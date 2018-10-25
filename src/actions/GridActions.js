@@ -197,6 +197,7 @@ export class GridActionsClass extends BaseActionsClass {
 			});
 		});
 	}
+
 }
 
 const GridActions = new GridActionsClass();
