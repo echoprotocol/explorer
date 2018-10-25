@@ -1,0 +1,25 @@
+stages:
+  - lint
+  - deploy
+
+eslint:
+  stage: lint
+  script:
+    - npm i
+    - npm run lint
+  tags:
+    - pp-server
+
+build_dev:
+  stage: deploy
+  script:
+    - cd /var/www/Projects/i/web-ui
+    - git pull
+    - npm i
+    - npm run build-dev
+  only:
+    - development
+  environment:
+    name: development
+  tags:
+    - pp-server
