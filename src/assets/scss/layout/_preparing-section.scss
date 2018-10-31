@@ -1,0 +1,307 @@
+.preparing-section {
+    padding-bottom: 10px;
+
+    @include res-768 {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    @include res-500 {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    @include res-768 {
+        padding-bottom: 13px;
+    }
+
+    @include res-320 {
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-direction: column;
+        padding-bottom: 19px;
+    }
+
+    .mobile-title {
+        @include Hack_Bold;
+        font-size: 9px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        margin-bottom: 9px;
+    }
+
+    .preparing-element {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        position: relative;
+
+        padding-left: 35px;
+        padding-right: 35px;
+        width: 360px;
+        padding-top: 15px;
+        padding-bottom: 11px;
+        @include transition;
+
+        &:hover {
+            .title {
+                color: #5eb3e8;
+
+                .tooltip {
+                    svg {
+                        path {
+                            fill: #5eb3e8;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        @include res-1280 {
+            width: 285px;
+            padding-left: 30px;
+            padding-right: 25px;
+        }
+
+        @include res-1000 {
+            padding-left: 25px;
+            padding-right: 20px;
+            width: 224px;
+        }
+
+        @include res-768 {
+            padding-left: 0;
+            padding-right: 0;
+            width: 140px;
+            padding-bottom: 3px;
+        }
+
+        @include res-500 {
+            width: 190px;
+        }
+
+        @include res-320 {
+            width: 100%;
+        }
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        &:not(:last-child) {
+            border-right: 1px solid #33374d;
+
+            @include res-768 {  
+                border: none;
+            }
+        }
+
+        &:not(:first-child) {
+            .status-container {
+                .description {
+                    .text {
+                        @include res-768 {
+                            display: none;
+                        }
+                        @include res-500 {
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.sm-border {
+            border-color: transparent;
+
+            &:after {
+                content: '';
+                width: 1px;
+                height: 35px;
+                background-color: #33374d;
+                display: inline-block;
+                position: absolute;
+                right: 0;
+                bottom: 0;
+
+                @include res-768 {
+                    display: none;
+                }
+            }
+        }
+
+        &.done {
+            .status-container {
+                .description {
+                    color: #f5f5f5;
+                    
+                    .status-icn {
+                        background-color: #5eb3e8;
+                        background-image: url(../images/icons/check-icn.svg);
+                        background-size: 9px 7px;
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+
+        &.progress {
+            .status-container {
+                .description {
+                    .status-icn {
+                        opacity: 1;
+                        visibility: visible;
+                        width: 14px;
+                        height: 14px;
+
+                        @keyframes spin{
+                            0%{
+                              -webkit-transform: rotate(0deg);
+                              -ms-transform: rotate(0deg);
+                              -o-transform: rotate(0deg);
+                              transform: rotate(0deg);
+                            }
+                          
+                            100%{
+                              -webkit-transform: rotate(360deg);
+                              -ms-transform: rotate(360deg);
+                              -o-transform: rotate(360deg);
+                              transform: rotate(360deg);
+                            }
+                        }
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 100%;
+                            border: 1px solid transparent;
+                            border-top-color: #5eb3e8;
+                            z-index: 2;
+                            animation: spin 1s infinite;
+                        }
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 100%;
+                            border: 1px solid transparent;
+                            border-top-color: #5eb3e8;
+                            border: 1px solid #304a6b;
+                            z-index: 1;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        .title {
+            display: inline-flex;
+            @include Hack_Bold;
+            font-size: 9px;
+            letter-spacing: 0.25em;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            color: #556270;
+            @include transition;
+
+            @include res-768 {
+                margin-bottom: 19px;
+            }
+
+            &.has-tooltip {
+                cursor: pointer;
+            }
+
+            .tooltip {
+                cursor: pointer;
+                display: inline-block;
+                margin-left: 9px;
+                width: 9px;
+                height: 9px;
+
+                svg {
+                    path {
+                        @include transition;
+                    }
+                }
+            }
+
+            .current-step {
+                color: #fff;
+            }
+        }
+
+        .status-container {
+            @include InterUI_Bold;
+            color: #556270;
+            width: 100%;
+
+            .description {
+                position: relative;
+                display: flex;
+                font-size: 16px;
+                @include transition;
+                
+                @include res-768 {
+                    height: 15px;
+
+                    .text {
+                        line-height: 13px;
+                    }
+                }
+
+                @include res-500 {
+                    .text {
+                        line-height: 18px;
+                    }
+                }
+
+                .status-icn {
+                    opacity: 0;
+                    visibility: hidden;
+                    @include transition;
+                    position: absolute;
+                    display: inline-block;
+                    right: 0;
+                    border-radius: 1000px;
+                    width: 15px;
+                    height: 15px;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+
+                    @include res-768 {
+                        position: relative;
+                    }
+                    @include res-500 {
+                        position: absolute;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.preparing-loader {
+    width: 100%;
+    height: 5px;
+    position: relative;
+
+    .line {
+        position: absolute;
+        box-shadow: 7px 0px 25px 0px rgba(94, 179, 232, 1); 
+        left: 0;
+        height: 100%;
+        top: 0;
+        width: 0px;
+        transition: all .3s ease-out;
+        background-color: #5eb3e8;
+    }
+}

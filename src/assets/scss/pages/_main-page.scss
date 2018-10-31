@@ -1,0 +1,28 @@
+.wrap {
+    width: 1440px;
+    margin: 0 auto;
+
+    @include res-1280 {
+        width: 1140px;
+    }
+
+    @include res-1000 {
+        width: 900px;
+    }
+
+    @include res-768 {
+        width: 668px;
+    }
+
+    @include res-500 {
+        width: 450px;
+    }
+
+    @include res-320 {
+        width: 300px;
+    }
+}
+
+.top-section {
+    background-color: #18142a;
+}

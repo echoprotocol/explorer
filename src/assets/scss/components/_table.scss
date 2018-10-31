@@ -1,0 +1,214 @@
+.table {
+  .divTable {
+    display: table;
+    width: 100%;
+
+    padding-bottom: 33px;
+    border-bottom: 1px solid #d8d8de;
+  }
+
+  .divTableBody {
+    display: table-row-group;
+  }
+
+  .devider {
+    height: 20px;
+    width: 100%;
+    display: block;
+  }
+
+  .blue {
+    color: #2995d8;
+    text-decoration: none;
+  }
+
+  .gray {
+    color: #828b95;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .divTableFoot {
+    background-color: #EEE;
+    display: table-footer-group;
+    font-weight: bold;
+  }
+
+  .divTableHeading {
+    background-color: transparent;
+    display: table-header-group;
+  }
+
+  .TableHeading {
+    display: table-row;
+    user-select: none;
+
+    background-color: #ebeaee;
+
+    @include Hack_Bold;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+
+    .divTableCell {
+      padding: 12px 35px;
+      color: #828b95;
+      white-space: nowrap;
+      padding-right: 0;
+      
+      @include res-1280 {
+        padding: 12px 18px;
+        &:not(:last-child) {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+
+  .divTableRow {
+    display: table-row;
+    @include transition;
+
+    @include InterUI_Medium;
+    font-size: 12px;
+    line-height: 18px;
+    background-color: #f3f2f5;
+
+    &:hover {
+      background-color: #fff;
+      box-shadow: 2px 0px 14px 0px rgba(0, 0, 0, 0.07); 
+    }
+
+    &:active {
+      background-color: #f3f2f5;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.07);
+    }
+
+    &.last-block {
+      background-color: #ebeaee;
+    }
+
+    .divTableCell {
+      padding: 7px 35px;
+      padding-right: 0;
+      color: #0f0739;
+
+      @include res-1280 {
+        padding: 7px 18px;
+        padding-right: 0;        
+      }
+    }
+  }
+
+  .divTableHead,
+  .divTableCell {
+    display: table-cell;
+    padding: 3px 10px;
+  }
+}
+
+
+.load-more-container {
+  width: 150px;
+  margin: 10px auto 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  
+  display: flex;
+  justify-content: center;
+
+  height: 35px;
+  
+  @include res-500 {  
+    margin: 30px auto 0;
+  }
+
+  @include res-320 {
+    margin: 20px auto 0;
+  }
+
+  .loader {
+      position: relative;
+      width: 15px;
+      height: 15px;
+      background-image: url(../images/icons/loader.png);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      animation: spin 1s infinite;
+      
+      @keyframes spin{
+          0%{
+            -webkit-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+        
+          100%{
+            -webkit-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+          }
+      }
+  }
+}
+
+.load-more {
+  @include InterUI_Regular;
+  font-size: 12px;
+  color: #828b95;
+  display: flex;
+  align-items: center;
+  @include transition;
+
+  &:hover {
+    color: #0f0739;
+
+    .icon {
+      svg {
+        path {
+          fill: #0f0739;
+        }
+      }
+    }
+  }
+
+  &:active {
+    color: #fb0707;
+
+    .icon {
+      svg {
+        path {
+          fill: #fb0707;
+        }
+      }
+    }
+  }
+
+  .icon {
+    width: 7px;
+    height: 13px;
+    display: block;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-left: 15px;
+    transform: translateY(-1px);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      path {
+        @include transition;
+      }
+    }
+  }
+}

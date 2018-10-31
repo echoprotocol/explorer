@@ -1,0 +1,57 @@
+body {
+	letter-spacing: 0.025em;
+}
+
+main.inner {
+	display: inline-block;
+	min-width: 100%;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+h1,h2,h3,h4,h5,h6 {
+	margin: 0;
+}
+
+input:focus,select:focus, button{
+	outline: none;
+}
+
+input[type='text'], input[type='phone'],input[type='email'], textarea {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+}
+
+textarea {
+	outline: none;
+}
+
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: block;
+}
+
+a {
+	@include transition;
+	text-decoration: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.hover {
+    opacity: 1;
+    transition: opacity .3s;
+}

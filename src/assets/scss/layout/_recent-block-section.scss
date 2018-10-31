@@ -1,0 +1,517 @@
+.recent-block-section {
+    padding-top: 25px;
+    background-color: #fff;
+
+    @include res-1000 {
+        overflow: hidden;
+    }
+
+    .wrap {
+        display: flex;
+
+        @include res-1000 {
+            flex-direction: column-reverse;
+        }
+
+        @include res-320 {
+            width: 100%;
+        }
+    }
+
+    .select {
+        position: relative;
+        color: #fff;
+        background-color: #5eb3e8;
+        @include transition;
+    }
+
+    .table-container {
+        width: 1015px;
+        padding-right: 70px;
+
+        padding-top: 37px;
+        min-height: calc(100vh - 270px);
+        padding-left: 0;
+        background-color: #f3f2f5;
+        position: relative;
+        padding-bottom: 37px;
+
+        @include res-1280 {
+            padding-right: 30px;
+            padding-left: 0px;
+        }
+
+        @include res-1000 {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            min-height: calc(100vh - 397px);
+        }
+
+        @include res-768 {
+            padding-top: 50px;
+            min-height: calc(100vh - 484px);
+        }
+
+        @include res-500 {
+            padding-top: 40px;
+            min-height: calc(100vh - 511px);
+        }
+
+        @include res-320 {
+            padding-top: 45px;
+        }
+
+        &:before {
+            content: '';
+            width: 100%;
+            height: 100%;
+            background-color: #f3f2f5;
+            position: absolute;
+            top: 0;
+            display: block;
+            left: -1000vw;
+            width: 1000vw;
+        }
+
+        @include res-1000 {
+            &:after {
+                content: '';
+                width: 100%;
+                height: 100%;
+                background-color: #f3f2f5;
+                position: absolute;
+                top: 0;
+                display: block;
+                right: -1000vw;
+                width: 1000vw;
+            }
+    
+        }
+
+        h2 {
+            @include InterUI_Bold;
+            font-size: 23px;
+            color: #130d32;
+            padding-left: 34px;
+            margin-bottom: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            
+            @include res-1280 {
+                padding-left: 28px;
+            }
+
+            @include res-1000 {
+                padding-left: 0;
+                margin-bottom: 27px;
+            }
+
+            @include res-500 {
+                margin-bottom: 22px;
+            }
+
+            @include res-320 {
+                position: relative;
+                width: 300px;
+                margin: 0 auto;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-bottom: 35px;
+            }
+
+            .input-search-block {
+                margin-right: 25px;
+
+                @include res-1280 {
+                    margin-right: 20px;
+                }
+
+                @include res-320 {
+                    position: absolute;
+                    right: 20px;
+                    background-color: #f3f2f5;
+                }
+                &.small {
+                    &.is-active-small {
+                        @include res-500 {
+                            width: 200px;
+                        }
+        
+                        @include res-320 {
+                            width: calc(100% - 40px);
+                        }
+                    }
+                }
+            }
+        }
+
+        .divTable {
+            width: 945px;
+
+            @include res-1280 {
+                width: 790px;
+            }
+
+            @include res-1000 {
+                width: 100%;
+            }
+
+            .TableHeading {
+                .divTableCell {
+
+                    &:first-child {
+                        width: 160px;
+                        min-width: 160px;
+                        max-width: 160px;
+
+                        @include res-1280 {
+                            width: 115px;
+                            min-width: 115px;
+                            max-width: 115px;
+                        }
+
+                        @include res-1000 {
+                            width: auto;
+                        }
+
+                        @include res-768 {
+                            width: 80px;
+                            min-width: 80px;
+                            max-width: 80px;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        width: 160px;
+                        min-width: 160px;
+                        max-width: 160px;
+                        
+                        @include res-1280 {
+                            width: 130px;
+                            min-width: 130px;
+                            max-width: 130px;
+                        }
+
+                        @include res-1000 {
+                            width: auto;
+                        }
+
+                        @include res-768 {
+                            width: 80px;
+                            min-width: 80px;
+                            max-width: 80px;
+                        }
+                    }
+
+                    &:nth-child(3) {
+                        width: 195px;
+                        max-width: 195px;
+                        min-width: 195px;
+
+                        @include res-1000 {
+                            width: auto;
+                        }
+
+                        @include res-768 {
+                            width: 170px;
+                            max-width: 170px;
+                            min-width: 170px;
+                        }
+                    }
+
+                    &:nth-child(4) {
+                        width: 150px;
+                        max-width: 150px;
+                        min-width: 150px;
+                        
+                        @include res-1280 {
+                            width: 125px;
+                            max-width: 125px;
+                            min-width: 125px;
+                        }
+                        
+                        @include res-768 {
+                            width: 115px;
+                            max-width: 115px;
+                            min-width: 115px;
+                        }
+                    }
+
+                    &:nth-child(5) {
+                        width: 115px;
+                        max-width: 115px;
+                        min-width: 115px;
+
+                        @include res-1280 {
+                            width: 105px;
+                            max-width: 105px;
+                            min-width: 105px;
+                        }
+
+                        @include res-1000 {
+                            width: auto;
+                        }
+
+                        @include res-768 {
+                            width: 95px;
+                            max-width: 95px;
+                            min-width: 95px;
+                        }
+                    }
+                }
+            }
+
+            .divTableRow {
+                .divTableCell {
+
+                    .inner-container {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        position: relative;
+                    }
+
+                    &:nth-child(3) {
+                        width: 195px;
+                        max-width: 195px;
+                        min-width: 195px;
+
+                        @include res-768 {
+                            width: 170px;
+                            max-width: 170px;
+                            min-width: 170px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .recent-block-mobile-view {
+        @include res-320 {
+            width: 300px;
+            margin: 0 auto; 
+        }
+        .recent-block-element {
+            @include InterUI_Medium;
+            background-color: #e7e7e9;
+            margin-bottom: 7px;
+
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px 0px 5px 25px;
+
+            @include res-320 {
+                padding: 25px 0px 10px 20px;
+            }
+            .container {
+                width: 140px;
+                margin-bottom: 25px;
+                padding-right: 20px;
+
+                &:first-child {
+                    .title {
+                        margin-bottom: 13px;
+                    }
+                }
+                .title {
+                    user-select: none;
+                    background-color: transparent;
+                    @include Hack_Bold;
+                    font-size: 9px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.25em;
+                    color: #828b95;
+                    margin-bottom: 15px;
+                }
+                .value {
+                    color: #0f0739;
+                    font-size: 12px;
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    .blue {
+                        font-size: 15px;
+                    }
+
+                    .gray {
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+    }
+
+    .recent-block-sidebar {
+        width: 100%;
+        padding-left: 70px;
+        padding-top: 25px;
+
+        @include res-1280 {
+            padding-left: 50px;
+        }
+
+        @include res-1000 {
+            padding-left: 0;
+            padding-top: 30px;
+        }
+
+        @include res-768 {
+            padding-bottom: 5px;
+            padding-top: 25px;
+        }
+
+        @include res-500 {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        @include res-320 {
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 12px;
+            padding-bottom: 25px;
+        }
+
+        .help-container {
+            width: 360px;
+
+            @include res-1280 {
+                width: 260px;
+            }
+
+            @include res-1000 {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            @include res-768 {
+                flex-wrap: wrap;
+            }
+
+            @include res-320 {
+                flex-direction: column;
+            }
+        }
+
+        .sidebar-elem {
+            &:not(:last-child) {
+                margin-bottom: 25px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #e2e3e7;
+                
+                @include res-1000 {
+                    border-bottom: none;
+                    max-width: 250px;
+                    margin-bottom: 30px;
+                }
+
+                @include res-768 {
+                    padding-bottom: 0px;
+                    margin-bottom: 20px;
+
+                    &:first-child, &:nth-child(2) {
+                        padding-bottom: 5px;
+                        margin-bottom: 29px;
+                        border-bottom: 1px solid #e2e3e7;
+                    }
+                }
+
+                @include res-320 {
+                    border-bottom: 1px solid #e2e3e7;
+                    padding-bottom: 26px  !important;
+                    margin-bottom: 26px !important;
+                }
+
+                @include res-500 {
+                    width: 180px;
+                }
+
+                @include res-320 {
+                    width: 100%;
+                    max-width: none;
+                }
+            }
+
+            @include res-768 {
+                display: flex;
+                flex-direction: column-reverse;
+                justify-content: space-between;
+                width: 250px;
+                margin-bottom: 20px;
+            }
+
+            @include res-500 {
+                width: 180px;
+            }
+
+            @include res-320 {
+                width: 100%;
+                max-width: none;
+                flex-direction: column;
+            }
+
+            .title {
+                @include Hack_Bold;
+                font-size: 9px;
+                letter-spacing: 0.25em;
+                text-transform: uppercase;
+                margin-bottom: 10px;
+                color: #130d32;
+
+                
+                @include res-1000 {
+                    margin-bottom: 20px;
+                }
+
+                @include res-768 {
+                    line-height: 16px;
+                    margin-bottom: 0;
+                    height: 35px;
+                }
+
+                @include res-320 {
+                    width: 300px;
+                    margin: 0 auto;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+            }
+
+            .value {
+                @include InterUI_Bold;
+                font-size: 23px;
+                line-height: 45px;
+                color: #130d32;
+
+                @include res-1000 {
+                    line-height: 25px;
+                    word-break: break-all;
+                }
+
+                @include res-768 {
+                    line-height: 21px;
+                    margin-bottom: 21px;
+                }
+
+                @include res-320 {
+                    width: 300px;
+                    margin: 0 auto;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+
+                .sm {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
