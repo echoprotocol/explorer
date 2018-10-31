@@ -6,7 +6,7 @@ class CompositePreparingBlock extends React.Component {
 	render() {
 
 		const {
-			title, smallTitle, description, status, tooltip, className, currentStep, totalStep,
+			title, description, status, tooltip, className, currentStep, totalStep,
 		} = this.props;
 
 		return (
@@ -31,11 +31,19 @@ class CompositePreparingBlock extends React.Component {
 CompositePreparingBlock.propTypes = {
 	status: PropTypes.string,
 	className: PropTypes.string,
+	title: PropTypes.string,
+	description: PropTypes.string,
+	tooltip: PropTypes.bool,
+	currentStep: PropTypes.string.isRequired,
+	totalStep: PropTypes.string.isRequired,
 };
 
 CompositePreparingBlock.defaultProps = {
 	status: '',
 	className: '',
+	title: '',
+	description: '',
+	tooltip: false,
 };
 
 export default CompositePreparingBlock;

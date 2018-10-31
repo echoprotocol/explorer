@@ -72,11 +72,19 @@ class SimplePreparingBlock extends React.Component {
 SimplePreparingBlock.propTypes = {
 	status: PropTypes.string,
 	className: PropTypes.string,
+	title: PropTypes.string,
+	smallTitle: PropTypes.string,
+	description: PropTypes.string,
+	tooltip: PropTypes.bool,
 };
 
 SimplePreparingBlock.defaultProps = {
 	status: '',
 	className: '',
+	title: '',
+	smallTitle: '',
+	description: '',
+	tooltip: false,
 };
 
 export default SimplePreparingBlock;

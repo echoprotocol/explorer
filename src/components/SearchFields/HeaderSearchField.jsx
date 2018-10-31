@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-expressions */
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class HeaderSearchField extends React.Component {
 
@@ -131,5 +132,17 @@ class HeaderSearchField extends React.Component {
 	}
 
 }
+
+HeaderSearchField.propTypes = {
+	small: PropTypes.bool,
+	placeholder: PropTypes.string,
+	white: PropTypes.bool,
+};
+
+HeaderSearchField.defaultProps = {
+	small: false,
+	placeholder: '',
+	white: false,
+};
 
 export default HeaderSearchField;

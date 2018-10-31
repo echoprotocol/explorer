@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+
 import React from 'react';
 import Media from 'react-media';
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
