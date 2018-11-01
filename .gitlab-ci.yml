@@ -12,18 +12,18 @@ eslint:
     - npm i
     - npm run lint
   tags:
-    - pp-server
+    - pp-projects
 
-#build_dev:
-#  stage: deploy
-#  script:
-#    - cd /var/www/Projects/i/web-ui
-#    - git pull
-#    - npm i
-#    - npm run build-dev
-#  only:
-#    - development
-#  environment:
-#    name: development
-#  tags:
-#    - pp-server
+build_dev:
+  stage: deploy
+  script:
+    - cd /home/devuser/DevProjects/656.echo_explorer/explorer
+    - git pull
+    - npm i
+    - npm run build-dev
+  only:
+    - development
+  environment:
+    name: development
+  tags:
+    - pp-projects
