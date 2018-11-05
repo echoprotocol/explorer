@@ -216,6 +216,18 @@
                 margin-bottom: 19px;
             }
 
+            &:active {
+                color: #e85e5e;
+
+                .tooltip {
+                    svg {
+                        path {
+                            fill: #e85e5e;
+                        }
+                    }
+                }
+            }
+
             &.has-tooltip {
                 cursor: pointer;
             }
@@ -282,6 +294,9 @@
                     }
                     @include res-500 {
                         position: absolute;
+                    }
+                    @include res-320 {
+                        right: 11px;
                     }
                 }
             }

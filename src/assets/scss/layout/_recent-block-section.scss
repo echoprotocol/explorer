@@ -115,11 +115,12 @@
 
             @include res-320 {
                 position: relative;
-                width: 300px;
                 margin: 0 auto;
-                padding-left: 20px;
-                padding-right: 20px;
                 margin-bottom: 35px;
+
+                padding-left: 30px;
+                padding-right: 30px;
+                width: 100%;
             }
 
             .input-search-block {
@@ -129,9 +130,14 @@
                     margin-right: 20px;
                 }
 
+                @include res-500 {
+                    margin-right: 30px;
+                }
+
                 @include res-320 {
                     position: absolute;
-                    right: 20px;
+                    right: 30px;
+                    margin-right: 0;
                     background-color: #f3f2f5;
                 }
                 &.small {
@@ -141,7 +147,7 @@
                         }
         
                         @include res-320 {
-                            width: calc(100% - 40px);
+                            width: calc(100% - 60px);
                         }
                     }
                 }
@@ -292,8 +298,9 @@
 
     .recent-block-mobile-view {
         @include res-320 {
-            width: 300px;
             margin: 0 auto; 
+            width: 100%;
+            padding: 0 10px 0 10px;
         }
         .recent-block-element {
             @include InterUI_Medium;
@@ -306,7 +313,9 @@
 
             @include res-320 {
                 padding: 25px 0px 10px 20px;
+                justify-content: space-between;
             }
+
             .container {
                 width: 140px;
                 margin-bottom: 25px;
@@ -456,6 +465,7 @@
                 width: 100%;
                 max-width: none;
                 flex-direction: column;
+                padding-left: 10px;
             }
 
             .title {
@@ -478,10 +488,10 @@
                 }
 
                 @include res-320 {
-                    width: 300px;
                     margin: 0 auto;
                     padding-left: 20px;
                     padding-right: 20px;
+                    width: 100%;
                 }
             }
 
@@ -502,10 +512,10 @@
                 }
 
                 @include res-320 {
-                    width: 300px;
                     margin: 0 auto;
                     padding-left: 20px;
                     padding-right: 20px;
+                    width: 100%;
                 }
 
                 .sm {

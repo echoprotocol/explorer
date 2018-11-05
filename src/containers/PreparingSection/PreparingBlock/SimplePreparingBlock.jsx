@@ -18,7 +18,7 @@ class SimplePreparingBlock extends React.Component {
 					{
 						(tooltip) ? (
 							<Tooltip placement="rightTop" trigger={['hover']} overlay={<span>Description on hover (in two or more lines)</span>}>
-								<div className="title has-tooltip">
+								<a href="" className="title has-tooltip">
 									<Media query="(max-width: 999px)">
 										{(matches) =>
 											(matches ? (
@@ -41,10 +41,10 @@ class SimplePreparingBlock extends React.Component {
 											/>
 										</svg>
 									</div>
-								</div>
+								</a>
 							</Tooltip>
 						) : (
-							<div className="title">
+							<a href="" className="title">
 								<Media query="(max-width: 999px)">
 									{(matches) =>
 										(matches ? (
@@ -54,7 +54,7 @@ class SimplePreparingBlock extends React.Component {
 										))
 									}
 								</Media>
-							</div>
+							</a>
 						)
 					}
 					<div className="status-container">

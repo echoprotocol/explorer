@@ -31,15 +31,18 @@ class HeaderSearchField extends React.Component {
 	}
 
 	onBlur() {
-		this.setState({ focus: false });
-		this.setState({ isChange: false });
+		this.setState({
+			focus: false,
+			isChange: false,
+		});
 	}
 
 	onChange(e) {
 		// Показать блок с подсказками
-		this.setState({ isChange: true });
-
-		this.setState({ inputValue: e.target.value });
+		this.setState({
+			isChange: true,
+			inputValue: e.target.value,
+		});
 	}
 
 	setWrapperRef(node) {
@@ -63,9 +66,12 @@ class HeaderSearchField extends React.Component {
 	}
 
 	cleareInput() {
-		this.setState({ inputValue: '' });
-		this.setState({ focus: false });
-		this.setState({ isChange: false });
+		this.setState({
+			inputValue: '',
+			focus: false,
+			isChange: false,
+			isActiveSmall: false,
+		});
 	}
 
 
