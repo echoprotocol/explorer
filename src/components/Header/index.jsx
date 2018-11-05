@@ -1,7 +1,7 @@
 import React from 'react';
 import Media from 'react-media';
 import Logotype from '../Logotype';
-import HeaderSearchField from '../SearchFields/HeaderSearchField';
+import SearchField from '../SearchFields/SearchField';
 
 class Header extends React.Component {
 
@@ -12,9 +12,9 @@ class Header extends React.Component {
 				<Media query="(max-width: 767px)">
 					{(matches) =>
 						(matches ? (
-							<HeaderSearchField small placeholder="Search" />
+							<SearchField small placeholder="Search" />
 						) : (
-							<HeaderSearchField withHelp placeholder="Search by account / block / transaction" />
+							<SearchField withHelp placeholder="Search by account / block / transaction" />
 						))
 					}
 				</Media>

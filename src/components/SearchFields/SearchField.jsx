@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class HeaderSearchField extends React.Component {
+class SearchField extends React.Component {
 
 	constructor() {
 		super();
@@ -140,18 +140,18 @@ class HeaderSearchField extends React.Component {
 
 }
 
-HeaderSearchField.propTypes = {
+SearchField.propTypes = {
 	small: PropTypes.bool,
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
 };
 
-HeaderSearchField.defaultProps = {
+SearchField.defaultProps = {
 	small: false,
 	placeholder: '',
 	white: false,
 	withHelp: false,
 };
 
-export default HeaderSearchField;
+export default SearchField;

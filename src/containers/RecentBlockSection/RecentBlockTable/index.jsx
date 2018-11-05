@@ -3,7 +3,7 @@
 import React from 'react';
 import Media from 'react-media';
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
-import HeaderSearchField from '../../../components/SearchFields/HeaderSearchField';
+import SearchField from '../../../components/SearchFields/SearchField';
 
 class RecentBlockTable extends React.Component {
 
@@ -138,9 +138,9 @@ class RecentBlockTable extends React.Component {
 					<Media query="(max-width: 767px)">
 						{(matches) =>
 							(matches ? (
-								<HeaderSearchField small white placeholder="Search by block" />
+								<SearchField small white placeholder="Search by block" />
 							) : (
-								<HeaderSearchField small white placeholder="Search by block number" />
+								<SearchField small white placeholder="Search by block number" />
 							))
 						}
 					</Media>
