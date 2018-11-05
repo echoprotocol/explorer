@@ -78,7 +78,9 @@ class HeaderSearchField extends React.Component {
 	render() {
 
 		const { focus, isChange, isActiveSmall } = this.state;
-		const { small, placeholder, white } = this.props;
+		const {
+			small, placeholder, white, withHelp,
+		} = this.props;
 
 		// ВЫДЕЛЕНИЕ СОВПАВШИХ ЭЛЕМЕНТОВ --> <span className="select"></span>
 
@@ -107,7 +109,6 @@ class HeaderSearchField extends React.Component {
 							value={this.state.inputValue}
 							placeholder={placeholder}
 							onFocus={() => this.onFocus()}
-							// onBlur={() => this.onBlur()}
 							onChange={(e) => this.onChange(e)}
 							ref={(node) => { this.inputEl = node; }}
 						/>
@@ -115,7 +116,7 @@ class HeaderSearchField extends React.Component {
 					</div>
 				</div>
 				{
-					(!small) && (
+					(withHelp) && (
 						(isChange) && (
 							<div className="search-block-result">
 								<a href="" className="element" onClick={(e) => e.preventDefault()}>
@@ -143,12 +144,14 @@ HeaderSearchField.propTypes = {
 	small: PropTypes.bool,
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
+	withHelp: PropTypes.bool,
 };
 
 HeaderSearchField.defaultProps = {
 	small: false,
 	placeholder: '',
 	white: false,
+	withHelp: false,
 };
 
 export default HeaderSearchField;

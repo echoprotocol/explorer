@@ -14,7 +14,7 @@ class Header extends React.Component {
 						(matches ? (
 							<HeaderSearchField small placeholder="Search" />
 						) : (
-							<HeaderSearchField placeholder="Search by account / block / transaction" />
+							<HeaderSearchField withHelp placeholder="Search by account / block / transaction" />
 						))
 					}
 				</Media>
