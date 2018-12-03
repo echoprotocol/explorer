@@ -20,6 +20,17 @@
   .blue {
     color: #2995d8;
     text-decoration: none;
+    transition: .2s ease-out;
+    cursor: pointer;
+    display: inline-block;
+    
+    &:hover {
+      color: #095494;
+    }
+
+    &:active {
+      color: #fb0707;
+    }
   }
 
   .gray {
@@ -27,6 +38,7 @@
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    transition: all .2s ease-out;
   }
 
   .divTableFoot {
@@ -52,7 +64,7 @@
     letter-spacing: 0.25em;
 
     .divTableCell {
-      padding: 12px 35px;
+      padding: 12px 30px;
       color: #828b95;
       white-space: nowrap;
       padding-right: 0;
@@ -83,6 +95,17 @@
     &:active {
       background-color: #f3f2f5;
       box-shadow: 2px 0 8px rgba(0, 0, 0, 0.07);
+
+      .divTableCell {
+        color: #4e4b5d;
+
+        .gray {
+          color: #4e4b5d;
+        }
+        .blue {
+          color: #6b9ebe;
+        }
+      }
     }
 
     &.last-block {
@@ -90,13 +113,19 @@
     }
 
     .divTableCell {
-      padding: 7px 35px;
+      position: relative;
+      padding: 7px 30px;
       padding-right: 0;
       color: #0f0739;
+      transition: all .2s ease-out;
 
       @include res-1280 {
         padding: 7px 18px;
         padding-right: 0;        
+      }
+
+      .sub-container {
+        position: relative;
       }
     }
   }

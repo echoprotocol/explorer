@@ -1,0 +1,133 @@
+.table-container {
+    .transaction-info-table {
+        width: 945px;
+        padding-right: 20px;
+        margin-top: 60px;
+
+        @include res-1280 {
+            // width: 790px;
+            width: 100%;
+            padding-right: 50px;
+        }
+
+        @include res-1000 {
+            width: 100%;
+
+            padding-left: 0;
+            padding-right: 19px;
+        }
+
+        @include res-768 {
+            padding-left: 19px;
+        }
+
+        @include res-500 {
+            margin-top: 24px;
+            // padding-right: 0;
+            padding-left: 25px;
+            padding-right: 35px;
+        }
+
+        @include res-320 {
+            padding-left: 30px;
+            padding-right: 30px;
+            margin-top: 50px;
+        }
+
+        .row {
+            display: flex;
+            margin-bottom: 25px;
+
+            @include res-320 {
+                flex-direction: column;
+            }
+
+            &.bytecode {
+                margin-bottom: 45px;
+
+                @include res-500 {
+                    margin-bottom: 35px;
+                }
+
+                .value {
+                    @include Hack_Regular;
+                    color: #080808;
+                    font-size: 12px;
+                    line-height: 18px;
+                }
+            }
+
+            .title {
+                @include Hack_Bold;
+                padding-top: 4px;
+                width: 185px;
+                font-size: 9px;
+                color: #1f3c4d;
+                text-transform: uppercase;
+                min-height: 16px;
+                display: flex;
+                flex-shrink: 0;
+
+                @include res-500 {
+                    width: 140px;
+                }
+
+                @include res-320 {
+                    margin-bottom: 10px;
+                }
+
+            }
+            .value {
+                @include InterUI_Medium;
+                font-size: 14px;
+                color: #130d32;
+                min-height: 16px;
+                word-break: break-all;
+
+                .blue {
+                    color: #2a90e6;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+.copy-bytecode {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 84px;
+    height: 21px;
+    margin-top: 25px;
+    border-radius: 11px;
+    background-color: #ebeaee;
+    @include InterUI_Regular;
+    font-size: 12px;
+    color: #000000;
+    border: none;
+    outline: none;
+
+    @include res-500 {
+        margin-top: 30px;
+    }
+
+    @include res-320 {
+        margin-top: 15px;
+    }
+
+    &:before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        background-image: url(../images/icons/copy-btn-icn.svg);
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        display: inline-block;
+        flex-shrink: 0;
+        margin-right: 5px;
+    }
+}

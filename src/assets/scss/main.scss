@@ -7,9 +7,12 @@
 @import 'layout/header';
 @import 'layout/preparing-section';
 @import 'layout/recent-block-section';
+@import 'layout/inner-block-information';
+@import 'layout/transactions-info-table';
 
 @import "pages/all";
 
 @import "components/table";
 @import "components/input-search-block";
 @import "components/tooltip";
+@import 'components/information-breadcrumbs';

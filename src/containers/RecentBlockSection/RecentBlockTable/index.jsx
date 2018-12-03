@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import Media from 'react-media';
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SearchField from '../../../components/SearchFields/SearchField';
@@ -155,7 +156,7 @@ class RecentBlockTable extends React.Component {
 											<div className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
-													<div className="value"><a href="" className="blue" onClick={(e) => e.preventDefault()}>{data.blockNumber}</a></div>
+													<div className="value"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
 												</div>
 												<div className="container">
 													<div className="title">Block time</div>
@@ -217,7 +218,7 @@ class RecentBlockTable extends React.Component {
 											codingData.map((data) => (
 												<React.Fragment>
 													<div className="divTableRow">
-														<div className="divTableCell"><a href="" className="blue" onClick={(e) => e.preventDefault()}>{data.blockNumber}</a></div>
+														<div className="divTableCell"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
 														<div className="divTableCell">{data.time}</div>
 														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
@@ -239,5 +240,14 @@ class RecentBlockTable extends React.Component {
 	}
 
 }
+
+RecentBlockTable.propTypes = {
+	switchToBlockInfo: PropTypes.func,
+};
+
+RecentBlockTable.defaultProps = {
+	switchToBlockInfo: null,
+};
+
 
 export default RecentBlockTable;

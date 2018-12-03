@@ -1,8 +1,8 @@
 $res-320: 320px;
 $res-500: 500px;
 $res-768: 768px;
-$res-1000: 1000px;
-$res-1280: 1245px;
+$res-1000: 1024px;
+$res-1280: 1280px;
 
 $res-1440: 1535px;
 
@@ -52,6 +52,12 @@ $res-1440: 1535px;
 
 @mixin transition {
   transition: all .2s ease-out;
+}
+
+@mixin allWidth($width) {
+    width: $width;
+    max-width: $width;
+    min-width: $width;
 }
 
 

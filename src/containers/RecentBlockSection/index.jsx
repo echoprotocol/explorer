@@ -1,14 +1,50 @@
 import React from 'react';
 import RecentBlockTable from './RecentBlockTable';
+import BlockInformation from './BlockInformation';
+import TransactionInfo from './TransactionsInfo';
 import RecentBlockSidebar from './RecentBlockSidebar';
 
-class RecentBlockSection extends React.Component {
+class MainContainer extends React.Component {
+
+	constructor() {
+		super();
+
+		this.state = {
+			blockInfo: true,
+			trnsInfo: false,
+		};
+
+		this.switchBlockInfo = this.switchBlockInfo.bind(this);
+		this.switchTransInfo = this.switchTransInfo.bind(this);
+	}
+
+	switchBlockInfo(value) {
+		this.setState({
+			blockInfo: value,
+			trnsInfo: false,
+		});
+	}
+
+	switchTransInfo(value) {
+		this.setState({
+			blockInfo: false,
+			trnsInfo: value,
+		});
+	}
 
 	render() {
 		return (
 			<div className="recent-block-section">
 				<div className="wrap">
-					<RecentBlockTable />
+					{
+						(!this.state.blockInfo && !this.state.trnsInfo) && (<RecentBlockTable switchToBlockInfo={this.switchBlockInfo} />)
+					}
+					{
+						(this.state.blockInfo) && (<BlockInformation switchToTransInfo={this.switchTransInfo} />)
+					}
+					{
+						(this.state.trnsInfo) && (<TransactionInfo switchToBlockInfo={this.switchBlockInfo} />)
+					}
 					<RecentBlockSidebar />
 				</div>
 			</div>
@@ -17,4 +53,4 @@ class RecentBlockSection extends React.Component {
 
 }
 
-export default RecentBlockSection;
+export default MainContainer;

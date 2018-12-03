@@ -26,6 +26,10 @@
 .top-section {
     background-color: #18142a;
 
+    @include res-320 {
+        position: relative;
+        z-index: 20;
+    }
     .wrap {
         @include res-320 {
             width: 100%;

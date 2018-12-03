@@ -1,0 +1,559 @@
+.table-container.inner-information-container {
+    padding-top: 25px;
+
+    @include res-768 {
+        padding-top: 20px;
+    }
+
+    @include res-500 {
+        padding-top: 15px;
+    }
+
+    @include res-320 {
+        // padding-top: 65px;
+        padding-top: 25px;
+    }
+
+    h2 {
+        padding-left: 30px;
+        font-size: 16px;
+        line-height: 27px;
+        margin-bottom: 12px;
+
+        @include res-768 {
+            padding-left: 20px;
+        }
+
+        @include res-500 {
+            padding-left: 25px;
+            margin-bottom: 18px;
+        }
+
+        @include res-320 {
+            padding-left: 30px;
+        }
+    }
+
+
+    &.block-information {
+        
+        .block-description {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            // background-color: #fff;
+            box-shadow: 0 0 62px rgba(64, 64, 64, 0.18);
+            padding: 22px 50px 22px 30px;
+            margin-bottom: 17px;
+            justify-content: space-between;
+
+
+            @include res-768 {
+                flex-wrap: wrap;
+                padding-bottom: 0;
+                margin-bottom: 42px;
+            }
+
+            @include res-500 {
+                 padding-left: 25px;
+                 justify-content: flex-start;
+                 padding-right: 15px;
+                 margin-bottom: 28px;
+            }
+
+            @include res-320 {
+                width: calc(100% - 20px);
+                margin: 0 auto 28px;
+                padding-left: 20px;
+            }
+
+            > .container {
+                flex-shrink: 0;
+
+                @include res-768 {
+                    margin-bottom: 25px;
+                }
+
+                @include res-320 {
+                    width: 100% !important;
+                }
+
+                &.time {
+                    width: 215px;
+
+                    @include res-500 {
+                        width: 180px;
+                    }
+                }
+
+                &.size {
+                    width: 115px;
+
+                    @include res-500 {
+                        width: 110px;
+                    }
+                }
+
+                &.producer {
+                    width: 130px;
+
+                    @include res-500 {
+                        width: 115px;
+                    }
+                }
+
+                &.reward {
+                    width: 125px;
+
+                    @include res-500 {
+                        width: 180px;
+                    }
+                }
+
+                &.verifiers {
+                    width: 140px;
+                }
+
+                > .title {
+                    @include Hack_Bold;
+                    font-size: 9px;
+                    letter-spacing: 0.250em;
+                    color: #1f3c4d;
+                    text-transform: uppercase;
+                    margin-bottom: 14px;
+                }
+
+                > .value {
+                    @include InterUI_Medium;
+                    font-size: 14px;
+                    letter-spacing: 0.025em;
+                    color: #130d32;
+                    min-height: 21px;
+                    line-height: normal;
+
+                    display: flex;
+                    align-items: center;
+
+                    .view-list {
+                        cursor: pointer;
+
+                        width: 87px;
+                        height: 21px;
+                        @include InterUI_Regular;
+                        font-size: 12px;
+                        color: #000000;
+                        background-color: #ebeaee;
+                        border-radius: 11px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: .2s ease-out;
+
+                        margin-left: 18px;
+
+                        &:hover {
+                            background-color: #e1e0e4;
+                        }
+
+                        &:active {
+                            background-color: #d2d1d5;
+                            color: rgba(0, 0, 0, 0.8);
+                            &:before {
+                                opacity: 0.7;
+                            }
+                        }
+
+                        &:before {
+                            content: '';
+                            width: 7px;
+                            height: 5px;                            
+                            margin-right: 5px;
+                            flex-shrink: 0;
+                            transition: .2s ease-out;
+                            background-image: url(../images/icons/view-list.svg);
+                            background-size: auto;
+                            background-position: center center;
+                            background-repeat: no-repeat;
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+        }
+        
+        .divTable {
+            .TableHeading {
+                .divTableCell {
+                    padding: 12px 15px;
+                    padding-right: 0;
+
+                    &:first-child {
+                        padding-left: 30px;
+                        @include allWidth(10px);
+
+                        @include res-1280 {
+                            @include allWidth(10px);
+                        }
+                        @include res-768 {
+                            padding-left: 20px;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        @include allWidth(110px);
+
+                        @include res-1280 {
+                            @include allWidth(110px);
+                        }
+                    }
+                    &:nth-child(3) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(130px);
+                        }
+                    }
+                    &:nth-child(4) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(120px);
+                        }
+                    }
+                    &:nth-child(5) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(135px);
+                        }
+                    }
+                    &:nth-child(6) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(150px);
+                        }
+                    }
+                    &:nth-child(7) {
+                        @include allWidth(105px);
+                    }
+                }
+            }
+
+            .divTableRow {
+                .divTableCell {
+                    padding: 7px 15px;
+                    padding-right: 0;
+
+                    &.fail {
+                        color: #ff0042;
+                    }
+
+                    &:first-child {
+                        padding-left: 30px;
+                        
+                        @include res-768 {
+                            padding-left: 20px;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        @include allWidth(110px);
+                        
+                        @include res-1280 {
+                            @include allWidth(110px);
+                        }
+                    }
+                    &:nth-child(3) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(130px);
+                        }
+                    }
+                    &:nth-child(4) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(120px);
+                        }
+                    }
+                    &:nth-child(5) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(135px);
+                        }
+                    }
+                    &:nth-child(6) {
+                        @include allWidth(165px);
+
+                        @include res-1280 {
+                            @include allWidth(150px);
+                        }
+                    }
+                    &:nth-child(7) {
+                        @include allWidth(105px);
+                    }
+                }
+
+                &.with-subtransfer {
+
+                    .divTableCell.transaction-to {
+                        .sub-container {
+                            &:before {
+                                content: '';
+                                left: -14px;
+                                top: 7px;
+                                position: absolute;
+                                width: 7px;
+                                height: 1px;
+                                display: block;
+                                border-bottom: 1px dotted #929293;
+                                box-sizing: border-box;
+                            }
+                            &:after {
+                                content: '';
+                                left: -15px;
+                                top: 8px;
+                                position: absolute;
+                                width: 1px;
+                                height: 18px;
+                                display: block;
+                                border-right: 1px dotted #929293;
+                                box-sizing: border-box;
+                            }
+                        }
+                    }
+                }
+
+                &.is-subtransfer {
+                    cursor: default;
+                    &:hover {
+                        background-color: transparent;
+                        box-shadow: none;
+                    }
+
+                    .divTableCell.transaction-to {
+                        .sub-container {
+
+                            .line-arrow {
+                                background-image: url(../images/icons/subtransfer-line-arrow.svg);
+                                background-position: 0 0;
+                                background-repeat: no-repeat;
+                                width: 3px;
+                                height: 5px;
+                                position: absolute;
+                                left: -6px;
+                                top: 7px;
+                            }
+
+                            &:before {
+                                content: '';
+                                left: -14px;
+                                top: 9px;
+                                position: absolute;
+                                width: 7px;
+                                height: 1px;
+                                display: block;
+                                border-bottom: 1px dotted #929293;
+                                box-sizing: border-box;
+                            }
+                            &:after {
+                                content: '';
+                                left: -15px;
+                                top: -5px;
+                                position: absolute;
+                                width: 1px;
+                                height: 31px;
+                                display: block;
+                                border-right: 1px dotted #929293;
+                                box-sizing: border-box;
+                            }
+                        }
+                    }
+
+                    &_last {
+                        .divTableCell.transaction-to {
+                            .sub-container {
+                                &:after {
+                                    content: '';
+                                    left: -15px;
+                                    top: -5px;
+                                    position: absolute;
+                                    width: 1px;
+                                    height: 14px;
+                                    display: block;
+                                    border-right: 1px dotted #929293;
+                                    box-sizing: border-box;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .sub-container {
+                    display: inline-block;
+                }
+
+                .subtransfer-type {
+                    position: absolute;
+                    @include InterUI_Regular;
+                    font-size: 10px;
+                    color: #3f3b55;
+                    background-color: #e0e0e3;
+                    border-radius: 2px;
+                    top: 50%;
+                    left: calc(100% + 5px);
+                    transform: translateY(-50%);
+                    white-space: nowrap;
+                    padding: 0 3px;
+                    line-height: 17px;
+                }
+            }
+        }
+    }
+    
+    .recent-block-mobile-view {
+        .recent-block-element {
+            position: relative;
+
+            cursor: pointer;
+            transition: all .2s ease-out;
+
+            &:hover {
+                background-color: #e0dfe2;
+            }
+
+            &:active {
+                background-color: #dad9dc;
+
+                .container {
+                    opacity: 0.8;
+                }
+            }
+
+            @include res-320 {
+                justify-content: flex-start;
+            }
+
+            &.is-subtransfer {
+                padding: 45px 0px 0px 15px;
+                width: calc(100% - 25px);
+                margin-left: auto;
+
+                .subtransfer-type {
+                    position: absolute;
+                    @include InterUI_Regular;
+                    font-size: 10px;
+                    color: #3f3b55;
+                    background-color: #e0e0e3;
+                    border-radius: 2px;
+                    top: 10px;
+                    left: 14px;
+                    white-space: nowrap;
+                    padding: 0 3px;
+                    line-height: 17px;
+                }
+
+                .container {
+                    &.amount {
+                        width: 138px;
+                        @include res-320 {
+                            width: 120px;
+                        }
+                    }
+                }
+
+                &:before {
+                    content: '';
+                    left: -23px;
+                    top: 17px;
+                    position: absolute;
+                    width: 7px;
+                    height: 1px;
+                    display: block;
+                    border-bottom: 1px dotted #929293;
+                    box-sizing: border-box;
+                }
+                
+                &:after {
+                    content: '';
+                    left: -25px;
+                    top: 8px;
+                    position: absolute;
+                    width: 1px;
+                    // height: 18px;
+                    // height: 100%;
+                    height: calc(100% + 6px);
+
+                    display: block;
+                    border-right: 1px dotted #929293;
+                    box-sizing: border-box;
+                }
+
+                &_last {
+                    &:after {
+                        height: 10px;
+                    }
+                }
+
+                .line-arrow {
+                    background-image: url(../images/icons/subtransfer-line-arrow.svg);
+                    background-position: 0 0;
+                    background-repeat: no-repeat;
+                    width: 3px;
+                    height: 5px;
+                    position: absolute;
+                    left: -15px;
+                    top: 15px;
+                }
+            }
+
+            .container {
+                width: 130px;
+                transition: all .2s ease-out;
+
+                &.fail {
+                    .value {
+                        color: #ff0042;
+                    }
+                }
+
+                @include res-320 {
+                    width: 140px;
+                }
+
+                &:first-child {
+                    width: auto;
+                    min-width: 10px;
+                    padding-right: 13px;
+
+                    .title {
+                        margin-bottom: 15px;
+                    }
+                }
+
+                &:nth-child(2) {
+                    @include res-320 {
+                        width: calc(100% - 45px);
+                    }
+                }
+
+                &.amount {
+                    width: 153px;
+
+                    @include res-320 {
+                        width: 140px;
+                    }
+                }
+
+                .value {
+                    .blue {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+}

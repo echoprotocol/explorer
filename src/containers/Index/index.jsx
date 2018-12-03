@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from '../../containers/Navigation';
 import PreparingSection from '../../containers/PreparingSection';
-import RecentBlockSection from '../../containers/RecentBlockSection';
+import MainContainer from '../../containers/RecentBlockSection';
 
 class Index extends React.Component {
 
@@ -13,7 +13,7 @@ class Index extends React.Component {
 					<Navigation />
 					<PreparingSection />
 				</div>
-				<RecentBlockSection />
+				<MainContainer />
 			</div>
 		);
 	}

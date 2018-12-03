@@ -39,6 +39,8 @@
         @include res-1280 {
             padding-right: 30px;
             padding-left: 0px;
+            width: 830px;
+            flex-shrink: 0;
         }
 
         @include res-1000 {
@@ -93,7 +95,7 @@
             @include InterUI_Bold;
             font-size: 23px;
             color: #130d32;
-            padding-left: 34px;
+            padding-left: 30px;
             margin-bottom: 30px;
 
             display: flex;
@@ -125,13 +127,16 @@
 
             .input-search-block {
                 margin-right: 25px;
+                margin-right: 0;
 
                 @include res-1280 {
                     margin-right: 20px;
+                    margin-right: 0;
                 }
 
                 @include res-500 {
                     margin-right: 30px;
+                    margin-right: 0;
                 }
 
                 @include res-320 {
@@ -158,7 +163,8 @@
             width: 945px;
 
             @include res-1280 {
-                width: 790px;
+                // width: 790px;
+                width: 100%;
             }
 
             @include res-1000 {
@@ -326,6 +332,7 @@
                         margin-bottom: 13px;
                     }
                 }
+                
                 .title {
                     user-select: none;
                     background-color: transparent;
