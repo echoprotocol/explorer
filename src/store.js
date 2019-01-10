@@ -1,5 +1,6 @@
 import thunk from 'redux-thunk';
 import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
+import { batchDispatchMiddleware } from 'redux-batched-actions';
 
 import { routerMiddleware, routerReducer } from 'react-router-redux';
 
@@ -18,6 +19,7 @@ const store = createStore(
 	}), {},
 	compose(
 		applyMiddleware(thunk),
+		applyMiddleware(batchDispatchMiddleware),
 		applyMiddleware(middleware),
 		window.devToolsExtension ? window.devToolsExtension() : (f) => f,
 	),

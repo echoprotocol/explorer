@@ -4,18 +4,28 @@ import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
-	connected: false,
-	error: '',
+	producers: 0,
+	preparingBlock: 0,
+	stepProgress: '',
+	readyProducers: 0,
 });
 
 export default createModule({
-	name: 'global',
+	name: 'round',
 	initialState: _.cloneDeep(DEFAULT_FIELDS),
 	transformations: {
 		..._.cloneDeep(TransformModules(DEFAULT_FIELDS)),
 		set: {
 			reducer: (state, { payload }) => {
 				state = state.set(payload.field, payload.value);
+
+				return state;
+			},
+		},
+		increment: {
+			reducer: (state, { payload }) => {
+				let count = state.get(payload.field);
+				state = state.set(payload.field, count += 1);
 
 				return state;
 			},
