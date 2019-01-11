@@ -234,8 +234,8 @@ class BlockInformation extends React.Component {
 											<div className="devider" />
 											{
 												codingData.map((data) => (
-													<React.Fragment>
-														<a href="" key={Math.random()} className="divTableRow" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+													<React.Fragment key={Math.random()}>
+														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
 															<div className="divTableCell">{data.blockNumber}</div>
 															<div className="divTableCell">{data.type}</div>
 															<div className="divTableCell">
