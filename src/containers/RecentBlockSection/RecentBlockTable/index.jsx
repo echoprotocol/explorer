@@ -153,7 +153,7 @@ class RecentBlockTable extends React.Component {
 								<div className="recent-block-mobile-view">
 									{
 										codingData.map((data) => (
-											<div className="recent-block-element">
+											<div key={Math.random()} className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
 													<div className="value"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
@@ -216,7 +216,7 @@ class RecentBlockTable extends React.Component {
 										<div className="devider" />
 										{
 											codingData.map((data) => (
-												<React.Fragment>
+												<React.Fragment key={Math.random()}>
 													<div className="divTableRow">
 														<div className="divTableCell"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
 														<div className="divTableCell">{data.time}</div>
