@@ -40,7 +40,6 @@ class PreparingSection extends React.Component {
 		if (stepProgress && nextProps.stepProgress !== stepProgress) {
 			this.setState({
 				progressBar: rounderSteps[stepProgress].progress,
-				timer: 0,
 			});
 		}
 

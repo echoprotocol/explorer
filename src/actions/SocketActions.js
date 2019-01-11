@@ -9,14 +9,18 @@ import FormatHelper from '../helpers/FormatHelper';
 
 import rounderSteps from '../constants/RoundConstants';
 
+import { initBlocks, setLatestBlock } from './BlockActions';
+
 const roundSubscribe = (notification) => (dispatch) => {
 	const steps = Object.keys(rounderSteps);
 
 	switch (notification[0].type) {
 		case steps[0]:
+			dispatch(setLatestBlock());
+
+			dispatch(RoundReducer.actions.set({ field: 'readyProducers', value: 0 }));
 			dispatch(batchActions([
 				RoundReducer.actions.set({ field: 'preparingBlock', value: notification[0].round }),
-				RoundReducer.actions.set({ field: 'readyProducers', value: 0 }),
 				RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }),
 			]));
 			break;
@@ -57,6 +61,8 @@ export const connect = () => async (dispatch) => {
 			GlobalReducer.actions.set({ field: 'connected', value: true }),
 			RoundReducer.actions.set({ field: 'producers', value: producers }),
 		]));
+
+		dispatch(initBlocks(socket));
 
 		return true;
 	} catch (err) {

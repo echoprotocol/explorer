@@ -1,8 +1,9 @@
 const rounderSteps = {
 	round_started: {
-		progress: 28,
+		progress: 30,
 		producing: 'progress',
 		verifying: 'progress',
+		timer: true,
 	},
 	block_produced: 1,
 	gc_started: {

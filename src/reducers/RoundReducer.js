@@ -8,6 +8,8 @@ const DEFAULT_FIELDS = Map({
 	preparingBlock: 0,
 	stepProgress: '',
 	readyProducers: 0,
+	latestBlock: 0,
+	blockTime: 0,
 });
 
 export default createModule({
