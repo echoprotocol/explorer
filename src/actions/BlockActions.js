@@ -1,4 +1,5 @@
 // import moment from 'moment';
+import BN from 'bignumber.js';
 
 import RoundReducer from '../reducers/RoundReducer';
 
@@ -22,10 +23,18 @@ export const initBlocks = (socket) => async (dispatch) => {
 		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));
 	}
 
-	// const lBlockNum = obj[0].head_block_number;
-	// const lBlock = await socket.api.wsApi.database.getBlock(lBlockNum);
-	// console.log(lBlock);
-	//
+	const startBlock = obj[0].head_block_number - 10;
+	let blocks = [];
+
+	for (let i = startBlock; i < startBlock + 11; i += 1) {
+		blocks.push(socket.api.wsApi.database.getBlock(i));
+	}
+
+	blocks = await Promise.all(blocks);
+	const sumLengths = blocks.reduce((sum, block) => sum.plus(block.transactions.length), new BN(0));
+	const averageTransactions = sumLengths.div(blocks.length);
+	dispatch(RoundReducer.actions.set({ field: 'averageTransactions', value: averageTransactions }));
+
 	// const timeLimit = moment(lBlock.timestamp).subtract(1, 'days');
 
 	// console.log(await socket.api.wsApi.database.getBlockHeader(lBlockNum));

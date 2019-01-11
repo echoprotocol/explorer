@@ -5,11 +5,17 @@ import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
 	producers: 0,
-	preparingBlock: 0,
 	stepProgress: '',
 	readyProducers: 0,
+	preparingBlock: 0,
+
 	latestBlock: 0,
 	blockTime: 0,
+	averageTransactions: Map({
+		value: 0,
+		count: 0,
+		sum: 0,
+	}),
 });
 
 export default createModule({
