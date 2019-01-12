@@ -33,7 +33,7 @@ class RecentBlockSidebar extends React.Component {
 	}
 
 	render() {
-		const { latestBlock } = this.props;
+		const { latestBlock, averageTransactions } = this.props;
 
 		return (
 			<div className="recent-block-sidebar">
@@ -47,8 +47,8 @@ class RecentBlockSidebar extends React.Component {
 						<div className="value">{this.state.timer}&nbsp;<span className="sm">sec</span></div>
 					</div>
 					<div className="sidebar-elem">
-						<div className="title">Average transactions amount</div>
-						<div className="value">466.33</div>
+						<div className="title">Average transactions count</div>
+						<div className="value">{`${averageTransactions.getIn(['transactions', 'value'])}/${averageTransactions.getIn(['operations', 'value'])}`}</div>
 					</div>
 					<div className="sidebar-elem">
 						<div className="title">average block time (24h)</div>
@@ -63,11 +63,13 @@ class RecentBlockSidebar extends React.Component {
 
 RecentBlockSidebar.propTypes = {
 	latestBlock: PropTypes.number.isRequired,
+	averageTransactions: PropTypes.object.isRequired,
 };
 
 export default connect(
 	(state) => ({
 		latestBlock: state.round.get('latestBlock'),
+		averageTransactions: state.round.get('averageTransactions'),
 	}),
 	() => ({}),
 )(RecentBlockSidebar);

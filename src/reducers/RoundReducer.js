@@ -1,5 +1,5 @@
 import { createModule } from 'redux-modules';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
@@ -12,9 +12,18 @@ const DEFAULT_FIELDS = Map({
 	latestBlock: 0,
 	blockTime: 0,
 	averageTransactions: Map({
-		value: 0,
+		transactions: new Map({
+			value: 0,
+			sum: 0,
+			lengthsList: new List([]),
+		}),
+		operations: new Map({
+			value: 0,
+			sum: 0,
+			lengthsList: new List([]),
+		}),
 		count: 0,
-		sum: 0,
+		block: 0,
 	}),
 });
 

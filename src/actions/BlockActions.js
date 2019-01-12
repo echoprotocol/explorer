@@ -1,7 +1,12 @@
-// import moment from 'moment';
 import BN from 'bignumber.js';
+import echo from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
+import GlobalReducer from '../reducers/GlobalReducer';
+
+import { START_AVERAGE_TRS_BLOCKS } from '../constants/GlobalConstants';
+
+import FormatHelper from '../helpers/FormatHelper';
 
 export const setLatestBlock = () => (dispatch, getState) => {
 	const prepBlock = getState().round.get('preparingBlock');
@@ -15,62 +20,68 @@ export const setLatestBlock = () => (dispatch, getState) => {
 	return true;
 };
 
+export const updateAverageTransactions = (lastBlock, startBlock) => async (dispatch, getState) => {
+	let transactions = getState().round.get('averageTransactions');
+	const averageTransactions = transactions.get('transactions');
+	const averageOperations = transactions.get('operations');
 
-export const initBlocks = (socket) => async (dispatch) => {
-	const obj = await socket.api.wsApi.database.getObjects(['2.1.0']);
+	const latestBlock = lastBlock || getState().round.get('latestBlock');
+
+	let blocks = [];
+
+	try {
+		for (let i = startBlock || transactions.get('block') + 1; i <= latestBlock; i += 1) {
+			blocks.push(echo.api.wsApi.database.getBlock(i));
+		}
+
+		blocks = await Promise.all(blocks);
+
+		let trLengths = averageTransactions.get('lengthsList');
+
+		const sumResults = blocks
+			.reduce(({ sum, sumOps }, block) => {
+				trLengths = trLengths.push(block.transactions.length);
+
+				return ({
+					sum: sum.plus(block.transactions.length),
+					sumOps: sumOps.plus(block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0))),
+				});
+			}, { sum: new BN(averageTransactions.get('sum')), sumOps: new BN(averageOperations.get('sum')) });
+
+
+		const blocksLength = transactions.get('count') + blocks.length;
+
+		if (trLengths.size > 20) {
+			sumResults.sum -= trLengths.get(0);
+			trLengths = trLengths.shift();
+		}
+
+		transactions = transactions
+			.setIn(['transactions', 'value'], sumResults.sum.div(blocksLength).toString())
+			.setIn(['transactions', 'sum'], sumResults.sum.toString())
+			.setIn(['transactions', 'lengthsList'], trLengths)
+			.setIn(['operations', 'value'], sumResults.sumOps.div(blocksLength).toString())
+			.setIn(['operations', 'sum'], sumResults.sumOps.toString())
+			.set('count', blocksLength)
+			.set('block', latestBlock);
+
+		dispatch(RoundReducer.actions.set({
+			field: 'averageTransactions',
+			value: transactions,
+		}));
+	} catch (err) {
+		dispatch(GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }));
+	}
+};
+
+export const initBlocks = () => async (dispatch) => {
+	const obj = await echo.api.wsApi.database.getObjects(['2.1.0']);
 
 	if (obj && obj[0]) {
 		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));
 	}
 
-	const startBlock = obj[0].head_block_number - 10;
-	let blocks = [];
+	const startBlock = obj[0].head_block_number - START_AVERAGE_TRS_BLOCKS;
 
-	for (let i = startBlock; i < startBlock + 11; i += 1) {
-		blocks.push(socket.api.wsApi.database.getBlock(i));
-	}
-
-	blocks = await Promise.all(blocks);
-	const sumLengths = blocks.reduce((sum, block) => sum.plus(block.transactions.length), new BN(0));
-	const averageTransactions = sumLengths.div(blocks.length);
-	dispatch(RoundReducer.actions.set({ field: 'averageTransactions', value: averageTransactions }));
-
-	// const timeLimit = moment(lBlock.timestamp).subtract(1, 'days');
-
-	// console.log(await socket.api.wsApi.database.getBlockHeader(lBlockNum));
-	// const blockNums = [];
-	// const startBlock = lBlockNum - 60;
-	// console.log(startBlock);
-	// for (let i = startBlock; i < startBlock + 50; i += 1) {
-	// 	console.log(i);
-	// 	blockNums.push(i);
-	// }
-	// console.log(blockNums);
-	// console.log(await socket.api.wsApi.database.getBlockHeaderBatch(blockNums));
-
-	// for (let i = 0; ; i += 1) {
-	// 	const block = await socket.api.wsApi.database.getBlock(lBlockNum - i); // eslint-disable-line no-await-in-loop
-	//
-	// 	if (moment(block.timestamp) < timeLimit) {
-	// 		console.log('complete');
-	//
-	// 		break;
-	// 	}
-	// 	if (Number.isInteger(i / 100)) {
-	//
-	// 		console.log(block.timestamp, Date.now());
-	// 	}
-	// }
-
-	// const promiseArr = [];
-	//
-	// for (let i = 0; i < 600; i += 1) {
-	// 	promiseArr.push(socket.api.wsApi.database.getBlock(lBlockNum - i)); // eslint-disable-line no-await-in-loop
-	// }
-	//
-	// console.log('start123');
-	// console.log(promiseArr);
-	// console.log('start');
-	// console.log(await Promise.all(promiseArr));
-	// console.log('end');
+	await dispatch(updateAverageTransactions(obj[0].head_block_number, startBlock));
 };

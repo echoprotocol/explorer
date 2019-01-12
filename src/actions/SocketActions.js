@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { Echo } from 'echojs-lib';
+import echo from 'echojs-lib';
 import { batchActions } from 'redux-batched-actions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
@@ -9,7 +9,7 @@ import FormatHelper from '../helpers/FormatHelper';
 
 import rounderSteps from '../constants/RoundConstants';
 
-import { initBlocks, setLatestBlock } from './BlockActions';
+import { initBlocks, setLatestBlock, updateAverageTransactions } from './BlockActions';
 
 const roundSubscribe = (notification) => (dispatch) => {
 	const steps = Object.keys(rounderSteps);
@@ -17,6 +17,7 @@ const roundSubscribe = (notification) => (dispatch) => {
 	switch (notification[0].type) {
 		case steps[0]:
 			dispatch(setLatestBlock());
+			dispatch(updateAverageTransactions());
 
 			dispatch(RoundReducer.actions.set({ field: 'readyProducers', value: 0 }));
 			dispatch(batchActions([
@@ -40,9 +41,7 @@ const roundSubscribe = (notification) => (dispatch) => {
 
 export const connect = () => async (dispatch) => {
 	try {
-		const socket = new Echo();
-
-		await socket.connect('ws://195.201.164.54:6311', {
+		await echo.connect('ws://195.201.164.54:6311', {
 			connectionTimeout: 5000,
 			maxRetries: 5,
 			pingTimeout: 3000,
@@ -51,9 +50,11 @@ export const connect = () => async (dispatch) => {
 			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
 		});
 
-		await socket.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result, socket)));
+		await dispatch(initBlocks());
 
-		const global = (await socket.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
+		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
+
+		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
 
 		const producers = global._creator_count;
 
@@ -61,8 +62,6 @@ export const connect = () => async (dispatch) => {
 			GlobalReducer.actions.set({ field: 'connected', value: true }),
 			RoundReducer.actions.set({ field: 'producers', value: producers }),
 		]));
-
-		dispatch(initBlocks(socket));
 
 		return true;
 	} catch (err) {
@@ -76,9 +75,7 @@ export const connect = () => async (dispatch) => {
 };
 
 export const disconnect = () => async (dispatch) => {
-	const socket = new Echo();
-
-	await socket.disconnect();
+	await echo.disconnect();
 
 	dispatch(GlobalReducer.actions.set({ field: 'connected', value: false }));
 };

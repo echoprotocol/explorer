@@ -6,3 +6,5 @@ export const KEY_CODES = {
 	MINUS_CODE: 189,
 	FIVE_NUMBER_CODE: 53,
 };
+
+export const START_AVERAGE_TRS_BLOCKS = 10;
