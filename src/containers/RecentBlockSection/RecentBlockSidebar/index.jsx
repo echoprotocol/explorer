@@ -35,6 +35,9 @@ class RecentBlockSidebar extends React.Component {
 	render() {
 		const { latestBlock, averageTransactions } = this.props;
 
+		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
+		const averageOp = FormatHelper.roundNumber(averageTransactions.getIn(['operations', 'value']), 1);
+
 		return (
 			<div className="recent-block-sidebar">
 				<div className="help-container">
@@ -47,12 +50,12 @@ class RecentBlockSidebar extends React.Component {
 						<div className="value">{this.state.timer}&nbsp;<span className="sm">sec</span></div>
 					</div>
 					<div className="sidebar-elem">
-						<div className="title">Average transactions count</div>
-						<div className="value">{`${averageTransactions.getIn(['transactions', 'value'])}/${averageTransactions.getIn(['operations', 'value'])}`}</div>
+						<div className="title">Average transactions / operations count</div>
+						<div className="value">{`${averageTr}/${averageOp}`}</div>
 					</div>
 					<div className="sidebar-elem">
-						<div className="title">average block time (24h)</div>
-						<div className="value">4.56&nbsp;<span className="sm">sec</span></div>
+						<div className="title">Average block time</div>
+						<div className="value">{FormatHelper.roundNumber(averageTransactions.get('averageTime'), 1)}&nbsp;<span className="sm">sec</span></div>
 					</div>
 				</div>
 			</div>

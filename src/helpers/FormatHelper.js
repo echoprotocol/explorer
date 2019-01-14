@@ -37,8 +37,8 @@ class FormatHelper {
 		return err instanceof Error || (_.isObject(err) && err.message) ? err.message : err;
 	}
 
-	static capitalize(str) {
-		return `${str[0].toUpperCase()}${str.slice(1)}`;
+	static roundNumber(value, decimals) {
+		return Number(`${Math.ceil(`${value}e${decimals}`)}e-${decimals}`);
 	}
 
 }

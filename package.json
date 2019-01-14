@@ -25,6 +25,7 @@
 		"intl": "^1.2.5",
 		"isomorphic-fetch": "^2.2.1",
 		"lodash": "^4.17.10",
+		"moment": "^2.23.0",
 		"prop-types": "^15.6.1",
 		"qs": "^6.5.2",
 		"randomstring": "^1.1.5",

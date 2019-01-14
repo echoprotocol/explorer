@@ -4,6 +4,8 @@ import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
+	error: '',
+
 	producers: 0,
 	stepProgress: '',
 	readyProducers: 0,
@@ -24,6 +26,8 @@ const DEFAULT_FIELDS = Map({
 		}),
 		count: 0,
 		block: 0,
+		unixTimestamps: new List([]),
+		averageTime: 0,
 	}),
 });
 
