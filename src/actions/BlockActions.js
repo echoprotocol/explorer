@@ -5,7 +5,7 @@ import moment from 'moment';
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
 
-import { PAGE_BLOCKS_COUNT, START_AVERAGE_TRS_BLOCKS } from '../constants/GlobalConstants';
+import { MAX_AVERAGE_TRS_BLOCKS, START_AVERAGE_TRS_BLOCKS, PAGE_BLOCKS_COUNT } from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 
@@ -57,7 +57,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			}, { sum: new BN(averageTransactions.get('sum')), sumOps: new BN(averageOperations.get('sum')) });
 
 
-		if (trLengths.size > 20) {
+		if (trLengths.size > MAX_AVERAGE_TRS_BLOCKS) {
 			sumResults.sum = sumResults.sum.minus(trLengths.get(0));
 			trLengths = trLengths.shift();
 
