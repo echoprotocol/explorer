@@ -34,8 +34,8 @@ CompositePreparingBlock.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string,
 	tooltip: PropTypes.bool,
-	currentStep: PropTypes.string.isRequired,
-	totalStep: PropTypes.string.isRequired,
+	currentStep: PropTypes.number.isRequired,
+	totalStep: PropTypes.number.isRequired,
 };
 
 CompositePreparingBlock.defaultProps = {
