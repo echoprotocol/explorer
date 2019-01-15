@@ -7,7 +7,7 @@ import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
 import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
 import Loader from './Loader';
 
-import rounderSteps from '../../constants/RoundConstants';
+import { rounderSteps } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
@@ -77,7 +77,7 @@ class PreparingSection extends React.Component {
 						<Media query="(max-width: 767px)">
 							{(matches) =>
 								(matches ? (
-									<CompositePreparingBlock composite title="Producing block" currentStep="1" totalStep="3" description="Producers: 12/12" status="done" tooltip />
+									<CompositePreparingBlock composite title="Producing block" currentStep="1" totalStep="3" description={`Producers: ${readyProducers}/${producers}`} status="done" tooltip />
 								) : (
 									<React.Fragment>
 										<SimplePreparingBlock title="Producing block" description={`Producers: ${readyProducers}/${producers}`} status={rounderSteps[stepProgress].producing} tooltip />

@@ -2,29 +2,29 @@
 import { Echo } from 'echojs-lib';
 import { batchActions } from 'redux-batched-actions';
 
+import config from '../config/chain';
+
 import GlobalReducer from '../reducers/GlobalReducer';
 import RoundReducer from '../reducers/RoundReducer';
 
 import FormatHelper from '../helpers/FormatHelper';
 
-import rounderSteps from '../constants/RoundConstants';
+import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED } from '../constants/RoundConstants';
 
 const roundSubscribe = (notification) => (dispatch) => {
-	const steps = Object.keys(rounderSteps);
-
 	switch (notification[0].type) {
-		case steps[0]:
+		case ROUND_STARTED:
 			dispatch(batchActions([
 				RoundReducer.actions.set({ field: 'preparingBlock', value: notification[0].round }),
 				RoundReducer.actions.set({ field: 'readyProducers', value: 0 }),
 				RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }),
 			]));
 			break;
-		case steps[1]:
+		case BLOCK_PRODUCED:
 			dispatch(RoundReducer.actions.increment({ field: 'readyProducers' }));
 			break;
-		case steps[2]:
-		case steps[3]:
+		case GC_STARTED:
+		case BBA_STARTED:
 			dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }));
 			break;
 		default:
@@ -38,7 +38,7 @@ export const connect = () => async (dispatch) => {
 	try {
 		const socket = new Echo();
 
-		await socket.connect('ws://195.201.164.54:6311', {
+		await socket.connect(config.url, {
 			connectionTimeout: 5000,
 			maxRetries: 5,
 			pingTimeout: 3000,
