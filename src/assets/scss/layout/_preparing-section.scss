@@ -43,7 +43,7 @@
         width: 360px;
         padding-top: 15px;
         padding-bottom: 11px;
-        @include transition;
+        // @include transition;
 
         &:hover {
             .title {
@@ -210,7 +210,7 @@
             margin-bottom: 25px;
             text-transform: uppercase;
             color: #556270;
-            @include transition;
+            // @include transition;
 
             @include res-768 {
                 margin-bottom: 19px;
@@ -260,7 +260,7 @@
                 position: relative;
                 display: flex;
                 font-size: 16px;
-                @include transition;
+                // @include transition;
                 
                 @include res-768 {
                     height: 15px;
@@ -279,7 +279,7 @@
                 .status-icn {
                     opacity: 0;
                     visibility: hidden;
-                    @include transition;
+                    // @include transition;
                     position: absolute;
                     display: inline-block;
                     right: 0;
@@ -316,7 +316,7 @@
         height: 100%;
         top: 0;
         width: 0px;
-        transition: all .3s ease-out;
+        // transition: all .3s ease-out;
         background-color: #5eb3e8;
     }
 }
