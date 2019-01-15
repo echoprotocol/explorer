@@ -55,6 +55,10 @@ export const connect = () => async (dispatch) => {
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
+		// const chainProps = await echo.api.getChainProperties();
+		// const globalProps = await echo.api.getGlobalProperties();
+		// const configProps = await echo.api.getConfig();
+		// console.log(chainProps, globalProps, configProps);
 
 		const producers = global._creator_count;
 

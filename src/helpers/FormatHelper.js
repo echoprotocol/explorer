@@ -41,6 +41,13 @@ class FormatHelper {
 		return Number(`${Math.ceil(`${value}e${decimals}`)}e-${decimals}`);
 	}
 
+	static formatByteSize(bytes) {
+		if (bytes < 1024) return `${bytes} bytes`;
+		else if (bytes < 1048576) return 'KB';
+		else if (bytes < 1073741824) return 'MB';
+		return 'GB';
+	}
+
 }
 
 export default FormatHelper;

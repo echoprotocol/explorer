@@ -3,8 +3,9 @@ import echo from 'echojs-lib';
 import moment from 'moment';
 
 import RoundReducer from '../reducers/RoundReducer';
+import BlockReducer from '../reducers/BlockReducer';
 
-import { START_AVERAGE_TRS_BLOCKS } from '../constants/GlobalConstants';
+import { PAGE_BLOCKS_COUNT, START_AVERAGE_TRS_BLOCKS } from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 
@@ -99,6 +100,43 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 };
 
+export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {
+	let blocks = getState().block.get('blocks');
+
+	let blocksResult = [];
+
+	for (let i = startBlock + 1; i <= lastBlock; i += 1) {
+		blocksResult.push(echo.api.getBlock(i));
+	}
+
+	blocksResult = await Promise.all(blocksResult);
+
+	const accountIds = blocksResult.reduce((accounts, block, index) => {
+		accounts[index] = block.account;
+		return accounts;
+	}, []);
+
+	const accounts = await echo.api.getAccounts(accountIds);
+
+	for (let i = 0; i < blocksResult.length; i += 1) {
+		const blockNumber = blocksResult[i].round;
+		blocks = blocks
+			.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
+			.setIn([blockNumber, 'producer'], accounts[i].name)
+			.setIn([blockNumber, 'reward'], 10)
+			.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
+			.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
+			.setIn([blockNumber, 'weightSize'], 'bytes')
+			.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
+	}
+
+	// console.log(blocks.toJS());
+	dispatch(BlockReducer.actions.set({
+		field: 'blocks',
+		value: blocks,
+	}));
+};
+
 export const initBlocks = () => async (dispatch) => {
 	const obj = await echo.api.wsApi.database.getObjects(['2.1.0']);
 
@@ -106,7 +144,11 @@ export const initBlocks = () => async (dispatch) => {
 		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));
 	}
 
-	const startBlock = obj[0].head_block_number - START_AVERAGE_TRS_BLOCKS;
+	const startBlockAverage = obj[0].head_block_number - START_AVERAGE_TRS_BLOCKS;
 
-	await dispatch(updateAverageTransactions(obj[0].head_block_number, startBlock));
+	await dispatch(updateAverageTransactions(obj[0].head_block_number, startBlockAverage));
+
+	const startBlockList = obj[0].head_block_number - PAGE_BLOCKS_COUNT;
+
+	await dispatch(updateBlockList(obj[0].head_block_number, startBlockList));
 };
