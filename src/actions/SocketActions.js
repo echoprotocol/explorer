@@ -9,7 +9,7 @@ import RoundReducer from '../reducers/RoundReducer';
 
 import FormatHelper from '../helpers/FormatHelper';
 
-import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED } from '../constants/RoundConstants';
+import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED, DONE } from '../constants/RoundConstants';
 
 const roundSubscribe = (notification) => (dispatch) => {
 	switch (notification[0].type) {
@@ -48,6 +48,8 @@ export const connect = () => async (dispatch) => {
 		});
 
 		await socket.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result, socket)));
+
+		await socket.subscriber.setBlockApplySubscribe(() => dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE })));
 
 		const global = (await socket.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
 
