@@ -118,19 +118,20 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 
 	const accounts = await echo.api.getAccounts(accountIds);
 
-	for (let i = 0; i < blocksResult.length; i += 1) {
-		const blockNumber = blocksResult[i].round;
-		blocks = blocks
-			.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
-			.setIn([blockNumber, 'producer'], accounts[i].name)
-			.setIn([blockNumber, 'reward'], 10)
-			.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
-			.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
-			.setIn([blockNumber, 'weightSize'], 'bytes')
-			.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
-	}
+	blocks = blocks.withMutations((mapBlocks) => {
+		for (let i = 0; i < blocksResult.length; i += 1) {
+			const blockNumber = blocksResult[i].round;
+			mapBlocks
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
+				.setIn([blockNumber, 'producer'], accounts[i].name)
+				.setIn([blockNumber, 'reward'], 10)
+				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
+				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
+				.setIn([blockNumber, 'weightSize'], 'bytes')
+				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
+		}
+	});
 
-	// console.log(blocks.toJS());
 	dispatch(BlockReducer.actions.set({
 		field: 'blocks',
 		value: blocks,

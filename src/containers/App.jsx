@@ -9,7 +9,7 @@ import Toast from '../components/Toast';
 class App extends React.Component {
 
 	componentDidMount() {
-		this.props.connect();
+		// this.props.connect();
 	}
 
 	componentWillUnmount() {

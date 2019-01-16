@@ -36,7 +36,6 @@ class MainContainer extends React.Component {
 		return (
 			<div className="recent-block-section">
 				<div className="wrap">
-					<RecentBlockTable switchToBlockInfo={this.switchBlockInfo} />
 					{
 						(!this.state.blockInfo && !this.state.trnsInfo) && (<RecentBlockTable switchToBlockInfo={this.switchBlockInfo} />)
 					}
