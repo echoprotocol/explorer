@@ -16,11 +16,11 @@ export const rounderSteps = {
 		producing: 'progress',
 		verifying: 'progress',
 		timer: true,
-		title: 'Preparing block',
+		title: 'Producing block',
 	},
 	[BLOCK_PRODUCED]: {
 		step: 1,
-		title: 'Preparing block',
+		title: 'Producing block',
 	},
 	[GC_STARTED]: {
 		step: 2,
