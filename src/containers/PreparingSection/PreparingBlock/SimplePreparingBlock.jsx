@@ -9,7 +9,7 @@ class SimplePreparingBlock extends React.Component {
 	render() {
 
 		const {
-			title, smallTitle, description, status, tooltip, className,
+			title, smallTitle, description, status, tooltip, className, tip,
 		} = this.props;
 
 		return (
@@ -17,7 +17,7 @@ class SimplePreparingBlock extends React.Component {
 				<div className={`preparing-element ${status} ${className}`}>
 					{
 						(tooltip) ? (
-							<Tooltip placement="rightTop" trigger={['hover']} overlay={<span>Description on hover (in two or more lines)</span>}>
+							<Tooltip placement="rightTop" trigger={['hover']} overlay={<span>{tip}</span>}>
 								<div className="title has-tooltip">
 									<Media query="(max-width: 999px)">
 										{(matches) =>
@@ -75,6 +75,7 @@ SimplePreparingBlock.propTypes = {
 	title: PropTypes.string,
 	smallTitle: PropTypes.string,
 	description: PropTypes.string,
+	tip: PropTypes.string,
 	tooltip: PropTypes.bool,
 };
 
@@ -84,6 +85,7 @@ SimplePreparingBlock.defaultProps = {
 	title: '',
 	smallTitle: '',
 	description: '',
+	tip: '',
 	tooltip: false,
 };
 
