@@ -82,7 +82,7 @@ class PreparingSection extends React.Component {
 								(matches ? (
 									<CompositePreparingBlock
 										composite
-										title="Producing block"
+										title={rounderSteps[stepProgress].title}
 										currentStep={rounderSteps[stepProgress].step}
 										totalStep={rounderSteps.totalStep}
 										description={`Producers: ${readyProducers}/${producers}`}

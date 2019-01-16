@@ -16,9 +16,11 @@ export const rounderSteps = {
 		producing: 'progress',
 		verifying: 'progress',
 		timer: true,
+		title: 'Preparing block',
 	},
 	[BLOCK_PRODUCED]: {
 		step: 1,
+		title: 'Preparing block',
 	},
 	[GC_STARTED]: {
 		step: 2,
@@ -26,6 +28,7 @@ export const rounderSteps = {
 		maxProgress: 69,
 		producing: 'done',
 		verifying: 'progress',
+		title: 'Verifying block: GC',
 	},
 	[BBA_STARTED]: {
 		step: 3,
@@ -33,12 +36,14 @@ export const rounderSteps = {
 		maxProgress: 99,
 		producing: 'done',
 		verifying: 'done',
+		title: 'Verifying block: BBA',
 	},
 	[DONE]: {
 		step: 4,
 		progress: 100,
 		producing: 'done',
 		verifying: 'done',
+		title: 'Verifying block: BBA',
 	},
 	totalStep: 3,
 };
