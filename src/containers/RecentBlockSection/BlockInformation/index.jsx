@@ -1,23 +1,15 @@
 /* eslint-disable no-shadow */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Media from 'react-media';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
 import SearchField from '../../../components/SearchFields/SearchField';
 
 class BlockInformation extends React.Component {
-
-	constructor() {
-		super();
-
-		this.returnFunction = this.returnFunction.bind(this);
-	}
-
-	returnFunction() {
-		this.props.switchToTransInfo(false);
-	}
 
 	render() {
 
@@ -330,11 +322,20 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
-	switchToTransInfo: PropTypes.func,
+	match: PropTypes.object.isRequired,
 };
 
 BlockInformation.defaultProps = {
-	switchToTransInfo: null,
 };
 
-export default BlockInformation;
+export default withRouter(connect(
+	(state, props) => {
+		console.log(props.match.params.round)
+        return {
+            handledBlock: state.block.getIn(['blocks'])
+        }
+	},
+	(dispatch) => ({
+		// resetConverter: () => dispatch(resetConverter()),
+	})
+)(BlockInformation));

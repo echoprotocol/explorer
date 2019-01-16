@@ -1,5 +1,4 @@
 /* eslint-disable no-shadow */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
@@ -10,7 +9,14 @@ import SearchField from '../../../components/SearchFields/SearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
+import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+
 class RecentBlockTable extends React.Component {
+
+	onLink(link, e) {
+		e.preventDefault();
+		this.props.history.push(link);
+	}
 
 	getBlocks() {
 		const { blocks } = this.props;
@@ -45,6 +51,12 @@ class RecentBlockTable extends React.Component {
 		});
 	}
 
+	pushToBlockInformation(e, blockRound) {
+		e.preventDefault();
+		console.log(this.props.history);
+		this.props.history.go(`/blocks/${blockRound}`);
+	}
+
 	render() {
 		return (
 			<div className="table-container recent-block-table">
@@ -69,7 +81,9 @@ class RecentBlockTable extends React.Component {
 											<div key={data.blockNumber} className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
-													<div className="value"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
+													<div className="value">
+														<a href="" className="blue" onClick={(e) => this.onLink(BLOCK_INFORMATION_PATH.replace(/:round/, data.blockNumber), e)}>{data.blockNumber}</a>
+													</div>
 												</div>
 												<div className="container">
 													<div className="title">Block time</div>
@@ -131,7 +145,7 @@ class RecentBlockTable extends React.Component {
 											this.getBlocks().map((data) => (
 												<React.Fragment key={data.blockNumber}>
 													<div className="divTableRow">
-														<div className="divTableCell"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
+														<div className="divTableCell"><a href="" className="blue" onClick={(e) => this.onLink(BLOCK_INFORMATION_PATH.replace(/:round/, data.blockNumber), e)}>{data.blockNumber}</a></div>
 														<div className="divTableCell">{data.time}</div>
 														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
@@ -155,18 +169,11 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
-	switchToBlockInfo: PropTypes.func,
 	blocks: PropTypes.object.isRequired,
-};
-
-RecentBlockTable.defaultProps = {
-	switchToBlockInfo: null,
+	history: PropTypes.object.isRequired,
 };
 
 
-export default connect(
-	(state) => ({
-		blocks: state.block.get('blocks'),
-	}),
-	() => ({}),
-)(RecentBlockTable);
+export default connect((state) => ({
+	blocks: state.block.get('blocks'),
+}))(RecentBlockTable);
