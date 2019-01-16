@@ -7,7 +7,7 @@ import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
 import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
 import Loader from './Loader';
 
-import { DONE, rounderSteps } from '../../constants/RoundConstants';
+import { BBA_STARTED, BBA_TIP, GC_TIP, PRODUCING_TIP, rounderSteps } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
@@ -19,13 +19,16 @@ class PreparingSection extends React.Component {
 		this.state = {
 			progressBar: 0,
 			timer: 0,
+			step: '',
 		};
 		this.progressInterval = null;
 	}
 
 	componentDidMount() {
 		this.progressInterval = setInterval(() => {
-			if (this.state.progressBar < 100) {
+			const loadLimit = this.state.step ? rounderSteps[this.state.step].maxProgress : 100;
+
+			if (this.state.progressBar < loadLimit) {
 				this.setState({
 					progressBar: this.state.progressBar += 1,
 					timer: this.state.timer += 500,
@@ -39,7 +42,8 @@ class PreparingSection extends React.Component {
 
 		if (stepProgress && nextProps.stepProgress !== stepProgress) {
 			this.setState({
-				progressBar: rounderSteps[stepProgress].progress,
+				progressBar: rounderSteps[nextProps.stepProgress].progress,
+				step: nextProps.stepProgress,
 			});
 		}
 
@@ -78,16 +82,22 @@ class PreparingSection extends React.Component {
 								(matches ? (
 									<CompositePreparingBlock
 										composite
-										title="Producing block"
+										title={rounderSteps[stepProgress].title}
 										currentStep={rounderSteps[stepProgress].step}
 										totalStep={rounderSteps.totalStep}
 										description={`Producers: ${readyProducers}/${producers}`}
-										status={stepProgress === DONE ? 'done' : 'progress'}
+										status={stepProgress === BBA_STARTED ? 'done' : 'progress'}
 										tooltip
 									/>
 								) : (
 									<React.Fragment>
-										<SimplePreparingBlock title="Producing block" description={`Producers: ${readyProducers}/${producers}`} status={rounderSteps[stepProgress].producing} tooltip />
+										<SimplePreparingBlock
+											title="Producing block"
+											description={`Producers: ${readyProducers}/${producers}`}
+											status={rounderSteps[stepProgress].producing}
+											tooltip
+											tip={PRODUCING_TIP}
+										/>
 										<SimplePreparingBlock
 											className="sm-border"
 											title="Verifying block: GC"
@@ -95,8 +105,9 @@ class PreparingSection extends React.Component {
 											description="Verifying"
 											status={rounderSteps[stepProgress].verifying}
 											tooltip
+											tip={GC_TIP}
 										/>
-										<SimplePreparingBlock title="Verifying block: BBA" smallTitle="Verifying: BBA" description="Pending" tooltip />
+										<SimplePreparingBlock tip={BBA_TIP} title="Verifying block: BBA" smallTitle="Verifying: BBA" description="Pending" tooltip />
 									</React.Fragment>
 								))
 							}
