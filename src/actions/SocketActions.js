@@ -9,7 +9,7 @@ import RoundReducer from '../reducers/RoundReducer';
 
 import FormatHelper from '../helpers/FormatHelper';
 
-import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED } from '../constants/RoundConstants';
+import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED, DONE } from '../constants/RoundConstants';
 
 import { initBlocks, setLatestBlock, updateAverageTransactions } from './BlockActions';
 
@@ -59,6 +59,8 @@ export const connect = () => async (dispatch) => {
 		// const globalProps = await echo.api.getGlobalProperties();
 		// const configProps = await echo.api.getConfig();
 		// console.log(chainProps, globalProps, configProps);
+
+		await echo.subscriber.setBlockApplySubscribe(() => dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE })));
 
 		const producers = global._creator_count;
 
