@@ -9,10 +9,6 @@ import Header from './Header';
 
 class App extends React.Component {
 
-	componentDidMount() {
-		// this.props.connect();
-	}
-
 	componentWillUnmount() {
 		this.props.disconnect();
 	}
@@ -46,7 +42,6 @@ App.propTypes = {
 export default connect(
 	() => ({}),
 	(dispatch) => ({
-		connect: () => dispatch(startConnection()),
 		disconnect: () => dispatch(disconnect()),
 	}),
 )(App);

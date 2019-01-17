@@ -3,6 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SearchField from '../../../components/SearchFields/SearchField';
@@ -13,11 +15,6 @@ import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 
 class RecentBlockTable extends React.Component {
 
-	onLink(link, e) {
-		e.preventDefault();
-		this.props.history.push(link);
-	}
-
 	getBlocks() {
 		const { blocks } = this.props;
 
@@ -25,6 +22,7 @@ class RecentBlockTable extends React.Component {
 
 		blocks.mapEntries(([key, value]) => {
 			blocksResult.push({
+				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
 				time: value.get('time'),
 				producer: value.get('producer'),
@@ -49,12 +47,6 @@ class RecentBlockTable extends React.Component {
 
 			return 0;
 		});
-	}
-
-	pushToBlockInformation(e, blockRound) {
-		e.preventDefault();
-		console.log(this.props.history);
-		this.props.history.go(`/blocks/${blockRound}`);
 	}
 
 	render() {
@@ -82,7 +74,12 @@ class RecentBlockTable extends React.Component {
 												<div className="container">
 													<div className="title">Block #</div>
 													<div className="value">
-														<a href="" className="blue" onClick={(e) => this.onLink(BLOCK_INFORMATION_PATH.replace(/:round/, data.blockNumber), e)}>{data.blockNumber}</a>
+														<Link
+															to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+															className="blue"
+														>
+															{data.blockNumber}
+														</Link>
 													</div>
 												</div>
 												<div className="container">
@@ -145,7 +142,14 @@ class RecentBlockTable extends React.Component {
 											this.getBlocks().map((data) => (
 												<React.Fragment key={data.blockNumber}>
 													<div className="divTableRow">
-														<div className="divTableCell"><a href="" className="blue" onClick={(e) => this.onLink(BLOCK_INFORMATION_PATH.replace(/:round/, data.blockNumber), e)}>{data.blockNumber}</a></div>
+														<div className="divTableCell">
+															<Link
+																to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+																className="blue"
+															>
+																{data.blockNumber}
+															</Link>
+														</div>
 														<div className="divTableCell">{data.time}</div>
 														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
@@ -174,6 +178,6 @@ RecentBlockTable.propTypes = {
 };
 
 
-export default connect((state) => ({
+export default withRouter(connect((state) => ({
 	blocks: state.block.get('blocks'),
-}))(RecentBlockTable);
+}))(RecentBlockTable));

@@ -16,8 +16,8 @@ export default class Routes extends React.Component {
 		return (
 			<App>
 				<Switch>
-					<Route path={INDEX_PATH} component={RecentBlockSection} />
-					<Route path={BLOCK_INFORMATION_PATH} component={BlockInformation} />
+					<Route exact path={INDEX_PATH} component={RecentBlockSection} />
+					<Route exact path={BLOCK_INFORMATION_PATH} component={BlockInformation} />
 				</Switch>
 			</App>
 		);

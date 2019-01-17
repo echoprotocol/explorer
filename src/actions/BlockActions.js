@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import BN from 'bignumber.js';
 import echo from 'echojs-lib';
 import moment from 'moment';
+import { Map } from 'immutable';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -8,6 +10,50 @@ import BlockReducer from '../reducers/BlockReducer';
 import { MAX_AVERAGE_TRS_BLOCKS, START_AVERAGE_TRS_BLOCKS, PAGE_BLOCKS_COUNT } from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
+
+export const getBlockInformation = (round) => async (dispatch, getState) => {
+	try {
+		const planeBlock = await echo.api.getBlock(round);
+
+		if (!planeBlock) {
+			// redirect 404
+		}
+
+		const handledBlock = getState().block.getIn(['blocks', round]);
+
+		const value = {};
+
+		if (handledBlock) {
+			value.producer = handledBlock.get('producer');
+			value.reward = `${handledBlock.get('reward')} ${handledBlock.get('rewardCurrency')}`;
+			value.size = `${FormatHelper.formatBlockSize(handledBlock.get('weight'))}
+			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
+		} else {
+			value.producer = (await echo.api.getObject(planeBlock.account)).name;
+			value.reward = '10 ECHO';
+			const weight = JSON.stringify(planeBlock).length;
+			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
+		}
+
+		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
+
+		const verifiers = await echo.api.getAccounts(verifiersIds);
+
+		value.verifiers = verifiers.map(({ name }) => name);
+		value.round = planeBlock.round;
+		value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
+		value.transactions = planeBlock.transactions;
+		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
+
+		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
+
+	} catch (error) {
+		console.log(error)
+		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
+	}
+
+	return true;
+};
 
 export const setLatestBlock = () => (dispatch, getState) => {
 	const prepBlock = getState().round.get('preparingBlock');
@@ -98,6 +144,18 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	} catch (err) {
 		dispatch(RoundReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }));
 	}
+};
+
+const _addSizeToBlock = (blocksResult, producer, mapBlocks) => {
+	const blockNumber = blocksResult.round;
+	mapBlocks
+		.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
+		.setIn([blockNumber, 'producer'], accounts[i].name)
+		.setIn([blockNumber, 'reward'], 10)
+		.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
+		.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
+		.setIn([blockNumber, 'weightSize'], 'bytes')
+		.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
 };
 
 export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {

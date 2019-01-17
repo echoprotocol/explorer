@@ -5,7 +5,7 @@ import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
 	error: '',
-
+	blockInformation: new Map({}),
 	blocks: new Map({}),
 });
 
