@@ -17,7 +17,7 @@ class Loader extends React.Component {
 }
 
 Loader.propTypes = {
-	status: PropTypes.string,
+	status: PropTypes.number,
 };
 
 Loader.defaultProps = {

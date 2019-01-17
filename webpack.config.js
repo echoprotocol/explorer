@@ -1,4 +1,6 @@
 /* eslint-disable import/no-dynamic-require */
+require('babel-polyfill');
+
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
@@ -23,6 +25,7 @@ const timeCache = Date.now();
 
 module.exports = {
 	entry: {
+		babel: 'babel-polyfill',
 		app: path.resolve('src/index.js'),
 	},
 	output: {
@@ -111,7 +114,7 @@ module.exports = {
 	plugins: [
 		new CleanWebpackPlugin(['dist']),
 		new webpack.DefinePlugin({
-			__API_URL__: JSON.stringify(configFile.api),
+			__API_URL__: JSON.stringify(configFile.url),
 		}),
 		HTMLWebpackPluginConfig,
 		extractSass,

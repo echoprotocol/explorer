@@ -6,10 +6,15 @@
 				"modules": false
 			}
 		],
+		"es2017",
 		"stage-0",
 		"react"
 	],
 	"plugins": [
+		["transform-runtime", {
+			"polyfill": false,
+			"regenerator": true
+		}],
 		"transform-decorators-legacy",
 		"react-hot-loader/babel"
 	],

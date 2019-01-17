@@ -4,7 +4,8 @@ import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
-
+	connected: false,
+	error: '',
 });
 
 export default createModule({
@@ -12,5 +13,12 @@ export default createModule({
 	initialState: _.cloneDeep(DEFAULT_FIELDS),
 	transformations: {
 		..._.cloneDeep(TransformModules(DEFAULT_FIELDS)),
+		set: {
+			reducer: (state, { payload }) => {
+				state = state.set(payload.field, payload.value);
+
+				return state;
+			},
+		},
 	},
 });
