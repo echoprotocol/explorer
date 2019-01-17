@@ -41,7 +41,7 @@ const roundSubscribe = (notification) => (dispatch) => {
 
 export const connect = () => async (dispatch) => {
 	try {
-		await echo.connect(config.URL, {
+		await echo.connect(config.API_URL, {
 			connectionTimeout: 5000,
 			maxRetries: 5,
 			pingTimeout: 3000,
