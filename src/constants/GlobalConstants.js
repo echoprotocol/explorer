@@ -9,3 +9,4 @@ export const KEY_CODES = {
 
 export const START_AVERAGE_TRS_BLOCKS = 10;
 export const MAX_AVERAGE_TRS_BLOCKS = 100;
+export const PAGE_BLOCKS_COUNT = 12;

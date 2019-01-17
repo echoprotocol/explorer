@@ -1,138 +1,55 @@
 /* eslint-disable no-shadow */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
+
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SearchField from '../../../components/SearchFields/SearchField';
 
+import FormatHelper from '../../../helpers/FormatHelper';
+
+import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+
 class RecentBlockTable extends React.Component {
 
+	getBlocks() {
+		const { blocks } = this.props;
+
+		const blocksResult = [];
+
+		blocks.mapEntries(([key, value]) => {
+			blocksResult.push({
+				round: key,
+				blockNumber: FormatHelper.formatAmount(key, 0),
+				time: value.get('time'),
+				producer: value.get('producer'),
+				reward: value.get('reward'),
+				rewardCurrency: value.get('rewardCurrency'),
+				weight: FormatHelper.roundNumber(value.get('weight') / 1024, 2),
+				weightSize: FormatHelper.formatByteSize(value.get('weight')),
+				transactions: value.get('transactions'),
+			});
+		});
+
+		return blocksResult.sort((a, b) => {
+			if (!a || !b) {
+				return 0;
+			}
+
+			const numA = a.blockNumber;
+			const numB = b.blockNumber;
+
+			if (numA > numB) { return -1; }
+			if (numA < numB) { return 1; }
+
+			return 0;
+		});
+	}
+
 	render() {
-
-		const codingData = [
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-		];
-
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
@@ -152,11 +69,18 @@ class RecentBlockTable extends React.Component {
 							(matches ? (
 								<div className="recent-block-mobile-view">
 									{
-										codingData.map((data) => (
-											<div key={Math.random()} className="recent-block-element">
+										this.getBlocks().map((data) => (
+											<div key={data.blockNumber} className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
-													<div className="value"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
+													<div className="value">
+														<Link
+															to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+															className="blue"
+														>
+															{data.blockNumber}
+														</Link>
+													</div>
 												</div>
 												<div className="container">
 													<div className="title">Block time</div>
@@ -215,10 +139,17 @@ class RecentBlockTable extends React.Component {
 										</div>
 										<div className="devider" />
 										{
-											codingData.map((data) => (
-												<React.Fragment key={Math.random()}>
+											this.getBlocks().map((data) => (
+												<React.Fragment key={data.blockNumber}>
 													<div className="divTableRow">
-														<div className="divTableCell"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
+														<div className="divTableCell">
+															<Link
+																to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+																className="blue"
+															>
+																{data.blockNumber}
+															</Link>
+														</div>
 														<div className="divTableCell">{data.time}</div>
 														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
@@ -242,12 +173,11 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
-	switchToBlockInfo: PropTypes.func,
-};
-
-RecentBlockTable.defaultProps = {
-	switchToBlockInfo: null,
+	blocks: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 
-export default RecentBlockTable;
+export default withRouter(connect((state) => ({
+	blocks: state.block.get('blocks'),
+}))(RecentBlockTable));

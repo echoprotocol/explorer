@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import echo from 'echojs-lib';
 
 import Routes from './routes'; // Or wherever you keep your reducers
 import './assets/loader';
@@ -12,8 +13,8 @@ import history from './history';
 import store from './store';
 
 store.dispatch(GlobalActions.init()).then(() => {
-	// Now you can dispatch navigation actions from anywhere!
-	// store.dispatch(push('/foo'))
+	echo.syncCacheWithStore(store);
+
 	ReactDOM.render(
 		<Provider store={store}>
 			{/* ConnectedRouter will use the store from Provider automatically */}

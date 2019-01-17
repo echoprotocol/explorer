@@ -3,6 +3,7 @@ import globalReducer from './GlobalReducer';
 import formReducer from './FormReducer';
 import gridReducer from './GridReducer';
 import roundReducer from './RoundReducer';
+import blockReducer from './BlockReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -10,4 +11,5 @@ export default {
 	form: formReducer.reducer,
 	grid: gridReducer.reducer,
 	round: roundReducer.reducer,
+	block: blockReducer.reducer,
 };
