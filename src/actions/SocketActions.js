@@ -11,7 +11,7 @@ import FormatHelper from '../helpers/FormatHelper';
 
 import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED, DONE } from '../constants/RoundConstants';
 
-import { initBlocks, setLatestBlock, updateAverageTransactions } from './BlockActions';
+import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
 
 const roundSubscribe = (notification) => (dispatch) => {
 	switch (notification[0].type) {
@@ -39,6 +39,7 @@ const roundSubscribe = (notification) => (dispatch) => {
 const blockRelease = () => (dispatch) => {
 	dispatch(setLatestBlock());
 	dispatch(updateAverageTransactions());
+	dispatch(updateBlockList());
 
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE }));
 };

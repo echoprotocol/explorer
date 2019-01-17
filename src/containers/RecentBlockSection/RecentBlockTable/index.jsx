@@ -19,6 +19,7 @@ class RecentBlockTable extends React.Component {
 
 		blocks.mapEntries(([key, value]) => {
 			blocksResult.push({
+				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
 				time: value.get('time'),
 				producer: value.get('producer'),
@@ -35,13 +36,7 @@ class RecentBlockTable extends React.Component {
 				return 0;
 			}
 
-			const numA = a.blockNumber;
-			const numB = b.blockNumber;
-
-			if (numA > numB) { return -1; }
-			if (numA < numB) { return 1; }
-
-			return 0;
+			return b.round - a.round;
 		});
 	}
 
@@ -66,7 +61,7 @@ class RecentBlockTable extends React.Component {
 								<div className="recent-block-mobile-view">
 									{
 										this.getBlocks().map((data) => (
-											<div key={data.blockNumber} className="recent-block-element">
+											<div key={data.round} className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
 													<div className="value"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
@@ -116,7 +111,7 @@ class RecentBlockTable extends React.Component {
 														(matches ? (
 															'Time'
 														) : (
-															'Time (GTM+1)'
+															'Time (UTC)'
 														))
 													}
 												</Media>
@@ -129,9 +124,13 @@ class RecentBlockTable extends React.Component {
 										<div className="devider" />
 										{
 											this.getBlocks().map((data) => (
-												<React.Fragment key={data.blockNumber}>
+												<React.Fragment key={data.round}>
 													<div className="divTableRow">
-														<div className="divTableCell"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
+														<div className="divTableCell">
+															<a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>
+																{data.blockNumber}
+															</a>
+														</div>
 														<div className="divTableCell">{data.time}</div>
 														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>

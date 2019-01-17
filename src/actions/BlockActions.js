@@ -77,7 +77,6 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			sumUnix += (unixTimestamps.get(i + 1) - unixTimestamps.get(i));
 		}
 
-
 		transactions = transactions
 			.setIn(['transactions', 'value'], sumResults.sum.div(trLengths.size).toString())
 			.setIn(['transactions', 'sum'], sumResults.sum.toString())
@@ -102,10 +101,15 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
+	const latestBlock = lastBlock || getState().round.get('latestBlock');
+	const maxBlocks = getState().block.get('blocksCount');
+
+	const [...keys] = blocks.keys();
+	const startedBlock = startBlock || Math.max(...keys);
 
 	let blocksResult = [];
 
-	for (let i = startBlock + 1; i <= lastBlock; i += 1) {
+	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
 	}
 
@@ -118,13 +122,25 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 
 	const accounts = await echo.api.getAccounts(accountIds);
 
+	if (blocksResult.length && blocks.size >= maxBlocks) {
+		blocks = blocks.withMutations((mapBlocks) => {
+			for (let i = 0; i < blocksResult.length; i += 1) {
+				const minBlockNum = Math.min(...keys);
+
+				mapBlocks.delete(minBlockNum);
+
+				keys.splice(keys.indexOf(minBlockNum), 1);
+			}
+		});
+	}
+
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
 				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
-				.setIn([blockNumber, 'reward'], 10)
+				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
 				.setIn([blockNumber, 'weightSize'], 'bytes')
@@ -152,4 +168,22 @@ export const initBlocks = () => async (dispatch) => {
 	const startBlockList = obj[0].head_block_number - PAGE_BLOCKS_COUNT;
 
 	await dispatch(updateBlockList(obj[0].head_block_number, startBlockList));
+};
+
+export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
+	const maxBlocks = getState().block.get('blocksCount') + PAGE_BLOCKS_COUNT;
+
+	dispatch(BlockReducer.actions.set({
+		field: 'blocksCount',
+		value: maxBlocks,
+	}));
+
+	const [...keys] = getState().block.get('blocks').keys();
+	const startedBlock = Math.min(...keys) - PAGE_BLOCKS_COUNT;
+
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
+
+	await dispatch(updateBlockList(0, startedBlock));
+
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 };

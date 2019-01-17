@@ -1,22 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { setMaxDisplayedBlocks } from '../../actions/BlockActions';
 
 class LoadMoreBtn extends React.Component {
 
-	constructor() {
-		super();
-
-		this.state = {
-			loading: false,
-		};
-	}
-
-	isLoading() {
-		this.setState({ loading: true });
+	loadMoreBlocks(e) {
+		e.preventDefault();
+		this.props.loadBlocks();
 	}
 
 	render() {
 
-		const { loading } = this.state;
+		const { loading } = this.props;
 
 		return (
 			<React.Fragment>
@@ -25,8 +22,8 @@ class LoadMoreBtn extends React.Component {
 						loading ? (
 							<div className="loader" />
 						) : (
-							<a href="" className="load-more" onClick={(e) => { e.preventDefault(); this.isLoading(); }}>
-            Load more blocks
+							<a href="" className="load-more" onClick={(e) => this.loadMoreBlocks(e)}>
+								Load more blocks
 								<div className="icon">
 									<svg
 										width="8px"
@@ -50,4 +47,16 @@ class LoadMoreBtn extends React.Component {
 
 }
 
-export default LoadMoreBtn;
+LoadMoreBtn.propTypes = {
+	loading: PropTypes.bool.isRequired,
+	loadBlocks: PropTypes.func.isRequired,
+};
+
+export default connect(
+	(state) => ({
+		loading: state.block.get('loading'),
+	}),
+	(dispatch) => ({
+		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
+	}),
+)(LoadMoreBtn);

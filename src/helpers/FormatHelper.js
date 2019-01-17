@@ -26,7 +26,7 @@ class FormatHelper {
 			}
 		}
 
-		const resultNumber = (mod ? `${base.substr(0, mod)} ` : '')
+		const resultNumber = (mod ? `${base.substr(0, mod)},` : '')
             + base.substr(mod).replace(/(\d{3})(?=\d)/g, `$1${','}`)
             + (precision ? postfix : '');
 
@@ -41,8 +41,15 @@ class FormatHelper {
 		return Number(`${Math.ceil(`${value}e${decimals}`)}e-${decimals}`);
 	}
 
+	static formatBlockSize(value) {
+		if (value < 1024) return value;
+		else if (value < 1048576) return value / 1024;
+		else if (value < 1073741824) return value / 1048576;
+		return value / 1073741824;
+	}
+
 	static formatByteSize(bytes) {
-		if (bytes < 1024) return `${bytes} bytes`;
+		if (bytes < 1024) return 'bytes';
 		else if (bytes < 1048576) return 'KB';
 		else if (bytes < 1073741824) return 'MB';
 		return 'GB';
