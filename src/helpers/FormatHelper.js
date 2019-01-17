@@ -26,7 +26,7 @@ class FormatHelper {
 			}
 		}
 
-		const resultNumber = (mod ? `${base.substr(0, mod)} ` : '')
+		const resultNumber = (mod ? `${base.substr(0, mod)},` : '')
             + base.substr(mod).replace(/(\d{3})(?=\d)/g, `$1${','}`)
             + (precision ? postfix : '');
 
