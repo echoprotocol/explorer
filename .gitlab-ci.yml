@@ -20,7 +20,6 @@ build_dev:
     - cd /home/devuser/DevProjects/656.echo_explorer/explorer
     - git pull
     - npm i
-    - npm link echojs-lib
     - npm run build-dev
   only:
     - development
