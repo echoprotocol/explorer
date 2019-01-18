@@ -1,9 +1,10 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle,camelcase */
 import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map } from 'immutable';
+import _ from 'lodash';
 
-import echo from 'echojs-lib';
+import echo, { OPERATIONS_IDS } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -16,7 +17,98 @@ import {
 	MAX_BLOCK_REQUESTS,
 } from '../constants/GlobalConstants';
 
+import Operations from '../constants/Operations';
+
 import FormatHelper from '../helpers/FormatHelper';
+
+const formatOperation = async (data, round) => {
+	const [type, operation] = data;
+	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
+
+	const { name, options } = Object.values(Operations).find((i) => i.value === type);
+	const result = {
+		type,
+		fee: {
+			amount: operation.fee.amount,
+			precision: feeAsset.precision,
+			symbol: feeAsset.symbol,
+		},
+		name,
+		value: {},
+		status: true,
+	};
+
+	if (options.from) {
+
+		if (Array.isArray(options.from)) {
+			if (options.from[1]) {
+				const request = _.get(operation, options.from[0]);
+				const response = await echo.api.getObject(request);
+				result.subject = response[options.from[1]];
+			} else {
+				result.from = operation[options.from[0]];
+			}
+		} else {
+			const request = _.get(operation, options.from);
+			const response = await echo.api.getObject(request);
+			result.from = response ? response.name : options.from;
+		}
+	}
+
+	if (options.subject) {
+		if (options.subject[1]) {
+			const request = _.get(operation, options.subject[0]);
+			const response = await echo.api.getObject(request);
+			result.subject = response[options.subject[1]];
+		} else {
+			result.subject = operation[options.subject[0]];
+		}
+	}
+
+	if (options.value) {
+		result.value = {
+			...result.value,
+			amount: _.get(operation, options.value),
+		};
+	}
+
+	if (options.asset) {
+		const request = _.get(operation, options.asset);
+		const response = await echo.api.getObject(request);
+		result.value = {
+			...result.value,
+			precision: response.precision,
+			symbol: response.symbol,
+		};
+	}
+
+	if (
+		type === OPERATIONS_IDS.CREATE_CONTRACT ||
+			type === OPERATIONS_IDS.CALL_CONTRACT ||
+			type === OPERATIONS_IDS.CONTRACT_TRANSFER
+	) {
+		result.status = true;
+	}
+
+	if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
+		const contractHistory = await echo.api.getContractHistory(result.subject);
+		const internalTransactions = contractHistory
+			.filter(({ block_num }) => block_num === round)
+			.map(({ op }) => formatOperation(op));
+
+		result.internal = await Promise.all(internalTransactions);
+	}
+
+	// if (type === 0 && operation.memo && operation.memo.message) {
+	// 	result.memo = operation.memo;
+	// }
+
+	// if (operation.code) {
+	// 	result.bytecode = operation.code;
+	// }
+
+    return result;
+};
 
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
@@ -48,10 +140,17 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
+		const planeOperations = planeBlock.transactions
+			.reduce((acum, { operations }) => { acum.push(...operations); return acum; }, []);
 
+		let operations = [];
+		if (planeOperations.length !== 0) {
+			const promiseOperations = planeOperations.map((op) => formatOperation(op, planeBlock.round));
+			operations = await Promise.all(promiseOperations);
+		}
+		value.operations = operations;
 		value.verifiers = verifiers.map(({ name }) => name);
 		value.round = planeBlock.round;
-		value.transactions = planeBlock.transactions;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
