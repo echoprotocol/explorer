@@ -2,8 +2,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-// import LoadMoreBtn from '../../../components/LoadMoreBtn';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
+import TransactionActions from '../../../actions/TransactionActions';
 
 class TransactionsInfo extends React.Component {
 
@@ -13,16 +16,25 @@ class TransactionsInfo extends React.Component {
 		this.returnFunction = this.returnFunction.bind(this);
 	}
 
+	componentDidMount() {
+		this.props.getTransaction();
+	}
+
+	componentWillUnmount() {
+		this.props.clearTransaction();
+	}
+
 	returnFunction() {
 		this.props.switchToBlockInfo(true);
 	}
 
 	render() {
+		const { round, index } = this.props.match.params;
 
 		return (
 			<React.Fragment>
 				<div className="table-container inner-information-container transaction-information">
-					<BreadCrumbs title="Transactions 12 in Block 1,265,456" returnFunction={this.returnFunction} />
+					<BreadCrumbs title={`Transaction ${index} in Block ${round}`} returnFunction={this.returnFunction} />
 					<div className="transaction-info-table">
 						<div className="row">
 							<div className="title">Type</div>
@@ -68,11 +80,26 @@ class TransactionsInfo extends React.Component {
 }
 
 TransactionsInfo.propTypes = {
+	match: PropTypes.object.isRequired,
 	switchToBlockInfo: PropTypes.func,
+	getTransaction: PropTypes.func.isRequired,
+	clearTransaction: PropTypes.func.isRequired,
 };
 
 TransactionsInfo.defaultProps = {
 	switchToBlockInfo: null,
 };
 
-export default TransactionsInfo;
+export default withRouter(connect(
+	(state) => ({
+		transaction: state.transaction,
+	}),
+	(dispatch, props) => ({
+		getTransaction: () => dispatch(TransactionActions.getTransaction(
+			props.match.params.round,
+			props.match.params.index,
+		)),
+		clearTransaction: () => dispatch(TransactionActions.clear()),
+	})
+	,
+)(TransactionsInfo));
