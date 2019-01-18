@@ -4,6 +4,7 @@ import formReducer from './FormReducer';
 import gridReducer from './GridReducer';
 import roundReducer from './RoundReducer';
 import blockReducer from './BlockReducer';
+import objectsReducer from './ObjectsReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -12,4 +13,5 @@ export default {
 	grid: gridReducer.reducer,
 	round: roundReducer.reducer,
 	block: blockReducer.reducer,
+	objects: objectsReducer.reducer,
 };

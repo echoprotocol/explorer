@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { disconnect } from '../actions/SocketActions';
 
 import Toast from '../components/Toast';
+import Header from './Header';
 
 class App extends React.Component {
 
@@ -23,6 +24,7 @@ class App extends React.Component {
 
 		return (
 			<div className="wrapper">
+				<Header />
 				{children}
 				{this.renderModals()}
 				<Toast />
