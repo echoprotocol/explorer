@@ -216,7 +216,7 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).format('HH:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)
