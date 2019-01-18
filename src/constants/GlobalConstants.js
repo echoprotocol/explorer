@@ -13,3 +13,5 @@ export const MAX_AVERAGE_TRS_BLOCKS = 100;
 export const MAX_PAGE_BLOCKS = 100;
 export const PAGE_BLOCKS_COUNT = 20;
 export const PAGE_ADD_BLOCKS_COUNT = 10;
+
+export const MAX_BLOCK_REQUESTS = 100;

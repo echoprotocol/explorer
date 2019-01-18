@@ -5,6 +5,7 @@ import Media from 'react-media';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
@@ -73,7 +74,10 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container verifiers">
 							<div className="title">Verifiers</div>
-							<div className="value">{verifiers && verifiers.length} <a href="" className="view-list" onClick={(e) => { e.preventDefault(); }}>View list</a></div>
+							<div className="value">
+								{verifiers && verifiers.length}
+								<a href="" className="view-list" >View list</a>
+							</div>
 						</div>
 					</div>
 					<h2>{`${operations && operations.length} Operations`}
@@ -98,11 +102,10 @@ class BlockInformation extends React.Component {
 													{
 														operations.map((data, i) => (
 															<React.Fragment>
-																<a
-																	href=""
+																<Link
+																	to=""
 																	key={Math.random()}
 																	className={classnames('recent-block-element', { 'with-subtransfer': data.internal })}
-																	onClick={(e) => { e.preventDefault(); }}
 																>
 																	<div className="container">
 																		<div className="title">#</div>
@@ -132,7 +135,7 @@ class BlockInformation extends React.Component {
 																		<div className="title">Status</div>
 																		<div className="value">{data.status ? 'Success' : 'Fail'}</div>
 																	</div>
-																</a>
+																</Link>
 																{
 																	data.internal ?
 																		(data.internal.map((io, i) => (
@@ -140,7 +143,8 @@ class BlockInformation extends React.Component {
 																				key={Math.random()}
 																				className={classnames('recent-block-element', 'is-subtransfer', { 'is-subtransfer_last': i === (data.internal.length - 1) })}
 																			>
-																				<div className="subtransfer-type">Subtransfer
+																				<div className="subtransfer-type">
+																					{io.type === 49 ? 'Subtransfer' : 'Call contract'}
 																				</div>
 																				<div className="line-arrow" />
 																				<div className="container amount">
@@ -153,25 +157,23 @@ class BlockInformation extends React.Component {
 																				<div className="container">
 																					<div className="title">From</div>
 																					<div className="value">
-																						<a
-																							href=""
+																						<Link
+																							to=""
 																							className="blue"
-																							onClick={(e) => e.preventDefault()}
 																						>
 																							{io.from}
-																						</a>
+																						</Link>
 																					</div>
 																				</div>
 																				<div className="container">
 																					<div className="title">To</div>
 																					<div className="value">
-																						<a
-																							href=""
+																						<Link
+																							to=""
 																							className="blue"
-																							onClick={(e) => e.preventDefault()}
 																						>
 																							{io.subject}
-																						</a>
+																						</Link>
 																					</div>
 																				</div>
 																			</div>
@@ -199,10 +201,9 @@ class BlockInformation extends React.Component {
 														{
 															operations.map((data, i) => (
 																<React.Fragment key={Math.random()}>
-																	<a
-																		href=""
+																	<Link
+																		to=""
 																		className={classnames('divTableRow', { 'with-subtransfer': data.internal })}
-																		onClick={(e) => { e.preventDefault(); }}
 																	>
 																		<div className="divTableCell">{i + 1}</div>
 																		<div className="divTableCell">{data.name}</div>
@@ -215,7 +216,7 @@ class BlockInformation extends React.Component {
 																		<div className="divTableCell">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
 																		<div className="divTableCell">{data.fee.amount} <span className="gray">{data.fee.symbol}</span></div>
 																		<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
-																	</a>
+																	</Link>
 																	{
 																		data.internal ?
 																			(data.internal.map((io, i) => (
