@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import PropTypes from 'prop-types';
+import FormatHelper from '../../helpers/FormatHelper';
+import { KEY_CODE_ENTER } from '../../constants/GlobalConstants';
 
 class SearchField extends React.Component {
 
@@ -12,6 +14,7 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 			inputValue: '',
+			inputError: '',
 		};
 
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -38,11 +41,29 @@ class SearchField extends React.Component {
 	}
 
 	onChange(e) {
+		const { value } = e.target;
 		// Показать блок с подсказками
+		const error = FormatHelper.isBlockNumber(value);
+
+		if (error) {
+			this.setState({
+				inputError: error,
+			});
+		}
+
 		this.setState({
 			isChange: true,
-			inputValue: e.target.value,
+			inputValue: value,
+			inputError: '',
 		});
+	}
+
+	onKeyPress(e) {
+		const code = e.keyCode || e.which;
+
+		if (this.state.inputValue && KEY_CODE_ENTER === code) {
+			this.props.onSearch(this.state.inputValue);
+		}
 	}
 
 	setWrapperRef(node) {
@@ -80,7 +101,10 @@ class SearchField extends React.Component {
 
 	render() {
 
-		const { focus, isChange, isActiveSmall } = this.state;
+		const {
+			focus, isChange, isActiveSmall, inputError, // eslint-disable-line no-unused-vars
+		} = this.state;
+
 		const {
 			small, placeholder, white, withHelp,
 		} = this.props;
@@ -113,6 +137,7 @@ class SearchField extends React.Component {
 							placeholder={placeholder}
 							onFocus={() => this.onFocus()}
 							onChange={(e) => this.onChange(e)}
+							onKeyPress={(e) => this.onKeyPress(e)}
 							ref={(node) => { this.inputEl = node; }}
 						/>
 						<button tabIndex="0" className="close-icn" onClick={() => this.cleareInput()} />
