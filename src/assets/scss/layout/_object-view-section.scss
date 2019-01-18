@@ -21,7 +21,7 @@
             .json-tree-container {
                 background-color: #ebeaee;
                 display: flex;
-                padding-bottom: 30px;
+                padding-bottom: 19px;
 
                 @include res-320 {
                     flex-direction: column-reverse;
@@ -31,7 +31,6 @@
                 }
 
                 .copy-bytecode {
-                    background-color: #e2e0e6;
                     margin-left: auto;
                     margin-right: 25px;
                     margin-top: 20px;

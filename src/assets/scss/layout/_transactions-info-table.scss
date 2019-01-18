@@ -103,12 +103,13 @@
     height: 21px;
     margin-top: 25px;
     border-radius: 11px;
-    background-color: #ebeaee;
+    background-color: #e2e0e6;
     @include InterUI_Regular;
     font-size: 12px;
     color: #000000;
     border: none;
     outline: none;
+    transition: all .2s ease-out;
 
     @include res-500 {
         margin-top: 30px;
@@ -129,5 +130,20 @@
         display: inline-block;
         flex-shrink: 0;
         margin-right: 5px;
+        transition: all .2s ease-out;
+        will-change: transform;
+    }
+
+    &:hover {
+        background-color: #d9d8dc;
+    }
+    
+    &:active {
+        background-color: #d9d8dc;
+        color: rgba(0, 0, 0, 0.5);
+
+        &:before {
+            opacity: 0.5;
+        }
     }
 }
