@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import BN from 'bignumber.js';
 import moment from 'moment';
+import { Map } from 'immutable';
 
 import echo from 'echojs-lib';
 
@@ -15,6 +17,53 @@ import {
 } from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
+
+export const getBlockInformation = (round) => async (dispatch, getState) => {
+	try {
+		const planeBlock = await echo.api.getBlock(round);
+
+		if (!planeBlock) {
+			return;
+			// redirect 404
+		}
+
+		const handledBlock = getState().block.getIn(['blocks', round]);
+
+		const value = {};
+
+		if (handledBlock) {
+			value.producer = handledBlock.get('producer');
+			value.reward = `${handledBlock.get('reward')} ${handledBlock.get('rewardCurrency')}`;
+			value.size = `${FormatHelper.formatBlockSize(handledBlock.get('weight'))}
+			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
+			value.blockNumber = handledBlock.get('blockNumber');
+		} else {
+			value.producer = (await echo.api.getObject(planeBlock.account)).name;
+			value.reward = '10 ECHO';
+			const weight = JSON.stringify(planeBlock).length;
+			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
+			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
+		}
+
+		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
+
+		const verifiers = await echo.api.getAccounts(verifiersIds);
+
+		value.verifiers = verifiers.map(({ name }) => name);
+		value.round = planeBlock.round;
+		value.transactions = planeBlock.transactions;
+		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
+
+		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
+
+	} catch (error) {
+		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
+	}
+};
+
+export const clearBlockInformation = () => (dispatch) => {
+	dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map({}) }));
+};
 
 export const setLatestBlock = () => (dispatch, getState) => {
 	const prepBlock = getState().round.get('preparingBlock');
