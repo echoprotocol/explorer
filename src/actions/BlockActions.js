@@ -58,8 +58,6 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 	}
-
-	return true;
 };
 
 export const clearBlockInformation = () => (dispatch) => {
@@ -159,18 +157,6 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	} catch (err) {
 		dispatch(RoundReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }));
 	}
-};
-
-const _addSizeToBlock = (blocksResult, producer, mapBlocks) => {
-	const blockNumber = blocksResult.round;
-	mapBlocks
-		.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
-		.setIn([blockNumber, 'producer'], accounts[i].name)
-		.setIn([blockNumber, 'reward'], 10)
-		.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
-		.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
-		.setIn([blockNumber, 'weightSize'], 'bytes')
-		.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
 };
 
 export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {

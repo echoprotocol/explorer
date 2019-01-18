@@ -47,7 +47,7 @@ class BlockInformation extends React.Component {
 		const size = blockInformation.get('size');
 		const verifiers = blockInformation.get('verifiers');
 
-		const transactions = blockInformation.get('transactions');
+		// const transactions = blockInformation.get('transactions');
 
 		const codingData = [
 			{
@@ -138,7 +138,7 @@ class BlockInformation extends React.Component {
 												</a>
 											))
 										}
-										<a href="" className="recent-block-element with-subtransfer" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+										<a href="" className="recent-block-element with-subtransfer" onClick={(e) => { e.preventDefault(); }}>
 											<div className="container">
 												<div className="title">#</div>
 												<div className="value">6.</div>
@@ -217,7 +217,7 @@ class BlockInformation extends React.Component {
 											{
 												codingData.map((data) => (
 													<React.Fragment key={Math.random()}>
-														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); }}>
 															<div className="divTableCell">{data.blockNumber}</div>
 															<div className="divTableCell">{data.type}</div>
 															<div className="divTableCell">
@@ -236,7 +236,7 @@ class BlockInformation extends React.Component {
 
 											{/* Класс with-subtransfer добавляется для главного элемента, который имееет сабтрансферы */}
 
-											<a href="" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }} className="divTableRow with-subtransfer">
+											<a href="" onClick={(e) => { e.preventDefault(); }} className="divTableRow with-subtransfer">
 												<div className="divTableCell">6.</div>
 												<div className="divTableCell">Place order</div>
 												<div className="divTableCell">

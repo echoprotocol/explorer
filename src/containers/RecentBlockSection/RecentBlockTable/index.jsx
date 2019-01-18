@@ -171,11 +171,8 @@ class RecentBlockTable extends React.Component {
 
 RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 	blocksCount: PropTypes.number.isRequired,
 };
-
-
 
 export default withRouter(connect(
 	(state) => ({
