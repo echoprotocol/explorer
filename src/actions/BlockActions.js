@@ -91,12 +91,17 @@ const formatOperation = async (data, round) => {
 	}
 
 	if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
+		console.log(await echo.api.getContractLogs(result.subject, round - 100, round + 100));
+		const [, { code }] = await echo.api.wsApi.database.getContract(result.subject);
+
+
 		const contractHistory = await echo.api.getContractHistory(result.subject);
 		const internalTransactions = contractHistory
 			.filter(({ block_num }) => block_num === round)
 			.map(({ op }) => formatOperation(op));
 
 		result.internal = await Promise.all(internalTransactions);
+		console.log(contractHistory)
 	}
 
 	// if (type === 0 && operation.memo && operation.memo.message) {
@@ -107,7 +112,7 @@ const formatOperation = async (data, round) => {
 	// 	result.bytecode = operation.code;
 	// }
 
-    return result;
+	return result;
 };
 
 export const getBlockInformation = (round) => async (dispatch, getState) => {

@@ -76,7 +76,7 @@ class BlockInformation extends React.Component {
 							<div className="title">Verifiers</div>
 							<div className="value">
 								{verifiers && verifiers.length}
-								<a href="" className="view-list" >View list</a>
+								<Link to="" className="view-list" >View list</Link>
 							</div>
 						</div>
 					</div>
@@ -105,7 +105,7 @@ class BlockInformation extends React.Component {
 																<Link
 																	to=""
 																	key={Math.random()}
-																	className={classnames('recent-block-element', { 'with-subtransfer': data.internal })}
+																	className={classnames('recent-block-element', { 'with-subtransfer': data.internal && data.internal.length })}
 																>
 																	<div className="container">
 																		<div className="title">#</div>
@@ -137,7 +137,7 @@ class BlockInformation extends React.Component {
 																	</div>
 																</Link>
 																{
-																	data.internal ?
+																	data.internal && data.internal.length ?
 																		(data.internal.map((io, i) => (
 																			<div
 																				key={Math.random()}
@@ -203,7 +203,7 @@ class BlockInformation extends React.Component {
 																<React.Fragment key={Math.random()}>
 																	<Link
 																		to=""
-																		className={classnames('divTableRow', { 'with-subtransfer': data.internal })}
+																		className={classnames('divTableRow', { 'with-subtransfer': data.internal && data.internal.length })}
 																	>
 																		<div className="divTableCell">{i + 1}</div>
 																		<div className="divTableCell">{data.name}</div>
@@ -218,7 +218,7 @@ class BlockInformation extends React.Component {
 																		<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
 																	</Link>
 																	{
-																		data.internal ?
+																		data.internal && data.internal.length ?
 																			(data.internal.map((io, i) => (
 																				<div
 																					key={Math.random()}
