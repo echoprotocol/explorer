@@ -89,7 +89,7 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container verifiers">
 							<div className="title">Verifiers</div>
-							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
+							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers || []} /></div>
 						</div>
 					</div>
 					<h2>43 Transactions
