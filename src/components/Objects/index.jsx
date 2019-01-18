@@ -12,8 +12,12 @@ class Objects extends React.Component {
 		super(props);
 		this.copy = this.copy.bind(this);
 		this.state = {
-			id: this.getId(this.props)
+			id: this.getId(this.props),
 		};
+	}
+
+	componentDidMount() {
+		this.checkObject();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -23,7 +27,7 @@ class Objects extends React.Component {
 		if (newId !== this.state.id) {
 
 			this.setState({
-				id: newId
+				id: newId,
 			}, () => {
 				this.checkObject();
 			});
@@ -31,18 +35,8 @@ class Objects extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		this.checkObject();
-	}
-
-	checkObject() {
-		const id = this.state.id;
-
-		if (!id) {
-			this.props.setError('Object id is Invalid');
-		} else {
-			this.props.getObjectInfo(id);
-		}
+	componentWillUnmount() {
+		this.props.setError(null);
 	}
 
 	getId(props) {
@@ -57,12 +51,14 @@ class Objects extends React.Component {
 		return parsed.id;
 	}
 
-	componentDidUpdate() {
+	checkObject() {
+		const { id } = this.state;
 
-	}
-
-	componentWillUnmount() {
-		this.props.setError(null);
+		if (!id) {
+			this.props.setError('Object id is Invalid');
+		} else {
+			this.props.getObjectInfo(id);
+		}
 	}
 
 	copy() {
@@ -116,7 +112,8 @@ class Objects extends React.Component {
 
 						const regExp = /^"\d+\.\d+\.\d+"$/;
 
-						return (raw && isString(raw) && (raw.search(regExp) !== -1)) ? <Link
+						return (raw && isString(raw) && (raw.search(regExp) !== -1)) ?
+							<Link
 								to={`/objects?id=${raw.substr(1, raw.length - 1 - 1)}`}
 								className="blue"
 							>
@@ -137,7 +134,6 @@ Objects.propTypes = {
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
 	error: PropTypes.string,
-	location: PropTypes.object,
 };
 
 Objects.defaultProps = {
@@ -145,7 +141,6 @@ Objects.defaultProps = {
 	getObjectInfo: null,
 	setError: null,
 	error: null,
-	location: null,
 };
 
 export default Objects;
