@@ -36,6 +36,15 @@
         position: relative;
         padding-bottom: 37px;
 
+        &.recent-block-table {
+            @include res-320 {
+                h2 {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+            }
+        }
+
         @include res-1280 {
             padding-right: 30px;
             padding-left: 0px;
