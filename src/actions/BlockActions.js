@@ -11,6 +11,7 @@ import {
 	START_AVERAGE_TRS_BLOCKS,
 	PAGE_BLOCKS_COUNT,
 	PAGE_ADD_BLOCKS_COUNT,
+	MAX_BLOCK_REQUESTS,
 } from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
@@ -36,8 +37,14 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 	let blocks = [];
 
+	let startedBlock = startBlock || transactions.get('block') + 1;
+
+	if ((getState().round.get('latestBlock') - transactions.get('block')) > MAX_BLOCK_REQUESTS) {
+		startedBlock = getState().round.get('latestBlock') - MAX_BLOCK_REQUESTS;
+	}
+
 	try {
-		for (let i = startBlock || transactions.get('block') + 1; i <= latestBlock; i += 1) {
+		for (let i = startedBlock; i <= latestBlock; i += 1) {
 			blocks.push(echo.api.wsApi.database.getBlock(i));
 		}
 
@@ -86,7 +93,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 		const averageTime = new BN(sumUnix).div(trLengths.size);
 
 		if (Math.sign(averageTime.toNumber()) > 0) {
-			transactions = transactions.set('averageTime', sumUnix / trLengths.size);
+			transactions = transactions.set('averageTime', parseFloat(averageTime.toFixed(3)));
 		}
 
 		transactions = transactions
@@ -149,7 +156,7 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
