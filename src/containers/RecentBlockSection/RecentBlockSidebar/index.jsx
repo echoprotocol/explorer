@@ -33,7 +33,7 @@ class RecentBlockSidebar extends React.Component {
 	}
 
 	render() {
-		const { latestBlock, averageTransactions } = this.props;
+		const { latestBlock, averageTransactions, startTimestamp } = this.props;
 
 		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
 		const averageOp = FormatHelper.roundNumber(averageTransactions.getIn(['operations', 'value']), 1);
@@ -47,7 +47,7 @@ class RecentBlockSidebar extends React.Component {
 					</div>
 					<div className="sidebar-elem">
 						<div className="title">Latest block time</div>
-						<div className="value">{this.state.timer}&nbsp;<span className="sm">sec</span></div>
+						<div className="value">{startTimestamp + this.state.timer}&nbsp;<span className="sm">sec</span></div>
 					</div>
 					<div className="sidebar-elem">
 						<div className="title">Average transactions / operations count</div>
@@ -66,6 +66,7 @@ class RecentBlockSidebar extends React.Component {
 
 RecentBlockSidebar.propTypes = {
 	latestBlock: PropTypes.number.isRequired,
+	startTimestamp: PropTypes.number.isRequired,
 	averageTransactions: PropTypes.object.isRequired,
 };
 
@@ -73,6 +74,7 @@ export default connect(
 	(state) => ({
 		latestBlock: state.round.get('latestBlock'),
 		averageTransactions: state.round.get('averageTransactions'),
+		startTimestamp: state.block.get('startTimestamp'),
 	}),
 	() => ({}),
 )(RecentBlockSidebar);

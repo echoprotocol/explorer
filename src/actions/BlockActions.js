@@ -159,6 +159,20 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 		}
 	});
 
+	const lastBlockStorage = blocksResult[blocksResult.length - 1];
+
+	if (lastBlockStorage) {
+		localStorage.setItem('lastBlock', JSON.stringify({
+			number: lastBlockStorage.round,
+			timestamp: moment.utc(lastBlockStorage.timestamp).local().unix(),
+		}));
+
+		dispatch(BlockReducer.actions.set({
+			field: 'startTimestamp',
+			value: 0,
+		}));
+	}
+
 	dispatch(BlockReducer.actions.set({
 		field: 'blocks',
 		value: blocks,
@@ -179,6 +193,15 @@ export const initBlocks = () => async (dispatch) => {
 	const startBlockList = obj[0].head_block_number - PAGE_BLOCKS_COUNT;
 
 	await dispatch(updateBlockList(obj[0].head_block_number, startBlockList));
+
+	const lastBlock = JSON.parse(localStorage.getItem('lastBlock'));
+
+	const dateNowUnix = new BN(Date.now()).div(1000);
+
+	dispatch(BlockReducer.actions.set({
+		field: 'startTimestamp',
+		value: parseInt(dateNowUnix.minus(lastBlock.timestamp).toFixed(0), 10),
+	}));
 };
 
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
