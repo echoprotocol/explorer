@@ -1,75 +1,57 @@
 /* eslint-disable no-shadow */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Media from 'react-media';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
 import SearchField from '../../../components/SearchFields/SearchField';
+
+import { INDEX_PATH } from '../../../constants/RouterConstants';
+
+import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
 
 class BlockInformation extends React.Component {
 
 	constructor() {
 		super();
-
 		this.returnFunction = this.returnFunction.bind(this);
 	}
 
-	returnFunction() {
-		this.props.switchToTransInfo(false);
+	componentDidMount() {
+		this.props.getBlockInfo();
+
 	}
 
-	render() {
+	componentWillUnmount() {
+		this.props.clearBlockInfo();
+	}
+
+	returnFunction() {
+		this.props.history.push(INDEX_PATH);
+	}
+
+	renderLoader() {
+		// TODO loader
+		return null;
+	}
+
+	renderBlockInfo(blockInformation) {
+		const blockNumber = blockInformation.get('blockNumber');
+
+		const time = blockInformation.get('time');
+		const producer = blockInformation.get('producer');
+		const reward = blockInformation.get('reward');
+		const size = blockInformation.get('size');
+		const verifiers = blockInformation.get('verifiers');
+
+		// const transactions = blockInformation.get('transactions');
 
 		const codingData = [
 			{
 				blockNumber: '1.',
-				type: 'Place order',
-				from: 'GeorgeLukas',
-				to: '1.16.2345.235',
-				amount: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				status: 'Success',
-			},
-			{
-				blockNumber: '2.',
-				type: 'Place order',
-				from: 'GeorgeLukas',
-				to: '1.16.2345.235',
-				amount: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				status: 'Success',
-			},
-			{
-				blockNumber: '3.',
-				type: 'Place order',
-				from: 'GeorgeLukas',
-				to: '1.16.2345.235',
-				amount: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				status: 'Success',
-				subRows: {
-					type: 'Subtransfer',
-					to: 'openledger-dc',
-					amountSize: '0.003245',
-					amount: 'echo',
-				},
-			},
-			{
-				blockNumber: '4.',
-				type: 'Place order',
-				from: 'GeorgeLukas',
-				to: '1.16.2345.235',
-				amount: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				status: 'Fail',
-			},
-			{
-				blockNumber: '5.',
 				type: 'Place order',
 				from: 'GeorgeLukas',
 				to: '1.16.2345.235',
@@ -83,27 +65,27 @@ class BlockInformation extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="table-container inner-information-container block-information">
-					<BreadCrumbs title="Block 1,265,447" returnFunction={this.returnFunction} />
+					<BreadCrumbs title={`Block ${blockNumber}`} returnFunction={this.returnFunction} />
 					<div className="block-description">
 						<div className="container time">
 							<div className="title">Time, Date</div>
-							<div className="value">15 Aug, 2018, 18:53:12</div>
+							<div className="value">{time}</div>
 						</div>
 						<div className="container size">
 							<div className="title">Size</div>
-							<div className="value">0.365 Mb</div>
+							<div className="value">{size}</div>
 						</div>
 						<div className="container producer">
 							<div className="title">Producer</div>
-							<div className="value">Alexua1769</div>
+							<div className="value">{producer}</div>
 						</div>
 						<div className="container reward">
 							<div className="title">Reward</div>
-							<div className="value">12.5 ECHO</div>
+							<div className="value">{reward}</div>
 						</div>
 						<div className="container verifiers">
 							<div className="title">Verifiers</div>
-							<div className="value">12 <a href="" className="view-list" onClick={(e) => { e.preventDefault(); }}>View list</a></div>
+							<div className="value">{verifiers && verifiers.length} <a href="" className="view-list" onClick={(e) => { e.preventDefault(); }}>View list</a></div>
 						</div>
 					</div>
 					<h2>43 Transactions
@@ -124,7 +106,7 @@ class BlockInformation extends React.Component {
 									<div className="recent-block-mobile-view">
 										{
 											codingData.map((data) => (
-												<a href="" key={Math.random()} className="recent-block-element" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+												<a href="" key={Math.random()} className="recent-block-element" onClick={(e) => { e.preventDefault(); }}>
 													<div className="container">
 														<div className="title">#</div>
 														<div className="value">{data.blockNumber}</div>
@@ -156,7 +138,7 @@ class BlockInformation extends React.Component {
 												</a>
 											))
 										}
-										<a href="" className="recent-block-element with-subtransfer" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+										<a href="" className="recent-block-element with-subtransfer" onClick={(e) => { e.preventDefault(); }}>
 											<div className="container">
 												<div className="title">#</div>
 												<div className="value">6.</div>
@@ -235,7 +217,7 @@ class BlockInformation extends React.Component {
 											{
 												codingData.map((data) => (
 													<React.Fragment key={Math.random()}>
-														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); }}>
 															<div className="divTableCell">{data.blockNumber}</div>
 															<div className="divTableCell">{data.type}</div>
 															<div className="divTableCell">
@@ -254,7 +236,7 @@ class BlockInformation extends React.Component {
 
 											{/* Класс with-subtransfer добавляется для главного элемента, который имееет сабтрансферы */}
 
-											<a href="" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }} className="divTableRow with-subtransfer">
+											<a href="" onClick={(e) => { e.preventDefault(); }} className="divTableRow with-subtransfer">
 												<div className="divTableCell">6.</div>
 												<div className="divTableCell">Place order</div>
 												<div className="divTableCell">
@@ -327,14 +309,28 @@ class BlockInformation extends React.Component {
 		);
 	}
 
+	render() {
+		const { blockInformation } = this.props;
+
+		return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
+	}
+
 }
 
 BlockInformation.propTypes = {
-	switchToTransInfo: PropTypes.func,
+	blockInformation: PropTypes.object.isRequired,
+	getBlockInfo: PropTypes.func.isRequired,
+	clearBlockInfo: PropTypes.func.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
-BlockInformation.defaultProps = {
-	switchToTransInfo: null,
-};
-
-export default BlockInformation;
+export default withRouter(connect(
+	(state) => ({
+		blockInformation: state.block.get('blockInformation'),
+	}),
+	(dispatch, props) => ({
+		getBlockInfo: () => dispatch(getBlockInformation(props.match.params.round)),
+		clearBlockInfo: () => dispatch(clearBlockInformation()),
+	})
+	,
+)(BlockInformation));

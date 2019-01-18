@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import BN from 'bignumber.js';
+import moment from 'moment';
 
 class FormatHelper {
 
@@ -51,9 +52,13 @@ class FormatHelper {
 
 	static formatByteSize(bytes) {
 		if (bytes < 1024) return 'bytes';
-		else if (bytes < 1048576) return 'KB';
+		else if (bytes < 1048576) return 'kB';
 		else if (bytes < 1073741824) return 'MB';
 		return 'GB';
+	}
+
+	static timestampToBlockInformationTime(timestamp) {
+		return moment.utc(timestamp).local().format('D MMM, YYYY, hh:mm:ss');
 	}
 
 }

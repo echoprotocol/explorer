@@ -7,8 +7,6 @@ class BreadCrumbs extends React.Component {
 
 		const { title } = this.props;
 
-		// console.log(this.props.switchToBlockInfo);
-
 		return (
 			<div className="information-breadcrumbs">
 				<div className="breadcrumbs-container">

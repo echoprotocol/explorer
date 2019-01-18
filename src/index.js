@@ -14,8 +14,7 @@ import store from './store';
 
 store.dispatch(GlobalActions.init()).then(() => {
 	echo.syncCacheWithStore(store);
-	// Now you can dispatch navigation actions from anywhere!
-	// store.dispatch(push('/foo'))
+
 	ReactDOM.render(
 		<Provider store={store}>
 			{/* ConnectedRouter will use the store from Provider automatically */}
