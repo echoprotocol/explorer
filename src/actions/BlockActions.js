@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle,camelcase */
 import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map } from 'immutable';
@@ -37,9 +37,25 @@ const formatOperation = async (data, round) => {
 	};
 
 	if (options.from) {
-		const request = _.get(operation, options.from);
-		const response = await echo.api.getObject(request);
-		result.from = response.name;
+
+		if (Array.isArray(options.from)) {
+			if (options.from[1]) {
+				const request = _.get(operation, options.from[0]);
+				const response = await echo.api.getObject(request);
+				result.subject = response[options.from[1]];
+			} else {
+				result.from = operation[options.from[0]];
+			}
+		} else {
+
+			console.log(options.from)
+			const request = _.get(operation, options.from);
+            console.log(request)
+			const response = await echo.api.getObject(request);
+            console.log(response)
+			result.from = response ? response.name : options.from;
+            console.log(result.from)
+		}
 	}
 
 	if (options.subject) {
@@ -77,10 +93,13 @@ const formatOperation = async (data, round) => {
 		result.status = true;
 	}
 
-	if (type === OPERATIONS_IDS.CALL_CONTRACT) {
+	if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
 		const contractHistory = await echo.api.getContractHistory(result.subject);
-		const internalTransactions = contractHistory.filter(({ block_num }) => block_num === round);
+		const internalTransactions = contractHistory
+			.filter(({ block_num }) => block_num === round)
+			.map(({ op }) => formatOperation(op));
 
+		result.internal = await Promise.all(internalTransactions);
 	}
 
 	// if (type === 0 && operation.memo && operation.memo.message) {
@@ -124,16 +143,17 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
-		console.log(planeBlock.transactions)
+		// console.log(planeBlock.transactions)
 		const planeOperations = planeBlock.transactions
 			.reduce((acum, { operations }) => { acum.push(...operations); return acum; }, []);
 
 		let operations = [];
 		if (planeOperations.length !== 0) {
-			const promiseOperations = planeOperations.map((op) => formatOperation(op, round));
-            operations = await Promise.all(promiseOperations);
-        }
+			const promiseOperations = planeOperations.map((op) => formatOperation(op, planeBlock.round));
+			operations = await Promise.all(promiseOperations);
+		}
 		value.operations = operations;
+		console.log(operations);
 		value.verifiers = verifiers.map(({ name }) => name);
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);

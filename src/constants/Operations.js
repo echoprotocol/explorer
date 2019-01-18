@@ -441,37 +441,37 @@ export default {
 			asset: 'amount_to_claim.asset_id',
 		},
 	},
-    // FBA_DISTRIBUTE = 44,
-    // BID_COLLATERAL = 45,
-    // EXECUTE_BID = 46,
+	// FBA_DISTRIBUTE = 44,
+	// BID_COLLATERAL = 45,
+	// EXECUTE_BID = 46,
 	contract_create: {
 		value: OPERATIONS_IDS.CREATE_CONTRACT,
 		name: 'Contract create',
 		options: {
 			from: 'registrar',
 			subject: null,
-            value: 'value.amount',
-            asset: 'value.asset_id',
+			value: 'value.amount',
+			asset: 'value.asset_id',
 		},
 	},
-    contract_call: {
-        value: OPERATIONS_IDS.CALL_CONTRACT,
-        name: 'Contract call',
-        options: {
-            from: 'registrar',
-            subject: ['callee'],
-            value: 'value.amount',
-            asset: 'value.asset_id',
-        },
-    },
-    contract_transfer: {
-        value: OPERATIONS_IDS.CONTRACT_TRANSFER,
-        name: 'Contract transfer',
-        options: {
-            from: 'from',
-            subject: ['to', 'name'],
-            value: 'amount.amount',
-            asset: 'amount.asset_id',
-        },
-    },
+	contract_call: {
+		value: OPERATIONS_IDS.CALL_CONTRACT,
+		name: 'Contract call',
+		options: {
+			from: 'registrar',
+			subject: ['callee'],
+			value: 'value.amount',
+			asset: 'value.asset_id',
+		},
+	},
+	contract_transfer: {
+		value: OPERATIONS_IDS.CONTRACT_TRANSFER,
+		name: 'Contract transfer',
+		options: {
+			from: 'from',
+			subject: ['to', 'name'],
+			value: 'amount.amount',
+			asset: 'amount.asset_id',
+		},
+	},
 };
