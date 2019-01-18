@@ -5,6 +5,7 @@ import gridReducer from './GridReducer';
 import roundReducer from './RoundReducer';
 import blockReducer from './BlockReducer';
 import transactionReducer from './TransactionReducer';
+import objectsReducer from './ObjectsReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -14,4 +15,5 @@ export default {
 	round: roundReducer.reducer,
 	block: blockReducer.reducer,
 	transaction: transactionReducer.reducer,
+	objects: objectsReducer.reducer,
 };
