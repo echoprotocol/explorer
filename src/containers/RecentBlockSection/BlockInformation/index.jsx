@@ -47,7 +47,7 @@ class BlockInformation extends React.Component {
 		const size = blockInformation.get('size');
 		const verifiers = blockInformation.get('verifiers');
 
-		// const transactions = blockInformation.get('transactions');
+		const operations = blockInformation.get('operations');
 
 		const codingData = [
 			{
@@ -88,7 +88,7 @@ class BlockInformation extends React.Component {
 							<div className="value">{verifiers && verifiers.length} <a href="" className="view-list" onClick={(e) => { e.preventDefault(); }}>View list</a></div>
 						</div>
 					</div>
-					<h2>43 Transactions
+					<h2>{`${operations.length} Operations`}
 						<Media query="(max-width: 767px)">
 							{(matches) =>
 								(matches ? (
@@ -105,15 +105,15 @@ class BlockInformation extends React.Component {
 								(matches ? (
 									<div className="recent-block-mobile-view">
 										{
-											codingData.map((data) => (
+											operations.map((data, i) => (
 												<a href="" key={Math.random()} className="recent-block-element" onClick={(e) => { e.preventDefault(); }}>
 													<div className="container">
 														<div className="title">#</div>
-														<div className="value">{data.blockNumber}</div>
+														<div className="value">{i + 1}</div>
 													</div>
 													<div className="container">
 														<div className="title">Type</div>
-														<div className="value">{data.type}</div>
+														<div className="value">{data.name}</div>
 													</div>
 													<div className="container">
 														<div className="title">From</div>
@@ -121,19 +121,19 @@ class BlockInformation extends React.Component {
 													</div>
 													<div className="container">
 														<div className="title">To</div>
-														<div className="value"><div className="blue">{data.to}</div></div>
+														<div className="value"><div className="blue">{data.subject}</div></div>
 													</div>
 													<div className="container amount">
 														<div className="title">Amount</div>
-														<div className="value">{data.weight} <span className="gray">{data.amount}</span></div>
+														<div className="value">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
 													</div>
 													<div className="container">
 														<div className="title">Fee amount</div>
-														<div className="value">{data.weight} <span className="gray">{data.amount}</span></div>
+														<div className="value">{data.fee.amount} <span className="gray">{data.fee.symbol}</span></div>
 													</div>
-													<div className={`container ${(data.status === 'Fail' ? ('fail') : '')}`}>
+													<div className={`container ${(data.status ? '' : ('fail'))}`}>
 														<div className="title">Status</div>
-														<div className="value">{data.status}</div>
+														<div className="value">{data.status ? 'Success' : 'Fail'}</div>
 													</div>
 												</a>
 											))
@@ -215,20 +215,20 @@ class BlockInformation extends React.Component {
 											</div>
 											<div className="devider" />
 											{
-												codingData.map((data) => (
+												operations.map((data, i) => (
 													<React.Fragment key={Math.random()}>
 														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); }}>
-															<div className="divTableCell">{data.blockNumber}</div>
-															<div className="divTableCell">{data.type}</div>
+															<div className="divTableCell">{i + 1}</div>
+															<div className="divTableCell">{data.name}</div>
 															<div className="divTableCell">
 																<div className="inner-container"><div className="blue">{data.from}</div></div>
 															</div>
 															<div className="divTableCell transaction-to">
-																<div className="sub-container"><div className="blue">{data.to}</div></div>
+																<div className="sub-container"><div className="blue">{data.subject}</div></div>
 															</div>
-															<div className="divTableCell">{data.weight} <span className="gray">{data.amount}</span></div>
-															<div className="divTableCell">{data.weight} <span className="gray">{data.amount}</span></div>
-															<div className={`divTableCell ${(data.status === 'Fail' ? ('fail') : '')}`}>{data.status}</div>
+															<div className="divTableCell">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
+															<div className="divTableCell">{data.fee.amount} <span className="gray">{data.fee.symbol}</span></div>
+															<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
 														</a>
 													</React.Fragment>
 												))
