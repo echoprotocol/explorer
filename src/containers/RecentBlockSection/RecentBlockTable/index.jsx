@@ -56,15 +56,7 @@ class RecentBlockTable extends React.Component {
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
-					<Media query="(max-width: 767px)">
-						{(matches) =>
-							(matches ? (
-								<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} small white placeholder="Search by block" />
-							) : (
-								<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} small white placeholder="Search by block number" />
-							))
-						}
-					</Media>
+					<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
 				</h2>
 				<div className="table">
 					<Media query="(max-width: 767px)">
