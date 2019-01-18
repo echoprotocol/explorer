@@ -2,9 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-// import echo from 'echojs-lib';
-
-import echo from '../../echojs-lib/dist/index';
+import echo from 'echojs-lib';
 
 import Routes from './routes'; // Or wherever you keep your reducers
 import './assets/loader';

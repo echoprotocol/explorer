@@ -1,7 +1,7 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
 
-import echo from '../../../echojs-lib/dist/index';
+import echo from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';

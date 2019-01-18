@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Media from 'react-media';
 import { connect } from 'react-redux';
 
+import history from '../../../history';
+
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SearchField from '../../../components/SearchFields/SearchField';
 
@@ -13,6 +15,10 @@ import FormatHelper from '../../../helpers/FormatHelper';
 import { MAX_PAGE_BLOCKS } from '../../../constants/GlobalConstants';
 
 class RecentBlockTable extends React.Component {
+
+	onSearch(blockNumber) {
+		history.push(`/blocks/${blockNumber}`);
+	}
 
 	getBlocks() {
 		const { blocks } = this.props;
@@ -51,9 +57,9 @@ class RecentBlockTable extends React.Component {
 					<Media query="(max-width: 767px)">
 						{(matches) =>
 							(matches ? (
-								<SearchField small white placeholder="Search by block" />
+								<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} small white placeholder="Search by block" />
 							) : (
-								<SearchField small white placeholder="Search by block number" />
+								<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} small white placeholder="Search by block number" />
 							))
 						}
 					</Media>

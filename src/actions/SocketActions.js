@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-// import echo from 'echojs-lib';
+import echo from 'echojs-lib';
 import { batchActions } from 'redux-batched-actions';
-
-import echo from '../../../echojs-lib/dist/index';
 
 import config from '../config/chain';
 
@@ -62,10 +60,6 @@ export const connect = () => async (dispatch) => {
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
-		// const chainProps = await echo.api.getChainProperties();
-		// const globalProps = await echo.api.getGlobalProperties();
-		// const configProps = await echo.api.getConfig();
-		// console.log(chainProps, globalProps, configProps);
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 
