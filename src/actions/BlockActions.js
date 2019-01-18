@@ -47,14 +47,9 @@ const formatOperation = async (data, round) => {
 				result.from = operation[options.from[0]];
 			}
 		} else {
-
-			console.log(options.from)
 			const request = _.get(operation, options.from);
-            console.log(request)
 			const response = await echo.api.getObject(request);
-            console.log(response)
 			result.from = response ? response.name : options.from;
-            console.log(result.from)
 		}
 	}
 
@@ -143,7 +138,6 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
-		// console.log(planeBlock.transactions)
 		const planeOperations = planeBlock.transactions
 			.reduce((acum, { operations }) => { acum.push(...operations); return acum; }, []);
 
@@ -153,11 +147,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			operations = await Promise.all(promiseOperations);
 		}
 		value.operations = operations;
-		console.log(operations);
 		value.verifiers = verifiers.map(({ name }) => name);
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
-
 
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 

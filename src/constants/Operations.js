@@ -468,7 +468,7 @@ export default {
 		value: OPERATIONS_IDS.CONTRACT_TRANSFER,
 		name: 'Contract transfer',
 		options: {
-			from: 'from',
+			from: ['from'],
 			subject: ['to', 'name'],
 			value: 'amount.amount',
 			asset: 'amount.asset_id',
