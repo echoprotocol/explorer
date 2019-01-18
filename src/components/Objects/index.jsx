@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
 import copy from 'copy-to-clipboard';
+import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 
 class Objects extends React.Component {
 
