@@ -39,7 +39,7 @@ export const rounderSteps = {
 		title: 'Verifying block: BBA',
 	},
 	[DONE]: {
-		step: 4,
+		step: 3,
 		progress: 100,
 		producing: 'done',
 		verifying: 'done',

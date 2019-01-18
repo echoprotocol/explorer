@@ -16,9 +16,6 @@ import { initBlocks, setLatestBlock, updateAverageTransactions } from './BlockAc
 const roundSubscribe = (notification) => (dispatch) => {
 	switch (notification[0].type) {
 		case ROUND_STARTED:
-			dispatch(setLatestBlock());
-			dispatch(updateAverageTransactions());
-
 			dispatch(batchActions([
 				RoundReducer.actions.set({ field: 'readyProducers', value: 0 }),
 				RoundReducer.actions.set({ field: 'preparingBlock', value: notification[0].round }),
@@ -39,6 +36,13 @@ const roundSubscribe = (notification) => (dispatch) => {
 	return null;
 };
 
+const blockRelease = () => (dispatch) => {
+	dispatch(setLatestBlock());
+	dispatch(updateAverageTransactions());
+
+	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE }));
+};
+
 export const connect = () => async (dispatch) => {
 	try {
 		await echo.connect(config.API_URL, {
@@ -56,7 +60,7 @@ export const connect = () => async (dispatch) => {
 
 		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
 
-		await echo.subscriber.setBlockApplySubscribe(() => dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE })));
+		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 
 		const producers = global._creator_count;
 
