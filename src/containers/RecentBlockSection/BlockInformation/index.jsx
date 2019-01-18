@@ -6,6 +6,7 @@ import Media from 'react-media';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
 import SearchField from '../../../components/SearchFields/SearchField';
+import ViewListPopover from '../../../components/ViewListPopover';
 
 class BlockInformation extends React.Component {
 
@@ -103,7 +104,7 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container verifiers">
 							<div className="title">Verifiers</div>
-							<div className="value">12 <a href="" className="view-list" onClick={(e) => { e.preventDefault(); }}>View list</a></div>
+							<div className="value">12 <ViewListPopover /></div>
 						</div>
 					</div>
 					<h2>43 Transactions
