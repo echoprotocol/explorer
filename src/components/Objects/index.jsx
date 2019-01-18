@@ -109,20 +109,10 @@ class Objects extends React.Component {
 									valueRenderer={(raw) => {
 
 										const idRegExp = /^"\d+\.\d+\.\d+"$/;
-										const accountRegExp = /^"1.2\.\d+"$/;
-										const contractRegExp = /^"1.16\.\d+"$/;
 
 										if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
 
-											let url;
-
-											if (raw.search(accountRegExp) !== -1) {
-												url = URLHelper.createAccountUrl(raw.substr(1, raw.length - 1 - 1));
-											} else if (raw.search(contractRegExp) !== -1) {
-												url = URLHelper.createContractUrl(raw.substr(1, raw.length - 1 - 1));
-											} else {
-												url = URLHelper.createObjectsUrl(raw.substr(1, raw.length - 1 - 1));
-											}
+											const url = URLHelper.createUrlById(raw.substr(1, raw.length - 1 - 1));
 
 											return (
 												<Link
