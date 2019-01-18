@@ -312,7 +312,8 @@ class BlockInformation extends React.Component {
 	render() {
 		const { blockInformation } = this.props;
 
-		return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
+		// return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
+		return this.renderBlockInfo(blockInformation);
 	}
 
 }
