@@ -1,0 +1,24 @@
+.table-container {
+    &.object-view {
+        flex-shrink: 0;
+
+        > h2 {
+            padding-left: 0;
+        }
+
+        .json-tree-container {
+            background-color: #ebeaee;
+        }
+        
+        > ul {
+            @include Hack_Regular;
+            font-size: 13px;
+            padding-left: 45px !important;
+            padding-top: 18px !important;
+            background: transparent !important;
+            a {
+                color: #0000ee;
+            }
+        }
+    }
+}
