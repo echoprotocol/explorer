@@ -42,10 +42,10 @@ class FormatHelper {
 	}
 
 	static formatBlockSize(value) {
-		if (value < 1024) return value;
-		else if (value < 1048576) return value / 1024;
-		else if (value < 1073741824) return value / 1048576;
-		return value / 1073741824;
+		if (value < 1024) return this.roundNumber(value, 2);
+		else if (value < 1048576) return this.roundNumber(value / 1024, 2);
+		else if (value < 1073741824) return this.roundNumber(value / 1048576, 2);
+		return this.roundNumber(value / 1073741824, 2);
 	}
 
 	static formatByteSize(bytes) {

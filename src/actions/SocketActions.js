@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import echo from 'echojs-lib';
+// import echo from 'echojs-lib';
 import { batchActions } from 'redux-batched-actions';
+
+import echo from '../../../echojs-lib/dist/index';
 
 import config from '../config/chain';
 

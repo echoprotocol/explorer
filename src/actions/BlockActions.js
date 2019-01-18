@@ -1,11 +1,17 @@
 import BN from 'bignumber.js';
-import echo from 'echojs-lib';
 import moment from 'moment';
+
+import echo from '../../../echojs-lib/dist/index';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
 
-import { MAX_AVERAGE_TRS_BLOCKS, START_AVERAGE_TRS_BLOCKS, PAGE_BLOCKS_COUNT } from '../constants/GlobalConstants';
+import {
+	MAX_AVERAGE_TRS_BLOCKS,
+	START_AVERAGE_TRS_BLOCKS,
+	PAGE_BLOCKS_COUNT,
+	PAGE_ADD_BLOCKS_COUNT,
+} from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 
@@ -77,6 +83,12 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			sumUnix += (unixTimestamps.get(i + 1) - unixTimestamps.get(i));
 		}
 
+		const averageTime = new BN(sumUnix).div(trLengths.size);
+
+		if (Math.sign(averageTime.toNumber()) > 0) {
+			transactions = transactions.set('averageTime', sumUnix / trLengths.size);
+		}
+
 		transactions = transactions
 			.setIn(['transactions', 'value'], sumResults.sum.div(trLengths.size).toString())
 			.setIn(['transactions', 'sum'], sumResults.sum.toString())
@@ -86,8 +98,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			.setIn(['operations', 'lengthsList'], opLengths)
 			.set('count', trLengths.size)
 			.set('block', latestBlock)
-			.set('unixTimestamps', unixTimestamps)
-			.set('averageTime', sumUnix / trLengths.size);
+			.set('unixTimestamps', unixTimestamps);
 
 
 		dispatch(RoundReducer.actions.set({
@@ -171,15 +182,15 @@ export const initBlocks = () => async (dispatch) => {
 };
 
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
-	const maxBlocks = getState().block.get('blocksCount') + PAGE_BLOCKS_COUNT;
+	const maxBlocks = getState().block.get('blocksCount');
 
 	dispatch(BlockReducer.actions.set({
 		field: 'blocksCount',
-		value: maxBlocks,
+		value: maxBlocks + PAGE_ADD_BLOCKS_COUNT,
 	}));
 
 	const [...keys] = getState().block.get('blocks').keys();
-	const startedBlock = Math.min(...keys) - PAGE_BLOCKS_COUNT;
+	const startedBlock = Math.min(...keys) - PAGE_ADD_BLOCKS_COUNT;
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
 

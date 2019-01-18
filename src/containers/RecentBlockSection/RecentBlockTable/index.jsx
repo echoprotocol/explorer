@@ -10,6 +10,8 @@ import SearchField from '../../../components/SearchFields/SearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
+import { MAX_PAGE_BLOCKS } from '../../../constants/GlobalConstants';
+
 class RecentBlockTable extends React.Component {
 
 	getBlocks() {
@@ -25,7 +27,7 @@ class RecentBlockTable extends React.Component {
 				producer: value.get('producer'),
 				reward: value.get('reward'),
 				rewardCurrency: value.get('rewardCurrency'),
-				weight: FormatHelper.roundNumber(value.get('weight') / 1024, 2),
+				weight: FormatHelper.formatBlockSize(value.get('weight')),
 				weightSize: FormatHelper.formatByteSize(value.get('weight')),
 				transactions: value.get('transactions'),
 			});
@@ -41,6 +43,8 @@ class RecentBlockTable extends React.Component {
 	}
 
 	render() {
+		const { blocksCount } = this.props;
+
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
@@ -145,7 +149,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					<LoadMoreBtn />
+					{blocksCount < MAX_PAGE_BLOCKS && <LoadMoreBtn />}
 				</div>
 			</div>
 		);
@@ -156,6 +160,7 @@ class RecentBlockTable extends React.Component {
 RecentBlockTable.propTypes = {
 	switchToBlockInfo: PropTypes.func,
 	blocks: PropTypes.object.isRequired,
+	blocksCount: PropTypes.number.isRequired,
 };
 
 RecentBlockTable.defaultProps = {
@@ -166,6 +171,7 @@ RecentBlockTable.defaultProps = {
 export default connect(
 	(state) => ({
 		blocks: state.block.get('blocks'),
+		blocksCount: state.block.get('blocksCount'),
 	}),
 	() => ({}),
 )(RecentBlockTable);
