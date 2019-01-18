@@ -8,8 +8,9 @@ import { withRouter } from 'react-router';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
 import SearchField from '../../../components/SearchFields/SearchField';
+import ViewListPopover from '../../../components/ViewListPopover';
 
-import { INDEX_PATH } from '../../../constants/RouterConstants';
+import { INDEX_PATH, ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
 
@@ -45,7 +46,10 @@ class BlockInformation extends React.Component {
 		const producer = blockInformation.get('producer');
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
-		const verifiers = blockInformation.get('verifiers');
+		let verifiers = blockInformation.get('verifiers');
+		if (verifiers) {
+			verifiers = verifiers.map((name) => ({ name, to: ACCOUNTS_PATH.replace(/:name/, name) }));
+		}
 
 		// const transactions = blockInformation.get('transactions');
 
@@ -85,7 +89,7 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container verifiers">
 							<div className="title">Verifiers</div>
-							<div className="value">{verifiers && verifiers.length} <a href="" className="view-list" onClick={(e) => { e.preventDefault(); }}>View list</a></div>
+							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
 						</div>
 					</div>
 					<h2>43 Transactions
