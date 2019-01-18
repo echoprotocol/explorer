@@ -11,29 +11,35 @@ import SearchField from '../../../components/SearchFields/SearchField';
 
 import { INDEX_PATH } from '../../../constants/RouterConstants';
 
-import { getBlockInformation } from '../../../actions/BlockActions';
+import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
 
 class BlockInformation extends React.Component {
 
 	constructor() {
 		super();
 		this.returnFunction = this.returnFunction.bind(this);
-    }
+	}
 
+	componentDidMount() {
+		this.props.getBlockInfo();
 
-	componentWillMount() {
-        this.props.getBlockInfo();
+	}
 
-    }
+	componentWillUnmount() {
+		this.props.clearBlockInfo();
+	}
 
 	returnFunction() {
 		this.props.history.push(INDEX_PATH);
 	}
 
-	render() {
-		const { blockInformation } = this.props;
+	renderLoader() {
+		// TODO loader
+		return null;
+	}
 
-		const blockNumber = blockInformation.get('handledBlock');
+	renderBlockInfo(blockInformation) {
+		const blockNumber = blockInformation.get('blockNumber');
 
 		const time = blockInformation.get('time');
 		const producer = blockInformation.get('producer');
@@ -303,11 +309,18 @@ class BlockInformation extends React.Component {
 		);
 	}
 
+	render() {
+		const { blockInformation } = this.props;
+
+		return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
+	}
+
 }
 
 BlockInformation.propTypes = {
 	blockInformation: PropTypes.object.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
+	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
 };
 
@@ -317,6 +330,7 @@ export default withRouter(connect(
 	}),
 	(dispatch, props) => ({
 		getBlockInfo: () => dispatch(getBlockInformation(props.match.params.round)),
+		clearBlockInfo: () => dispatch(clearBlockInformation()),
 	})
 	,
 )(BlockInformation));
