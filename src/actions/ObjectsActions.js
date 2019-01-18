@@ -4,9 +4,12 @@ import ObjectsReducer from '../reducers/ObjectsReducer';
 
 export const getObjectInfo = (objectId) => async (dispatch) => {
 
-	const result = await echo.api.getObject(objectId);
-
-	dispatch(ObjectsReducer.actions.set({ field: 'data', value: result }));
+	try {
+		const result = await echo.api.getObject(objectId);
+		dispatch(ObjectsReducer.actions.set({ field: 'data', value: result }));
+	} catch (e) {
+		dispatch(ObjectsReducer.actions.set({ field: 'error', value: e.message }));
+	}
 
 };
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
 import copy from 'copy-to-clipboard';
+import queryString from 'query-string';
 
 class Objects extends React.Component {
 
@@ -13,12 +14,14 @@ class Objects extends React.Component {
 
 	componentDidMount() {
 
-		const regExp = /^"\d+\.\d+\.\d+"$/;
+		const regExp = /^\d+\.\d+\.\d+$/;
 
-		if (0 && this.props.match.params.objectId.search(regExp) === -1) { // TODO::
+		const parsed = queryString.parse(this.props.location.search);
+
+		if (!parsed.id || parsed.id.search(regExp) === -1) {
 			this.props.setError('Object id is Invalid');
 		} else {
-			this.props.getObjectInfo('1.3.0');
+			this.props.getObjectInfo(parsed.id);
 		}
 
 	}
@@ -93,7 +96,7 @@ Objects.propTypes = {
 	data: PropTypes.object,
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
-	error: PropTypes.object,
+	error: PropTypes.string,
 	match: PropTypes.object,
 };
 
