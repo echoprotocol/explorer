@@ -81,7 +81,7 @@ class Objects extends React.Component {
 
 						const regExp = /^"\d+\.\d+\.\d+"$/;
 
-						return (raw && isString(raw) && (raw.search(regExp) !== -1)) ? <a href={`/objects/${raw.substr(1, raw.length - 1 - 1)}`}>{raw}</a> : raw;
+						return (raw && isString(raw) && (raw.search(regExp) !== -1)) ? <a href={`/objects?id=${raw.substr(1, raw.length - 1 - 1)}`}>{raw}</a> : raw;
 
 					}}
 					data={data}
