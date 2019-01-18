@@ -69,12 +69,11 @@ class Objects extends React.Component {
 		}
 
 		return (
-			<div className="recent-block-section">
+			<div className="recent-block-section object-view">
 				<div className="wrap">
 					<div className="table-container object-view">
 						<h2>Object 1.16.2345</h2>
 						<div className="json-tree-container">
-							<button onClick={this.copy}>Button</button>
 							<JSONTree
 								theme={theme}
 								invertTheme={false}
@@ -87,6 +86,8 @@ class Objects extends React.Component {
 								}}
 								data={data}
 							/>
+							<button className="copy-bytecode" onClick={this.copy}>Copy</button>
+
 						</div>
 					</div>
 					<RecentBlockSidebar />

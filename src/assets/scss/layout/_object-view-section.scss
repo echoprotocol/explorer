@@ -1,23 +1,82 @@
-.table-container {
+.recent-block-section {
     &.object-view {
-        flex-shrink: 0;
+        padding-top: 47px;
 
-        > h2 {
-            padding-left: 0;
-        }
+        padding-bottom: 25px;
 
-        .json-tree-container {
-            background-color: #ebeaee;
-        }
-        
-        > ul {
-            @include Hack_Regular;
-            font-size: 13px;
-            padding-left: 45px !important;
-            padding-top: 18px !important;
-            background: transparent !important;
-            a {
-                color: #0000ee;
+        // overflow: visible !important;
+
+        .table-container {
+            flex-shrink: 0;
+
+            > h2 {
+                padding-left: 0;
+                margin-bottom: 38px;
+
+                @include res-320 {
+                    padding-left: 10px;
+                }
+            }
+
+            .json-tree-container {
+                background-color: #ebeaee;
+                display: flex;
+                padding-bottom: 30px;
+
+                @include res-320 {
+                    flex-direction: column-reverse;
+                    align-items: flex-start;
+                    width: calc(100% - 20px);
+                    margin: 0 auto;
+                }
+
+                .copy-bytecode {
+                    background-color: #e2e0e6;
+                    margin-left: auto;
+                    margin-right: 25px;
+                    margin-top: 20px;
+                    position: sticky;
+                    top: 20px;
+
+                    @include res-320 {
+                        margin-left: 20px;
+                    }
+                }
+
+                > ul {
+                    @include Hack_Regular;
+                    font-size: 13px;
+                    padding-left: 45px !important;
+                    padding-top: 18px !important;
+                    background: transparent !important;
+                    margin: 0 !important;
+                    max-width: calc(100% - 140px);
+                    width: 100%;
+                    
+                    @include res-500 {
+                        max-width: calc(100% - 125px);
+                    }
+
+                    @include res-320 {
+                        padding-top: 22px !important;
+                        padding-left: 20px !important;
+                        max-width: 100%;
+                        padding-right: 20px !important;
+                    }
+
+                    span {
+                        line-height: normal;
+                    }
+
+                    li {
+                        padding-top: 3px !important;
+                        padding-bottom: 3px !important;
+                    }
+
+                    a {
+                        color: #0000ee;
+                    }
+                }
             }
         }
     }
