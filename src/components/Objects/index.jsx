@@ -108,15 +108,33 @@ class Objects extends React.Component {
 									invertTheme={false}
 									valueRenderer={(raw) => {
 
-										const regExp = /^"\d+\.\d+\.\d+"$/;
+										const idRegExp = /^"\d+\.\d+\.\d+"$/;
+										const accountRegExp = /^"1.2\.\d+"$/;
+										const contractRegExp = /^"1.16\.\d+"$/;
 
-										return (raw && isString(raw) && (raw.search(regExp) !== -1)) ?
-											<Link
-												to={URLHelper.createObjectsUrl(raw.substr(1, raw.length - 1 - 1))}
-												className="blue"
-											>
-												{raw}
-											</Link> : raw;
+										if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
+
+											let url;
+
+											if (raw.search(accountRegExp) !== -1) {
+												url = URLHelper.createAccountUrl(raw.substr(1, raw.length - 1 - 1));
+											} else if (raw.search(contractRegExp) !== -1) {
+												url = URLHelper.createContractUrl(raw.substr(1, raw.length - 1 - 1));
+											} else {
+												url = URLHelper.createObjectsUrl(raw.substr(1, raw.length - 1 - 1));
+											}
+
+											return (
+												<Link
+													to={url}
+													className="blue"
+												>
+													{raw}
+												</Link>
+											);
+										}
+
+										return raw;
 
 									}}
 									data={data}
