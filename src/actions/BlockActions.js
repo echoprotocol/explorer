@@ -18,6 +18,10 @@ import {
 
 import FormatHelper from '../helpers/FormatHelper';
 
+/**
+ *
+ * @param {Number} round
+ */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);

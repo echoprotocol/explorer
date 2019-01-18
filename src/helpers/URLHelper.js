@@ -1,3 +1,4 @@
+import { CONTRACT_OBJECT_PREFIX, ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
 class URLHelper {
 
@@ -34,8 +35,8 @@ class URLHelper {
 	 */
 	static createUrlById(id) {
 
-		const accountRegExp = /^1.2\.\d+$/;
-		const contractRegExp = /^1.16\.\d+$/;
+		const accountRegExp = new RegExp(`^${ACCOUNT_OBJECT_PREFIX}.\\d+$`);
+		const contractRegExp = new RegExp(`^${CONTRACT_OBJECT_PREFIX}.\\d+$`);
 
 		let url;
 
