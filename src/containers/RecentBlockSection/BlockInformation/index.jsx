@@ -11,29 +11,35 @@ import SearchField from '../../../components/SearchFields/SearchField';
 
 import { INDEX_PATH } from '../../../constants/RouterConstants';
 
-import { getBlockInformation } from '../../../actions/BlockActions';
+import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
 
 class BlockInformation extends React.Component {
 
 	constructor() {
 		super();
 		this.returnFunction = this.returnFunction.bind(this);
-    }
+	}
 
+	componentDidMount() {
+		this.props.getBlockInfo();
 
-	componentWillMount() {
-        this.props.getBlockInfo();
+	}
 
-    }
+	componentWillUnmount() {
+		this.props.clearBlockInfo();
+	}
 
 	returnFunction() {
 		this.props.history.push(INDEX_PATH);
 	}
 
-	render() {
-		const { blockInformation } = this.props;
+	renderLoader() {
+		// TODO loader
+		return null;
+	}
 
-		const blockNumber = blockInformation.get('handledBlock');
+	renderBlockInfo(blockInformation) {
+		const blockNumber = blockInformation.get('blockNumber');
 
 		const time = blockInformation.get('time');
 		const producer = blockInformation.get('producer');
@@ -41,7 +47,7 @@ class BlockInformation extends React.Component {
 		const size = blockInformation.get('size');
 		const verifiers = blockInformation.get('verifiers');
 
-		const transactions = blockInformation.get('transactions');
+		// const transactions = blockInformation.get('transactions');
 
 		const codingData = [
 			{
@@ -132,7 +138,7 @@ class BlockInformation extends React.Component {
 												</a>
 											))
 										}
-										<a href="" className="recent-block-element with-subtransfer" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+										<a href="" className="recent-block-element with-subtransfer" onClick={(e) => { e.preventDefault(); }}>
 											<div className="container">
 												<div className="title">#</div>
 												<div className="value">6.</div>
@@ -211,7 +217,7 @@ class BlockInformation extends React.Component {
 											{
 												codingData.map((data) => (
 													<React.Fragment key={Math.random()}>
-														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }}>
+														<a href="" className="divTableRow" onClick={(e) => { e.preventDefault(); }}>
 															<div className="divTableCell">{data.blockNumber}</div>
 															<div className="divTableCell">{data.type}</div>
 															<div className="divTableCell">
@@ -230,7 +236,7 @@ class BlockInformation extends React.Component {
 
 											{/* Класс with-subtransfer добавляется для главного элемента, который имееет сабтрансферы */}
 
-											<a href="" onClick={(e) => { e.preventDefault(); this.props.switchToTransInfo(true); }} className="divTableRow with-subtransfer">
+											<a href="" onClick={(e) => { e.preventDefault(); }} className="divTableRow with-subtransfer">
 												<div className="divTableCell">6.</div>
 												<div className="divTableCell">Place order</div>
 												<div className="divTableCell">
@@ -303,11 +309,19 @@ class BlockInformation extends React.Component {
 		);
 	}
 
+	render() {
+		const { blockInformation } = this.props;
+
+		// return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
+		return this.renderBlockInfo(blockInformation);
+	}
+
 }
 
 BlockInformation.propTypes = {
 	blockInformation: PropTypes.object.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
+	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
 };
 
@@ -317,6 +331,7 @@ export default withRouter(connect(
 	}),
 	(dispatch, props) => ({
 		getBlockInfo: () => dispatch(getBlockInformation(props.match.params.round)),
+		clearBlockInfo: () => dispatch(clearBlockInformation()),
 	})
 	,
 )(BlockInformation));

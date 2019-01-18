@@ -63,6 +63,9 @@ class SearchField extends React.Component {
 	isSmallShow() {
 		this.setState({ isActiveSmall: true });
 		this.inputEl.focus();
+		if (this.state.inputValue) {
+			this.props.onSearch(this.state.inputValue);
+		}
 	}
 
 	cleareInput() {
@@ -145,6 +148,7 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
+	onSearch: PropTypes.func,
 };
 
 SearchField.defaultProps = {
@@ -152,6 +156,7 @@ SearchField.defaultProps = {
 	placeholder: '',
 	white: false,
 	withHelp: false,
+	onSearch: null,
 };
 
 export default SearchField;
