@@ -34,7 +34,7 @@ class Logotype extends React.Component {
 			<a
 				href=""
 				className="logotype"
-				onClick={(e) => { e.preventDefault(); this.props.onClick(e); }}
+				onClick={(e) => { e.preventDefault(); this.props.onClick(); }}
 			>
 				{logo}
 			</a>
@@ -48,7 +48,7 @@ Logotype.propTypes = {
 };
 
 Logotype.defaultProps = {
-	onClick: () => {},
+	onClick: null,
 };
 
 
