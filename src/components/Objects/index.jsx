@@ -97,7 +97,7 @@ Objects.propTypes = {
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
 	error: PropTypes.string,
-	match: PropTypes.object,
+	location: PropTypes.object,
 };
 
 Objects.defaultProps = {
@@ -105,7 +105,7 @@ Objects.defaultProps = {
 	getObjectInfo: null,
 	setError: null,
 	error: null,
-	match: null,
+	location: null,
 };
 
 export default Objects;
