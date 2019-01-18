@@ -13,6 +13,7 @@ import {
 	START_AVERAGE_TRS_BLOCKS,
 	PAGE_BLOCKS_COUNT,
 	PAGE_ADD_BLOCKS_COUNT,
+	MAX_BLOCK_REQUESTS,
 } from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
@@ -85,8 +86,14 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 	let blocks = [];
 
+	let startedBlock = startBlock || transactions.get('block') + 1;
+
+	if ((getState().round.get('latestBlock') - transactions.get('block')) > MAX_BLOCK_REQUESTS) {
+		startedBlock = getState().round.get('latestBlock') - MAX_BLOCK_REQUESTS;
+	}
+
 	try {
-		for (let i = startBlock || transactions.get('block') + 1; i <= latestBlock; i += 1) {
+		for (let i = startedBlock; i <= latestBlock; i += 1) {
 			blocks.push(echo.api.wsApi.database.getBlock(i));
 		}
 
@@ -135,7 +142,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 		const averageTime = new BN(sumUnix).div(trLengths.size);
 
 		if (Math.sign(averageTime.toNumber()) > 0) {
-			transactions = transactions.set('averageTime', sumUnix / trLengths.size);
+			transactions = transactions.set('averageTime', parseFloat(averageTime.toFixed(3)));
 		}
 
 		transactions = transactions
@@ -198,7 +205,7 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
@@ -207,6 +214,20 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
 		}
 	});
+
+	const lastBlockStorage = blocksResult[blocksResult.length - 1];
+
+	if (lastBlockStorage) {
+		localStorage.setItem('lastBlock', JSON.stringify({
+			number: lastBlockStorage.round,
+			timestamp: moment.utc(lastBlockStorage.timestamp).local().unix(),
+		}));
+
+		dispatch(BlockReducer.actions.set({
+			field: 'startTimestamp',
+			value: 0,
+		}));
+	}
 
 	dispatch(BlockReducer.actions.set({
 		field: 'blocks',
@@ -228,6 +249,15 @@ export const initBlocks = () => async (dispatch) => {
 	const startBlockList = obj[0].head_block_number - PAGE_BLOCKS_COUNT;
 
 	await dispatch(updateBlockList(obj[0].head_block_number, startBlockList));
+
+	const lastBlock = JSON.parse(localStorage.getItem('lastBlock'));
+
+	const dateNowUnix = new BN(Date.now()).div(1000);
+
+	dispatch(BlockReducer.actions.set({
+		field: 'startTimestamp',
+		value: parseInt(dateNowUnix.minus(lastBlock.timestamp).toFixed(0), 10),
+	}));
 };
 
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {

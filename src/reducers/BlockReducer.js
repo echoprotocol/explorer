@@ -10,6 +10,7 @@ const DEFAULT_FIELDS = Map({
 	blocks: new Map({}),
 	blocksCount: PAGE_BLOCKS_COUNT,
 	loading: false,
+	startTimestamp: 0,
 });
 
 export default createModule({
