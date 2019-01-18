@@ -107,7 +107,7 @@ const formatOperation = async (data, round) => {
 	// 	result.bytecode = operation.code;
 	// }
 
-	{ return result; }
+    return result;
 };
 
 export const getBlockInformation = (round) => async (dispatch, getState) => {
