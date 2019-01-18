@@ -37,7 +37,6 @@ class ViewListPopover extends Component {
 	}
 
 	search(e) {
-		console.log(e);
 		this.setState({
 			query: e.target.value.trim(),
 		});

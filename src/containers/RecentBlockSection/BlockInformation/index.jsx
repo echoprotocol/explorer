@@ -66,10 +66,17 @@ class BlockInformation extends React.Component {
 			},
 		];
 
+		const breadcrumbs = [
+			{
+				title: 'Block list',
+				path: INDEX_PATH,
+			},
+		];
+
 		return (
 			<React.Fragment>
 				<div className="table-container inner-information-container block-information">
-					<BreadCrumbs title={`Block ${blockNumber}`} returnFunction={this.returnFunction} />
+					<BreadCrumbs breadcrumbs={breadcrumbs} title={`Block ${blockNumber}`} returnFunction={this.returnFunction} />
 					<div className="block-description">
 						<div className="container time">
 							<div className="title">Time, Date</div>
