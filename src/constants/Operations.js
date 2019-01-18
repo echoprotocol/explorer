@@ -446,22 +446,22 @@ export default {
     // EXECUTE_BID = 46,
 	contract_create: {
 		value: OPERATIONS_IDS.CREATE_CONTRACT,
-		name: 'Contract',
+		name: 'Contract create',
 		options: {
 			from: 'registrar',
 			subject: null,
-			value: 'value',
-			asset: 'asset_id',
+            value: 'value.amount',
+            asset: 'value.asset_id',
 		},
 	},
     contract_call: {
         value: OPERATIONS_IDS.CALL_CONTRACT,
-        name: 'Contract transfer',
+        name: 'Contract call',
         options: {
-            from: 'from',
-            subject: ['to', 'name'],
-            value: 'amount.amount',
-            asset: 'amount.asset_id',
+            from: 'registrar',
+            subject: ['callee'],
+            value: 'value.amount',
+            asset: 'value.asset_id',
         },
     },
     contract_transfer: {

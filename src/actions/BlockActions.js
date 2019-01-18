@@ -20,12 +20,11 @@ import Operations from '../constants/Operations';
 
 import FormatHelper from '../helpers/FormatHelper';
 
-const formatOperation = async (data) => {
+const formatOperation = async (data, round) => {
 	const [type, operation] = data;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
 
 	const { name, options } = Object.values(Operations).find((i) => i.value === type);
-
 	const result = {
 		fee: {
 			amount: operation.fee.amount,
@@ -36,6 +35,7 @@ const formatOperation = async (data) => {
 		value: {},
 		status: true,
 	};
+
 	if (options.from) {
 		const request = _.get(operation, options.from);
 		const response = await echo.api.getObject(request);
@@ -77,8 +77,10 @@ const formatOperation = async (data) => {
 		result.status = true;
 	}
 
-	if (type === 47) {
-		[, result.subject] = data.result;
+	if (type === OPERATIONS_IDS.CALL_CONTRACT) {
+		const contractHistory = await echo.api.getContractHistory(result.subject);
+		const internalTransactions = contractHistory.filter(({ block_num }) => block_num === round);
+
 	}
 
 	// if (type === 0 && operation.memo && operation.memo.message) {
@@ -122,16 +124,15 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
-
+		console.log(planeBlock.transactions)
 		const planeOperations = planeBlock.transactions
 			.reduce((acum, { operations }) => { acum.push(...operations); return acum; }, []);
 
 		let operations = [];
 		if (planeOperations.length !== 0) {
-			const promiseOperations = planeOperations.map((op) => formatOperation(op));
-			operations = await Promise.all(promiseOperations);
-		}
-
+			const promiseOperations = planeOperations.map((op) => formatOperation(op, round));
+            operations = await Promise.all(promiseOperations);
+        }
 		value.operations = operations;
 		value.verifiers = verifiers.map(({ name }) => name);
 		value.round = planeBlock.round;
