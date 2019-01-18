@@ -4,6 +4,7 @@ import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
 import copy from 'copy-to-clipboard';
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
+import URLHelper from '../../helpers/URLHelper';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 
@@ -45,11 +46,11 @@ class Objects extends React.Component {
 		const parsed = queryString.parse(props.location.search);
 		const regExp = /^\d+\.\d+\.\d+$/;
 
-		if (!parsed.id || parsed.id.search(regExp) === -1) {
+		if (!parsed.id || parsed.id.trim().search(regExp) === -1) {
 			return null;
 		}
 
-		return parsed.id;
+		return parsed.id.trim();
 	}
 
 	checkObject() {
@@ -69,14 +70,6 @@ class Objects extends React.Component {
 	render() {
 
 		const { data, error } = this.props;
-
-		if (error) {
-			return (
-				<div>
-					{error}
-				</div>
-			);
-		}
 
 		const theme = {
 			base00: '#ebeaee', // Background color
@@ -98,37 +91,39 @@ class Objects extends React.Component {
 			// #ebeaee
 		};
 
-		if (!data) {
-			return null;
-		}
-
 		return (
 			<div className="recent-block-section object-view">
 				<div className="wrap">
 					<div className="table-container object-view">
-						<h2>Object 1.16.2345</h2>
-						<div className="json-tree-container">
-							<JSONTree
-								theme={theme}
-								invertTheme={false}
-								valueRenderer={(raw) => {
+						<h2>Object { this.state.id }</h2>
+						{error ?
+							<div className="json-tree-container">
+								{error}
+							</div>
+							:
+							<div className="json-tree-container">
+								<JSONTree
+									theme={theme}
+									invertTheme={false}
+									valueRenderer={(raw) => {
 
-									const regExp = /^"\d+\.\d+\.\d+"$/;
+										const regExp = /^"\d+\.\d+\.\d+"$/;
 
-						return (raw && isString(raw) && (raw.search(regExp) !== -1)) ?
-							<Link
-								to={`/objects?id=${raw.substr(1, raw.length - 1 - 1)}`}
-								className="blue"
-							>
-								{raw}
-							</Link> : raw;
+										return (raw && isString(raw) && (raw.search(regExp) !== -1)) ?
+											<Link
+												to={URLHelper.createObjectsUrl(raw.substr(1, raw.length - 1 - 1))}
+												className="blue"
+											>
+												{raw}
+											</Link> : raw;
 
-								}}
-								data={data}
-							/>
-							<button className="copy-bytecode" onClick={this.copy}>Copy</button>
+									}}
+									data={data}
+								/>
+								<button className="copy-bytecode" onClick={this.copy}>Copy</button>
+							</div>
+						}
 
-						</div>
 					</div>
 					<RecentBlockSidebar />
 				</div>
