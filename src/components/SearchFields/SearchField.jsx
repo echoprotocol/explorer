@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
+
 class SearchField extends React.Component {
 
 	constructor() {
@@ -12,6 +14,7 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 			inputValue: '',
+			inputError: '',
 		};
 
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -38,11 +41,37 @@ class SearchField extends React.Component {
 	}
 
 	onChange(e) {
+		const { value } = e.target;
 		// Показать блок с подсказками
+
 		this.setState({
 			isChange: true,
-			inputValue: e.target.value,
+			inputValue: value,
 		});
+	}
+
+	onClick(e) {
+		e.preventDefault();
+
+		this.setState({ focus: true });
+		this.inputEl.focus();
+
+		if (this.state.inputValue) {
+			this.props.onSearch(this.state.inputValue);
+		}
+	}
+
+	onKeyPress(e) {
+		const code = e.keyCode || e.which;
+
+		if (this.state.inputValue && KEY_CODE_ENTER === code) {
+			this.props.onSearch(this.state.inputValue);
+		}
+
+		if (KEY_CODE_ESC === code) {
+			this.inputEl.blur();
+			this.setState({ focus: false });
+		}
 	}
 
 	setWrapperRef(node) {
@@ -63,9 +92,6 @@ class SearchField extends React.Component {
 	isSmallShow() {
 		this.setState({ isActiveSmall: true });
 		this.inputEl.focus();
-		if (this.state.inputValue) {
-			this.props.onSearch(this.state.inputValue);
-		}
 	}
 
 	cleareInput() {
@@ -80,7 +106,10 @@ class SearchField extends React.Component {
 
 	render() {
 
-		const { focus, isChange, isActiveSmall } = this.state;
+		const {
+			focus, isChange, isActiveSmall, inputError, // eslint-disable-line no-unused-vars
+		} = this.state;
+
 		const {
 			small, placeholder, white, withHelp, goToBlock,
 		} = this.props;
@@ -117,13 +146,14 @@ class SearchField extends React.Component {
 							placeholder={placeholder}
 							onFocus={() => this.onFocus()}
 							onChange={(e) => this.onChange(e)}
+							onKeyDown={(e) => this.onKeyPress(e)}
 							ref={(node) => { this.inputEl = node; }}
 						/>
 						{
 							(!goToBlock) ? (
 								<button tabIndex="0" className="close-icn" onClick={() => this.cleareInput()} />
 							) : (
-								<button tabIndex="0" className="g-t-btn" onClick={(e) => e.preventDefault()} />
+								<button tabIndex="0" className="g-t-btn" onClick={(e) => this.onClick(e)} />
 							)
 						}
 					</div>

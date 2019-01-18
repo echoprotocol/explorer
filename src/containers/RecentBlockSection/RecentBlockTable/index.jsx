@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import history from '../../../history';
-
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SearchField from '../../../components/SearchFields/SearchField';
 
@@ -15,11 +13,12 @@ import FormatHelper from '../../../helpers/FormatHelper';
 
 import { MAX_PAGE_BLOCKS } from '../../../constants/GlobalConstants';
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+import URLHelper from '../../../helpers/URLHelper';
 
 class RecentBlockTable extends React.Component {
 
 	onSearch(blockNumber) {
-		history.push(`/blocks/${blockNumber}`);
+		this.props.history.push(`/blocks/${blockNumber}`);
 	}
 
 	getBlocks() {
@@ -33,6 +32,7 @@ class RecentBlockTable extends React.Component {
 				blockNumber: FormatHelper.formatAmount(key, 0),
 				time: value.get('time'),
 				producer: value.get('producer'),
+				producerId: value.get('producerId'),
 				reward: value.get('reward'),
 				rewardCurrency: value.get('rewardCurrency'),
 				weight: FormatHelper.formatBlockSize(value.get('weight')),
@@ -83,7 +83,14 @@ class RecentBlockTable extends React.Component {
 												</div>
 												<div className="container">
 													<div className="title">Producer</div>
-													<div className="value">{data.producer}</div>
+													<div className="value">
+														<Link
+															to={URLHelper.createUrlById(data.producerId)}
+															className="blue"
+														>
+															{data.producer}
+														</Link>
+													</div>
 												</div>
 												<div className="container">
 													<div className="title">Reward</div>
@@ -146,7 +153,16 @@ class RecentBlockTable extends React.Component {
 															</Link>
 														</div>
 														<div className="divTableCell">{data.time}</div>
-														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
+														<div className="divTableCell">
+															<div className="inner-container">
+																<Link
+																	to={URLHelper.createUrlById(data.producerId)}
+																	className="blue"
+																>
+																	{data.producer}
+																</Link>
+															</div>
+														</div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
 														<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
 														<div className="divTableCell">{data.transactions}</div>
@@ -170,6 +186,7 @@ class RecentBlockTable extends React.Component {
 RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	blocksCount: PropTypes.number.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
