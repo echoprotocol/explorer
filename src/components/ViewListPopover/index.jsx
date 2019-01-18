@@ -11,7 +11,11 @@ class ViewListPopover extends Component {
 
 		this.state = {
 			isOpen: false,
+			query: ''
 		};
+
+		this.search = this.search.bind(this);
+
 	}
 
 	componentDidMount() {
@@ -32,6 +36,13 @@ class ViewListPopover extends Component {
 		}
 	}
 
+	search(e) {
+		console.log(e);
+		this.setState({
+			query: e.target.value.trim(),
+		});
+	}
+
 	render() {
 
 		const { isOpen } = this.state;
@@ -50,10 +61,13 @@ class ViewListPopover extends Component {
 					(isOpen) && (
 						<div className="view-list-menu" ref={(viewListMenu) => { this.viewListMenu = viewListMenu; }}>
 							<div className="input-container">
-								<input type="text" placeholder="Search by name" />
+								<input value={this.state.query} type="text" placeholder="Search by name" onChange={this.search}/>
 							</div>
 							<div className="result">
-								{list.map(({ name, to }) => (<Link to={to} key={name}>{name}</Link>))}
+								{list.filter(({ name }) => {
+									console.log(name, this.state.query);
+									return !this.state.query || (name && (name.search(new RegExp(this.state.query)) !== -1)) ;
+								}).map(({ name, to }) => (<Link to={to} key={name}>{name}</Link>))}
 							</div>
 						</div>
 					)
