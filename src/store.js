@@ -4,6 +4,8 @@ import { batchDispatchMiddleware } from 'redux-batched-actions';
 
 import { routerMiddleware, routerReducer } from 'react-router-redux';
 
+// import { echoReducer } from 'echojs-lib';
+
 import { echoReducer } from 'echojs-lib';
 
 import history from './history';

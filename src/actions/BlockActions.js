@@ -1,13 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 import BN from 'bignumber.js';
-import echo from 'echojs-lib';
 import moment from 'moment';
 import { Map } from 'immutable';
+
+import echo from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
 
-import { MAX_AVERAGE_TRS_BLOCKS, START_AVERAGE_TRS_BLOCKS, PAGE_BLOCKS_COUNT } from '../constants/GlobalConstants';
+import {
+	MAX_AVERAGE_TRS_BLOCKS,
+	START_AVERAGE_TRS_BLOCKS,
+	PAGE_BLOCKS_COUNT,
+	PAGE_ADD_BLOCKS_COUNT,
+} from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 
@@ -128,6 +134,11 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			sumUnix += (unixTimestamps.get(i + 1) - unixTimestamps.get(i));
 		}
 
+		const averageTime = new BN(sumUnix).div(trLengths.size);
+
+		if (Math.sign(averageTime.toNumber()) > 0) {
+			transactions = transactions.set('averageTime', sumUnix / trLengths.size);
+		}
 
 		transactions = transactions
 			.setIn(['transactions', 'value'], sumResults.sum.div(trLengths.size).toString())
@@ -138,8 +149,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			.setIn(['operations', 'lengthsList'], opLengths)
 			.set('count', trLengths.size)
 			.set('block', latestBlock)
-			.set('unixTimestamps', unixTimestamps)
-			.set('averageTime', sumUnix / trLengths.size);
+			.set('unixTimestamps', unixTimestamps);
 
 
 		dispatch(RoundReducer.actions.set({
@@ -165,10 +175,15 @@ const _addSizeToBlock = (blocksResult, producer, mapBlocks) => {
 
 export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
+	const latestBlock = lastBlock || getState().round.get('latestBlock');
+	const maxBlocks = getState().block.get('blocksCount');
+
+	const [...keys] = blocks.keys();
+	const startedBlock = startBlock || Math.max(...keys);
 
 	let blocksResult = [];
 
-	for (let i = startBlock + 1; i <= lastBlock; i += 1) {
+	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
 	}
 
@@ -181,13 +196,25 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 
 	const accounts = await echo.api.getAccounts(accountIds);
 
+	if (blocksResult.length && blocks.size >= maxBlocks) {
+		blocks = blocks.withMutations((mapBlocks) => {
+			for (let i = 0; i < blocksResult.length; i += 1) {
+				const minBlockNum = Math.min(...keys);
+
+				mapBlocks.delete(minBlockNum);
+
+				keys.splice(keys.indexOf(minBlockNum), 1);
+			}
+		});
+	}
+
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
 				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
-				.setIn([blockNumber, 'reward'], 10)
+				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
 				.setIn([blockNumber, 'weightSize'], 'bytes')
@@ -215,4 +242,22 @@ export const initBlocks = () => async (dispatch) => {
 	const startBlockList = obj[0].head_block_number - PAGE_BLOCKS_COUNT;
 
 	await dispatch(updateBlockList(obj[0].head_block_number, startBlockList));
+};
+
+export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
+	const maxBlocks = getState().block.get('blocksCount');
+
+	dispatch(BlockReducer.actions.set({
+		field: 'blocksCount',
+		value: maxBlocks + PAGE_ADD_BLOCKS_COUNT,
+	}));
+
+	const [...keys] = getState().block.get('blocks').keys();
+	const startedBlock = Math.min(...keys) - PAGE_ADD_BLOCKS_COUNT;
+
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
+
+	await dispatch(updateBlockList(0, startedBlock));
+
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 };

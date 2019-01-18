@@ -11,6 +11,7 @@ import SearchField from '../../../components/SearchFields/SearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
+import { MAX_PAGE_BLOCKS } from '../../../constants/GlobalConstants';
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 
 class RecentBlockTable extends React.Component {
@@ -28,7 +29,7 @@ class RecentBlockTable extends React.Component {
 				producer: value.get('producer'),
 				reward: value.get('reward'),
 				rewardCurrency: value.get('rewardCurrency'),
-				weight: FormatHelper.roundNumber(value.get('weight') / 1024, 2),
+				weight: FormatHelper.formatBlockSize(value.get('weight')),
 				weightSize: FormatHelper.formatByteSize(value.get('weight')),
 				transactions: value.get('transactions'),
 			});
@@ -39,17 +40,13 @@ class RecentBlockTable extends React.Component {
 				return 0;
 			}
 
-			const numA = a.blockNumber;
-			const numB = b.blockNumber;
-
-			if (numA > numB) { return -1; }
-			if (numA < numB) { return 1; }
-
-			return 0;
+			return b.round - a.round;
 		});
 	}
 
 	render() {
+		const { blocksCount } = this.props;
+
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
@@ -70,7 +67,7 @@ class RecentBlockTable extends React.Component {
 								<div className="recent-block-mobile-view">
 									{
 										this.getBlocks().map((data) => (
-											<div key={data.blockNumber} className="recent-block-element">
+											<div key={data.round} className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
 													<div className="value">
@@ -127,7 +124,7 @@ class RecentBlockTable extends React.Component {
 														(matches ? (
 															'Time'
 														) : (
-															'Time (GTM+1)'
+															'Time (UTC)'
 														))
 													}
 												</Media>
@@ -140,7 +137,7 @@ class RecentBlockTable extends React.Component {
 										<div className="devider" />
 										{
 											this.getBlocks().map((data) => (
-												<React.Fragment key={data.blockNumber}>
+												<React.Fragment key={data.round}>
 													<div className="divTableRow">
 														<div className="divTableCell">
 															<Link
@@ -164,7 +161,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					<LoadMoreBtn />
+					{blocksCount < MAX_PAGE_BLOCKS && <LoadMoreBtn />}
 				</div>
 			</div>
 		);
@@ -175,9 +172,15 @@ class RecentBlockTable extends React.Component {
 RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
+	blocksCount: PropTypes.number.isRequired,
 };
 
 
-export default withRouter(connect((state) => ({
-	blocks: state.block.get('blocks'),
-}))(RecentBlockTable));
+
+export default withRouter(connect(
+	(state) => ({
+		blocks: state.block.get('blocks'),
+		blocksCount: state.block.get('blocksCount'),
+	}),
+	() => ({}),
+)(RecentBlockTable));

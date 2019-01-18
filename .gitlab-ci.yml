@@ -17,13 +17,9 @@ eslint:
 build_dev:
   stage: deploy
   script:
-    - /home/devuser/DevProjects/656.echo_explorer/echojs-lib
-    - git pull
-    - npm link
     - cd /home/devuser/DevProjects/656.echo_explorer/explorer
     - git pull
     - npm i
-    - npm link echojs-lib
     - npm run build-dev
   only:
     - development

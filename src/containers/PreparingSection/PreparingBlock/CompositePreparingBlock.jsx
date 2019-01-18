@@ -12,10 +12,10 @@ class CompositePreparingBlock extends React.Component {
 		return (
 			<React.Fragment>
 				<div className={`preparing-element ${status} ${className}`}>
-					<a href="" className="title">
+					<div className="title">
 						<span className="current-step">{currentStep}</span>&nbsp;{`of ${totalStep}:${title}`}
 						{(tooltip) && <div className="tooltip" />}
-					</a>
+					</div>
 					<div className="status-container">
 						<div className="description">
 							<span className="text">{description}</span> {(status) && (<div className="status-icn" />)}

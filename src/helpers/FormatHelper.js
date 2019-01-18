@@ -27,7 +27,7 @@ class FormatHelper {
 			}
 		}
 
-		const resultNumber = (mod ? `${base.substr(0, mod)} ` : '')
+		const resultNumber = (mod ? `${base.substr(0, mod)},` : '')
             + base.substr(mod).replace(/(\d{3})(?=\d)/g, `$1${','}`)
             + (precision ? postfix : '');
 
@@ -43,17 +43,10 @@ class FormatHelper {
 	}
 
 	static formatBlockSize(value) {
-		let divider = 1073741824;
-
-		if (value < 1024) {
-			return value;
-		} else if (value < 1048576) {
-			divider = 1024;
-		} else if (value < 1073741824) {
-			divider = 1048576;
-		}
-
-		return Number.parseFloat((value / divider).toFixed(3));
+		if (value < 1024) return this.roundNumber(value, 2);
+		else if (value < 1048576) return this.roundNumber(value / 1024, 2);
+		else if (value < 1073741824) return this.roundNumber(value / 1048576, 2);
+		return this.roundNumber(value / 1073741824, 2);
 	}
 
 	static formatByteSize(bytes) {
