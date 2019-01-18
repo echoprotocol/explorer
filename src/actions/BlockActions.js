@@ -61,7 +61,11 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 				const opLength = block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
 				opLengths = opLengths.push(opLength);
 
-				unixTimestamps = unixTimestamps.push(moment(block.timestamp).unix());
+				const unixTimeStamp = moment(block.timestamp).unix();
+
+				if (Math.sign(unixTimeStamp) > 0) {
+					unixTimestamps = unixTimestamps.push(unixTimeStamp);
+				}
 
 				return ({
 					sum: sum.plus(block.transactions.length),
@@ -134,7 +138,10 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 	blocksResult = await Promise.all(blocksResult);
 
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
-		accounts[index] = block.account;
+		if (block) {
+			accounts[index] = block.account;
+		}
+
 		return accounts;
 	}, []);
 
