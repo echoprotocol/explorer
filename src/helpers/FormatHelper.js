@@ -4,14 +4,6 @@ import moment from 'moment';
 
 class FormatHelper {
 
-	static isBlockNumber(value) {
-		if (!value.match(/^\d+$/)) {
-			return 'Block number must contain only digits';
-		}
-
-		return null;
-	}
-
 	static toFixed(value, precision) {
 
 		return value.toFixed(precision).toString(10);
