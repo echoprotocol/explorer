@@ -50,6 +50,7 @@ class URLHelper {
 		return url;
 
 	}
+
 }
 
 export default URLHelper;
