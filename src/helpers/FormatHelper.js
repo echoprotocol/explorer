@@ -41,6 +41,21 @@ class FormatHelper {
 		return Number(`${Math.ceil(`${value}e${decimals}`)}e-${decimals}`);
 	}
 
+	static formatBlockSize(value) {
+		value = new BN(value);
+		if (value.lt(1024)) return this.roundNumber(value.toNumber(), 2);
+		else if (value.lt(1048576)) return this.roundNumber(value.div(1024).toNumber(), 2);
+		else if (value.lt(1073741824)) return this.roundNumber(value.div(1048576).toNumber(), 2);
+		return this.roundNumber(value.div(1073741824).toNumber(), 2);
+	}
+
+	static formatByteSize(bytes) {
+		if (bytes < 1024) return 'bytes';
+		else if (bytes < 1048576) return 'KB';
+		else if (bytes < 1073741824) return 'MB';
+		return 'GB';
+	}
+
 }
 
 export default FormatHelper;

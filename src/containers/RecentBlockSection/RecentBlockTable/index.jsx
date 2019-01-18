@@ -3,135 +3,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
+import { connect } from 'react-redux';
+
+import history from '../../../history';
+
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SearchField from '../../../components/SearchFields/SearchField';
 
+import FormatHelper from '../../../helpers/FormatHelper';
+
+import { MAX_PAGE_BLOCKS } from '../../../constants/GlobalConstants';
+
 class RecentBlockTable extends React.Component {
 
-	render() {
+	onSearch(blockNumber) {
+		history.push(`/blocks/${blockNumber}`);
+	}
 
-		const codingData = [
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-			{
-				blockNumber: '1,265,456',
-				time: '12:53:15',
-				producer: 'GeorgeLukas',
-				reward: '0.3123',
-				rewardCurrency: 'echo',
-				weight: '3.125',
-				weightSize: 'mb',
-				transactions: '1.757',
-			},
-		];
+	getBlocks() {
+		const { blocks } = this.props;
+
+		const blocksResult = [];
+
+		blocks.mapEntries(([key, value]) => {
+			blocksResult.push({
+				round: key,
+				blockNumber: FormatHelper.formatAmount(key, 0),
+				time: value.get('time'),
+				producer: value.get('producer'),
+				reward: value.get('reward'),
+				rewardCurrency: value.get('rewardCurrency'),
+				weight: FormatHelper.formatBlockSize(value.get('weight')),
+				weightSize: FormatHelper.formatByteSize(value.get('weight')),
+				transactions: value.get('transactions'),
+			});
+		});
+
+		return blocksResult.sort((a, b) => {
+			if (!a || !b) {
+				return 0;
+			}
+
+			return b.round - a.round;
+		});
+	}
+
+	render() {
+		const { blocksCount } = this.props;
 
 		return (
 			<div className="table-container recent-block-table">
@@ -139,9 +57,9 @@ class RecentBlockTable extends React.Component {
 					<Media query="(max-width: 767px)">
 						{(matches) =>
 							(matches ? (
-								<SearchField small white placeholder="Search by block" />
+								<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} small white placeholder="Search by block" />
 							) : (
-								<SearchField small white placeholder="Search by block number" />
+								<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} small white placeholder="Search by block number" />
 							))
 						}
 					</Media>
@@ -152,8 +70,8 @@ class RecentBlockTable extends React.Component {
 							(matches ? (
 								<div className="recent-block-mobile-view">
 									{
-										codingData.map((data) => (
-											<div key={Math.random()} className="recent-block-element">
+										this.getBlocks().map((data) => (
+											<div key={data.round} className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
 													<div className="value"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
@@ -203,7 +121,7 @@ class RecentBlockTable extends React.Component {
 														(matches ? (
 															'Time'
 														) : (
-															'Time (GTM+1)'
+															'Time (UTC)'
 														))
 													}
 												</Media>
@@ -215,10 +133,14 @@ class RecentBlockTable extends React.Component {
 										</div>
 										<div className="devider" />
 										{
-											codingData.map((data) => (
-												<React.Fragment key={Math.random()}>
+											this.getBlocks().map((data) => (
+												<React.Fragment key={data.round}>
 													<div className="divTableRow">
-														<div className="divTableCell"><a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>{data.blockNumber}</a></div>
+														<div className="divTableCell">
+															<a href="" className="blue" onClick={(e) => { e.preventDefault(); this.props.switchToBlockInfo(true); }}>
+																{data.blockNumber}
+															</a>
+														</div>
 														<div className="divTableCell">{data.time}</div>
 														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
@@ -233,7 +155,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					<LoadMoreBtn />
+					{blocksCount < MAX_PAGE_BLOCKS && <LoadMoreBtn />}
 				</div>
 			</div>
 		);
@@ -243,6 +165,8 @@ class RecentBlockTable extends React.Component {
 
 RecentBlockTable.propTypes = {
 	switchToBlockInfo: PropTypes.func,
+	blocks: PropTypes.object.isRequired,
+	blocksCount: PropTypes.number.isRequired,
 };
 
 RecentBlockTable.defaultProps = {
@@ -250,4 +174,10 @@ RecentBlockTable.defaultProps = {
 };
 
 
-export default RecentBlockTable;
+export default connect(
+	(state) => ({
+		blocks: state.block.get('blocks'),
+		blocksCount: state.block.get('blocksCount'),
+	}),
+	() => ({}),
+)(RecentBlockTable);

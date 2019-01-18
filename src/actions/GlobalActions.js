@@ -1,5 +1,6 @@
 import GlobalReducer from '../reducers/GlobalReducer';
 import BaseActionsClass from './BaseActionsClass';
+import { connect } from './SocketActions';
 
 class GlobalActionsClass extends BaseActionsClass {
 
@@ -33,6 +34,7 @@ class GlobalActionsClass extends BaseActionsClass {
 	init() {
 		return (dispatch) => new Promise((resolve) => {
 			Promise.all([
+				dispatch(connect()),
 				// Load data before start page
 			]).then((data) => {
 				dispatch(this.afterInit()).then(() => {

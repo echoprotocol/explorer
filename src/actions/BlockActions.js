@@ -1,10 +1,18 @@
 import BN from 'bignumber.js';
-import echo from 'echojs-lib';
 import moment from 'moment';
 
-import RoundReducer from '../reducers/RoundReducer';
+import echo from 'echojs-lib';
 
-import { MAX_AVERAGE_TRS_BLOCKS, START_AVERAGE_TRS_BLOCKS } from '../constants/GlobalConstants';
+import RoundReducer from '../reducers/RoundReducer';
+import BlockReducer from '../reducers/BlockReducer';
+
+import {
+	MAX_AVERAGE_TRS_BLOCKS,
+	START_AVERAGE_TRS_BLOCKS,
+	PAGE_BLOCKS_COUNT,
+	PAGE_ADD_BLOCKS_COUNT,
+	MAX_BLOCK_REQUESTS,
+} from '../constants/GlobalConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 
@@ -29,8 +37,14 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 	let blocks = [];
 
+	let startedBlock = startBlock || transactions.get('block') + 1;
+
+	if ((getState().round.get('latestBlock') - transactions.get('block')) > MAX_BLOCK_REQUESTS) {
+		startedBlock = getState().round.get('latestBlock') - MAX_BLOCK_REQUESTS;
+	}
+
 	try {
-		for (let i = startBlock || transactions.get('block') + 1; i <= latestBlock; i += 1) {
+		for (let i = startedBlock; i <= latestBlock; i += 1) {
 			blocks.push(echo.api.wsApi.database.getBlock(i));
 		}
 
@@ -76,6 +90,11 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			sumUnix += (unixTimestamps.get(i + 1) - unixTimestamps.get(i));
 		}
 
+		const averageTime = new BN(sumUnix).div(trLengths.size);
+
+		if (Math.sign(averageTime.toNumber()) > 0) {
+			transactions = transactions.set('averageTime', parseFloat(averageTime.toFixed(3)));
+		}
 
 		transactions = transactions
 			.setIn(['transactions', 'value'], sumResults.sum.div(trLengths.size).toString())
@@ -86,8 +105,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 			.setIn(['operations', 'lengthsList'], opLengths)
 			.set('count', trLengths.size)
 			.set('block', latestBlock)
-			.set('unixTimestamps', unixTimestamps)
-			.set('averageTime', sumUnix / trLengths.size);
+			.set('unixTimestamps', unixTimestamps);
 
 
 		dispatch(RoundReducer.actions.set({
@@ -99,6 +117,75 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 };
 
+export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {
+	let blocks = getState().block.get('blocks');
+	const latestBlock = lastBlock || getState().round.get('latestBlock');
+	const maxBlocks = getState().block.get('blocksCount');
+
+	const [...keys] = blocks.keys();
+	const startedBlock = startBlock || Math.max(...keys);
+
+	let blocksResult = [];
+
+	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
+		blocksResult.push(echo.api.getBlock(i));
+	}
+
+	blocksResult = await Promise.all(blocksResult);
+
+	const accountIds = blocksResult.reduce((accounts, block, index) => {
+		accounts[index] = block.account;
+		return accounts;
+	}, []);
+
+	const accounts = await echo.api.getAccounts(accountIds);
+
+	if (blocksResult.length && blocks.size >= maxBlocks) {
+		blocks = blocks.withMutations((mapBlocks) => {
+			for (let i = 0; i < blocksResult.length; i += 1) {
+				const minBlockNum = Math.min(...keys);
+
+				mapBlocks.delete(minBlockNum);
+
+				keys.splice(keys.indexOf(minBlockNum), 1);
+			}
+		});
+	}
+
+	blocks = blocks.withMutations((mapBlocks) => {
+		for (let i = 0; i < blocksResult.length; i += 1) {
+			const blockNumber = blocksResult[i].round;
+			mapBlocks
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
+				.setIn([blockNumber, 'producer'], accounts[i].name)
+				.setIn([blockNumber, 'reward'], 0)
+				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
+				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
+				.setIn([blockNumber, 'weightSize'], 'bytes')
+				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
+		}
+	});
+
+	const lastBlockStorage = blocksResult[blocksResult.length - 1];
+
+	if (lastBlockStorage) {
+		localStorage.setItem('lastBlock', JSON.stringify({
+			number: lastBlockStorage.round,
+			timestamp: moment.utc(lastBlockStorage.timestamp).local().unix(),
+		}));
+
+		dispatch(BlockReducer.actions.set({
+			field: 'startTimestamp',
+			value: 0,
+		}));
+	}
+
+	dispatch(BlockReducer.actions.set({
+		field: 'blocks',
+		value: blocks,
+	}));
+};
+
 export const initBlocks = () => async (dispatch) => {
 	const obj = await echo.api.wsApi.database.getObjects(['2.1.0']);
 
@@ -106,7 +193,38 @@ export const initBlocks = () => async (dispatch) => {
 		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));
 	}
 
-	const startBlock = obj[0].head_block_number - START_AVERAGE_TRS_BLOCKS;
+	const startBlockAverage = obj[0].head_block_number - START_AVERAGE_TRS_BLOCKS;
 
-	await dispatch(updateAverageTransactions(obj[0].head_block_number, startBlock));
+	await dispatch(updateAverageTransactions(obj[0].head_block_number, startBlockAverage));
+
+	const startBlockList = obj[0].head_block_number - PAGE_BLOCKS_COUNT;
+
+	await dispatch(updateBlockList(obj[0].head_block_number, startBlockList));
+
+	const lastBlock = JSON.parse(localStorage.getItem('lastBlock'));
+
+	const dateNowUnix = new BN(Date.now()).div(1000);
+
+	dispatch(BlockReducer.actions.set({
+		field: 'startTimestamp',
+		value: parseInt(dateNowUnix.minus(lastBlock.timestamp).toFixed(0), 10),
+	}));
+};
+
+export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
+	const maxBlocks = getState().block.get('blocksCount');
+
+	dispatch(BlockReducer.actions.set({
+		field: 'blocksCount',
+		value: maxBlocks + PAGE_ADD_BLOCKS_COUNT,
+	}));
+
+	const [...keys] = getState().block.get('blocks').keys();
+	const startedBlock = Math.min(...keys) - PAGE_ADD_BLOCKS_COUNT;
+
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
+
+	await dispatch(updateBlockList(0, startedBlock));
+
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 };
