@@ -4,23 +4,61 @@ import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
 import copy from 'copy-to-clipboard';
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
+import queryString from 'query-string';
+import { Link } from 'react-router-dom';
 
 class Objects extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.copy = this.copy.bind(this);
+		this.state = {
+			id: this.getId(this.props)
+		};
+	}
+
+	componentWillReceiveProps(nextProps) {
+
+		const newId = this.getId(nextProps);
+
+		if (newId !== this.state.id) {
+
+			this.setState({
+				id: newId
+			}, () => {
+				this.checkObject();
+			});
+
+		}
 	}
 
 	componentDidMount() {
+		this.checkObject();
+	}
 
-		const regExp = /^"\d+\.\d+\.\d+"$/;
+	checkObject() {
+		const id = this.state.id;
 
-		if (0 && this.props.match.params.objectId.search(regExp) === -1) { // TODO::
+		if (!id) {
 			this.props.setError('Object id is Invalid');
 		} else {
-			this.props.getObjectInfo('1.3.0');
+			this.props.getObjectInfo(id);
 		}
+	}
+
+	getId(props) {
+
+		const parsed = queryString.parse(props.location.search);
+		const regExp = /^\d+\.\d+\.\d+$/;
+
+		if (!parsed.id || parsed.id.search(regExp) === -1) {
+			return null;
+		}
+
+		return parsed.id;
+	}
+
+	componentDidUpdate() {
 
 	}
 
@@ -81,7 +119,12 @@ class Objects extends React.Component {
 
 									const regExp = /^"\d+\.\d+\.\d+"$/;
 
-									return (raw && isString(raw) && (raw.search(regExp) !== -1)) ? <a href={`/objects/${raw.substr(1, raw.length - 1 - 1)}`}>{raw}</a> : raw;
+						return (raw && isString(raw) && (raw.search(regExp) !== -1)) ? <Link
+								to={`/objects?id=${raw.substr(1, raw.length - 1 - 1)}`}
+								className="blue"
+							>
+								{raw}
+							</Link> : raw;
 
 								}}
 								data={data}
@@ -102,8 +145,8 @@ Objects.propTypes = {
 	data: PropTypes.object,
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
-	error: PropTypes.object,
-	match: PropTypes.object,
+	error: PropTypes.string,
+	location: PropTypes.object,
 };
 
 Objects.defaultProps = {
@@ -111,7 +154,7 @@ Objects.defaultProps = {
 	getObjectInfo: null,
 	setError: null,
 	error: null,
-	match: null,
+	location: null,
 };
 
 export default Objects;
