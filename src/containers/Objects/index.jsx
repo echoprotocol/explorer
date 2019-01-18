@@ -9,8 +9,8 @@ export default withRouter(connect(
 		data: state.objects.get('data'),
 		error: state.objects.get('error'),
 	}),
-	(dispatch, props) => ({
+	(dispatch) => ({
 		getObjectInfo: (id) => dispatch(getObjectInfo(id)),
 		setError: (text) => dispatch(setError(text)),
-	})
+	}),
 )(Objects));

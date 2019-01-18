@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import JSONTree from 'react-json-tree'
-import { isString } from 'lodash'
+import JSONTree from 'react-json-tree';
+import { isString } from 'lodash';
 import copy from 'copy-to-clipboard';
 
 class Objects extends React.Component {
@@ -15,7 +15,7 @@ class Objects extends React.Component {
 
 		const regExp = /^"\d+\.\d+\.\d+"$/;
 
-		if (0 && this.props.match.params.objectId.search(regExp) === -1) {
+		if (0 && this.props.match.params.objectId.search(regExp) === -1) { // TODO::
 			this.props.setError('Object id is Invalid');
 		} else {
 			this.props.getObjectInfo('1.3.0');
@@ -61,7 +61,7 @@ class Objects extends React.Component {
 			base0C: '#a1efe4',
 			base0D: '#66d9ef',
 			base0E: '#ae81ff',
-			base0F: '#cc6633'
+			base0F: '#cc6633',
 		};
 
 		if (!data) {
@@ -71,10 +71,18 @@ class Objects extends React.Component {
 		return (
 			<div>
 				<button onClick={this.copy}>Button</button>
-				<JSONTree theme={theme} invertTheme={true} valueRenderer={raw => {
-					const regExp = /^"\d+\.\d+\.\d+"$/;
-					return (raw && isString(raw) && (raw.search(regExp) !== -1)) ? <a href={`/objects/${raw.substr(1, raw.length - 1 - 1)}`}>{raw}</a> : raw;
-				}} data={data} />
+				<JSONTree
+					theme={theme}
+					invertTheme
+					valueRenderer={(raw) => {
+
+						const regExp = /^"\d+\.\d+\.\d+"$/;
+
+						return (raw && isString(raw) && (raw.search(regExp) !== -1)) ? <a href={`/objects/${raw.substr(1, raw.length - 1 - 1)}`}>{raw}</a> : raw;
+
+					}}
+					data={data}
+				/>
 			</div>
 		);
 	}
@@ -86,6 +94,7 @@ Objects.propTypes = {
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
 	error: PropTypes.object,
+	match: PropTypes.object,
 };
 
 Objects.defaultProps = {
@@ -93,6 +102,7 @@ Objects.defaultProps = {
 	getObjectInfo: null,
 	setError: null,
 	error: null,
+	match: null,
 };
 
 export default Objects;
