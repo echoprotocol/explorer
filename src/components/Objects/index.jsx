@@ -5,9 +5,11 @@ import { isString } from 'lodash';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
+import queryString from 'query-string';
+import { Link } from 'react-router-dom';
+
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 import URLHelper from '../../helpers/URLHelper';
-
 
 class Objects extends React.Component {
 
@@ -108,15 +110,23 @@ class Objects extends React.Component {
 									invertTheme={false}
 									valueRenderer={(raw) => {
 
-										const regExp = /^"\d+\.\d+\.\d+"$/;
+										const idRegExp = /^"\d+\.\d+\.\d+"$/;
 
-										return (raw && isString(raw) && (raw.search(regExp) !== -1)) ?
-											<Link
-												to={URLHelper.createObjectsUrl(raw.substr(1, raw.length - 1 - 1))}
-												className="blue"
-											>
-												{raw}
-											</Link> : raw;
+										if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
+
+											const url = URLHelper.createUrlById(raw.substr(1, raw.length - 1 - 1));
+
+											return (
+												<Link
+													to={url}
+													className="blue"
+												>
+													{raw}
+												</Link>
+											);
+										}
+
+										return raw;
 
 									}}
 									data={data}

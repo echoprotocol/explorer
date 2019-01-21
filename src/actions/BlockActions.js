@@ -18,6 +18,10 @@ import {
 
 import FormatHelper from '../helpers/FormatHelper';
 
+/**
+ *
+ * @param {Number} round
+ */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
@@ -110,7 +114,11 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 				const opLength = block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
 				opLengths = opLengths.push(opLength);
 
-				unixTimestamps = unixTimestamps.push(moment(block.timestamp).unix());
+				const unixTimeStamp = moment(block.timestamp).unix();
+
+				if (Math.sign(unixTimeStamp) > 0) {
+					unixTimestamps = unixTimestamps.push(unixTimeStamp);
+				}
 
 				return ({
 					sum: sum.plus(block.transactions.length),
@@ -183,7 +191,10 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 	blocksResult = await Promise.all(blocksResult);
 
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
-		accounts[index] = block.account;
+		if (block) {
+			accounts[index] = block.account;
+		}
+
 		return accounts;
 	}, []);
 
@@ -205,8 +216,9 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).format('HH:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
+				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
