@@ -65,7 +65,9 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container producer">
 							<div className="title">Producer</div>
-							<div className="value">{producer}</div>
+							<Link to="">
+								<div className="value">{producer.name}</div>
+							</Link>
 						</div>
 						<div className="container reward">
 							<div className="title">Reward</div>
@@ -236,7 +238,7 @@ class BlockInformation extends React.Component {
 																						<div className="divTableCell" />
 																						<div className="divTableCell" />
 																						<div className="divTableCell">
-																							<div className="inner-container"><div className="blue">{io.from}</div></div>
+																							<div className="inner-container"><div className="blue">{io.from.name || io.from.id}</div></div>
 																						</div>
 																						<div className="divTableCell transaction-to">
 																							<div className="sub-container">
@@ -249,7 +251,7 @@ class BlockInformation extends React.Component {
 																							<div className="sub-container">
 																								{io.value.amount}
 																								<span className="gray">{io.value.symbol}</span>
-																								<div className="subtransfer-type">Subtransfer</div>
+																								<div className="subtransfer-type">{io.label}</div>
 																							</div>
 																						</div>
 																						<div className="divTableCell" />

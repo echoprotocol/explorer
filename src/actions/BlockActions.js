@@ -24,9 +24,9 @@ import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
 
 const parseTransferEvent = async ({ log, data }) => {
-	const [hexFrom, hexTo] = log;
+	const [, hexFrom, hexTo] = log;
 	const value = { amount: parseInt(data, 16), symbol: '' };
-
+	console.log(log)
 	const fromInt = parseInt(hexFrom.slice(26), 16);
 	const toInt = parseInt(hexTo.slice(26), 16);
 
@@ -118,9 +118,7 @@ const formatOperation = async (data, round, opres) => {
 	}
 
 	if (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT) {
-        console.log(resId)
 		const contractResult = await echo.api.wsApi.database.getContractResult(resId);
-        console.log(contractResult)
 		const [, { exec_res: { excepted }, tr_receipt: { log } }] = contractResult;
 		result.status = excepted === 'None';
 
@@ -175,18 +173,20 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const value = {};
 
 		if (handledBlock) {
-			value.producer = handledBlock.get('producer');
 			value.reward = `${handledBlock.get('reward')} ${handledBlock.get('rewardCurrency')}`;
 			value.size = `${FormatHelper.formatBlockSize(handledBlock.get('weight'))}
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			value.producer = (await echo.api.getObject(planeBlock.account)).name;
 			value.reward = '10 ECHO';
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
 		}
+
+		const producer = await echo.api.getObject(planeBlock.account);
+
+		value.producer = { id: producer.id, name: producer.name };
 
 		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
 
@@ -207,7 +207,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.verifiers = verifiers.map(({ name, id }) => ({ id, name }));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
-
+		console.log(value);
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
