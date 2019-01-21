@@ -174,15 +174,20 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 };
 
-export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {
+export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
-	const latestBlock = lastBlock || getState().round.get('latestBlock');
-	const maxBlocks = getState().block.get('blocksCount');
+	let latestBlock = lastBlock || getState().round.get('latestBlock');
+
 
 	const [...keys] = blocks.keys();
-	const startedBlock = startBlock || Math.max(...keys);
+	let startedBlock = startBlock || Math.max(...keys);
 
 	let blocksResult = [];
+
+	if (isLoadMore) {
+		startedBlock -= 1;
+		latestBlock -= 1;
+	}
 
 	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
@@ -200,17 +205,9 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 
 	const accounts = await echo.api.getAccounts(accountIds);
 
-	if (blocksResult.length && blocks.size >= maxBlocks) {
-		blocks = blocks.withMutations((mapBlocks) => {
-			for (let i = 0; i < blocksResult.length; i += 1) {
-				const minBlockNum = Math.min(...keys);
+	blocks = getState().block.get('blocks');
 
-				mapBlocks.delete(minBlockNum);
-
-				keys.splice(keys.indexOf(minBlockNum), 1);
-			}
-		});
-	}
+	const maxBlocks = getState().block.get('blocksCount');
 
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
@@ -239,6 +236,21 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 			field: 'startTimestamp',
 			value: 0,
 		}));
+	}
+
+	const blocksToRemove = blocks.size - maxBlocks;
+
+	if (Math.sign(blocksToRemove) > 0) {
+		blocks = blocks.withMutations((mapBlocks) => {
+			for (let i = 0; i < blocksToRemove; i += 1) {
+				const [...blocksKeys] = mapBlocks.keys();
+				const minBlockNum = Math.min(...blocksKeys);
+
+				mapBlocks.delete(minBlockNum);
+
+				keys.splice(keys.indexOf(minBlockNum), 1);
+			}
+		});
 	}
 
 	dispatch(BlockReducer.actions.set({
@@ -285,7 +297,7 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
 
-	await dispatch(updateBlockList(0, startedBlock));
+	await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 };
