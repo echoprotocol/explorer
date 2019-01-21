@@ -317,6 +317,10 @@ export const initBlocks = () => async (dispatch) => {
  * 	Set maximum number of displayed blocks
  */
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
+	if (!echo._ws._connected || !echo.subscriber.subscriptions.echorand || !echo.subscriber.subscriptions.block) {
+		return false;
+	}
+
 	const maxBlocks = getState().block.get('blocksCount');
 
 	dispatch(BlockReducer.actions.set({
@@ -332,4 +336,6 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
+
+	return true;
 };
