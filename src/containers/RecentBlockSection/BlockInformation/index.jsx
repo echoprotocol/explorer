@@ -15,6 +15,7 @@ import ViewListPopover from '../../../components/ViewListPopover';
 import { INDEX_PATH } from '../../../constants/RouterConstants';
 
 import URLHelper from '../../../helpers/URLHelper';
+import FormatHelper from '../../../helpers/FormatHelper';
 
 import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
 
@@ -49,7 +50,7 @@ class BlockInformation extends React.Component {
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
-		const transactions = blockInformation.get('transactions');
+		const transactions = blockInformation.get('transactions') || [];
 
 		let verifiers = blockInformation.get('verifiers');
 		if (verifiers) {
@@ -147,7 +148,7 @@ class BlockInformation extends React.Component {
 																		</div>
 																		<div className="container">
 																			<div className="title">Fee amount</div>
-																			<div className="value">{data.fee.amount} <span className="gray">{data.fee.symbol}</span></div>
+																			<div className="value">{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)} <span className="gray">{data.fee.symbol}</span></div>
 																		</div>
 																		<div className={`container ${(data.status ? '' : ('fail'))}`}>
 																			<div className="title">Status</div>
@@ -229,13 +230,17 @@ class BlockInformation extends React.Component {
 																			}
 																			<div className="divTableCell">{data.name}</div>
 																			<div className="divTableCell">
-																				<div className="inner-container"><div className="blue">{data.from.name || data.from.id}</div></div>
+																				<Link to={URLHelper.createUrlById(data.from.id)}>
+																					<div className="inner-container"><div className="blue">{data.from.name || data.from.id}</div></div>
+																				</Link>
 																			</div>
 																			<div className="divTableCell transaction-to">
-																				<div className="sub-container"><div className="blue">{data.subject.name || data.subject.id}</div></div>
+																				<Link to={URLHelper.createUrlById(data.subject.id)}>
+																					<div className="sub-container"><div className="blue">{data.subject.name || data.subject.id}</div></div>
+																				</Link>
 																			</div>
 																			<div className="divTableCell">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
-																			<div className="divTableCell">{data.fee.amount} <span className="gray">{data.fee.symbol}</span></div>
+																			<div className="divTableCell">{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)} <span className="gray">{data.fee.symbol}</span></div>
 																			<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
 																		</Link>
 																		{
@@ -248,13 +253,17 @@ class BlockInformation extends React.Component {
 																						<div className="divTableCell" />
 																						<div className="divTableCell" />
 																						<div className="divTableCell">
-																							<div className="inner-container"><div className="blue">{io.from.name || io.from.id}</div></div>
+																							<Link to={URLHelper.createUrlById(io.from.id)}>
+																								<div className="inner-container"><div className="blue">{io.from.name || io.from.id}</div></div>
+																							</Link>
 																						</div>
 																						<div className="divTableCell transaction-to">
 																							<div className="sub-container">
 																								{/* Блок line-arrow добавляется только для строк с классом is-subtransfer */}
 																								<div className="line-arrow" />
-																								<div className="blue">{io.subject.name || io.subject.id}</div>
+																								<Link to={URLHelper.createUrlById(io.subject.id)}>
+																									<div className="blue">{io.subject.name || io.subject.id}</div>
+																								</Link>
 																							</div>
 																						</div>
 																						<div className="divTableCell">
