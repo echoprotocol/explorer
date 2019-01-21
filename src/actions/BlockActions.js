@@ -176,7 +176,6 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
-	const lengthBeforeRequest = blocks.size;
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
 
 
@@ -207,21 +206,8 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	const accounts = await echo.api.getAccounts(accountIds);
 
 	blocks = getState().block.get('blocks');
-	const blocksToRemove = blocks.size - lengthBeforeRequest;
 
 	const maxBlocks = getState().block.get('blocksCount');
-
-	if (blocksResult.length && blocks.size >= maxBlocks) {
-		blocks = blocks.withMutations((mapBlocks) => {
-			for (let i = 0; i < blocksResult.length; i += 1) {
-				const minBlockNum = Math.min(...keys);
-
-				mapBlocks.delete(minBlockNum);
-
-				keys.splice(keys.indexOf(minBlockNum), 1);
-			}
-		});
-	}
 
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
@@ -252,7 +238,9 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		}));
 	}
 
-	if (isLoadMore) {
+	const blocksToRemove = blocks.size - maxBlocks;
+
+	if (Math.sign(blocksToRemove) > 0) {
 		blocks = blocks.withMutations((mapBlocks) => {
 			for (let i = 0; i < blocksToRemove; i += 1) {
 				const [...blocksKeys] = mapBlocks.keys();
