@@ -10,8 +10,11 @@ import classnames from 'classnames';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
 import SearchField from '../../../components/SearchFields/SearchField';
+import ViewListPopover from '../../../components/ViewListPopover';
 
 import { INDEX_PATH } from '../../../constants/RouterConstants';
+
+import URLHelper from '../../../helpers/URLHelper';
 
 import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
 
@@ -42,18 +45,28 @@ class BlockInformation extends React.Component {
 
 	renderBlockInfo(blockInformation) {
 		const blockNumber = blockInformation.get('blockNumber');
-
 		const time = blockInformation.get('time');
-		const producer = blockInformation.get('producer');
+		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
 		const transactions = blockInformation.get('transactions');
-		const verifiers = blockInformation.get('verifiers');
+
+		let verifiers = blockInformation.get('verifiers');
+		if (verifiers) {
+			verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
+		}
+
+		const breadcrumbs = [
+			{
+				title: 'Block list',
+				path: INDEX_PATH,
+			},
+		];
 
 		return (
 			<React.Fragment>
 				<div className="table-container inner-information-container block-information">
-					<BreadCrumbs title={`Block ${blockNumber}`} returnFunction={this.returnFunction} />
+					<BreadCrumbs breadcrumbs={breadcrumbs} title={`Block ${blockNumber}`} returnFunction={this.returnFunction} />
 					<div className="block-description">
 						<div className="container time">
 							<div className="title">Time, Date</div>
@@ -65,7 +78,7 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container producer">
 							<div className="title">Producer</div>
-							<Link to="">
+							<Link to={URLHelper.createAccountUrl(producer.id)}>
 								<div className="value">{producer.name}</div>
 							</Link>
 						</div>
@@ -75,10 +88,7 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container verifiers">
 							<div className="title">Verifiers</div>
-							<div className="value">
-								{verifiers && verifiers.length}
-								<Link to="" className="view-list" >View list</Link>
-							</div>
+							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers || []} /></div>
 						</div>
 					</div>
 					<h2>{`${transactions && transactions.length} Transactions`}
@@ -166,7 +176,7 @@ class BlockInformation extends React.Component {
 																						<div className="title">From</div>
 																						<div className="value">
 																							<Link
-																								to=""
+																								to={URLHelper.createUrlById(io.from.id)}
 																								className="blue"
 																							>
 																								{io.from.name || io.from.id}
@@ -177,7 +187,7 @@ class BlockInformation extends React.Component {
 																						<div className="title">To</div>
 																						<div className="value">
 																							<Link
-																								to=""
+																								to={URLHelper.createUrlById(io.subject.id)}
 																								className="blue"
 																							>
 																								{io.subject.name || io.subject.id}
@@ -289,7 +299,8 @@ class BlockInformation extends React.Component {
 	render() {
 		const { blockInformation } = this.props;
 
-		return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
+		// return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
+		return this.renderBlockInfo(blockInformation);
 	}
 
 }

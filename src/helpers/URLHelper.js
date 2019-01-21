@@ -1,3 +1,4 @@
+import { CONTRACT_OBJECT_PREFIX, ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
 class URLHelper {
 
@@ -26,6 +27,29 @@ class URLHelper {
 	 */
 	static createContractUrl(contractId) {
 		return `/contracts?id=${contractId}`;
+	}
+
+	/**
+	 *
+	 * @param {String} id
+	 */
+	static createUrlById(id) {
+
+		const accountRegExp = new RegExp(`^${ACCOUNT_OBJECT_PREFIX}.\\d+$`);
+		const contractRegExp = new RegExp(`^${CONTRACT_OBJECT_PREFIX}.\\d+$`);
+
+		let url;
+
+		if (id.search(accountRegExp) !== -1) {
+			url = URLHelper.createAccountUrl(id);
+		} else if (id.search(contractRegExp) !== -1) {
+			url = URLHelper.createContractUrl(id);
+		} else {
+			url = URLHelper.createObjectsUrl(id);
+		}
+
+		return url;
+
 	}
 
 }

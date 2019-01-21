@@ -6,20 +6,18 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import history from '../../../history';
-
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SearchField from '../../../components/SearchFields/SearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
-import { MAX_PAGE_BLOCKS } from '../../../constants/GlobalConstants';
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+import URLHelper from '../../../helpers/URLHelper';
 
 class RecentBlockTable extends React.Component {
 
 	onSearch(blockNumber) {
-		history.push(`/blocks/${blockNumber}`);
+		this.props.history.push(`/blocks/${blockNumber}`);
 	}
 
 	getBlocks() {
@@ -33,6 +31,7 @@ class RecentBlockTable extends React.Component {
 				blockNumber: FormatHelper.formatAmount(key, 0),
 				time: value.get('time'),
 				producer: value.get('producer'),
+				producerId: value.get('producerId'),
 				reward: value.get('reward'),
 				rewardCurrency: value.get('rewardCurrency'),
 				weight: FormatHelper.formatBlockSize(value.get('weight')),
@@ -51,8 +50,6 @@ class RecentBlockTable extends React.Component {
 	}
 
 	render() {
-		const { blocksCount } = this.props;
-
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
@@ -65,7 +62,7 @@ class RecentBlockTable extends React.Component {
 								<div className="recent-block-mobile-view">
 									{
 										this.getBlocks().map((data) => (
-											<div key={data.round} className="recent-block-element">
+											<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} key={data.round} className="recent-block-element">
 												<div className="container">
 													<div className="title">Block #</div>
 													<div className="value">
@@ -83,7 +80,14 @@ class RecentBlockTable extends React.Component {
 												</div>
 												<div className="container">
 													<div className="title">Producer</div>
-													<div className="value">{data.producer}</div>
+													<div className="value">
+														<Link
+															to={URLHelper.createUrlById(data.producerId)}
+															className="blue"
+														>
+															{data.producer}
+														</Link>
+													</div>
 												</div>
 												<div className="container">
 													<div className="title">Reward</div>
@@ -97,7 +101,7 @@ class RecentBlockTable extends React.Component {
 													<div className="title">Transactions</div>
 													<div className="value">{data.transactions}</div>
 												</div>
-											</div>
+											</Link>
 										))
 									}
 								</div>
@@ -136,7 +140,7 @@ class RecentBlockTable extends React.Component {
 										{
 											this.getBlocks().map((data) => (
 												<React.Fragment key={data.round}>
-													<div className="divTableRow">
+													<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow">
 														<div className="divTableCell">
 															<Link
 																to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
@@ -146,11 +150,20 @@ class RecentBlockTable extends React.Component {
 															</Link>
 														</div>
 														<div className="divTableCell">{data.time}</div>
-														<div className="divTableCell"><div className="inner-container">{data.producer}</div></div>
+														<div className="divTableCell">
+															<div className="inner-container">
+																<Link
+																	to={URLHelper.createUrlById(data.producerId)}
+																	className="blue"
+																>
+																	{data.producer}
+																</Link>
+															</div>
+														</div>
 														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
 														<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
 														<div className="divTableCell">{data.transactions}</div>
-													</div>
+													</Link>
 												</React.Fragment>
 											))
 										}
@@ -159,7 +172,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					{blocksCount < MAX_PAGE_BLOCKS && <LoadMoreBtn />}
+					<LoadMoreBtn />
 				</div>
 			</div>
 		);
@@ -169,13 +182,12 @@ class RecentBlockTable extends React.Component {
 
 RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
-	blocksCount: PropTypes.number.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
 		blocks: state.block.get('blocks'),
-		blocksCount: state.block.get('blocksCount'),
 	}),
 	() => ({}),
 )(RecentBlockTable));

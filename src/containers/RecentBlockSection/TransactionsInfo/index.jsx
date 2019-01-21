@@ -4,6 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
+import FormatHelper from '../../../helpers/FormatHelper';
+import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 
 class TransactionsInfo extends React.Component {
 
@@ -19,10 +21,22 @@ class TransactionsInfo extends React.Component {
 
 	render() {
 
+		const blockNumber = 10000;
+		const breadcrumbs = [
+			{
+				title: 'Block list',
+				path: INDEX_PATH,
+			},
+			{
+				title: `Block ${FormatHelper.formatAmount(blockNumber, 0)}`,
+				path: BLOCK_INFORMATION_PATH.replace(':round', blockNumber),
+			},
+		];
+
 		return (
 			<React.Fragment>
 				<div className="table-container inner-information-container transaction-information">
-					<BreadCrumbs title="Transactions 12 in Block 1,265,456" returnFunction={this.returnFunction} />
+					<BreadCrumbs breadcrumbs={breadcrumbs} title="Transactions 12 in Block 1,265,456" returnFunction={this.returnFunction} />
 					<div className="transaction-info-table">
 						<div className="row">
 							<div className="title">Type</div>

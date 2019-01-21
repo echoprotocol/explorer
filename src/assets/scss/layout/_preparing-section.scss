@@ -1,6 +1,6 @@
 .preparing-section {
     padding-bottom: 10px;
-
+    
     @include res-768 {
         display: flex;
         justify-content: space-between;
@@ -213,6 +213,7 @@
             // @include transition;
 
             @include res-768 {
+                white-space: nowrap;
                 margin-bottom: 19px;
             }
 

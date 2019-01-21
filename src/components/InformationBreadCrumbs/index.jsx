@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class BreadCrumbs extends React.Component {
 
@@ -10,8 +11,15 @@ class BreadCrumbs extends React.Component {
 		return (
 			<div className="information-breadcrumbs">
 				<div className="breadcrumbs-container">
-					<a href="" className="element" onClick={(e) => { e.preventDefault(); }}>Block list</a>
-					<a href="" className="element" onClick={(e) => { e.preventDefault(); }}>Block 1,2433,3455</a>
+					{this.props.breadcrumbs && this.props.breadcrumbs.map((breadcrumb) => (
+						<Link
+							key={breadcrumb.title}
+							to={breadcrumb.path}
+							className="element"
+						>
+							{breadcrumb.title}
+						</Link>
+					))}
 				</div>
 				<div className="backwards">
 					<a
@@ -41,11 +49,13 @@ class BreadCrumbs extends React.Component {
 BreadCrumbs.propTypes = {
 	title: PropTypes.string,
 	returnFunction: PropTypes.func,
+	breadcrumbs: PropTypes.array,
 };
 
 BreadCrumbs.defaultProps = {
 	title: null,
 	returnFunction: null,
+	breadcrumbs: [],
 };
 
 export default BreadCrumbs;

@@ -23,10 +23,9 @@ import Operations from '../constants/Operations';
 import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
 
-const parseTransferEvent = async ({ log, data }) => {
+const parseTransferEvent = async ({ log, data }, symbol = '') => {
 	const [, hexFrom, hexTo] = log;
-	const value = { amount: parseInt(data, 16), symbol: '' };
-	console.log(log)
+	const value = { amount: parseInt(data, 16), symbol };
 	const fromInt = parseInt(hexFrom.slice(26), 16);
 	const toInt = parseInt(hexTo.slice(26), 16);
 
@@ -118,12 +117,15 @@ const formatOperation = async (data, round, opres) => {
 	}
 
 	if (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT) {
-		const contractResult = await echo.api.wsApi.database.getContractResult(resId);
+
+		const contractResult = await echo.api.getContractResult(resId);
 		const [, { exec_res: { excepted }, tr_receipt: { log } }] = contractResult;
 		result.status = excepted === 'None';
 
 		if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
+
 			const contractHistory = await echo.api.getContractHistory(result.subject.id);
+
 			let internalOperations = contractHistory
 				.filter(({ block_num }) => block_num === round)
 				.map(({ op }) => formatOperation(op));
@@ -131,7 +133,7 @@ const formatOperation = async (data, round, opres) => {
 			internalOperations = await Promise.all(internalOperations);
 			internalOperations = internalOperations.map((op) => { op.label = 'Subtransfer'; return op; });
 			let internalTransactions = internalOperations;
-			const [, { code }] = await echo.api.wsApi.database.getContract(result.subject.id);
+			const [, { code }] = await echo.api.getContract(result.subject.id);
 
 			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
@@ -159,10 +161,13 @@ const formatOperation = async (data, round, opres) => {
 	return result;
 };
 
+/**
+ *
+ * @param {Number} round
+ */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
-
 		if (!planeBlock) {
 			return;
 			// redirect 404
@@ -183,9 +188,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
 		}
-
 		const producer = await echo.api.getObject(planeBlock.account);
-
 		value.producer = { id: producer.id, name: producer.name };
 
 		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
@@ -207,9 +210,10 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.verifiers = verifiers.map(({ name, id }) => ({ id, name }));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
-		console.log(value);
+
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
+		console.log(error)
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 	}
 };
@@ -218,6 +222,11 @@ export const clearBlockInformation = () => (dispatch) => {
 	dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map({}) }));
 };
 
+/**
+ *  @method setLatestBlock
+ *
+ * 	Set latest block from blockchain to redux store
+ */
 export const setLatestBlock = () => (dispatch, getState) => {
 	const prepBlock = getState().round.get('preparingBlock');
 
@@ -230,6 +239,14 @@ export const setLatestBlock = () => (dispatch, getState) => {
 	return true;
 };
 
+/**
+ *  @method updateAverageTransactions
+ *
+ * 	Update latest block time, average transactions/operations and average block time
+ *
+ * 	@param {Number?} lastBlock
+ * 	@param {Number?} startBlock
+ */
 export const updateAverageTransactions = (lastBlock, startBlock) => async (dispatch, getState) => {
 	let transactions = getState().round.get('averageTransactions');
 	const averageTransactions = transactions.get('transactions');
@@ -247,7 +264,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 	try {
 		for (let i = startedBlock; i <= latestBlock; i += 1) {
-			blocks.push(echo.api.wsApi.database.getBlock(i));
+			blocks.push(echo.api.getBlock(i));
 		}
 
 		blocks = await Promise.all(blocks);
@@ -263,7 +280,11 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 				const opLength = block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
 				opLengths = opLengths.push(opLength);
 
-				unixTimestamps = unixTimestamps.push(moment(block.timestamp).unix());
+				const unixTimeStamp = moment(block.timestamp).unix();
+
+				if (Math.sign(unixTimeStamp) > 0) {
+					unixTimestamps = unixTimestamps.push(unixTimeStamp);
+				}
 
 				return ({
 					sum: sum.plus(block.transactions.length),
@@ -319,15 +340,29 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 };
 
-export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {
+/**
+ *  @method updateBlockList
+ *
+ * 	Update list of blocks on the recent blocks page
+ *
+ * 	@param {Number?} lastBlock
+ * 	@param {Number?} startBlock
+ * 	@param {Boolean?} isLoadMore
+ */
+export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
-	const latestBlock = lastBlock || getState().round.get('latestBlock');
-	const maxBlocks = getState().block.get('blocksCount');
+	let latestBlock = lastBlock || getState().round.get('latestBlock');
+
 
 	const [...keys] = blocks.keys();
-	const startedBlock = startBlock || Math.max(...keys);
+	let startedBlock = startBlock || Math.max(...keys);
 
 	let blocksResult = [];
+
+	if (isLoadMore) {
+		startedBlock -= 1;
+		latestBlock -= 1;
+	}
 
 	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
@@ -336,30 +371,26 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 	blocksResult = await Promise.all(blocksResult);
 
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
-		accounts[index] = block.account;
+		if (block) {
+			accounts[index] = block.account;
+		}
+
 		return accounts;
 	}, []);
 
 	const accounts = await echo.api.getAccounts(accountIds);
 
-	if (blocksResult.length && blocks.size >= maxBlocks) {
-		blocks = blocks.withMutations((mapBlocks) => {
-			for (let i = 0; i < blocksResult.length; i += 1) {
-				const minBlockNum = Math.min(...keys);
+	blocks = getState().block.get('blocks');
 
-				mapBlocks.delete(minBlockNum);
-
-				keys.splice(keys.indexOf(minBlockNum), 1);
-			}
-		});
-	}
+	const maxBlocks = getState().block.get('blocksCount');
 
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).format('HH:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
+				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
@@ -382,14 +413,34 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 		}));
 	}
 
+	const blocksToRemove = blocks.size - maxBlocks;
+
+	if (Math.sign(blocksToRemove) > 0) {
+		blocks = blocks.withMutations((mapBlocks) => {
+			for (let i = 0; i < blocksToRemove; i += 1) {
+				const [...blocksKeys] = mapBlocks.keys();
+				const minBlockNum = Math.min(...blocksKeys);
+
+				mapBlocks.delete(minBlockNum);
+
+				keys.splice(keys.indexOf(minBlockNum), 1);
+			}
+		});
+	}
+
 	dispatch(BlockReducer.actions.set({
 		field: 'blocks',
 		value: blocks,
 	}));
 };
 
+/**
+ *  @method initBlocks
+ *
+ * 	Initialize recent blocks and starting timestamp of latest block
+ */
 export const initBlocks = () => async (dispatch) => {
-	const obj = await echo.api.wsApi.database.getObjects(['2.1.0']);
+	const obj = await echo.api.getObjects(['2.1.0']);
 
 	if (obj && obj[0]) {
 		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));
@@ -413,7 +464,16 @@ export const initBlocks = () => async (dispatch) => {
 	}));
 };
 
+/**
+ *  @method setMaxDisplayedBlocks
+ *
+ * 	Set maximum number of displayed blocks
+ */
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
+	if (!echo._ws._connected || !echo.subscriber.subscriptions.echorand || !echo.subscriber.subscriptions.block) {
+		return false;
+	}
+
 	const maxBlocks = getState().block.get('blocksCount');
 
 	dispatch(BlockReducer.actions.set({
@@ -426,7 +486,9 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
 
-	await dispatch(updateBlockList(0, startedBlock));
+	await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
+
+	return true;
 };
