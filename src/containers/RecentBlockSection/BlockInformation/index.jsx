@@ -51,7 +51,7 @@ class BlockInformation extends React.Component {
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
 		const transactions = blockInformation.get('transactions') || [];
-
+		console.log(transactions)
 		let verifiers = blockInformation.get('verifiers');
 		if (verifiers) {
 			verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
@@ -80,7 +80,7 @@ class BlockInformation extends React.Component {
 						<div className="container producer">
 							<div className="title">Producer</div>
 							<Link to={URLHelper.createAccountUrl(producer.id)}>
-								<div className="value">{producer.name}</div>
+								<div className="value blue-link">{producer.name}</div>
 							</Link>
 						</div>
 						<div className="container reward">
@@ -144,7 +144,7 @@ class BlockInformation extends React.Component {
 																		</div>
 																		<div className="container amount">
 																			<div className="title">Amount</div>
-																			<div className="value">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
+																			<div className="value">{FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
 																		</div>
 																		<div className="container">
 																			<div className="title">Fee amount</div>
@@ -169,7 +169,7 @@ class BlockInformation extends React.Component {
 																					<div className="container amount">
 																						<div className="title">Amount</div>
 																						<div className="value">
-																							{io.value.amount}
+																							{FormatHelper.formatAmount(data.value.amount, data.value.precision)}
 																							<span className="gray">{io.value.symbol}</span>
 																						</div>
 																					</div>
@@ -239,7 +239,7 @@ class BlockInformation extends React.Component {
 																					<div className="sub-container"><div className="blue">{data.subject.name || data.subject.id}</div></div>
 																				</Link>
 																			</div>
-																			<div className="divTableCell">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
+																			<div className="divTableCell">{FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
 																			<div className="divTableCell">{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)} <span className="gray">{data.fee.symbol}</span></div>
 																			<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
 																		</Link>
@@ -268,7 +268,7 @@ class BlockInformation extends React.Component {
 																						</div>
 																						<div className="divTableCell">
 																							<div className="sub-container">
-																								{io.value.amount}
+																								{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
 																								<span className="gray">{io.value.symbol}</span>
 																								<div className="subtransfer-type">{io.label}</div>
 																							</div>

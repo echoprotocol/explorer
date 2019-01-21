@@ -25,7 +25,7 @@ import TypesHelper from '../helpers/TypesHelper';
 
 const parseTransferEvent = async ({ log, data }, symbol = '') => {
 	const [, hexFrom, hexTo] = log;
-	const value = { amount: parseInt(data, 16), symbol };
+	const value = { amount: new BN(data, 16).toString(10), symbol };
 	const fromInt = parseInt(hexFrom.slice(26), 16);
 	const toInt = parseInt(hexTo.slice(26), 16);
 
@@ -61,6 +61,12 @@ const formatOperation = async (data, round = undefined, opres = []) => {
 			amount: operation.fee.amount,
 			precision: feeAsset.precision,
 			symbol: feeAsset.symbol,
+		},
+		from: {
+			id: '',
+		},
+		subject: {
+			id: '',
 		},
 		name,
 		value: {},
