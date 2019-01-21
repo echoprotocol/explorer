@@ -44,7 +44,7 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInfo(blockInformation) {
-		const blockNumber = blockInformation.get('blockNumber');
+		const blockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');

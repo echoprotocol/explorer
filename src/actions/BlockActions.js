@@ -49,7 +49,7 @@ const parseTransferEvent = async ({ log, data }, symbol = '') => {
 	};
 };
 
-const formatOperation = async (data, round, opres) => {
+const formatOperation = async (data, round = undefined, opres = []) => {
 	const [type, operation] = data;
 	const [, resId] = opres;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
@@ -125,7 +125,6 @@ const formatOperation = async (data, round, opres) => {
 		if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
 
 			const contractHistory = await echo.api.getContractHistory(result.subject.id);
-
 			let internalOperations = contractHistory
 				.filter(({ block_num }) => block_num === round)
 				.map(({ op }) => formatOperation(op));
@@ -140,7 +139,7 @@ const formatOperation = async (data, round, opres) => {
 				let internalTransfers = log
 					.filter(({ address }) => `1.16.${parseInt(address.slice(2), 16)}` === result.subject.id)
 					.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-					.map(parseTransferEvent);
+					.map((event) => parseTransferEvent(event, ''));
 
 				internalTransfers = await Promise.all(internalTransfers);
 				internalTransactions = [...internalTransactions, ...internalTransfers];
@@ -213,7 +212,6 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
-		console.log(error)
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 	}
 };
