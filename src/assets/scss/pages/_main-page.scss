@@ -25,10 +25,20 @@
 
 .top-section {
     background-color: #18142a;
+    min-height: 245px;
+
+    @include res-768 {
+        min-height: 216px;
+    }
+
+    @include res-500 {
+        min-height: 210px;
+    }
 
     @include res-320 {
         position: relative;
         z-index: 20;
+        min-height: 240px;
     }
     .wrap {
         @include res-320 {
