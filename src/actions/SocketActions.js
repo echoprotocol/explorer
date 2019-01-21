@@ -13,6 +13,13 @@ import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED, DONE } from '..
 
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
 
+/**
+ *  @method roundSubscribe
+ *
+ * 	Call when trigger setEchorandSubscribe (round process notifications)
+ *
+ * 	@param {Object} notification
+ */
 const roundSubscribe = (notification) => (dispatch) => {
 	switch (notification[0].type) {
 		case ROUND_STARTED:
@@ -36,6 +43,11 @@ const roundSubscribe = (notification) => (dispatch) => {
 	return null;
 };
 
+/**
+ *  @method blockRelease
+ *
+ * 	Call when trigger setBlockApplySubscribe (release new block)
+ */
 const blockRelease = () => (dispatch) => {
 	dispatch(setLatestBlock());
 	dispatch(updateAverageTransactions());
@@ -44,6 +56,11 @@ const blockRelease = () => (dispatch) => {
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE }));
 };
 
+/**
+ *  @method connect
+ *
+ * 	WS connect to blockchain and set subscribe callbacks
+ */
 export const connect = () => async (dispatch) => {
 	try {
 		await echo.connect(config.API_URL, {
@@ -81,6 +98,11 @@ export const connect = () => async (dispatch) => {
 	}
 };
 
+/**
+ *  @method disconnect
+ *
+ * 	Disconnect from web socket
+ */
 export const disconnect = () => async (dispatch) => {
 	await echo.disconnect();
 

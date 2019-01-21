@@ -69,6 +69,11 @@ export const clearBlockInformation = () => (dispatch) => {
 	dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map({}) }));
 };
 
+/**
+ *  @method setLatestBlock
+ *
+ * 	Set latest block from blockchain to redux store
+ */
 export const setLatestBlock = () => (dispatch, getState) => {
 	const prepBlock = getState().round.get('preparingBlock');
 
@@ -81,6 +86,14 @@ export const setLatestBlock = () => (dispatch, getState) => {
 	return true;
 };
 
+/**
+ *  @method updateAverageTransactions
+ *
+ * 	Update latest block time, average transactions/operations and average block time
+ *
+ * 	@param {Number?} lastBlock
+ * 	@param {Number?} startBlock
+ */
 export const updateAverageTransactions = (lastBlock, startBlock) => async (dispatch, getState) => {
 	let transactions = getState().round.get('averageTransactions');
 	const averageTransactions = transactions.get('transactions');
@@ -174,6 +187,15 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 };
 
+/**
+ *  @method updateBlockList
+ *
+ * 	Update list of blocks on the recent blocks page
+ *
+ * 	@param {Number?} lastBlock
+ * 	@param {Number?} startBlock
+ * 	@param {Boolean?} isLoadMore
+ */
 export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
@@ -259,6 +281,11 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	}));
 };
 
+/**
+ *  @method initBlocks
+ *
+ * 	Initialize recent blocks and starting timestamp of latest block
+ */
 export const initBlocks = () => async (dispatch) => {
 	const obj = await echo.api.wsApi.database.getObjects(['2.1.0']);
 
@@ -284,6 +311,11 @@ export const initBlocks = () => async (dispatch) => {
 	}));
 };
 
+/**
+ *  @method setMaxDisplayedBlocks
+ *
+ * 	Set maximum number of displayed blocks
+ */
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	const maxBlocks = getState().block.get('blocksCount');
 
