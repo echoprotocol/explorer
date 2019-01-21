@@ -62,6 +62,10 @@ class TransactionsInfo extends React.Component {
 			);
 		}
 
+		if (typeof value === 'number') {
+			value = FormatHelper.formatAmount(value, 0);
+		}
+
 		return (
 			<div className={classnames('row', { bytecode: ['bytecode', 'logs'].includes(key) })} key={`${opKey}_${key}`}>
 				<div className="title">{key}</div>

@@ -88,7 +88,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				].includes(type)) {
 					const [, result] = await echo.api.getContractResult(transaction.operation_results[opIndex][1]);
 
-					options.excepted = result.exec_res.excepted;
+					options.excepted = _.startCase(result.exec_res.excepted);
 					options['code deposit'] = result.exec_res.code_deposit;
 
 					if (parseInt(result.exec_res.new_address, 10)) {
