@@ -169,6 +169,11 @@ export const clearBlockInformation = () => (dispatch) => {
 	dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map({}) }));
 };
 
+/**
+ *  @method setLatestBlock
+ *
+ * 	Set latest block from blockchain to redux store
+ */
 export const setLatestBlock = () => (dispatch, getState) => {
 	const prepBlock = getState().round.get('preparingBlock');
 
@@ -181,6 +186,14 @@ export const setLatestBlock = () => (dispatch, getState) => {
 	return true;
 };
 
+/**
+ *  @method updateAverageTransactions
+ *
+ * 	Update latest block time, average transactions/operations and average block time
+ *
+ * 	@param {Number?} lastBlock
+ * 	@param {Number?} startBlock
+ */
 export const updateAverageTransactions = (lastBlock, startBlock) => async (dispatch, getState) => {
 	let transactions = getState().round.get('averageTransactions');
 	const averageTransactions = transactions.get('transactions');
@@ -270,15 +283,29 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 };
 
-export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getState) => {
+/**
+ *  @method updateBlockList
+ *
+ * 	Update list of blocks on the recent blocks page
+ *
+ * 	@param {Number?} lastBlock
+ * 	@param {Number?} startBlock
+ * 	@param {Boolean?} isLoadMore
+ */
+export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
-	const latestBlock = lastBlock || getState().round.get('latestBlock');
-	const maxBlocks = getState().block.get('blocksCount');
+	let latestBlock = lastBlock || getState().round.get('latestBlock');
+
 
 	const [...keys] = blocks.keys();
-	const startedBlock = startBlock || Math.max(...keys);
+	let startedBlock = startBlock || Math.max(...keys);
 
 	let blocksResult = [];
+
+	if (isLoadMore) {
+		startedBlock -= 1;
+		latestBlock -= 1;
+	}
 
 	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
@@ -293,17 +320,9 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 
 	const accounts = await echo.api.getAccounts(accountIds);
 
-	if (blocksResult.length && blocks.size >= maxBlocks) {
-		blocks = blocks.withMutations((mapBlocks) => {
-			for (let i = 0; i < blocksResult.length; i += 1) {
-				const minBlockNum = Math.min(...keys);
+	blocks = getState().block.get('blocks');
 
-				mapBlocks.delete(minBlockNum);
-
-				keys.splice(keys.indexOf(minBlockNum), 1);
-			}
-		});
-	}
+	const maxBlocks = getState().block.get('blocksCount');
 
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
@@ -333,12 +352,32 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 		}));
 	}
 
+	const blocksToRemove = blocks.size - maxBlocks;
+
+	if (Math.sign(blocksToRemove) > 0) {
+		blocks = blocks.withMutations((mapBlocks) => {
+			for (let i = 0; i < blocksToRemove; i += 1) {
+				const [...blocksKeys] = mapBlocks.keys();
+				const minBlockNum = Math.min(...blocksKeys);
+
+				mapBlocks.delete(minBlockNum);
+
+				keys.splice(keys.indexOf(minBlockNum), 1);
+			}
+		});
+	}
+
 	dispatch(BlockReducer.actions.set({
 		field: 'blocks',
 		value: blocks,
 	}));
 };
 
+/**
+ *  @method initBlocks
+ *
+ * 	Initialize recent blocks and starting timestamp of latest block
+ */
 export const initBlocks = () => async (dispatch) => {
 	const obj = await echo.api.wsApi.database.getObjects(['2.1.0']);
 
@@ -364,7 +403,16 @@ export const initBlocks = () => async (dispatch) => {
 	}));
 };
 
+/**
+ *  @method setMaxDisplayedBlocks
+ *
+ * 	Set maximum number of displayed blocks
+ */
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
+	if (!echo._ws._connected || !echo.subscriber.subscriptions.echorand || !echo.subscriber.subscriptions.block) {
+		return false;
+	}
+
 	const maxBlocks = getState().block.get('blocksCount');
 
 	dispatch(BlockReducer.actions.set({
@@ -377,7 +425,9 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
 
-	await dispatch(updateBlockList(0, startedBlock));
+	await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
 
 	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
+
+	return true;
 };

@@ -6,6 +6,7 @@ import echo from 'echojs-lib';
 
 import Routes from './routes'; // Or wherever you keep your reducers
 import './assets/loader';
+import './assets/favicon.ico';
 import GlobalActions from './actions/GlobalActions';
 
 // Create a history of your choosing (we're using a browser history in this case)
