@@ -1,10 +1,10 @@
 import { createModule } from 'redux-modules';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = new Map({
-	info: new Map({}),
+	operations: new List([]),
 });
 
 export default createModule({
