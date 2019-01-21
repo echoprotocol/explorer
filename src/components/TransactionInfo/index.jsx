@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 
-import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
@@ -90,10 +90,25 @@ class TransactionsInfo extends React.Component {
 		const { round, index } = this.props.match.params;
 		const { operations } = this.props;
 
+		const breadcrumbs = [
+			{
+				title: 'Block list',
+				path: INDEX_PATH,
+			},
+			{
+				title: `Block ${FormatHelper.formatAmount(round, 0)}`,
+				path: BLOCK_INFORMATION_PATH.replace(/:round/, round),
+			},
+		];
+
 		return (
 			<React.Fragment>
 				<div className="table-container inner-information-container transaction-information">
-					<BreadCrumbs title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`} returnFunction={() => this.returnFunction} />
+					<BreadCrumbs
+						breadcrumbs={breadcrumbs}
+						title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}
+						returnFunction={() => this.returnFunction}
+					/>
 					{
 						operations ?
 							operations.map((op, i) => this.renderOperation(op, i)) : null

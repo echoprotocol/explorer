@@ -2,7 +2,10 @@ import echo, { OPERATIONS_IDS, isAccountId, isAssetId } from 'echojs-lib';
 import { List } from 'immutable';
 import _ from 'lodash';
 
+import history from '../history';
+
 import Operations from '../constants/Operations';
+import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 
 import ConvertHelper from '../helpers/ConvertHelper';
 
@@ -23,6 +26,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			const block = await echo.api.getBlock(blockNumber);
 
 			if (!block || !block.transactions[index - 1]) {
+				history.push(NOT_FOUND_PATH);
 				return;
 			}
 
