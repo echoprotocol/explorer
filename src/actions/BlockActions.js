@@ -138,6 +138,7 @@ const formatOperation = async (data, round = undefined, opres = []) => {
 
 				let internalTransfers = log
 					.filter(({ address }) => `1.16.${parseInt(address.slice(2), 16)}` === result.subject.id)
+					// eslint-disable-next-line no-shadow
 					.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
 					.map((event) => parseTransferEvent(event, ''));
 
