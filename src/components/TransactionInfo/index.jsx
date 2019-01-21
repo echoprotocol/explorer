@@ -4,8 +4,9 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 
-import { OBJECTS_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import FormatHelper from '../../helpers/FormatHelper';
+import URLHelper from '../../helpers/URLHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 
 class TransactionsInfo extends React.Component {
@@ -22,12 +23,34 @@ class TransactionsInfo extends React.Component {
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, this.props.match.params.round));
 	}
 
+	renderContractLogs(logs) {
+		return (
+			<div>
+				{
+					logs.map((log, index) => (
+						<span key={log.data}>
+							<span><b>Log [{index}]</b>:<br /></span>
+							<span>
+								<span><b>Contract: </b></span><span>{log.contract}<br /></span>
+								<span><b>Topics</b><br /></span>
+								{log.topics.map((topic, i) => (<span key={topic}>[{i}]: {topic}<br /></span>))}
+								<span><b>Data</b><br /></span>
+								<span>{log.data}<br /></span>
+								<br />
+							</span>
+						</span>
+					))
+				}
+			</div>
+		);
+	}
+
 	renderOperationRow(key, value, opKey) {
-		if (typeof value === 'object') {
+		if (typeof value === 'object' && key !== 'logs') {
 			if (!value.link) {
 				value = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
 			} else {
-				value = (<Link to={`${OBJECTS_PATH}?id=${value.link}`} className="blue">{value.value}</Link>);
+				value = (<Link to={URLHelper.createUrlById(value.link)} className="blue">{value.value}</Link>);
 			}
 		}
 
@@ -39,16 +62,11 @@ class TransactionsInfo extends React.Component {
 			);
 		}
 
-		if (key === 'contract id') {
-			// TODO link to contract page
-			value = (<a href="" className="blue" onClick={(e) => e.preventDefault()}>{value}</a>);
-		}
-
 		return (
-			<div className={classnames('row', { bytecode: key === 'bytecode' })} key={`${opKey}_${key}`}>
+			<div className={classnames('row', { bytecode: ['bytecode', 'logs'].includes(key) })} key={`${opKey}_${key}`}>
 				<div className="title">{key}</div>
 				<div className="value">
-					{value}
+					{key !== 'logs' ? value : this.renderContractLogs(value)}
 					{key === 'bytecode' ? <button className="copy-bytecode" onClick={() => copy(value)}>Copy</button> : null}
 				</div>
 			</div>

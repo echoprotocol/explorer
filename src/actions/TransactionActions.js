@@ -1,7 +1,10 @@
 import echo, { OPERATIONS_IDS, isAccountId, isAssetId } from 'echojs-lib';
 import { List } from 'immutable';
+import _ from 'lodash';
 
 import Operations from '../constants/Operations';
+
+import ConvertHelper from '../helpers/ConvertHelper';
 
 import TransactionReducer from '../reducers/TransactionReducer';
 import BaseActionsClass from './BaseActionsClass';
@@ -31,6 +34,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				delete options.memo;
 				delete options.extensions;
 				delete options.gasPrice;
+				delete options.eth_accuracy;
 
 				options = Object.entries(options).map(async ([key, value]) => {
 					let link = null;
@@ -44,7 +48,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							}
 							break;
 						case 'object':
-							if (value.amount && value.asset_id) {
+							if (_.has(value, 'amount') && value.asset_id) {
 								const asset = await echo.api.getObject(value.asset_id);
 								delete value.asset_id;
 								value.precision = asset.precision;
@@ -61,6 +65,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							break;
 						case 'callee':
 							key = 'contract id';
+							link = value;
 							break;
 						default:
 							break;
@@ -78,9 +83,20 @@ class TransactionActionsClass extends BaseActionsClass {
 					OPERATIONS_IDS.CONTRACT_TRANSFER,
 				].includes(type)) {
 					const [, result] = await echo.api.getContractResult(transaction.operation_results[opIndex][1]);
+
 					options.excepted = result.exec_res.excepted;
 					options['code deposit'] = result.exec_res.code_deposit;
-					// TODO logs
+
+					if (parseInt(result.exec_res.new_address, 10)) {
+						options['new contract id'] = ConvertHelper.toContractId(result.exec_res.new_address);
+					}
+
+					if (result.tr_receipt.log.length) {
+						options.logs = result.tr_receipt.log.map(({ address, data, log }) => {
+							const contract = ConvertHelper.toContractId(address);
+							return { topics: log, contract, data };
+						});
+					}
 				}
 
 				return {
