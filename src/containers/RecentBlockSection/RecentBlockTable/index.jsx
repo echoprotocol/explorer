@@ -11,7 +11,6 @@ import SearchField from '../../../components/SearchFields/SearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
-import { MAX_PAGE_BLOCKS } from '../../../constants/GlobalConstants';
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import URLHelper from '../../../helpers/URLHelper';
 
@@ -51,8 +50,6 @@ class RecentBlockTable extends React.Component {
 	}
 
 	render() {
-		const { blocksCount } = this.props;
-
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
@@ -175,7 +172,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					{blocksCount < MAX_PAGE_BLOCKS && <LoadMoreBtn />}
+					<LoadMoreBtn />
 				</div>
 			</div>
 		);
@@ -185,14 +182,12 @@ class RecentBlockTable extends React.Component {
 
 RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
-	blocksCount: PropTypes.number.isRequired,
 	history: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
 		blocks: state.block.get('blocks'),
-		blocksCount: state.block.get('blocksCount'),
 	}),
 	() => ({}),
 )(RecentBlockTable));
