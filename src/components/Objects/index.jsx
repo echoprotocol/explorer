@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
-import copy from 'copy-to-clipboard';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
+import copy from 'copy-to-clipboard';
 
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 import URLHelper from '../../helpers/URLHelper';

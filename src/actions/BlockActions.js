@@ -91,12 +91,17 @@ const formatOperation = async (data, round) => {
 	}
 
 	if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
+		console.log(await echo.api.getContractLogs(result.subject, round - 100, round + 100));
+		// const [, { code }] = await echo.api.wsApi.database.getContract(result.subject);
+
+
 		const contractHistory = await echo.api.getContractHistory(result.subject);
 		const internalTransactions = contractHistory
 			.filter(({ block_num }) => block_num === round)
 			.map(({ op }) => formatOperation(op));
 
 		result.internal = await Promise.all(internalTransactions);
+		// console.log(contractHistory)
 	}
 
 	// if (type === 0 && operation.memo && operation.memo.message) {
@@ -209,11 +214,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 				const opLength = block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
 				opLengths = opLengths.push(opLength);
 
-				const unixTimeStamp = moment(block.timestamp).unix();
-
-				if (Math.sign(unixTimeStamp) > 0) {
-					unixTimestamps = unixTimestamps.push(unixTimeStamp);
-				}
+				unixTimestamps = unixTimestamps.push(moment(block.timestamp).unix());
 
 				return ({
 					sum: sum.plus(block.transactions.length),
@@ -286,10 +287,7 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 	blocksResult = await Promise.all(blocksResult);
 
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
-		if (block) {
-			accounts[index] = block.account;
-		}
-
+		accounts[index] = block.account;
 		return accounts;
 	}, []);
 
@@ -313,7 +311,6 @@ export const updateBlockList = (lastBlock, startBlock) => async (dispatch, getSt
 			mapBlocks
 				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
-				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
