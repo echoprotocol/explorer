@@ -5,8 +5,6 @@ import { isString } from 'lodash';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
-import queryString from 'query-string';
-import { Link } from 'react-router-dom';
 
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 import URLHelper from '../../helpers/URLHelper';
