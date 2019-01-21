@@ -12,7 +12,10 @@ import BreadCrumbs from '../../../components/InformationBreadCrumbs';
 import SearchField from '../../../components/SearchFields/SearchField';
 import ViewListPopover from '../../../components/ViewListPopover';
 
-import { INDEX_PATH, ACCOUNTS_PATH } from '../../../constants/RouterConstants';
+import { INDEX_PATH } from '../../../constants/RouterConstants';
+
+import URLHelper from '../../../helpers/URLHelper';
+import FormatHelper from '../../../helpers/FormatHelper';
 
 import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
 
@@ -42,18 +45,17 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInfo(blockInformation) {
-		const blockNumber = blockInformation.get('blockNumber');
-
+		const blockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
-		const producer = blockInformation.get('producer');
+		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
+		const transactions = blockInformation.get('transactions') || [];
+
 		let verifiers = blockInformation.get('verifiers');
 		if (verifiers) {
-			verifiers = verifiers.map((name) => ({ name, to: ACCOUNTS_PATH.replace(/:name/, name) }));
+			verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
 		}
-
-		const operations = blockInformation.get('operations');
 
 		const breadcrumbs = [
 			{
@@ -77,7 +79,9 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container producer">
 							<div className="title">Producer</div>
-							<div className="value">{producer}</div>
+							<Link to={URLHelper.createAccountUrl(producer.id)}>
+								<div className="value">{producer.name}</div>
+							</Link>
 						</div>
 						<div className="container reward">
 							<div className="title">Reward</div>
@@ -88,7 +92,7 @@ class BlockInformation extends React.Component {
 							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers || []} /></div>
 						</div>
 					</div>
-					<h2>{`${operations && operations.length} Operations`}
+					<h2>{`${transactions && transactions.length} Transactions`}
 						<Media query="(max-width: 767px)">
 							{(matches) =>
 								(matches ? (
@@ -100,7 +104,7 @@ class BlockInformation extends React.Component {
 						</Media>
 					</h2>
 					{
-						operations && operations.length ?
+						transactions && transactions.length ?
 							(
 								<div className="table">
 									<Media query="(max-width: 767px)">
@@ -108,89 +112,96 @@ class BlockInformation extends React.Component {
 											(matches ? (
 												<div className="recent-block-mobile-view">
 													{
-														operations.map((data, i) => (
-															<React.Fragment>
-																<Link
-																	to=""
-																	key={Math.random()}
-																	className={classnames('recent-block-element', { 'with-subtransfer': data.internal })}
-																>
-																	<div className="container">
-																		<div className="title">#</div>
-																		<div className="value">{i + 1}</div>
-																	</div>
-																	<div className="container">
-																		<div className="title">Type</div>
-																		<div className="value">{data.name}</div>
-																	</div>
-																	<div className="container">
-																		<div className="title">From</div>
-																		<div className="value"><div className="blue">{data.from}</div></div>
-																	</div>
-																	<div className="container">
-																		<div className="title">To</div>
-																		<div className="value"><div className="blue">{data.subject}</div></div>
-																	</div>
-																	<div className="container amount">
-																		<div className="title">Amount</div>
-																		<div className="value">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
-																	</div>
-																	<div className="container">
-																		<div className="title">Fee amount</div>
-																		<div className="value">{data.fee.amount} <span className="gray">{data.fee.symbol}</span></div>
-																	</div>
-																	<div className={`container ${(data.status ? '' : ('fail'))}`}>
-																		<div className="title">Status</div>
-																		<div className="value">{data.status ? 'Success' : 'Fail'}</div>
-																	</div>
-																</Link>
-																{
-																	data.internal ?
-																		(data.internal.map((io, i) => (
-																			<div
-																				key={Math.random()}
-																				className={classnames('recent-block-element', 'is-subtransfer', { 'is-subtransfer_last': i === (data.internal.length - 1) })}
-																			>
-																				<div className="subtransfer-type">
-																					{io.type === 49 ? 'Subtransfer' : 'Call contract'}
-																				</div>
-																				<div className="line-arrow" />
-																				<div className="container amount">
-																					<div className="title">Amount</div>
-																					<div className="value">
-																						{io.value.amount}
-																						<span className="gray">{io.value.symbol}</span>
-																					</div>
-																				</div>
-																				<div className="container">
-																					<div className="title">From</div>
-																					<div className="value">
-																						<Link
-																							to=""
-																							className="blue"
-																						>
-																							{io.from}
-																						</Link>
-																					</div>
-																				</div>
-																				<div className="container">
-																					<div className="title">To</div>
-																					<div className="value">
-																						<Link
-																							to=""
-																							className="blue"
-																						>
-																							{io.subject}
-																						</Link>
-																					</div>
-																				</div>
-																			</div>
-																		))
-																		) : null
-																}
-															</React.Fragment>
+														transactions.map((operations, i) =>
+															operations.map((data, j) => (
+																<React.Fragment key={Math.random()} >
+																	<Link
+																		to=""
+																		className={classnames('recent-block-element', { 'with-subtransfer': data.internal && data.internal.length })}
+																	>
 
-														))
+																		<div className="container">
+
+																			{
+																				j === 0 &&
+																				<React.Fragment>
+																					<div className="title">#</div>
+																					<div className="value">{i + 1}</div>
+																				</React.Fragment>
+																			}
+																		</div>
+																		<div className="container">
+																			<div className="title">Type</div>
+																			<div className="value">{data.name}</div>
+																		</div>
+																		<div className="container">
+																			<div className="title">From</div>
+																			<div className="value"><div className="blue">{data.from.name || data.from.id}</div></div>
+																		</div>
+																		<div className="container">
+																			<div className="title">To</div>
+																			<div className="value"><div className="blue">{data.subject.name || data.subject.id}</div></div>
+																		</div>
+																		<div className="container amount">
+																			<div className="title">Amount</div>
+																			<div className="value">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
+																		</div>
+																		<div className="container">
+																			<div className="title">Fee amount</div>
+																			<div className="value">{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)} <span className="gray">{data.fee.symbol}</span></div>
+																		</div>
+																		<div className={`container ${(data.status ? '' : ('fail'))}`}>
+																			<div className="title">Status</div>
+																			<div className="value">{data.status ? 'Success' : 'Fail'}</div>
+																		</div>
+																	</Link>
+																	{
+																		data.internal && data.internal.length ?
+																			(data.internal.map((io, i) => (
+																				<div
+																					key={Math.random()}
+																					className={classnames('recent-block-element', 'is-subtransfer', { 'is-subtransfer_last': i === (data.internal.length - 1) })}
+																				>
+																					<div className="subtransfer-type">
+																						{io.label}
+																					</div>
+																					<div className="line-arrow" />
+																					<div className="container amount">
+																						<div className="title">Amount</div>
+																						<div className="value">
+																							{io.value.amount}
+																							<span className="gray">{io.value.symbol}</span>
+																						</div>
+																					</div>
+																					<div className="container">
+																						<div className="title">From</div>
+																						<div className="value">
+																							<Link
+																								to={URLHelper.createUrlById(io.from.id)}
+																								className="blue"
+																							>
+																								{io.from.name || io.from.id}
+																							</Link>
+																						</div>
+																					</div>
+																					<div className="container">
+																						<div className="title">To</div>
+																						<div className="value">
+																							<Link
+																								to={URLHelper.createUrlById(io.subject.id)}
+																								className="blue"
+																							>
+																								{io.subject.name || io.subject.id}
+																							</Link>
+																						</div>
+																					</div>
+																				</div>
+																			))
+																			) : null
+																	}
+																</React.Fragment>
+
+															)))
 													}
 												</div>
 											) : (
@@ -207,59 +218,70 @@ class BlockInformation extends React.Component {
 														</div>
 														<div className="devider" />
 														{
-															operations.map((data, i) => (
-																<React.Fragment key={Math.random()}>
-																	<Link
-																		to=""
-																		className={classnames('divTableRow', { 'with-subtransfer': data.internal })}
-																	>
-																		<div className="divTableCell">{i + 1}</div>
-																		<div className="divTableCell">{data.name}</div>
-																		<div className="divTableCell">
-																			<div className="inner-container"><div className="blue">{data.from}</div></div>
-																		</div>
-																		<div className="divTableCell transaction-to">
-																			<div className="sub-container"><div className="blue">{data.subject}</div></div>
-																		</div>
-																		<div className="divTableCell">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
-																		<div className="divTableCell">{data.fee.amount} <span className="gray">{data.fee.symbol}</span></div>
-																		<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
-																	</Link>
-																	{
-																		data.internal ?
-																			(data.internal.map((io, i) => (
-																				<div
-																					key={Math.random()}
-																					className={classnames('divTableRow', 'is-subtransfer', { 'is-subtransfer_last': i === (data.internal.length - 1) })}
-																				>
-																					<div className="divTableCell" />
-																					<div className="divTableCell" />
-																					<div className="divTableCell">
-																						<div className="inner-container"><div className="blue">{io.from}</div></div>
-																					</div>
-																					<div className="divTableCell transaction-to">
-																						<div className="sub-container">
-																							{/* Блок line-arrow добавляется только для строк с классом is-subtransfer */}
-																							<div className="line-arrow" />
-																							<div className="blue">{io.subject}</div>
+															transactions.map((operations, i) =>
+																operations.map((data, j) => (
+																	<React.Fragment key={Math.random()}>
+																		<Link
+																			to=""
+																			className={classnames('divTableRow', { 'with-subtransfer': data.internal && data.internal.length })}
+																		>
+																			{
+																				<div className="divTableCell">{j === 0 ? i + 1 : ''}</div>
+																			}
+																			<div className="divTableCell">{data.name}</div>
+																			<div className="divTableCell">
+																				<Link to={URLHelper.createUrlById(data.from.id)}>
+																					<div className="inner-container"><div className="blue">{data.from.name || data.from.id}</div></div>
+																				</Link>
+																			</div>
+																			<div className="divTableCell transaction-to">
+																				<Link to={URLHelper.createUrlById(data.subject.id)}>
+																					<div className="sub-container"><div className="blue">{data.subject.name || data.subject.id}</div></div>
+																				</Link>
+																			</div>
+																			<div className="divTableCell">{data.value.amount} <span className="gray">{data.value.symbol}</span></div>
+																			<div className="divTableCell">{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)} <span className="gray">{data.fee.symbol}</span></div>
+																			<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
+																		</Link>
+																		{
+																			data.internal && data.internal.length ?
+																				(data.internal.map((io, i) => (
+																					<div
+																						key={Math.random()}
+																						className={classnames('divTableRow', 'is-subtransfer', { 'is-subtransfer_last': i === (data.internal.length - 1) })}
+																					>
+																						<div className="divTableCell" />
+																						<div className="divTableCell" />
+																						<div className="divTableCell">
+																							<Link to={URLHelper.createUrlById(io.from.id)}>
+																								<div className="inner-container"><div className="blue">{io.from.name || io.from.id}</div></div>
+																							</Link>
 																						</div>
-																					</div>
-																					<div className="divTableCell">
-																						<div className="sub-container">
-																							{io.value.amount}
-																							<span className="gray">{io.value.symbol}</span>
-																							<div className="subtransfer-type">Subtransfer</div>
+																						<div className="divTableCell transaction-to">
+																							<div className="sub-container">
+																								{/* Блок line-arrow добавляется только для строк с классом is-subtransfer */}
+																								<div className="line-arrow" />
+																								<Link to={URLHelper.createUrlById(io.subject.id)}>
+																									<div className="blue">{io.subject.name || io.subject.id}</div>
+																								</Link>
+																							</div>
 																						</div>
+																						<div className="divTableCell">
+																							<div className="sub-container">
+																								{io.value.amount}
+																								<span className="gray">{io.value.symbol}</span>
+																								<div className="subtransfer-type">{io.label}</div>
+																							</div>
+																						</div>
+																						<div className="divTableCell" />
+																						<div className="divTableCell success" />
 																					</div>
-																					<div className="divTableCell" />
-																					<div className="divTableCell success" />
-																				</div>
-																			))
+																				))
 
-																			) : null
-																	}
-																</React.Fragment>
-															))
+																				) : null
+																		}
+																	</React.Fragment>
+																)))
 														}
 
 														{/* Класс with-subtransfer добавляется для главного элемента, который имееет сабтрансферы */}

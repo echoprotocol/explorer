@@ -15,14 +15,43 @@ import {
 	PAGE_BLOCKS_COUNT,
 	PAGE_ADD_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
+	ERC20_HASHES,
 } from '../constants/GlobalConstants';
 
 import Operations from '../constants/Operations';
 
 import FormatHelper from '../helpers/FormatHelper';
+import TypesHelper from '../helpers/TypesHelper';
 
-const formatOperation = async (data, round) => {
+const parseTransferEvent = async ({ log, data }, symbol = '') => {
+	const [, hexFrom, hexTo] = log;
+	const value = { amount: parseInt(data, 16), symbol };
+	const fromInt = parseInt(hexFrom.slice(26), 16);
+	const toInt = parseInt(hexTo.slice(26), 16);
+
+	let from = { id: `1.16.${fromInt}` };
+	let to = { id: `1.16.${toInt}` };
+
+	if (hexFrom[25] === 0) {
+		const id = `1.2.${fromInt}`;
+		const { name } = (await echo.api.getObject(id));
+		from = { id, name };
+	}
+
+	if (hexTo[25] === 0) {
+		const id = `1.2.${toInt}`;
+		const { name } = (await echo.api.getObject(id));
+		to = { id, name };
+	}
+
+	return {
+		from, subject: to, value, label: 'ERC 20 Token transfer',
+	};
+};
+
+const formatOperation = async (data, round = undefined, opres = []) => {
 	const [type, operation] = data;
+	const [, resId] = opres;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
 
 	const { name, options } = Object.values(Operations).find((i) => i.value === type);
@@ -44,24 +73,29 @@ const formatOperation = async (data, round) => {
 			if (options.from[1]) {
 				const request = _.get(operation, options.from[0]);
 				const response = await echo.api.getObject(request);
-				result.subject = response[options.from[1]];
+				result.from = { id: request, name: response[options.from[1]] };
 			} else {
-				result.from = operation[options.from[0]];
+				result.from = { id: operation[options.from[0]] };
 			}
 		} else {
 			const request = _.get(operation, options.from);
 			const response = await echo.api.getObject(request);
-			result.from = response ? response.name : options.from;
+
+			result.from = { id: request };
+			if (response) {
+				result.from.name = response.name;
+			}
 		}
 	}
+
 
 	if (options.subject) {
 		if (options.subject[1]) {
 			const request = _.get(operation, options.subject[0]);
 			const response = await echo.api.getObject(request);
-			result.subject = response[options.subject[1]];
+			result.subject = { id: request, name: response[options.subject[1]] };
 		} else {
-			result.subject = operation[options.subject[0]];
+			result.subject = { id: operation[options.subject[0]] };
 		}
 	}
 
@@ -82,26 +116,38 @@ const formatOperation = async (data, round) => {
 		};
 	}
 
-	if (
-		type === OPERATIONS_IDS.CREATE_CONTRACT ||
-			type === OPERATIONS_IDS.CALL_CONTRACT ||
-			type === OPERATIONS_IDS.CONTRACT_TRANSFER
-	) {
-		result.status = true;
-	}
+	if (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT) {
 
-	if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
-		console.log(await echo.api.getContractLogs(result.subject, round - 100, round + 100));
-		// const [, { code }] = await echo.api.wsApi.database.getContract(result.subject);
+		const contractResult = await echo.api.getContractResult(resId);
+		const [, { exec_res: { excepted }, tr_receipt: { log } }] = contractResult;
+		result.status = excepted === 'None';
 
+		if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
 
-		const contractHistory = await echo.api.getContractHistory(result.subject);
-		const internalTransactions = contractHistory
-			.filter(({ block_num }) => block_num === round)
-			.map(({ op }) => formatOperation(op));
+			const contractHistory = await echo.api.getContractHistory(result.subject.id);
+			let internalOperations = contractHistory
+				.filter(({ block_num }) => block_num === round)
+				.map(({ op }) => formatOperation(op));
 
-		result.internal = await Promise.all(internalTransactions);
-		// console.log(contractHistory)
+			internalOperations = await Promise.all(internalOperations);
+			internalOperations = internalOperations.map((op) => { op.label = 'Subtransfer'; return op; });
+			let internalTransactions = internalOperations;
+			const [, { code }] = await echo.api.getContract(result.subject.id);
+
+			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
+
+				let internalTransfers = log
+					.filter(({ address }) => `1.16.${parseInt(address.slice(2), 16)}` === result.subject.id)
+					// eslint-disable-next-line no-shadow
+					.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
+					.map((event) => parseTransferEvent(event, ''));
+
+				internalTransfers = await Promise.all(internalTransfers);
+				internalTransactions = [...internalTransactions, ...internalTransfers];
+			}
+
+			result.internal = internalTransactions;
+		}
 	}
 
 	// if (type === 0 && operation.memo && operation.memo.message) {
@@ -115,10 +161,13 @@ const formatOperation = async (data, round) => {
 	return result;
 };
 
+/**
+ *
+ * @param {Number} round
+ */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
-
 		if (!planeBlock) {
 			return;
 			// redirect 404
@@ -129,37 +178,40 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const value = {};
 
 		if (handledBlock) {
-			value.producer = handledBlock.get('producer');
 			value.reward = `${handledBlock.get('reward')} ${handledBlock.get('rewardCurrency')}`;
 			value.size = `${FormatHelper.formatBlockSize(handledBlock.get('weight'))}
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			value.producer = (await echo.api.getObject(planeBlock.account)).name;
 			value.reward = '10 ECHO';
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
 		}
+		const producer = await echo.api.getObject(planeBlock.account);
+		value.producer = { id: producer.id, name: producer.name };
 
 		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
-		const planeOperations = planeBlock.transactions
-			.reduce((acum, { operations }) => { acum.push(...operations); return acum; }, []);
+		const { transactions } = planeBlock;
 
-		let operations = [];
-		if (planeOperations.length !== 0) {
-			const promiseOperations = planeOperations.map((op) => formatOperation(op, planeBlock.round));
-			operations = await Promise.all(promiseOperations);
+		let resultTransactions = [];
+		if (transactions.length !== 0) {
+
+			const promiseTransactions = transactions
+				.map(({ operations, operation_results }) =>
+					Promise.all(operations.map((op, i) =>
+						formatOperation(op, planeBlock.round, operation_results[i]))));
+			resultTransactions = await Promise.all(promiseTransactions);
 		}
-		value.operations = operations;
-		value.verifiers = verifiers.map(({ name }) => name);
+
+		value.transactions = resultTransactions;
+		value.verifiers = verifiers.map(({ name, id }) => ({ id, name }));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
-
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 	}
@@ -211,7 +263,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 	try {
 		for (let i = startedBlock; i <= latestBlock; i += 1) {
-			blocks.push(echo.api.wsApi.database.getBlock(i));
+			blocks.push(echo.api.getBlock(i));
 		}
 
 		blocks = await Promise.all(blocks);
@@ -227,7 +279,11 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 				const opLength = block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
 				opLengths = opLengths.push(opLength);
 
-				unixTimestamps = unixTimestamps.push(moment(block.timestamp).unix());
+				const unixTimeStamp = moment(block.timestamp).unix();
+
+				if (Math.sign(unixTimeStamp) > 0) {
+					unixTimestamps = unixTimestamps.push(unixTimeStamp);
+				}
 
 				return ({
 					sum: sum.plus(block.transactions.length),
@@ -314,7 +370,10 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	blocksResult = await Promise.all(blocksResult);
 
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
-		accounts[index] = block.account;
+		if (block) {
+			accounts[index] = block.account;
+		}
+
 		return accounts;
 	}, []);
 
@@ -328,8 +387,9 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('HH:mm:ss'))
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).format('HH:mm:ss'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
+				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
@@ -379,7 +439,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
  * 	Initialize recent blocks and starting timestamp of latest block
  */
 export const initBlocks = () => async (dispatch) => {
-	const obj = await echo.api.wsApi.database.getObjects(['2.1.0']);
+	const obj = await echo.api.getObjects(['2.1.0']);
 
 	if (obj && obj[0]) {
 		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));
