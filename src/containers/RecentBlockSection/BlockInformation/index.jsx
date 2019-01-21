@@ -80,7 +80,7 @@ class BlockInformation extends React.Component {
 						<div className="container producer">
 							<div className="title">Producer</div>
 							<Link to={URLHelper.createAccountUrl(producer.id)}>
-								<div className="value blue-link">{producer.name}</div>
+								<div className="value blue">{producer.name}</div>
 							</Link>
 						</div>
 						<div className="container reward">
@@ -93,15 +93,6 @@ class BlockInformation extends React.Component {
 						</div>
 					</div>
 					<h2>{`${transactions && transactions.length} Transactions`}
-						<Media query="(max-width: 767px)">
-							{(matches) =>
-								(matches ? (
-									<SearchField small white placeholder="Search by block" />
-								) : (
-									<SearchField small white placeholder="Search by block number" />
-								))
-							}
-						</Media>
 					</h2>
 					{
 						transactions && transactions.length ?
@@ -241,7 +232,7 @@ class BlockInformation extends React.Component {
 																			</div>
 																			<div className="divTableCell">{FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
 																			<div className="divTableCell">{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)} <span className="gray">{data.fee.symbol}</span></div>
-																			<div className={`divTableCell ${(data.status ? '' : ('fail'))}`}>{data.status ? 'Success' : 'Fail'}</div>
+																			<div className={classnames('divTableCell', { fail: !data.status })}>{data.status ? 'Success' : 'Fail'}</div>
 																		</Link>
 																		{
 																			data.internal && data.internal.length ?
@@ -259,7 +250,6 @@ class BlockInformation extends React.Component {
 																						</div>
 																						<div className="divTableCell transaction-to">
 																							<div className="sub-container">
-																								{/* Блок line-arrow добавляется только для строк с классом is-subtransfer */}
 																								<div className="line-arrow" />
 																								<Link to={URLHelper.createUrlById(io.subject.id)}>
 																									<div className="blue">{io.subject.name || io.subject.id}</div>
@@ -269,7 +259,7 @@ class BlockInformation extends React.Component {
 																						<div className="divTableCell">
 																							<div className="sub-container">
 																								{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
-																								<span className="gray">{io.value.symbol}</span>
+																								<span className="gray">{` ${io.value.symbol}`}</span>
 																								<div className="subtransfer-type">{io.label}</div>
 																							</div>
 																						</div>
@@ -283,12 +273,6 @@ class BlockInformation extends React.Component {
 																	</React.Fragment>
 																)))
 														}
-
-														{/* Класс with-subtransfer добавляется для главного элемента, который имееет сабтрансферы */}
-
-
-														{/* Класс is-subtransfer добавляется для самих сабтрансферов */}
-
 
 													</div>
 												</div>

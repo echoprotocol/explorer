@@ -2,6 +2,11 @@ import { ERC20_HASHES } from '../constants/GlobalConstants';
 
 class TypesHelper {
 
+	/**
+	 *
+     * @param {String} scriptHex
+     * @returns {boolean}
+     */
 	static isErc20Contract(scriptHex) {
 		const hashes = [
 			ERC20_HASHES['allowance(address,address)'],
@@ -26,6 +31,11 @@ class TypesHelper {
 		return false;
 	}
 
+	/**
+	 *
+     * @param {String} hex
+     * @returns {boolean}
+     */
 	static isTransferEvent(hex) {
 		return hex.indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) !== -1;
 	}
