@@ -1,4 +1,4 @@
-import echo, { OPERATIONS_IDS, isAccountId, isAssetId } from 'echojs-lib';
+import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List } from 'immutable';
 import _ from 'lodash';
 
@@ -45,10 +45,10 @@ class TransactionActionsClass extends BaseActionsClass {
 
 					switch (typeof value) {
 						case 'string':
-							if (isAccountId(value) || isAssetId(value)) {
+							if (validators.isAccountId(value) || validators.isAssetId(value)) {
 								const object = await echo.api.getObject(value);
 								link = value;
-								value = isAccountId(value) ? object.name : object.symbol;
+								value = validators.isAccountId(value) ? object.name : object.symbol;
 							}
 							break;
 						case 'object':
