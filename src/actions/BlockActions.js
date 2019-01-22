@@ -16,30 +16,46 @@ import {
 	PAGE_ADD_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
 	ERC20_HASHES,
+	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 } from '../constants/GlobalConstants';
 
 import Operations from '../constants/Operations';
+import {
+	ACCOUNT_OBJECT_PREFIX,
+	CONTRACT_OBJECT_PREFIX,
+} from '../constants/ObjectPrefixesConstants';
+
+import { NOT_FOUND_PATH } from '../constants/RouterConstants';
+
+import history from '../history';
 
 import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
 
-const parseTransferEvent = async ({ log, data }, symbol = '') => {
+/**
+ *
+ * @param {Object} log
+ * @param {Object} data
+ * @param {String} symbol
+ * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
+ */
+const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) => {
 	const [, hexFrom, hexTo] = log;
-	const value = { amount: new BN(data, 16).toString(10), symbol };
+	const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 	const fromInt = parseInt(hexFrom.slice(26), 16);
 	const toInt = parseInt(hexTo.slice(26), 16);
 
-	let from = { id: `1.16.${fromInt}` };
-	let to = { id: `1.16.${toInt}` };
+	let from = { id: `${CONTRACT_OBJECT_PREFIX}.${fromInt}` };
+	let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
 	if (hexFrom[25] === 0) {
-		const id = `1.2.${fromInt}`;
+		const id = `${ACCOUNT_OBJECT_PREFIX}.${fromInt}`;
 		const { name } = (await echo.api.getObject(id));
 		from = { id, name };
 	}
 
 	if (hexTo[25] === 0) {
-		const id = `1.2.${toInt}`;
+		const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 		const { name } = (await echo.api.getObject(id));
 		to = { id, name };
 	}
@@ -49,9 +65,16 @@ const parseTransferEvent = async ({ log, data }, symbol = '') => {
 	};
 };
 
-const formatOperation = async (data, round = undefined, opres = []) => {
+/**
+ *
+ * @param {Array} data
+ * @param {Number} round
+ * @param {Array} operationResult
+ * @returns {Promise.<{type: *, fee: {amount, precision, symbol}, from: {id: string}, subject: {id: string}, name, value: {}, status: boolean}>}
+ */
+const formatOperation = async (data, round = undefined, operationResult = []) => {
 	const [type, operation] = data;
-	const [, resId] = opres;
+	const [, resId] = operationResult;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
 
 	const { name, options } = Object.values(Operations).find((i) => i.value === type);
@@ -142,11 +165,15 @@ const formatOperation = async (data, round = undefined, opres = []) => {
 
 			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
+				const symbol = FormatHelper
+					.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, '1.2.12', '1.3.0', ERC20_HASHES['symbol()'])).slice(128));
+				const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, '1.2.16', '1.3.0', ERC20_HASHES['decimals()']), 16);
+
 				let internalTransfers = log
-					.filter(({ address }) => `1.16.${parseInt(address.slice(2), 16)}` === result.subject.id)
+					.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id)
 					// eslint-disable-next-line no-shadow
 					.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-					.map((event) => parseTransferEvent(event, ''));
+					.map((event) => _parseTransferEvent(event, symbol, precision));
 
 				internalTransfers = await Promise.all(internalTransfers);
 				internalTransactions = [...internalTransactions, ...internalTransfers];
@@ -175,8 +202,8 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
 		if (!planeBlock) {
+			history.push(NOT_FOUND_PATH);
 			return;
-			// redirect 404
 		}
 
 		const handledBlock = getState().block.getIn(['blocks', round]);
@@ -189,7 +216,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			value.reward = '10 ECHO';
+			value.reward = '0 ECHO';
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
@@ -197,7 +224,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const producer = await echo.api.getObject(planeBlock.account);
 		value.producer = { id: producer.id, name: producer.name };
 
-		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `1.2.${_signer}`);
+		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
 		const { transactions } = planeBlock;
@@ -220,6 +247,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
+		history.push(NOT_FOUND_PATH);
 	}
 };
 
@@ -445,7 +473,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
  * 	Initialize recent blocks and starting timestamp of latest block
  */
 export const initBlocks = () => async (dispatch) => {
-	const obj = await echo.api.getObjects(['2.1.0']);
+	const obj = await echo.api.getObjects([DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES]);
 
 	if (obj && obj[0]) {
 		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import BN from 'bignumber.js';
 import moment from 'moment';
+import utf8 from 'utf8';
 
 class FormatHelper {
 
@@ -9,7 +10,14 @@ class FormatHelper {
 		return value.toFixed(precision).toString(10);
 	}
 
-	static formatAmount(amount, precision = 1, symbol) {
+	/**
+	 *
+     * @param {String|Number|BN} amount
+     * @param {Number} precision
+     * @param {String} symbol
+     * @returns {string}
+     */
+	static formatAmount(amount, precision = 0, symbol) {
 		const number = new BN(amount).div(10 ** precision);
 
 		const base = `${parseInt(this.toFixed(Math.abs(number || 0), precision), 10)}`;
@@ -60,6 +68,29 @@ class FormatHelper {
 	static timestampToBlockInformationTime(timestamp) {
 		return moment.utc(timestamp).local().format('D MMM, YYYY, hh:mm:ss');
 	}
+
+	/**
+	 *
+     * @param {String} hex
+     */
+	static toUtf8(hex) {
+		let str = '';
+
+		for (let i = 0; i < hex.length; i += 2) {
+			const code = parseInt(hex.substr(i, 2), 16);
+			if (code !== 0) {
+				str += String.fromCharCode(code);
+			}
+		}
+		let result = str;
+		try {
+			result = utf8.decode(str);
+		} catch (error) {
+			result = str;
+		}
+		return result;
+	}
+
 
 }
 

@@ -7,6 +7,8 @@ export const KEY_CODES = {
 	FIVE_NUMBER_CODE: 53,
 };
 
+export const DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES = '2.1.0';
+
 export const START_AVERAGE_TRS_BLOCKS = 10;
 export const MAX_AVERAGE_TRS_BLOCKS = 100;
 
