@@ -108,7 +108,8 @@
                 min-height: 16px;
                 display: flex;
                 flex-shrink: 0;
-
+                letter-spacing: 0.25em;
+                
                 @include res-500 {
                     width: 140px;
                 }
