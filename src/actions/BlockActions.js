@@ -25,6 +25,10 @@ import {
 	CONTRACT_OBJECT_PREFIX,
 } from '../constants/ObjectPrefixesConstants';
 
+import { NOT_FOUND_PATH } from '../constants/RouterConstants';
+
+import history from '../history';
+
 import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
 
@@ -198,8 +202,8 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
 		if (!planeBlock) {
+			history.push(NOT_FOUND_PATH);
 			return;
-			// redirect 404
 		}
 
 		const handledBlock = getState().block.getIn(['blocks', round]);
@@ -243,6 +247,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
+		history.push(NOT_FOUND_PATH);
 	}
 };
 
