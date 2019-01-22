@@ -51,7 +51,7 @@ class BlockInformation extends React.Component {
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
 		const transactions = blockInformation.get('transactions') || [];
-		console.log(transactions)
+		console.log(transactions);
 		let verifiers = blockInformation.get('verifiers');
 		if (verifiers) {
 			verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
