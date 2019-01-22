@@ -63,10 +63,11 @@ class ViewListPopover extends Component {
 								<input value={this.state.query} type="text" placeholder="Search by name" onChange={this.search} />
 							</div>
 							<div className="result">
-								{list.filter(({ name }) => {
-									console.log(name, this.state.query);
-									return !this.state.query || (name && (name.search(new RegExp(this.state.query)) !== -1));
-								}).map(({ name, to }) => (<Link to={to} key={name}>{name}</Link>))}
+								{
+									list
+										.filter(({ name }) => !this.state.query || (name && (name.search(new RegExp(this.state.query)) !== -1)))
+										.map(({ name, to }) => (<Link to={to} key={name}>{name}</Link>))
+								}
 							</div>
 						</div>
 					)

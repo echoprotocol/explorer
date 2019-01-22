@@ -1,3 +1,19 @@
+.blue {
+  color: #2995d8 !important;
+  text-decoration: none;
+  transition: .2s ease-out;
+  cursor: pointer;
+  display: inline-block;
+  
+  &:hover {
+    color: #095494 !important;
+  }
+
+  &:active {
+    color: #fb0707 !important;
+  }
+}
+
 .table {
   .divTable {
     display: table;
