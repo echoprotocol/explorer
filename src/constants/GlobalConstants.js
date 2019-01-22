@@ -34,3 +34,5 @@ export const ERC20_HASHES = {
 	'Approval(address,address,uint256)': '8c5be1e5',
 	'version()': '54fd4d50',
 };
+
+export const BYTECODE_SYMBOLS_LENGTH = '616';

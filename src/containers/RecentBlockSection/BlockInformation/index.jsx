@@ -11,7 +11,7 @@ import classnames from 'classnames';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
 import ViewListPopover from '../../../components/ViewListPopover';
 
-import { INDEX_PATH } from '../../../constants/RouterConstants';
+import { INDEX_PATH, TRANSACTION_INFORMATION_PATH } from '../../../constants/RouterConstants';
 
 import URLHelper from '../../../helpers/URLHelper';
 import FormatHelper from '../../../helpers/FormatHelper';
@@ -44,6 +44,8 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInfo(blockInformation) {
+		const { round } = this.props.match.params;
+
 		const blockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
 		const producer = blockInformation.get('producer') || {};
@@ -106,7 +108,7 @@ class BlockInformation extends React.Component {
 															operations.map((data, j) => (
 																<React.Fragment key={Math.random()} >
 																	<Link
-																		to=""
+																		to={TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, i + 1)}
 																		className={classnames('recent-block-element', { 'with-subtransfer': data.internal && data.internal.length })}
 																	>
 
@@ -212,7 +214,7 @@ class BlockInformation extends React.Component {
 																operations.map((data, j) => (
 																	<React.Fragment key={Math.random()}>
 																		<Link
-																			to=""
+																			to={TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, i + 1)}
 																			className={classnames('divTableRow', { 'with-subtransfer': data.internal && data.internal.length })}
 																		>
 																			{
@@ -302,6 +304,7 @@ BlockInformation.propTypes = {
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
