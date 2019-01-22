@@ -103,7 +103,7 @@ class TransactionsInfo extends React.Component {
 
 		return (
 			<React.Fragment>
-				{ bytecode }
+				<div className="txt">{ bytecode }</div>
 				{
 					value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index] ?
 						<a href="" className="load-more" onClick={(e) => this.onToggleLoadMore(index, e)}>
