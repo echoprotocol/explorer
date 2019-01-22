@@ -196,7 +196,6 @@ SearchField.propTypes = {
 	onSearch: PropTypes.func,
 	goToBlock: PropTypes.bool,
 	getHints: PropTypes.func,
-	history: PropTypes.object,
 };
 
 SearchField.defaultProps = {
@@ -208,7 +207,6 @@ SearchField.defaultProps = {
 	goToBlock: null,
 	onSearch: null,
 	getHints: () => {},
-	history: {},
 };
 
 export default SearchField;
