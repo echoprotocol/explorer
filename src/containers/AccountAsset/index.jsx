@@ -49,17 +49,45 @@ class AccountAsset extends React.Component {
 				<div className="recent-block-section">
 					<div className="wrap">
 						<div className="table-container inner-information-container block-information account-asset-page">
-							<div className="account-page-t-block">
+							<div className="asset-container">
 								<div className="title">Account <span className="accent">1.16.1231</span></div>
 								<div className="help-container">
-									<div className="left-card">
-										<div className="line">
-											<div className="title">Account name</div>
-											<div className="val">Homer1956</div>
+									<div className="asset-elem">
+										<div className="title">Asset info</div>
+										<div className="list">
+											<div className="block">
+												<div className="title">Account name</div>
+												<a href="" className="val blue">Homer1956</a>
+											</div>
+											<div className="block">
+												<div className="title">Precision</div>
+												<div className="val">5</div>
+											</div>
+											<div className="block">
+												<div className="title">Current supply</div>
+												<div className="val">999999432.23342</div>
+											</div>
+											<div className="block">
+												<div className="title">Max supply</div>
+												<div className="val">100000000.00000</div>
+											</div>
 										</div>
-										<div className="line">
-											<div className="title">Echo balance</div>
-											<div className="val"><span className="txt">234.055432</span><span className="accent">ECHO</span></div>
+									</div>
+									<div className="asset-elem">
+										<div className="title">FreePool info</div>
+										<div className="list">
+											<div className="block">
+												<div className="title">Echo exchange rate</div>
+												<a href="" className="val blue">10000000.000042</a>
+											</div>
+											<div className="block">
+												<div className="title">Pool balance</div>
+												<div className="val"><span className="txt">12.30349</span><a href="" className="blue">ECHO</a></div>
+											</div>
+											<div className="block">
+												<div className="title">Unclaimed issuer Balance</div>
+												<div className="val"><span className="txt">555555</span><span className="gray">E-ZSCH</span></div>
+											</div>
 										</div>
 									</div>
 								</div>
