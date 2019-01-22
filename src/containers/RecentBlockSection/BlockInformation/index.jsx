@@ -220,13 +220,13 @@ class BlockInformation extends React.Component {
 																			}
 																			<div className="divTableCell">{data.name}</div>
 																			<div className="divTableCell">
-																				<Link to={URLHelper.createUrlById(data.from.id)}>
-																					<div className="inner-container"><div className="blue">{data.from.name || data.from.id}</div></div>
+																				<Link to={URLHelper.createUrlById(data.from.id)} className="inner-container">
+																					<div className="blue">{data.from.name || data.from.id}</div>
 																				</Link>
 																			</div>
 																			<div className="divTableCell transaction-to">
-																				<Link to={URLHelper.createUrlById(data.subject.id)}>
-																					<div className="sub-container"><div className="blue">{data.subject.name || data.subject.id}</div></div>
+																				<Link to={URLHelper.createUrlById(data.subject.id)} className="sub-container">
+																					<div className="blue">{data.subject.name || data.subject.id}</div>
 																				</Link>
 																			</div>
 																			<div className="divTableCell">{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
@@ -243,8 +243,8 @@ class BlockInformation extends React.Component {
 																						<div className="divTableCell" />
 																						<div className="divTableCell" />
 																						<div className="divTableCell">
-																							<Link to={URLHelper.createUrlById(io.from.id)}>
-																								<div className="inner-container"><div className="blue">{io.from.name || io.from.id}</div></div>
+																							<Link to={URLHelper.createUrlById(io.from.id)} className="inner-container">
+																								<div className="blue">{io.from.name || io.from.id}</div>
 																							</Link>
 																						</div>
 																						<div className="divTableCell transaction-to">
