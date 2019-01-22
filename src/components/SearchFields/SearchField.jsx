@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 
@@ -118,10 +119,10 @@ class SearchField extends React.Component {
 
 		return (
 			<div
-				className={`input-search-block ${(small) ? 'small' : ''} ${(isActiveSmall || this.state.inputValue) ? 'is-active-small' : ''} ${(white) ? 'white' : ''} ${(goToBlock) ? 'go-to-block' : ''}`}
+				className={classnames('input-search-block', { small, 'is-active-small': (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock })}
 				ref={this.setWrapperRef}
 			>
-				<div className={`input-container ${focus ? 'focus' : ''}`}>
+				<div className={classnames('input-container', { focus })}>
 					{
 						(!goToBlock) && (
 							<a
