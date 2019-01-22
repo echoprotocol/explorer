@@ -36,3 +36,7 @@ export const ERC20_HASHES = {
 };
 
 export const BYTECODE_SYMBOLS_LENGTH = '616';
+export const ECHO_ASSET = {
+	ID: '1.3.0',
+	SYMBOL: 'ECHO',
+};
