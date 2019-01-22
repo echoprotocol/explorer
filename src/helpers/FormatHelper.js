@@ -9,7 +9,7 @@ class FormatHelper {
 		return value.toFixed(precision).toString(10);
 	}
 
-	static formatAmount(amount, precision = 1, symbol) {
+	static formatAmount(amount, precision = 0, symbol) {
 		const number = new BN(amount).div(10 ** precision);
 
 		const base = `${parseInt(this.toFixed(Math.abs(number || 0), precision), 10)}`;

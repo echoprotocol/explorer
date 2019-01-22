@@ -16,13 +16,13 @@ import {
 	PAGE_ADD_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
 	ERC20_HASHES,
-    DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
+	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 } from '../constants/GlobalConstants';
 
 import Operations from '../constants/Operations';
 import {
 	ACCOUNT_OBJECT_PREFIX,
-	CONTRACT_OBJECT_PREFIX
+	CONTRACT_OBJECT_PREFIX,
 } from '../constants/ObjectPrefixesConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
@@ -35,9 +35,9 @@ import TypesHelper from '../helpers/TypesHelper';
  * @param {String} symbol
  * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
  */
-const _parseTransferEvent = async ({ log, data }, symbol = '') => {
+const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) => {
 	const [, hexFrom, hexTo] = log;
-	const value = { amount: new BN(data, 16).toString(10), symbol };
+	const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 	const fromInt = parseInt(hexFrom.slice(26), 16);
 	const toInt = parseInt(hexTo.slice(26), 16);
 

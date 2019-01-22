@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
-import SearchField from '../../../components/SearchFields/SearchField';
 import ViewListPopover from '../../../components/ViewListPopover';
 
 import { INDEX_PATH } from '../../../constants/RouterConstants';
@@ -51,7 +50,7 @@ class BlockInformation extends React.Component {
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
 		const transactions = blockInformation.get('transactions') || [];
-		console.log(transactions);
+
 		let verifiers = blockInformation.get('verifiers');
 		if (verifiers) {
 			verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
