@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 
-import RecentBlockTable from './RecentBlockTable';
+// import RecentBlockTable from './RecentBlockTable';
 import BlockInformation from './BlockInformation';
 import RecentBlockSidebar from './RecentBlockSidebar';
 import TransactionsInfo from './TransactionsInfo';
