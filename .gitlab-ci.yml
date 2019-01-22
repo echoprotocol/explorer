@@ -101,6 +101,6 @@ containerize:
       - dist
   only:
     - master
-    - stage\
+    - stage
   tags:
     - docker
