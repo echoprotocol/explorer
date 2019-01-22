@@ -8,6 +8,7 @@ stages:
   - test
   - build
   - containerize
+  - postbuilder
 
 eslint:
   image: node:10.15
@@ -99,6 +100,18 @@ containerize:
     key: $CI_COMMIT_REF_NAME
     paths:
       - dist
+  only:
+    - master
+    - stage
+  tags:
+    - docker
+
+update_app:
+  stage: postbuilder
+  image: alpine:latest
+  script:
+    - apk add curl
+    - curl -X POST -F token=$UPDATE_PROJECT_TOKEN -F ref=master -F "variables[PROJECT_ENV]=$CI_COMMIT_REF_NAME" https://gitlab.pixelplex.by/api/v4/projects/799/trigger/pipeline
   only:
     - master
     - stage
