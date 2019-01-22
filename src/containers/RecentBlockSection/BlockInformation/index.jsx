@@ -134,7 +134,7 @@ class BlockInformation extends React.Component {
 																		</div>
 																		<div className="container amount">
 																			<div className="title">Amount</div>
-																			<div className="value">{FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
+																			<div className="value">{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
 																		</div>
 																		<div className="container">
 																			<div className="title">Fee amount</div>
@@ -229,7 +229,7 @@ class BlockInformation extends React.Component {
 																					<div className="sub-container"><div className="blue">{data.subject.name || data.subject.id}</div></div>
 																				</Link>
 																			</div>
-																			<div className="divTableCell">{FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
+																			<div className="divTableCell">{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)} <span className="gray">{data.value.symbol}</span></div>
 																			<div className="divTableCell">{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)} <span className="gray">{data.fee.symbol}</span></div>
 																			<div className={classnames('divTableCell', { fail: !data.status })}>{data.status ? 'Success' : 'Fail'}</div>
 																		</Link>
