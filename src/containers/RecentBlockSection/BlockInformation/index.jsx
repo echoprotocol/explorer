@@ -23,7 +23,11 @@ class BlockInformation extends React.Component {
 
 	componentDidMount() {
 		this.props.getBlockInfo();
+	}
 
+	shouldComponentUpdate(nextProps) {
+		this.props.getBlockInfo(nextProps.match.params.round);
+		return true;
 	}
 
 	componentWillUnmount() {
@@ -334,6 +338,7 @@ BlockInformation.propTypes = {
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
@@ -341,7 +346,7 @@ export default withRouter(connect(
 		blockInformation: state.block.get('blockInformation'),
 	}),
 	(dispatch, props) => ({
-		getBlockInfo: () => dispatch(getBlockInformation(props.match.params.round)),
+		getBlockInfo: (round = props.match.params.round) => dispatch(getBlockInformation(round)),
 		clearBlockInfo: () => dispatch(clearBlockInformation()),
 	})
 	,

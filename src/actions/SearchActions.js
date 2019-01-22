@@ -22,13 +22,13 @@ export const headerSearchHint = (str) => async (dispatch) => {
 	try {
 		if (TypesHelper.isId(str)) {
 			hints = [{
-				section: 'Id', prefix: '', value: str, to: URLHelper.createUrlById(str),
+				section: 'Id', value: str, to: URLHelper.createUrlById(str),
 			}];
 			return;
 		}
 
 		if (TypesHelper.isStringNumber(str)) {
-		    const accountHint = {
+			const accountHint = {
 				section: 'Account', prefix: `${ACCOUNT_OBJECT_PREFIX}.`, value: str, to: URLHelper.createAccountUrl(`${ACCOUNT_OBJECT_PREFIX}.${str}`),
 			};
 
@@ -41,10 +41,10 @@ export const headerSearchHint = (str) => async (dispatch) => {
 			};
 
 			const blockHint = {
-				section: 'Block', prefix: '', value: str, to: URLHelper.createBlockUrl(str),
+				section: 'Block', value: str, to: URLHelper.createBlockUrl(str),
 			};
 
-		    const numberHints = [
+			const numberHints = [
 				accountHint,
 				assetHint,
 				contractHint,
@@ -54,11 +54,20 @@ export const headerSearchHint = (str) => async (dispatch) => {
 			hints = [...hints, ...numberHints];
 		}
 
-		if (str.length > 2) {
+		if (TypesHelper.isStartWithLetter(str) && str.length > 2) {
+			const regExp = new RegExp(str);
 			const accounts = (await echo.api.lookupAccounts(str, HEADER_SEARCH_ACCOUNT_LIMIT))
-				.map(([name, id]) => ({
-					section: 'Account', prefix: '', value: name, to: URLHelper.createAccountUrl(id),
-				}));
+				.filter(([name]) => regExp.exec(name))
+				.map(([name, id]) => {
+					const { index } = regExp.exec(name);
+					return {
+						section: 'Account',
+						prefix: name.slice(0, index),
+						postfix: name.slice(index + str.length),
+						value: name.slice(index, index + str.length),
+						to: URLHelper.createAccountUrl(id),
+					};
+				});
 
 			hints = [...hints, ...accounts];
 		}

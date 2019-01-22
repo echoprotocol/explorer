@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 
@@ -170,12 +170,12 @@ class SearchField extends React.Component {
 							<div className="search-block-result">
 								{
 									hints.map(({
-										section, prefix, value, to,
+										section, prefix, value, to, postfix,
 									}) => (
-										<Link to={to} className="element" onClick={(e) => e.preventDefault()}>
+										<NavLink key={Math.random()} to={to} replace className="element">
 											<div className="section-name">{section}</div>
-											<div className="value">{prefix}<span className="select">{value}</span></div>
-										</Link>
+											<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+										</NavLink>
 									))
 								}
 							</div>)
@@ -196,6 +196,7 @@ SearchField.propTypes = {
 	onSearch: PropTypes.func,
 	goToBlock: PropTypes.bool,
 	getHints: PropTypes.func,
+	history: PropTypes.object,
 };
 
 SearchField.defaultProps = {
@@ -207,6 +208,7 @@ SearchField.defaultProps = {
 	goToBlock: null,
 	onSearch: null,
 	getHints: () => {},
+	history: {},
 };
 
 export default SearchField;

@@ -43,7 +43,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
 			value.producer = (await echo.api.getObject(planeBlock.account)).name;
-			value.reward = '10 ECHO';
+			value.reward = '0 ECHO';
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
