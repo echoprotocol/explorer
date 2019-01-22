@@ -10,6 +10,13 @@ class FormatHelper {
 		return value.toFixed(precision).toString(10);
 	}
 
+	/**
+	 *
+     * @param {String|Number|BN} amount
+     * @param {Number} precision
+     * @param {String} symbol
+     * @returns {string}
+     */
 	static formatAmount(amount, precision = 0, symbol) {
 		const number = new BN(amount).div(10 ** precision);
 

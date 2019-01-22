@@ -45,8 +45,8 @@ const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) =>
 	const fromInt = parseInt(hexFrom.slice(26), 16);
 	const toInt = parseInt(hexTo.slice(26), 16);
 
-	let from = { id: `1.16.${fromInt}` };
-	let to = { id: `1.16.${toInt}` };
+	let from = { id: `${CONTRACT_OBJECT_PREFIX}.${fromInt}` };
+	let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
 	if (hexFrom[25] === 0) {
 		const id = `${ACCOUNT_OBJECT_PREFIX}.${fromInt}`;
@@ -166,7 +166,7 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
 				const symbol = FormatHelper
-					.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, '1.2.16', '1.3.0', ERC20_HASHES['symbol()'])).slice(128));
+					.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, '1.2.12', '1.3.0', ERC20_HASHES['symbol()'])).slice(128));
 				const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, '1.2.16', '1.3.0', ERC20_HASHES['decimals()']), 16);
 
 				let internalTransfers = log
