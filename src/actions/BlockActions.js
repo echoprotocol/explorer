@@ -161,11 +161,15 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 
 			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
+				const symbol = FormatHelper
+					.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, '1.2.16', '1.3.0', ERC20_HASHES['symbol()'])).slice(128));
+				const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, '1.2.16', '1.3.0', ERC20_HASHES['decimals()']), 16);
+
 				let internalTransfers = log
 					.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id)
 					// eslint-disable-next-line no-shadow
 					.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-					.map((event) => _parseTransferEvent(event, ''));
+					.map((event) => _parseTransferEvent(event, symbol, precision));
 
 				internalTransfers = await Promise.all(internalTransfers);
 				internalTransactions = [...internalTransactions, ...internalTransfers];
