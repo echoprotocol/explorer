@@ -17,7 +17,7 @@ class TransactionsInfo extends React.Component {
 		super(props);
 
 		this.state = {
-			loadMore: props.operations.map(() => false),
+			loadMore: [],
 		};
 	}
 
@@ -166,7 +166,7 @@ class TransactionsInfo extends React.Component {
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
 						title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}
-						returnFunction={() => this.returnFunction}
+						returnFunction={() => this.returnFunction()}
 					/>
 					{
 						operations ?

@@ -26,7 +26,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			const block = await echo.api.getBlock(blockNumber);
 
 			if (!block || !block.transactions[index - 1]) {
-				history.push(NOT_FOUND_PATH);
+				history.replace(NOT_FOUND_PATH);
 				return;
 			}
 
@@ -45,6 +45,10 @@ class TransactionActionsClass extends BaseActionsClass {
 
 					switch (typeof value) {
 						case 'string':
+							if (value === '') {
+								return {};
+							}
+
 							if (validators.isAccountId(value) || validators.isAssetId(value)) {
 								const object = await echo.api.getObject(value);
 								link = value;
@@ -92,7 +96,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					options['code deposit'] = result.exec_res.code_deposit;
 
 					if (parseInt(result.exec_res.new_address, 10)) {
-						options['new contract id'] = ConvertHelper.toContractId(result.exec_res.new_address);
+						const id = ConvertHelper.toContractId(result.exec_res.new_address);
+						options['new contract id'] = { value: id, link: id };
 					}
 
 					if (result.tr_receipt.log.length) {
