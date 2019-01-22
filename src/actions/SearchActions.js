@@ -11,20 +11,23 @@ import {
 
 import URLHelper from '../helpers/URLHelper';
 import FormatHelper from '../helpers/FormatHelper';
+import TypesHelper from '../helpers/TypesHelper';
 
 // eslint-disable-next-line import/prefer-default-export
-export const headerSearchHint = (str) => async (dispatch, getState) => {
+export const headerSearchHint = (str) => async (dispatch) => {
 	let hints = [];
-
+	/*
+	 Стрелочками вверх/вниз должен работать выбор вариантов. Всегда по умолчанию в фокусе первый вариант. По клику на Enter переходим на вариант, который в фокусе.
+	 */
 	try {
-		// if (isId(str)) {
-		// 	hints = [{
-		// 		section: 'Id', prefix: '', value: str, to: URLHelper.createUrlById(str),
-		// 	}];
-			// return;
-		// }
+		if (TypesHelper.isId(str)) {
+			hints = [{
+				section: 'Id', prefix: '', value: str, to: URLHelper.createUrlById(str),
+			}];
+			return;
+		}
 
-		// if (isStringNumber(str)) {
+		if (TypesHelper.isStringNumber(str)) {
 		    const accountHint = {
 				section: 'Account', prefix: `${ACCOUNT_OBJECT_PREFIX}.`, value: str, to: URLHelper.createAccountUrl(`${ACCOUNT_OBJECT_PREFIX}.${str}`),
 			};
@@ -49,7 +52,7 @@ export const headerSearchHint = (str) => async (dispatch, getState) => {
 			];
 
 			hints = [...hints, ...numberHints];
-		// }
+		}
 
 		if (str.length > 2) {
 			const accounts = (await echo.api.lookupAccounts(str, HEADER_SEARCH_ACCOUNT_LIMIT))
