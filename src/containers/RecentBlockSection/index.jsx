@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 
-import RecentBlockTable from './RecentBlockTable';
+// import RecentBlockTable from './RecentBlockTable';
 import BlockInformation from './BlockInformation';
 import RecentBlockSidebar from './RecentBlockSidebar';
+import AccountPage from './AccountPage';
+
 
 import {
 	INDEX_PATH,
@@ -18,7 +20,7 @@ class RecentBlockSection extends React.Component {
 			<div className="recent-block-section">
 				<div className="wrap">
 					<Switch>
-						<Route exact path={INDEX_PATH} component={RecentBlockTable} />
+						<Route exact path={INDEX_PATH} component={AccountPage} />
 						<Route exact path={BLOCK_INFORMATION_PATH} component={BlockInformation} />
 					</Switch>
 					<RecentBlockSidebar />
