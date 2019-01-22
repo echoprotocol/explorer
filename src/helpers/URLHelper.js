@@ -1,6 +1,17 @@
 import { CONTRACT_OBJECT_PREFIX, ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
+import { BLOCK_INFORMATION_PATH } from '../constants/RouterConstants';
+
 class URLHelper {
+
+	/**
+     *
+     * @param {String} round
+     * @return {String}
+     */
+	static createBlockUrl(round) {
+		return BLOCK_INFORMATION_PATH.replace(/:round/, round);
+	}
 
 	/**
 	 *

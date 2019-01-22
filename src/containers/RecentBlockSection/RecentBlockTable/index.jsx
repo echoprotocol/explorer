@@ -7,7 +7,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
-import SearchField from '../../../components/SearchFields/SearchField';
+import SearchField from '../../../components/SearchFields';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 

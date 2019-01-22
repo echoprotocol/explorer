@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 
@@ -49,6 +50,8 @@ class SearchField extends React.Component {
 			isChange: true,
 			inputValue: value,
 		});
+
+		this.props.getHints(value);
 	}
 
 	onClick(e) {
@@ -112,14 +115,16 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock,
+			small, placeholder, white, withHelp, goToBlock, hints,
 		} = this.props;
 
 		// ВЫДЕЛЕНИЕ СОВПАВШИХ ЭЛЕМЕНТОВ --> <span className="select"></span>
 
 		return (
 			<div
-				className={classnames('input-search-block', { small, 'is-active-small': (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock })}
+				className={classnames('input-search-block', {
+					small, 'is-active-small': (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock,
+				})}
 				ref={this.setWrapperRef}
 			>
 				<div className={classnames('input-container', { focus })}>
@@ -163,18 +168,16 @@ class SearchField extends React.Component {
 					(withHelp) && (
 						(isChange) && (
 							<div className="search-block-result">
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Block</div>
-									<div className="value">1.16.<span className="select">5</span></div>
-								</a>
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Account</div>
-									<div className="value"><span className="select">15</span>homersimpson</div>
-								</a>
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Transaction</div>
-									<div className="value"><span className="select">15</span>289378929384</div>
-								</a>
+								{
+									hints.map(({
+										section, prefix, value, to,
+									}) => (
+										<Link to={to} className="element" onClick={(e) => e.preventDefault()}>
+											<div className="section-name">{section}</div>
+											<div className="value">{prefix}<span className="select">{value}</span></div>
+										</Link>
+									))
+								}
 							</div>)
 					)
 				}
@@ -189,8 +192,10 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
+	hints: PropTypes.array,
 	onSearch: PropTypes.func,
 	goToBlock: PropTypes.bool,
+	getHints: PropTypes.func,
 };
 
 SearchField.defaultProps = {
@@ -198,8 +203,10 @@ SearchField.defaultProps = {
 	placeholder: '',
 	white: false,
 	withHelp: false,
+	hints: [],
 	goToBlock: null,
 	onSearch: null,
+	getHints: () => {},
 };
 
 export default SearchField;

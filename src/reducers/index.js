@@ -5,6 +5,7 @@ import gridReducer from './GridReducer';
 import roundReducer from './RoundReducer';
 import blockReducer from './BlockReducer';
 import objectsReducer from './ObjectsReducer';
+import searchReducer from './SearchReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -14,4 +15,5 @@ export default {
 	round: roundReducer.reducer,
 	block: blockReducer.reducer,
 	objects: objectsReducer.reducer,
+	search: searchReducer.reducer,
 };

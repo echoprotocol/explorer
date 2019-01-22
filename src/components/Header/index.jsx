@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 
 import Logotype from '../Logotype';
-import SearchField from '../SearchFields/SearchField';
+import HeaderSearch from '../../containers/HeaderSearch';
 import { INDEX_PATH } from '../../constants/RouterConstants';
 
 class Header extends React.Component {
@@ -16,9 +16,9 @@ class Header extends React.Component {
 				<Media query="(max-width: 767px)">
 					{(matches) =>
 						(matches ? (
-							<SearchField small placeholder="Search" />
+							<HeaderSearch small placeholder="Search" />
 						) : (
-							<SearchField withHelp placeholder="Search by account / block / transaction" />
+							<HeaderSearch withHelp placeholder="Search by account / block / transaction" />
 						))
 					}
 				</Media>

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 // import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import BreadCrumbs from '../../../components/InformationBreadCrumbs';
-import SearchField from '../../../components/SearchFields/SearchField';
+import SearchField from '../../../components/SearchFields';
 import ViewListPopover from '../../../components/ViewListPopover';
 
 import { INDEX_PATH, ACCOUNTS_PATH } from '../../../constants/RouterConstants';
