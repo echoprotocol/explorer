@@ -9,6 +9,7 @@ import Account from './containers/Account';
 import {
 	INDEX_PATH,
 	BLOCK_INFORMATION_PATH,
+	TRANSACTION_INFORMATION_PATH,
 	OBJECTS_PATH,
 	ACCOUNTS_PATH,
 } from './constants/RouterConstants';
@@ -21,6 +22,7 @@ export default class Routes extends React.Component {
 				<Switch>
 					<Route exact path={INDEX_PATH} component={RecentBlockSection} />
 					<Route exact path={BLOCK_INFORMATION_PATH} component={RecentBlockSection} />
+					<Route exact path={TRANSACTION_INFORMATION_PATH} component={RecentBlockSection} />
 					<Route exact path={OBJECTS_PATH} component={Objects} />
 					<Route exact path={ACCOUNTS_PATH} component={Account} />
 				</Switch>
