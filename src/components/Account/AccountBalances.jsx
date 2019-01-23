@@ -42,12 +42,9 @@ class AccountBalances extends React.Component {
 		return (
 			<div className="right-container">
 				<div className="elem">
-					{
-						count > DEFAULT_COUNT && !isLoadedMore ?
-							<div className="title">
-								other assets: {count - DEFAULT_COUNT}
-							</div> : null
-					}
+					<div className="title">
+						other assets: {count || <span className="gray">none</span>}
+					</div>
 					<div className="elements-container">
 						{
 							elements.reduce((arr, { stats, asset }) => ([
@@ -61,14 +58,14 @@ class AccountBalances extends React.Component {
 						}
 					</div>
 					{
-						count > DEFAULT_COUNT && !isLoadedMore ?
+						count > DEFAULT_COUNT ?
 							<a href="" className="load-more" onClick={(e) => this.onLoadMore(e)}>
-								View {count - DEFAULT_COUNT} more
+								{isLoadedMore ? 'Show less' : `View ${count - DEFAULT_COUNT} more`}
 							</a> : null
 					}
 				</div>
 				<div className="elem">
-					<div className="title">tokens:<span className="gray">none</span></div>
+					<div className="title">tokens: <span className="gray">none</span></div>
 				</div>
 			</div>
 		);

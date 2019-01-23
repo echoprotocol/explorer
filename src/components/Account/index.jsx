@@ -47,7 +47,7 @@ class Account extends React.Component {
 											name={account.get('name')}
 										/>
 										<AccountBalances
-											balances={assetBalances}
+											balances={assetBalances.delete(ECHO_ASSET.ID)}
 											owner={account.get('assets')}
 										/>
 									</div> : null
