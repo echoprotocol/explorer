@@ -60,7 +60,7 @@ build:
     - chmod 644 ~/.ssh/known_hosts
 
     - npm install --silent
-    - npm run build
+    - npm run build-stage
   cache:
     key: $CI_COMMIT_REF_NAME
     paths:
