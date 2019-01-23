@@ -1,7 +1,7 @@
 variables:
   DOCKER_REPOSITORY_TYPE: "ecr"
   ECR_REGION: "eu-central-1"
-  ERC_REPOSITORY_NAME: web/full-stack/front
+  ERC_REPOSITORY_NAME: web/656-echo-explorer/frontend
   DOCKER_REPOSITORY_URL: 676650119647.dkr.ecr.eu-central-1.amazonaws.com/web/656-echo-explorer/frontend
 
 stages:
