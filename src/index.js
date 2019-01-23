@@ -13,6 +13,8 @@ import GlobalActions from './actions/GlobalActions';
 import history from './history';
 import store from './store';
 
+console.log(echo);
+
 store.dispatch(GlobalActions.init()).then(() => {
 	echo.syncCacheWithStore(store);
 
