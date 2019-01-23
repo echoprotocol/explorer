@@ -1,4 +1,4 @@
 # build environment
-FROM node:8.9.4-alpine as builder
+FROM node:10.15 as builder
 WORKDIR /home/frontend
 COPY dist /home/frontend
