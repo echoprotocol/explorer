@@ -2,9 +2,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink } from 'react-router-dom';
+import { Dropdown } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom'; // eslint-disable-line no-unused-vars
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
+
+const options = [
+	{
+		key: 'angular',
+		value: 'angular',
+		content: (
+			<a className="element">
+				<div className="section-name">Block</div>
+				<div className="value">11<span className="select">123</span>123123</div>
+			</a>
+		),
+	},
+	{
+		key: '1123',
+		value: '1123',
+		content: (
+			<a className="element">
+				<div className="section-name">Block</div>
+				<div className="value">11<span className="select">123</span>123123</div>
+			</a>
+		),
+	},
+	{
+		key: 'qqsa',
+		value: 'qqsa',
+		content: (
+			<a className="element">
+				<div className="section-name">Block</div>
+				<div className="value">11<span className="select">123</span>123123</div>
+			</a>
+		),
+	},
+];
 
 class SearchField extends React.Component {
 
@@ -115,7 +149,7 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, hints,
+			small, placeholder, white, withHelp, goToBlock, hints, // eslint-disable-line no-unused-vars
 		} = this.props;
 
 		// ВЫДЕЛЕНИЕ СОВПАВШИХ ЭЛЕМЕНТОВ --> <span className="select"></span>
@@ -164,21 +198,26 @@ class SearchField extends React.Component {
 						}
 					</div>
 				</div>
+
 				{
 					(withHelp) && (
 						(isChange) && (
 							<div className="search-block-result">
-								{
-									hints.map(({
-										section, prefix, value, to, postfix,
-									}) => (
-										<NavLink key={Math.random()} to={to} replace className="element">
-											<div className="section-name">{section}</div>
-											<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
-										</NavLink>
-									))
-								}
-							</div>)
+								<Dropdown options={options} open />
+							</div>
+							// <div className="search-block-result">
+							// 	{
+							// 		hints.map(({
+							// 			section, prefix, value, to, postfix,
+							// 		}) => (
+							// 			<NavLink key={Math.random()} to={to} replace className="element">
+							// 				<div className="section-name">{section}</div>
+							// 				<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+							// 			</NavLink>
+							// 		))
+							// 	}
+							// </div>
+						)
 					)
 				}
 			</div>
