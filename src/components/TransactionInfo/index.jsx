@@ -38,7 +38,7 @@ class TransactionsInfo extends React.Component {
 	}
 
 	returnFunction() {
-		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, this.props.match.params.round));
+		this.props.history.goBack();
 	}
 
 	renderContractLogs(logs) {

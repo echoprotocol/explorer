@@ -8,6 +8,7 @@ import AccountActions from '../../actions/AccountActions';
 export default withRouter(connect(
 	(state) => ({
 		balances: state.account.get('balances'),
+		history: state.account.get('history'),
 		account: state.echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, state.account.get('id')]),
 		cacheObjects: state.echoCache.get(CACHE_MAPS.OBJECTS_BY_ID),
 	}),

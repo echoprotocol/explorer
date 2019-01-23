@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import AccountHistory from './AccountHistory';
+import TransactionsTable from '../BlockInformation/TransactionsTable';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 
@@ -22,7 +22,7 @@ class Account extends React.Component {
 
 	render() {
 		const {
-			account, balances, cacheObjects, match: { params: { id } },
+			account, balances, history, cacheObjects, match: { params: { id } },
 		} = this.props;
 
 		const assetBalances = balances.mapEntries(([assetId, statsId]) => ([
@@ -53,8 +53,13 @@ class Account extends React.Component {
 									</div> : null
 							}
 						</div>
-						<h2>43 Transactions</h2>
-						<AccountHistory />
+						{
+							account && history ?
+								<React.Fragment>
+									<h2>{account.get('history').size} Transactions</h2>
+									<TransactionsTable transactions={history} />
+								</React.Fragment> : null
+						}
 					</div>
 					<RecentBlockSidebar />
 				</div>
@@ -67,6 +72,7 @@ class Account extends React.Component {
 Account.propTypes = {
 	account: PropTypes.object,
 	balances: PropTypes.object,
+	history: PropTypes.object,
 	cacheObjects: PropTypes.object,
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
@@ -77,6 +83,7 @@ Account.defaultProps = {
 	account: null,
 	balances: null,
 	cacheObjects: null,
+	history: null,
 };
 
 export default Account;

@@ -36,7 +36,7 @@ class BlockInformation extends React.Component {
 	}
 
 	render() {
-		const { blockInformation, match: { params: { round } } } = this.props;
+		const { blockInformation } = this.props;
 
 		const blockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
@@ -86,7 +86,7 @@ class BlockInformation extends React.Component {
 						</div>
 					</div>
 					<h2>{`${transactions && transactions.length} Transactions`}</h2>
-					{transactions && transactions.length ? <TransactionsTable transactions={transactions} round={round} /> : null}
+					{transactions && transactions.length ? <TransactionsTable transactions={transactions} /> : null}
 				</div>
 			</React.Fragment>
 		);
@@ -99,7 +99,6 @@ BlockInformation.propTypes = {
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
 };
 
 export default BlockInformation;

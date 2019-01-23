@@ -61,6 +61,8 @@ class TransactionActionsClass extends BaseActionsClass {
 								delete value.asset_id;
 								value.precision = asset.precision;
 								value.symbol = asset.symbol;
+							} else {
+								return {};
 							}
 							break;
 						default:

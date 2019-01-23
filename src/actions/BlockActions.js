@@ -72,7 +72,7 @@ const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) =>
  * @param {Array} operationResult
  * @returns {Promise.<{type: *, fee: {amount, precision, symbol}, from: {id: string}, subject: {id: string}, name, value: {}, status: boolean}>}
  */
-const formatOperation = async (data, round = undefined, operationResult = []) => {
+export const formatOperation = async (data, round = undefined, operationResult = []) => {
 	const [type, operation] = data;
 	const [, resId] = operationResult;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
@@ -94,6 +94,7 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 		name,
 		value: {},
 		status: true,
+		round,
 	};
 
 	if (options.from) {

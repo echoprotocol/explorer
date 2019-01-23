@@ -11,12 +11,12 @@ import FormatHelper from '../../helpers/FormatHelper';
 
 class TransactionsTable extends React.Component {
 
-	renderMobileViewOperation(round, data, i, j) {
+	renderMobileViewOperation(data, i, j) {
 
 		return (
 			<React.Fragment key={Math.random()} >
 				<Link
-					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, i + 1)}
+					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, i + 1)}
 					className={classnames('recent-block-element', { 'with-subtransfer': data.internal && data.internal.length })}
 				>
 
@@ -109,19 +109,19 @@ class TransactionsTable extends React.Component {
 		);
 	}
 
-	renderMobileView(transactions, round) {
+	renderMobileView(transactions) {
 		return (
 			<div className="recent-block-mobile-view">
-				{transactions.map((operations, i) => operations.map((data, j) => this.renderMobileViewOperation(round, data, i, j)))}
+				{transactions.map((operations, i) => operations.map((data, j) => this.renderMobileViewOperation(data, i, j)))}
 			</div>
 		);
 	}
 
-	renderTableOperation(round, data, i, j) {
+	renderTableOperation(data, i, j) {
 		return (
 			<React.Fragment key={Math.random()}>
 				<Link
-					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, i + 1)}
+					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, i + 1)}
 					className={classnames('divTableRow', { 'with-subtransfer': data.internal && data.internal.length })}
 				>
 					<div className="divTableCell">{j === 0 ? i + 1 : ''}</div>
@@ -186,7 +186,7 @@ class TransactionsTable extends React.Component {
 		);
 	}
 
-	renderTable(transactions, round) {
+	renderTable(transactions) {
 		return (
 			<div className="divTable">
 				<div className="divTableBody">
@@ -200,7 +200,7 @@ class TransactionsTable extends React.Component {
 						<div className="divTableCell">Status</div>
 					</div>
 					<div className="devider" />
-					{transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(round, data, i, j)))}
+					{transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(data, i, j)))}
 				</div>
 			</div>
 		);
@@ -208,15 +208,15 @@ class TransactionsTable extends React.Component {
 	}
 
 	render() {
-		const { transactions, round } = this.props;
+		const { transactions } = this.props;
 
 		return (
 			<div className="table">
 				<Media query="(max-width: 767px)">
 					{(matches) => (
 						matches ?
-							this.renderMobileView(transactions, round) :
-							this.renderTable(transactions, round)
+							this.renderMobileView(transactions) :
+							this.renderTable(transactions)
 					)}
 				</Media>
 			</div>
@@ -226,8 +226,7 @@ class TransactionsTable extends React.Component {
 }
 
 TransactionsTable.propTypes = {
-	transactions: PropTypes.array.isRequired,
-	round: PropTypes.string.isRequired,
+	transactions: PropTypes.any.isRequired,
 };
 
 export default TransactionsTable;
