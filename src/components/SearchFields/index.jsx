@@ -18,6 +18,7 @@ class SearchField extends React.Component {
 			isActiveSmall: false,
 			inputValue: '',
 			inputError: '',
+			to: '',
 		};
 
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -36,6 +37,10 @@ class SearchField extends React.Component {
 		this.setState({ focus: true });
 	}
 
+	onChangeDropdown(data) {
+		this.setState({ to: data.value });
+	}
+
 	onBlur() {
 		this.setState({
 			focus: false,
@@ -45,7 +50,6 @@ class SearchField extends React.Component {
 
 	onChange(e) {
 		const { value } = e.target;
-		// Показать блок с подсказками
 
 		this.setState({
 			isChange: true,
@@ -61,21 +65,22 @@ class SearchField extends React.Component {
 		this.setState({ focus: true });
 		this.inputEl.focus();
 
-		if (this.state.inputValue) {
-			this.props.onSearch(this.state.inputValue);
-		}
+		// if (this.state.inputValue) {
+		// 	this.props.onSearch(this.state.inputValue);
+		// }
 	}
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
 
-		if (this.state.inputValue && KEY_CODE_ENTER === code) {
-			this.props.onSearch(this.state.inputValue);
+		if (this.state.inputValue && this.state.to && KEY_CODE_ENTER === code) {
+			this.props.history.push(this.state.to);
+			this.setState({ focus: false, isChange: false });
 		}
 
 		if (KEY_CODE_ESC === code) {
 			this.inputEl.blur();
-			this.setState({ focus: false });
+			this.setState({ focus: false, isChange: false });
 		}
 	}
 
@@ -89,8 +94,7 @@ class SearchField extends React.Component {
 		}
 
 		if (!this.wrapperRef.contains(event.target)) {
-			this.setState({ focus: false });
-			this.setState({ isChange: false });
+			this.setState({ focus: false, isChange: false });
 		}
 	}
 
@@ -105,6 +109,7 @@ class SearchField extends React.Component {
 			focus: false,
 			isChange: false,
 			isActiveSmall: false,
+			to: '',
 		});
 	}
 
@@ -120,9 +125,11 @@ class SearchField extends React.Component {
 		} = this.props;
 
 		const options = hints
-			.map(({ section, prefix, value, to, postfix }, i) => ({
+			.map(({
+				section, prefix, value, to, postfix,
+			}, i) => ({
 				key: i,
-				value: i,
+				value: to,
 				content: (
 					<Link key={Math.random()} to={to} className="element">
 						<div className="section-name">{section}</div>
@@ -180,7 +187,7 @@ class SearchField extends React.Component {
 					(withHelp) && (
 						(isChange || focus) && (
 							<div className="search-block-result">
-								<Dropdown options={options} open />
+								<Dropdown options={options} open onChange={(even, data) => this.onChangeDropdown(data)} />
 							</div>
 						)
 					)
@@ -197,9 +204,9 @@ SearchField.propTypes = {
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
 	hints: PropTypes.array,
-	onSearch: PropTypes.func,
 	goToBlock: PropTypes.bool,
 	getHints: PropTypes.func,
+	history: PropTypes.object,
 };
 
 SearchField.defaultProps = {
@@ -209,7 +216,7 @@ SearchField.defaultProps = {
 	withHelp: false,
 	hints: [],
 	goToBlock: null,
-	onSearch: null,
+	history: {},
 	getHints: () => {},
 };
 
