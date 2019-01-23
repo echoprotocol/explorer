@@ -4,21 +4,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import RecentBlockSidebar from '../RecentBlockSection/RecentBlockSidebar';
 
-import { INDEX_PATH, ACCOUNTS_PATH } from '../../constants/RouterConstants';
+import { ACCOUNTS_PATH } from '../../constants/RouterConstants';
 
 import { getFullAssetInformation } from '../../actions/AssetActions';
 
 class AccountAsset extends React.Component {
 
 	componentDidMount() {
-		this.props.getBlockInfo();
+		this.props.getAssetInfo();
 	}
 
-	componentWillUnmount() {
-		this.props.clearBlockInfo();
+	shouldComponentUpdate(nextProps) {
+		this.props.getAssetInfo(nextProps.match.params.id);
+		return true;
 	}
 
 	renderLoader() {
@@ -27,12 +29,9 @@ class AccountAsset extends React.Component {
 	}
 
 	renderAsset() {
-		// let verifiers = blockInformation.get('verifiers');
-		// if (verifiers) {
-		// 	verifiers = verifiers.map((name) => ({ name, to: ACCOUNTS_PATH.replace(/:name/, name) }));
-		// }
-
-		// const transactions = blockInformation.get('transactions');
+		const {
+			asset, account
+		} = this.props;
 
 		return (
 			<React.Fragment>
@@ -99,14 +98,30 @@ class AccountAsset extends React.Component {
 }
 
 AccountAsset.propTypes = {
-	assetInformation: PropTypes.object.isRequired,
+	asset: PropTypes.object.isRequired,
+	account: PropTypes.object.isRequired,
 	getAssetInfo: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
-	(state) => (),
+	(state, props) => {
+		const asset = state.echoCache.getIn(['objectsById', props.match.params.id]);
+
+		if (!asset) {
+			return { asset: {}, issuer: {} };
+		}
+
+		const account = state.echoCache.getIn(['objectsById', asset.issuer]);
+
+		if (!account) {
+			return { asset: {}, issuer: {} };
+		}
+
+		return { asset, account };
+
+	},
 	(dispatch, props) => ({
 		getAssetInfo: (id = props.match.params.id) => getFullAssetInformation(id),
 	})
