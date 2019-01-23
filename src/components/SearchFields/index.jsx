@@ -2,8 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 
@@ -116,8 +116,20 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, hints,
+			small, placeholder, white, withHelp, goToBlock, hints, // eslint-disable-line no-unused-vars
 		} = this.props;
+
+		const options = hints
+			.map(({ section, prefix, value, to, postfix }, i) => ({
+				key: i,
+				value: i,
+				content: (
+					<Link key={Math.random()} to={to} className="element">
+						<div className="section-name">{section}</div>
+						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+					</Link>
+				),
+			}));
 
 		return (
 			<div
@@ -144,19 +156,6 @@ class SearchField extends React.Component {
 							</a>
 						)
 					}
-
-					<Dropdown
-						options={
-							hints.map(({
-								section, prefix, value, to, postfix,
-							}) => (
-								<Link key={Math.random()} to={to} className="element">
-									<div className="section-name">{section}</div>
-									<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
-								</Link>
-							))
-						}
-					/>
 					<div className="input-field">
 						<input
 							type="text"
@@ -176,21 +175,14 @@ class SearchField extends React.Component {
 						}
 					</div>
 				</div>
+
 				{
 					(withHelp) && (
 						(isChange || focus) && (
 							<div className="search-block-result">
-								{
-									hints.map(({
-										section, prefix, value, to, postfix,
-									}) => (
-										<Link key={Math.random()} to={to} className="element">
-											<div className="section-name">{section}</div>
-											<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
-										</Link>
-									))
-								}
-							</div>)
+								<Dropdown options={options} open />
+							</div>
+						)
 					)
 				}
 			</div>

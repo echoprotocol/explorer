@@ -50,6 +50,7 @@
 		"redux-modules": "^1.1.0",
 		"redux-modules-middleware": "^1.2.0",
 		"redux-thunk": "^2.3.0",
+		"semantic-ui-react": "^0.84.0",
 		"uglifyjs-webpack-plugin": "^1.2.2",
 		"utf8": "^3.0.0",
 		"wow.js": "^1.2.2"
