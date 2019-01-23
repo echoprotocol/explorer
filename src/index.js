@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import echo from 'echojs-lib';
 
-console.log(echo);
-
 import Routes from './routes'; // Or wherever you keep your reducers
 import './assets/loader';
 import './assets/favicon.ico';
