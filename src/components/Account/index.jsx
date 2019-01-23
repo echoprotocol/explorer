@@ -20,30 +20,33 @@ class Account extends React.Component {
 		this.props.clearAccountInfo();
 	}
 
-	renderAccount(account, balances) {
-		return (
-			<React.Fragment>
-				<div className="account-page-t-block">
-					<div className="title">Account <span className="accent">{account.get('id')}</span></div>
-					<div className="help-container">
-						<AccountInfo echo={balances.get(ECHO_ASSET.ID)} name={account.get('name')} />
-						<AccountBalances />
-					</div>
-				</div>
-				<h2>43 Transactions</h2>
-				<AccountHistory />
-			</React.Fragment>
-		);
-	}
-
 	render() {
-		const { account, balances } = this.props;
+		const {
+			account, balances, cacheObjects, match: { params: { id } },
+		} = this.props;
 
 		return (
 			<div className="recent-block-section">
 				<div className="wrap">
 					<div className="table-container inner-information-container block-information account-page">
-						{ account ? this.renderAccount(account, balances) : null }
+						<div className="account-page-t-block">
+							<div className="title">Account <span className="accent">{id}</span></div>
+							{
+								account && balances && cacheObjects ?
+									<div className="help-container">
+										<AccountInfo
+											echo={{
+												stats: cacheObjects.get(balances.get(ECHO_ASSET.ID)),
+												asset: cacheObjects.get(ECHO_ASSET.ID),
+											}}
+											name={account.get('name')}
+										/>
+										<AccountBalances />
+									</div> : null
+							}
+						</div>
+						<h2>43 Transactions</h2>
+						<AccountHistory />
 					</div>
 					<RecentBlockSidebar />
 				</div>
@@ -56,6 +59,8 @@ class Account extends React.Component {
 Account.propTypes = {
 	account: PropTypes.object,
 	balances: PropTypes.object,
+	cacheObjects: PropTypes.object,
+	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
 };
@@ -63,6 +68,7 @@ Account.propTypes = {
 Account.defaultProps = {
 	account: null,
 	balances: null,
+	cacheObjects: null,
 };
 
 export default Account;

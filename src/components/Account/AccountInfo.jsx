@@ -23,8 +23,8 @@ class AccountInfo extends React.Component {
 								<span className="txt">
 									{
 										FormatHelper.formatAmount(
-											echo.getIn(['stats', 'balance']),
-											echo.getIn(['asset', 'precision']),
+											echo.stats.get('balance'),
+											echo.asset.get('precision'),
 										)
 									}
 								</span>
