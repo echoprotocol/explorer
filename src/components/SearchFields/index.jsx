@@ -2,7 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 
@@ -118,8 +119,6 @@ class SearchField extends React.Component {
 			small, placeholder, white, withHelp, goToBlock, hints,
 		} = this.props;
 
-		// ВЫДЕЛЕНИЕ СОВПАВШИХ ЭЛЕМЕНТОВ --> <span className="select"></span>
-
 		return (
 			<div
 				className={classnames('input-search-block', {
@@ -145,6 +144,19 @@ class SearchField extends React.Component {
 							</a>
 						)
 					}
+
+					<Dropdown
+						options={
+							hints.map(({
+								section, prefix, value, to, postfix,
+							}) => (
+								<Link key={Math.random()} to={to} className="element">
+									<div className="section-name">{section}</div>
+									<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+								</Link>
+							))
+						}
+					/>
 					<div className="input-field">
 						<input
 							type="text"
@@ -166,16 +178,16 @@ class SearchField extends React.Component {
 				</div>
 				{
 					(withHelp) && (
-						(isChange) && (
+						(isChange || focus) && (
 							<div className="search-block-result">
 								{
 									hints.map(({
 										section, prefix, value, to, postfix,
 									}) => (
-										<NavLink key={Math.random()} to={to} replace className="element">
+										<Link key={Math.random()} to={to} className="element">
 											<div className="section-name">{section}</div>
 											<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
-										</NavLink>
+										</Link>
 									))
 								}
 							</div>)

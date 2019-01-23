@@ -1,5 +1,4 @@
-import echo from 'echojs-lib';
-
+import echo, { validators } from 'echojs-lib';
 import SearchReducer from '../reducers/SearchReducer';
 
 import { HEADER_SEARCH_ACCOUNT_LIMIT } from '../constants/SearchConstants';
@@ -20,7 +19,7 @@ export const headerSearchHint = (str) => async (dispatch) => {
 	 Стрелочками вверх/вниз должен работать выбор вариантов. Всегда по умолчанию в фокусе первый вариант. По клику на Enter переходим на вариант, который в фокусе.
 	 */
 	try {
-		if (TypesHelper.isId(str)) {
+		if (validators.isObjectId(str)) {
 			hints = [{
 				section: 'Id', value: str, to: URLHelper.createUrlById(str),
 			}];

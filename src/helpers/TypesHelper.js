@@ -49,14 +49,6 @@ class TypesHelper {
      *
      * @param {String} str
      */
-	static isId(str) {
-		return isIdRegEx.test(str);
-	}
-
-	/**
-     *
-     * @param {String} str
-     */
 	static isStringNumber(str) {
 		return stringNumberRegEx.test(str);
 	}
