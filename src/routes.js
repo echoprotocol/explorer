@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router';
 import App from './containers/App';
 import RecentBlockSection from './containers/RecentBlockSection';
 import Objects from './containers/Objects';
-import AccountAsset from './containers/AccountAsset';
+import AccountAsset from './containers/Asset';
 
 import {
 	INDEX_PATH,

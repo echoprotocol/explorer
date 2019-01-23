@@ -4,12 +4,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
-// import LoadMoreBtn from '../../../components/LoadMoreBtn';
+
 import RecentBlockSidebar from '../RecentBlockSection/RecentBlockSidebar';
 
 import { INDEX_PATH, ACCOUNTS_PATH } from '../../constants/RouterConstants';
 
-import { getBlockInformation, clearBlockInformation } from '../../actions/BlockActions';
+import { getFullAssetInformation } from '../../actions/AssetActions';
 
 class AccountAsset extends React.Component {
 
@@ -46,7 +46,7 @@ class AccountAsset extends React.Component {
 										<div className="title">Asset info</div>
 										<div className="list">
 											<div className="block">
-												<div className="title">Account name</div>
+												<div className="title">Issuer</div>
 												<a href="" className="val blue">Homer1956</a>
 											</div>
 											<div className="block">
@@ -106,11 +106,9 @@ AccountAsset.propTypes = {
 };
 
 export default withRouter(connect(
-	(state) => ({
-		// asset: state.asset.get('assetInformation'),
-	}),
+	(state) => (),
 	(dispatch, props) => ({
-		getAssetInfo: (id = props.match.params.id) => dispatch((id) => {}),
+		getAssetInfo: (id = props.match.params.id) => getFullAssetInformation(id),
 	})
 	,
 )(AccountAsset));
