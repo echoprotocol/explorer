@@ -1,7 +1,7 @@
 {
-	"name": "PixelPlex-app",
-	"description": "PixelPlex React Redux app",
-	"version": "0.2.0",
+	"name": "echo-explorer",
+	"description": "Echo Explorer",
+	"version": "0.3.0",
 	"scripts": {
 		"start": "cross-env NODE_ENV=local webpack-dev-server --mode development --progress --colors --history-api-fallback --hot --inline",
 		"build": "cross-env NODE_ENV=production webpack --progress --display-error-details --colors --mode production",
@@ -14,6 +14,7 @@
 		"autoprefixer": "^8.1.0",
 		"babel-runtime": "^6.26.0",
 		"bignumber.js": "^8.0.1",
+		"classnames": "^2.2.6",
 		"config": "^1.30.0",
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.5.7",
@@ -50,6 +51,7 @@
 		"redux-modules-middleware": "^1.2.0",
 		"redux-thunk": "^2.3.0",
 		"uglifyjs-webpack-plugin": "^1.2.2",
+		"utf8": "^3.0.0",
 		"wow.js": "^1.2.2"
 	},
 	"devDependencies": {

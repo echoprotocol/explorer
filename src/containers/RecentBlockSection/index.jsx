@@ -4,10 +4,12 @@ import { Route, Switch } from 'react-router';
 import RecentBlockTable from './RecentBlockTable';
 import BlockInformation from './BlockInformation';
 import RecentBlockSidebar from './RecentBlockSidebar';
+import TransactionsInfo from './TransactionsInfo';
 
 import {
 	INDEX_PATH,
 	BLOCK_INFORMATION_PATH,
+	TRANSACTION_INFORMATION_PATH,
 } from '../../constants/RouterConstants';
 
 
@@ -20,6 +22,7 @@ class RecentBlockSection extends React.Component {
 					<Switch>
 						<Route exact path={INDEX_PATH} component={RecentBlockTable} />
 						<Route exact path={BLOCK_INFORMATION_PATH} component={BlockInformation} />
+						<Route exact path={TRANSACTION_INFORMATION_PATH} component={TransactionsInfo} />
 					</Switch>
 					<RecentBlockSidebar />
 				</div>

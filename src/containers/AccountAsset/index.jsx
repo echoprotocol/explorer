@@ -13,22 +13,12 @@ import { getBlockInformation, clearBlockInformation } from '../../actions/BlockA
 
 class AccountAsset extends React.Component {
 
-	constructor() {
-		super();
-		this.returnFunction = this.returnFunction.bind(this);
-	}
-
 	componentDidMount() {
 		this.props.getBlockInfo();
-
 	}
 
 	componentWillUnmount() {
 		this.props.clearBlockInfo();
-	}
-
-	returnFunction() {
-		this.props.history.push(INDEX_PATH);
 	}
 
 	renderLoader() {
@@ -36,11 +26,11 @@ class AccountAsset extends React.Component {
 		return null;
 	}
 
-	renderBlockInfo(blockInformation) {
-		let verifiers = blockInformation.get('verifiers');
-		if (verifiers) {
-			verifiers = verifiers.map((name) => ({ name, to: ACCOUNTS_PATH.replace(/:name/, name) }));
-		}
+	renderAsset() {
+		// let verifiers = blockInformation.get('verifiers');
+		// if (verifiers) {
+		// 	verifiers = verifiers.map((name) => ({ name, to: ACCOUNTS_PATH.replace(/:name/, name) }));
+		// }
 
 		// const transactions = blockInformation.get('transactions');
 
@@ -101,28 +91,26 @@ class AccountAsset extends React.Component {
 	}
 
 	render() {
-		const { blockInformation } = this.props;
 
-		// return blockInformation.get('blockNumber') ? this.renderBlockInfo(blockInformation) : this.renderLoader();
-		return this.renderBlockInfo(blockInformation);
+		// return blockInformation.get('blockNumber') ? this.renderAsset() : this.renderLoader();
+		return this.renderAsset();
 	}
 
 }
 
 AccountAsset.propTypes = {
-	blockInformation: PropTypes.object.isRequired,
-	getBlockInfo: PropTypes.func.isRequired,
-	clearBlockInfo: PropTypes.func.isRequired,
+	assetInformation: PropTypes.object.isRequired,
+	getAssetInfo: PropTypes.func.isRequired,
+	match: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
-		blockInformation: state.block.get('blockInformation'),
+		// asset: state.asset.get('assetInformation'),
 	}),
 	(dispatch, props) => ({
-		getBlockInfo: () => dispatch(getBlockInformation(props.match.params.round)),
-		clearBlockInfo: () => dispatch(clearBlockInformation()),
+		getAssetInfo: (id = props.match.params.id) => dispatch((id) => {}),
 	})
 	,
 )(AccountAsset));
