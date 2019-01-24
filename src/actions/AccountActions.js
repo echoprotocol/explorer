@@ -1,4 +1,4 @@
-import echo, { validators } from 'echojs-lib';
+import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import { List, fromJS } from 'immutable';
 
 import AccountReducer from '../reducers/AccountReducer';
@@ -19,11 +19,21 @@ class AccountActions extends BaseActionsClass {
 
 	/**
 	 * Format account history
-	 * @param {array} history
+	 * @param {String} accountId
+	 * @param {Array} history
 	 * @returns {function}
 	 */
-	async formatAccountHistory(transactions) {
-		let accountHistory = transactions.map((t) => formatOperation(t.op, t.block_num, t.result));
+	async formatAccountHistory(accountId, transactions) {
+		let accountHistory = transactions.map(async (t) => {
+			let { op: operation, result } = t;
+			if (OPERATIONS_IDS.CONTRACT_TRANSFER === t.op[0]) {
+				const block = await echo.api.getBlock(t.block_num);
+				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
+				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
+			}
+
+			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, result);
+		});
 		accountHistory = await Promise.all(accountHistory);
 		return accountHistory.reduce((arr, t) => ([...arr, [t]]), []);
 	}
@@ -54,25 +64,22 @@ class AccountActions extends BaseActionsClass {
 
 				await echo.api.getObjects(objectIds);
 
+				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
+
 				// await echo.subscriber.setAccountSubscribe(async () => {
-				// 	const transactions = await this.formatAccountHistory(account.history);
+				// 	// TODO get history and update
+				// 	const transactions = await this.formatAccountHistory(id, account.history);
 				// 	dispatch(this.setValue('history', transactions));
 				// }, [id]);
 
-				const transactions = await this.formatAccountHistory(account.history);
+				const transactions = await this.formatAccountHistory(id, account.history);
 
-				dispatch(this.setMultipleValue({
-					loading: false,
-					id: account.id,
-					balances: fromJS(account.balances),
-					history: new List(transactions),
-				}));
+				dispatch(this.setValue('history', new List(transactions)));
 
 			} catch (e) {
-				dispatch(this.setMultipleValue({
-					loading: false,
-					error: e,
-				}));
+				dispatch(this.setValue('error', e));
+			} finally {
+				dispatch(this.setValue('loading', false));
 			}
 		};
 	}

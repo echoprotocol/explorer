@@ -16,7 +16,7 @@ class TransactionsTable extends React.Component {
 		return (
 			<React.Fragment key={Math.random()} >
 				<Link
-					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, i + 1)}
+					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
 					className={classnames('recent-block-element', { 'with-subtransfer': data.internal && data.internal.length })}
 				>
 
@@ -121,7 +121,7 @@ class TransactionsTable extends React.Component {
 		return (
 			<React.Fragment key={Math.random()}>
 				<Link
-					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, i + 1)}
+					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
 					className={classnames('divTableRow', { 'with-subtransfer': data.internal && data.internal.length })}
 				>
 					<div className="divTableCell">{j === 0 ? i + 1 : ''}</div>
