@@ -200,5 +200,133 @@
                 }
             }
         }
+
+        &.contract-page {
+            .account-page-t-block {
+                .title {
+                    padding-left: 0;
+
+                    @include res-320 {
+                        padding-left: 19px;
+                    }
+                }
+
+                .help-container {
+                    .right-container {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+
+        .react-tabs {
+            margin-top: 65px;
+
+            @include res-1000 {
+                margin-top: 50px;
+            }
+
+            @include res-768 {
+                margin-top: 40px;
+            }
+        }
+
+        .tab-panel {
+            list-style-type: none;
+            display: flex;
+            height: 35px;
+            align-items: center;
+            margin-bottom: 15px;
+
+            @include res-320 {
+                padding-left: 30px;
+            }
+
+            .react-tabs__tab {
+                position: relative;   
+                height: 100%;
+                cursor: pointer;
+                @include InterUI_Bold;
+                font-size: 16px;
+                color: #130d32;
+                opacity: 0.6;
+                display: flex;
+                align-items: center;
+
+                padding-left: 22px;
+                padding-right: 22px;
+
+                @include res-320 {
+                    font-size: 15px;
+                }
+    
+
+                &:first-child {
+                    padding-left: 0;
+                }
+                
+                &:not(:last-child) {
+                    &:after {
+                        content: '';
+                        width: 1px;
+                        height: 100%;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        background-color: #cfd0d6;
+                    }
+                }
+
+                &--selected {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .contract-bytecode-panel {
+
+            @include res-320 {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .row {
+                display: flex;
+                align-items: flex-start;
+
+                @include res-320 {
+                    flex-direction: column;
+                }
+
+                .left-column {
+                    @include Hack_Bold;
+                    font-size: 9px;
+                    color: #1f3c4d;
+                    text-transform: uppercase;
+                    letter-spacing: 0.25em;
+                    margin-top: 3px;
+                    margin-right: 125px;
+                    flex-shrink: 0;
+
+                    @include res-320 {
+                        margin-bottom: 15px;
+                    }
+                }
+                
+                .right-column {
+                    .text-block {
+                        @include Hack_Regular;
+                        font-size: 12px;
+                        color: #080808;
+                        line-height: 18px;
+                        word-break: break-all;
+                    }
+                    
+                    .load-more {
+                        margin-top: 12px;
+                    }
+                }
+            }
+        }
     }
 }

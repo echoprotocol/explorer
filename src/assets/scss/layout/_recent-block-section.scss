@@ -35,6 +35,7 @@
         background-color: #f3f2f5;
         position: relative;
         padding-bottom: 37px;
+        flex-shrink: 0;
 
         &.recent-block-table {
             @include res-320 {
