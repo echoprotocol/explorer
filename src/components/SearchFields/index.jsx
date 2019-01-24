@@ -17,7 +17,6 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 			inputValue: '',
-			inputError: '',
 			to: '',
 		};
 
@@ -39,14 +38,6 @@ class SearchField extends React.Component {
 
 	onChangeDropdown(data) {
 		this.setState({ to: data.value });
-	}
-
-	onBlur() {
-		this.setState({
-			focus: false,
-			isChange: false,
-		});
-		this.inputEl.blur();
 	}
 
 	onChange(e) {
@@ -86,6 +77,14 @@ class SearchField extends React.Component {
 		this.wrapperRef = node;
 	}
 
+	blurInput() {
+		this.setState({
+			focus: false,
+			isChange: false,
+		});
+		this.inputEl.blur();
+	}
+
 	handleClickOutside(event) {
 		if (this.state.isActiveSmall && !this.wrapperRef.contains(event.target)) {
 			this.setState({ isActiveSmall: false });
@@ -112,15 +111,14 @@ class SearchField extends React.Component {
 		this.props.getHints();
 	}
 
-
 	render() {
 
 		const {
-			focus, isChange, isActiveSmall, inputError, // eslint-disable-line no-unused-vars
+			focus, isChange, isActiveSmall,
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, hints, // eslint-disable-line no-unused-vars
+			small, placeholder, white, withHelp, goToBlock, hints,
 		} = this.props;
 
 		const options = hints
@@ -130,7 +128,7 @@ class SearchField extends React.Component {
 				key: i,
 				value: to,
 				content: (
-					<Link key={Math.random()} to={to} className="element" onClick={() => this.onBlur()} >
+					<Link key={Math.random()} to={to} className="element" onClick={() => this.blurInput()} >
 						<div className="section-name">{section}</div>
 						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
 					</Link>
@@ -206,8 +204,8 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
-	hints: PropTypes.array,
 	goToBlock: PropTypes.bool,
+	hints: PropTypes.array,
 	getHints: PropTypes.func,
 	history: PropTypes.object,
 };
