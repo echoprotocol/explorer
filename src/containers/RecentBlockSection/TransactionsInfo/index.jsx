@@ -8,6 +8,7 @@ import TransactionActions from '../../../actions/TransactionActions';
 export default withRouter(connect(
 	(state) => ({
 		operations: state.transaction.get('operations'),
+		historyLength: state.global.get('historyLength'),
 	}),
 	(dispatch, props) => ({
 		getTransaction: () => dispatch(TransactionActions.getTransaction(

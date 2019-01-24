@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { DebounceInput } from 'react-debounce-input';
+
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
+import { DEBOUNCE_TIMEOUT } from '../../constants/SearchConstants';
+import { NOT_FOUND_PATH } from '../../constants/RouterConstants';
+
 
 class SearchField extends React.Component {
 
@@ -62,6 +67,10 @@ class SearchField extends React.Component {
 		const code = e.keyCode || e.which;
 
 		if (this.state.inputValue && this.state.to && KEY_CODE_ENTER === code) {
+			if (this.props.hints.length === 0) {
+				this.props.history.push(NOT_FOUND_PATH);
+				return;
+			}
 			this.props.history.push(this.state.to);
 			this.setState({ focus: false, isChange: false });
 			this.inputEl.blur();
@@ -161,14 +170,15 @@ class SearchField extends React.Component {
 						)
 					}
 					<div className="input-field">
-						<input
+						<DebounceInput
 							type="text"
 							value={this.state.inputValue}
 							placeholder={placeholder}
 							onFocus={() => this.onFocus()}
 							onChange={(e) => this.onChange(e)}
 							onKeyDown={(e) => this.onKeyPress(e)}
-							ref={(node) => { this.inputEl = node; }}
+							debounceTimeout={DEBOUNCE_TIMEOUT}
+							inputRef={(node) => { this.inputEl = node; }}
 						/>
 						{
 							(!goToBlock) ? (

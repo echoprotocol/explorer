@@ -52,14 +52,14 @@ export const headerSearchHint = (str) => async (dispatch) => {
 				section: 'Block', value: str, to: URLHelper.createBlockUrl(str),
 			};
 
-			const numberHints = [
+			hints = [
 				accountHint,
 				assetHint,
 				contractHint,
 				blockHint,
 			];
 
-			hints = [...hints, ...numberHints];
+			return;
 		}
 
 		if (TypesHelper.isStartWithLetter(str) && str.length > 2) {
@@ -77,7 +77,7 @@ export const headerSearchHint = (str) => async (dispatch) => {
 					};
 				});
 
-			hints = [...hints, ...accounts];
+			hints = accounts;
 		}
 	} catch (error) {
 		dispatch(SearchReducer.actions.set({ field: ['headerSearch', 'error'], value: FormatHelper.formatError(error) }));

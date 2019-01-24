@@ -68,11 +68,13 @@ const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) =>
 /**
  *
  * @param {Array} data
+ * @param {String} accountId
  * @param {Number} round
+ * @param {Number} trIndex
  * @param {Array} operationResult
  * @returns {Promise.<{type: *, fee: {amount, precision, symbol}, from: {id: string}, subject: {id: string}, name, value: {}, status: boolean}>}
  */
-const formatOperation = async (data, round = undefined, operationResult = []) => {
+export const formatOperation = async (data, accountId = undefined, round = undefined, trIndex = undefined, operationResult = []) => {
 	const [type, operation] = data;
 	const [, resId] = operationResult;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
@@ -94,6 +96,8 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 		name,
 		value: {},
 		status: true,
+		round,
+		trIndex,
 	};
 
 	if (options.from) {
@@ -145,6 +149,11 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 		};
 	}
 
+	// filter sub-operations by account
+	if (accountId && ![result.from.id, result.subject.id].includes(accountId) && !round) {
+		return null;
+	}
+
 	if (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT) {
 
 		const contractResult = await echo.api.getContractResult(resId);
@@ -152,16 +161,29 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 		result.status = excepted === 'None';
 
 		if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
+			let contractHistory = [];
 
-			const contractHistory = await echo.api.getContractHistory(result.subject.id);
+			try {
+				contractHistory = await echo.api.getContractHistory(result.subject.id);
+			} catch (e) {
+				//
+			}
+
 			let internalOperations = contractHistory
 				.filter(({ block_num }) => block_num === round)
-				.map(({ op }) => formatOperation(op));
+				.map(({ op }) => formatOperation(op, accountId))
+				.filter((op) => op);
 
 			internalOperations = await Promise.all(internalOperations);
 			internalOperations = internalOperations.map((op) => { op.label = 'Subtransfer'; return op; });
 			let internalTransactions = internalOperations;
-			const [, { code }] = await echo.api.getContract(result.subject.id);
+			let code = '';
+			try {
+				([, { code }] = await echo.api.getContract(result.subject.id));
+
+			} catch (e) {
+				//
+			}
 
 			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
@@ -233,9 +255,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		if (transactions.length !== 0) {
 
 			const promiseTransactions = transactions
-				.map(({ operations, operation_results }) =>
+				.map(({ operations, operation_results }, trIndex) =>
 					Promise.all(operations.map((op, i) =>
-						formatOperation(op, planeBlock.round, operation_results[i]))));
+						formatOperation(op, null, planeBlock.round, trIndex, operation_results[i]))));
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 

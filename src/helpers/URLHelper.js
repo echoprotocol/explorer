@@ -1,6 +1,5 @@
 import { CONTRACT_OBJECT_PREFIX, ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
-
-import { BLOCK_INFORMATION_PATH } from '../constants/RouterConstants';
+import { ACCOUNTS_PATH, BLOCK_INFORMATION_PATH } from '../constants/RouterConstants';
 
 class URLHelper {
 
@@ -28,7 +27,7 @@ class URLHelper {
 	 * @return {String}
 	 */
 	static createAccountUrl(accountId) {
-		return `/accounts?id=${accountId}`;
+		return ACCOUNTS_PATH.replace(/:id/, accountId);
 	}
 
 	/**
