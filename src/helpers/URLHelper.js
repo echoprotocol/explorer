@@ -1,6 +1,6 @@
 import { validators } from 'echojs-lib';
 
-import { ASSET_PATH } from '../constants/RouterConstants';
+import { ASSET_PATH, ACCOUNTS_PATH } from '../constants/RouterConstants';
 
 class URLHelper {
 
@@ -19,7 +19,7 @@ class URLHelper {
 	 * @return {String}
 	 */
 	static createAccountUrl(accountId) {
-		return `/accounts?id=${accountId}`;
+		return ASSET_PATH.replace(/:id/, accountId);
 	}
 
 	/**

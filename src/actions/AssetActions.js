@@ -11,6 +11,7 @@ import history from '../history';
  */
 // eslint-disable-next-line import/prefer-default-export
 export const getFullAssetInformation = async (assetId) => {
+	console.log('getFullAssetInformation')
 	try {
 		const asset = await echo.api.getObject(assetId);
 

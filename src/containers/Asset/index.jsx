@@ -18,7 +18,7 @@ export default withRouter(connect(
 			return { asset: {}, issuer: {} };
 		}
 
-		console.log(asset.toJS(), issuer.toJS())
+		// console.log(asset.toJS())
 		return { asset, issuer };
 
 	},
