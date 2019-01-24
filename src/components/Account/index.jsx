@@ -26,10 +26,14 @@ class Account extends React.Component {
 			return;
 		}
 
-		const prevHistory = prevProps.account.get('history');
-		const history = this.props.account.get('history');
-		if (prevHistory.first().id !== history.first().id) {
-			this.props.updateAccountHistory(history);
+		const { account: prevAccount } = prevProps;
+		const { account } = this.props;
+		if (prevAccount.get('history').first().id !== account.get('history').first().id) {
+			this.props.updateAccountHistory(account.get('history'));
+		}
+
+		if (!prevAccount.get('balances').equals(account.get('balances'))) {
+			this.props.updateAccountBalances(account.get('balances'));
 		}
 	}
 
@@ -60,19 +64,22 @@ class Account extends React.Component {
 					<div className="table-container inner-information-container block-information account-page">
 						<div className="account-page-t-block">
 							<div className="title">Account {id}</div>
-							{
-								account && balances && cacheObjects ?
-									<div className="help-container">
+							<div className="help-container">
+								{
+									account ?
 										<AccountInfo
 											echo={assetBalances.get(ECHO_ASSET.ID)}
 											name={account.get('name')}
-										/>
+										/> : null
+								}
+								{
+									balances.size ?
 										<AccountBalances
 											balances={assetBalances.delete(ECHO_ASSET.ID)}
 											owner={account.get('assets')}
-										/>
-									</div> : null
-							}
+										/> : null
+								}
+							</div>
 						</div>
 						{
 							account && history.size && !loading ?
@@ -100,6 +107,7 @@ Account.propTypes = {
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
 	updateAccountHistory: PropTypes.func.isRequired,
+	updateAccountBalances: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {

@@ -15,8 +15,6 @@ class AccountActions extends BaseActionsClass {
 	 */
 	constructor() {
 		super(AccountReducer);
-
-		this.subscriber = null;
 	}
 
 	/**
@@ -73,7 +71,7 @@ class AccountActions extends BaseActionsClass {
 				dispatch(this.setValue('history', new List(transactions)));
 
 			} catch (e) {
-				dispatch(this.setValue('error', e));
+				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));
 			}
@@ -90,6 +88,20 @@ class AccountActions extends BaseActionsClass {
 		return async (dispatch) => {
 			const transactions = await this.formatAccountHistory(accountId, accountHistory);
 			dispatch(this.setValue('history', new List(transactions)));
+		};
+	}
+
+	/**
+	 * Update account balances
+	 * @param {Map} balances
+	 * @returns {function}
+	 */
+	updateAccountBalances(balances) {
+		return async (dispatch) => {
+			const objectIds = balances.reduce((arr, key, value) => [...arr, key, value], []);
+			await echo.api.getObjects(objectIds);
+
+			dispatch(this.setMultipleValue({ balances }));
 		};
 	}
 

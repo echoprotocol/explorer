@@ -177,7 +177,13 @@ export const formatOperation = async (data, accountId = undefined, round = undef
 			internalOperations = await Promise.all(internalOperations);
 			internalOperations = internalOperations.map((op) => { op.label = 'Subtransfer'; return op; });
 			let internalTransactions = internalOperations;
-			const [, { code }] = await echo.api.getContract(result.subject.id);
+			let code = '';
+			try {
+				([, { code }] = await echo.api.getContract(result.subject.id));
+
+			} catch (e) {
+				//
+			}
 
 			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
