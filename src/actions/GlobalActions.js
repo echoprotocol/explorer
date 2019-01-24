@@ -41,6 +41,7 @@ class GlobalActionsClass extends BaseActionsClass {
 					resolve(data);
 				});
 			}).catch((error) => {
+				console.error(error);
 				resolve(error);
 			});
 		});
