@@ -46,6 +46,7 @@ class SearchField extends React.Component {
 			focus: false,
 			isChange: false,
 		});
+		this.inputEl.blur();
 	}
 
 	onChange(e) {
@@ -64,10 +65,6 @@ class SearchField extends React.Component {
 
 		this.setState({ focus: true });
 		this.inputEl.focus();
-
-		// if (this.state.inputValue) {
-		// 	this.props.onSearch(this.state.inputValue);
-		// }
 	}
 
 	onKeyPress(e) {
@@ -76,6 +73,7 @@ class SearchField extends React.Component {
 		if (this.state.inputValue && this.state.to && KEY_CODE_ENTER === code) {
 			this.props.history.push(this.state.to);
 			this.setState({ focus: false, isChange: false });
+			this.inputEl.blur();
 		}
 
 		if (KEY_CODE_ESC === code) {
@@ -111,6 +109,7 @@ class SearchField extends React.Component {
 			isActiveSmall: false,
 			to: '',
 		});
+		this.props.getHints();
 	}
 
 
@@ -131,7 +130,7 @@ class SearchField extends React.Component {
 				key: i,
 				value: to,
 				content: (
-					<Link key={Math.random()} to={to} className="element">
+					<Link key={Math.random()} to={to} className="element" onClick={() => this.onBlur()} >
 						<div className="section-name">{section}</div>
 						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
 					</Link>
@@ -187,7 +186,11 @@ class SearchField extends React.Component {
 					(withHelp) && (
 						(isChange || focus) && (
 							<div className="search-block-result">
-								<Dropdown options={options} open onChange={(even, data) => this.onChangeDropdown(data)} />
+								<Dropdown
+									options={options}
+									open
+									onChange={(even, data) => this.onChangeDropdown(data)}
+								/>
 							</div>
 						)
 					)
