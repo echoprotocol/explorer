@@ -68,20 +68,6 @@ class AccountActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
 
-				if (this.subscriber) {
-					echo.subscriber.removeAccountSubscribe(this.subscriber);
-					this.subscriber = null;
-				}
-
-				this.subscriber = async (update) => {
-					console.log(update);
-					// TODO get history and update
-					// const transactions = await this.formatAccountHistory(id, account.history);
-					// dispatch(this.setValue('history', transactions));
-				};
-
-				await echo.subscriber.setAccountSubscribe(this.subscriber.bind(this), [id]);
-
 				const transactions = await this.formatAccountHistory(id, account.history);
 
 				dispatch(this.setValue('history', new List(transactions)));
@@ -95,15 +81,15 @@ class AccountActions extends BaseActionsClass {
 	}
 
 	/**
-	 * Clear account info
-	 * @param {string} id
+	 * Update account history
+	 * @param {string} accountId
+	 * @param {array} accountHistory
 	 * @returns {function}
 	 */
-	clearAccountInfo() {
+	updateAccountHistory(accountId, accountHistory) {
 		return async (dispatch) => {
-			echo.subscriber.removeAccountSubscribe(this.subscriber);
-			this.subscriber = null;
-			dispatch(this.clear());
+			const transactions = await this.formatAccountHistory(accountId, accountHistory);
+			dispatch(this.setValue('history', new List(transactions)));
 		};
 	}
 

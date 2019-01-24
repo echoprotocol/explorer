@@ -19,6 +19,17 @@ class Account extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.match.params.id !== this.props.match.params.id) {
 			this.props.getAccountInfo();
+			return;
+		}
+
+		if (!prevProps.account) {
+			return;
+		}
+
+		const prevHistory = prevProps.account.get('history');
+		const history = this.props.account.get('history');
+		if (prevHistory.first().id !== history.first().id) {
+			this.props.updateAccountHistory(history);
 		}
 	}
 
@@ -88,6 +99,7 @@ Account.propTypes = {
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
+	updateAccountHistory: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {

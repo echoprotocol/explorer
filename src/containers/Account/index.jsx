@@ -15,7 +15,11 @@ export default withRouter(connect(
 	}),
 	(dispatch, props) => ({
 		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),
-		clearAccountInfo: () => dispatch(AccountActions.clearAccountInfo()),
+		updateAccountHistory: (history) => dispatch(AccountActions.updateAccountHistory(
+			props.match.params.id,
+			history,
+		)),
+		clearAccountInfo: () => dispatch(AccountActions.clear()),
 	})
 	,
 )(Account));
