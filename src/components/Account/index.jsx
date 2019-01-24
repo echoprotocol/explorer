@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import AccountHistory from './AccountHistory';
+import TransactionsTable from '../BlockInformation/TransactionsTable';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 
@@ -16,13 +16,38 @@ class Account extends React.Component {
 
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.match.params.id !== this.props.match.params.id) {
+			this.props.getAccountInfo();
+			return;
+		}
+
+		if (!prevProps.account) {
+			return;
+		}
+
+		const { account: prevAccount } = prevProps;
+		const { account } = this.props;
+		if (prevAccount.get('history').first().id !== account.get('history').first().id) {
+			this.props.updateAccountHistory(account.get('history'));
+		}
+
+		if (!prevAccount.get('balances').equals(account.get('balances'))) {
+			this.props.updateAccountBalances(account.get('balances'));
+		}
+	}
+
 	componentWillUnmount() {
 		this.props.clearAccountInfo();
 	}
 
+	renderLoader(loading) {
+		return loading ? <div /> : null;
+	}
+
 	render() {
 		const {
-			account, balances, cacheObjects, match: { params: { id } },
+			loading, account, balances, history, cacheObjects, match: { params: { id } },
 		} = this.props;
 
 		const assetBalances = balances.mapEntries(([assetId, statsId]) => ([
@@ -38,23 +63,31 @@ class Account extends React.Component {
 				<div className="wrap">
 					<div className="table-container inner-information-container block-information account-page">
 						<div className="account-page-t-block">
-							<div className="title">Account <span className="accent">{id}</span></div>
-							{
-								account && balances && cacheObjects ?
-									<div className="help-container">
+							<div className="title">Account {id}</div>
+							<div className="help-container">
+								{
+									account ?
 										<AccountInfo
 											echo={assetBalances.get(ECHO_ASSET.ID)}
 											name={account.get('name')}
-										/>
+										/> : null
+								}
+								{
+									balances.size ?
 										<AccountBalances
 											balances={assetBalances.delete(ECHO_ASSET.ID)}
 											owner={account.get('assets')}
-										/>
-									</div> : null
-							}
+										/> : null
+								}
+							</div>
 						</div>
-						<h2>43 Transactions</h2>
-						<AccountHistory />
+						{
+							account && history.size && !loading ?
+								<React.Fragment>
+									<h2>{account.get('history').size} Transactions</h2>
+									<TransactionsTable transactions={history} />
+								</React.Fragment> : this.renderLoader(loading)
+						}
 					</div>
 					<RecentBlockSidebar />
 				</div>
@@ -65,18 +98,23 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
+	loading: PropTypes.bool.isRequired,
 	account: PropTypes.object,
 	balances: PropTypes.object,
+	history: PropTypes.object,
 	cacheObjects: PropTypes.object,
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
+	updateAccountHistory: PropTypes.func.isRequired,
+	updateAccountBalances: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {
 	account: null,
 	balances: null,
 	cacheObjects: null,
+	history: null,
 };
 
 export default Account;
