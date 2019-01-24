@@ -37,11 +37,11 @@ class Asset extends React.Component {
 
 		const assetSymbol = asset.get && asset.get('symbol');
 		const assetPrecision = asset.get && asset.get('precision');
-		const currentSupply = asset.get && asset.get('dynamic').current_supply;
+		const currentSupply = asset.get && asset.getIn(['dynamic', 'current_supply']);
 		const maxSupply = asset.getIn && asset.getIn(['options', 'max_supply']);
 
-		const feePool = asset.get && asset.get('dynamic').fee_pool;
-		const accumulatedFees = asset.get && asset.get('dynamic').accumulated_fees;
+		const feePool = asset.get && asset.getIn(['dynamic', 'fee_pool']);
+		const accumulatedFees = asset.get && asset.getIn(['dynamic', 'accumulated_fees']);
 
 		const baseAmount = asset.getIn && asset.getIn(['options', 'core_exchange_rate', 'base', 'amount']);
 		const quoteAmount = asset.getIn && asset.getIn(['options', 'core_exchange_rate', 'quote', 'amount']);
@@ -55,9 +55,10 @@ class Asset extends React.Component {
 			validators.isVoid(quoteAmount) ||
 			validators.isVoid(feePool) ||
 			validators.isVoid(accumulatedFees) ||
+			validators.isVoid(assetPrecision) ||
 			assetSymbol
 		) {
-			exchangeRate = `${new BN(baseAmount).div(quoteAmount).toString()} ECHO / ${assetSymbol}`;
+			exchangeRate = `${new BN(quoteAmount).div(baseAmount).toString()} ECHO / ${assetSymbol}`;
 			poolBalance = feePool === 0 ? 0 : new BN(feePool).div(baseAmount).toString();
 			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : new BN(accumulatedFees).div(quoteAmount).toString();
 		}
@@ -70,7 +71,7 @@ class Asset extends React.Component {
 							{
 								assetSymbol && (
 									<div className="asset-container">
-										<div className="title">Asset <span className="accent">{assetSymbol}</span></div>
+										<div className="title">Asset {assetSymbol}</div>
 										<div className="help-container">
 											<div className="asset-elem">
 												<div className="title">Asset info</div>
@@ -85,11 +86,11 @@ class Asset extends React.Component {
 													</div>
 													<div className="block">
 														<div className="title">Current supply</div>
-														<div className="val">{FormatHelper.formatAmount(currentSupply)}</div>
+														<div className="val">{FormatHelper.formatAmount(currentSupply, assetPrecision)}</div>
 													</div>
 													<div className="block">
 														<div className="title">Max supply</div>
-														<div className="val">{FormatHelper.formatAmount(maxSupply)}</div>
+														<div className="val">{FormatHelper.formatAmount(maxSupply, assetPrecision)}</div>
 													</div>
 												</div>
 											</div>
@@ -98,7 +99,7 @@ class Asset extends React.Component {
 												<div className="list">
 													<div className="block">
 														<div className="title">Echo exchange rate</div>
-														<a href="" className="val blue">{exchangeRate}</a>
+														<div className="val"><span className="txt">{exchangeRate}</span></div>
 													</div>
 													<div className="block">
 														<div className="title">Pool balance</div>
