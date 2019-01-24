@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
 import FormatHelper from '../../helpers/FormatHelper';
+import URLHelper from '../../helpers/URLHelper';
 
 class AccountBalances extends React.Component {
 
@@ -27,7 +29,11 @@ class AccountBalances extends React.Component {
 				<span className="txt">
 					{FormatHelper.formatAmount(stats.get('balance'), asset.get('precision'))}
 				</span>
-				<span className="accent">{asset.get('symbol')}</span>
+				<span className="accent">
+					<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
+						{asset.get('symbol')}
+					</Link>
+				</span>
 			</div>
 		);
 	}
@@ -64,9 +70,11 @@ class AccountBalances extends React.Component {
 							</a> : null
 					}
 				</div>
-				<div className="elem">
-					<div className="title">tokens: <span className="gray">none</span></div>
-				</div>
+				{/*
+					<div className="elem">
+						<div className="title">tokens: <span className="gray">none</span></div>
+					</div>
+				*/}
 			</div>
 		);
 	}

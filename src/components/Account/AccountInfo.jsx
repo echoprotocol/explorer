@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
+import URLHelper from '../../helpers/URLHelper';
 
 class AccountInfo extends React.Component {
 
@@ -28,7 +30,11 @@ class AccountInfo extends React.Component {
 										)
 									}
 								</span>
-								<span className="accent">{ECHO_ASSET.SYMBOL}</span>
+								<span className="accent">
+									<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
+										{ECHO_ASSET.SYMBOL}
+									</Link>
+								</span>
 							</div>
 						</div> : null
 				}

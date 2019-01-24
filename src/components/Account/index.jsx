@@ -16,13 +16,23 @@ class Account extends React.Component {
 
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.match.params.id !== this.props.match.params.id) {
+			this.props.getAccountInfo();
+		}
+	}
+
 	componentWillUnmount() {
 		this.props.clearAccountInfo();
 	}
 
+	renderLoader(loading) {
+		return loading ? <div /> : null;
+	}
+
 	render() {
 		const {
-			account, balances, history, cacheObjects, match: { params: { id } },
+			loading, account, balances, history, cacheObjects, match: { params: { id } },
 		} = this.props;
 
 		const assetBalances = balances.mapEntries(([assetId, statsId]) => ([
@@ -38,7 +48,7 @@ class Account extends React.Component {
 				<div className="wrap">
 					<div className="table-container inner-information-container block-information account-page">
 						<div className="account-page-t-block">
-							<div className="title">Account <span className="accent">{id}</span></div>
+							<div className="title">Account {id}</div>
 							{
 								account && balances && cacheObjects ?
 									<div className="help-container">
@@ -54,11 +64,11 @@ class Account extends React.Component {
 							}
 						</div>
 						{
-							account && history ?
+							account && history.size && !loading ?
 								<React.Fragment>
 									<h2>{account.get('history').size} Transactions</h2>
 									<TransactionsTable transactions={history} />
-								</React.Fragment> : null
+								</React.Fragment> : this.renderLoader(loading)
 						}
 					</div>
 					<RecentBlockSidebar />
@@ -70,6 +80,7 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
+	loading: PropTypes.bool.isRequired,
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	history: PropTypes.object,

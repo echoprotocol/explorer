@@ -4,6 +4,7 @@ import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = new Map({
+	loading: false,
 	id: null,
 	balances: new Map({}),
 	history: new List([]),

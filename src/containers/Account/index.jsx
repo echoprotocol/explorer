@@ -7,6 +7,7 @@ import AccountActions from '../../actions/AccountActions';
 
 export default withRouter(connect(
 	(state) => ({
+		loading: state.account.get('loading'),
 		balances: state.account.get('balances'),
 		history: state.account.get('history'),
 		account: state.echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, state.account.get('id')]),
@@ -14,7 +15,7 @@ export default withRouter(connect(
 	}),
 	(dispatch, props) => ({
 		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),
-		clearAccountInfo: () => dispatch(AccountActions.clear()),
+		clearAccountInfo: () => dispatch(AccountActions.clearAccountInfo()),
 	})
 	,
 )(Account));
