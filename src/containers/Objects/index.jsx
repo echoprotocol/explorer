@@ -3,7 +3,6 @@ import { withRouter } from 'react-router';
 import Objects from '../../components/Objects';
 import { getObjectInfo, setError } from '../../actions/ObjectsActions';
 
-
 export default withRouter(connect(
 	(state) => ({
 		data: state.objects.get('data'),

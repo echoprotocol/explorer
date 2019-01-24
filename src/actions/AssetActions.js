@@ -10,7 +10,7 @@ import history from '../history';
  * 	Set latest block from blockchain to redux store
  */
 // eslint-disable-next-line import/prefer-default-export
-export const getFullAssetInformation = (assetId) => async () => {
+export const getFullAssetInformation = async (assetId) => {
 	try {
 		const asset = await echo.api.getObject(assetId);
 

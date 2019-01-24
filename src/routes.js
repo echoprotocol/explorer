@@ -11,7 +11,7 @@ import {
 	BLOCK_INFORMATION_PATH,
 	TRANSACTION_INFORMATION_PATH,
 	OBJECTS_PATH,
-	ACCOUNT_ASSET_PATH,
+	ASSET_PATH,
 } from './constants/RouterConstants';
 
 export default class Routes extends React.Component {
@@ -24,7 +24,7 @@ export default class Routes extends React.Component {
 					<Route exact path={BLOCK_INFORMATION_PATH} component={RecentBlockSection} />
 					<Route exact path={TRANSACTION_INFORMATION_PATH} component={RecentBlockSection} />
 					<Route exact path={OBJECTS_PATH} component={Objects} />
-					<Route exact path={ACCOUNT_ASSET_PATH} component={AccountAsset} />
+					<Route exact path={ASSET_PATH} component={AccountAsset} />
 				</Switch>
 			</App>
 		);
