@@ -1,9 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 
@@ -17,7 +14,7 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 			inputValue: '',
-			to: '',
+			inputError: '',
 		};
 
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -36,10 +33,6 @@ class SearchField extends React.Component {
 		this.setState({ focus: true });
 	}
 
-	onChangeDropdown(data) {
-		this.setState({ to: data.value });
-	}
-
 	onChange(e) {
 		const { value } = e.target;
 
@@ -47,8 +40,6 @@ class SearchField extends React.Component {
 			isChange: true,
 			inputValue: value,
 		});
-
-		this.props.getHints(value);
 	}
 
 	onClick(e) {
@@ -56,33 +47,27 @@ class SearchField extends React.Component {
 
 		this.setState({ focus: true });
 		this.inputEl.focus();
+
+		if (this.state.inputValue) {
+			this.props.onSearch(this.state.inputValue);
+		}
 	}
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
 
-		if (this.state.inputValue && this.state.to && KEY_CODE_ENTER === code) {
-			this.props.history.push(this.state.to);
-			this.setState({ focus: false, isChange: false });
-			this.inputEl.blur();
+		if (this.state.inputValue && KEY_CODE_ENTER === code) {
+			this.props.onSearch(this.state.inputValue);
 		}
 
 		if (KEY_CODE_ESC === code) {
 			this.inputEl.blur();
-			this.setState({ focus: false, isChange: false });
+			this.setState({ focus: false });
 		}
 	}
 
 	setWrapperRef(node) {
 		this.wrapperRef = node;
-	}
-
-	blurInput() {
-		this.setState({
-			focus: false,
-			isChange: false,
-		});
-		this.inputEl.blur();
 	}
 
 	handleClickOutside(event) {
@@ -91,7 +76,8 @@ class SearchField extends React.Component {
 		}
 
 		if (!this.wrapperRef.contains(event.target)) {
-			this.setState({ focus: false, isChange: false });
+			this.setState({ focus: false });
+			this.setState({ isChange: false });
 		}
 	}
 
@@ -106,43 +92,28 @@ class SearchField extends React.Component {
 			focus: false,
 			isChange: false,
 			isActiveSmall: false,
-			to: '',
 		});
-		this.props.getHints();
 	}
+
 
 	render() {
 
 		const {
-			focus, isChange, isActiveSmall,
+			focus, isChange, isActiveSmall, inputError, // eslint-disable-line no-unused-vars
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, hints,
+			small, placeholder, white, withHelp, goToBlock,
 		} = this.props;
 
-		const options = hints
-			.map(({
-				section, prefix, value, to, postfix,
-			}, i) => ({
-				key: i,
-				value: to,
-				content: (
-					<Link key={to} to={to} className="element" onClick={() => this.blurInput()} >
-						<div className="section-name">{section}</div>
-						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
-					</Link>
-				),
-			}));
+		// ВЫДЕЛЕНИЕ СОВПАВШИХ ЭЛЕМЕНТОВ --> <span className="select"></span>
 
 		return (
 			<div
-				className={classnames('input-search-block', {
-					small, 'is-active-small': (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock,
-				})}
+				className={`input-search-block ${(small) ? 'small' : ''} ${(isActiveSmall || this.state.inputValue) ? 'is-active-small' : ''} ${(white) ? 'white' : ''} ${(goToBlock) ? 'go-to-block' : ''}`}
 				ref={this.setWrapperRef}
 			>
-				<div className={classnames('input-container', { focus })}>
+				<div className={`input-container ${focus ? 'focus' : ''}`}>
 					{
 						(!goToBlock) && (
 							<a
@@ -179,18 +150,23 @@ class SearchField extends React.Component {
 						}
 					</div>
 				</div>
-
 				{
 					(withHelp) && (
-						(isChange || focus) && (
+						(isChange) && (
 							<div className="search-block-result">
-								<Dropdown
-									options={options}
-									open
-									onChange={(even, data) => this.onChangeDropdown(data)}
-								/>
-							</div>
-						)
+								<a href="" className="element" onClick={(e) => e.preventDefault()}>
+									<div className="section-name">Block</div>
+									<div className="value">1.16.<span className="select">5</span></div>
+								</a>
+								<a href="" className="element" onClick={(e) => e.preventDefault()}>
+									<div className="section-name">Account</div>
+									<div className="value"><span className="select">15</span>homersimpson</div>
+								</a>
+								<a href="" className="element" onClick={(e) => e.preventDefault()}>
+									<div className="section-name">Transaction</div>
+									<div className="value"><span className="select">15</span>289378929384</div>
+								</a>
+							</div>)
 					)
 				}
 			</div>
@@ -204,10 +180,8 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
+	onSearch: PropTypes.func,
 	goToBlock: PropTypes.bool,
-	hints: PropTypes.array,
-	getHints: PropTypes.func,
-	history: PropTypes.object,
 };
 
 SearchField.defaultProps = {
@@ -215,10 +189,8 @@ SearchField.defaultProps = {
 	placeholder: '',
 	white: false,
 	withHelp: false,
-	hints: [],
 	goToBlock: null,
-	history: {},
-	getHints: () => {},
+	onSearch: null,
 };
 
 export default SearchField;

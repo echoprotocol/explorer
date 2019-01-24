@@ -18,8 +18,19 @@ export const headerSearchHint = (str) => async (dispatch) => {
 
 	try {
 		if (validators.isObjectId(str)) {
+
+			let section = 'Id';
+
+			if (validators.isAccountId(str)) {
+				section = 'Account';
+			} else if (validators.isAssetId(str)) {
+				section = 'Asset';
+			} else if (validators.isContractId(str)) {
+				section = 'Contract';
+			}
+
 			hints = [{
-				section: 'Id', value: str, to: URLHelper.createUrlById(str),
+				section, value: str, to: URLHelper.createUrlById(str),
 			}];
 			return;
 		}

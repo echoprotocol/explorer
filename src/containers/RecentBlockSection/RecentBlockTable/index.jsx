@@ -7,7 +7,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
-import SearchField from '../../../components/SearchFields';
+import SmallSearchField from '../../../components/SmallSearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
@@ -53,7 +53,7 @@ class RecentBlockTable extends React.Component {
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
-					<SearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
+					<SmallSearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
 				</h2>
 				<div className="table">
 					<Media query="(max-width: 767px)">
