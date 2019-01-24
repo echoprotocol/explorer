@@ -40,3 +40,7 @@ export const ECHO_ASSET = {
 	ID: '1.3.0',
 	SYMBOL: 'ECHO',
 };
+
+export const NATHAN = {
+	ID: '1.2.12',
+};
