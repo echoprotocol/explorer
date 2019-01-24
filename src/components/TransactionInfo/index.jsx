@@ -38,7 +38,11 @@ class TransactionsInfo extends React.Component {
 	}
 
 	returnFunction() {
-		this.props.history.goBack();
+		if (!this.props.historyLength) {
+			this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, this.props.match.params.round));
+		} else {
+			this.props.history.goBack();
+		}
 	}
 
 	renderContractLogs(logs) {
@@ -183,12 +187,14 @@ TransactionsInfo.propTypes = {
 	match: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	operations: PropTypes.object,
+	historyLength: PropTypes.number,
 	getTransaction: PropTypes.func.isRequired,
 	clearTransaction: PropTypes.func.isRequired,
 };
 
 TransactionsInfo.defaultProps = {
 	operations: null,
+	historyLength: 0,
 };
 
 export default TransactionsInfo;
