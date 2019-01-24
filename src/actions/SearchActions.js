@@ -15,9 +15,7 @@ import TypesHelper from '../helpers/TypesHelper';
 // eslint-disable-next-line import/prefer-default-export
 export const headerSearchHint = (str) => async (dispatch) => {
 	let hints = [];
-	/*
-	 Стрелочками вверх/вниз должен работать выбор вариантов. Всегда по умолчанию в фокусе первый вариант. По клику на Enter переходим на вариант, который в фокусе.
-	 */
+
 	try {
 		if (validators.isObjectId(str)) {
 			hints = [{

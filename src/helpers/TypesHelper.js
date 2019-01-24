@@ -1,9 +1,7 @@
 import { ERC20_HASHES } from '../constants/GlobalConstants';
 
 const stringNumberRegEx = /^(0|[1-9]\d*)$/;
-const isIdRegEx = /^([1-3]{1}\.[1-9]{1}[0-9]{0,1}\.[0-9]+)$/;
 const isStartWithLetterRegEx = /^([a-zA-Z]{1}.*)$/;
-
 
 class TypesHelper {
 
