@@ -25,6 +25,14 @@ class Account extends React.Component {
 			account, balances, cacheObjects, match: { params: { id } },
 		} = this.props;
 
+		const assetBalances = balances.mapEntries(([assetId, statsId]) => ([
+			assetId,
+			{
+				asset: cacheObjects.get(assetId),
+				stats: cacheObjects.get(statsId),
+			},
+		]));
+
 		return (
 			<div className="recent-block-section">
 				<div className="wrap">
@@ -35,13 +43,13 @@ class Account extends React.Component {
 								account && balances && cacheObjects ?
 									<div className="help-container">
 										<AccountInfo
-											echo={{
-												stats: cacheObjects.get(balances.get(ECHO_ASSET.ID)),
-												asset: cacheObjects.get(ECHO_ASSET.ID),
-											}}
+											echo={assetBalances.get(ECHO_ASSET.ID)}
 											name={account.get('name')}
 										/>
-										<AccountBalances />
+										<AccountBalances
+											balances={assetBalances.delete(ECHO_ASSET.ID)}
+											owner={account.get('assets')}
+										/>
 									</div> : null
 							}
 						</div>
