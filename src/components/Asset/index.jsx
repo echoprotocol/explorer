@@ -138,7 +138,6 @@ Asset.propTypes = {
 	issuer: PropTypes.object.isRequired,
 	getAssetInfo: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 };
 
 export default Asset;

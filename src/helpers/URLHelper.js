@@ -19,7 +19,7 @@ class URLHelper {
 	 * @return {String}
 	 */
 	static createAccountUrl(accountId) {
-		return ASSET_PATH.replace(/:id/, accountId);
+		return ACCOUNTS_PATH.replace(/:id/, accountId);
 	}
 
 	/**
