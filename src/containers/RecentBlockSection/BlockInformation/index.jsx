@@ -29,9 +29,10 @@ class BlockInformation extends React.Component {
 		this.props.getBlockInfo();
 	}
 
-	shouldComponentUpdate(nextProps) {
-		this.props.getBlockInfo(nextProps.match.params.round);
-		return true;
+	componentDidUpdate(prevProps) {
+		if (this.props.match.params.round !== prevProps.match.params.round) {
+			this.props.getBlockInfo(this.props.match.params.round);
+		}
 	}
 
 	componentWillUnmount() {
