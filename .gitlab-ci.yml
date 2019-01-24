@@ -1,14 +1,6 @@
-variables:
-  DOCKER_REPOSITORY_TYPE: "ecr"
-  ECR_REGION: "eu-central-1"
-  ERC_REPOSITORY_NAME: web/656-echo-explorer/frontend
-  DOCKER_REPOSITORY_URL: 676650119647.dkr.ecr.eu-central-1.amazonaws.com/web/656-echo-explorer/frontend
-
 stages:
   - test
   - build
-  - containerize
-  - postbuilder
 
 eslint:
   image: node:10.15
@@ -30,90 +22,135 @@ eslint:
     - npm i --silent
     - npm run lint
   tags:
-    - docker
+    - stage
 
-build_dev:
+build.stage:
   stage: build
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules
   script:
-    - cd /home/devuser/DevProjects/656.echo_explorer/explorer
-    - git pull
+    - npm i
+    - npm run build-stage
+    - rm -rf /home/frontend
+    - cp -r ./dist /home/frontend
+  only:
+    - stage
+  tags:
+    - stage
+  environment:
+    name: stage
+
+build.development:
+  stage: build
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules
+  script:
     - npm i
     - npm run build-dev
+    - rm -rf /home/frontend
+    - cp -r ./dist /home/frontend
   only:
+    - development
+  tags:
     - development
   environment:
     name: development
-  tags:
-    - pp-projects
 
-build: 
-  image: node:10.15
-  stage: build
-  script:
-    # TODO: only for support private lib
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
 
-    - npm install --silent
-    - npm run build-$CI_COMMIT_REF_NAME
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - dist
-      - node_modules
-  only:
-    - master
-    - stage
-  tags:
-    - docker
+# variables:
+#   DOCKER_REPOSITORY_TYPE: "ecr"
+#   ECR_REGION: "eu-central-1"
+#   ERC_REPOSITORY_NAME: web/656-echo-explorer/frontend
+#   DOCKER_REPOSITORY_URL: 676650119647.dkr.ecr.eu-central-1.amazonaws.com/web/656-echo-explorer/frontend
 
-containerize:
-  image: docker:latest
-  stage: containerize
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_DRIVER: overlay2
-  script:
-    - docker -v
-    - rm -rf node_modules
-    - apk add curl jq python py-pip
-    - pip install awscli
-    - IMAGE_TAG="$CI_COMMIT_REF_NAME"
-    - echo "Use Repository - $DOCKER_REPOSITORY_URL"
-    - if [[ $DOCKER_REPOSITORY_TYPE == "ecr" ]]; then $(aws ecr get-login --no-include-email --region "${ECR_REGION}"); fi
-    - echo "Building image..."
-    - docker build -t $DOCKER_REPOSITORY_URL:$IMAGE_TAG .
-    - echo "Pushing image..."
-    - docker push $DOCKER_REPOSITORY_URL:$IMAGE_TAG
-    # If master - push with latest tag
-    - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then docker tag $DOCKER_REPOSITORY_URL:$IMAGE_TAG $DOCKER_REPOSITORY_URL:latest; docker push $DOCKER_REPOSITORY_URL:latest; fi
-    - if [[ $DOCKER_REPOSITORY_TYPE == "ecr" ]]; then IMAGES_TO_DELETE=$( aws ecr list-images --region $ECR_REGION --repository-name $ERC_REPOSITORY_NAME --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json ); fi
-    - if [[ $DOCKER_REPOSITORY_TYPE == "ecr" ]]; then aws ecr batch-delete-image --region $ECR_REGION --repository-name $ERC_REPOSITORY_NAME --image-ids "$IMAGES_TO_DELETE" || true; fi
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - dist
-  only:
-    - master
-    - stage
-  tags:
-    - docker
 
-update_app:
-  stage: postbuilder
-  image: alpine:latest
-  script:
-    - apk add curl
-    - curl -X POST -F token=$UPDATE_PROJECT_TOKEN -F ref=master -F "variables[PROJECT_ENV]=$CI_COMMIT_REF_NAME" https://gitlab.pixelplex.by/api/v4/projects/799/trigger/pipeline
-  only:
-    - master
-    - stage
-  tags:
-    - docker
+
+# build_dev:
+#   stage: build
+#   script:
+#     - cd /home/devuser/DevProjects/656.echo_explorer/explorer
+#     - git pull
+#     - npm i
+#     - npm run build-dev
+#   only:
+#     - development
+#   environment:
+#     name: development
+#   tags:
+#     - pp-projects
+
+# build: 
+#   image: node:10.15
+#   stage: build
+#   script:
+#     # TODO: only for support private lib
+#     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+#     - eval $(ssh-agent -s)
+#     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+#     - chmod 644 ~/.ssh/known_hosts
+
+#     - npm install --silent
+#     - npm run build-$CI_COMMIT_REF_NAME
+#   cache:
+#     key: $CI_COMMIT_REF_NAME
+#     paths:
+#       - dist
+#       - node_modules
+#   only:
+#     - master
+#     - stage
+#   tags:
+#     - docker
+
+# containerize:
+#   image: docker:latest
+#   stage: containerize
+#   services:
+#     - docker:dind
+#   variables:
+#     DOCKER_HOST: tcp://docker:2375/
+#     DOCKER_DRIVER: overlay2
+#   script:
+#     - docker -v
+#     - rm -rf node_modules
+#     - apk add curl jq python py-pip
+#     - pip install awscli
+#     - IMAGE_TAG="$CI_COMMIT_REF_NAME"
+#     - echo "Use Repository - $DOCKER_REPOSITORY_URL"
+#     - if [[ $DOCKER_REPOSITORY_TYPE == "ecr" ]]; then $(aws ecr get-login --no-include-email --region "${ECR_REGION}"); fi
+#     - echo "Building image..."
+#     - docker build -t $DOCKER_REPOSITORY_URL:$IMAGE_TAG .
+#     - echo "Pushing image..."
+#     - docker push $DOCKER_REPOSITORY_URL:$IMAGE_TAG
+#     # If master - push with latest tag
+#     - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then docker tag $DOCKER_REPOSITORY_URL:$IMAGE_TAG $DOCKER_REPOSITORY_URL:latest; docker push $DOCKER_REPOSITORY_URL:latest; fi
+#     - if [[ $DOCKER_REPOSITORY_TYPE == "ecr" ]]; then IMAGES_TO_DELETE=$( aws ecr list-images --region $ECR_REGION --repository-name $ERC_REPOSITORY_NAME --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json ); fi
+#     - if [[ $DOCKER_REPOSITORY_TYPE == "ecr" ]]; then aws ecr batch-delete-image --region $ECR_REGION --repository-name $ERC_REPOSITORY_NAME --image-ids "$IMAGES_TO_DELETE" || true; fi
+#   cache:
+#     key: $CI_COMMIT_REF_NAME
+#     paths:
+#       - dist
+#   only:
+#     - master
+#     - stage
+#   tags:
+#     - docker
+
+# update_app:
+#   stage: postbuilder
+#   image: alpine:latest
+#   script:
+#     - apk add curl
+#     - curl -X POST -F token=$UPDATE_PROJECT_TOKEN -F ref=master -F "variables[PROJECT_ENV]=$CI_COMMIT_REF_NAME" https://gitlab.pixelplex.by/api/v4/projects/799/trigger/pipeline
+#   only:
+#     - master
+#     - stage
+#   tags:
+#     - docker
