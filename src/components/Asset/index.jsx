@@ -59,7 +59,10 @@ class Asset extends React.Component {
 			validators.isVoid(assetPrecision) ||
 			assetSymbol
 		) {
-			exchangeRate = `${new BN(quoteAmount).div(baseAmount).toString()} ${ECHO_ASSET.SYMBOL} / ${assetSymbol}`;
+
+
+			exchangeRate = `${(new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
+				.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString()} ${ECHO_ASSET.SYMBOL} / ${assetSymbol}`;
 			poolBalance = feePool === 0 ? 0 : new BN(feePool).div(baseAmount).toString();
 			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : new BN(accumulatedFees).div(quoteAmount).toString();
 		}
