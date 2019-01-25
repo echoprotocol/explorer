@@ -1,8 +1,22 @@
 import { validators } from 'echojs-lib';
 
-import { ASSET_PATH, ACCOUNTS_PATH } from '../constants/RouterConstants';
+import {
+	ACCOUNTS_PATH,
+	ASSET_PATH,
+	BLOCK_INFORMATION_PATH,
+} from '../constants/RouterConstants';
+
 
 class URLHelper {
+
+	/**
+     *
+     * @param {String} round
+     * @return {String}
+     */
+	static createBlockUrl(round) {
+		return BLOCK_INFORMATION_PATH.replace(/:round/, round);
+	}
 
 	/**
 	 *

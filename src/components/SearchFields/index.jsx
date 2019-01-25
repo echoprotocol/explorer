@@ -1,8 +1,16 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { Dropdown } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { DebounceInput } from 'react-debounce-input';
+
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
+import { DEBOUNCE_TIMEOUT } from '../../constants/SearchConstants';
+import { NOT_FOUND_PATH } from '../../constants/RouterConstants';
+
 
 class SearchField extends React.Component {
 
@@ -14,7 +22,7 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 			inputValue: '',
-			inputError: '',
+			to: '',
 		};
 
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -33,21 +41,19 @@ class SearchField extends React.Component {
 		this.setState({ focus: true });
 	}
 
-	onBlur() {
-		this.setState({
-			focus: false,
-			isChange: false,
-		});
+	onChangeDropdown(data) {
+		this.setState({ to: data.value });
 	}
 
 	onChange(e) {
 		const { value } = e.target;
-		// Показать блок с подсказками
 
 		this.setState({
 			isChange: true,
 			inputValue: value,
 		});
+
+		this.props.getHints(value);
 	}
 
 	onClick(e) {
@@ -55,27 +61,37 @@ class SearchField extends React.Component {
 
 		this.setState({ focus: true });
 		this.inputEl.focus();
-
-		if (this.state.inputValue) {
-			this.props.onSearch(this.state.inputValue);
-		}
 	}
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
-
-		if (this.state.inputValue && KEY_CODE_ENTER === code) {
-			this.props.onSearch(this.state.inputValue);
+		if (KEY_CODE_ENTER === code) {
+			if (this.state.inputValue && this.state.to && this.props.hints.length !== 0) {
+				this.props.history.push(this.state.to);
+				this.setState({ focus: false, isChange: false });
+				this.inputEl.blur();
+			} else if (this.props.hints.length === 0) {
+				this.props.history.push(NOT_FOUND_PATH);
+				return;
+			}
 		}
 
 		if (KEY_CODE_ESC === code) {
 			this.inputEl.blur();
-			this.setState({ focus: false });
+			this.setState({ focus: false, isChange: false });
 		}
 	}
 
 	setWrapperRef(node) {
 		this.wrapperRef = node;
+	}
+
+	blurInput() {
+		this.setState({
+			focus: false,
+			isChange: false,
+		});
+		this.inputEl.blur();
 	}
 
 	handleClickOutside(event) {
@@ -84,8 +100,7 @@ class SearchField extends React.Component {
 		}
 
 		if (!this.wrapperRef.contains(event.target)) {
-			this.setState({ focus: false });
-			this.setState({ isChange: false });
+			this.setState({ focus: false, isChange: false });
 		}
 	}
 
@@ -100,28 +115,43 @@ class SearchField extends React.Component {
 			focus: false,
 			isChange: false,
 			isActiveSmall: false,
+			to: '',
 		});
+		this.props.getHints();
 	}
-
 
 	render() {
 
 		const {
-			focus, isChange, isActiveSmall, inputError, // eslint-disable-line no-unused-vars
+			focus, isChange, isActiveSmall,
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock,
+			small, placeholder, white, withHelp, goToBlock, hints,
 		} = this.props;
 
-		// ВЫДЕЛЕНИЕ СОВПАВШИХ ЭЛЕМЕНТОВ --> <span className="select"></span>
+		const options = hints
+			.map(({
+				section, prefix, value, to, postfix,
+			}, i) => ({
+				key: i,
+				value: to,
+				content: (
+					<Link key={to} to={to} className="element" onClick={() => this.blurInput()} >
+						<div className="section-name">{section}</div>
+						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+					</Link>
+				),
+			}));
 
 		return (
 			<div
-				className={`input-search-block ${(small) ? 'small' : ''} ${(isActiveSmall || this.state.inputValue) ? 'is-active-small' : ''} ${(white) ? 'white' : ''} ${(goToBlock) ? 'go-to-block' : ''}`}
+				className={classnames('input-search-block', {
+					small, 'is-active-small': (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock,
+				})}
 				ref={this.setWrapperRef}
 			>
-				<div className={`input-container ${focus ? 'focus' : ''}`}>
+				<div className={classnames('input-container', { focus })}>
 					{
 						(!goToBlock) && (
 							<a
@@ -140,14 +170,15 @@ class SearchField extends React.Component {
 						)
 					}
 					<div className="input-field">
-						<input
+						<DebounceInput
 							type="text"
 							value={this.state.inputValue}
 							placeholder={placeholder}
 							onFocus={() => this.onFocus()}
 							onChange={(e) => this.onChange(e)}
 							onKeyDown={(e) => this.onKeyPress(e)}
-							ref={(node) => { this.inputEl = node; }}
+							debounceTimeout={DEBOUNCE_TIMEOUT}
+							inputRef={(node) => { this.inputEl = node; }}
 						/>
 						{
 							(!goToBlock) ? (
@@ -158,23 +189,18 @@ class SearchField extends React.Component {
 						}
 					</div>
 				</div>
+
 				{
 					(withHelp) && (
-						(isChange) && (
+						(isChange || focus) && (
 							<div className="search-block-result">
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Block</div>
-									<div className="value">1.16.<span className="select">5</span></div>
-								</a>
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Account</div>
-									<div className="value"><span className="select">15</span>homersimpson</div>
-								</a>
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Transaction</div>
-									<div className="value"><span className="select">15</span>289378929384</div>
-								</a>
-							</div>)
+								<Dropdown
+									options={options}
+									open
+									onChange={(even, data) => this.onChangeDropdown(data)}
+								/>
+							</div>
+						)
 					)
 				}
 			</div>
@@ -188,8 +214,10 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
-	onSearch: PropTypes.func,
 	goToBlock: PropTypes.bool,
+	hints: PropTypes.array,
+	getHints: PropTypes.func,
+	history: PropTypes.object,
 };
 
 SearchField.defaultProps = {
@@ -197,8 +225,10 @@ SearchField.defaultProps = {
 	placeholder: '',
 	white: false,
 	withHelp: false,
+	hints: [],
 	goToBlock: null,
-	onSearch: null,
+	history: {},
+	getHints: () => {},
 };
 
 export default SearchField;
