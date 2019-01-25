@@ -19,6 +19,7 @@
 		"config": "^1.30.0",
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.6.3",
+		"echojs-lib": "git+ssh://git@gitlab.pixelplex.by/645.echo/echojs/echojs-lib.git",
 		"es6-promise": "^4.2.4",
 		"es6-promise-promise": "^1.0.0",
 		"file-loader": "^1.1.11",
