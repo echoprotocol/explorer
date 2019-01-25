@@ -66,7 +66,7 @@ class Asset extends React.Component {
 			<React.Fragment>
 				<div className="table-container inner-information-container block-information account-asset-page">
 					<div className="asset-container">
-						<div className="title">Asset {assetSymbol}</div>
+						<div className="title">Asset: {assetSymbol}</div>
 						<div className="help-container">
 							<div className="asset-elem">
 								<div className="title">Asset info</div>
@@ -100,14 +100,14 @@ class Asset extends React.Component {
 												assetSymbol !== ECHO_ASSET.SYMBOL ?
 													(
 														<React.Fragment>
-															<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">
-																{ECHO_ASSET.SYMBOL}
+															<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+																<span className="blue">{ECHO_ASSET.SYMBOL}</span>
 															</Link>
-															/
-															<span className="txt">{assetSymbol}</span>
+															<span className="gray">&nbsp;/&nbsp;</span>
+															<span className="gray">{assetSymbol}</span>
 														</React.Fragment>
 													) : (
-														<span className="txt">{`${ECHO_ASSET.SYMBOL}/${ECHO_ASSET.SYMBOL}`}</span>
+														<span className="gray">{`${ECHO_ASSET.SYMBOL} / ${ECHO_ASSET.SYMBOL}`}</span>
 													)
 											}
 										</div>
@@ -120,7 +120,7 @@ class Asset extends React.Component {
 													(
 														<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
 													) : (
-														<span className="txt">{ECHO_ASSET.SYMBOL}</span>
+														<span className="gray">{ECHO_ASSET.SYMBOL}</span>
 													)
 											}
 										</div>
