@@ -1,0 +1,208 @@
+.table-container {
+    &.account-page {
+
+        @include res-768 {
+            padding-top: 67px;
+        }
+
+        @include res-500 {
+            padding-top: 48px;
+        }
+
+        .account-page-t-block {
+            margin-bottom: 30px;
+
+            @include res-500 {
+                margin-bottom: 43px;
+            }
+
+            @include res-320 {
+                padding: 0 10px 0 10px;
+            }
+
+            > .title {
+                @include InterUI_Bold;
+                font-size: 23px;
+                color: #18142a;
+                margin-bottom: 33px;
+
+                @include res-768 {
+                    margin-bottom: 29px;
+                    padding-left: 19px;
+                }
+            }
+
+            .accent {
+                color: #2a90e6;
+            }
+
+            .help-container {
+                display: flex;
+                align-items: flex-start;
+
+                @include res-320 {
+                    flex-direction: column;
+                }
+
+                .left-card {
+                    background-color: #ebeaee;
+                    display: inline-flex;
+                    flex-direction: column;
+                    width: 366px;
+                    // min-height: 176px;
+                    padding: 25px;
+                    flex-shrink: 0;
+
+                    @include res-768 {
+                        // min-height: 190px;
+                    }
+
+                    @include res-500 {
+                        width: 220px;
+                        // min-height: 167px;
+                    }
+
+                    @include res-320 {
+                        width: 100%;
+                    }
+
+                    .line {
+                        &:not(:last-child) {
+                            margin-bottom: 35px;
+
+                            @include res-500 {
+                                margin-bottom: 27px;
+                            }
+                        }
+
+                        > .title {
+                            @include Hack_Bold;
+                            color: #1f3c4d;
+                            font-size: 9px;
+                            text-transform: uppercase;
+                            display: block;
+                            letter-spacing: 0.25em;
+                            margin-bottom: 15px;
+                        }
+
+                        .val {
+                            @include InterUI_Medium;
+                            font-size: 16px;
+                            color: #130d32;
+                            display: flex;
+
+                            .txt {
+                                margin-right: 5px;
+                            }
+                        }
+                    }
+                }
+
+                .right-container {
+                    margin-top: 25px;
+                    width: 370px;
+                    margin-left: 35px;
+
+                    @include res-768 {
+                        margin-left: 30px;
+                        width: 270px;
+                    }
+
+                    @include res-500 {
+                        width: 187px;
+                        margin-left: 40px;
+                    }
+
+                    @include res-320 {
+                        width: 100%;
+                        margin-left: 0;
+                    }
+
+                    .elem {
+                        &:not(:last-child) {
+                            margin-bottom: 35px;
+
+                            @include res-500 {
+                                margin-bottom: 30px;
+                            }
+                        }
+
+                        > .title {
+                            @include Hack_Bold;
+                            font-size: 9px;
+                            text-transform: uppercase;
+                            color: #1f3c4d;
+                            letter-spacing: 0.25em;
+                            border-bottom: 1px solid #d8d9de;
+                            padding-bottom: 8px;
+
+                            @include res-320 {
+                                padding-left: 20px;
+                            }
+
+                            .gray {
+                                color: #828b95;
+                            }
+                        }
+
+                        .elements-container {
+                            margin-top: 14px;
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: space-between;
+                            
+                            .inner-elem {
+                                width: 170px;
+                                @include InterUI_Regular;
+                                font-size: 12px;
+                                color: #0f0739;
+                                border-bottom: 1px solid #d8d9de;
+                                padding-bottom: 11px;
+                                margin-bottom: 10px;
+                                position: relative;
+
+                                @include res-768 {
+                                    width: 100%;
+                                }
+
+                                @include res-320 {
+                                    padding-left: 20px;
+                                }
+
+                                &.is-owner {
+                                    &:after {
+                                        content: 'OWNER';
+                                        position: absolute;
+                                        right: 0;
+                                        background-color: #cadef0;
+                                        top: -2px;
+                                        @include Hack_Bold;
+                                        padding: 3px;
+                                        font-size: 9px;
+                                        color: #2a90e6;
+                                        letter-spacing: 0.25em;
+                                    }
+                                }
+                                .txt {
+                                    margin-right: 5px;
+                                }
+                            }
+                        }
+
+                        .load-more {
+                            display: inline-flex;
+
+                            @include res-320 {
+                                margin-left: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .table .divTable {
+            border-bottom: 0;
+        }
+    }
+}

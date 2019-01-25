@@ -47,6 +47,12 @@ class GlobalActionsClass extends BaseActionsClass {
 		});
 	}
 
+	incrementHistoryLength() {
+		return (dispatch, getState) => {
+			dispatch(this.setValue('historyLength', getState().global.get('historyLength') + 1));
+		};
+	}
+
 }
 
 const GlobalActions = new GlobalActionsClass();

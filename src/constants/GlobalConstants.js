@@ -35,4 +35,13 @@ export const ERC20_HASHES = {
 	'version()': '54fd4d50',
 };
 
-export const BYTECODE_SYMBOLS_LENGTH = '616';
+export const BYTECODE_SYMBOLS_LENGTH = 616;
+export const ECHO_ASSET = {
+	ID: '1.3.0',
+	SYMBOL: 'ECHO',
+	PRECISION: 5,
+};
+
+export const NATHAN = {
+	ID: '1.2.12',
+};

@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Map } from 'immutable';
 import _ from 'lodash';
 
-import echo, { OPERATIONS_IDS } from 'echojs-lib';
+import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -17,6 +17,8 @@ import {
 	MAX_BLOCK_REQUESTS,
 	ERC20_HASHES,
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
+	ECHO_ASSET,
+	NATHAN,
 } from '../constants/GlobalConstants';
 
 import Operations from '../constants/Operations';
@@ -68,11 +70,13 @@ const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) =>
 /**
  *
  * @param {Array} data
+ * @param {String} accountId
  * @param {Number} round
+ * @param {Number} trIndex
  * @param {Array} operationResult
  * @returns {Promise.<{type: *, fee: {amount, precision, symbol}, from: {id: string}, subject: {id: string}, name, value: {}, status: boolean}>}
  */
-const formatOperation = async (data, round = undefined, operationResult = []) => {
+export const formatOperation = async (data, accountId = undefined, round = undefined, trIndex = undefined, operationResult = []) => {
 	const [type, operation] = data;
 	const [, resId] = operationResult;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
@@ -94,6 +98,8 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 		name,
 		value: {},
 		status: true,
+		round,
+		trIndex,
 	};
 
 	if (options.from) {
@@ -123,6 +129,21 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 			const request = _.get(operation, options.subject[0]);
 			const response = await echo.api.getObject(request);
 			result.subject = { id: request, name: response[options.subject[1]] };
+		} else if (!validators.isObjectId(operation[options.subject[0]])) {
+			const request = _.get(operation, options.subject[0]);
+			let response = null;
+			switch (options.subject[0]) {
+				case 'name':
+					response = await echo.api.getAccountByName(request);
+					break;
+				case 'symbol':
+					[response] = await echo.api.lookupAssetSymbols([request]);
+					break;
+				default:
+					response = await echo.api.getObject(request);
+					break;
+			}
+			result.subject = { id: response.id, name: request };
 		} else {
 			result.subject = { id: operation[options.subject[0]] };
 		}
@@ -145,6 +166,11 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 		};
 	}
 
+	// filter sub-operations by account
+	if (accountId && ![result.from.id, result.subject.id].includes(accountId) && !round) {
+		return null;
+	}
+
 	if (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT) {
 
 		const contractResult = await echo.api.getContractResult(resId);
@@ -152,22 +178,35 @@ const formatOperation = async (data, round = undefined, operationResult = []) =>
 		result.status = excepted === 'None';
 
 		if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
+			let contractHistory = [];
 
-			const contractHistory = await echo.api.getContractHistory(result.subject.id);
+			try {
+				contractHistory = await echo.api.getContractHistory(result.subject.id);
+			} catch (e) {
+				//
+			}
+
 			let internalOperations = contractHistory
 				.filter(({ block_num }) => block_num === round)
-				.map(({ op }) => formatOperation(op));
+				.map(({ op }) => formatOperation(op, accountId))
+				.filter((op) => op);
 
 			internalOperations = await Promise.all(internalOperations);
 			internalOperations = internalOperations.map((op) => { op.label = 'Subtransfer'; return op; });
 			let internalTransactions = internalOperations;
-			const [, { code }] = await echo.api.getContract(result.subject.id);
+			let code = '';
+			try {
+				([, { code }] = await echo.api.getContract(result.subject.id));
+
+			} catch (e) {
+				//
+			}
 
 			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
 				const symbol = FormatHelper
-					.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, '1.2.12', '1.3.0', ERC20_HASHES['symbol()'])).slice(128));
-				const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, '1.2.16', '1.3.0', ERC20_HASHES['decimals()']), 16);
+					.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['symbol()'])).slice(128));
+				const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['decimals()']), 16);
 
 				let internalTransfers = log
 					.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id)
@@ -202,7 +241,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
 		if (!planeBlock) {
-			history.push(NOT_FOUND_PATH);
+			history.replace(NOT_FOUND_PATH);
 			return;
 		}
 
@@ -216,7 +255,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			value.reward = '0 ECHO';
+			value.reward = `0 ${ECHO_ASSET.SYMBOL}`;
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
@@ -233,9 +272,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		if (transactions.length !== 0) {
 
 			const promiseTransactions = transactions
-				.map(({ operations, operation_results }) =>
+				.map(({ operations, operation_results }, trIndex) =>
 					Promise.all(operations.map((op, i) =>
-						formatOperation(op, planeBlock.round, operation_results[i]))));
+						formatOperation(op, null, planeBlock.round, trIndex, operation_results[i]))));
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 
@@ -247,7 +286,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
-		history.push(NOT_FOUND_PATH);
+		history.replace(NOT_FOUND_PATH);
 	}
 };
 

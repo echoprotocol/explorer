@@ -1,5 +1,8 @@
 import { ERC20_HASHES } from '../constants/GlobalConstants';
 
+const stringNumberRegEx = /^(0|[1-9]\d*)$/;
+const isStartWithLetterRegEx = /^([a-zA-Z]{1}.*)$/;
+
 class TypesHelper {
 
 	/**
@@ -38,6 +41,22 @@ class TypesHelper {
      */
 	static isTransferEvent(hex) {
 		return hex.indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) !== -1;
+	}
+
+	/**
+     *
+     * @param {String} str
+     */
+	static isStringNumber(str) {
+		return stringNumberRegEx.test(str);
+	}
+
+	/**
+     *
+     * @param {String} str
+     */
+	static isStartWithLetter(str) {
+		return isStartWithLetterRegEx.test(str);
 	}
 
 }

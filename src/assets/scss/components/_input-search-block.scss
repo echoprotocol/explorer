@@ -316,6 +316,27 @@
         top: 100%;
         left: 0;
         width: 100%;
+
+        .menu {
+            .item {
+                &.selected {
+                    .element {
+                        background-color: #e8e8ec;
+    
+                        .section-name {
+                            color: #18142a;
+                        }
+        
+                        .value {
+                            .select {
+                                background-color: #18142a;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         .element {
             cursor: pointer;
             width: 100%;
@@ -346,6 +367,7 @@
                     }
                 }
             }
+
             .section-name {
                 @include Hack_Bold;
                 color: #828b95;

@@ -1,24 +1,34 @@
 import React from 'react';
 import Media from 'react-media';
-import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 
+
 import Logotype from '../Logotype';
-import SearchField from '../SearchFields/SearchField';
+import HeaderSearch from '../../components/SearchFields';
 import { INDEX_PATH } from '../../constants/RouterConstants';
 
 class Header extends React.Component {
 
 	render() {
+
+		const {
+			history, hints, getHints,
+		} = this.props;
 		return (
 			<header>
 				<Logotype onClick={() => this.props.history.push(INDEX_PATH)} />
 				<Media query="(max-width: 767px)">
 					{(matches) =>
 						(matches ? (
-							<SearchField small placeholder="Search" />
+							<HeaderSearch small placeholder="Search" />
 						) : (
-							<SearchField withHelp placeholder="Search by account / block / transaction" />
+							<HeaderSearch
+								withHelp
+								hints={hints}
+								history={history}
+								getHints={getHints}
+								placeholder="Search by account / block / id"
+							/>
 						))
 					}
 				</Media>
@@ -29,7 +39,15 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-	history: PropTypes.object.isRequired,
+	history: PropTypes.object,
+	hints: PropTypes.array,
+	getHints: PropTypes.func,
 };
 
-export default withRouter(Header);
+Header.defaultProps = {
+	hints: [],
+	history: {},
+	getHints: () => {},
+};
+
+export default Header;

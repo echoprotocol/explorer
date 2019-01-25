@@ -1,6 +1,22 @@
-import { CONTRACT_OBJECT_PREFIX, ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
+import { validators } from 'echojs-lib';
+
+import {
+	ACCOUNTS_PATH,
+	ASSET_PATH,
+	BLOCK_INFORMATION_PATH,
+} from '../constants/RouterConstants';
+
 
 class URLHelper {
+
+	/**
+     *
+     * @param {String} round
+     * @return {String}
+     */
+	static createBlockUrl(round) {
+		return BLOCK_INFORMATION_PATH.replace(/:round/, round);
+	}
 
 	/**
 	 *
@@ -17,7 +33,16 @@ class URLHelper {
 	 * @return {String}
 	 */
 	static createAccountUrl(accountId) {
-		return `/accounts?id=${accountId}`;
+		return ACCOUNTS_PATH.replace(/:id/, accountId);
+	}
+
+	/**
+     *
+     * @param {String} assetId
+     * @return {String}
+     */
+	static createAssetUrl(assetId) {
+		return ASSET_PATH.replace(/:id/, assetId);
 	}
 
 	/**
@@ -35,15 +60,14 @@ class URLHelper {
 	 */
 	static createUrlById(id) {
 
-		const accountRegExp = new RegExp(`^${ACCOUNT_OBJECT_PREFIX}.\\d+$`);
-		const contractRegExp = new RegExp(`^${CONTRACT_OBJECT_PREFIX}.\\d+$`);
-
 		let url;
 
-		if (id.search(accountRegExp) !== -1) {
+		if (validators.isAccountId(id)) {
 			url = URLHelper.createAccountUrl(id);
-		} else if (id.search(contractRegExp) !== -1) {
+		} else if (validators.isContractId(id)) {
 			url = URLHelper.createContractUrl(id);
+		} else if (validators.isAssetId(id)) {
+			url = URLHelper.createAssetUrl(id);
 		} else {
 			url = URLHelper.createObjectsUrl(id);
 		}
