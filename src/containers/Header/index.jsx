@@ -3,7 +3,8 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { headerSearchHint } from '../../actions/SearchActions';
+import searchActions from '../../actions/SearchActions';
+
 import Navigation from '../../containers/Navigation';
 import PreparingSection from '../../containers/PreparingSection';
 
@@ -42,6 +43,6 @@ export default withRouter(connect(
 		hints: state.search.getIn(['headerSearch', 'hints']),
 	}),
 	(dispatch) => ({
-		getHints: (str) => dispatch(headerSearchHint(str)),
+		getHints: (str) => dispatch(searchActions.headerSearchHint(str)),
 	}),
 )(Header));
