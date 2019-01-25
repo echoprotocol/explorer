@@ -32,6 +32,7 @@ class Asset extends React.Component {
 		const issuerName = issuer.get('name');
 		const issuerId = issuer.get('id');
 
+		const assetId = asset.get('id');
 		const assetSymbol = asset.get('symbol');
 		const assetPrecision = asset.get('precision');
 		const currentSupply = asset.getIn(['dynamic', 'current_supply']);
@@ -54,12 +55,12 @@ class Asset extends React.Component {
                 validators.isVoid(assetPrecision) ||
                 assetSymbol
 		) {
-			exchangeRate = `${(new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
-				.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString()} ${ECHO_ASSET.SYMBOL} / ${assetSymbol}`;
+			exchangeRate = (new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
+				.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString();
 			poolBalance = feePool === 0 ? 0 : FormatHelper
-				.formatAmount(new BN(feePool).div(baseAmount).toString());
+				.formatAmount(new BN(feePool).div(baseAmount).toString(), ECHO_ASSET.PRECISION);
 			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : FormatHelper
-				.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString());
+				.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), assetPrecision);
 		}
 
 		return (
@@ -90,16 +91,39 @@ class Asset extends React.Component {
 								</div>
 							</div>
 							<div className="asset-elem">
-								<div className="title">FreePool info</div>
+								<div className="title">FeePool info</div>
 								<div className="list">
 									<div className="block">
 										<div className="title">Echo exchange rate</div>
-										<div className="val"><span className="txt">{exchangeRate}</span></div>
+										<div className="val">
+											<span className="txt">{exchangeRate}</span>
+											{
+												assetSymbol !== ECHO_ASSET.SYMBOL ?
+													(
+														<React.Fragment>
+															<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">
+																{ECHO_ASSET.SYMBOL}
+															</Link>
+															<span className="txt"> / </span>
+															<span className="txt">{assetSymbol}</span>
+														</React.Fragment>
+													) : (
+														<span className="txt">{`${ECHO_ASSET.SYMBOL} / ${ECHO_ASSET.SYMBOL}`}</span>
+													)
+											}
+										</div>
 									</div>
 									<div className="block">
 										<div className="title">Pool balance</div>
 										<div className="val"><span className="txt">{poolBalance}</span>
-											<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
+											{
+												assetSymbol !== ECHO_ASSET.SYMBOL ?
+													(
+														<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
+													) : (
+														<span className="txt">{ECHO_ASSET.SYMBOL}</span>
+													)
+											}
 										</div>
 									</div>
 									<div className="block">

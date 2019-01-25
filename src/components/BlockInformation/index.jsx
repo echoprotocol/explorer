@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import TransactionsTable from './TransactionsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import ViewListPopover from '../ViewListPopover';
+import Loader from '../Loader';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
 
@@ -36,12 +37,10 @@ class BlockInformation extends React.Component {
 	}
 
 	renderLoader() {
-		// TODO loader
-		return null;
+		return <Loader />;
 	}
 
-	render() {
-		const { blockInformation } = this.props;
+	renderBlockInformation(blockInformation) {
 
 		const blockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
@@ -50,10 +49,8 @@ class BlockInformation extends React.Component {
 		const size = blockInformation.get('size');
 		const transactions = blockInformation.get('transactions') || [];
 
-		let verifiers = blockInformation.get('verifiers');
-		if (verifiers) {
-			verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
-		}
+		let verifiers = blockInformation.get('verifiers') || [];
+		verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
 
 		const breadcrumbs = [
 			{
@@ -91,7 +88,7 @@ class BlockInformation extends React.Component {
 						</div>
 						<div className="container verifiers">
 							<div className="title">Verifiers</div>
-							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers || []} /></div>
+							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
 						</div>
 					</div>
 					<h2>{`${transactions && transactions.length} Transactions`}</h2>
@@ -99,6 +96,12 @@ class BlockInformation extends React.Component {
 				</div>
 			</React.Fragment>
 		);
+	}
+
+	render() {
+		const { blockInformation } = this.props;
+
+		return blockInformation.get('blockNumber') ? this.renderBlockInformation(blockInformation) : this.renderLoader();
 	}
 
 }
