@@ -6,6 +6,8 @@ import { disconnect } from '../actions/SocketActions';
 
 import Toast from '../components/Toast';
 import Header from './Header';
+import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
+
 
 class App extends React.Component {
 
@@ -25,7 +27,12 @@ class App extends React.Component {
 		return (
 			<div className="wrapper">
 				<Header />
-				{children}
+				<div className="recent-block-section">
+					<div className="wrap">
+						{children}
+						<RecentBlockSidebar />
+					</div>
+				</div>
 				{this.renderModals()}
 				<Toast />
 			</div>

@@ -4,7 +4,7 @@
   transition: .2s ease-out;
   cursor: pointer;
   display: inline-block;
-  
+
   &:hover {
     color: #095494 !important;
   }
@@ -12,6 +12,14 @@
   &:active {
     color: #fb0707 !important;
   }
+}
+
+.gray {
+  color: #828b95;
+}
+
+.accent {
+  color: #2a90e6;
 }
 
 .table {
