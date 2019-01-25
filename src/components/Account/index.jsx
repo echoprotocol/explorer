@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,6 +8,7 @@ import AccountBalances from './AccountBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
+import Loader from '../../components/Loader';
 
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 
@@ -28,11 +31,7 @@ class Account extends React.Component {
 
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
-		if (
-			prevAccount.get('history').first() &&
-            account.get('history').first() &&
-			prevAccount.get('history').first().id !== account.get('history').first().id
-		) {
+		if (!prevAccount.get('history').equals(account.get('history'))) {
 			this.props.updateAccountHistory(account.get('history'));
 		}
 
@@ -46,7 +45,7 @@ class Account extends React.Component {
 	}
 
 	renderLoader(loading) {
-		return loading ? <div /> : null;
+		return loading ? <Loader /> : null;
 	}
 
 	render() {

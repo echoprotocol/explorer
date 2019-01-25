@@ -86,7 +86,7 @@ class AccountActions extends BaseActionsClass {
 	 */
 	updateAccountHistory(accountId, accountHistory) {
 		return async (dispatch) => {
-			const transactions = await this.formatAccountHistory(accountId, accountHistory);
+			const transactions = await this.formatAccountHistory(accountId, accountHistory.toJS());
 			dispatch(this.setValue('history', new List(transactions)));
 		};
 	}
