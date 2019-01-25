@@ -32,7 +32,6 @@ class Asset extends React.Component {
 		const issuerName = issuer.get('name');
 		const issuerId = issuer.get('id');
 
-		const assetId = asset.get('id');
 		const assetSymbol = asset.get('symbol');
 		const assetPrecision = asset.get('precision');
 		const currentSupply = asset.getIn(['dynamic', 'current_supply']);
