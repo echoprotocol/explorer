@@ -6,7 +6,6 @@ import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 
-import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 import URLHelper from '../../helpers/URLHelper';
 
 class Objects extends React.Component {
@@ -93,49 +92,44 @@ class Objects extends React.Component {
 		};
 
 		return (
-			<div className="recent-block-section object-view">
-				<div className="wrap">
-					<div className="table-container object-view">
-						<h2>Object { this.state.id }</h2>
-						{error ?
-							<div className="json-tree-container">
-								{error}
-							</div>
-							:
-							<div className="json-tree-container">
-								<JSONTree
-									theme={theme}
-									invertTheme={false}
-									valueRenderer={(raw) => {
-
-										const idRegExp = /^"\d+\.\d+\.\d+"$/;
-
-										if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
-
-											const url = URLHelper.createUrlById(raw.substr(1, raw.length - 1 - 1));
-
-											return (
-												<Link
-													to={url}
-													className="blue"
-												>
-													{raw}
-												</Link>
-											);
-										}
-
-										return raw;
-
-									}}
-									data={data}
-								/>
-								<button className="copy-bytecode" onClick={this.copy}>Copy</button>
-							</div>
-						}
-
+			<div className="table-container object-view">
+				<h2>Object { this.state.id }</h2>
+				{error ?
+					<div className="json-tree-container">
+						{error}
 					</div>
-					<RecentBlockSidebar />
-				</div>
+					:
+					<div className="json-tree-container">
+						<JSONTree
+							theme={theme}
+							invertTheme={false}
+							valueRenderer={(raw) => {
+
+								const idRegExp = /^"\d+\.\d+\.\d+"$/;
+
+								if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
+
+									const url = URLHelper.createUrlById(raw.substr(1, raw.length - 1 - 1));
+
+									return (
+										<Link
+											to={url}
+											className="blue"
+										>
+											{raw}
+										</Link>
+									);
+								}
+
+								return raw;
+
+							}}
+							data={data}
+						/>
+						<button className="copy-bytecode" onClick={this.copy}>Copy</button>
+					</div>
+				}
+
 			</div>
 		);
 	}

@@ -10,8 +10,6 @@ import TransactionsTable from '../BlockInformation/TransactionsTable';
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 
-import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
-
 class Account extends React.Component {
 
 	componentDidMount() {
@@ -62,37 +60,32 @@ class Account extends React.Component {
 		]));
 
 		return (
-			<div className="recent-block-section">
-				<div className="wrap">
-					<div className="table-container inner-information-container block-information account-page">
-						<div className="account-page-t-block">
-							<div className="title">Account {id}</div>
-							<div className="help-container">
-								{
-									account ?
-										<React.Fragment>
-											<AccountInfo
-												echo={assetBalances.get(ECHO_ASSET.ID)}
-												name={account.get('name')}
-											/>
-											<AccountBalances
-												balances={assetBalances.delete(ECHO_ASSET.ID)}
-												owner={account.get('assets')}
-											/>
-										</React.Fragment> : null
-								}
-							</div>
-						</div>
+			<div className="table-container inner-information-container block-information account-page">
+				<div className="account-page-t-block">
+					<div className="title">Account {id}</div>
+					<div className="help-container">
 						{
-							account && history.size && !loading ?
+							account ?
 								<React.Fragment>
-									<h2>{account.get('history').size} Transactions</h2>
-									<TransactionsTable transactions={history} />
-								</React.Fragment> : this.renderLoader(loading)
+									<AccountInfo
+										echo={assetBalances.get(ECHO_ASSET.ID)}
+										name={account.get('name')}
+									/>
+									<AccountBalances
+										balances={assetBalances.delete(ECHO_ASSET.ID)}
+										owner={account.get('assets')}
+									/>
+								</React.Fragment> : null
 						}
 					</div>
-					<RecentBlockSidebar />
 				</div>
+				{
+					account && history.size && !loading ?
+						<React.Fragment>
+							<h2>{account.get('history').size} Transactions</h2>
+							<TransactionsTable transactions={history} />
+						</React.Fragment> : this.renderLoader(loading)
+				}
 			</div>
 		);
 	}
