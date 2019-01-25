@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,6 +8,7 @@ import AccountBalances from './AccountBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
+import Loader from '../../components/Loader';
 
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 
@@ -69,7 +72,7 @@ class Account extends React.Component {
 						<div className="account-page-t-block">
 							<div className="title">Account {id}</div>
 							<div className="help-container">
-								{
+								{/* {
 									account ?
 										<AccountInfo
 											echo={assetBalances.get(ECHO_ASSET.ID)}
@@ -82,7 +85,8 @@ class Account extends React.Component {
 											balances={assetBalances.delete(ECHO_ASSET.ID)}
 											owner={account.get('assets')}
 										/> : null
-								}
+								} */}
+								<Loader />
 							</div>
 						</div>
 						{
