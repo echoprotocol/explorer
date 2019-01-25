@@ -104,11 +104,11 @@ class Asset extends React.Component {
 															<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">
 																{ECHO_ASSET.SYMBOL}
 															</Link>
-															<span className="txt"> / </span>
+															/
 															<span className="txt">{assetSymbol}</span>
 														</React.Fragment>
 													) : (
-														<span className="txt">{`${ECHO_ASSET.SYMBOL} / ${ECHO_ASSET.SYMBOL}`}</span>
+														<span className="txt">{`${ECHO_ASSET.SYMBOL}/${ECHO_ASSET.SYMBOL}`}</span>
 													)
 											}
 										</div>
