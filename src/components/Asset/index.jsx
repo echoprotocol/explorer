@@ -5,6 +5,7 @@ import { validators } from 'echojs-lib';
 import BN from 'bignumber.js';
 
 import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
+import { ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -58,7 +59,7 @@ class Asset extends React.Component {
 			validators.isVoid(assetPrecision) ||
 			assetSymbol
 		) {
-			exchangeRate = `${new BN(quoteAmount).div(baseAmount).toString()} ECHO / ${assetSymbol}`;
+			exchangeRate = `${new BN(quoteAmount).div(baseAmount).toString()} ${ECHO_ASSET.SYMBOL} / ${assetSymbol}`;
 			poolBalance = feePool === 0 ? 0 : new BN(feePool).div(baseAmount).toString();
 			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : new BN(accumulatedFees).div(quoteAmount).toString();
 		}
@@ -104,7 +105,7 @@ class Asset extends React.Component {
 													<div className="block">
 														<div className="title">Pool balance</div>
 														<div className="val"><span className="txt">{poolBalance}</span>
-															<Link to={URLHelper.createAssetUrl('1.3.0')} className="blue">ECHO</Link>
+															<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
 														</div>
 													</div>
 													<div className="block">
