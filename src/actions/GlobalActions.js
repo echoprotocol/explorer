@@ -32,17 +32,16 @@ class GlobalActionsClass extends BaseActionsClass {
 	 * @returns {function(*=): Promise<any>}
 	 */
 	init() {
-		return (dispatch) => new Promise((resolve) => {
+		return (dispatch) => new Promise((resolve, reject) => {
 			Promise.all([
 				dispatch(connect()),
-				// Load data before start page
 			]).then((data) => {
 				dispatch(this.afterInit()).then(() => {
 					resolve(data);
 				});
 			}).catch((error) => {
 				console.error(error);
-				resolve(error);
+				reject(error);
 			});
 		});
 	}

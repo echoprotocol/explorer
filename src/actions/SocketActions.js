@@ -86,15 +86,13 @@ export const connect = () => async (dispatch) => {
 			GlobalReducer.actions.set({ field: 'connected', value: true }),
 			RoundReducer.actions.set({ field: 'producers', value: producers }),
 		]));
-
-		return true;
 	} catch (err) {
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
 			GlobalReducer.actions.set({ field: 'connected', value: false }),
 		]));
 
-		return false;
+		throw err;
 	}
 };
 
