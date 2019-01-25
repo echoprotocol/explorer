@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -80,10 +78,10 @@ class Account extends React.Component {
 					</div>
 				</div>
 				{
-					account && history.size && !loading ?
+					account && !loading ?
 						<React.Fragment>
 							<h2>{account.get('history').size} Transactions</h2>
-							<TransactionsTable transactions={history} />
+							{ history.size ? <TransactionsTable transactions={history} /> : null }
 						</React.Fragment> : this.renderLoader(loading)
 				}
 			</div>
