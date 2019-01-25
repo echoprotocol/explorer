@@ -5,7 +5,6 @@ import Media from 'react-media';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import Loader from '../../components/Loader';
 import { TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 import URLHelper from '../../helpers/URLHelper';
@@ -202,11 +201,10 @@ class TransactionsTable extends React.Component {
 							<div className="divTableCell">Fee amount</div>
 							<div className="divTableCell">Status</div>
 						</div>
-						{/* <div className="devider" /> */}
-						{/* {transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(data, i, j)))} */}
+						<div className="devider" />
+						{transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(data, i, j)))}
 					</div>
 				</div>
-				<Loader />
 			</React.Fragment>
 		);
 
