@@ -70,17 +70,16 @@ class Account extends React.Component {
 							<div className="help-container">
 								{
 									account ?
-										<AccountInfo
-											echo={assetBalances.get(ECHO_ASSET.ID)}
-											name={account.get('name')}
-										/> : null
-								}
-								{
-									balances.size ?
-										<AccountBalances
-											balances={assetBalances.delete(ECHO_ASSET.ID)}
-											owner={account.get('assets')}
-										/> : null
+										<React.Fragment>
+											<AccountInfo
+												echo={assetBalances.get(ECHO_ASSET.ID)}
+												name={account.get('name')}
+											/>
+											<AccountBalances
+												balances={assetBalances.delete(ECHO_ASSET.ID)}
+												owner={account.get('assets')}
+											/>
+										</React.Fragment> : null
 								}
 							</div>
 						</div>

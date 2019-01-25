@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Map } from 'immutable';
 import _ from 'lodash';
 
-import echo, { OPERATIONS_IDS } from 'echojs-lib';
+import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -129,6 +129,21 @@ export const formatOperation = async (data, accountId = undefined, round = undef
 			const request = _.get(operation, options.subject[0]);
 			const response = await echo.api.getObject(request);
 			result.subject = { id: request, name: response[options.subject[1]] };
+		} else if (!validators.isObjectId(operation[options.subject[0]])) {
+			const request = _.get(operation, options.subject[0]);
+			let response = null;
+			switch (options.subject[0]) {
+				case 'name':
+					response = await echo.api.getAccountByName(request);
+					break;
+				case 'symbol':
+					[response] = await echo.api.lookupAssetSymbols([request]);
+					break;
+				default:
+					response = await echo.api.getObject(request);
+					break;
+			}
+			result.subject = { id: response.id, name: request };
 		} else {
 			result.subject = { id: operation[options.subject[0]] };
 		}
