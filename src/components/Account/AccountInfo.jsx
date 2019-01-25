@@ -17,10 +17,10 @@ class AccountInfo extends React.Component {
 					<div className="title">Account name</div>
 					<div className="val">{name}</div>
 				</div>
-				{
-					echo ?
-						<div className="line">
-							<div className="title">Echo balance</div>
+				<div className="line">
+					<div className="title">Echo balance</div>
+					{
+						echo ?
 							<div className="val">
 								<span className="txt">
 									{
@@ -35,9 +35,10 @@ class AccountInfo extends React.Component {
 										{ECHO_ASSET.SYMBOL}
 									</Link>
 								</span>
-							</div>
-						</div> : null
-				}
+							</div> :
+							<div className="val"><span className="txt">None</span></div>
+					}
+				</div>
 			</div>
 		);
 	}

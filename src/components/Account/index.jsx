@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -66,25 +64,24 @@ class Account extends React.Component {
 					<div className="help-container">
 						{
 							account ?
-								<AccountInfo
-									echo={assetBalances.get(ECHO_ASSET.ID)}
-									name={account.get('name')}
-								/> : null
-						}
-						{
-							balances.size ?
-								<AccountBalances
-									balances={assetBalances.delete(ECHO_ASSET.ID)}
-									owner={account.get('assets')}
-								/> : null
+								<React.Fragment>
+									<AccountInfo
+										echo={assetBalances.get(ECHO_ASSET.ID)}
+										name={account.get('name')}
+									/>
+									<AccountBalances
+										balances={assetBalances.delete(ECHO_ASSET.ID)}
+										owner={account.get('assets')}
+									/>
+								</React.Fragment> : null
 						}
 					</div>
 				</div>
 				{
-					account && history.size && !loading ?
+					account && !loading ?
 						<React.Fragment>
 							<h2>{account.get('history').size} Transactions</h2>
-							<TransactionsTable transactions={history} />
+							{ history.size ? <TransactionsTable transactions={history} /> : null }
 						</React.Fragment> : this.renderLoader(loading)
 				}
 			</div>
