@@ -33,38 +33,52 @@ class Asset extends React.Component {
 			asset, issuer,
 		} = this.props;
 
-		const issuerName = issuer.get && issuer.get('name');
-		const issuerId = issuer.get && issuer.get('id');
+		let issuerName;
+		let issuerId;
 
-		const assetSymbol = asset.get && asset.get('symbol');
-		const assetPrecision = asset.get && asset.get('precision');
-		const currentSupply = asset.get && asset.getIn(['dynamic', 'current_supply']);
-		const maxSupply = asset.getIn && asset.getIn(['options', 'max_supply']);
+		let assetSymbol;
+		let assetPrecision;
+		let currentSupply;
+		let maxSupply;
 
-		const feePool = asset.get && asset.getIn(['dynamic', 'fee_pool']);
-		const accumulatedFees = asset.get && asset.getIn(['dynamic', 'accumulated_fees']);
+		let feePool;
+		let accumulatedFees;
 
-		const baseAmount = asset.getIn && asset.getIn(['options', 'core_exchange_rate', 'base', 'amount']);
-		const quoteAmount = asset.getIn && asset.getIn(['options', 'core_exchange_rate', 'quote', 'amount']);
+		let baseAmount;
+		let quoteAmount;
 
 		let poolBalance;
 		let exchangeRate;
 		let unclamedIssuerBalances;
 
-		if (
-			validators.isVoid(baseAmount) ||
-			validators.isVoid(quoteAmount) ||
-			validators.isVoid(feePool) ||
-			validators.isVoid(accumulatedFees) ||
-			validators.isVoid(assetPrecision) ||
-			assetSymbol
-		) {
+		if (asset !== null && issuer !== null) {
+			issuerName = issuer.get('name');
+			issuerId = issuer.get('id');
 
+			assetSymbol = asset.get('symbol');
+			assetPrecision = asset.get('precision');
+			currentSupply = asset.getIn(['dynamic', 'current_supply']);
+			maxSupply = asset.getIn(['options', 'max_supply']);
 
-			exchangeRate = `${(new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
-				.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString()} ${ECHO_ASSET.SYMBOL} / ${assetSymbol}`;
-			poolBalance = feePool === 0 ? 0 : new BN(feePool).div(baseAmount).toString();
-			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : new BN(accumulatedFees).div(quoteAmount).toString();
+			feePool = asset.getIn(['dynamic', 'fee_pool']);
+			accumulatedFees = asset.getIn(['dynamic', 'accumulated_fees']);
+
+			baseAmount = asset.getIn(['options', 'core_exchange_rate', 'base', 'amount']);
+			quoteAmount = asset.getIn(['options', 'core_exchange_rate', 'quote', 'amount']);
+
+			if (
+				validators.isVoid(baseAmount) ||
+                validators.isVoid(quoteAmount) ||
+                validators.isVoid(feePool) ||
+                validators.isVoid(accumulatedFees) ||
+                validators.isVoid(assetPrecision) ||
+                assetSymbol
+			) {
+				exchangeRate = `${(new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
+					.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString()} ${ECHO_ASSET.SYMBOL} / ${assetSymbol}`;
+				poolBalance = feePool === 0 ? 0 : new BN(feePool).div(baseAmount).toString();
+				unclamedIssuerBalances = accumulatedFees === 0 ? 0 : new BN(accumulatedFees).div(quoteAmount).toString();
+			}
 		}
 
 		return (
@@ -73,7 +87,7 @@ class Asset extends React.Component {
 					<div className="wrap">
 						<div className="table-container inner-information-container block-information account-asset-page">
 							{
-								assetSymbol && (
+								asset && (
 									<div className="asset-container">
 										<div className="title">Asset {assetSymbol}</div>
 										<div className="help-container">
@@ -130,7 +144,7 @@ class Asset extends React.Component {
 	}
 
 	render() {
-
+		console.log('render asset');
 		// return blockInformation.get('blockNumber') ? this.renderAsset() : this.renderLoader();
 		return this.renderAsset();
 	}
@@ -138,10 +152,15 @@ class Asset extends React.Component {
 }
 
 Asset.propTypes = {
-	asset: PropTypes.object.isRequired,
-	issuer: PropTypes.object.isRequired,
+	asset: PropTypes.object,
+	issuer: PropTypes.object,
 	getAssetInfo: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
+};
+
+Asset.defaultProps = {
+	asset: null,
+	issuer: null,
 };
 
 export default Asset;
