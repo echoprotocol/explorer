@@ -29,11 +29,7 @@ class Account extends React.Component {
 
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
-		if (
-			prevAccount.get('history').first() &&
-            account.get('history').first() &&
-			prevAccount.get('history').first().id !== account.get('history').first().id
-		) {
+		if (!prevAccount.get('history').equals(account.get('history'))) {
 			this.props.updateAccountHistory(account.get('history'));
 		}
 
@@ -47,7 +43,7 @@ class Account extends React.Component {
 	}
 
 	renderLoader(loading) {
-		return loading ? <div /> : null;
+		return loading ? <Loader /> : null;
 	}
 
 	render() {
@@ -68,21 +64,20 @@ class Account extends React.Component {
 				<div className="account-page-t-block">
 					<div className="title">Account {id}</div>
 					<div className="help-container">
-						{/* {
-									account ?
-										<AccountInfo
-											echo={assetBalances.get(ECHO_ASSET.ID)}
-											name={account.get('name')}
-										/> : null
-								}
-								{
-									balances.size ?
-										<AccountBalances
-											balances={assetBalances.delete(ECHO_ASSET.ID)}
-											owner={account.get('assets')}
-										/> : null
-								} */}
-						<Loader />
+						{
+							account ?
+								<AccountInfo
+									echo={assetBalances.get(ECHO_ASSET.ID)}
+									name={account.get('name')}
+								/> : null
+						}
+						{
+							balances.size ?
+								<AccountBalances
+									balances={assetBalances.delete(ECHO_ASSET.ID)}
+									owner={account.get('assets')}
+								/> : null
+						}
 					</div>
 				</div>
 				{
