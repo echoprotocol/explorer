@@ -12,11 +12,6 @@ import URLHelper from '../../helpers/URLHelper';
 
 class BlockInformation extends React.Component {
 
-	constructor() {
-		super();
-		this.returnFunction = this.returnFunction.bind(this);
-	}
-
 	componentDidMount() {
 		this.props.getBlockInfo();
 
@@ -33,7 +28,11 @@ class BlockInformation extends React.Component {
 	}
 
 	returnFunction() {
-		this.props.history.push(INDEX_PATH);
+		if (!this.props.historyLength) {
+			this.props.history.push(INDEX_PATH);
+		} else {
+			this.props.history.goBack();
+		}
 	}
 
 	renderLoader() {
@@ -66,7 +65,11 @@ class BlockInformation extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="table-container inner-information-container block-information">
-					<BreadCrumbs breadcrumbs={breadcrumbs} title={`Block ${blockNumber}`} returnFunction={this.returnFunction} />
+					<BreadCrumbs
+						breadcrumbs={breadcrumbs}
+						title={`Block ${blockNumber}`}
+						returnFunction={() => this.returnFunction()}
+					/>
 					<div className="block-description">
 						<div className="container time">
 							<div className="title">Time, Date</div>
@@ -105,7 +108,12 @@ BlockInformation.propTypes = {
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
+	historyLength: PropTypes.number,
 	match: PropTypes.object.isRequired,
+};
+
+BlockInformation.defaultProps = {
+	historyLength: 0,
 };
 
 export default BlockInformation;

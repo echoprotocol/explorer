@@ -226,7 +226,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
 		if (!planeBlock) {
-			history.push(NOT_FOUND_PATH);
+			history.replace(NOT_FOUND_PATH);
 			return;
 		}
 
@@ -271,7 +271,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
-		history.push(NOT_FOUND_PATH);
+		history.replace(NOT_FOUND_PATH);
 	}
 };
 
