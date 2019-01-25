@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 import Media from 'react-media';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-
+import Loader from '../../components/Loader';
 import { TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 import URLHelper from '../../helpers/URLHelper';
@@ -188,21 +190,24 @@ class TransactionsTable extends React.Component {
 
 	renderTable(transactions) {
 		return (
-			<div className="divTable">
-				<div className="divTableBody">
-					<div className="TableHeading">
-						<div className="divTableCell">#</div>
-						<div className="divTableCell">Type</div>
-						<div className="divTableCell">From</div>
-						<div className="divTableCell">To</div>
-						<div className="divTableCell">Amount</div>
-						<div className="divTableCell">Fee amount</div>
-						<div className="divTableCell">Status</div>
+			<React.Fragment>
+				<div className="divTable">
+					<div className="divTableBody">
+						<div className="TableHeading">
+							<div className="divTableCell">#</div>
+							<div className="divTableCell">Type</div>
+							<div className="divTableCell">From</div>
+							<div className="divTableCell">To</div>
+							<div className="divTableCell">Amount</div>
+							<div className="divTableCell">Fee amount</div>
+							<div className="divTableCell">Status</div>
+						</div>
+						{/* <div className="devider" /> */}
+						{/* {transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(data, i, j)))} */}
 					</div>
-					<div className="devider" />
-					{transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(data, i, j)))}
 				</div>
-			</div>
+				<Loader />
+			</React.Fragment>
 		);
 
 	}

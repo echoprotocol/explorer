@@ -66,7 +66,7 @@ class SearchActions extends BaseActionsClass {
 						section: 'Asset',
 						prefix: `${ASSET_OBJECT_PREFIX}.`,
 						value: str,
-						to: URLHelper.createObjectsUrl(`${ASSET_OBJECT_PREFIX}.${str}`),
+						to: URLHelper.createAssetUrl(`${ASSET_OBJECT_PREFIX}.${str}`),
 					};
 
 					const contractHint = {

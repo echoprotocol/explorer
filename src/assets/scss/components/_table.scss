@@ -265,3 +265,49 @@
     }
   }
 }
+
+.f-h-loader {
+  width: 100%;
+  min-width: 200px;
+  display: flex;
+  margin-top: 30px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+
+  .spin {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-image: url(../images/icons/loader-l.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: spin 1s infinite;
+    margin-bottom: 15px;
+
+    @keyframes spin{
+        0%{
+          -webkit-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+          -o-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+      
+        100%{
+          -webkit-transform: rotate(360deg);
+          -ms-transform: rotate(360deg);
+          -o-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+    }
+  }
+
+  .text {
+    @include InterUI_Regular;
+    font-size: 12px;
+    color: #0f0739;
+    opacity: 0.5;
+  }
+}

@@ -240,7 +240,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			value.reward = '0 ECHO';
+			value.reward = `0 ${ECHO_ASSET.SYMBOL}`;
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
