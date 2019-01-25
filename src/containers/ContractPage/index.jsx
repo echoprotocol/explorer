@@ -66,33 +66,12 @@ class ContractPage extends React.Component {
 						<div className="table-container inner-information-container block-information account-page contract-page">
 							<div className="account-page-t-block">
 								<div className="title">Contract <span className="accent">1.16.1231</span></div>
-								<div className="help-container">
-									<div className="right-container">
-										<div className="elem">
-											<div className="title">other assets: 23</div>
-											<div className="elements-container">
-												<div className="inner-elem is-owner">
-													<span className="txt">0.003245</span><span className="accent">EKC</span>
-												</div>
-												<div className="inner-elem">
-													<span className="txt">0.003245</span><span className="accent">DRM</span>
-												</div>
-												<div className="inner-elem">
-													<span className="txt">0.003245</span><span className="accent">ZSCH</span>
-												</div>
-												<div className="inner-elem">
-													<span className="txt">0.0032934245</span><span className="accent">DSKL</span>
-												</div>
-											</div>
-											<a href="" className="load-more">View 19 more</a>
-										</div>
-									</div>
-								</div>
 							</div>
 							<Tabs>
 								<TabList className="tab-panel">
 									<Tab>Transactions(43)</Tab>
 									<Tab>Bytecode</Tab>
+									<Tab>Assets</Tab>
 								</TabList>
 								<TabPanel>
 									<div className="table">
@@ -314,6 +293,28 @@ class ContractPage extends React.Component {
 												<a href="" className="load-more" onClick={(e) => e.preventDefault()}>Show All</a>
 												<button className="copy-bytecode" onClick={this.copy}>Copy</button>
 											</div>
+										</div>
+									</div>
+								</TabPanel>
+								<TabPanel>
+									<div className="contract-asset-panel">
+										<div className="elem">
+											<div className="title">other assets: 23</div>
+											<div className="elements-container">
+												<div className="inner-elem is-owner">
+													<span className="txt">0.003245</span><span className="accent">EKC</span>
+												</div>
+												<div className="inner-elem">
+													<span className="txt">0.003245</span><span className="accent">DRM</span>
+												</div>
+												<div className="inner-elem">
+													<span className="txt">0.003245</span><span className="accent">ZSCH</span>
+												</div>
+												<div className="inner-elem">
+													<span className="txt">0.0032934245</span><span className="accent">DSKL</span>
+												</div>
+											</div>
+											<a href="" className="load-more">View 19 more</a>
 										</div>
 									</div>
 								</TabPanel>

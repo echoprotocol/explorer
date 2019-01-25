@@ -9,6 +9,10 @@
             padding-top: 48px;
         }
 
+        .accent {
+            color: #2a90e6;
+        }
+        
         .account-page-t-block {
             margin-bottom: 30px;
 
@@ -220,10 +224,10 @@
         }
 
         .react-tabs {
-            margin-top: 65px;
+            margin-top: 45px;
 
             @include res-1000 {
-                margin-top: 50px;
+                margin-top: 45px;
             }
 
             @include res-768 {
@@ -234,35 +238,36 @@
         .tab-panel {
             list-style-type: none;
             display: flex;
-            height: 35px;
+            height: 27px;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
 
             @include res-320 {
-                padding-left: 30px;
+                padding-left: 0px;
+                justify-content: center;
             }
 
             .react-tabs__tab {
                 position: relative;   
                 height: 100%;
                 cursor: pointer;
-                @include InterUI_Bold;
-                font-size: 16px;
-                color: #130d32;
-                opacity: 0.6;
+                @include InterUI_Regular;
+                font-size: 13px;
                 display: flex;
                 align-items: center;
 
-                padding-left: 22px;
-                padding-right: 22px;
-
-                @include res-320 {
-                    font-size: 15px;
-                }
+                padding-left: 15px;
+                padding-right: 15px;
+                background-color: rgba(226, 224, 230, 0.5);
+                color: rgba(0, 0, 0, 0.5);
     
 
                 &:first-child {
-                    padding-left: 0;
+                    border-radius: 14px 0 0 14px;
+                }
+
+                &:last-child {
+                    border-radius: 0 14px 14px 0;
                 }
                 
                 &:not(:last-child) {
@@ -278,12 +283,25 @@
                 }
 
                 &--selected {
-                    opacity: 1;
+                    @include InterUI_Bold;
+                    color: rgba(0, 0, 0, 1);
+                    background-color: rgba(226, 224, 230, 1);
                 }
             }
         }
 
         .contract-bytecode-panel {
+            margin-left: 30px;
+            padding-top: 15px;
+
+            @include res-500 {
+                margin-left: 0px;
+                padding-top: 10px;
+            }
+
+            @include res-320 {
+                margin-left: 0;
+            }
 
             @include res-320 {
                 padding-left: 30px;
@@ -304,8 +322,7 @@
                     color: #1f3c4d;
                     text-transform: uppercase;
                     letter-spacing: 0.25em;
-                    margin-top: 3px;
-                    margin-right: 125px;
+                    margin-right: 120px;
                     flex-shrink: 0;
 
                     @include res-320 {
@@ -314,6 +331,8 @@
                 }
                 
                 .right-column {
+                    margin-top: -3px;
+
                     .text-block {
                         @include Hack_Regular;
                         font-size: 12px;
@@ -324,6 +343,101 @@
                     
                     .load-more {
                         margin-top: 12px;
+                    }
+                }
+            }
+        }
+
+        .contract-asset-panel {
+            width: 370px;
+            margin-left: 30px;
+            padding-top: 15px;
+
+
+            @include res-500 {
+                margin-left: 0px;
+                padding-top: 10px;
+            }
+
+            @include res-320 {
+                width: 100%;
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+            .elem {
+                &:not(:last-child) {
+                    margin-bottom: 35px;
+
+                    @include res-500 {
+                        margin-bottom: 30px;
+                    }
+                }
+
+                > .title {
+                    @include Hack_Bold;
+                    font-size: 9px;
+                    text-transform: uppercase;
+                    color: #1f3c4d;
+                    letter-spacing: 0.25em;
+                    border-bottom: 1px solid #d8d9de;
+                    padding-bottom: 8px;
+
+                    @include res-320 {
+                        padding-left: 0px;
+                    }
+
+                    .gray {
+                        color: #828b95;
+                    }
+                }
+
+                .elements-container {
+                    margin-top: 14px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    
+                    .inner-elem {
+                        width: 170px;
+                        @include InterUI_Regular;
+                        font-size: 12px;
+                        color: #0f0739;
+                        border-bottom: 1px solid #d8d9de;
+                        padding-bottom: 12px;
+                        margin-bottom: 14px;
+                        position: relative;
+
+                        @include res-320 {
+                            padding-left: 0px;
+                            width: 100%;
+                        }
+
+                        &.is-owner {
+                            &:after {
+                                content: 'OWNER';
+                                position: absolute;
+                                right: 0;
+                                background-color: #cadef0;
+                                top: -2px;
+                                @include Hack_Bold;
+                                padding: 3px;
+                                font-size: 9px;
+                                color: #2a90e6;
+                                letter-spacing: 0.25em;
+                            }
+                        }
+                        .txt {
+                            margin-right: 5px;
+                        }
+                    }
+                }
+
+                .load-more {
+                    display: inline-flex;
+
+                    @include res-320 {
+                        margin-left: 20px;
                     }
                 }
             }
