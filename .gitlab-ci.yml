@@ -31,6 +31,7 @@ build.stage:
     paths:
       - node_modules
   script:
+    - if [ -d node_modules/echojs-lib ]; then rm -rf node_modules/echojs-lib; fi
     - npm i
     - npm run build-stage
     - rm -rf /home/frontend
