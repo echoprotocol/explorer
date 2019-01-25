@@ -10,8 +10,6 @@ import TransactionsTable from '../BlockInformation/TransactionsTable';
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 
-import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
-
 class Account extends React.Component {
 
 	componentDidMount() {

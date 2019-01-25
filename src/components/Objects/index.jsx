@@ -6,7 +6,6 @@ import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 
-import RecentBlockSidebar from '../../containers/RecentBlockSection/RecentBlockSidebar';
 import URLHelper from '../../helpers/URLHelper';
 
 class Objects extends React.Component {
