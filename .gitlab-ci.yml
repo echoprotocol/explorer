@@ -49,6 +49,7 @@ build.development:
     paths:
       - node_modules
   script:
+    - if [ -d node_modules/echojs-lib ]; then rm -rf node_modules/echojs-lib; fi
     - npm i
     - npm run build-dev
     - rm -rf /home/frontend
