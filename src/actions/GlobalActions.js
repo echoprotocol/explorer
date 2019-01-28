@@ -2,6 +2,8 @@ import GlobalReducer from '../reducers/GlobalReducer';
 import BaseActionsClass from './BaseActionsClass';
 import { connect } from './SocketActions';
 
+import { DEFAULT_TITLE } from '../constants/GlobalConstants';
+
 class GlobalActionsClass extends BaseActionsClass {
 
 	/** Initialize reducer
@@ -50,6 +52,12 @@ class GlobalActionsClass extends BaseActionsClass {
 	incrementHistoryLength() {
 		return (dispatch, getState) => {
 			dispatch(this.setValue('historyLength', getState().global.get('historyLength') + 1));
+		};
+	}
+
+	setTitle(title) {
+		return (dispatch) => {
+			dispatch(this.setValue('title', title));
 		};
 	}
 

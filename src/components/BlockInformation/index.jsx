@@ -8,6 +8,7 @@ import ViewListPopover from '../ViewListPopover';
 import Loader from '../Loader';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
+import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 
@@ -19,6 +20,10 @@ class BlockInformation extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		if (this.props.blockInformation) {
+			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.blockInformation.get('round')));
+		}
+
 		if (this.props.match.params.round !== prevProps.match.params.round) {
 			this.props.getBlockInfo(this.props.match.params.round);
 		}
@@ -113,6 +118,7 @@ BlockInformation.propTypes = {
 	history: PropTypes.object.isRequired,
 	historyLength: PropTypes.number,
 	match: PropTypes.object.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 BlockInformation.defaultProps = {

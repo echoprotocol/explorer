@@ -11,6 +11,16 @@ import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
 
 class App extends React.Component {
 
+	componentDidMount() {
+		document.title = this.props.title;
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.title !== this.props.title) {
+			document.title = this.props.title;
+		}
+	}
+
 	componentWillUnmount() {
 		this.props.disconnect();
 	}
@@ -44,10 +54,13 @@ class App extends React.Component {
 App.propTypes = {
 	children: PropTypes.element.isRequired,
 	disconnect: PropTypes.func.isRequired,
+	title: PropTypes.string.isRequired,
 };
 
 export default connect(
-	() => ({}),
+	(state) => ({
+		title: state.global.get('title'),
+	}),
 	(dispatch) => ({
 		disconnect: () => dispatch(disconnect()),
 	}),

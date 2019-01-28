@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 
 import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
-import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
+import { BYTECODE_SYMBOLS_LENGTH, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
@@ -22,6 +22,10 @@ class TransactionsInfo extends React.Component {
 	}
 
 	componentDidMount() {
+		const { round, index } = this.props.match.params;
+
+		this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
+
 		this.props.getTransaction();
 	}
 
@@ -190,6 +194,7 @@ TransactionsInfo.propTypes = {
 	historyLength: PropTypes.number,
 	getTransaction: PropTypes.func.isRequired,
 	clearTransaction: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 TransactionsInfo.defaultProps = {

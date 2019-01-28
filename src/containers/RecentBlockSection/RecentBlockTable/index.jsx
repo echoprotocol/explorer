@@ -10,11 +10,18 @@ import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
-
-import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import URLHelper from '../../../helpers/URLHelper';
 
+import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
+
+import GlobalActions from '../../../actions/GlobalActions';
+
 class RecentBlockTable extends React.Component {
+
+	componentDidMount() {
+		this.props.setTitle(TITLE_TEMPLATES.MAIN);
+	}
 
 	onSearch(blockNumber) {
 		this.props.history.push(`/blocks/${blockNumber}`);
@@ -183,11 +190,14 @@ class RecentBlockTable extends React.Component {
 RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
 		blocks: state.block.get('blocks'),
 	}),
-	() => ({}),
+	(dispatch) => ({
+		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
+	}),
 )(RecentBlockTable));
