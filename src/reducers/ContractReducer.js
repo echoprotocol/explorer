@@ -7,6 +7,7 @@ const DEFAULT_FIELDS = new Map({
 	loading: false,
 	bytecode: null,
 	balances: new List([]),
+	history: new List([]),
 });
 
 export default createModule({

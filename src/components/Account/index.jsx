@@ -6,7 +6,7 @@ import AccountBalances from './AccountBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
-import Loader from '../../components/Loader';
+import Loader from '../Loader';
 
 class Account extends React.Component {
 
