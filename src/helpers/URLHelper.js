@@ -4,6 +4,7 @@ import {
 	ACCOUNTS_PATH,
 	ASSET_PATH,
 	BLOCK_INFORMATION_PATH,
+	CONTRACT_PATH,
 } from '../constants/RouterConstants';
 
 
@@ -51,7 +52,7 @@ class URLHelper {
 	 * @return {String}
 	 */
 	static createContractUrl(contractId) {
-		return `/contracts?id=${contractId}`;
+		return CONTRACT_PATH.replace(/:id/, contractId);
 	}
 
 	/**
