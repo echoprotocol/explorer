@@ -15,5 +15,12 @@ export default createModule({
 	initialState: _.cloneDeep(DEFAULT_FIELDS),
 	transformations: {
 		..._.cloneDeep(TransformModules(DEFAULT_FIELDS)),
+		concat: {
+			reducer: (state, { payload }) => {
+				state = state.set(payload.field, state.get(payload.field).concat(payload.value));
+
+				return state;
+			},
+		},
 	},
 });

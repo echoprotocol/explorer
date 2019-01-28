@@ -2,12 +2,22 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PropTypes from 'prop-types';
 
+import { DEFAULT_ROWS_COUNT } from '../../constants/GlobalConstants';
+
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 import Loader from '../Loader';
 
 class Contract extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			loadingMoreHistory: false,
+		};
+	}
 
 	componentDidMount() {
 		this.props.getContractInfo();
@@ -18,10 +28,22 @@ class Contract extends React.Component {
 		this.props.clearContractInfo();
 	}
 
+	async onLoadMoreHistory() {
+		try {
+			this.setState({ loadingMoreHistory: true });
+			await this.props.loadContractHistory(this.props.history.last()[0].id);
+		} catch (e) {
+			//
+		} finally {
+			this.setState({ loadingMoreHistory: false });
+		}
+	}
+
 	render() {
 		const {
 			loading, bytecode, history, balances, cacheObjects, match: { params: { id } },
 		} = this.props;
+		const { loadingMoreHistory } = this.state;
 
 		const contractBalances = balances.map((b, i) => ({
 			id: i,
@@ -41,7 +63,14 @@ class Contract extends React.Component {
 						<Tab>Balances</Tab>
 					</TabList>
 					<TabPanel>
-						{!loading ? <TransactionsTable transactions={history} /> : <Loader />}
+						{
+							!loading ?
+								<TransactionsTable
+									transactions={history}
+									loading={loadingMoreHistory}
+									loadMore={history.size >= DEFAULT_ROWS_COUNT ? () => this.onLoadMoreHistory() : null}
+								/> : <Loader />
+						}
 					</TabPanel>
 					<TabPanel>
 						{!loading ? <ContractBytecode bytecode={bytecode} /> : <Loader />}
@@ -67,6 +96,7 @@ Contract.propTypes = {
 	match: PropTypes.object.isRequired,
 	getContractInfo: PropTypes.func.isRequired,
 	clearContractInfo: PropTypes.func.isRequired,
+	loadContractHistory: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {

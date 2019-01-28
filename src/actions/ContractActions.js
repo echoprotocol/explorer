@@ -6,13 +6,13 @@ import BaseActionsClass from './BaseActionsClass';
 
 import browserHistory from '../history';
 import { NOT_FOUND_PATH } from '../constants/RouterConstants';
+import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 import { formatOperation } from './BlockActions';
 
 class ContractActions extends BaseActionsClass {
 
 	/**
-	 * Format account history
-	 * @param {String} accountId
+	 * Format contract history
 	 * @param {Array} history
 	 * @returns {function}
 	 */
@@ -21,11 +21,12 @@ class ContractActions extends BaseActionsClass {
 			let { op: operation, result } = t;
 			if (OPERATIONS_IDS.CONTRACT_TRANSFER === t.op[0]) {
 				const block = await echo.api.getBlock(t.block_num);
+
 				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
 			}
 
-			return formatOperation(operation, null, t.block_num, t.trx_in_block, result);
+			return formatOperation(operation, null, t.block_num, t.trx_in_block, result, t.id);
 		});
 		history = await Promise.all(history);
 		return history.reduce((arr, t) => ([...arr, [t]]), []);
@@ -61,7 +62,13 @@ class ContractActions extends BaseActionsClass {
 					balances: fromJS(balances),
 				}));
 
-				let history = await echo.api.getContractHistory(id);
+				let history = await echo.api.getContractHistory(
+					id,
+					DEFAULT_OPERATION_HISTORY_ID,
+					DEFAULT_ROWS_COUNT,
+					DEFAULT_OPERATION_HISTORY_ID,
+				);
+
 				history = await this.formatContractHistory(history);
 
 				dispatch(this.setValue('history', new List(history)));
@@ -69,6 +76,37 @@ class ContractActions extends BaseActionsClass {
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));
+			}
+		};
+	}
+
+	/**
+	 * Load contract history
+	 * @param {string} id
+	 * @param {string} lastOperationId
+	 * @returns {function}
+	 */
+	loadContractHistory(id, lastOperationId) {
+		return async (dispatch) => {
+			try {
+				let history = await echo.api.getContractHistory(
+					id,
+					DEFAULT_OPERATION_HISTORY_ID,
+					DEFAULT_ROWS_COUNT,
+					lastOperationId,
+				);
+
+				if (history[0].id === lastOperationId) {
+					history = history.slice(1);
+				}
+				history = await this.formatContractHistory(history);
+
+				dispatch(this.reducer.actions.concat({
+					field: 'history',
+					value: new List(history),
+				}));
+			} catch (e) {
+				dispatch(this.setValue('error', e.message));
 			}
 		};
 	}

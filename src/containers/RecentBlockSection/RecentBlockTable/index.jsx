@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
+import { setMaxDisplayedBlocks } from '../../../actions/BlockActions';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
@@ -50,6 +51,8 @@ class RecentBlockTable extends React.Component {
 	}
 
 	render() {
+		const { loading } = this.props;
+
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
@@ -172,7 +175,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					<LoadMoreBtn />
+					<LoadMoreBtn title="Load more blocks" loading={loading} loadMore={() => this.props.loadBlocks()} />
 				</div>
 			</div>
 		);
@@ -181,13 +184,18 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
+	loading: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
+	loadBlocks: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
+		loading: state.block.get('loading'),
 		blocks: state.block.get('blocks'),
 	}),
-	() => ({}),
+	(dispatch) => ({
+		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
+	}),
 )(RecentBlockTable));

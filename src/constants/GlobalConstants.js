@@ -45,3 +45,6 @@ export const ECHO_ASSET = {
 export const NATHAN = {
 	ID: '1.2.12',
 };
+
+export const DEFAULT_ROWS_COUNT = 50;
+export const DEFAULT_OPERATION_HISTORY_ID = '1.11.0';

@@ -16,5 +16,9 @@ export default withRouter(connect(
 	(dispatch, props) => ({
 		getContractInfo: () => dispatch(ContractActions.getContractInfo(props.match.params.id)),
 		clearContractInfo: () => dispatch(ContractActions.clear()),
+		loadContractHistory: (lastOperationId) => dispatch(ContractActions.loadContractHistory(
+			props.match.params.id,
+			lastOperationId,
+		)),
 	}),
 )(Contract));
