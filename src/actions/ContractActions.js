@@ -8,13 +8,6 @@ import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 
 class ContractActions extends BaseActionsClass {
 
-	/** Set reducer
-	 * @constructor
-	 */
-	constructor() {
-		super(ContractReducer);
-	}
-
 	/**
 	 * Get contract info
 	 * @param {string} id
@@ -47,4 +40,4 @@ class ContractActions extends BaseActionsClass {
 
 }
 
-export default new ContractActions();
+export default new ContractActions(ContractReducer);
