@@ -21,23 +21,14 @@ history.listen(() => {
 	store.dispatch(GlobalActions.incrementHistoryLength());
 });
 
-store.dispatch(GlobalActions.init())
-	.then(() => {
-		echo.syncCacheWithStore(store);
 
-		ReactDOM.render(
-			<Provider store={store}>
-				{/* ConnectedRouter will use the store from Provider automatically */}
-				<ConnectedRouter history={history}>
-					<Routes />
-				</ConnectedRouter>
-			</Provider>,
-			document.getElementById('root'),
-		);
-	})
-	.catch((error) => {
-		ReactDOM.render(
-			<ErrorScreen error={FormatHelper.formatError(error)} />,
-			document.getElementById('root'),
-		);
-	});
+ReactDOM.render(
+	<Provider store={store}>
+		<ConnectedRouter history={history}>
+			<Routes />
+		</ConnectedRouter>
+	</Provider>,
+	document.getElementById('root'),
+);
+
+echo.syncCacheWithStore(store);

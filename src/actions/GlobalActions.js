@@ -32,7 +32,7 @@ class GlobalActionsClass extends BaseActionsClass {
 	 * @returns {function(*=): Promise<any>}
 	 */
 	init() {
-		return (dispatch) => new Promise((resolve, reject) => {
+		return (dispatch) => new Promise((resolve) => {
 			Promise.all([
 				dispatch(connect()),
 			]).then((data) => {
@@ -40,8 +40,7 @@ class GlobalActionsClass extends BaseActionsClass {
 					resolve(data);
 				});
 			}).catch((error) => {
-				console.error(error);
-				reject(error);
+				resolve(error);
 			});
 		});
 	}
