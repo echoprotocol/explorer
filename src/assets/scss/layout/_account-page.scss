@@ -260,7 +260,11 @@
                 padding-right: 15px;
                 background-color: rgba(226, 224, 230, 0.5);
                 color: rgba(0, 0, 0, 0.5);
-    
+                transition: background-color .2s ease-out;
+
+                &:hover {
+                    background-color: rgba(226, 224, 230, 0.8);
+                }
 
                 &:first-child {
                     border-radius: 14px 0 0 14px;
