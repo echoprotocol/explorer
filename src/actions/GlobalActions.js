@@ -2,8 +2,6 @@ import GlobalReducer from '../reducers/GlobalReducer';
 import BaseActionsClass from './BaseActionsClass';
 import { connect } from './SocketActions';
 
-import { DEFAULT_TITLE } from '../constants/GlobalConstants';
-
 class GlobalActionsClass extends BaseActionsClass {
 
 	/** Initialize reducer
@@ -43,7 +41,6 @@ class GlobalActionsClass extends BaseActionsClass {
 					resolve(data);
 				});
 			}).catch((error) => {
-				console.error(error);
 				resolve(error);
 			});
 		});
