@@ -71,7 +71,7 @@ class ContractPage extends React.Component {
 								<TabList className="tab-panel">
 									<Tab>Transactions(43)</Tab>
 									<Tab>Bytecode</Tab>
-									<Tab>Assets</Tab>
+									<Tab>Contract balances</Tab>
 								</TabList>
 								<TabPanel>
 									<div className="table">
