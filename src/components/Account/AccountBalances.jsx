@@ -10,7 +10,7 @@ class AccountBalances extends React.Component {
 
 		return (
 			<div className="right-container">
-				<AssetBalances owner={owner} balances={balances} />
+				<AssetBalances title="other assets" owner={owner} balances={balances} />
 				{/*
 					<div className="elem">
 						<div className="title">tokens: <span className="gray">none</span></div>
@@ -23,7 +23,7 @@ class AccountBalances extends React.Component {
 }
 
 AccountBalances.propTypes = {
-	balances: PropTypes.object,
+	balances: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	owner: PropTypes.object,
 };
 

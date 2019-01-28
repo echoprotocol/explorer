@@ -23,11 +23,11 @@ class AssetBalances extends React.Component {
 		this.setState({ isLoadedMore: !this.state.isLoadedMore });
 	}
 
-	renderElement(asset, stats, isOwner) {
+	renderElement(id, asset, amount, isOwner) {
 		return (
-			<div key={stats.get('id')} className={classnames('inner-elem', { 'is-owner': isOwner })}>
+			<div key={id} className={classnames('inner-elem', { 'is-owner': isOwner })}>
 				<span className="txt">
-					{FormatHelper.formatAmount(stats.get('balance'), asset.get('precision'))}
+					{FormatHelper.formatAmount(amount, asset.get('precision'))}
 				</span>
 				<span className="accent">
 					<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
@@ -39,27 +39,25 @@ class AssetBalances extends React.Component {
 	}
 
 	render() {
-		const { owner, balances } = this.props;
+		const { owner, balances, title } = this.props;
 		const { isLoadedMore, DEFAULT_COUNT } = this.state;
-		const count = balances.count();
+		const count = balances.size || balances.length;
 
 		const elements = isLoadedMore ? balances : balances.slice(0, DEFAULT_COUNT);
 
 		return (
 			<div className="elem">
 				<div className="title">
-					other assets: {count || <span className="gray">none</span>}
+					{title}: {count || <span className="gray">none</span>}
 				</div>
 				<div className="elements-container">
 					{
-						elements.reduce((arr, { stats, asset }) => ([
-							...arr,
-							this.renderElement(
-								asset,
-								stats,
-								owner.includes(asset.get('id')),
-							),
-						]), [])
+						elements.map(({ amount, asset, id }) => this.renderElement(
+							id,
+							asset,
+							amount,
+							owner ? owner.includes(asset.get('id')) : false,
+						))
 					}
 				</div>
 				{
@@ -75,8 +73,9 @@ class AssetBalances extends React.Component {
 }
 
 AssetBalances.propTypes = {
-	balances: PropTypes.object,
+	balances: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	owner: PropTypes.object,
+	title: PropTypes.string.isRequired,
 };
 
 AssetBalances.defaultProps = {

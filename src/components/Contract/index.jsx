@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map, List } from 'immutable';
+import { List } from 'immutable';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PropTypes from 'prop-types';
 
@@ -19,7 +19,15 @@ class Contract extends React.Component {
 	}
 
 	render() {
-		const { bytecode, match: { params: { id } } } = this.props;
+		const {
+			bytecode, balances, cacheObjects, match: { params: { id } },
+		} = this.props;
+
+		const contractBalances = balances.map((b, i) => ({
+			id: i,
+			amount: b.get('amount'),
+			asset: cacheObjects.get(b.get('asset_id')),
+		}));
 
 		return (
 			<div className="table-container inner-information-container block-information account-page contract-page">
@@ -30,7 +38,7 @@ class Contract extends React.Component {
 					<TabList className="tab-panel">
 						<Tab>Transactions(43)</Tab>
 						<Tab>Bytecode</Tab>
-						<Tab>Assets</Tab>
+						<Tab>Balances</Tab>
 					</TabList>
 					<TabPanel>
 						<TransactionsTable transactions={new List([])} />
@@ -39,9 +47,12 @@ class Contract extends React.Component {
 						<ContractBytecode bytecode={bytecode} />
 					</TabPanel>
 					<TabPanel>
-						<div className="contract-asset-panel">
-							<AssetBalances balances={new Map({})} owner={new List([])} />
-						</div>
+						{
+							balances.size ?
+								<div className="contract-asset-panel">
+									<AssetBalances title="assets" balances={contractBalances} />
+								</div> : null
+						}
 					</TabPanel>
 				</Tabs>
 			</div>
@@ -52,6 +63,8 @@ class Contract extends React.Component {
 
 Contract.propTypes = {
 	bytecode: PropTypes.string,
+	cacheObjects: PropTypes.object,
+	balances: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
 	getContractInfo: PropTypes.func.isRequired,
 	clearContractInfo: PropTypes.func.isRequired,
@@ -59,6 +72,7 @@ Contract.propTypes = {
 
 Contract.defaultProps = {
 	bytecode: null,
+	cacheObjects: null,
 };
 
 export default Contract;
