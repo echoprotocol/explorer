@@ -37,6 +37,31 @@ class PreparingSection extends React.Component {
 		}, 500);
 	}
 
+	shouldComponentUpdate(nextProps) {
+		const { stepProgress } = this.props;
+
+		if (stepProgress && nextProps.stepProgress !== stepProgress) {
+
+			if (this.state.progressBar < rounderSteps[nextProps.stepProgress].progress) {
+				this.fillProgressBar(rounderSteps[nextProps.stepProgress].progress);
+			}
+
+
+			this.setState({
+				// progressBar: rounderSteps[nextProps.stepProgress].progress,
+				step: nextProps.stepProgress,
+			});
+		}
+
+		return true;
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.progressInterval);
+		clearInterval(this.state.fillInterval);
+	}
+
+
 	fillProgressBar(to, time = 500) {
 		const loadLimit = to;
 		const steps = to - this.state.progressBar;
@@ -61,29 +86,6 @@ class PreparingSection extends React.Component {
 		this.setState({
 			fillInterval,
 		});
-	}
-
-	shouldComponentUpdate(nextProps) {
-		const { stepProgress } = this.props;
-
-		if (stepProgress && nextProps.stepProgress !== stepProgress) {
-
-			if (this.state.progressBar < rounderSteps[nextProps.stepProgress].progress) {
-				this.fillProgressBar(rounderSteps[nextProps.stepProgress].progress);
-			}
-
-
-			this.setState({
-				// progressBar: rounderSteps[nextProps.stepProgress].progress,
-				step: nextProps.stepProgress,
-			});
-		}
-
-		return true;
-	}
-
-	componentWillUnmount() {
-		clearInterval(this.progressInterval);
 	}
 
 	render() {
