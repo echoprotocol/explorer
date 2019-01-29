@@ -3,7 +3,10 @@ import { Map } from 'immutable';
 import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
+import { DEFAULT_TITLE } from '../constants/GlobalConstants';
+
 const DEFAULT_FIELDS = Map({
+	title: DEFAULT_TITLE,
 	historyLength: 0,
 	connected: false,
 	error: '',
