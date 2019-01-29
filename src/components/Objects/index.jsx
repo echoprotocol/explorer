@@ -40,8 +40,8 @@ class Objects extends React.Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.data) {
-			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.props.data.id));
+		if (this.state.id) {
+			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.state.id));
 		}
 	}
 
