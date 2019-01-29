@@ -3,7 +3,9 @@ import Media from 'react-media';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+
 import { TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
+import LoadMoreBtn from '../LoadMoreBtn';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -209,7 +211,12 @@ class TransactionsTable extends React.Component {
 	}
 
 	render() {
-		const { transactions } = this.props;
+		const {
+			transactions,
+			loadMore,
+			loadMoreTitle,
+			loadMoreLoading,
+		} = this.props;
 
 		return (
 			<div className="table">
@@ -220,6 +227,7 @@ class TransactionsTable extends React.Component {
 							this.renderTable(transactions)
 					)}
 				</Media>
+				{ loadMore && <LoadMoreBtn loadMore={loadMore} title={loadMoreTitle} loading={loadMoreLoading} /> }
 			</div>
 		);
 	}
@@ -228,6 +236,15 @@ class TransactionsTable extends React.Component {
 
 TransactionsTable.propTypes = {
 	transactions: PropTypes.any.isRequired,
+	loadMore: PropTypes.func,
+	loadMoreTitle: PropTypes.string,
+	loadMoreLoading: PropTypes.bool,
+};
+
+TransactionsTable.defaultProps = {
+	loadMore: undefined,
+	loadMoreTitle: undefined,
+	loadMoreLoading: undefined,
 };
 
 export default TransactionsTable;
