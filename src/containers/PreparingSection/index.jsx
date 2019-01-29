@@ -28,7 +28,7 @@ class PreparingSection extends React.Component {
 		this.progressInterval = setInterval(() => {
 			const loadLimit = this.state.step ? rounderSteps[this.state.step].maxProgress : 100;
 
-			if (this.state.progressBar < loadLimit) {
+			if (this.state.progressBar < loadLimit && !this.state.fillInterval) {
 				this.setState({
 					progressBar: this.state.progressBar += 1,
 					timer: this.state.timer += 500,
@@ -37,12 +37,44 @@ class PreparingSection extends React.Component {
 		}, 500);
 	}
 
+	fillProgressBar(to, time = 500) {
+		const loadLimit = to;
+		const steps = to - this.state.progressBar;
+		const timeout = time / steps;
+
+		clearInterval(this.state.fillInterval);
+		const fillInterval = setInterval(() => {
+
+			if (this.state.progressBar < loadLimit) {
+				this.setState({
+					progressBar: this.state.progressBar += 1,
+					timer: this.state.timer += timeout,
+				});
+			} else {
+				clearInterval(this.state.fillInterval);
+				this.setState({
+					fillInterval: undefined,
+				});
+			}
+		}, timeout);
+
+		this.setState({
+			fillInterval,
+		});
+	}
+
 	shouldComponentUpdate(nextProps) {
 		const { stepProgress } = this.props;
 
 		if (stepProgress && nextProps.stepProgress !== stepProgress) {
+
+			if (this.state.progressBar < rounderSteps[nextProps.stepProgress].progress) {
+				this.fillProgressBar(rounderSteps[nextProps.stepProgress].progress);
+			}
+
+
 			this.setState({
-				progressBar: rounderSteps[nextProps.stepProgress].progress,
+				// progressBar: rounderSteps[nextProps.stepProgress].progress,
 				step: nextProps.stepProgress,
 			});
 		}
