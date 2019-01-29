@@ -6,6 +6,7 @@ import RecentBlockSection from './containers/RecentBlockSection';
 import Objects from './containers/Objects';
 import Account from './containers/Account';
 import Asset from './containers/Asset';
+import Contract from './containers/Contract';
 
 import {
 	INDEX_PATH,
@@ -14,6 +15,7 @@ import {
 	OBJECTS_PATH,
 	ACCOUNTS_PATH,
 	ASSET_PATH,
+	CONTRACT_PATH,
 } from './constants/RouterConstants';
 
 export default class Routes extends React.Component {
@@ -28,6 +30,7 @@ export default class Routes extends React.Component {
 					<Route exact path={OBJECTS_PATH} component={Objects} />
 					<Route exact path={ACCOUNTS_PATH} component={Account} />
 					<Route exact path={ASSET_PATH} component={Asset} />
+					<Route exact path={CONTRACT_PATH} component={Contract} />
 				</Switch>
 			</App>
 		);
