@@ -31,10 +31,10 @@ class PreparingSection extends React.Component {
 			if (this.state.progressBar < loadLimit && !this.state.fillInterval) {
 				this.setState({
 					progressBar: this.state.progressBar += 1,
-					timer: this.state.timer += 500,
+					timer: this.state.timer += 200,
 				});
 			}
-		}, 500);
+		}, 200);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -42,15 +42,26 @@ class PreparingSection extends React.Component {
 
 		if (stepProgress && nextProps.stepProgress !== stepProgress) {
 
-			if (this.state.progressBar < rounderSteps[nextProps.stepProgress].progress) {
-				this.fillProgressBar(rounderSteps[nextProps.stepProgress].progress);
+			console.log(nextProps.stepProgress)
+			if (rounderSteps[nextProps.stepProgress].step === 0) {
+				this.fillProgressBar(100);
+                // console.log('0')
+                // this.setState({
+					// progressBar: rounderSteps[nextProps.stepProgress].progress,
+					// step: nextProps.stepProgress,
+                // });
+                // console.log(this.state)
+            } else {
+				if (this.state.progressBar < rounderSteps[nextProps.stepProgress].progress) {
+					this.fillProgressBar(rounderSteps[nextProps.stepProgress].progress);
+				}
+
+
+
 			}
-
-
-			this.setState({
-				// progressBar: rounderSteps[nextProps.stepProgress].progress,
-				step: nextProps.stepProgress,
-			});
+            this.setState({
+                step: nextProps.stepProgress,
+            });
 		}
 
 		return true;
@@ -62,7 +73,7 @@ class PreparingSection extends React.Component {
 	}
 
 
-	fillProgressBar(to, time = 500) {
+	fillProgressBar(to, time = 200) {
 		const loadLimit = to;
 		const steps = to - this.state.progressBar;
 		const timeout = time / steps;
@@ -75,6 +86,12 @@ class PreparingSection extends React.Component {
 					progressBar: this.state.progressBar += 1,
 					timer: this.state.timer += timeout,
 				});
+			} else if (this.state.progressBar === 100) {
+                clearInterval(this.state.fillInterval);
+                this.setState({
+                    progressBar: 0,
+                    fillInterval: undefined,
+                });
 			} else {
 				clearInterval(this.state.fillInterval);
 				this.setState({

@@ -11,7 +11,7 @@ export const BBA_TIP = 'Chosen verifiers should reach an agreement to apply the 
 export const rounderSteps = {
 	[ROUND_STARTED]: {
 		step: 0,
-		progress: 30,
+		progress: 0,
 		maxProgress: 49,
 		producing: 'progress',
 		verifying: 'progress',
