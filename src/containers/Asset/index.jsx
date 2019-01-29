@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Asset from '../../components/Asset';
 
 import { getFullAssetInformation } from '../../actions/AssetActions';
+import GlobalActions from '../../actions/GlobalActions';
 
 export default connect(
 	(state, props) => {
@@ -22,5 +23,6 @@ export default connect(
 	},
 	(dispatch, props) => ({
 		getAssetInfo: (id = props.match.params.id) => getFullAssetInformation(id),
+		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),
 )(Asset);

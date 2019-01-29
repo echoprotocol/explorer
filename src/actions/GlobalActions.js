@@ -41,7 +41,6 @@ class GlobalActionsClass extends BaseActionsClass {
 					resolve(data);
 				});
 			}).catch((error) => {
-				console.error(error);
 				resolve(error);
 			});
 		});
@@ -50,6 +49,12 @@ class GlobalActionsClass extends BaseActionsClass {
 	incrementHistoryLength() {
 		return (dispatch, getState) => {
 			dispatch(this.setValue('historyLength', getState().global.get('historyLength') + 1));
+		};
+	}
+
+	setTitle(title) {
+		return (dispatch) => {
+			dispatch(this.setValue('title', title));
 		};
 	}
 
