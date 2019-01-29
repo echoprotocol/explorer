@@ -188,11 +188,10 @@ export const formatOperation = async (data, accountId = undefined, round = undef
 
 			let internalOperations = contractHistory
 				.filter(({ block_num }) => block_num === round)
-				.map(({ op }) => formatOperation(op, accountId))
-				.filter((op) => op);
+				.map(({ op }) => formatOperation(op, accountId));
 
 			internalOperations = await Promise.all(internalOperations);
-			internalOperations = internalOperations.map((op) => { op.label = 'Subtransfer'; return op; });
+			internalOperations = internalOperations.filter((op) => op).map((op) => { op.label = 'Subtransfer'; return op; });
 			let internalTransactions = internalOperations;
 			let code = '';
 			try {

@@ -17,6 +17,14 @@ class App extends React.Component {
 
 	componentDidMount() {
 		this.props.init();
+
+		document.title = this.props.title;
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.title !== this.props.title) {
+			document.title = this.props.title;
+		}
 	}
 
 	componentWillUnmount() {
@@ -61,6 +69,7 @@ class App extends React.Component {
 App.propTypes = {
 	children: PropTypes.element.isRequired,
 	disconnect: PropTypes.func.isRequired,
+	title: PropTypes.string.isRequired,
 	init: PropTypes.func.isRequired,
 	error: PropTypes.string.isRequired,
 	connected: PropTypes.bool.isRequired,
@@ -70,6 +79,7 @@ export default connect(
 	(state) => ({
 		error: state.global.get('error'),
 		connected: state.global.get('connected'),
+		title: state.global.get('title'),
 	}),
 	(dispatch) => ({
 		init: () => dispatch(GlobalActions.init()),

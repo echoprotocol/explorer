@@ -8,6 +8,8 @@ import copy from 'copy-to-clipboard';
 
 import URLHelper from '../../helpers/URLHelper';
 
+import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+
 class Objects extends React.Component {
 
 	constructor(props) {
@@ -34,6 +36,12 @@ class Objects extends React.Component {
 				this.checkObject();
 			});
 
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.state.id) {
+			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.state.id));
 		}
 	}
 
@@ -141,6 +149,7 @@ Objects.propTypes = {
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
 	error: PropTypes.string,
+	setTitle: PropTypes.func.isRequired,
 };
 
 Objects.defaultProps = {

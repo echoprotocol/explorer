@@ -51,6 +51,12 @@ class GlobalActionsClass extends BaseActionsClass {
 		};
 	}
 
+	setTitle(title) {
+		return (dispatch) => {
+			dispatch(this.setValue('title', title));
+		};
+	}
+
 }
 
 const GlobalActions = new GlobalActionsClass();

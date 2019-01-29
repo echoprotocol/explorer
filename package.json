@@ -1,7 +1,7 @@
 {
 	"name": "echo-explorer",
 	"description": "Echo Explorer",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"scripts": {
 		"start": "cross-env NODE_ENV=local webpack-dev-server --mode development --progress --colors --history-api-fallback --hot --inline",
 		"build": "cross-env NODE_ENV=production webpack --progress --display-error-details --colors --mode production",
@@ -46,6 +46,7 @@
 		"react-router-dom": "^4.2.2",
 		"react-router-redux": "^5.0.0-alpha.9",
 		"react-scroll-to-component": "^1.0.2",
+		"react-tabs": "^3.0.0",
 		"react-toastify": "^4.4.0",
 		"redux": "^3.7.2",
 		"redux-batched-actions": "^0.4.1",

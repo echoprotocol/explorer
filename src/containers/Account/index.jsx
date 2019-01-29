@@ -4,6 +4,7 @@ import { CACHE_MAPS } from 'echojs-lib';
 
 import Account from '../../components/Account';
 import AccountActions from '../../actions/AccountActions';
+import GlobalActions from '../../actions/GlobalActions';
 
 export default withRouter(connect(
 	(state) => ({
@@ -21,6 +22,7 @@ export default withRouter(connect(
 		)),
 		updateAccountBalances: (balances) => dispatch(AccountActions.updateAccountBalances(balances)),
 		clearAccountInfo: () => dispatch(AccountActions.clear()),
+		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	})
 	,
 )(Account));
