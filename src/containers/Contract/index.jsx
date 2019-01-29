@@ -8,6 +8,7 @@ import ContractActions from '../../actions/ContractActions';
 export default withRouter(connect(
 	(state) => ({
 		loading: state.contract.get('loading'),
+		isFullHistory: state.contract.get('isFullHistory'),
 		history: state.contract.get('history'),
 		bytecode: state.contract.get('bytecode'),
 		balances: state.contract.get('balances'),

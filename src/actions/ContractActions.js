@@ -26,7 +26,7 @@ class ContractActions extends BaseActionsClass {
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
 			}
 
-			return formatOperation(operation, null, t.block_num, t.trx_in_block, result, t.id);
+			return formatOperation(operation, null, t.block_num, t.trx_in_block, t.op_in_trx, result, t.id);
 		});
 		history = await Promise.all(history);
 		return history.reduce((arr, t) => ([...arr, [t]]), []);
@@ -65,13 +65,18 @@ class ContractActions extends BaseActionsClass {
 				let history = await echo.api.getContractHistory(
 					id,
 					DEFAULT_OPERATION_HISTORY_ID,
-					DEFAULT_ROWS_COUNT,
+					DEFAULT_ROWS_COUNT + 1,
 					DEFAULT_OPERATION_HISTORY_ID,
 				);
 
+				const isFullHistory = history.length <= DEFAULT_ROWS_COUNT;
+				if (history.length > DEFAULT_ROWS_COUNT) {
+					history = history.slice(0, history.length - 1);
+				}
+
 				history = await this.formatContractHistory(history);
 
-				dispatch(this.setValue('history', new List(history)));
+				dispatch(this.setMultipleValue({ history: new List(history), isFullHistory }));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -83,7 +88,7 @@ class ContractActions extends BaseActionsClass {
 	/**
 	 * Load contract history
 	 * @param {string} id
-	 * @param {string} lastOperationId
+	 * @param {number} lastOperationId
 	 * @returns {function}
 	 */
 	loadContractHistory(id, lastOperationId) {
@@ -92,13 +97,14 @@ class ContractActions extends BaseActionsClass {
 				let history = await echo.api.getContractHistory(
 					id,
 					DEFAULT_OPERATION_HISTORY_ID,
-					DEFAULT_ROWS_COUNT,
-					lastOperationId,
+					DEFAULT_ROWS_COUNT + 1,
+					`1.11.${lastOperationId - 1}`,
 				);
 
-				if (history[0].id === lastOperationId) {
-					history = history.slice(1);
+				if (!history.length || history.length <= DEFAULT_ROWS_COUNT) {
+					dispatch(this.setValue('isFullHistory', true));
 				}
+
 				history = await this.formatContractHistory(history);
 
 				dispatch(this.reducer.actions.concat({

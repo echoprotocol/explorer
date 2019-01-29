@@ -2,8 +2,6 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PropTypes from 'prop-types';
 
-import { DEFAULT_ROWS_COUNT } from '../../constants/GlobalConstants';
-
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
@@ -31,7 +29,7 @@ class Contract extends React.Component {
 	async onLoadMoreHistory() {
 		try {
 			this.setState({ loadingMoreHistory: true });
-			await this.props.loadContractHistory(this.props.history.last()[0].id);
+			await this.props.loadContractHistory(this.props.history.last()[0].id.split('.')[2]);
 		} catch (e) {
 			//
 		} finally {
@@ -41,7 +39,7 @@ class Contract extends React.Component {
 
 	render() {
 		const {
-			loading, bytecode, history, balances, cacheObjects, match: { params: { id } },
+			loading, isFullHistory, bytecode, history, balances, cacheObjects, match: { params: { id } },
 		} = this.props;
 		const { loadingMoreHistory } = this.state;
 
@@ -68,7 +66,7 @@ class Contract extends React.Component {
 								<TransactionsTable
 									transactions={history}
 									loading={loadingMoreHistory}
-									loadMore={history.size >= DEFAULT_ROWS_COUNT ? () => this.onLoadMoreHistory() : null}
+									loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 								/> : <Loader />
 						}
 					</TabPanel>
@@ -89,6 +87,7 @@ class Contract extends React.Component {
 
 Contract.propTypes = {
 	loading: PropTypes.bool,
+	isFullHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
 	cacheObjects: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
@@ -101,6 +100,7 @@ Contract.propTypes = {
 
 Contract.defaultProps = {
 	loading: false,
+	isFullHistory: false,
 	bytecode: null,
 };
 

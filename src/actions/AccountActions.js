@@ -36,7 +36,7 @@ class AccountActions extends BaseActionsClass {
 				}
 			}
 
-			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, result);
+			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, t.op_in_trx, result);
 		});
 		accountHistory = await Promise.all(accountHistory);
 		return accountHistory.filter((t) => t).reduce((arr, t) => ([...arr, [t]]), []);

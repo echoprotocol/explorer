@@ -73,11 +73,20 @@ const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) =>
  * @param {String} accountId
  * @param {Number} round
  * @param {Number} trIndex
+ * @param {Number} opIndex
  * @param {Array} operationResult
  * @param {String} id
  * @returns {Promise.<{type: *, fee: {amount, precision, symbol}, from: {id: string}, subject: {id: string}, name, value: {}, status: boolean}>}
  */
-export const formatOperation = async (data, accountId = undefined, round = undefined, trIndex = undefined, operationResult = [], id = undefined) => {
+export const formatOperation = async (
+	data,
+	accountId = undefined,
+	round = undefined,
+	trIndex = undefined,
+	opIndex = undefined,
+	operationResult = [],
+	id = undefined,
+) => {
 	const [type, operation] = data;
 	const [, resId] = operationResult;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
@@ -189,7 +198,7 @@ export const formatOperation = async (data, accountId = undefined, round = undef
 			}
 
 			let internalOperations = contractHistory
-				.filter(({ block_num }) => block_num === round)
+				.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
 				.map(({ op }) => formatOperation(op, accountId));
 
 			internalOperations = await Promise.all(internalOperations);
@@ -275,7 +284,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
 					Promise.all(operations.map((op, i) =>
-						formatOperation(op, null, planeBlock.round, trIndex, operation_results[i]))));
+						formatOperation(op, null, planeBlock.round, trIndex, i, operation_results[i]))));
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 
