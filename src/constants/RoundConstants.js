@@ -54,3 +54,4 @@ export const PROGRESS_BAR_STEP_RANGE = 1;
 
 
 export const AVERAGE_TIME = 3000;
+export const MS = 1000;

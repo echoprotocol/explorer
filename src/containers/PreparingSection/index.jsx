@@ -18,6 +18,7 @@ import {
 	PROGRESS_BAR_STEP_RANGE,
 	AVERAGE_TIME,
 	ROUND_STARTED,
+	MS,
 } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -37,7 +38,7 @@ class PreparingSection extends React.Component {
 	componentDidMount() {
 		const { averageTransactions } = this.props;
 		const averageTime = averageTransactions.get('averageTime');
-		this.startProgressBar(averageTime && averageTime * 1000);
+		this.startProgressBar(averageTime && averageTime * MS);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -47,13 +48,12 @@ class PreparingSection extends React.Component {
 			(stepProgress && nextProps.stepProgress !== stepProgress) &&
 			(rounderSteps[nextProps.stepProgress].step === rounderSteps[ROUND_STARTED].step)
 		) {
-
 			const averageTime = averageTransactions.get('averageTime');
 			clearInterval(this.progressInterval);
 			this.setState({
 				progressBar: rounderSteps[nextProps.stepProgress].progress,
 			});
-			this.startProgressBar(averageTime && averageTime * 1000);
+			this.startProgressBar(averageTime && averageTime * MS);
 		}
 
 		return true;
