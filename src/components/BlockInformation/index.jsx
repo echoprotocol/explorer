@@ -8,11 +8,20 @@ import ViewListPopover from '../ViewListPopover';
 import Loader from '../Loader';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
+import { DEFAULT_TABLE_LENGTH } from '../../constants/LoadMoreConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 
 class BlockInformation extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			currentTransactionLength: DEFAULT_TABLE_LENGTH,
+		};
+	}
 
 	componentDidMount() {
 		this.props.getBlockInfo();
@@ -41,11 +50,21 @@ class BlockInformation extends React.Component {
 		}
 	}
 
+	loadMoreTransactions() {
+		this.setState({
+			currentTransactionLength: this.state.currentTransactionLength + DEFAULT_TABLE_LENGTH,
+		});
+	}
+
 	renderLoader() {
 		return <Loader />;
 	}
 
 	renderBlockInformation(blockInformation) {
+
+		const {
+			currentTransactionLength,
+		} = this.state;
 
 		const blockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
@@ -53,6 +72,8 @@ class BlockInformation extends React.Component {
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
 		const transactions = blockInformation.get('transactions') || [];
+
+		const slicedTransactions = transactions.slice(0, currentTransactionLength);
 
 		let verifiers = blockInformation.get('verifiers') || [];
 		verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
@@ -97,7 +118,13 @@ class BlockInformation extends React.Component {
 						</div>
 					</div>
 					<h2>{`${transactions && transactions.length} Transactions`}</h2>
-					{transactions && transactions.length ? <TransactionsTable transactions={transactions} /> : null}
+					{
+						(slicedTransactions && slicedTransactions.length) ?
+							<TransactionsTable
+								transactions={slicedTransactions}
+								loadMore={currentTransactionLength < transactions.length && (() => this.loadMoreTransactions())}
+							/> : null
+					}
 				</div>
 			</React.Fragment>
 		);

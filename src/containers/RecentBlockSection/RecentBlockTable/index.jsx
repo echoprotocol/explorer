@@ -13,9 +13,11 @@ import FormatHelper from '../../../helpers/FormatHelper';
 import URLHelper from '../../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+import { LOAD_MORE_TEMPLATE } from '../../../constants/LoadMoreConstants';
 import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
+import { setMaxDisplayedBlocks } from '../../../actions/BlockActions';
 
 class RecentBlockTable extends React.Component {
 
@@ -179,7 +181,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					<LoadMoreBtn />
+					<LoadMoreBtn loadMore={this.props.loadBlocks} loading={this.props.loading} title={LOAD_MORE_TEMPLATE.BLOCK_TABLE} />
 				</div>
 			</div>
 		);
@@ -190,14 +192,18 @@ class RecentBlockTable extends React.Component {
 RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
+	loading: PropTypes.bool.isRequired,
+	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
 		blocks: state.block.get('blocks'),
+		loading: state.block.get('loading'),
 	}),
 	(dispatch) => ({
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
+		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
 	}),
 )(RecentBlockTable));
