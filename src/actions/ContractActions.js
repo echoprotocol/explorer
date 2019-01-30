@@ -1,5 +1,6 @@
 import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, fromJS } from 'immutable';
+import { batchActions } from 'redux-batched-actions';
 
 import ContractReducer from '../reducers/ContractReducer';
 import BaseActionsClass from './BaseActionsClass';
@@ -7,6 +8,7 @@ import BaseActionsClass from './BaseActionsClass';
 import browserHistory from '../history';
 import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
+import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { formatOperation } from './BlockActions';
 
 class ContractActions extends BaseActionsClass {
@@ -98,7 +100,7 @@ class ContractActions extends BaseActionsClass {
 					id,
 					DEFAULT_OPERATION_HISTORY_ID,
 					DEFAULT_ROWS_COUNT + 1,
-					`1.11.${lastOperationId - 1}`,
+					`${OPERATION_HISTORY_OBJECT_PREFIX}.${lastOperationId - 1}`,
 				);
 
 				if (!history.length || history.length <= DEFAULT_ROWS_COUNT) {
@@ -111,6 +113,45 @@ class ContractActions extends BaseActionsClass {
 					field: 'history',
 					value: new List(history),
 				}));
+			} catch (e) {
+				dispatch(this.setValue('error', e.message));
+			}
+		};
+	}
+
+	updateContractInfo(id, recentOperationId = DEFAULT_OPERATION_HISTORY_ID) {
+		const getHistory = async (history = []) => {
+
+			const chunk = await echo.api.getContractHistory(
+				id,
+				history.length ? [history.length - 1].id : recentOperationId,
+				DEFAULT_ROWS_COUNT + 1,
+				DEFAULT_OPERATION_HISTORY_ID,
+			);
+
+			history = history.concat(chunk);
+
+			if (chunk.length > DEFAULT_ROWS_COUNT) {
+				return getHistory(history);
+			}
+
+			return history;
+		};
+
+		return async (dispatch) => {
+			try {
+				let balances = await echo.api.getContractBalances(id);
+				await echo.api.getObjects(balances.map((b) => b.asset_id));
+				balances = fromJS(balances);
+
+				let history = await getHistory();
+				history = await this.formatContractHistory(history);
+				history = new List(history);
+
+				dispatch(batchActions([
+					this.reducer.actions.update({ field: 'history', value: history }),
+					this.reducer.actions.set({ field: 'balances', value: balances }),
+				]));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			}

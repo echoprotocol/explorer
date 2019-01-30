@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PropTypes from 'prop-types';
+import echo from 'echojs-lib';
 
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
@@ -19,11 +20,12 @@ class Contract extends React.Component {
 
 	componentDidMount() {
 		this.props.getContractInfo();
-
+		echo.subscriber.setBlockApplySubscribe(this.updateInfo.bind(this));
 	}
 
 	componentWillUnmount() {
 		this.props.clearContractInfo();
+		echo.subscriber.removeBlockApplySubscribe(this.updateInfo.bind(this));
 	}
 
 	async onLoadMoreHistory() {
@@ -35,6 +37,15 @@ class Contract extends React.Component {
 		} finally {
 			this.setState({ loadingMoreHistory: false });
 		}
+	}
+
+	updateInfo() {
+		const { history, loading } = this.props;
+		const first = history.first();
+
+		if (loading) { return; }
+
+		this.props.updateContractInfo(first ? first[0].id : first);
 	}
 
 	render() {
@@ -96,6 +107,7 @@ Contract.propTypes = {
 	getContractInfo: PropTypes.func.isRequired,
 	clearContractInfo: PropTypes.func.isRequired,
 	loadContractHistory: PropTypes.func.isRequired,
+	updateContractInfo: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {

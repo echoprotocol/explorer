@@ -21,5 +21,9 @@ export default withRouter(connect(
 			props.match.params.id,
 			lastOperationId,
 		)),
+		updateContractInfo: (recetOperationId) => dispatch(ContractActions.updateContractInfo(
+			props.match.params.id,
+			recetOperationId,
+		)),
 	}),
 )(Contract));
