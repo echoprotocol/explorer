@@ -35,13 +35,11 @@ class GlobalActionsClass extends BaseActionsClass {
 		return (dispatch) => new Promise((resolve) => {
 			Promise.all([
 				dispatch(connect()),
-				// Load data before start page
 			]).then((data) => {
 				dispatch(this.afterInit()).then(() => {
 					resolve(data);
 				});
 			}).catch((error) => {
-				console.error(error);
 				resolve(error);
 			});
 		});
@@ -50,6 +48,12 @@ class GlobalActionsClass extends BaseActionsClass {
 	incrementHistoryLength() {
 		return (dispatch, getState) => {
 			dispatch(this.setValue('historyLength', getState().global.get('historyLength') + 1));
+		};
+	}
+
+	setTitle(title) {
+		return (dispatch) => {
+			dispatch(this.setValue('title', title));
 		};
 	}
 

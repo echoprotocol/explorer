@@ -4,12 +4,28 @@ import PropTypes from 'prop-types';
 
 import { disconnect } from '../actions/SocketActions';
 
+import GlobalActions from '../actions/GlobalActions';
+
 import Toast from '../components/Toast';
 import Header from './Header';
 import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
 
+import ErrorScreen from '../components/ErrorScreen';
+
 
 class App extends React.Component {
+
+	componentDidMount() {
+		this.props.init();
+
+		document.title = this.props.title;
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.title !== this.props.title) {
+			document.title = this.props.title;
+		}
+	}
 
 	componentWillUnmount() {
 		this.props.disconnect();
@@ -21,9 +37,13 @@ class App extends React.Component {
 		);
 	}
 
-	render() {
-		const { children } = this.props;
+	renderErrorScreen(error) {
+		return (
+			<ErrorScreen error={error} />
+		);
+	}
 
+	renderApp(children) {
 		return (
 			<div className="wrapper">
 				<Header />
@@ -39,16 +59,30 @@ class App extends React.Component {
 		);
 	}
 
+	render() {
+		const { children, error, connected } = this.props;
+		return !connected && error ? this.renderErrorScreen(error) : this.renderApp(children);
+	}
+
 }
 
 App.propTypes = {
 	children: PropTypes.element.isRequired,
 	disconnect: PropTypes.func.isRequired,
+	title: PropTypes.string.isRequired,
+	init: PropTypes.func.isRequired,
+	error: PropTypes.string.isRequired,
+	connected: PropTypes.bool.isRequired,
 };
 
 export default connect(
-	() => ({}),
+	(state) => ({
+		error: state.global.get('error'),
+		connected: state.global.get('connected'),
+		title: state.global.get('title'),
+	}),
 	(dispatch) => ({
+		init: () => dispatch(GlobalActions.init()),
 		disconnect: () => dispatch(disconnect()),
 	}),
 )(App);

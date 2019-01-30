@@ -4,6 +4,7 @@ import { CACHE_MAPS } from 'echojs-lib';
 
 import Contract from '../../components/Contract';
 import ContractActions from '../../actions/ContractActions';
+import GlobalActions from '../../actions/GlobalActions';
 
 export default withRouter(connect(
 	(state) => ({
@@ -26,5 +27,6 @@ export default withRouter(connect(
 			props.match.params.id,
 			recetOperationId,
 		)),
+		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),
 )(Contract));

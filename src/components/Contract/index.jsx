@@ -8,9 +8,12 @@ import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 import Loader from '../Loader';
 
+import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+
 class Contract extends React.Component {
 
 	componentDidMount() {
+		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, this.props.match.params.id));
 		this.props.getContractInfo();
 		echo.subscriber.setBlockApplySubscribe(this.updateInfo.bind(this));
 	}
@@ -94,6 +97,7 @@ Contract.propTypes = {
 	clearContractInfo: PropTypes.func.isRequired,
 	loadContractHistory: PropTypes.func.isRequired,
 	updateContractInfo: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {

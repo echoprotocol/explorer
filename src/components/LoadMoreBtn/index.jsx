@@ -7,9 +7,7 @@ class LoadMoreBtn extends React.Component {
 		e.preventDefault();
 		this.props.loadMore();
 	}
-
 	render() {
-
 		const { loading, title } = this.props;
 
 		return (
@@ -40,6 +38,7 @@ class LoadMoreBtn extends React.Component {
 				</div>
 			</React.Fragment>
 		);
+
 	}
 
 }

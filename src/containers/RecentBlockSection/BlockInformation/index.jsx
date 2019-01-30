@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 
 import BlockInformation from '../../../components/BlockInformation';
 import { getBlockInformation, clearBlockInformation } from '../../../actions/BlockActions';
+import GlobalActions from '../../../actions/GlobalActions';
 
 export default withRouter(connect(
 	(state) => ({
@@ -12,6 +13,7 @@ export default withRouter(connect(
 	(dispatch, props) => ({
 		getBlockInfo: (round = props.match.params.round) => dispatch(getBlockInformation(round)),
 		clearBlockInfo: () => dispatch(clearBlockInformation()),
+		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	})
 	,
 )(BlockInformation));

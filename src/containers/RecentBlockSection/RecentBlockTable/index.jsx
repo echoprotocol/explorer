@@ -8,14 +8,22 @@ import { Link } from 'react-router-dom';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
-import { setMaxDisplayedBlocks } from '../../../actions/BlockActions';
 
 import FormatHelper from '../../../helpers/FormatHelper';
-
-import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import URLHelper from '../../../helpers/URLHelper';
 
+import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+import { LOAD_MORE_TEMPLATE } from '../../../constants/LoadMoreConstants';
+import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
+
+import GlobalActions from '../../../actions/GlobalActions';
+import { setMaxDisplayedBlocks } from '../../../actions/BlockActions';
+
 class RecentBlockTable extends React.Component {
+
+	componentDidMount() {
+		this.props.setTitle(TITLE_TEMPLATES.MAIN);
+	}
 
 	onSearch(blockNumber) {
 		this.props.history.push(`/blocks/${blockNumber}`);
@@ -175,7 +183,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					<LoadMoreBtn title="Load more blocks" loading={loading} loadMore={() => this.props.loadBlocks()} />
+					<LoadMoreBtn title={LOAD_MORE_TEMPLATE.BLOCK_TABLE} loading={loading} loadMore={() => this.props.loadBlocks()} />
 				</div>
 			</div>
 		);
@@ -188,6 +196,7 @@ RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
@@ -196,6 +205,7 @@ export default withRouter(connect(
 		blocks: state.block.get('blocks'),
 	}),
 	(dispatch) => ({
+		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
 	}),
 )(RecentBlockTable));

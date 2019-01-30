@@ -7,6 +7,18 @@ export const KEY_CODES = {
 	FIVE_NUMBER_CODE: 53,
 };
 
+export const DEFAULT_TITLE = 'Echo Explorer';
+
+export const TITLE_TEMPLATES = {
+	MAIN: DEFAULT_TITLE,
+	ACCOUNT: `Account name | ${DEFAULT_TITLE}`,
+	BLOCK: `Block round | ${DEFAULT_TITLE}`,
+	ASSET: `Asset name | ${DEFAULT_TITLE}`,
+	OBJECT: `Object id | ${DEFAULT_TITLE}`,
+	TRANSACTION: `Transaction index in block round | ${DEFAULT_TITLE}`,
+	CONTRACT: `Contract id | ${DEFAULT_TITLE}`,
+};
+
 export const DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES = '2.1.0';
 
 export const START_AVERAGE_TRS_BLOCKS = 10;

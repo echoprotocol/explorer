@@ -6,7 +6,7 @@ import BN from 'bignumber.js';
 
 import Loader from '../Loader';
 
-import { ECHO_ASSET } from '../../constants/GlobalConstants';
+import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -18,6 +18,10 @@ class Asset extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		if (this.props.asset) {
+			this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.props.asset.get('symbol')));
+		}
+
 		if (this.props.match.params.id !== prevProps.match.params.id) {
 			this.props.getAssetInfo();
 		}
@@ -153,6 +157,7 @@ Asset.propTypes = {
 	issuer: PropTypes.object,
 	getAssetInfo: PropTypes.func.isRequired,
 	match: PropTypes.object.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 Asset.defaultProps = {

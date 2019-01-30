@@ -5,17 +5,20 @@ import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 
-import { ECHO_ASSET } from '../../constants/GlobalConstants';
-import Loader from '../Loader';
+import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import Loader from '../../components/Loader';
 
 class Account extends React.Component {
 
 	componentDidMount() {
 		this.props.getAccountInfo();
-
 	}
 
 	componentDidUpdate(prevProps) {
+		if (this.props.account) {
+			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
+		}
+
 		if (prevProps.match.params.id !== this.props.match.params.id) {
 			this.props.getAccountInfo();
 			return;
@@ -102,6 +105,7 @@ Account.propTypes = {
 	clearAccountInfo: PropTypes.func.isRequired,
 	updateAccountHistory: PropTypes.func.isRequired,
 	updateAccountBalances: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {
