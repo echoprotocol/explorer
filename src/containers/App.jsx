@@ -65,7 +65,7 @@ class App extends React.Component {
 		if (!connected) {
 			return error ? this.renderErrorScreen(error) : (
 				<div className="f-h-loader-wrapper">
-					<Loader />
+					<Loader text="Loading..." />
 				</div>
 			);
 		}
