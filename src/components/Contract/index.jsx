@@ -7,11 +7,14 @@ import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 
+import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+
 class Contract extends React.Component {
 
 	componentDidMount() {
 		this.props.getContractInfo();
 
+		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, this.props.match.params.id));
 	}
 
 	componentWillUnmount() {
@@ -55,6 +58,7 @@ Contract.propTypes = {
 	match: PropTypes.object.isRequired,
 	getContractInfo: PropTypes.func.isRequired,
 	clearContractInfo: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {

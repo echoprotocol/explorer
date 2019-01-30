@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 
 import TransactionInfo from '../../../components/TransactionInfo';
 import TransactionActions from '../../../actions/TransactionActions';
+import GlobalActions from '../../../actions/GlobalActions';
 
 
 export default withRouter(connect(
@@ -16,6 +17,7 @@ export default withRouter(connect(
 			props.match.params.index,
 		)),
 		clearTransaction: () => dispatch(TransactionActions.clear()),
+		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	})
 	,
 )(TransactionInfo));
