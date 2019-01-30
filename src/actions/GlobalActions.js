@@ -35,7 +35,6 @@ class GlobalActionsClass extends BaseActionsClass {
 		return (dispatch) => new Promise((resolve) => {
 			Promise.all([
 				dispatch(connect()),
-				// Load data before start page
 			]).then((data) => {
 				dispatch(this.afterInit()).then(() => {
 					resolve(data);
