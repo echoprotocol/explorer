@@ -50,7 +50,7 @@ export const rounderSteps = {
 
 export const MIN_PERCENT_PROGRESS_BAR = 0;
 export const MAX_PERCENT_PROGRESS_BAR = 100;
-export const PROGRESS_BAR_STEP_RANGE = 1;
+export const PROGRESS_BAR_STEP_RANGE = 5;
 
 
 export const AVERAGE_TIME = 3000;

@@ -1,16 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 class Loader extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.bar = React.createRef();
+	}
+
+	shouldComponentUpdate(nextProps) {
+		if (this.props.status && this.props.status > nextProps.status) {
+			if (this.bar) {
+				const classes = this.bar.classList;
+				classes.remove('transition');
+			}
+		} else if (this.props.status === 5) {
+			if (this.bar) {
+				const classes = this.bar.classList;
+				if (classes.contains('transition')) {
+					return false;
+				}
+				classes.add('transition');
+			}
+		}
+		return true;
+	}
+
 	render() {
 
-		const { status, transparent } = this.props;
-
+		const { status } = this.props;
 		return (
 			<div className="preparing-loader">
-				<div className={classnames('line', { transparent })} style={{ width: `${status}%` }} />
+				<div ref={(el) => { this.bar = el; }} className="line transition" style={{ width: `${status}%` }} />
 			</div>
 		);
 	}
@@ -19,12 +41,10 @@ class Loader extends React.Component {
 
 Loader.propTypes = {
 	status: PropTypes.number,
-	transparent: PropTypes.bool,
 };
 
 Loader.defaultProps = {
 	status: '',
-	transparent: false,
 };
 
 

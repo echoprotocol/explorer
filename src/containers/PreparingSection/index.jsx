@@ -30,7 +30,6 @@ class PreparingSection extends React.Component {
 
 		this.state = {
 			progressBar: MIN_PERCENT_PROGRESS_BAR,
-			transparent: true,
 		};
 		this.progressInterval = null;
 	}
@@ -50,6 +49,7 @@ class PreparingSection extends React.Component {
 		) {
 			const averageTime = averageTransactions.get('averageTime');
 			clearInterval(this.progressInterval);
+
 			this.setState({
 				progressBar: rounderSteps[nextProps.stepProgress].progress,
 			});
@@ -63,7 +63,7 @@ class PreparingSection extends React.Component {
 	}
 
 	startProgressBar(averageTime = AVERAGE_TIME) {
-		const intervalPeriods = averageTime / MAX_PERCENT_PROGRESS_BAR;
+		const intervalPeriods = averageTime / (MAX_PERCENT_PROGRESS_BAR / PROGRESS_BAR_STEP_RANGE);
 
 		this.progressInterval = setInterval(() => {
 			if (this.state.progressBar < MAX_PERCENT_PROGRESS_BAR) {
@@ -81,9 +81,7 @@ class PreparingSection extends React.Component {
 			producers, stepProgress, readyProducers, preparingBlock,
 		} = this.props;
 
-		const {
-			progressBar, transparent,
-		} = this.state;
+		const { progressBar } = this.state;
 
 		if (!stepProgress) {
 			return null;
@@ -140,7 +138,7 @@ class PreparingSection extends React.Component {
 						</Media>
 					</div>
 				</div>
-				<Loader status={progressBar} transparent={transparent} />
+				<Loader status={progressBar} />
 			</React.Fragment>
 		);
 	}
