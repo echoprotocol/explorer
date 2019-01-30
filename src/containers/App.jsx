@@ -63,7 +63,11 @@ class App extends React.Component {
 		const { children, error, connected } = this.props;
 
 		if (!connected) {
-			return error ? this.renderErrorScreen(error) : <Loader />;
+			return error ? this.renderErrorScreen(error) : (
+				<div className="f-h-loader-wrapper">
+					<Loader />
+				</div>
+			);
 		}
 
 		return this.renderApp(children);
