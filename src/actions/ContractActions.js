@@ -96,6 +96,8 @@ class ContractActions extends BaseActionsClass {
 	loadContractHistory(id, lastOperationId) {
 		return async (dispatch) => {
 			try {
+				dispatch(this.setValue('loadingMoreHistory', true));
+
 				let history = await echo.api.getContractHistory(
 					id,
 					DEFAULT_OPERATION_HISTORY_ID,
@@ -103,22 +105,29 @@ class ContractActions extends BaseActionsClass {
 					`${OPERATION_HISTORY_OBJECT_PREFIX}.${lastOperationId - 1}`,
 				);
 
-				if (!history.length || history.length <= DEFAULT_ROWS_COUNT) {
-					dispatch(this.setValue('isFullHistory', true));
-				}
-
 				history = await this.formatContractHistory(history);
 
-				dispatch(this.reducer.actions.concat({
-					field: 'history',
-					value: new List(history),
-				}));
+				dispatch(batchActions([
+					this.reducer.actions.concat({ field: 'history', value: new List(history) }),
+					this.reducer.actions.set({
+						field: 'isFullHistory',
+						value: !history.length || history.length <= DEFAULT_ROWS_COUNT,
+					}),
+				]));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
+			} finally {
+				dispatch(this.setValue('loadingMoreHistory', false));
 			}
 		};
 	}
 
+	/**
+	 * Update contract info
+	 * @param {string} id
+	 * @param {number} recentOperationId
+	 * @returns {function}
+	 */
 	updateContractInfo(id, recentOperationId = DEFAULT_OPERATION_HISTORY_ID) {
 		const getHistory = async (history = []) => {
 

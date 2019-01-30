@@ -10,14 +10,6 @@ import Loader from '../Loader';
 
 class Contract extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			loadingMoreHistory: false,
-		};
-	}
-
 	componentDidMount() {
 		this.props.getContractInfo();
 		echo.subscriber.setBlockApplySubscribe(this.updateInfo.bind(this));
@@ -28,15 +20,8 @@ class Contract extends React.Component {
 		echo.subscriber.removeBlockApplySubscribe(this.updateInfo.bind(this));
 	}
 
-	async onLoadMoreHistory() {
-		try {
-			this.setState({ loadingMoreHistory: true });
-			await this.props.loadContractHistory(this.props.history.last()[0].id.split('.')[2]);
-		} catch (e) {
-			//
-		} finally {
-			this.setState({ loadingMoreHistory: false });
-		}
+	onLoadMoreHistory() {
+		this.props.loadContractHistory(this.props.history.last()[0].id.split('.')[2]);
 	}
 
 	updateInfo() {
@@ -50,9 +35,9 @@ class Contract extends React.Component {
 
 	render() {
 		const {
-			loading, isFullHistory, bytecode, history, balances, cacheObjects, match: { params: { id } },
+			loading, isFullHistory, loadingMoreHistory,
+			bytecode, history, balances, cacheObjects, match: { params: { id } },
 		} = this.props;
-		const { loadingMoreHistory } = this.state;
 
 		const contractBalances = balances.map((b, i) => ({
 			id: i,
@@ -99,6 +84,7 @@ class Contract extends React.Component {
 Contract.propTypes = {
 	loading: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
+	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
 	cacheObjects: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
@@ -113,6 +99,7 @@ Contract.propTypes = {
 Contract.defaultProps = {
 	loading: false,
 	isFullHistory: false,
+	loadingMoreHistory: false,
 	bytecode: null,
 };
 

@@ -7,10 +7,11 @@ import { DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 
 const DEFAULT_FIELDS = new Map({
 	loading: false,
-	bytecode: null,
+	loadingMoreHistory: false,
+	isFullHistory: false,
 	balances: new List([]),
 	history: new List([]),
-	isFullHistory: false,
+	bytecode: null,
 });
 
 export default createModule({

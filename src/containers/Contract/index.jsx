@@ -9,6 +9,7 @@ export default withRouter(connect(
 	(state) => ({
 		loading: state.contract.get('loading'),
 		isFullHistory: state.contract.get('isFullHistory'),
+		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
 		history: state.contract.get('history'),
 		bytecode: state.contract.get('bytecode'),
 		balances: state.contract.get('balances'),
