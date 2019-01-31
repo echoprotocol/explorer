@@ -7,7 +7,19 @@ import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
 import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
 import Loader from './Loader';
 
-import { BBA_STARTED, BBA_TIP, GC_TIP, PRODUCING_TIP, rounderSteps } from '../../constants/RoundConstants';
+import {
+	BBA_STARTED,
+	BBA_TIP,
+	GC_TIP,
+	PRODUCING_TIP,
+	rounderSteps,
+	MIN_PERCENT_PROGRESS_BAR,
+	MAX_PERCENT_PROGRESS_BAR,
+	PROGRESS_BAR_STEP_RANGE,
+	AVERAGE_TIME,
+	ROUND_STARTED,
+	MS,
+} from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
@@ -17,47 +29,59 @@ class PreparingSection extends React.Component {
 		super(props);
 
 		this.state = {
-			progressBar: 0,
-			timer: 0,
-			step: '',
+			progressBar: MIN_PERCENT_PROGRESS_BAR,
 		};
 		this.progressInterval = null;
 	}
 
 	componentDidMount() {
-		this.progressInterval = setInterval(() => {
-			const loadLimit = this.state.step ? rounderSteps[this.state.step].maxProgress : 100;
-
-			if (this.state.progressBar < loadLimit) {
-				this.setState({
-					progressBar: this.state.progressBar += 1,
-					timer: this.state.timer += 500,
-				});
-			}
-		}, 500);
+		const { averageTransactions } = this.props;
+		const averageTime = averageTransactions.get('averageTime');
+		this.startProgressBar(averageTime && averageTime * MS);
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { stepProgress } = this.props;
+		const { stepProgress, averageTransactions } = this.props;
 
-		if (stepProgress && nextProps.stepProgress !== stepProgress) {
+		if (
+			(stepProgress && nextProps.stepProgress !== stepProgress) &&
+			(rounderSteps[nextProps.stepProgress].step === rounderSteps[ROUND_STARTED].step)
+		) {
+			const averageTime = averageTransactions.get('averageTime');
+			clearInterval(this.progressInterval);
+
 			this.setState({
 				progressBar: rounderSteps[nextProps.stepProgress].progress,
-				step: nextProps.stepProgress,
 			});
+			this.startProgressBar(averageTime && averageTime * MS);
 		}
 
 		return true;
 	}
-
 	componentWillUnmount() {
 		clearInterval(this.progressInterval);
+	}
+
+	startProgressBar(averageTime = AVERAGE_TIME) {
+		const intervalPeriods = averageTime / (MAX_PERCENT_PROGRESS_BAR / PROGRESS_BAR_STEP_RANGE);
+
+		this.progressInterval = setInterval(() => {
+			if (this.state.progressBar < MAX_PERCENT_PROGRESS_BAR) {
+				this.setState({
+					progressBar: this.state.progressBar += PROGRESS_BAR_STEP_RANGE,
+				});
+			} else {
+				clearInterval(this.progressInterval);
+			}
+		}, intervalPeriods);
 	}
 
 	render() {
 		const {
 			producers, stepProgress, readyProducers, preparingBlock,
 		} = this.props;
+
+		const { progressBar } = this.state;
 
 		if (!stepProgress) {
 			return null;
@@ -114,7 +138,7 @@ class PreparingSection extends React.Component {
 						</Media>
 					</div>
 				</div>
-				<Loader status={this.state.progressBar} />
+				<Loader status={progressBar} />
 			</React.Fragment>
 		);
 	}
@@ -126,10 +150,12 @@ PreparingSection.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
 	readyProducers: PropTypes.number.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
+	averageTransactions: PropTypes.object.isRequired,
 };
 
 export default connect(
 	(state) => ({
+		averageTransactions: state.round.get('averageTransactions'),
 		producers: state.round.get('producers'),
 		stepProgress: state.round.get('stepProgress'),
 		readyProducers: state.round.get('readyProducers'),
