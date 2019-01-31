@@ -11,7 +11,7 @@ import Header from './Header';
 import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
 
 import ErrorScreen from '../components/ErrorScreen';
-
+import Loader from '../components/Loader';
 
 class App extends React.Component {
 
@@ -61,7 +61,16 @@ class App extends React.Component {
 
 	render() {
 		const { children, error, connected } = this.props;
-		return !connected && error ? this.renderErrorScreen(error) : this.renderApp(children);
+
+		if (!connected) {
+			return error ? this.renderErrorScreen(error) : (
+				<div className="f-h-loader-wrapper">
+					<Loader text="Loading..." />
+				</div>
+			);
+		}
+
+		return this.renderApp(children);
 	}
 
 }

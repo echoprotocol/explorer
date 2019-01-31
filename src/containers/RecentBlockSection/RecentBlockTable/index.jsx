@@ -59,6 +59,8 @@ class RecentBlockTable extends React.Component {
 	}
 
 	render() {
+		const { loading } = this.props;
+
 		return (
 			<div className="table-container recent-block-table">
 				<h2>Recent blocks
@@ -181,7 +183,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					<LoadMoreBtn loadMore={this.props.loadBlocks} loading={this.props.loading} title={LOAD_MORE_TEMPLATE.BLOCK_TABLE} />
+					<LoadMoreBtn title={LOAD_MORE_TEMPLATE.BLOCK_TABLE} loading={loading} loadMore={() => this.props.loadBlocks()} />
 				</div>
 			</div>
 		);
@@ -190,17 +192,17 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
+	loading: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
-	loading: PropTypes.bool.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
-		blocks: state.block.get('blocks'),
 		loading: state.block.get('loading'),
+		blocks: state.block.get('blocks'),
 	}),
 	(dispatch) => ({
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),

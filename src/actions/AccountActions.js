@@ -30,12 +30,16 @@ class AccountActions extends BaseActionsClass {
 				const block = await echo.api.getBlock(t.block_num);
 				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
+
+				if (operation[1].registrar === accountId) {
+					return null;
+				}
 			}
 
-			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, result);
+			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, t.op_in_trx, result);
 		});
 		accountHistory = await Promise.all(accountHistory);
-		return accountHistory.reduce((arr, t) => ([...arr, [t]]), []);
+		return accountHistory.filter((t) => t).reduce((arr, t) => ([...arr, [t]]), []);
 	}
 
 	/**

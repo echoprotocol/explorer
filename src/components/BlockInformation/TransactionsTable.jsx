@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
-import LoadMoreBtn from '../LoadMoreBtn';
-
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import LoadMoreBtn from '../LoadMoreBtn';
+
 
 class TransactionsTable extends React.Component {
 
@@ -211,12 +211,7 @@ class TransactionsTable extends React.Component {
 	}
 
 	render() {
-		const {
-			transactions,
-			loadMore,
-			loadMoreTitle,
-			loadMoreLoading,
-		} = this.props;
+		const { transactions, loading, loadMore } = this.props;
 
 		return (
 			<div className="table">
@@ -227,7 +222,14 @@ class TransactionsTable extends React.Component {
 							this.renderTable(transactions)
 					)}
 				</Media>
-				{ loadMore && <LoadMoreBtn loadMore={loadMore} title={loadMoreTitle} loading={loadMoreLoading} /> }
+				{
+					loadMore ?
+						<LoadMoreBtn
+							title="Load more transactions"
+							loading={loading}
+							loadMore={() => this.props.loadMore()}
+						/> : null
+				}
 			</div>
 		);
 	}
@@ -236,15 +238,13 @@ class TransactionsTable extends React.Component {
 
 TransactionsTable.propTypes = {
 	transactions: PropTypes.any.isRequired,
+	loading: PropTypes.bool,
 	loadMore: PropTypes.func,
-	loadMoreTitle: PropTypes.string,
-	loadMoreLoading: PropTypes.bool,
 };
 
 TransactionsTable.defaultProps = {
-	loadMore: undefined,
-	loadMoreTitle: undefined,
-	loadMoreLoading: undefined,
+	loading: false,
+	loadMore: null,
 };
 
 export default TransactionsTable;

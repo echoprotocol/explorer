@@ -12,7 +12,7 @@
         .accent {
             color: #2a90e6;
         }
-        
+
         .account-page-t-block {
             margin-bottom: 30px;
 
@@ -154,7 +154,7 @@
                             display: flex;
                             flex-wrap: wrap;
                             justify-content: space-between;
-                            
+
                             .inner-elem {
                                 width: 170px;
                                 @include InterUI_Regular;
@@ -205,10 +205,6 @@
             }
         }
 
-        .table .divTable {
-            border-bottom: 0;
-        }
-
         &.contract-page {
             .account-page-t-block {
                 .title {
@@ -252,7 +248,7 @@
             }
 
             .react-tabs__tab {
-                position: relative;   
+                position: relative;
                 height: 100%;
                 cursor: pointer;
                 @include InterUI_Regular;
@@ -264,7 +260,11 @@
                 padding-right: 15px;
                 background-color: rgba(226, 224, 230, 0.5);
                 color: rgba(0, 0, 0, 0.5);
-    
+                transition: background-color .2s ease-out;
+
+                &:hover {
+                    background-color: rgba(226, 224, 230, 0.8);
+                }
 
                 &:first-child {
                     border-radius: 14px 0 0 14px;
@@ -273,7 +273,7 @@
                 &:last-child {
                     border-radius: 0 14px 14px 0;
                 }
-                
+
                 &:not(:last-child) {
                     &:after {
                         content: '';
@@ -333,7 +333,7 @@
                         margin-bottom: 15px;
                     }
                 }
-                
+
                 .right-column {
                     margin-top: -3px;
 
@@ -344,7 +344,7 @@
                         line-height: 18px;
                         word-break: break-all;
                     }
-                    
+
                     .load-more {
                         margin-top: 12px;
                     }
@@ -401,7 +401,7 @@
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: space-between;
-                    
+
                     .inner-elem {
                         width: 170px;
                         @include InterUI_Regular;

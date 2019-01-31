@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Loader extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = { };
-	}
 	render() {
 		return (
 			<div className="f-h-loader">
 				<div className="spin" />
-				<div className="text">Please wait while data is loading</div>
+				<div className="text">{this.props.text}</div>
 			</div>
 		);
 	}
 
 }
+
+Loader.propTypes = {
+	text: PropTypes.string,
+};
+
+Loader.defaultProps = {
+	text: 'Please wait while data is loading',
+};
 
 export default Loader;
