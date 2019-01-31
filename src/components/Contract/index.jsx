@@ -18,6 +18,13 @@ class Contract extends React.Component {
 		echo.subscriber.setBlockApplySubscribe(this.updateInfo.bind(this));
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.match.params.id !== this.props.match.params.id) {
+			this.props.getContractInfo();
+			this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, this.props.match.params.id));
+		}
+	}
+
 	componentWillUnmount() {
 		this.props.clearContractInfo();
 		echo.subscriber.removeBlockApplySubscribe(this.updateInfo.bind(this));
