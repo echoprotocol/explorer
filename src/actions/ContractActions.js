@@ -1,4 +1,5 @@
 import echo, { validators } from 'echojs-lib';
+import { fromJS } from 'immutable';
 
 import ContractReducer from '../reducers/ContractReducer';
 import BaseActionsClass from './BaseActionsClass';
@@ -29,7 +30,14 @@ class ContractActions extends BaseActionsClass {
 					return;
 				}
 
-				dispatch(this.setValue('bytecode', contract[1].code));
+				const balances = await echo.api.getContractBalances(id);
+
+				await echo.api.getObjects(balances.map((b) => b.asset_id));
+
+				dispatch(this.setMultipleValue({
+					bytecode: contract[1].code,
+					balances: fromJS(balances),
+				}));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {

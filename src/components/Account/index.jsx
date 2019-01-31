@@ -56,7 +56,8 @@ class Account extends React.Component {
 			assetId,
 			{
 				asset: cacheObjects.get(assetId),
-				stats: cacheObjects.get(statsId),
+				amount: cacheObjects.getIn([statsId, 'balance']),
+				id: cacheObjects.getIn([statsId, 'id']),
 			},
 		]));
 
@@ -73,7 +74,7 @@ class Account extends React.Component {
 										name={account.get('name')}
 									/>
 									<AccountBalances
-										balances={assetBalances.delete(ECHO_ASSET.ID)}
+										balances={assetBalances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
 										owner={account.get('assets')}
 									/>
 								</React.Fragment> : null

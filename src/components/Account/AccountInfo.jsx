@@ -25,7 +25,7 @@ class AccountInfo extends React.Component {
 								<span className="txt">
 									{
 										FormatHelper.formatAmount(
-											echo.stats.get('balance'),
+											echo.amount,
 											echo.asset.get('precision'),
 										)
 									}
