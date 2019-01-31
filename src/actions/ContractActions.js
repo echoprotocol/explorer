@@ -105,13 +105,13 @@ class ContractActions extends BaseActionsClass {
 					`${OPERATION_HISTORY_OBJECT_PREFIX}.${lastOperationId - 1}`,
 				);
 
-				history = await this.formatContractHistory(history);
+				history = await this.formatContractHistory(history.slice(0, DEFAULT_ROWS_COUNT));
 
 				dispatch(batchActions([
 					this.reducer.actions.concat({ field: 'history', value: new List(history) }),
 					this.reducer.actions.set({
 						field: 'isFullHistory',
-						value: !history.length || history.length <= DEFAULT_ROWS_COUNT,
+						value: history.length <= DEFAULT_ROWS_COUNT,
 					}),
 				]));
 			} catch (e) {

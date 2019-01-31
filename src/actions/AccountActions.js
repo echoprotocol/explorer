@@ -1,11 +1,14 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import { List, fromJS } from 'immutable';
+import { batchActions } from 'redux-batched-actions';
 
 import AccountReducer from '../reducers/AccountReducer';
 import BaseActionsClass from './BaseActionsClass';
 
 import history from '../history';
 import { NOT_FOUND_PATH } from '../constants/RouterConstants';
+import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
+import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { formatOperation } from './BlockActions';
 
 class AccountActions extends BaseActionsClass {
@@ -36,7 +39,7 @@ class AccountActions extends BaseActionsClass {
 				}
 			}
 
-			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, t.op_in_trx, result);
+			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, t.op_in_trx, result, t.id);
 		});
 		accountHistory = await Promise.all(accountHistory);
 		return accountHistory.filter((t) => t).reduce((arr, t) => ([...arr, [t]]), []);
@@ -70,9 +73,12 @@ class AccountActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
 
-				const transactions = await this.formatAccountHistory(id, account.history);
+				const transactions = await this.formatAccountHistory(id, account.history.slice(0, DEFAULT_ROWS_COUNT));
 
-				dispatch(this.setValue('history', new List(transactions)));
+				dispatch(this.setMultipleValue({
+					history: new List(transactions),
+					isFullHistory: account.history.length <= DEFAULT_ROWS_COUNT,
+				}));
 
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
@@ -88,10 +94,14 @@ class AccountActions extends BaseActionsClass {
 	 * @param {array} accountHistory
 	 * @returns {function}
 	 */
-	updateAccountHistory(accountId, accountHistory) {
+	updateAccountHistory(accountId, newAccountHistory, oldAccountHistory) {
 		return async (dispatch) => {
-			const transactions = await this.formatAccountHistory(accountId, accountHistory.toJS());
-			dispatch(this.setValue('history', new List(transactions)));
+			const diff = newAccountHistory.filter((h) => !oldAccountHistory.includes(h));
+			const transactions = await this.formatAccountHistory(accountId, diff.toJS());
+			dispatch(this.reducer.actions.update({
+				field: 'history',
+				value: new List(transactions),
+			}));
 		};
 	}
 
@@ -106,6 +116,45 @@ class AccountActions extends BaseActionsClass {
 			await echo.api.getObjects(objectIds);
 
 			dispatch(this.setMultipleValue({ balances }));
+		};
+	}
+
+	/**
+	 * Load account history
+	 * @param {string} accountId
+	 * @param {number} lastOperationId
+	 * @returns {function}
+	 */
+	loadAccountHistory(accountId, lastOperationId) {
+		return async (dispatch) => {
+			try {
+				dispatch(this.setValue('loadingMoreHistory', true));
+
+				let transactions = await echo.api.getAccountHistory(
+					accountId,
+					DEFAULT_OPERATION_HISTORY_ID,
+					DEFAULT_ROWS_COUNT + 1,
+					`${OPERATION_HISTORY_OBJECT_PREFIX}.${lastOperationId - 1}`,
+				);
+
+				const isFullHistory = transactions.length <= DEFAULT_ROWS_COUNT;
+				transactions = await this.formatAccountHistory(accountId, transactions.slice(0, DEFAULT_ROWS_COUNT));
+
+				dispatch(batchActions([
+					this.reducer.actions.concat({
+						field: 'history',
+						value: new List(transactions),
+					}),
+					this.reducer.actions.set({
+						field: 'isFullHistory',
+						value: isFullHistory,
+					}),
+				]));
+			} catch (e) {
+				dispatch(this.setValue('error', e.message));
+			} finally {
+				dispatch(this.setValue('loadingMoreHistory', false));
+			}
 		};
 	}
 

@@ -62,7 +62,7 @@ class Contract extends React.Component {
 				</div>
 				<Tabs>
 					<TabList className="tab-panel">
-						<Tab>Transactions{history.size ? `(${history.size})` : ''}</Tab>
+						<Tab>Transactions</Tab>
 						<Tab>Bytecode</Tab>
 						<Tab>Balances</Tab>
 					</TabList>

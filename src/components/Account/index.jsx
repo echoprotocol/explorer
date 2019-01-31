@@ -31,7 +31,7 @@ class Account extends React.Component {
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
 		if (!prevAccount.get('history').equals(account.get('history'))) {
-			this.props.updateAccountHistory(account.get('history'));
+			this.props.updateAccountHistory(account.get('history'), prevAccount.get('history'));
 		}
 
 		if (!prevAccount.get('balances').equals(account.get('balances'))) {
@@ -43,13 +43,18 @@ class Account extends React.Component {
 		this.props.clearAccountInfo();
 	}
 
+	onLoadMoreHistory() {
+		this.props.loadAccountHistory(this.props.history.last()[0].id.split('.')[2]);
+	}
+
 	renderLoader(loading) {
 		return loading ? <Loader /> : null;
 	}
 
 	render() {
 		const {
-			loading, account, balances, history, cacheObjects, match: { params: { id } },
+			loading, loadingMoreHistory, isFullHistory,
+			account, balances, history, cacheObjects, match: { params: { id } },
 		} = this.props;
 
 		const assetBalances = balances.mapEntries(([assetId, statsId]) => ([
@@ -84,8 +89,15 @@ class Account extends React.Component {
 				{
 					account && !loading ?
 						<React.Fragment>
-							<h2>{account.get('history').size} Transactions</h2>
-							{ history.size ? <TransactionsTable transactions={history} /> : null }
+							<h2>Transactions</h2>
+							{
+								history.size ?
+									<TransactionsTable
+										transactions={history}
+										loading={loadingMoreHistory}
+										loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+									/> : null
+							}
 						</React.Fragment> : this.renderLoader(loading)
 				}
 			</div>
@@ -95,7 +107,9 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
-	loading: PropTypes.bool.isRequired,
+	loading: PropTypes.bool,
+	loadingMoreHistory: PropTypes.bool,
+	isFullHistory: PropTypes.bool,
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	history: PropTypes.object,
@@ -105,10 +119,14 @@ Account.propTypes = {
 	clearAccountInfo: PropTypes.func.isRequired,
 	updateAccountHistory: PropTypes.func.isRequired,
 	updateAccountBalances: PropTypes.func.isRequired,
+	loadAccountHistory: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {
+	loading: false,
+	loadingMoreHistory: false,
+	isFullHistory: false,
 	account: null,
 	balances: null,
 	cacheObjects: null,
