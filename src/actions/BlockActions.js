@@ -50,13 +50,13 @@ const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) =>
 	let from = { id: `${CONTRACT_OBJECT_PREFIX}.${fromInt}` };
 	let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
-	if (hexFrom[25] === 0) {
+	if (hexFrom[25] === '0') {
 		const id = `${ACCOUNT_OBJECT_PREFIX}.${fromInt}`;
 		const { name } = (await echo.api.getObject(id));
 		from = { id, name };
 	}
 
-	if (hexTo[25] === 0) {
+	if (hexTo[25] === '0') {
 		const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 		const { name } = (await echo.api.getObject(id));
 		to = { id, name };
@@ -202,7 +202,7 @@ export const formatOperation = async (
 				.map(({ op }) => formatOperation(op, accountId));
 
 			internalOperations = await Promise.all(internalOperations);
-			internalOperations = internalOperations.filter((op) => op).map((op) => { op.label = 'Subtransfer'; return op; });
+			internalOperations = internalOperations.filter((op) => op);
 			let internalTransactions = internalOperations;
 			let code = '';
 			try {

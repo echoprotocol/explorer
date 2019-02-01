@@ -123,7 +123,7 @@ class TransactionsTable extends React.Component {
 			<React.Fragment key={Math.random()}>
 				<Link
 					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
-					className={classnames('divTableRow', { 'with-subtransfer': data.internal && data.internal.length })}
+					className="divTableRow"
 				>
 					<div className="divTableCell">{j === 0 ? i + 1 : ''}</div>
 					<div className="divTableCell">{data.name}</div>
@@ -151,11 +151,8 @@ class TransactionsTable extends React.Component {
 				</Link>
 				{
 					data.internal && data.internal.length ?
-						data.internal.map((io, l) => (
-							<div
-								key={Math.random()}
-								className={classnames('divTableRow', 'is-subtransfer', { 'is-subtransfer_last': l === (data.internal.length - 1) })}
-							>
+						data.internal.map((io) => (
+							<div key={Math.random()} className="divTableRow">
 								<div className="divTableCell" />
 								<div className="divTableCell" />
 								<div className="divTableCell">
@@ -211,15 +208,17 @@ class TransactionsTable extends React.Component {
 	}
 
 	render() {
-		const { transactions, loading, loadMore } = this.props;
+		const {
+			transactions, objectId, loading, loadMore,
+		} = this.props;
 
 		return (
 			<div className="table">
 				<Media query="(max-width: 767px)">
 					{(matches) => (
 						matches ?
-							this.renderMobileView(transactions) :
-							this.renderTable(transactions)
+							this.renderMobileView(transactions, objectId) :
+							this.renderTable(transactions, objectId)
 					)}
 				</Media>
 				{
@@ -238,6 +237,7 @@ class TransactionsTable extends React.Component {
 
 TransactionsTable.propTypes = {
 	transactions: PropTypes.any.isRequired,
+	objectId: PropTypes.string,
 	loading: PropTypes.bool,
 	loadMore: PropTypes.func,
 };
@@ -245,6 +245,7 @@ TransactionsTable.propTypes = {
 TransactionsTable.defaultProps = {
 	loading: false,
 	loadMore: null,
+	objectId: null,
 };
 
 export default TransactionsTable;
