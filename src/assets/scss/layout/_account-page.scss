@@ -87,6 +87,7 @@
                             display: block;
                             letter-spacing: 0.25em;
                             margin-bottom: 15px;
+                            word-break: break-all;
                         }
 
                         .val {
@@ -94,6 +95,7 @@
                             font-size: 16px;
                             color: #130d32;
                             display: flex;
+                            word-break: break-all;
 
                             .txt {
                                 margin-right: 5px;
