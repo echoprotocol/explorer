@@ -61,3 +61,20 @@ build.develop:
     - develop
   environment:
     name: development
+
+build.production:
+  stage: build
+  variables:
+    NODE_ENV: "production"
+  script:
+    - NODE_ENV=development npm i
+    - npm run build
+    - rm -rf /var/www/testnet.explorer.echo-dev.io/*
+    - cp -r ./dist/* /var/www/testnet.explorer.echo-dev.io
+  only:
+    - tags
+  tags:
+    - echo-linux
+  environment:
+    name: production
+    url: https://testnet.explorer.echo-dev.io
