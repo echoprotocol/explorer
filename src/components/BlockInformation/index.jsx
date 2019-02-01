@@ -95,7 +95,7 @@ class BlockInformation extends React.Component {
 					/>
 					<div className="block-description">
 						<div className="container time">
-							<div className="title">Time, Date</div>
+							<div className="title">Date, Time</div>
 							<div className="value">{time}</div>
 						</div>
 						<div className="container size">
