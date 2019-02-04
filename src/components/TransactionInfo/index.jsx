@@ -100,7 +100,7 @@ class TransactionsInfo extends React.Component {
 			return this.renderContractLogs(value);
 		}
 
-		if (key !== 'bytecode') {
+		if (key.toLowerCase() !== 'bytecode') {
 			return value;
 		}
 

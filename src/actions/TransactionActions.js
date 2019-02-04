@@ -42,7 +42,6 @@ class TransactionActionsClass extends BaseActionsClass {
 
 				options = Object.entries(options).map(async ([key, value]) => {
 					let link = null;
-					key = _.startCase(key);
 
 					switch (typeof value) {
 						case 'string':
@@ -84,6 +83,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						default:
 							break;
 					}
+
+					key = _.startCase(key);
 
 					return { [key]: link ? { value, link } : value };
 				});
