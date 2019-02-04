@@ -12,10 +12,54 @@ import LoadMoreBtn from '../LoadMoreBtn';
 
 class TransactionsTable extends React.Component {
 
+	renderMobileViewInternalOperation(io, id, key, last) {
+		return (
+			<div
+				key={`${id}_${key}`}
+				className={classnames('recent-block-element', 'is-subtransfer', { 'is-subtransfer_last': key === last })}
+			>
+				<div className="subtransfer-type">
+					{io.label}
+				</div>
+				<div className="line-arrow" />
+				<div className="container amount">
+					<div className="title">Amount</div>
+					<div className="value">
+						{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
+						<span className="gray">{io.value.symbol}</span>
+					</div>
+				</div>
+				<div className="container">
+					<div className="title">From</div>
+					<div className="value">
+						<Link
+							to={URLHelper.createUrlById(io.from.id)}
+							className="blue"
+						>
+							{io.from.name || io.from.id}
+						</Link>
+					</div>
+				</div>
+				<div className="container">
+					<div className="title">To</div>
+					<div className="value">
+						<Link
+							to={URLHelper.createUrlById(io.subject.id)}
+							className="blue"
+						>
+							{io.subject.name || io.subject.id}
+						</Link>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 	renderMobileViewOperation(data, i, j) {
+		const key = data.id || `${i}-${j}`;
 
 		return (
-			<React.Fragment key={Math.random()} >
+			<React.Fragment key={key} >
 				<Link
 					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
 					className={classnames('recent-block-element', { 'with-subtransfer': data.internal && data.internal.length })}
@@ -65,44 +109,7 @@ class TransactionsTable extends React.Component {
 				{
 					data.internal && data.internal.length ?
 						(data.internal.map((io, l) => (
-							<div
-								key={Math.random()}
-								className={classnames('recent-block-element', 'is-subtransfer', { 'is-subtransfer_last': l === (data.internal.length - 1) })}
-							>
-								<div className="subtransfer-type">
-									{io.label}
-								</div>
-								<div className="line-arrow" />
-								<div className="container amount">
-									<div className="title">Amount</div>
-									<div className="value">
-										{FormatHelper.formatAmount(data.value.amount, data.value.precision)}
-										<span className="gray">{io.value.symbol}</span>
-									</div>
-								</div>
-								<div className="container">
-									<div className="title">From</div>
-									<div className="value">
-										<Link
-											to={URLHelper.createUrlById(io.from.id)}
-											className="blue"
-										>
-											{io.from.name || io.from.id}
-										</Link>
-									</div>
-								</div>
-								<div className="container">
-									<div className="title">To</div>
-									<div className="value">
-										<Link
-											to={URLHelper.createUrlById(io.subject.id)}
-											className="blue"
-										>
-											{io.subject.name || io.subject.id}
-										</Link>
-									</div>
-								</div>
-							</div>
+							this.renderMobileViewInternalOperation(io, key, l, data.internal.length - 1)
 						))
 						) : null
 				}
@@ -118,12 +125,45 @@ class TransactionsTable extends React.Component {
 		);
 	}
 
-	renderTableOperation(data, i, j) {
+	renderInternalOperation(io, id, key) {
 		return (
-			<React.Fragment key={Math.random()}>
+			<div key={`${id}_${key}`} className="divTableRow">
+				<div className="divTableCell" />
+				<div className="divTableCell" />
+				<div className="divTableCell">
+					<Link to={URLHelper.createUrlById(io.from.id)} className="inner-container">
+						<div className="blue">{io.from.name || io.from.id}</div>
+					</Link>
+				</div>
+				<div className="divTableCell transaction-to">
+					<div className="sub-container">
+						<div className="line-arrow" />
+						<Link to={URLHelper.createUrlById(io.subject.id)}>
+							<div className="blue">{io.subject.name || io.subject.id}</div>
+						</Link>
+					</div>
+				</div>
+				<div className="divTableCell">
+					<div className="sub-container">
+						{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
+						<span className="gray">{` ${io.value.symbol}`}</span>
+						<div className="subtransfer-type">{io.label}</div>
+					</div>
+				</div>
+				<div className="divTableCell" />
+				<div className="divTableCell success" />
+			</div>
+		);
+	}
+
+	renderTableOperation(data, i, j) {
+		const key = data.id || `${i}-${j}`;
+
+		return (
+			<React.Fragment key={key}>
 				<Link
 					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
-					className="divTableRow"
+					className="divTableRow fade-anim"
 				>
 					<div className="divTableCell">{j === 0 ? i + 1 : ''}</div>
 					<div className="divTableCell">{data.name}</div>
@@ -151,33 +191,8 @@ class TransactionsTable extends React.Component {
 				</Link>
 				{
 					data.internal && data.internal.length ?
-						data.internal.map((io) => (
-							<div key={Math.random()} className="divTableRow">
-								<div className="divTableCell" />
-								<div className="divTableCell" />
-								<div className="divTableCell">
-									<Link to={URLHelper.createUrlById(io.from.id)} className="inner-container">
-										<div className="blue">{io.from.name || io.from.id}</div>
-									</Link>
-								</div>
-								<div className="divTableCell transaction-to">
-									<div className="sub-container">
-										<div className="line-arrow" />
-										<Link to={URLHelper.createUrlById(io.subject.id)}>
-											<div className="blue">{io.subject.name || io.subject.id}</div>
-										</Link>
-									</div>
-								</div>
-								<div className="divTableCell">
-									<div className="sub-container">
-										{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
-										<span className="gray">{` ${io.value.symbol}`}</span>
-										<div className="subtransfer-type">{io.label}</div>
-									</div>
-								</div>
-								<div className="divTableCell" />
-								<div className="divTableCell success" />
-							</div>
+						data.internal.map((io, k) => (
+							this.renderInternalOperation(io, key, k)
 						)) : null
 				}
 			</React.Fragment>
