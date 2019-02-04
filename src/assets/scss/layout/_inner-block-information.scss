@@ -583,33 +583,34 @@
                         }
                     }
                 }
+                // LINES
 
-                &:before {
-                    content: '';
-                    left: -23px;
-                    top: 17px;
-                    position: absolute;
-                    width: 7px;
-                    height: 1px;
-                    display: block;
-                    border-bottom: 1px dotted #929293;
-                    box-sizing: border-box;
-                }
+                // &:before {
+                //     content: '';
+                //     left: -23px;
+                //     top: 17px;
+                //     position: absolute;
+                //     width: 7px;
+                //     height: 1px;
+                //     display: block;
+                //     border-bottom: 1px dotted #929293;
+                //     box-sizing: border-box;
+                // }
                 
-                &:after {
-                    content: '';
-                    left: -25px;
-                    top: 8px;
-                    position: absolute;
-                    width: 1px;
-                    // height: 18px;
-                    // height: 100%;
-                    height: calc(100% + 6px);
+                // &:after {
+                //     content: '';
+                //     left: -25px;
+                //     top: 8px;
+                //     position: absolute;
+                //     width: 1px;
+                //     // height: 18px;
+                //     // height: 100%;
+                //     height: calc(100% + 6px);
 
-                    display: block;
-                    border-right: 1px dotted #929293;
-                    box-sizing: border-box;
-                }
+                //     display: block;
+                //     border-right: 1px dotted #929293;
+                //     box-sizing: border-box;
+                // }
 
                 &_last {
                     &:after {
@@ -617,16 +618,18 @@
                     }
                 }
 
-                .line-arrow {
-                    background-image: url(../images/icons/subtransfer-line-arrow.svg);
-                    background-position: 0 0;
-                    background-repeat: no-repeat;
-                    width: 3px;
-                    height: 5px;
-                    position: absolute;
-                    left: -15px;
-                    top: 15px;
-                }
+                // LINES
+
+                // .line-arrow {
+                //     background-image: url(../images/icons/subtransfer-line-arrow.svg);
+                //     background-position: 0 0;
+                //     background-repeat: no-repeat;
+                //     width: 3px;
+                //     height: 5px;
+                //     position: absolute;
+                //     left: -15px;
+                //     top: 15px;
+                // }
             }
 
             .container {
