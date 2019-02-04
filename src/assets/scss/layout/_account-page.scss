@@ -394,14 +394,24 @@
         }
 
         .contract-asset-panel {
-            width: 370px;
+            // width: 370px;
+            // width: 100%;
             margin-left: 30px;
             padding-top: 15px;
+            width: 785px;
 
+            @include res-1280 {
+                width: 755px;
+            }
+
+            @include res-768 {
+                width: 570px;
+            }
 
             @include res-500 {
                 margin-left: 0px;
                 padding-top: 10px;
+                width: 370px;
             }
 
             @include res-320 {
@@ -441,7 +451,10 @@
                     margin-top: 14px;
                     display: flex;
                     flex-wrap: wrap;
-                    justify-content: space-between;
+
+                    @include res-500 {
+                        justify-content: space-between;
+                    }
 
                     .inner-elem {
                         width: 170px;
@@ -452,6 +465,31 @@
                         padding-bottom: 12px;
                         margin-bottom: 14px;
                         position: relative;
+                        margin-right: 35px;
+
+                        @include res-1280 {
+                            margin-right: 25px;
+                        }
+
+                        &:nth-child(4n) {
+                            margin-right: 0;
+                        }
+
+                        @include res-768 {
+                            margin-right: 30px;
+
+                            &:nth-child(3n) {
+                                margin-right: 0;
+                            }
+
+                            &:nth-child(4n) {
+                                margin-right: 30px;
+                            }
+                        }
+
+                        @include res-500 {
+                            margin-right: 0 !important;
+                        }
 
                         @include res-320 {
                             padding-left: 0px;
