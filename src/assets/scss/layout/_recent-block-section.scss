@@ -400,8 +400,10 @@
         }
 
         @include res-768 {
-            padding-bottom: 5px;
-            padding-top: 25px;
+            // padding-bottom: 5px;
+            // padding-top: 25px;
+            padding-bottom: 28px;
+            padding-top: 28px;
         }
 
         @include res-500 {

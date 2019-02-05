@@ -94,7 +94,7 @@
       padding-right: 0;
       
       @include res-1280 {
-        padding: 12px 18px;
+        padding: 12px 25px;
         &:not(:last-child) {
           padding-right: 0;
         }
@@ -108,7 +108,7 @@
 
     @include InterUI_Medium;
     font-size: 12px;
-    line-height: 18px;
+    line-height: 20px;
     background-color: #f3f2f5;
 
     &.fade-anim {
@@ -157,7 +157,7 @@
       transition: all .2s ease-out;
 
       @include res-1280 {
-        padding: 7px 18px;
+        padding: 7px 25px;
         padding-right: 0;        
       }
 
