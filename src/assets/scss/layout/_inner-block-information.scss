@@ -36,7 +36,7 @@
 
 
     &.block-information {
-        
+
         .block-description {
             position: relative;
             z-index: 2;
@@ -150,16 +150,16 @@
                             align-items: center;
                             justify-content: flex-start;
                             transition: .2s ease-out;
-    
+
                             padding-left: 14px;
                             padding-right: 12px;
-    
+
                             margin-left: 18px;
-    
+
                             &:hover {
                                 background-color: #e1e0e4;
                             }
-    
+
                             &:active {
                                 background-color: #d2d1d5;
                                 color: rgba(0, 0, 0, 0.8);
@@ -167,17 +167,17 @@
                                     opacity: 0.7;
                                 }
                             }
-    
+
                             &.is-open {
                                 &:after {
                                     transform: rotate(0deg);
                                 }
                             }
-    
+
                             &:after {
                                 content: '';
                                 width: 5px;
-                                height: 4px;                            
+                                height: 4px;
                                 margin-left: 8px;
                                 flex-shrink: 0;
                                 transition: .2s ease-out;
@@ -259,16 +259,16 @@
                                 &::-webkit-scrollbar {
                                     width: 7px;
                                 }
-                
+
                                 &::-webkit-scrollbar-track {
                                     background: #ffff;
                                     border-left: 1px solid #e8e8e8;
                                 }
-                
+
                                 &::-webkit-scrollbar-thumb {
                                     background-color: #c1c1c1;
                                 }
-                
+
                                 &::-webkit-scrollbar-thumb:hover {
                                     background: #555;
                                     cursor: pointer;
@@ -299,7 +299,7 @@
                 }
             }
         }
-        
+
         .divTable {
             .TableHeading {
                 .divTableCell {
@@ -370,7 +370,7 @@
 
                     &:first-child {
                         padding-left: 30px;
-                        
+
                         @include res-768 {
                             padding-left: 20px;
                         }
@@ -378,7 +378,7 @@
 
                     &:nth-child(2) {
                         @include allWidth(110px);
-                        
+
                         @include res-1280 {
                             @include allWidth(110px);
                         }
@@ -532,7 +532,7 @@
             }
         }
     }
-    
+
     .recent-block-mobile-view {
         .recent-block-element {
             position: relative;
@@ -542,7 +542,7 @@
 
             &.fade-anim {
                 animation: addd .4s ease-out;
-          
+
                 @keyframes addd {
                     from {
                         opacity: 0;
@@ -609,7 +609,7 @@
                 //     border-bottom: 1px dotted #929293;
                 //     box-sizing: border-box;
                 // }
-                
+
                 // &:after {
                 //     content: '';
                 //     left: -25px;

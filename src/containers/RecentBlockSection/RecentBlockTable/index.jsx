@@ -73,7 +73,7 @@ class RecentBlockTable extends React.Component {
 								<div className="recent-block-mobile-view">
 									{
 										this.getBlocks().map((data) => (
-											<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} key={data.round} className="recent-block-element">
+											<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} key={data.round} className="recent-block-element fade-anim">
 												<div className="container">
 													<div className="title">Block #</div>
 													<div className="value">
@@ -151,7 +151,7 @@ class RecentBlockTable extends React.Component {
 										{
 											this.getBlocks().map((data) => (
 												<React.Fragment key={data.round}>
-													<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow">
+													<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow fade-anim">
 														<div className="divTableCell">
 															<Link
 																to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}

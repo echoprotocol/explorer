@@ -16,7 +16,7 @@ class TransactionsTable extends React.Component {
 		return (
 			<div
 				key={`${id}_${key}`}
-				className={classnames('recent-block-element', 'is-subtransfer', { 'is-subtransfer_last': key === last })}
+				className={classnames('recent-block-element', 'fade-anim', 'is-subtransfer', { 'is-subtransfer_last': key === last })}
 			>
 				<div className="subtransfer-type">
 					{io.label}
@@ -62,7 +62,7 @@ class TransactionsTable extends React.Component {
 			<React.Fragment key={key} >
 				<Link
 					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
-					className={classnames('recent-block-element', { 'with-subtransfer': data.internal && data.internal.length })}
+					className={classnames('recent-block-element', 'fade-anim', { 'with-subtransfer': data.internal && data.internal.length })}
 				>
 
 					<div className="container">
@@ -127,7 +127,7 @@ class TransactionsTable extends React.Component {
 
 	renderInternalOperation(io, id, key) {
 		return (
-			<div key={`${id}_${key}`} className="divTableRow">
+			<div key={`${id}_${key}`} className="divTableRow  fade-anim">
 				<div className="divTableCell" />
 				<div className="divTableCell" />
 				<div className="divTableCell">
