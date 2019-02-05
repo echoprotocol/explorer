@@ -65,8 +65,12 @@ class FormatHelper {
 		return 'GB';
 	}
 
+	/**
+	 *
+	 * @param {String} timestamp
+	 */
 	static timestampToBlockInformationTime(timestamp) {
-		return moment.utc(timestamp).local().format('D MMM, YYYY, hh:mm:ss');
+		return moment.utc(timestamp).local().format('D MMM, YYYY, hh:mm:ss a');
 	}
 
 	/**
