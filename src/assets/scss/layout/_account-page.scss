@@ -82,7 +82,7 @@
                         > .title {
                             @include Hack_Bold;
                             color: #1f3c4d;
-                            font-size: 9px;
+                            font-size: 10px;
                             text-transform: uppercase;
                             display: block;
                             letter-spacing: 0.25em;
@@ -139,7 +139,7 @@
 
                         > .title {
                             @include Hack_Bold;
-                            font-size: 9px;
+                            font-size: 10px;
                             text-transform: uppercase;
                             color: #1f3c4d;
                             letter-spacing: 0.25em;
@@ -175,6 +175,10 @@
                                 position: relative;
                                 
                                 margin-right: 15px;
+
+                                &:only-child {
+                                    border-bottom: 0;
+                                }
 
                                 &:nth-child(3n) {
                                     margin-right: 0;
@@ -342,7 +346,7 @@
 
                 .left-column {
                     @include Hack_Bold;
-                    font-size: 9px;
+                    font-size: 10px;
                     color: #1f3c4d;
                     text-transform: uppercase;
                     letter-spacing: 0.25em;
@@ -431,7 +435,7 @@
 
                 > .title {
                     @include Hack_Bold;
-                    font-size: 9px;
+                    font-size: 10px;
                     text-transform: uppercase;
                     color: #1f3c4d;
                     letter-spacing: 0.25em;
@@ -489,6 +493,10 @@
 
                         @include res-500 {
                             margin-right: 0 !important;
+                        }
+
+                        &:only-child {
+                            border-bottom: 0;
                         }
 
                         @include res-320 {

@@ -205,12 +205,14 @@
         .title {
             display: inline-flex;
             @include Hack_Bold;
-            font-size: 9px;
-            letter-spacing: 0.25em;
+            // font-size: 9px;
+            // letter-spacing: 0.25em;
             margin-bottom: 25px;
-            text-transform: uppercase;
+            // text-transform: uppercase;
             color: #556270;
-            // @include transition;
+            line-height: 15px;
+            letter-spacing: 0.02em;
+            font-size: 12px;
 
             @include res-768 {
                 white-space: nowrap;

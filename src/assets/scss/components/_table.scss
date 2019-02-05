@@ -29,6 +29,10 @@
 
     padding-bottom: 33px;
     border-bottom: 1px solid #d8d8de;
+
+    &.n-l-more {
+      border-bottom: 0;
+    }
   }
 
   .divTableBody {
@@ -83,7 +87,7 @@
     background-color: #ebeaee;
 
     @include Hack_Bold;
-    font-size: 9px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.25em;
 
@@ -107,7 +111,7 @@
     @include transition;
 
     @include InterUI_Medium;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 20px;
     background-color: #f3f2f5;
 

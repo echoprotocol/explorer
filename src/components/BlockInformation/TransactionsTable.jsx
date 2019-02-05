@@ -202,7 +202,7 @@ class TransactionsTable extends React.Component {
 	renderTable(transactions) {
 		return (
 			<React.Fragment>
-				<div className="divTable">
+				<div className={`divTable ${!this.props.loadMore ? 'n-l-more' : ''}`}>
 					<div className="divTableBody">
 						<div className="TableHeading">
 							<div className="divTableCell">#</div>
