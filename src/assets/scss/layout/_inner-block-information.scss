@@ -540,6 +540,19 @@
             cursor: pointer;
             transition: all .2s ease-out;
 
+            &.fade-anim {
+                animation: addd .4s ease-out;
+          
+                @keyframes addd {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            }
+
             &:hover {
                 background-color: #e0dfe2;
             }
