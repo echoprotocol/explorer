@@ -93,50 +93,39 @@ class Asset extends React.Component {
 									</div>
 								</div>
 							</div>
-							<div className="asset-elem">
-								<div className="title">FeePool info</div>
-								<div className="list">
-									<div className="block">
-										<div className="title">Echo exchange rate</div>
-										<div className="val">
-											<span className="txt">{exchangeRate}</span>
-											{
-												assetSymbol !== ECHO_ASSET.SYMBOL ?
-													(
-														<React.Fragment>
-															<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
-																<span className="blue">{ECHO_ASSET.SYMBOL}</span>
-															</Link>
-															<span className="gray">&nbsp;/&nbsp;</span>
-															<span className="gray">{assetSymbol}</span>
-														</React.Fragment>
-													) : (
-														<span className="gray">{`${ECHO_ASSET.SYMBOL} / ${ECHO_ASSET.SYMBOL}`}</span>
-													)
-											}
+							{
+								assetSymbol !== ECHO_ASSET.SYMBOL && (
+									<div className="asset-elem">
+										<div className="title">FeePool info</div>
+										<div className="list">
+											<div className="block">
+												<div className="title">Echo exchange rate</div>
+												<div className="val">
+													<span className="txt">{exchangeRate}</span>
+													<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+														<span className="blue">{ECHO_ASSET.SYMBOL}</span>
+													</Link>
+													<span className="gray">&nbsp;/&nbsp;</span>
+													<span className="gray">{assetSymbol}</span>
+												</div>
+											</div>
+											<div className="block">
+												<div className="title">Pool balance</div>
+												<div className="val">
+													<span className="txt">{poolBalance}</span>
+													<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
+												</div>
+											</div>
+											<div className="block">
+												<div className="title">Unclaimed issuer Balance</div>
+												<div className="val">
+													<span className="txt">{unclamedIssuerBalances}</span><span className="gray">{assetSymbol}</span>
+												</div>
+											</div>
 										</div>
 									</div>
-									<div className="block">
-										<div className="title">Pool balance</div>
-										<div className="val"><span className="txt">{poolBalance}</span>
-											{
-												assetSymbol !== ECHO_ASSET.SYMBOL ?
-													(
-														<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
-													) : (
-														<span className="gray">{ECHO_ASSET.SYMBOL}</span>
-													)
-											}
-										</div>
-									</div>
-									<div className="block">
-										<div className="title">Unclaimed issuer Balance</div>
-										<div className="val">
-											<span className="txt">{unclamedIssuerBalances}</span><span className="gray">{assetSymbol}</span>
-										</div>
-									</div>
-								</div>
-							</div>
+								)
+							}
 						</div>
 					</div>
 				</div>
