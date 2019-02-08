@@ -54,7 +54,9 @@ class SearchActions extends BaseActionsClass {
 					return;
 				}
 
-				if (TypesHelper.isStringNumber(str)) {
+				if (TypesHelper.isStringNumber(str) || TypesHelper.isCommaNumberRepresentation(str)) {
+					str = FormatHelper.removeCommas(str);
+
 					const accountHint = {
 						section: 'Account',
 						prefix: `${ACCOUNT_OBJECT_PREFIX}.`,

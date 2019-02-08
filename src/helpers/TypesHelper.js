@@ -1,7 +1,9 @@
 import { ERC20_HASHES } from '../constants/GlobalConstants';
-
-const stringNumberRegEx = /^(0|[1-9]\d*)$/;
-const isStartWithLetterRegEx = /^([a-zA-Z]{1}.*)$/;
+import {
+	commaNumberRepresentationRegEx,
+	startWithLetterRegEx,
+	stringNumberRegEx,
+} from '../constants/TypeConstants';
 
 class TypesHelper {
 
@@ -52,11 +54,19 @@ class TypesHelper {
 	}
 
 	/**
+	 *
+	 * @param {String} str
+	 */
+	static isCommaNumberRepresentation(str) {
+		return commaNumberRepresentationRegEx.test(str);
+	}
+
+	/**
      *
      * @param {String} str
      */
 	static isStartWithLetter(str) {
-		return isStartWithLetterRegEx.test(str);
+		return startWithLetterRegEx.test(str);
 	}
 
 }

@@ -95,6 +95,13 @@ class FormatHelper {
 		return result;
 	}
 
+	/**
+	 *
+	 * @param {String} str
+	 */
+	static removeCommas(str) {
+		return str.replace(/,/g, '');
+	}
 
 }
 
