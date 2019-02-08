@@ -229,9 +229,9 @@
                     }
 
                     &:nth-child(3) {
-                        width: 195px;
-                        max-width: 195px;
-                        min-width: 195px;
+                        width: 230px;
+                        max-width: 230px;
+                        min-width: 230px;
 
                         @include res-1280 {
                             width: 180px;
@@ -251,20 +251,20 @@
                     }
 
                     &:nth-child(4) {
-                        width: 150px;
-                        max-width: 150px;
-                        min-width: 150px;
+                        width: 115px;
+                        max-width: 115px;
+                        min-width: 115px;
                         
                         @include res-1280 {
-                            width: 125px;
-                            max-width: 125px;
-                            min-width: 125px;
+                            width: 110px;
+                            max-width: 110px;
+                            min-width: 110px;
                         }
                         
                         @include res-768 {
-                            width: 115px;
-                            max-width: 115px;
-                            min-width: 115px;
+                            width: 100px;
+                            max-width: 100px;
+                            min-width: 100px;
                         }
                     }
 

@@ -1,0 +1,132 @@
+.not-found-page {
+    background-color: #18142a;
+    min-height: 100vh;
+
+    .logo-container {
+        padding-top: 40px;
+        padding-left: 70px;
+        padding-bottom: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        @include res-768 {
+            padding-left: 50px;
+        }
+
+        @include res-320 {
+            padding-left: 25px;
+            padding-top: 25px;
+        }
+    }
+
+    .logotype {
+        display: block;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        min-height: 100vh;
+        padding-top: 110px;
+        padding-bottom: 110px;
+
+        .img {
+            width: 363px;
+            height: 518px;
+            background-image: url(../images/404-img.png);
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+            margin-right: 165px;
+
+            // @include res-1280 {
+                // width: 325px;
+            // }
+
+            @include res-1000 {
+                width: 280px;
+            }
+
+            @include res-768 {
+                display: none;
+            }
+        }
+
+        .txt-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -90px;
+
+            @include res-768 {
+                margin-top: 0;
+            }
+
+            .title {
+                @include InterUI_Bold;
+                font-size: 160px;
+                color: #ffffff;
+
+                @include res-1000 {
+                    font-size: 150px;
+                }
+
+                @include res-768 {
+                    font-size: 140px;
+                }
+
+                @include res-320 {
+                    font-size: 65px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            .desc {
+                @include Hack_Regular;
+                font-size: 20px;
+                color: #556270;
+                text-transform: uppercase;
+                letter-spacing: 0.25em;
+
+                @include res-1000 {
+                    font-size: 18px;
+                }
+
+                @include res-768 {
+                    font-size: 15px;
+                }
+            }
+        }
+
+        .n-f-button {
+            cursor: pointer;
+            margin-top: 35px;
+            @include InterUI_Medium;
+            font-size: 14px;
+            color: #000000;
+            text-transform: uppercase;
+
+            border-radius: 21px;
+            background-color: #2a90e6;
+            outline: none;
+            border: none;
+            padding: 13px 28px;
+            transition: all .2s ease-out;
+
+            &:hover {
+                background-color: lighten(#2a90e6, 10);
+            }
+
+            &:active {
+                opacity: 0.7;
+            }
+
+            @include res-320 {
+                font-size: 13px;
+            }
+        }
+    }
+}
