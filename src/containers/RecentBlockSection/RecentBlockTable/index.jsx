@@ -10,6 +10,7 @@ import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
+import TypesHelper from '../../../helpers/TypesHelper';
 import URLHelper from '../../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
@@ -26,6 +27,9 @@ class RecentBlockTable extends React.Component {
 	}
 
 	onSearch(blockNumber) {
+		if (TypesHelper.isCommaNumberRepresentation(blockNumber)) {
+			blockNumber = FormatHelper.removeCommas(blockNumber);
+		}
 		this.props.history.push(`/blocks/${blockNumber}`);
 	}
 
