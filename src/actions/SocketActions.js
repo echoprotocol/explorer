@@ -10,6 +10,7 @@ import RoundReducer from '../reducers/RoundReducer';
 import FormatHelper from '../helpers/FormatHelper';
 
 import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED, DONE } from '../constants/RoundConstants';
+import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
 
@@ -48,10 +49,12 @@ const roundSubscribe = (notification) => (dispatch) => {
  *
  * 	Call when trigger setBlockApplySubscribe (release new block)
  */
-const blockRelease = () => (dispatch) => {
-	dispatch(setLatestBlock());
+const blockRelease = () => async (dispatch) => {
+	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
+
+	dispatch(setLatestBlock(global.head_block_number));
 	dispatch(updateAverageTransactions());
-	dispatch(updateBlockList());
+	dispatch(updateBlockList(global.head_block_number));
 
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE }));
 };

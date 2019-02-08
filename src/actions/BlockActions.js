@@ -306,19 +306,12 @@ export const clearBlockInformation = () => (dispatch) => {
 
 /**
  *  @method setLatestBlock
+ *  @param {Number} latestBlock
  *
  * 	Set latest block from blockchain to redux store
  */
-export const setLatestBlock = () => (dispatch, getState) => {
-	const prepBlock = getState().round.get('preparingBlock');
-
-	if (!prepBlock) {
-		return false;
-	}
-
-	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: prepBlock }));
-
-	return true;
+export const setLatestBlock = (latestBlock) => (dispatch) => {
+	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: latestBlock }));
 };
 
 /**
@@ -435,7 +428,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
 
-
 	const [...keys] = blocks.keys();
 	let startedBlock = startBlock || Math.max(...keys);
 
@@ -468,6 +460,10 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
+			if (!blocksResult[i]) {
+				break;
+			}
+
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
 				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).format('HH:mm:ss'))
@@ -484,10 +480,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	const lastBlockStorage = blocksResult[blocksResult.length - 1];
 
 	if (lastBlockStorage) {
-		localStorage.setItem('lastBlock', JSON.stringify({
-			number: lastBlockStorage.round,
-			timestamp: moment.utc(lastBlockStorage.timestamp).local().unix(),
-		}));
 
 		dispatch(BlockReducer.actions.set({
 			field: 'startTimestamp',
@@ -522,27 +514,24 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
  * 	Initialize recent blocks and starting timestamp of latest block
  */
 export const initBlocks = () => async (dispatch) => {
-	const obj = await echo.api.getObjects([DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES]);
+	const obj = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
 
-	if (obj && obj[0]) {
-		dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj[0].head_block_number }));
-	}
+	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj.head_block_number }));
 
-	const startBlockAverage = obj[0].head_block_number - START_AVERAGE_TRS_BLOCKS;
+	const startBlockAverage = obj.head_block_number - START_AVERAGE_TRS_BLOCKS;
 
-	await dispatch(updateAverageTransactions(obj[0].head_block_number, startBlockAverage));
+	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
-	const startBlockList = obj[0].head_block_number - PAGE_BLOCKS_COUNT;
+	const startBlockList = obj.head_block_number - PAGE_BLOCKS_COUNT;
 
-	await dispatch(updateBlockList(obj[0].head_block_number, startBlockList));
+	await dispatch(updateBlockList(obj.head_block_number, startBlockList));
 
-	const lastBlock = JSON.parse(localStorage.getItem('lastBlock'));
-
+	const { timestamp } = await echo.api.getBlock(obj.head_block_number);
 	const dateNowUnix = new BN(Date.now()).div(1000);
 
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
-		value: parseInt(dateNowUnix.minus(lastBlock.timestamp).toFixed(0), 10),
+		value: parseInt(dateNowUnix.minus(moment.utc(timestamp).local().unix()).toFixed(0), 10),
 	}));
 };
 
