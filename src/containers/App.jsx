@@ -13,6 +13,7 @@ import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
 import ErrorScreen from '../components/ErrorScreen';
 import Loader from '../components/Loader';
 
+import InternetPopup from '../components/InternetPopup';
 import NotFound from '../containers/NotFound';
 
 import { NOT_FOUND_PATH } from '../constants/RouterConstants';
@@ -59,6 +60,7 @@ class App extends React.Component {
 				</div>
 				{this.renderModals()}
 				<Toast />
+				<InternetPopup />
 			</div>
 		);
 	}
