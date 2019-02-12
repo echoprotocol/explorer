@@ -5,6 +5,7 @@ import { batchActions } from 'redux-batched-actions';
 import config from '../config/chain';
 
 import GlobalReducer from '../reducers/GlobalReducer';
+import InternetPopupReducer from '../reducers/InternetPopupReducer';
 import RoundReducer from '../reducers/RoundReducer';
 
 import FormatHelper from '../helpers/FormatHelper';
@@ -13,6 +14,36 @@ import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED, DONE } from '..
 import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
+
+/**
+ * set connected parameter to true
+ */
+const onConnectSubscriber = () => (dispatch) => {
+
+	const timeoutId = setTimeout(() => {
+		dispatch(batchActions([
+			InternetPopupReducer.actions.set({ field: 'show', value: false }),
+			InternetPopupReducer.actions.clearTimeout(),
+		]));
+	}, 3000);
+
+	dispatch(batchActions([
+		InternetPopupReducer.actions.set({ field: 'timeoutId', value: timeoutId }),
+		InternetPopupReducer.actions.set({ field: 'show', value: true }),
+		InternetPopupReducer.actions.set({ field: 'connect', value: true }),
+	]));
+};
+
+/**
+ * set connected parameter to false
+ */
+const onDisconnectSubscriber = () => (dispatch) => {
+	dispatch(batchActions([
+		InternetPopupReducer.actions.clearTimeout(),
+		InternetPopupReducer.actions.set({ field: 'connect', value: false }),
+		InternetPopupReducer.actions.set({ field: 'show', value: true }),
+	]));
+};
 
 /**
  *  @method roundSubscribe
@@ -82,6 +113,9 @@ export const connect = () => async (dispatch) => {
 		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
+
+		echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
+		echo.subscriber.setStatusSubscribe('disconnect', () => dispatch(onDisconnectSubscriber()));
 
 		const producers = global._creator_count;
 

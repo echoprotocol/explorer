@@ -9,6 +9,7 @@ import objectsReducer from './ObjectsReducer';
 import searchReducer from './SearchReducer';
 import accountReducer from './AccountReducer';
 import contractReducer from './ContractReducer';
+import internetPopupReducer from './InternetPopupReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -22,4 +23,5 @@ export default {
 	account: accountReducer.reducer,
 	search: searchReducer.reducer,
 	contract: contractReducer.reducer,
+	internetPopup: internetPopupReducer.reducer,
 };

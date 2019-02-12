@@ -48,7 +48,7 @@ class App extends React.Component {
 		);
 	}
 
-	renderApp(children) {
+	renderApp(children, { subscribeConnect, showInternetConnectionBar }) {
 		return (
 			<div className="wrapper">
 				<Header />
@@ -60,7 +60,9 @@ class App extends React.Component {
 				</div>
 				{this.renderModals()}
 				<Toast />
-				<InternetPopup />
+				{
+					showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />
+				}
 			</div>
 		);
 	}
@@ -73,7 +75,12 @@ class App extends React.Component {
 
 	render() {
 		const {
-			children, error, connected, pathName,
+			children,
+			error,
+			connected,
+			pathName,
+			subscribeConnect,
+			showInternetConnectionBar,
 		} = this.props;
 
 		if (!connected) {
@@ -88,7 +95,7 @@ class App extends React.Component {
 			return this.renderNotFound();
 		}
 
-		return this.renderApp(children);
+		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar });
 
 	}
 
@@ -102,6 +109,8 @@ App.propTypes = {
 	error: PropTypes.string.isRequired,
 	pathName: PropTypes.string.isRequired,
 	connected: PropTypes.bool.isRequired,
+	subscribeConnect: PropTypes.bool.isRequired,
+	showInternetConnectionBar: PropTypes.bool.isRequired,
 };
 
 export default connect(
@@ -110,6 +119,8 @@ export default connect(
 		connected: state.global.get('connected'),
 		title: state.global.get('title'),
 		pathName: state.router.location.pathname,
+		subscribeConnect: state.internetPopup.get('connect'),
+		showInternetConnectionBar: state.internetPopup.get('show'),
 	}),
 	(dispatch) => ({
 		init: () => dispatch(GlobalActions.init()),
