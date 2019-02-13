@@ -46,14 +46,8 @@ class Contract extends React.Component {
 	render() {
 		const {
 			loading, isFullHistory, loadingMoreHistory,
-			bytecode, history, balances, cacheObjects, match: { params: { id } },
+			bytecode, history, balances, match: { params: { id } },
 		} = this.props;
-
-		const contractBalances = balances.map((b, i) => ({
-			id: i,
-			amount: b.get('amount'),
-			asset: cacheObjects.get(b.get('asset_id')),
-		}));
 
 		return (
 			<div className="table-container inner-information-container block-information account-page contract-page">
@@ -81,7 +75,7 @@ class Contract extends React.Component {
 					</TabPanel>
 					<TabPanel>
 						<div className="contract-asset-panel">
-							{!loading ? <AssetBalances title="assets" balances={contractBalances} /> : <Loader />}
+							{!loading ? <AssetBalances title="assets" balances={balances} /> : <Loader />}
 						</div>
 					</TabPanel>
 				</Tabs>
@@ -96,7 +90,6 @@ Contract.propTypes = {
 	isFullHistory: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
-	cacheObjects: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
