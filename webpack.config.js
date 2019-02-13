@@ -24,6 +24,9 @@ const extractSass = new ExtractTextPlugin({
 const timeCache = Date.now();
 
 module.exports = {
+	node: {
+		fs: 'empty'
+	},
 	entry: {
 		babel: 'babel-polyfill',
 		app: path.resolve('src/index.js'),
