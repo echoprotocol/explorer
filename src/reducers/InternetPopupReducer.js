@@ -6,7 +6,7 @@ import TransformModules from '../utils/TransformModules';
 const DEFAULT_FIELDS = Map({
 	timeoutId: null,
 	show: false,
-	connected: false,
+	connect: false,
 });
 
 export default createModule({

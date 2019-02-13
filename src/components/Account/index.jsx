@@ -54,17 +54,8 @@ class Account extends React.Component {
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
-			account, balances, history, cacheObjects, match: { params: { id } },
+			account, balances, history, match: { params: { id } },
 		} = this.props;
-
-		const assetBalances = balances.mapEntries(([assetId, statsId]) => ([
-			assetId,
-			{
-				asset: cacheObjects.get(assetId),
-				amount: cacheObjects.getIn([statsId, 'balance']),
-				id: cacheObjects.getIn([statsId, 'id']),
-			},
-		]));
 
 		return (
 			<div className="table-container inner-information-container block-information account-page">
@@ -75,11 +66,11 @@ class Account extends React.Component {
 							account ?
 								<React.Fragment>
 									<AccountInfo
-										echo={assetBalances.get(ECHO_ASSET.ID)}
+										echo={balances.get(ECHO_ASSET.ID)}
 										name={account.get('name')}
 									/>
 									<AccountBalances
-										balances={assetBalances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
+										balances={balances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
 										owner={account.get('assets')}
 									/>
 								</React.Fragment> : null
@@ -113,7 +104,6 @@ Account.propTypes = {
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	history: PropTypes.object,
-	cacheObjects: PropTypes.object,
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
@@ -129,7 +119,6 @@ Account.defaultProps = {
 	isFullHistory: false,
 	account: null,
 	balances: null,
-	cacheObjects: null,
 	history: null,
 };
 
