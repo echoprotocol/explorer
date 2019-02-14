@@ -32,6 +32,7 @@ build.master:
       - node_modules
   script:
     - if [ -d node_modules/echojs-lib ]; then rm -rf node_modules/echojs-lib; fi
+    - npm config set unsafe-perm true
     - npm i
     - npm run build-stage
     - rm -rf /home/frontend
@@ -51,6 +52,7 @@ build.develop:
       - node_modules
   script:
     - if [ -d node_modules/echojs-lib ]; then rm -rf node_modules/echojs-lib; fi
+    - npm config set unsafe-perm true
     - npm i
     - npm run build-dev
     - rm -rf /home/frontend
