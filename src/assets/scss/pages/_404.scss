@@ -108,7 +108,7 @@
             font-size: 14px;
             color: #000000;
             text-transform: uppercase;
-
+            min-width: 180px;
             border-radius: 21px;
             background-color: #2a90e6;
             outline: none;
@@ -126,6 +126,39 @@
 
             @include res-320 {
                 font-size: 13px;
+            }
+        }
+    }
+
+    &.bad-internet {
+        .container {
+
+            .img {
+                background-image: url(../images/bad-internet-img.png);
+                width: 327px;
+                height: 361px;
+            }
+
+            .txt-block {
+                margin-top: 0;
+                max-width: 330px;
+                text-align: center;
+                
+                .title {
+                    font-size: 24px;
+                    @include InterUI_Medium;
+                    line-height: 32px;
+
+                    @include res-320 {
+                        font-size: 20px;
+                        padding-right: 15px;
+                        padding-left: 15px;
+                    }
+                }
+            }
+
+            .n-f-button {
+                margin-top: 25px;
             }
         }
     }
