@@ -109,7 +109,7 @@ class RecentBlockTable extends React.Component {
 													<div className="value">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
 												</div>
 												<div className="container">
-													<div className="title">Weight</div>
+													<div className="title">Size</div>
 													<div className="value">{data.weight} <span className="gray">{data.weightSize}</span></div>
 												</div>
 												<div className="container">
@@ -148,7 +148,7 @@ class RecentBlockTable extends React.Component {
 											</div>
 											<div className="divTableCell">Producer</div>
 											<div className="divTableCell">Reward</div>
-											<div className="divTableCell">Weight</div>
+											<div className="divTableCell">Size</div>
 											<div className="divTableCell">Transactions</div>
 										</div>
 										<div className="devider" />
