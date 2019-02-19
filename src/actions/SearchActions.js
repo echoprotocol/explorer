@@ -32,12 +32,12 @@ class SearchActions extends BaseActionsClass {
      * @returns {function}
      */
 	headerSearchHint(str) {
+
 		return async (dispatch) => {
 			let hints = [];
 
 			try {
 				if (validators.isObjectId(str)) {
-
 					let section = 'Id';
 
 					if (validators.isAccountId(str)) {
@@ -57,6 +57,9 @@ class SearchActions extends BaseActionsClass {
 				if (TypesHelper.isStringNumber(str) || TypesHelper.isCommaNumberRepresentation(str)) {
 					str = FormatHelper.removeCommas(str);
 
+					const blockHint = {
+						section: 'Block', value: str, to: URLHelper.createBlockUrl(str),
+					};
 					const accountHint = {
 						section: 'Account',
 						prefix: `${ACCOUNT_OBJECT_PREFIX}.`,
@@ -78,21 +81,19 @@ class SearchActions extends BaseActionsClass {
 						to: URLHelper.createContractUrl(`${CONTRACT_OBJECT_PREFIX}.${str}`),
 					};
 
-					const blockHint = {
-						section: 'Block', value: str, to: URLHelper.createBlockUrl(str),
-					};
 
 					hints = [
+						blockHint,
 						accountHint,
 						assetHint,
 						contractHint,
-						blockHint,
 					];
 
 					return;
 				}
 
 				if (TypesHelper.isStartWithLetter(str) && str.length > 2) {
+
 					const regExp = new RegExp(str);
 					hints = (await echo.api.lookupAccounts(str, HEADER_SEARCH_ACCOUNT_LIMIT))
 						.filter(([name]) => regExp.exec(name))
