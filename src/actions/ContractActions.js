@@ -41,6 +41,7 @@ class ContractActions extends BaseActionsClass {
 	 */
 	getContractInfo(id) {
 		return async (dispatch) => {
+
 			if (!validators.isContractId(id)) {
 				browserHistory.replace(NOT_FOUND_PATH);
 				return;

@@ -25,7 +25,7 @@ const timeCache = Date.now();
 
 module.exports = {
 	node: {
-		fs: 'empty'
+		fs: 'empty',
 	},
 	entry: {
 		babel: 'babel-polyfill',

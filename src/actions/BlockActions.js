@@ -29,6 +29,8 @@ import {
 
 import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 
+import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
+
 import history from '../history';
 
 import FormatHelper from '../helpers/FormatHelper';
@@ -185,8 +187,20 @@ export const formatOperation = async (
 	if (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT) {
 
 		const contractResult = await echo.api.getContractResult(resId);
-		const [, { exec_res: { excepted }, tr_receipt: { log } }] = contractResult;
-		result.status = excepted === 'None';
+		const [contractResultType, contractResultObject] = contractResult;
+
+		let log;
+
+		if (contractResultType === CONTRACT_RESULT_TYPE_0) {
+
+			const { exec_res: { excepted } } = contractResultObject;
+			({ log } = contractResultObject.tr_receipt);
+			result.status = excepted === 'None';
+
+		} else {
+			result.status = true;
+		}
+
 
 		if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
 			let contractHistory = [];

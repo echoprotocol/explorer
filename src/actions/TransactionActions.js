@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List } from 'immutable';
 import _ from 'lodash';
@@ -6,6 +7,7 @@ import history from '../history';
 
 import Operations from '../constants/Operations';
 import { NOT_FOUND_PATH } from '../constants/RouterConstants';
+import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 
 import ConvertHelper from '../helpers/ConvertHelper';
 
@@ -97,21 +99,26 @@ class TransactionActionsClass extends BaseActionsClass {
 					OPERATIONS_IDS.CALL_CONTRACT,
 					OPERATIONS_IDS.CONTRACT_TRANSFER,
 				].includes(type)) {
-					const [, result] = await echo.api.getContractResult(transaction.operation_results[opIndex][1]);
+					const [contractResultType, result] = await echo.api.getContractResult(transaction.operation_results[opIndex][1]);
+					if (contractResultType === CONTRACT_RESULT_TYPE_0) {
 
-					options.excepted = _.startCase(result.exec_res.excepted);
-					options['code deposit'] = result.exec_res.code_deposit;
+						const { exec_res: { excepted, code_deposit, new_address }, tr_receipt: { log } } = result;
 
-					if (parseInt(result.exec_res.new_address, 10)) {
-						const id = ConvertHelper.toContractId(result.exec_res.new_address);
-						options['new contract id'] = { value: id, link: id };
-					}
+						options.excepted = _.startCase(excepted);
+						options['code deposit'] = code_deposit;
 
-					if (result.tr_receipt.log.length) {
-						options.logs = result.tr_receipt.log.map(({ address, data, log }) => {
-							const contract = ConvertHelper.toContractId(address);
-							return { topics: log, contract, data };
-						});
+						if (parseInt(new_address, 10)) {
+							const id = ConvertHelper.toContractId(new_address);
+							options['new contract id'] = { value: id, link: id };
+						}
+
+						if (log.length) {
+							options.logs = log.map(({ address, data, log: topics }) => {
+								const contract = ConvertHelper.toContractId(address);
+								return { topics, contract, data };
+							});
+						}
+
 					}
 				}
 
