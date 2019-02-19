@@ -110,10 +110,7 @@
             }
 
             @include res-320 {
-                left: 9px;
-                // top: -89px;
-                position: fixed;
-                top: 20px;
+                display: none;
             }
         }
 
