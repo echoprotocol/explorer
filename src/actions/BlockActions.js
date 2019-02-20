@@ -530,6 +530,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
  * 	Initialize recent blocks and starting timestamp of latest block
  */
 export const initBlocks = () => async (dispatch) => {
+
 	const obj = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
 
 	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj.head_block_number }));
@@ -582,3 +583,37 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	}
 
 };
+
+/**
+ *  @method resetDisplayedBlocks
+ *
+ * 	Reset number of displayed blocks
+ */
+export const resetDisplayedBlocks = () => async (dispatch, getState) => {
+	try {
+		if (!echo._ws._connected || !echo.subscriber.subscriptions.echorand || !echo.subscriber.subscriptions.block) {
+			return false;
+		}
+
+		dispatch(BlockReducer.actions.set({
+			field: 'blocksCount',
+			value: PAGE_BLOCKS_COUNT,
+		}));
+
+		const [...keys] = getState().block.get('blocks').keys();
+		const startedBlock = Math.min(...keys) - PAGE_BLOCKS_COUNT;
+
+		dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
+
+		await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
+
+		return true;
+
+	} catch (_) {
+		return false;
+	} finally {
+		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
+	}
+
+};
+

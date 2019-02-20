@@ -18,14 +18,16 @@ import { LOAD_MORE_TEMPLATE } from '../../../constants/LoadMoreConstants';
 import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
-import { setMaxDisplayedBlocks } from '../../../actions/BlockActions';
+import { resetDisplayedBlocks, setMaxDisplayedBlocks } from '../../../actions/BlockActions';
 
 class RecentBlockTable extends React.Component {
 
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.MAIN);
 	}
-
+	componentWillUnmount() {
+		this.props.resetDisplayedBlocks();
+	}
 	onSearch(blockNumber) {
 		if (TypesHelper.isCommaNumberRepresentation(blockNumber)) {
 			blockNumber = FormatHelper.removeCommas(blockNumber);
@@ -195,6 +197,7 @@ RecentBlockTable.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
+	resetDisplayedBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 
@@ -206,5 +209,6 @@ export default withRouter(connect(
 	(dispatch) => ({
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
+		resetDisplayedBlocks: () => dispatch(resetDisplayedBlocks()),
 	}),
 )(RecentBlockTable));
