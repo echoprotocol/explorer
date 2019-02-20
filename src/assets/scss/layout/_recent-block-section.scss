@@ -300,6 +300,7 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         position: relative;
+                        display: block;
                     }
 
                     &:nth-child(3) {

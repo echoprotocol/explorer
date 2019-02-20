@@ -56,6 +56,7 @@ class TransactionsTable extends React.Component {
 	}
 
 	renderMobileViewOperation(data, i, j) {
+
 		const key = data.id || `${i}-${j}`;
 
 		return (
@@ -136,7 +137,7 @@ class TransactionsTable extends React.Component {
 					</Link>
 				</div>
 				<div className="divTableCell transaction-to">
-					<div className="sub-container">
+					<div className="inner-container">
 						<div className="line-arrow" />
 						<Link to={URLHelper.createUrlById(io.subject.id)}>
 							<div className="blue">{io.subject.name || io.subject.id}</div>
@@ -144,7 +145,7 @@ class TransactionsTable extends React.Component {
 					</div>
 				</div>
 				<div className="divTableCell">
-					<div className="sub-container">
+					<div className="inner-container">
 						{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
 						<span className="gray">{` ${io.value.symbol}`}</span>
 						<div className="subtransfer-type">{io.label}</div>
@@ -173,7 +174,7 @@ class TransactionsTable extends React.Component {
 						</Link>
 					</div>
 					<div className="divTableCell transaction-to">
-						<Link to={URLHelper.createUrlById(data.subject.id)} className="sub-container">
+						<Link to={URLHelper.createUrlById(data.subject.id)} className="inner-container">
 							<div className="blue">{data.subject.name || data.subject.id}</div>
 						</Link>
 					</div>

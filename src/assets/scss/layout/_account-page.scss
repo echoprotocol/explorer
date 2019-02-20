@@ -96,9 +96,13 @@
                             color: #130d32;
                             display: flex;
                             word-break: break-all;
-
+                            
                             .txt {
                                 margin-right: 5px;
+                            }
+
+                            .accent {
+                                flex-shrink: 0;
                             }
                         }
                     }
