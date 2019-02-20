@@ -20,7 +20,14 @@ class Header extends React.Component {
 				<Media query="(max-width: 767px)">
 					{(matches) =>
 						(matches ? (
-							<HeaderSearch small placeholder="Search" />
+							<HeaderSearch
+								withHelp
+								getHints={getHints}
+								hints={hints}
+								history={history}
+								small
+								placeholder="Search"
+							/>
 						) : (
 							<HeaderSearch
 								withHelp

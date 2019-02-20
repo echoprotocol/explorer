@@ -130,6 +130,7 @@ class SearchField extends React.Component {
 			small, placeholder, white, withHelp, goToBlock, hints,
 		} = this.props;
 
+
 		const options = hints
 			.map(({
 				section, prefix, value, to, postfix,
