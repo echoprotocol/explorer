@@ -10,6 +10,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const configFileName = `${process.env.NODE_ENV}.config.js`;
 const configFile = require(`./config/${configFileName}`);
 
+const API_URL = process.env.API_URL || configFile.API_URL;
+
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 	template: `${__dirname}/src/assets/index.html`,
 	filename: 'index.html',
@@ -117,7 +119,7 @@ module.exports = {
 	plugins: [
 		new CleanWebpackPlugin(['dist']),
 		new webpack.DefinePlugin({
-			__API_URL__: JSON.stringify(configFile.API_URL),
+			__API_URL__: JSON.stringify(API_URL),
 		}),
 		HTMLWebpackPluginConfig,
 		extractSass,
