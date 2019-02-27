@@ -1,5 +1,5 @@
 /* eslint-disable import/no-dynamic-require */
-require('babel-polyfill');
+require('@babel/polyfill');
 
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -30,7 +30,7 @@ module.exports = {
 		fs: 'empty',
 	},
 	entry: {
-		babel: 'babel-polyfill',
+		babel: '@babel/polyfill',
 		app: path.resolve('src/index.js'),
 	},
 	output: {
