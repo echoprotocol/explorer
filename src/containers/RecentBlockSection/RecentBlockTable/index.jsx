@@ -146,7 +146,7 @@ class RecentBlockTable extends React.Component {
 											<div className="divTableCell">Size</div>
 											<div className="divTableCell">Transactions</div>
 										</div>
-										<div className="devider" />
+										<div className="divider" />
 										{
 											this.getBlocks().map((data) => (
 												<React.Fragment key={data.round}>

@@ -88,6 +88,7 @@ export const formatOperation = async (
 	opIndex = undefined,
 	operationResult = [],
 	id = undefined,
+	timestamp = undefined,
 ) => {
 	const [type, operation] = data;
 	const [, resId] = operationResult;
@@ -113,6 +114,7 @@ export const formatOperation = async (
 		round,
 		trIndex,
 		id,
+		timestamp,
 	};
 
 	if (options.from) {

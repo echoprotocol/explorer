@@ -155,6 +155,7 @@ class TransactionsInfo extends React.Component {
 
 	render() {
 		const { round, index } = this.props.match.params;
+
 		const { operations } = this.props;
 
 		const breadcrumbs = [

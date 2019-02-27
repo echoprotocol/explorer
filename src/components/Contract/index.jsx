@@ -50,7 +50,7 @@ class Contract extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information account-page contract-page">
+			<div className="table-container inner-information-container block-information account-page contract-page with-d-table">
 				<div className="account-page-t-block">
 					<div className="title">Contract {id}</div>
 				</div>
@@ -64,6 +64,7 @@ class Contract extends React.Component {
 						{
 							!loading ?
 								<TransactionsTable
+									acccountsTable
 									transactions={history}
 									loading={loadingMoreHistory}
 									loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}

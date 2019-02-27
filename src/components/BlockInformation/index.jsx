@@ -87,7 +87,7 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="table-container inner-information-container block-information block-information-page">
+				<div className="table-container inner-information-container block-information account-page with-d-table">
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
 						title={`Block ${blockNumber}`}
@@ -123,6 +123,7 @@ class BlockInformation extends React.Component {
 							<TransactionsTable
 								transactions={slicedTransactions}
 								loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
+								blockTime={time}
 							/> : null
 					}
 				</div>

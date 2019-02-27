@@ -71,8 +71,8 @@ class TransactionsTable extends React.Component {
 						{
 							j === 0 &&
 							<React.Fragment>
-								<div className="title">#</div>
-								<div className="value">{i + 1}</div>
+								<div className="title">Time</div>
+								<div className="value">{this.props.acccountsTable ? (data.timestamp || i + 1) : this.props.blockTime}</div>
 							</React.Fragment>
 						}
 					</div>
@@ -92,14 +92,14 @@ class TransactionsTable extends React.Component {
 						<div className="title">Amount</div>
 						<div className="value">
 							{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)}
-							<span className="gray">&nbsp;{data.value.symbol}</span>
+							<span className="gray">&#32;{data.value.symbol}</span>
 						</div>
 					</div>
 					<div className="container">
 						<div className="title">Fee amount</div>
 						<div className="value">
 							{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)}
-							<span className="gray">&nbsp;{data.fee.symbol}</span>
+							<span className="gray">&#32;{data.fee.symbol}</span>
 						</div>
 					</div>
 					<div className={`container ${(data.status ? '' : ('fail'))}`}>
@@ -158,6 +158,7 @@ class TransactionsTable extends React.Component {
 	}
 
 	renderTableOperation(data, i, j) {
+
 		const key = data.id || `${i}-${j}`;
 
 		return (
@@ -166,7 +167,10 @@ class TransactionsTable extends React.Component {
 					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
 					className="divTableRow fade-anim"
 				>
-					<div className="divTableCell">{j === 0 ? i + 1 : ''}</div>
+					{
+						j === 0 &&
+							<div className="divTableCell">{this.props.acccountsTable ? (data.timestamp || i + 1) : this.props.blockTime}</div>
+					}
 					<div className="divTableCell">{data.name}</div>
 					<div className="divTableCell">
 						<Link to={URLHelper.createUrlById(data.from.id)} className="inner-container">
@@ -180,11 +184,11 @@ class TransactionsTable extends React.Component {
 					</div>
 					<div className="divTableCell">
 						{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)}
-						<span className="gray">&nbsp;{data.value.symbol}</span>
+						<span className="gray">&#32;{data.value.symbol}</span>
 					</div>
 					<div className="divTableCell">
 						{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)}
-						<span className="gray">&nbsp;{data.fee.symbol}</span>
+						<span className="gray">&#32;{data.fee.symbol}</span>
 					</div>
 					<div className={classnames('divTableCell', { fail: !data.status })}>
 						{data.status ? 'Success' : 'Fail'}
@@ -206,7 +210,7 @@ class TransactionsTable extends React.Component {
 				<div className={`divTable ${!this.props.loadMore ? 'n-l-more' : ''}`}>
 					<div className="divTableBody">
 						<div className="TableHeading">
-							<div className="divTableCell">#</div>
+							<div className="divTableCell">Time</div>
 							<div className="divTableCell">Type</div>
 							<div className="divTableCell">From</div>
 							<div className="divTableCell">To</div>
@@ -214,7 +218,7 @@ class TransactionsTable extends React.Component {
 							<div className="divTableCell">Fee amount</div>
 							<div className="divTableCell">Status</div>
 						</div>
-						<div className="devider" />
+						<div className="divider" />
 						{transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(data, i, j)))}
 					</div>
 				</div>
@@ -227,6 +231,7 @@ class TransactionsTable extends React.Component {
 		const {
 			transactions, objectId, loading, loadMore,
 		} = this.props;
+		console.log(transactions);
 
 		return (
 			<div className="table">
@@ -252,14 +257,18 @@ class TransactionsTable extends React.Component {
 }
 
 TransactionsTable.propTypes = {
-	transactions: PropTypes.any.isRequired,
+	acccountsTable: PropTypes.bool,
+	transactions: PropTypes.string.isRequired,
 	objectId: PropTypes.string,
+	blockTime: PropTypes.string,
 	loading: PropTypes.bool,
 	loadMore: PropTypes.func,
 };
 
 TransactionsTable.defaultProps = {
+	acccountsTable: false,
 	loading: false,
+	blockTime: '',
 	loadMore: null,
 	objectId: null,
 };

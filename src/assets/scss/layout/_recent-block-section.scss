@@ -360,7 +360,7 @@
 
             .container {
                 width: 140px;
-                margin-bottom: 25px;
+                margin-bottom: 22px;
                 padding-right: 20px;
 
                 &:first-child {
@@ -377,7 +377,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.25em;
                     color: #828b95;
-                    margin-bottom: 15px;
+                    margin-bottom: 12px;
                 }
                 .value {
                     color: #0f0739;
@@ -385,6 +385,7 @@
                     width: 100%;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    line-height: 18px;
 
                     .blue {
                         font-size: 15px;

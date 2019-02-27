@@ -335,12 +335,20 @@
                         @include res-1280 {
                             @include allWidth(110px);
                         }
+
+                        @include res-768 {
+                            @include allWidth(85px);
+                        }
                     }
                     &:nth-child(3) {
                         @include allWidth(165px);
 
                         @include res-1280 {
                             @include allWidth(130px);
+                        }
+
+                        @include res-768 {
+                            @include allWidth(100px);
                         }
                     }
                     &:nth-child(4) {
@@ -349,6 +357,10 @@
                         @include res-1280 {
                             @include allWidth(120px);
                         }
+
+                        @include res-768 {
+                            @include allWidth(100px);
+                        }
                     }
                     &:nth-child(5) {
                         @include allWidth(165px);
@@ -356,12 +368,20 @@
                         @include res-1280 {
                             @include allWidth(135px);
                         }
+
+                        @include res-768 {
+                            @include allWidth(110px);
+                        }
                     }
                     &:nth-child(6) {
                         @include allWidth(165px);
 
                         @include res-1280 {
                             @include allWidth(150px);
+                        }
+                        
+                        @include res-768 {
+                            @include allWidth(110px);
                         }
                     }
                     &:nth-child(7) {
@@ -393,12 +413,20 @@
                         @include res-1280 {
                             @include allWidth(110px);
                         }
+
+                        @include res-768 {
+                            @include allWidth(85px);
+                        }
                     }
                     &:nth-child(3) {
                         @include allWidth(165px);
 
                         @include res-1280 {
                             @include allWidth(130px);
+                        }
+
+                        @include res-768 {
+                            @include allWidth(100px);
                         }
                     }
                     &:nth-child(4) {
@@ -407,6 +435,10 @@
                         @include res-1280 {
                             @include allWidth(120px);
                         }
+
+                        @include res-768 {
+                            @include allWidth(100px);
+                        }
                     }
                     &:nth-child(5) {
                         @include allWidth(165px);
@@ -414,12 +446,20 @@
                         @include res-1280 {
                             @include allWidth(135px);
                         }
+
+                        @include res-768 {
+                            @include allWidth(110px);
+                        }
                     }
                     &:nth-child(6) {
                         @include allWidth(165px);
 
                         @include res-1280 {
                             @include allWidth(150px);
+                        }
+
+                        @include res-768 {
+                            @include allWidth(110px);
                         }
                     }
                     &:nth-child(7) {
@@ -520,10 +560,6 @@
                             }
                         }
                     }
-                }
-
-                .sub-container {
-                    display: inline-block;
                 }
 
                 .subtransfer-type {
@@ -672,27 +708,26 @@
                 }
 
                 &:first-child {
-                    width: auto;
+                    // width: auto;
                     min-width: 10px;
-                    padding-right: 13px;
+                    // padding-right: 13px;
 
-                    .title {
-                        margin-bottom: 15px;
-                    }
+                    // .title {
+                    //     margin-bottom: 15px;
+                    // }
                 }
 
                 &:nth-child(2) {
                     @include res-320 {
-                        width: calc(100% - 45px);
+                        // width: calc(100% - 45px);
                     }
                 }
 
                 &.amount {
-                    width: 153px;
-
-                    @include res-320 {
-                        width: 140px;
-                    }
+                    // width: 153px;
+                    // @include res-320 {
+                        // width: 140px;
+                    // }
                 }
 
                 .value {

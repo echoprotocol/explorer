@@ -58,7 +58,7 @@ class Account extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information account-page">
+			<div className="table-container inner-information-container block-information account-page with-d-table">
 				<div className="account-page-t-block">
 					<div className="title">Account {id}</div>
 					<div className="help-container">
@@ -84,6 +84,7 @@ class Account extends React.Component {
 							{
 								history.size ?
 									<TransactionsTable
+										acccountsTable
 										transactions={history}
 										loading={loadingMoreHistory}
 										loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}

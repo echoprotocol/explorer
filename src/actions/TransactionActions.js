@@ -14,6 +14,8 @@ import ConvertHelper from '../helpers/ConvertHelper';
 import TransactionReducer from '../reducers/TransactionReducer';
 import BaseActionsClass from './BaseActionsClass';
 
+import FormatHelper from '../helpers/FormatHelper';
+
 class TransactionActionsClass extends BaseActionsClass {
 
 	/** Initialize reducer
@@ -125,6 +127,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				return {
 					type: operation.name,
 					block: block.round,
+					time: FormatHelper.timestampToBlockInformationTime(block.timestamp),
 					...options,
 				};
 			});

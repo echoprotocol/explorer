@@ -10,6 +10,7 @@ import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { formatOperation } from './BlockActions';
+import FormatHelper from '../helpers/FormatHelper';
 
 class ContractActions extends BaseActionsClass {
 
@@ -21,14 +22,16 @@ class ContractActions extends BaseActionsClass {
 	async formatContractHistory(transactions) {
 		let history = transactions.map(async (t) => {
 			let { op: operation, result } = t;
+
+			const block = await echo.api.getBlock(t.block_num);
+
 			if (OPERATIONS_IDS.CONTRACT_TRANSFER === t.op[0]) {
-				const block = await echo.api.getBlock(t.block_num);
 
 				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
 			}
 
-			return formatOperation(operation, null, t.block_num, t.trx_in_block, t.op_in_trx, result, t.id);
+			return formatOperation(operation, null, t.block_num, t.trx_in_block, t.op_in_trx, result, t.id, FormatHelper.timestampToBlockInformationTime(block.timestamp));
 		});
 		history = await Promise.all(history);
 		return history.reduce((arr, t) => ([...arr, [t]]), []);

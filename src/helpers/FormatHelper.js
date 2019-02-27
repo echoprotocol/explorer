@@ -70,7 +70,7 @@ class FormatHelper {
 	 * @param {String} timestamp
 	 */
 	static timestampToBlockInformationTime(timestamp) {
-		return moment.utc(timestamp).local().format('D MMM, YYYY, hh:mm:ss A');
+		return moment.utc(timestamp).local().format('D MMM, YYYY hh:mm:ss A');
 	}
 
 	/**
