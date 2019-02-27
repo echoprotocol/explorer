@@ -603,16 +603,12 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		const [...keys] = getState().block.get('blocks').keys();
 		const startedBlock = Math.min(...keys) - PAGE_BLOCKS_COUNT;
 
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
-
 		await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
 
 		return true;
 
 	} catch (_) {
 		return false;
-	} finally {
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 	}
 
 };
