@@ -84,7 +84,6 @@ class Account extends React.Component {
 							{
 								history.size ?
 									<TransactionsTable
-										acccountsTable
 										transactions={history}
 										loading={loadingMoreHistory}
 										loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}

@@ -72,7 +72,7 @@ class TransactionsTable extends React.Component {
 							j === 0 &&
 							<React.Fragment>
 								<div className="title">Time</div>
-								<div className="value">{this.props.acccountsTable ? (data.timestamp || i + 1) : this.props.blockTime}</div>
+								<div className="value">{this.props.isBlockTable ? this.props.blockTime : (data.timestamp || i + 1)}</div>
 							</React.Fragment>
 						}
 					</div>
@@ -169,7 +169,7 @@ class TransactionsTable extends React.Component {
 				>
 					{
 						j === 0 &&
-							<div className="divTableCell">{this.props.acccountsTable ? (data.timestamp || i + 1) : this.props.blockTime}</div>
+							<div className="divTableCell">{this.props.isBlockTable ? this.props.blockTime : (data.timestamp || i + 1)}</div>
 					}
 					<div className="divTableCell">{data.name}</div>
 					<div className="divTableCell">
@@ -229,17 +229,18 @@ class TransactionsTable extends React.Component {
 
 	render() {
 		const {
-			transactions, objectId, loading, loadMore,
+			transactions, objectId, loading, loadMore, isBlockTable,
 		} = this.props;
-		console.log(transactions);
+
+		const trs = isBlockTable ? transactions.reverse() : transactions;
 
 		return (
 			<div className="table">
 				<Media query="(max-width: 767px)">
 					{(matches) => (
 						matches ?
-							this.renderMobileView(transactions, objectId) :
-							this.renderTable(transactions, objectId)
+							this.renderMobileView(trs, objectId) :
+							this.renderTable(trs, objectId)
 					)}
 				</Media>
 				{
@@ -257,7 +258,7 @@ class TransactionsTable extends React.Component {
 }
 
 TransactionsTable.propTypes = {
-	acccountsTable: PropTypes.bool,
+	isBlockTable: PropTypes.bool,
 	transactions: PropTypes.string.isRequired,
 	objectId: PropTypes.string,
 	blockTime: PropTypes.string,
@@ -266,7 +267,7 @@ TransactionsTable.propTypes = {
 };
 
 TransactionsTable.defaultProps = {
-	acccountsTable: false,
+	isBlockTable: false,
 	loading: false,
 	blockTime: '',
 	loadMore: null,

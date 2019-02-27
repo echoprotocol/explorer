@@ -121,6 +121,7 @@ class BlockInformation extends React.Component {
 					{
 						(slicedTransactions && slicedTransactions.length) ?
 							<TransactionsTable
+								isBlockTable
 								transactions={slicedTransactions}
 								loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
 								blockTime={time}

@@ -7,7 +7,6 @@ import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 import Loader from '../Loader';
-
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 class Contract extends React.Component {
@@ -64,7 +63,6 @@ class Contract extends React.Component {
 						{
 							!loading ?
 								<TransactionsTable
-									acccountsTable
 									transactions={history}
 									loading={loadingMoreHistory}
 									loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
