@@ -540,12 +540,9 @@ export const initBlocks = () => async (dispatch) => {
 
 	await dispatch(updateBlockList(obj.head_block_number, startBlockList));
 
-	const { timestamp } = await echo.api.getBlock(obj.head_block_number);
-	const dateNowUnix = new BN(Date.now()).div(1000);
-
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
-		value: parseInt(dateNowUnix.minus(moment.utc(timestamp).local().unix()).toFixed(0), 10),
+		value: 0,
 	}));
 };
 
