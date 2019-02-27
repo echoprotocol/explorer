@@ -3,36 +3,29 @@ import PropTypes from 'prop-types';
 
 class Loader extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.bar = React.createRef();
-	}
-
 	shouldComponentUpdate(nextProps) {
-		if (this.props.status && this.props.status > nextProps.status) {
-			if (this.bar) {
-				const classes = this.bar.classList;
-				classes.remove('transition');
-			}
-		} else if (this.props.status === 5) {
-			if (this.bar) {
-				const classes = this.bar.classList;
-				if (classes.contains('transition')) {
-					return false;
-				}
-				classes.add('transition');
-			}
+		const { status, executeTime } = this.props;
+		const { status: nextStatus, executeTime: nextExecuteTime } = nextProps;
+
+		if ((status === nextStatus) && (executeTime === nextExecuteTime)) {
+			return false;
 		}
+
 		return true;
 	}
 
 	render() {
+		const { status, executeTime } = this.props;
 
-		const { status } = this.props;
+		const style = { width: `${status}%` };
+
+		if (status !== 0) {
+			style.transition = `width ${executeTime}s`;
+		}
+
 		return (
 			<div className="preparing-loader">
-				<div ref={(el) => { this.bar = el; }} className="line transition" style={{ width: `${status}%` }} />
+				<div className="line" style={style} />
 			</div>
 		);
 	}
@@ -41,10 +34,12 @@ class Loader extends React.Component {
 
 Loader.propTypes = {
 	status: PropTypes.number,
+	executeTime: PropTypes.number,
 };
 
 Loader.defaultProps = {
 	status: '',
+	executeTime: 0,
 };
 
 
