@@ -5,17 +5,16 @@
     visibility: visible;
     line-height: 1.5;
     font-size: 12px;
-    background-color: rgba(0, 0, 0, 0.05);
     padding: 1px;
-    opacity: 0.9;
+    opacity: 0.9; 
 
     &-hidden {
         display: none;
     }
 
     &-content {
-        margin-top: -66px;
-        margin-left: 10px;
+        margin-left: 16px;
+        margin-bottom: 5px;
     }
 
     &-inner {
@@ -24,9 +23,7 @@
         text-align: left;
         text-decoration: none;
         background-color: #06060d;
-        border-radius: 3px;
         min-height: 34px;
-
         max-width: 200px;
         span {
             @include InterUI_Regular;
@@ -36,27 +33,28 @@
         }
     }
 
-    &.rc-tooltip-placement-rightTop {
+    &.rc-tooltip-placement-rightBottom {
+
         .rc-tooltip-arrow {
             position: absolute;
             width: 0;
             height: 0;
             border-color: transparent;
             border-style: solid;
-            bottom: -4px;
-            margin-left: -6px;
-            border-width: 12px 6px 0;
+            bottom: -2px;
+            margin-left: 5px;
+            border-width: 25px 10px 0;
             border-top-color: #06060d;
-            left: 11px;
+            left: 0px;
             right: auto;
-            transform: rotate(45deg);
+            transform: rotate(67deg);
         }
     }
     
-    &.rc-tooltip-placement-leftTop {
+    &.rc-tooltip-placement-leftBottom {
         .rc-tooltip-content {
             margin-left: 0px;
-            margin-right: 5px;
+            margin-right: 16px;
         }
         .rc-tooltip-arrow {
             position: absolute;
@@ -64,13 +62,13 @@
             height: 0;
             border-color: transparent;
             border-style: solid;
-            bottom: -4px;
+            bottom: -2px;
             margin-left: -6px;
-            border-width: 12px 6px 0;
+            border-width: 25px 10px 0;
             border-top-color: #06060d;
             left: auto;
-            right: 0px;
-            transform: rotate(-45deg);
+            right: 5px;
+            transform: rotate(-67deg);
         }
     }
 

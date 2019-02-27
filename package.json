@@ -17,7 +17,7 @@
 	},
 	"license": "MIT",
 	"bugs": {
-        "url": "https://github.com/echoprotocol/explorer/issues"
+		"url": "https://github.com/echoprotocol/explorer/issues"
 	},
 	"author": "PixelPlex",
 	"dependencies": {

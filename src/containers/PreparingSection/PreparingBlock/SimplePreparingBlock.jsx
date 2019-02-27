@@ -17,7 +17,7 @@ class SimplePreparingBlock extends React.Component {
 				<div className={`preparing-element ${status} ${className}`}>
 					{
 						(tooltip) ? (
-							<Tooltip placement="rightTop" trigger={['hover']} overlay={<span>{tip}</span>}>
+							<Tooltip placement="rightBottom" trigger={['hover']} overlay={<span>{tip}</span>}>
 								<div className="title has-tooltip">
 									<Media query="(max-width: 999px)">
 										{(matches) =>
