@@ -480,7 +480,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).format('HH:mm:ss'))
+				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)

@@ -35,13 +35,14 @@ class RecentBlockTable extends React.Component {
 
 	getBlocks() {
 		const { blocks } = this.props;
-
 		const blocksResult = [];
 
 		blocks.mapEntries(([key, value]) => {
+
 			blocksResult.push({
 				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
+				// time: FormatHelper.timestampToLocalTime(value.get('time')),
 				time: value.get('time'),
 				producer: value.get('producer'),
 				producerId: value.get('producerId'),
@@ -137,13 +138,7 @@ class RecentBlockTable extends React.Component {
 											</div>
 											<div className="divTableCell">
 												<Media query="(max-width: 999px)">
-													{(matches) =>
-														(matches ? (
-															'Time'
-														) : (
-															'Time (UTC)'
-														))
-													}
+													{() => 'Time'}
 												</Media>
 											</div>
 											<div className="divTableCell">Producer</div>
