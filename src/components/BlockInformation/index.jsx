@@ -87,7 +87,7 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="table-container inner-information-container block-information">
+				<div className="table-container inner-information-container block-information block-information-page">
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
 						title={`Block ${blockNumber}`}

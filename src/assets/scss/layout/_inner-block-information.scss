@@ -37,6 +37,14 @@
 
     &.block-information {
 
+        &-page {
+            padding-bottom: 290px;
+
+            @include res-768 {
+                padding-bottom: 270px;
+            }
+        }
+
         .block-description {
             position: relative;
             z-index: 2;
@@ -535,6 +543,7 @@
             }
         }
     }
+
 
     .recent-block-mobile-view {
         .recent-block-element {

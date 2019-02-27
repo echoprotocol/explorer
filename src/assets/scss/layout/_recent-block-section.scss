@@ -30,7 +30,7 @@
         padding-right: 70px;
 
         padding-top: 37px;
-        min-height: calc(100vh - 270px);
+        min-height: calc(100vh - 275px);
         padding-left: 0;
         background-color: #f3f2f5;
         position: relative;
@@ -536,10 +536,11 @@
                 }
 
                 @include res-320 {
-                    margin: 0 auto;
+                    margin: 0 auto 25px;
                     padding-left: 20px;
                     padding-right: 20px;
                     width: 100%;
+                    height: auto;
                 }
             }
 
