@@ -12,6 +12,7 @@ const DEFAULT_FIELDS = new Map({
 	balances: new List([]),
 	history: new List([]),
 	bytecode: null,
+	lastOperationId: '',
 });
 
 export default createModule({

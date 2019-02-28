@@ -98,8 +98,15 @@ class ContractActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	loadContractHistory(id, lastOperationId) {
-		return async (dispatch) => {
+		return async (dispatch, getState) => {
+			const lastOperationIdState = getState().contract.get('lastOperationId');
+
+			if (lastOperationIdState === lastOperationId) {
+				return;
+			}
+
 			try {
+				dispatch(this.setValue('lastOperationId', lastOperationId));
 				dispatch(this.setValue('loadingMoreHistory', true));
 
 				let history = await echo.api.getContractHistory(
@@ -115,7 +122,7 @@ class ContractActions extends BaseActionsClass {
 					this.reducer.actions.concat({ field: 'history', value: new List(history) }),
 					this.reducer.actions.set({
 						field: 'isFullHistory',
-						value: history.length <= DEFAULT_ROWS_COUNT,
+						value: history.length < DEFAULT_ROWS_COUNT,
 					}),
 				]));
 			} catch (e) {

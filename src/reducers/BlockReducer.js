@@ -11,6 +11,7 @@ const DEFAULT_FIELDS = Map({
 	blocksCount: PAGE_BLOCKS_COUNT,
 	loading: false,
 	startTimestamp: 0,
+	hasMore: true,
 });
 
 export default createModule({

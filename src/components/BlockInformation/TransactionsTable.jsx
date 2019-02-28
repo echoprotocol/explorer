@@ -3,6 +3,7 @@ import Media from 'react-media';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import { TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import URLHelper from '../../helpers/URLHelper';
@@ -227,11 +228,10 @@ class TransactionsTable extends React.Component {
 
 	}
 
-	render() {
+	renderTables() {
 		const {
 			transactions, objectId, loading, loadMore, isBlockTable,
 		} = this.props;
-
 		const trs = isBlockTable ? transactions.reverse() : transactions;
 
 		return (
@@ -255,11 +255,25 @@ class TransactionsTable extends React.Component {
 		);
 	}
 
+	render() {
+		const { hasMore, loadMore } = this.props;
+
+
+		return (
+			loadMore ?
+				<InfiniteScroll loadMore={() => this.props.loadMore()} hasMore={hasMore} >
+					{this.renderTables()}
+				</InfiniteScroll> :
+				this.renderTables()
+		);
+	}
+
 }
 
 TransactionsTable.propTypes = {
 	isBlockTable: PropTypes.bool,
-	transactions: PropTypes.string.isRequired,
+	hasMore: PropTypes.bool,
+	transactions: PropTypes.any.isRequired,
 	objectId: PropTypes.string,
 	blockTime: PropTypes.string,
 	loading: PropTypes.bool,
@@ -268,6 +282,7 @@ TransactionsTable.propTypes = {
 
 TransactionsTable.defaultProps = {
 	isBlockTable: false,
+	hasMore: false,
 	loading: false,
 	blockTime: '',
 	loadMore: null,

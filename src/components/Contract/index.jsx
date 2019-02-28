@@ -66,6 +66,7 @@ class Contract extends React.Component {
 									transactions={history}
 									loading={loadingMoreHistory}
 									loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+									hasMore={!isFullHistory}
 								/> : <Loader />
 						}
 					</TabPanel>

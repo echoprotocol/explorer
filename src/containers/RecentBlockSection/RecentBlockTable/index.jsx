@@ -5,6 +5,7 @@ import Media from 'react-media';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
@@ -14,7 +15,6 @@ import TypesHelper from '../../../helpers/TypesHelper';
 import URLHelper from '../../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
-import { LOAD_MORE_TEMPLATE } from '../../../constants/LoadMoreConstants';
 import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
@@ -66,94 +66,25 @@ class RecentBlockTable extends React.Component {
 	}
 
 	render() {
-		const { loading } = this.props;
+		const { hasMore } = this.props;
 
 		return (
-			<div className="table-container recent-block-table">
-				<h2>Recent blocks
-					<SmallSearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
-				</h2>
-				<div className="table">
-					<Media query="(max-width: 767px)">
-						{(matches) =>
-							(matches ? (
-								<div className="recent-block-mobile-view">
-									{
-										this.getBlocks().map((data) => (
-											<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} key={data.round} className="recent-block-element fade-anim">
-												<div className="container">
-													<div className="title">Block #</div>
-													<div className="value">
-														<Link
-															to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
-															className="blue"
-														>
-															{data.blockNumber}
-														</Link>
-													</div>
-												</div>
-												<div className="container">
-													<div className="title">Block time</div>
-													<div className="value">{data.time}</div>
-												</div>
-												<div className="container">
-													<div className="title">Producer</div>
-													<div className="value">
-														<Link
-															to={URLHelper.createUrlById(data.producerId)}
-															className="blue"
-														>
-															{data.producer}
-														</Link>
-													</div>
-												</div>
-												<div className="container">
-													<div className="title">Reward</div>
-													<div className="value">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
-												</div>
-												<div className="container">
-													<div className="title">Size</div>
-													<div className="value">{data.weight} <span className="gray">{data.weightSize}</span></div>
-												</div>
-												<div className="container">
-													<div className="title">Transactions</div>
-													<div className="value">{data.transactions}</div>
-												</div>
-											</Link>
-										))
-									}
-								</div>
-							) : (
-								<div className="divTable">
-									<div className="divTableBody">
-										<div className="TableHeading">
-											<div className="divTableCell">
-												<Media query="(max-width: 999px)">
-													{(matches) =>
-														(matches ? (
-															'Block #'
-														) : (
-															'Block number'
-														))
-													}
-												</Media>
-											</div>
-											<div className="divTableCell">
-												<Media query="(max-width: 999px)">
-													{() => 'Time'}
-												</Media>
-											</div>
-											<div className="divTableCell">Producer</div>
-											<div className="divTableCell">Reward</div>
-											<div className="divTableCell">Size</div>
-											<div className="divTableCell">Transactions</div>
-										</div>
-										<div className="divider" />
+			<InfiniteScroll loadMore={() => this.props.loadBlocks()} hasMore={hasMore}>
+				<div className="table-container recent-block-table">
+					<h2>Recent blocks
+						<SmallSearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
+					</h2>
+					<div className="table">
+						<Media query="(max-width: 767px)">
+							{(matches) =>
+								(matches ? (
+									<div className="recent-block-mobile-view">
 										{
 											this.getBlocks().map((data) => (
-												<React.Fragment key={data.round}>
-													<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow fade-anim">
-														<div className="divTableCell">
+												<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} key={data.round} className="recent-block-element fade-anim">
+													<div className="container">
+														<div className="title">Block #</div>
+														<div className="value">
 															<Link
 																to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
 																className="blue"
@@ -161,39 +92,110 @@ class RecentBlockTable extends React.Component {
 																{data.blockNumber}
 															</Link>
 														</div>
-														<div className="divTableCell">{data.time}</div>
-														<div className="divTableCell">
-															<div className="inner-container">
-																<Link
-																	to={URLHelper.createUrlById(data.producerId)}
-																	className="blue"
-																>
-																	{data.producer}
-																</Link>
-															</div>
+													</div>
+													<div className="container">
+														<div className="title">Block time</div>
+														<div className="value">{data.time}</div>
+													</div>
+													<div className="container">
+														<div className="title">Producer</div>
+														<div className="value">
+															<Link
+																to={URLHelper.createUrlById(data.producerId)}
+																className="blue"
+															>
+																{data.producer}
+															</Link>
 														</div>
-														<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
-														<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
-														<div className="divTableCell">{data.transactions}</div>
-													</Link>
-												</React.Fragment>
+													</div>
+													<div className="container">
+														<div className="title">Reward</div>
+														<div className="value">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
+													</div>
+													<div className="container">
+														<div className="title">Size</div>
+														<div className="value">{data.weight} <span className="gray">{data.weightSize}</span></div>
+													</div>
+													<div className="container">
+														<div className="title">Transactions</div>
+														<div className="value">{data.transactions}</div>
+													</div>
+												</Link>
 											))
 										}
 									</div>
-								</div>
-							))
-						}
-					</Media>
-					<LoadMoreBtn title={LOAD_MORE_TEMPLATE.BLOCK_TABLE} loading={loading} loadMore={() => this.props.loadBlocks()} />
+								) : (
+									<div className="divTable">
+										<div className="divTableBody">
+											<div className="TableHeading">
+												<div className="divTableCell">
+													<Media query="(max-width: 999px)">
+														{(matches) =>
+															(matches ? (
+																'Block #'
+															) : (
+																'Block number'
+															))
+														}
+													</Media>
+												</div>
+												<div className="divTableCell">
+													<Media query="(max-width: 999px)">
+														{() => 'Time'}
+													</Media>
+												</div>
+												<div className="divTableCell">Producer</div>
+												<div className="divTableCell">Reward</div>
+												<div className="divTableCell">Size</div>
+												<div className="divTableCell">Transactions</div>
+											</div>
+											<div className="divider" />
+											{
+												this.getBlocks().map((data) => (
+													<React.Fragment key={data.round}>
+														<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow fade-anim">
+															<div className="divTableCell">
+																<Link
+																	to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+																	className="blue"
+																>
+																	{data.blockNumber}
+																</Link>
+															</div>
+															<div className="divTableCell">{data.time}</div>
+															<div className="divTableCell">
+																<div className="inner-container">
+																	<Link
+																		to={URLHelper.createUrlById(data.producerId)}
+																		className="blue"
+																	>
+																		{data.producer}
+																	</Link>
+																</div>
+															</div>
+															<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
+															<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
+															<div className="divTableCell">{data.transactions}</div>
+														</Link>
+													</React.Fragment>
+												))
+											}
+										</div>
+									</div>
+								))
+							}
+						</Media>
+						{hasMore && <LoadMoreBtn />}
+					</div>
 				</div>
-			</div>
+			</InfiniteScroll>
 		);
 	}
 
 }
 
 RecentBlockTable.propTypes = {
-	loading: PropTypes.bool.isRequired,
+	hasMore: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
@@ -203,8 +205,8 @@ RecentBlockTable.propTypes = {
 
 export default withRouter(connect(
 	(state) => ({
-		loading: state.block.get('loading'),
 		blocks: state.block.get('blocks'),
+		hasMore: state.block.get('hasMore'),
 	}),
 	(dispatch) => ({
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),

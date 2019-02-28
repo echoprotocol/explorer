@@ -556,7 +556,14 @@ export const initBlocks = () => async (dispatch) => {
  */
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	try {
-		if (!echo._ws._connected || !echo.subscriber.subscriptions.echorand || !echo.subscriber.subscriptions.block) {
+		const hasMore = getState().block.get('hasMore');
+
+		if (
+			!echo._ws._connected
+			|| !echo.subscriber.subscriptions.echorand
+			|| !echo.subscriber.subscriptions.block
+			|| !hasMore
+		) {
 			return false;
 		}
 
@@ -568,9 +575,13 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 		}));
 
 		const [...keys] = getState().block.get('blocks').keys();
-		const startedBlock = Math.min(...keys) - PAGE_ADD_BLOCKS_COUNT;
 
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
+		let startedBlock = Math.min(...keys) - PAGE_ADD_BLOCKS_COUNT;
+
+		if (startedBlock <= 0) {
+			startedBlock = 1;
+			dispatch(BlockReducer.actions.set({ field: 'hasMore', value: false }));
+		}
 
 		await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
 
@@ -578,8 +589,6 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 
 	} catch (_) {
 		return false;
-	} finally {
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 	}
 
 };

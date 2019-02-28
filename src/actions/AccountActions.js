@@ -129,8 +129,15 @@ class AccountActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	loadAccountHistory(accountId, lastOperationId) {
-		return async (dispatch) => {
+		return async (dispatch, getState) => {
+			const lastOperationIdState = getState().account.get('lastOperationId');
+
+			if (lastOperationIdState === lastOperationId) {
+				return;
+			}
+
 			try {
+				dispatch(this.setValue('lastOperationId', lastOperationId));
 				dispatch(this.setValue('loadingMoreHistory', true));
 
 				let transactions = await echo.api.getAccountHistory(

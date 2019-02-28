@@ -87,6 +87,7 @@ class Account extends React.Component {
 										transactions={history}
 										loading={loadingMoreHistory}
 										loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+										hasMore={!isFullHistory}
 									/> : null
 							}
 						</React.Fragment> : this.renderLoader(loading)
