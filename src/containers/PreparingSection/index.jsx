@@ -89,6 +89,29 @@ class PreparingSection extends React.Component {
 		this.verifyingBBATimeout = setTimeout(() => this.setState({ verifyingBBA: status }), delay);
 	}
 
+	getMobileData(status, producing, verifyingGC) {
+		let stepProgress = ROUND_STARTED;
+		let currentStep = rounderSteps[ROUND_STARTED].step;
+		const stepStatus = status >= rounderSteps[GC_STARTED].progress ? producing : PROGRESS_STATUS;
+
+		if (status >= rounderSteps[DONE].progress && producing === DONE_STATUS && verifyingGC === DONE_STATUS) {
+			stepProgress = DONE;
+			currentStep = rounderSteps[DONE].step;
+		} else if (status >= rounderSteps[GC_STARTED].progress && producing === DONE_STATUS) {
+			stepProgress = GC_STARTED;
+			currentStep = rounderSteps[GC_STARTED].step;
+		} else if (status >= rounderSteps[ROUND_STARTED].progress) {
+			stepProgress = ROUND_STARTED;
+			currentStep = rounderSteps[ROUND_STARTED].step;
+		}
+
+		return {
+			titel: rounderSteps[stepProgress].title,
+			currentStep,
+			status: stepStatus,
+		};
+	}
+
 	startProgressBar(averageBlockTime = AVERAGE_TIME) {
 		averageBlockTime -= PROGRESS_BAR_END_DELAY * MS;
 		setTimeout(() => {
@@ -134,6 +157,8 @@ class PreparingSection extends React.Component {
 			return null;
 		}
 
+		const mobileData = this.getMobileData(status, producing, verifyingGC);
+
 		return (
 			<React.Fragment>
 				<div className="wrap">
@@ -153,11 +178,11 @@ class PreparingSection extends React.Component {
 								(matches ? (
 									<CompositePreparingBlock
 										composite
-										title={rounderSteps[stepProgress].title}
-										currentStep={rounderSteps[stepProgress].step}
+										title={mobileData.titel}
+										currentStep={mobileData.currentStep}
 										totalStep={rounderSteps.totalStep}
 										description={`Producers: ${readyProducers}/${producers}`}
-										status={producing === DONE_STATUS && status >= rounderSteps[GC_STARTED].progress ? producing : PROGRESS_STATUS}
+										status={mobileData.status}
 										tooltip
 									/>
 								) : (
