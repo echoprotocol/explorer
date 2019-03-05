@@ -1,2 +1,2 @@
 export const HEADER_SEARCH_ACCOUNT_LIMIT = 5;
-export const DEBOUNCE_TIMEOUT = 300;
+export const DEBOUNCE_TIMEOUT = 150;

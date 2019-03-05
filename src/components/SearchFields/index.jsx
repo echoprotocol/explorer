@@ -65,12 +65,13 @@ class SearchField extends React.Component {
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
-		if (KEY_CODE_ENTER === code) {
-			if (this.state.inputValue && this.state.to && this.props.hints.length !== 0) {
+
+		if (KEY_CODE_ENTER === code && this.state.inputValue && this.state.to) {
+			if (this.props.hints.length !== 0) {
 				this.props.history.push(this.state.to);
 				this.setState({ focus: false, isChange: false });
 				this.inputEl.blur();
-			} else if (this.props.hints.length === 0) {
+			} else {
 				this.props.history.push(NOT_FOUND_PATH);
 				return;
 			}
