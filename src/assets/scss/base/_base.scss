@@ -55,3 +55,12 @@ a {
     opacity: 1;
     transition: opacity .3s;
 }
+
+
+@media (max-width: 499px) and (-webkit-min-device-pixel-ratio:0) { 
+	select,
+	textarea,
+	input {
+	  font-size: 16px !important;
+	}
+  }
