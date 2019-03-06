@@ -37,14 +37,6 @@
 
     &.block-information {
 
-        &-page {
-            padding-bottom: 290px;
-
-            @include res-768 {
-                padding-bottom: 270px;
-            }
-        }
-
         .block-description {
             position: relative;
             z-index: 2;
@@ -576,6 +568,14 @@
                     padding: 0 3px;
                     line-height: 17px;
                 }
+            }
+        }
+
+        .help-table-wrapper {
+            min-height: 255px;
+
+            @include res-768 {
+                min-height: 240px;
             }
         }
     }

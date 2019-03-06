@@ -118,16 +118,18 @@ class BlockInformation extends React.Component {
 						</div>
 					</div>
 					<h2>{`${transactions && transactions.length} Transactions`}</h2>
-					{
-						(slicedTransactions && slicedTransactions.length) ?
-							<TransactionsTable
-								isBlockTable
-								transactions={slicedTransactions}
-								loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
-								blockTime={time}
-								hasMore={currentTransactionLength < transactions.length}
-							/> : null
-					}
+					<div className="help-table-wrapper">
+						{
+							(slicedTransactions && slicedTransactions.length) ?
+								<TransactionsTable
+									isBlockTable
+									transactions={slicedTransactions}
+									loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
+									blockTime={time}
+									hasMore={currentTransactionLength < transactions.length}
+								/> : null
+						}
+					</div>
 				</div>
 			</React.Fragment>
 		);
