@@ -59,4 +59,4 @@ export const NATHAN = {
 };
 
 export const DEFAULT_ROWS_COUNT = 50;
-export const DEFAULT_OPERATION_HISTORY_ID = '1.11.0';
+export const DEFAULT_OPERATION_HISTORY_ID = '1.10.0';
