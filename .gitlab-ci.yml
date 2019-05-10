@@ -1,8 +1,10 @@
 stages:
   - test
   - build
+  - deploy
 
-eslint:
+
+test:
   image: node:10.15
   stage: test
   cache:
@@ -10,73 +12,91 @@ eslint:
     paths:
     - node_modules/
   script:
-    # TODO: only for support private lib
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-
     - npm i --silent
     - npm run lint
   tags:
+    - docker
+  only:
+    - merge_requests
+    - develop
     - master
 
-build.master:
-  stage: build
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - node_modules
-  script:
-    - if [ -d node_modules/echojs-lib ]; then rm -rf node_modules/echojs-lib; fi
-    - npm config set unsafe-perm true
-    - npm i
-    - npm run build-stage
-    - rm -rf /home/frontend
-    - cp -r ./dist /home/frontend
-  only:
-    - master
-  tags:
-    - master
-  environment:
-    name: stage
 
 build.develop:
   stage: build
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - node_modules
+  variables:
+    NODE_ENV: production
+    NODE_APP_INSTANCE: develop
   script:
-    - if [ -d node_modules/echojs-lib ]; then rm -rf node_modules/echojs-lib; fi
-    - npm config set unsafe-perm true
-    - npm i
-    - npm run build-dev
-    - rm -rf /home/frontend
-    - cp -r ./dist /home/frontend
+    - docker build --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t 656.echo-explorer.frontend . --no-cache
+    - docker-compose down
+    - docker-compose up -d
   only:
     - develop
   tags:
-    - develop
+    - pp-develop
   environment:
-    name: development
+    name: develop
+    url: https://656-echo-explorer.pixelplex-test.by
+
+
+build.master:
+  stage: build
+  variables:
+    NODE_ENV: production
+    NODE_APP_INSTANCE: master
+  script:
+    - docker build --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t 656.echo-explorer.frontend . --no-cache
+    - docker-compose down
+    - docker-compose up -d
+  only:
+    - master
+  tags:
+    - pp-stage
+  environment:
+    name: master
+    url: http://656-echo-explorer.pixelplexlabs.com
+
 
 build.production:
   stage: build
   variables:
-    NODE_ENV: "production"
+    NODE_ENV: production
+    NODE_APP_INSTANCE: production
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - NODE_ENV=development npm i
-    - npm run build
-    - rm -rf /var/www/testnet.explorer.echo-dev.io/*
-    - cp -r ./dist/* /var/www/testnet.explorer.echo-dev.io
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+  after_script:
+    - docker logout $CI_REGISTRY
   only:
     - tags
   tags:
     - echo-linux
   environment:
     name: production
-    url: https://testnet.explorer.echo-dev.io
+    url: https://explorer.echo-dev.io
+
+
+deploy.production:
+  stage: deploy
+  variables:
+    NODE_ENV: production
+    NODE_APP_INSTANCE: production
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:latest
+    - docker start explorer || docker run --name explorer -p 80:80 -d $CI_REGISTRY_IMAGE
+  after_script:
+    - docker logout $CI_REGISTRY
+  only:
+    - tags
+  tags:
+    - echo-explorer-1
+  when: manual
+  environment:
+    name: production
+    url: https://explorer.echo-dev.io

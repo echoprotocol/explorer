@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+
+  frontend:
+    image: 656.echo-explorer.frontend
+    container_name: "656.echo-explorer.frontend"
+    ports:
+      - 26562:80
+    restart: always
