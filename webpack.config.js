@@ -7,10 +7,7 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const configFileName = `${process.env.NODE_ENV}.config.js`;
-const configFile = require(`./config/${configFileName}`);
-
-const API_URL = process.env.API_URL || configFile.API_URL;
+const { API_URL } = require('config');
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 	template: `${__dirname}/src/assets/index.html`,
