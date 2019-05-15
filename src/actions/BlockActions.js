@@ -91,7 +91,7 @@ export const formatOperation = async (
 	timestamp = undefined,
 ) => {
 	const [type, operation] = data;
-	let [, resId] = operationResult;
+	const [, resId] = operationResult;
 	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
 
 	const { name, options } = Object.values(Operations).find((i) => i.value === type);
@@ -187,13 +187,6 @@ export const formatOperation = async (
 	}
 
 	if (resId && (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT)) {
-		const partsResId = resId.split('.');
-
-		if (type === OPERATIONS_IDS.CREATE_CONTRACT) {
-			partsResId[2] -= 1;
-		}
-
-		resId = partsResId.join('.');
 
 		const contractResult = await echo.api.getContractResult(resId);
 
