@@ -5,12 +5,11 @@ import { batchActions } from 'redux-batched-actions';
 import AccountReducer from '../reducers/AccountReducer';
 import BaseActionsClass from './BaseActionsClass';
 
-import history from '../history';
-import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { formatOperation } from './BlockActions';
 import FormatHelper from '../helpers/FormatHelper';
+import GlobalReducer from '../reducers/GlobalReducer';
 
 class AccountActions extends BaseActionsClass {
 
@@ -56,7 +55,7 @@ class AccountActions extends BaseActionsClass {
 	getAccountInfo(id) {
 		return async (dispatch) => {
 			if (!validators.isAccountId(id)) {
-				history.replace(NOT_FOUND_PATH);
+				dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: 'true' }));
 				return;
 			}
 
@@ -66,7 +65,7 @@ class AccountActions extends BaseActionsClass {
 				const [account] = await echo.api.getFullAccounts([id]);
 
 				if (!account) {
-					history.replace(NOT_FOUND_PATH);
+					dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
 					return;
 				}
 

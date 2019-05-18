@@ -3,10 +3,7 @@ import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List } from 'immutable';
 import _ from 'lodash';
 
-import history from '../history';
-
 import Operations from '../constants/Operations';
-import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 
 import ConvertHelper from '../helpers/ConvertHelper';
@@ -15,6 +12,7 @@ import TransactionReducer from '../reducers/TransactionReducer';
 import BaseActionsClass from './BaseActionsClass';
 
 import FormatHelper from '../helpers/FormatHelper';
+import GlobalReducer from '../reducers/GlobalReducer';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -30,7 +28,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			const block = await echo.api.getBlock(blockNumber);
 
 			if (!block || !block.transactions[index - 1]) {
-				history.replace(NOT_FOUND_PATH);
+				dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
 				return;
 			}
 

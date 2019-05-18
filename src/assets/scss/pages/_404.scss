@@ -1,4 +1,9 @@
 .not-found-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
     background-color: #18142a;
     min-height: 100vh;
 
@@ -143,7 +148,7 @@
                 margin-top: 0;
                 max-width: 330px;
                 text-align: center;
-                
+
                 .title {
                     font-size: 24px;
                     @include InterUI_Medium;

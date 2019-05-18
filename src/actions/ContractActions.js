@@ -5,12 +5,11 @@ import { batchActions } from 'redux-batched-actions';
 import ContractReducer from '../reducers/ContractReducer';
 import BaseActionsClass from './BaseActionsClass';
 
-import browserHistory from '../history';
-import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { formatOperation } from './BlockActions';
 import FormatHelper from '../helpers/FormatHelper';
+import GlobalReducer from '../reducers/GlobalReducer';
 
 class ContractActions extends BaseActionsClass {
 
@@ -46,7 +45,7 @@ class ContractActions extends BaseActionsClass {
 		return async (dispatch) => {
 
 			if (!validators.isContractId(id)) {
-				browserHistory.replace(NOT_FOUND_PATH);
+				dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
 				return;
 			}
 
@@ -55,7 +54,7 @@ class ContractActions extends BaseActionsClass {
 				const contract = await echo.api.getContract(id);
 
 				if (!contract) {
-					browserHistory.replace(NOT_FOUND_PATH);
+					dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
 					return;
 				}
 

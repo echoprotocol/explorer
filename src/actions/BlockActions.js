@@ -27,14 +27,12 @@ import {
 	CONTRACT_OBJECT_PREFIX,
 } from '../constants/ObjectPrefixesConstants';
 
-import { NOT_FOUND_PATH } from '../constants/RouterConstants';
 
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 
-import history from '../history';
-
 import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
+import GlobalReducer from '../reducers/GlobalReducer';
 
 /**
  *
@@ -275,7 +273,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
 		if (!planeBlock) {
-			history.replace(NOT_FOUND_PATH);
+			dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
 			return;
 		}
 
@@ -320,7 +318,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
-		history.replace(NOT_FOUND_PATH);
+		dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
 	}
 };
 

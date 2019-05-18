@@ -10,6 +10,7 @@ const DEFAULT_FIELDS = Map({
 	historyLength: 0,
 	connected: false,
 	error: '',
+	errorPath: false,
 });
 
 export default createModule({

@@ -76,17 +76,19 @@ class App extends React.Component {
 		const {
 			children,
 			error,
+			errorPath,
 			connected,
 			pathName,
 			subscribeConnect,
 			showInternetConnectionBar,
 		} = this.props;
 
+
 		if (!connected && error) {
 			return this.renderErrorScreen(error);
 		}
 
-		if (pathName && pathName.search(NOT_FOUND_PATH) !== -1) {
+		if ((pathName && pathName.search(NOT_FOUND_PATH) !== -1) || errorPath) {
 			return this.renderNotFound();
 		}
 
@@ -102,6 +104,7 @@ App.propTypes = {
 	title: PropTypes.string.isRequired,
 	init: PropTypes.func.isRequired,
 	error: PropTypes.string.isRequired,
+	errorPath: PropTypes.bool.isRequired,
 	pathName: PropTypes.string.isRequired,
 	connected: PropTypes.bool.isRequired,
 	subscribeConnect: PropTypes.bool.isRequired,
@@ -111,6 +114,7 @@ App.propTypes = {
 export default connect(
 	(state) => ({
 		error: state.global.get('error'),
+		errorPath: state.global.get('errorPath'),
 		connected: state.global.get('connected'),
 		title: state.global.get('title'),
 		pathName: state.router.location.pathname,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router';
+import { Route, Switch } from 'react-router';
 
 import App from './containers/App';
 import RecentBlockSection from './containers/RecentBlockSection';
@@ -20,7 +20,8 @@ import {
 	CONTRACT_PATH_DETAIL,
 } from './constants/RouterConstants';
 
-export default class Routes extends React.Component {
+
+export default class extends React.Component {
 
 	render() {
 		return (
@@ -34,7 +35,7 @@ export default class Routes extends React.Component {
 					<Route exact path={ASSET_PATH} component={Asset} />
 					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
 					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
-					<Redirect to={NOT_FOUND_PATH} />
+					<Route component={NotFound} />
 				</Switch>
 			</App>
 		);
