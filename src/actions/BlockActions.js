@@ -373,6 +373,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 		let unixTimestamps = transactions.get('unixTimestamps');
 
 		const sumResults = blocks
+			.filter((block) => moment(block.timestamp).unix() - moment(new Date(null)).unix() > 0)
 			.reduce(({ sum, sumOps }, block) => {
 				trLengths = trLengths.push(block.transactions.length);
 
