@@ -56,6 +56,7 @@ class SearchActions extends BaseActionsClass {
 
 				if (TypesHelper.isStringNumber(str) || TypesHelper.isCommaNumberRepresentation(str)) {
 					str = FormatHelper.removeCommas(str);
+					str = FormatHelper.removeDots(str);
 
 					const blockHint = {
 						section: 'Block', value: str, to: URLHelper.createBlockUrl(str),

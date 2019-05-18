@@ -103,6 +103,14 @@ class FormatHelper {
 		return str.replace(/,/g, '');
 	}
 
+	/**
+	 *
+	 * @param {String} str
+	 */
+	static removeDots(str) {
+		return str.replace(/\./g, '');
+	}
+
 }
 
 export default FormatHelper;
