@@ -2,12 +2,14 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PropTypes from 'prop-types';
 import echo from 'echojs-lib';
-
+import { Link } from 'react-router-dom';
+import URLHelper from '../../helpers/URLHelper';
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 import Loader from '../Loader';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { CONTRACT_BALANCES, CONTRACT_BYTECODE, CONTRACT_DETAILS_NUMBERS_TAB } from '../../constants/RouterConstants';
 
 class Contract extends React.Component {
 
@@ -42,10 +44,11 @@ class Contract extends React.Component {
 		this.props.updateContractInfo(first ? first[0].id : first);
 	}
 
+
 	render() {
 		const {
 			loading, isFullHistory, loadingMoreHistory,
-			bytecode, history, balances, match: { params: { id } },
+			bytecode, history, balances, match: { params: { id, detail } },
 		} = this.props;
 
 		return (
@@ -53,11 +56,12 @@ class Contract extends React.Component {
 				<div className="account-page-t-block">
 					<div className="title">Contract {id}</div>
 				</div>
-				<Tabs>
-					<TabList className="tab-panel">
-						<Tab>Transactions</Tab>
-						<Tab>Bytecode</Tab>
-						<Tab>Balances</Tab>
+
+				<Tabs selectedIndex={CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0} onSelect={() => {}}>
+					<TabList className="tab-panel" onSelect={() => {}}>
+						<Tab><Link to={URLHelper.createContractUrl(id)}>Transactions</Link></Tab>
+						<Tab><Link to={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}>Bytecode</Link></Tab>
+						<Tab><Link to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}>Balances</Link></Tab>
 					</TabList>
 					<TabPanel>
 						{

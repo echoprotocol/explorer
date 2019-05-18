@@ -16,8 +16,8 @@ import {
 	OBJECTS_PATH,
 	ACCOUNTS_PATH,
 	ASSET_PATH,
-	CONTRACT_PATH,
 	NOT_FOUND_PATH,
+	CONTRACT_PATH_DETAIL,
 } from './constants/RouterConstants';
 
 export default class Routes extends React.Component {
@@ -32,7 +32,7 @@ export default class Routes extends React.Component {
 					<Route exact path={OBJECTS_PATH} component={Objects} />
 					<Route exact path={ACCOUNTS_PATH} component={Account} />
 					<Route exact path={ASSET_PATH} component={Asset} />
-					<Route exact path={CONTRACT_PATH} component={Contract} />
+					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
 					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
 					<Redirect to={NOT_FOUND_PATH} />
 				</Switch>

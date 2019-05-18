@@ -7,11 +7,11 @@
 
         .account-page-t-block {
             margin-bottom: 30px;
-            
+
             @include res-768 {
                 padding-top: 47px;
             }
-    
+
             @include res-500 {
                 padding-top: 28px;
                 margin-bottom: 43px;
@@ -93,7 +93,7 @@
                             color: #130d32;
                             display: flex;
                             word-break: break-all;
-                            
+
                             .txt {
                                 margin-right: 5px;
                             }
@@ -160,7 +160,7 @@
                             margin-top: 14px;
                             display: flex;
                             flex-wrap: wrap;
-                            
+
                             @include res-1280 {
                                 justify-content: space-between;
                             }
@@ -174,7 +174,7 @@
                                 padding-bottom: 11px;
                                 margin-bottom: 10px;
                                 position: relative;
-                                
+
                                 margin-right: 15px;
 
                                 &:only-child {
@@ -286,6 +286,10 @@
                 background-color: rgba(226, 224, 230, 0.5);
                 color: rgba(0, 0, 0, 0.5);
                 transition: background-color .2s ease-out;
+
+                a {
+                    color: inherit;
+                }
 
                 &:hover {
                     background-color: rgba(226, 224, 230, 0.8);
@@ -534,7 +538,7 @@
                 }
             }
         }
-        
+
 		&.with-d-table {
 			.divTable {
 				.TableHeading .divTableCell, .divTableRow .divTableCell{
@@ -551,7 +555,7 @@
                                 padding-left: 10px;
                             }
                         }
-                        
+
                         &:nth-child(2) {
                             @include res-768 {
                                 width: 85px;
@@ -578,7 +582,7 @@
                                 min-width: 85px;
                             }
                         }
-                        
+
                         &:nth-child(5), &:nth-child(6) {
                             width: 125px;
                             max-width: 125px;
@@ -599,7 +603,7 @@
                             }
                         }
 				}
-				
+
 				.divTableRow {
 					.divTableCell{
 

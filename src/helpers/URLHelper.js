@@ -47,12 +47,12 @@ class URLHelper {
 	}
 
 	/**
-	 *
-	 * @param {String} contractId
-	 * @return {String}
+	 * @param contractId
+	 * @param detail
+	 * @returns {string}
 	 */
-	static createContractUrl(contractId) {
-		return CONTRACT_PATH.replace(/:id/, contractId);
+	static createContractUrl(contractId, detail = '') {
+		return `${CONTRACT_PATH.replace(/:id/, contractId)}${`${detail}` || ''}`;
 	}
 
 	/**
