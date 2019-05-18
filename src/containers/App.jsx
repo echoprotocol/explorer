@@ -11,7 +11,6 @@ import Header from './Header';
 import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
 
 import ErrorScreen from '../components/ErrorScreen';
-import Loader from '../components/Loader';
 
 import InternetPopup from '../components/InternetPopup';
 import NotFound from '../containers/NotFound';
@@ -83,12 +82,8 @@ class App extends React.Component {
 			showInternetConnectionBar,
 		} = this.props;
 
-		if (!connected) {
-			return error ? this.renderErrorScreen(error) : (
-				<div className="f-h-loader-wrapper">
-					<Loader text="Loading..." />
-				</div>
-			);
+		if (!connected && error) {
+			return this.renderErrorScreen(error);
 		}
 
 		if (pathName && pathName.search(NOT_FOUND_PATH) !== -1) {

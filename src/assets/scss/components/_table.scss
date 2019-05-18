@@ -51,7 +51,7 @@
     transition: .2s ease-out;
     cursor: pointer;
     display: inline-block;
-    
+
     &:hover {
       color: #095494;
     }
@@ -96,7 +96,7 @@
       color: #828b95;
       white-space: nowrap;
       padding-right: 0;
-      
+
       @include res-1280 {
         padding: 12px 25px;
         &:not(:last-child) {
@@ -130,7 +130,7 @@
 
     &:hover {
       background-color: #fff;
-      box-shadow: 2px 0px 14px 0px rgba(0, 0, 0, 0.07); 
+      box-shadow: 2px 0px 14px 0px rgba(0, 0, 0, 0.07);
     }
 
     &:active {
@@ -162,7 +162,7 @@
 
       @include res-1280 {
         padding: 7px 25px;
-        padding-right: 0;        
+        padding-right: 0;
       }
 
       .sub-container {
@@ -186,13 +186,13 @@
   padding-left: 10px;
   padding-right: 10px;
   text-align: center;
-  
+
   display: flex;
   justify-content: center;
 
   height: 35px;
-  
-  @include res-500 {  
+
+  @include res-500 {
     margin: 30px auto 0;
   }
 
@@ -209,7 +209,7 @@
       background-position: center;
       background-repeat: no-repeat;
       animation: spin 1s infinite;
-      
+
       @keyframes spin{
           0%{
             -webkit-transform: rotate(0deg);
@@ -217,7 +217,7 @@
             -o-transform: rotate(0deg);
             transform: rotate(0deg);
           }
-        
+
           100%{
             -webkit-transform: rotate(360deg);
             -ms-transform: rotate(360deg);
@@ -269,7 +269,7 @@
     background-repeat: no-repeat;
     margin-left: 15px;
     transform: translateY(-1px);
-    
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -304,7 +304,7 @@
     position: relative;
     width: 30px;
     height: 30px;
-    background-image: url(../images/icons/loader-l.png);
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAfCAYAAAAfrhY5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkZCQTU5QkFEMjA4NTExRTk4RjExRTNGQzY3MjJENDU4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkZCQTU5QkFFMjA4NTExRTk4RjExRTNGQzY3MjJENDU4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RkJBNTlCQUIyMDg1MTFFOThGMTFFM0ZDNjcyMkQ0NTgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RkJBNTlCQUMyMDg1MTFFOThGMTFFM0ZDNjcyMkQ0NTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz55uWMsAAACSElEQVR42ryXS0hUURjHz9zMCkEoMwrMLApL1LAHkdROKAyyKAILImgRuAlpGQSKuBkiCloF1S4IClcFUQaFbSKlkOg5SVT2tOkhCmb2++IvXOKaXp17Pvgxw3Dn/s7zO99JtabPuphRBsthARTACHyFZ9AHv6f6orwpPrcSGmAzFMEsEYQ+jZ9wF65A90zlK+AwrA8J3kIGsjAE82ARrNaI7IRd0APt8DiuPAV7YT/Mhh9wA67Dm/80tlTiA7BBI5CG81EPBxM0qFlia0QHHIJzk4gtXsMZ2A6XNCXH4aQ6MWnPj2huB/WnHhc/bAG2QBecgj2SH4WxiXpeD1u0cE5MUxyOm9Co9+2WPHLYl8E+GFVrMy430QtN+n4MKqPkjZpjW1SPXG7jDlyAfGj7V277eBV8h6sumUhre9q0bgrLtyozdWrvJhG2XS9qdA+6UOKo1Fx3uWTjsnx143LLTnPhA3xMWP4S3sMSWGPyEvW6z/mJB+r0X3mB5FlP8gElnMWBspzJhz3Js8pyhSb/JXngSR6o58OBWmLyQk9yOzOe29Fs8n7JSzzJH8Jpyyk235/gmxaeVSlfEpZfC4//mOov632V8xjji6xb8rUwx7fcKpRXWoW1vuUWt1QGV6sW8yq3hXdPp9s2KPYpt7gPT1T47Uh6+0VlNRv+p2qAHX0boyrPXERU9WrDflvTUAPlsFRZKaMMlZg8XPi9g3W6l1XoBvNC9flgnHvZdK5LAyp/F0o8X7+PzlQc56L4WaQ0/yO5GPY/AgwAFe+BZVDZ//sAAAAASUVORK5CYII=');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -318,7 +318,7 @@
           -o-transform: rotate(0deg);
           transform: rotate(0deg);
         }
-      
+
         100%{
           -webkit-transform: rotate(360deg);
           -ms-transform: rotate(360deg);
