@@ -54,13 +54,13 @@ class Account extends React.Component {
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
-			account, balances, history, match: { params: { id } },
+			account, balances, history,
 		} = this.props;
 
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
 				<div className="account-page-t-block">
-					<div className="title">Account {id}</div>
+					{account && <div className="title">Account {account.get('id')}</div>}
 					<div className="help-container">
 						{
 							account ?

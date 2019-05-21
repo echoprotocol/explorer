@@ -101,7 +101,7 @@ class RecentBlockTable extends React.Component {
 														<div className="title">Producer</div>
 														<div className="value">
 															<Link
-																to={URLHelper.createUrlById(data.producerId)}
+																to={URLHelper.createAccountUrlByName(data.producer)}
 																className="blue"
 															>
 																{data.producer}
@@ -166,7 +166,7 @@ class RecentBlockTable extends React.Component {
 															<div className="divTableCell">
 																<div className="inner-container">
 																	<Link
-																		to={URLHelper.createUrlById(data.producerId)}
+																		to={URLHelper.createAccountUrlByName(data.producer)}
 																		className="blue"
 																	>
 																		{data.producer}

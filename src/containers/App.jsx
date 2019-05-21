@@ -88,6 +88,10 @@ class App extends React.Component {
 			return this.renderErrorScreen(error);
 		}
 
+		if (!connected) {
+			return null;
+		}
+
 		if ((pathName && pathName.search(NOT_FOUND_PATH) !== -1) || errorPath) {
 			return this.renderNotFound();
 		}

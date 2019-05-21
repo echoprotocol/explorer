@@ -34,7 +34,7 @@ class TransactionsTable extends React.Component {
 					<div className="title">From</div>
 					<div className="value">
 						<Link
-							to={URLHelper.createUrlById(io.from.id)}
+							to={URLHelper.createAccountUrlByName(io.from.name)}
 							className="blue"
 						>
 							{io.from.name || io.from.id}
@@ -45,7 +45,7 @@ class TransactionsTable extends React.Component {
 					<div className="title">To</div>
 					<div className="value">
 						<Link
-							to={URLHelper.createUrlById(io.subject.id)}
+							to={URLHelper.createAccountUrlByName(io.subject.name)}
 							className="blue"
 						>
 							{io.subject.name || io.subject.id}
@@ -133,14 +133,14 @@ class TransactionsTable extends React.Component {
 				<div className="divTableCell" />
 				<div className="divTableCell" />
 				<div className="divTableCell">
-					<Link to={URLHelper.createUrlById(io.from.id)} className="inner-container">
+					<Link to={URLHelper.createAccountUrlByName(io.from.name)} className="inner-container">
 						<div className="blue">{io.from.name || io.from.id}</div>
 					</Link>
 				</div>
 				<div className="divTableCell transaction-to">
 					<div className="inner-container">
 						<div className="line-arrow" />
-						<Link to={URLHelper.createUrlById(io.subject.id)}>
+						<Link to={URLHelper.createAccountUrlByName(io.subject.name)}>
 							<div className="blue">{io.subject.name || io.subject.id}</div>
 						</Link>
 					</div>
@@ -174,12 +174,13 @@ class TransactionsTable extends React.Component {
 					}
 					<div className="divTableCell">{data.name}</div>
 					<div className="divTableCell">
-						<Link to={URLHelper.createUrlById(data.from.id)} className="inner-container">
+						<Link to={URLHelper.createAccountUrlByName(data.from.name)} className="inner-container">
 							<div className="blue">{data.from.name || data.from.id}</div>
 						</Link>
 					</div>
 					<div className="divTableCell transaction-to">
-						<Link to={URLHelper.createUrlById(data.subject.id)} className="inner-container">
+
+						<Link to={URLHelper.createAccountUrlByName(data.subject.name)} className="inner-container">
 							<div className="blue">{data.subject.name || data.subject.id}</div>
 						</Link>
 					</div>

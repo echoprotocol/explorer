@@ -38,6 +38,15 @@ class URLHelper {
 	}
 
 	/**
+	 *
+	 * @param {String} accountName
+	 * @return {String}
+	 */
+	static createAccountUrlByName(accountName) {
+		return ACCOUNTS_PATH.replace(/:id/, accountName);
+	}
+
+	/**
      *
      * @param {String} assetId
      * @return {String}

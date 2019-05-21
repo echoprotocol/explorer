@@ -54,7 +54,7 @@ class AccountActions extends BaseActionsClass {
 	 */
 	getAccountInfo(id) {
 		return async (dispatch) => {
-			if (!validators.isAccountId(id)) {
+			if (!validators.isAccountId(id) && !validators.isAccountName(id)) {
 				dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: 'true' }));
 				return;
 			}
