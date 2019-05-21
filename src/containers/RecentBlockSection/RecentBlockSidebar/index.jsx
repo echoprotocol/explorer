@@ -47,7 +47,7 @@ class RecentBlockSidebar extends React.Component {
 					</div>
 					<div className="sidebar-elem">
 						<div className="title">Latest block time</div>
-						<div className="value">{startTimestamp + this.state.timer}&nbsp;<span className="sm">sec</span></div>
+						<div className="value">{FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)}</div>
 					</div>
 					<div className="sidebar-elem">
 						<div className="title">Average transactions / operations count</div>

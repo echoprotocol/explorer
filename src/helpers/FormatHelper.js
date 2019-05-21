@@ -75,6 +75,27 @@ class FormatHelper {
 
 	/**
 	 *
+	 * @param time
+	 * @returns {string}
+	 */
+	static formatLatestBlockTime(time) {
+		let hours = Math.floor(time / 3600);
+		let minutes = Math.floor((time - (hours * 3600)) / 60);
+		let seconds = time - (hours * 3600) - (minutes * 60);
+
+		if (hours > 0) {
+			hours = `${hours} ${hours > 1 ? 'hours ' : 'hour '}`;
+		}
+
+		if (minutes > 0) {
+			minutes = `${minutes} min `;
+		}
+		seconds = `${seconds} sec`;
+
+		return `${hours || ''}${minutes || ''}${seconds}`;
+	}
+	/**
+	 *
      * @param {String} hex
      */
 	static toUtf8(hex) {
