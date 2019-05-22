@@ -45,7 +45,7 @@ class TransactionsTable extends React.Component {
 					<div className="title">To</div>
 					<div className="value">
 						<Link
-							to={URLHelper.createAccountUrlByName(io.subject.name)}
+							to={URLHelper.createUrlById(io.subject.name || io.subject.id)}
 							className="blue"
 						>
 							{io.subject.name || io.subject.id}
@@ -140,7 +140,7 @@ class TransactionsTable extends React.Component {
 				<div className="divTableCell transaction-to">
 					<div className="inner-container">
 						<div className="line-arrow" />
-						<Link to={URLHelper.createAccountUrlByName(io.subject.name)}>
+						<Link to={URLHelper.createUrlById(io.subject.name || io.subject.id)}>
 							<div className="blue">{io.subject.name || io.subject.id}</div>
 						</Link>
 					</div>
@@ -180,7 +180,7 @@ class TransactionsTable extends React.Component {
 					</div>
 					<div className="divTableCell transaction-to">
 
-						<Link to={URLHelper.createAccountUrlByName(data.subject.name)} className="inner-container">
+						<Link to={URLHelper.createUrlById(data.subject.name || data.subject.id)} className="inner-container">
 							<div className="blue">{data.subject.name || data.subject.id}</div>
 						</Link>
 					</div>

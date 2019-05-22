@@ -1,38 +1,52 @@
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PropTypes from 'prop-types';
-import echo from 'echojs-lib';
 import { Link } from 'react-router-dom';
-import URLHelper from '../../helpers/URLHelper';
+import echo from 'echojs-lib';
+
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 import Loader from '../Loader';
+
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import URLHelper from '../../helpers/URLHelper';
 import { CONTRACT_BALANCES, CONTRACT_BYTECODE, CONTRACT_DETAILS_NUMBERS_TAB } from '../../constants/RouterConstants';
 
 class Contract extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.subscriber = this.updateInfo.bind(this);
+	}
+
 	componentDidMount() {
-		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, this.props.match.params.id));
-		this.props.getContractInfo();
-		echo.subscriber.setBlockApplySubscribe(this.updateInfo.bind(this));
+		this.initContract();
 	}
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.match.params.id !== this.props.match.params.id) {
-			this.props.getContractInfo();
-			this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, this.props.match.params.id));
+			this.initContract();
 		}
 	}
 
 	componentWillUnmount() {
 		this.props.clearContractInfo();
-		echo.subscriber.removeBlockApplySubscribe(this.updateInfo.bind(this));
+		echo.subscriber.removeContractSubscribe(this.subscriber);
 	}
 
 	onLoadMoreHistory() {
 		this.props.loadContractHistory(this.props.history.last()[0].id.split('.')[2]);
+	}
+
+	initContract() {
+		const { id } = this.props.match.params;
+
+		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
+		this.props.getContractInfo();
+		echo.subscriber.removeContractSubscribe(this.subscriber);
+		echo.subscriber.setContractSubscribe([id], this.subscriber);
 	}
 
 	updateInfo() {

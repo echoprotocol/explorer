@@ -72,7 +72,9 @@ class URLHelper {
 
 		let url;
 
-		if (validators.isAccountId(id)) {
+		if (validators.isAccountName(id)) {
+			url = URLHelper.createAccountUrlByName(id);
+		} else if (validators.isAccountId(id)) {
 			url = URLHelper.createAccountUrl(id);
 		} else if (validators.isContractId(id)) {
 			url = URLHelper.createContractUrl(id);

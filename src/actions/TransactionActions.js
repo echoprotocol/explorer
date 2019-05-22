@@ -99,16 +99,10 @@ class TransactionActionsClass extends BaseActionsClass {
 					OPERATIONS_IDS.CALL_CONTRACT,
 					OPERATIONS_IDS.CONTRACT_TRANSFER,
 				].includes(type)) {
-					let resId = transaction.operation_results[opIndex][1];
-					const partsResId = resId.split('.');
+					const [, resultId] = transaction.operation_results[opIndex];
 
-					if (type === OPERATIONS_IDS.CREATE_CONTRACT) {
-						partsResId[2] -= 1;
-					}
+					const [contractResultType, result] = await echo.api.getContractResult(resultId);
 
-					resId = partsResId.join('.');
-
-					const [contractResultType, result] = await echo.api.getContractResult(resId);
 					if (contractResultType === CONTRACT_RESULT_TYPE_0) {
 						const { exec_res: { excepted, code_deposit, new_address }, tr_receipt: { log } } = result;
 
