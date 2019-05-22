@@ -474,4 +474,84 @@ export default {
 			asset: 'amount.asset_id',
 		},
 	},
+	change_sidechain_config: {
+		value: OPERATIONS_IDS.CHANGE_SIDECHAIN_CONFIG,
+		name: 'Change sidechain config',
+		options: {
+			from: null,
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
+	account_address_create: {
+		value: OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE,
+		name: 'Account address create',
+		options: {
+			from: 'owner',
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
+	transfer_to_address: {
+		value: OPERATIONS_IDS.TRANSFER_TO_ADDRESS,
+		name: 'Transfer to address',
+		options: {
+			from: 'from',
+			subject: ['to', 'name'],
+			value: 'amount',
+			asset: null,
+		},
+	},
+	generate_eth_address: {
+		value: OPERATIONS_IDS.GENERATE_ETH_ADDRESS,
+		name: 'Generate eth address',
+		options: {
+			from: 'account_id',
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
+	create_eth_address: {
+		value: OPERATIONS_IDS.CREATE_ETH_ADDRESS,
+		name: 'Create eth address',
+		options: {
+			from: 'account_id',
+			subject: ['committee_member_id'],
+			value: null,
+			asset: null,
+		},
+	},
+	deposit_eth: {
+		value: OPERATIONS_IDS.DEPOSIT_ETH,
+		name: 'Deposit eth',
+		options: {
+			from: 'account_id',
+			subject: ['committee_member_id'],
+			value: 'value',
+			asset: null,
+		},
+	},
+	withdraw_eth: {
+		value: OPERATIONS_IDS.WITHDRAW_ETH,
+		name: 'Withdraw eth',
+		options: {
+			from: 'acc_id',
+			subject: null,
+			value: 'value',
+			asset: null,
+		},
+	},
+	approve_withdraw_eth: {
+		value: OPERATIONS_IDS.APPROVE_WITHDRAW_ETH,
+		name: 'Approve withdraw eth',
+		options: {
+			from: null,
+			subject: ['committee_member_id'],
+			value: null,
+			asset: null,
+		},
+	},
 };
