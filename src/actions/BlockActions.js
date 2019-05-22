@@ -185,6 +185,7 @@ export const formatOperation = async (
 	}
 
 	if (resId && (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT)) {
+
 		const contractResult = await echo.api.getContractResult(resId);
 
 		const [contractResultType, contractResultObject] = contractResult;
