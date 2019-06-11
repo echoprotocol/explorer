@@ -42,13 +42,13 @@ export default withRouter(connect(
 	}),
 	(dispatch, props) => ({
 		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),
-		updateAccountHistory: (newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
-			props.match.params.id,
+		updateAccountHistory: (accountId, newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
+			accountId,
 			newHistory,
 			oldHistory,
 		)),
-		loadAccountHistory: (lastOperationId) => dispatch(AccountActions.loadAccountHistory(
-			props.match.params.id,
+		loadAccountHistory: (accountId, lastOperationId) => dispatch(AccountActions.loadAccountHistory(
+			accountId,
 			lastOperationId,
 		)),
 		updateAccountBalances: (balances) => dispatch(AccountActions.updateAccountBalances(balances)),

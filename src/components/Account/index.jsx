@@ -31,11 +31,11 @@ class Account extends React.Component {
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
 		if (!prevAccount.get('history').equals(account.get('history'))) {
-			this.props.updateAccountHistory(account.get('history'), prevAccount.get('history'));
+			this.props.updateAccountHistory(account.get('id'), account.get('history'), prevAccount.get('history'));
 		}
 
 		if (!prevAccount.get('balances').equals(account.get('balances'))) {
-			this.props.updateAccountBalances(account.get('balances'));
+			this.props.updateAccountBalances(account.get('id'), account.get('balances'));
 		}
 	}
 
@@ -44,7 +44,8 @@ class Account extends React.Component {
 	}
 
 	onLoadMoreHistory() {
-		this.props.loadAccountHistory(this.props.history.last()[0].id.split('.')[2]);
+		const { account, history } = this.props;
+		this.props.loadAccountHistory(account.get('id'), history.last()[0].id.split('.')[2]);
 	}
 
 	renderLoader(loading) {

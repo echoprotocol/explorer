@@ -201,26 +201,6 @@ export default {
 			asset: 'asset_id',
 		},
 	},
-	witness_create: {
-		value: OPERATIONS_IDS.WITNESS_CREATE,
-		name: 'Create witness',
-		options: {
-			from: 'witness_account',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
-	witness_update: {
-		value: OPERATIONS_IDS.WITNESS_UPDATE,
-		name: 'Update witness',
-		options: {
-			from: 'witness_account',
-			subject: ['witness', 'name'],
-			value: null,
-			asset: null,
-		},
-	},
 	proposal_create: {
 		value: OPERATIONS_IDS.PROPOSAL_CREATE,
 		name: 'Create proposal',
@@ -341,16 +321,6 @@ export default {
 			asset: 'amount.asset_id',
 		},
 	},
-	worker_create: {
-		value: OPERATIONS_IDS.WORKER_CREATE,
-		name: 'Create worker',
-		options: {
-			from: 'owner',
-			subject: ['name', null],
-			value: null,
-			asset: null,
-		},
-	},
 	custom: {
 		value: OPERATIONS_IDS.CUSTOM,
 		name: 'Custom',
@@ -391,36 +361,6 @@ export default {
 			asset: 'amount.asset_id',
 		},
 	},
-	transfer_to_blind: {
-		value: OPERATIONS_IDS.TRANSFER_TO_BLIND,
-		name: 'Transfer to blinded account',
-		options: {
-			from: 'from',
-			subject: null,
-			value: 'amount.amount',
-			asset: 'amount.asset_id',
-		},
-	},
-	blind_transfer: {
-		value: OPERATIONS_IDS.BLIND_TRANSFER,
-		name: 'Blinded transfer',
-		options: {
-			from: null,
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
-	transfer_from_blind: {
-		value: OPERATIONS_IDS.TRANSFER_FROM_BLIND,
-		name: 'Transfer from blinded account',
-		options: {
-			from: null,
-			subject: ['to', 'name'],
-			value: 'amount.amount',
-			asset: 'amount.asset_id',
-		},
-	},
 	asset_settle_cancel: {
 		value: OPERATIONS_IDS.ASSET_SETTLE_CANCEL,
 		name: 'Cancel asset settlement',
@@ -454,7 +394,7 @@ export default {
 			asset: 'value.asset_id',
 		},
 	},
-	contract_call: {
+	call_contract: {
 		value: OPERATIONS_IDS.CALL_CONTRACT,
 		name: 'Contract call',
 		options: {
@@ -508,7 +448,7 @@ export default {
 		value: OPERATIONS_IDS.GENERATE_ETH_ADDRESS,
 		name: 'Generate eth address',
 		options: {
-			from: 'account_id',
+			from: 'account',
 			subject: null,
 			value: null,
 			asset: null,
@@ -518,7 +458,7 @@ export default {
 		value: OPERATIONS_IDS.CREATE_ETH_ADDRESS,
 		name: 'Create eth address',
 		options: {
-			from: 'account_id',
+			from: 'account',
 			subject: ['committee_member_id'],
 			value: null,
 			asset: null,
@@ -528,7 +468,7 @@ export default {
 		value: OPERATIONS_IDS.DEPOSIT_ETH,
 		name: 'Deposit eth',
 		options: {
-			from: 'account_id',
+			from: 'account',
 			subject: ['committee_member_id'],
 			value: 'value',
 			asset: null,
@@ -538,7 +478,7 @@ export default {
 		value: OPERATIONS_IDS.WITHDRAW_ETH,
 		name: 'Withdraw eth',
 		options: {
-			from: 'acc_id',
+			from: 'account',
 			subject: null,
 			value: 'value',
 			asset: null,
@@ -552,6 +492,46 @@ export default {
 			subject: ['committee_member_id'],
 			value: null,
 			asset: null,
+		},
+	},
+	contract_fund_pool: {
+		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
+		name: 'Contract fund pool',
+		options: {
+			from: 'registrar',
+			subject: 'contract_to_modify',
+			amount: null,
+			asset: 'fee',
+		},
+	},
+	contract_whitelist: {
+		value: OPERATIONS_IDS.CONTRACT_WHITELIST,
+		name: 'Contract whitelist',
+		options: {
+			from: 'sender',
+			subject: 'callee',
+			amount: 'value',
+			asset: 'fee',
+		},
+	},
+	sidechain_issue: {
+		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
+		name: 'Sidechain issue',
+		options: {
+			from: 'account',
+			subject: ['deposit_id'],
+			amount: 'value.amount',
+			asset: 'fee.asset_id',
+		},
+	},
+	sidechain_burn: {
+		value: OPERATIONS_IDS.SIDECHAIN_BURN,
+		name: 'Sidechain burn',
+		options: {
+			from: 'account',
+			subject: ['withdraw_id'],
+			amount: 'amount.value',
+			asset: 'fee.asset_id',
 		},
 	},
 };
