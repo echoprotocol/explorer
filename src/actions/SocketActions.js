@@ -81,8 +81,7 @@ const roundSubscribe = (notification) => (dispatch) => {
  * 	Call when trigger setBlockApplySubscribe (release new block)
  */
 const blockRelease = () => async (dispatch) => {
-	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
-
+	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
 	dispatch(updateAverageTransactions());
 	dispatch(updateBlockList(global.head_block_number));
@@ -110,13 +109,12 @@ export const connect = () => async (dispatch) => {
 
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
-		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
-
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 
 		echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
 		echo.subscriber.setStatusSubscribe('disconnect', () => dispatch(onDisconnectSubscriber()));
 
+		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
 		const producers = global._creator_count;
 
 		dispatch(batchActions([
