@@ -284,6 +284,10 @@
 
 .f-h-loader-wrapper {
   .f-h-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 16px);
     margin-top: 0;
     width: auto;
     height: auto;
