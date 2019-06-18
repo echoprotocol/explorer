@@ -22,7 +22,7 @@ export default connect(
 
 	},
 	(dispatch, props) => ({
-		getAssetInfo: (id = props.match.params.id) => getFullAssetInformation(id),
+		getAssetInfo: (id = props.match.params.id) => dispatch(getFullAssetInformation(id)),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),
 )(Asset);

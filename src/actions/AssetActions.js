@@ -7,7 +7,7 @@ import GlobalReducer from '../reducers/GlobalReducer';
  * 	Set latest block from blockchain to redux store
  */
 // eslint-disable-next-line import/prefer-default-export
-export const getFullAssetInformation = async (assetId) => async (dispatch) => {
+export const getFullAssetInformation = (assetId) => async (dispatch) => {
 	try {
 		const asset = await echo.api.getObject(assetId);
 
