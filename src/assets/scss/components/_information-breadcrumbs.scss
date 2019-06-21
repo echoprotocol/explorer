@@ -1,6 +1,6 @@
 .information-breadcrumbs {
     margin-bottom: 30px;
-    
+
     @include res-768 {
         margin-bottom: 25px;
     }
@@ -45,11 +45,11 @@
             padding-bottom: 5px;
 
             transition: .2s ease-out;
-    
+
             &:hover {
               color: #095494;
             }
-        
+
             &:active {
               color: #fb0707;
             }
@@ -69,63 +69,63 @@
             }
         }
     }
+}
 
-    .backwards {
+.backwards {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    @include res-768 {
+        padding-left: 18px;
+    }
+
+    @include res-500 {
+        padding-left: 23px;
+    }
+
+    @include res-320 {
+        padding-left: 30px;
+    }
+
+    &-link {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        left: -53px;
         display: flex;
         align-items: center;
-        position: relative;
+        justify-content: center;
+        z-index: 15;
+
+        @include res-1000 {
+            left: -45px;
+        }
 
         @include res-768 {
-            padding-left: 18px;
+            left: -39px;
         }
 
         @include res-500 {
-            padding-left: 23px;
+            left: -16px;
         }
 
         @include res-320 {
-            padding-left: 30px;
+            display: none;
         }
+    }
 
-        &-link {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            left: -53px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 15;
+    > .title {
+        @include InterUI_Bold;
+        font-size: 23px;
+        // line-height: 45px;
+        color: #130d32;
+        line-height: 33px;
+        letter-spacing: 0.025em;
 
-            @include res-1000 {
-                left: -45px;
-            }
-
-            @include res-768 {
-                left: -39px;
-            }
-
-            @include res-500 {
-                left: -16px;
-            }
-
-            @include res-320 {
-                display: none;
-            }
-        }
-
-        > .title {
-            @include InterUI_Bold;
-            font-size: 23px;
-            // line-height: 45px;
-            color: #130d32;   
-            line-height: 33px;
-            letter-spacing: 0.025em;
-
-            @include res-320 {
-                width: 100%;
-                padding-right: 30px;
-            }
+        @include res-320 {
+            width: 100%;
+            padding-right: 30px;
         }
     }
 }

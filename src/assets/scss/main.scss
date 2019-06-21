@@ -1,8 +1,13 @@
+@import 'helpers/variables';
 @import 'helpers/mixins';
 
 @import 'base/base';
 @import 'base/normalize';
 @import 'base/fonts';
+
+@import "vendors/slick-slider/theme";
+@import "vendors/slick-slider/slick";
+
 
 @import 'layout/header';
 @import 'layout/preparing-section';
@@ -20,3 +25,7 @@
 @import "components/tooltip";
 @import 'components/information-breadcrumbs';
 @import "components/internet-popup";
+@import 'components/action-button';
+@import 'components/text-button';
+@import 'components/scroll-tabs';
+@import 'components/dropdown-tabs';

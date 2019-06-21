@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import { disconnect } from '../actions/SocketActions';
 
@@ -15,7 +16,7 @@ import ErrorScreen from '../components/ErrorScreen';
 import InternetPopup from '../components/InternetPopup';
 import NotFound from '../containers/NotFound';
 
-import { NOT_FOUND_PATH } from '../constants/RouterConstants';
+import { NOT_FOUND_PATH, CONTRACT_PATH } from '../constants/RouterConstants';
 
 class App extends React.Component {
 
@@ -47,12 +48,19 @@ class App extends React.Component {
 		);
 	}
 
-	renderApp(children, { subscribeConnect, showInternetConnectionBar }) {
+	renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName) {
+		const parsedLocation = pathName.split('/')[1];
+		const fullWrapRouts = [CONTRACT_PATH.split('/')[1]];
+
 		return (
 			<div className="wrapper">
 				<Header />
 				<div className="recent-block-section">
-					<div className="wrap">
+					<div
+						className={classnames('wrap', {
+							full: (fullWrapRouts.includes(parsedLocation)),
+						})}
+					>
 						{children}
 						<RecentBlockSidebar />
 					</div>
@@ -96,7 +104,7 @@ class App extends React.Component {
 			return this.renderNotFound();
 		}
 
-		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar });
+		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName);
 
 	}
 

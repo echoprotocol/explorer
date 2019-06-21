@@ -1,4 +1,4 @@
-.wrap {
+.wrap:not(.full) {
     width: 1440px;
     margin: 0 auto;
 
@@ -45,6 +45,36 @@
             width: 100%;
             padding-left: 10px;
             padding-right: 10px;
+        }
+    }
+}
+.recent-block-section {
+    .wrap.full {
+        justify-content: center;
+        .table-container {
+            min-height: calc(100vh - 300px);
+        }
+        .recent-block-sidebar {
+            width: 430px;
+            @include res-1280 {
+                width: 310px;
+            }
+            @include res-1000 {
+                width: 900px;
+                margin: auto;
+            }
+
+            @include res-768 {
+                width: 668px;
+            }
+
+            @include res-500 {
+                width: 450px;
+            }
+
+            @include res-320 {
+                width: 300px;
+            }
         }
     }
 }

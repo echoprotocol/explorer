@@ -24,6 +24,12 @@ $res-1440: 1535px;
   }
 }
 
+@mixin min-res-768 {
+  @media (min-width: #{$res-1000}) {
+    @content;
+  }
+}
+
 @mixin res-1000 {
   @media (max-width: #{$res-1280 - 1px}) {
     @content;
@@ -93,4 +99,44 @@ $res-1440: 1535px;
   &::-webkit-scrollbar{
     width: 6px;
   }
+}
+
+@mixin hardware-accel() {
+	-webkit-transform: translateZ(0) scale(1, 1);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+}
+
+@mixin btn() {
+	position: relative;
+	white-space: nowrap;
+	transition:
+        color $speed,
+        border $speed,
+        background-color $speed;
+}
+
+@mixin onFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
+	@include hardware-accel();
+	position: relative;
+
+	&:before {
+		content: '';
+		position: absolute;
+		top: -($outerBorderWidth + $innerBorderWidth);
+		right: -($outerBorderWidth + $innerBorderWidth);
+		bottom: -($outerBorderWidth + $innerBorderWidth);
+		left: -($outerBorderWidth + $innerBorderWidth);
+		border: $outerBorderWidth solid transparent;
+		border-radius: $angular + 2px;
+		transition: border-color $speed;
+	}
+
+	&:not(:active) {
+		&:focus {
+			&:before {
+				border-color: $color;
+			}
+		}
+	}
 }

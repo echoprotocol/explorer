@@ -56,8 +56,11 @@ a {
     transition: opacity .3s;
 }
 
+.no-wrap {
+	white-space: nowrap;
+}
 
-@media (max-width: 499px) and (-webkit-min-device-pixel-ratio:0) { 
+@media (max-width: 499px) and (-webkit-min-device-pixel-ratio:0) {
 	select,
 	textarea,
 	input {

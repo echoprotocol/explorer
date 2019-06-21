@@ -1,0 +1,336 @@
+.table-container.contract-page {
+    .react-tabs {
+        margin-top: 15px;
+
+        @include res-1000 {
+            width: 900px;
+            margin: auto;
+        }
+
+        @include res-768 {
+            width: 668px;
+        }
+
+        @include res-500 {
+            width: 450px;
+        }
+
+        @include res-320 {
+            width: 300px;
+        }
+
+        .tab-head {
+            position: relative;
+
+            &:before {
+                background-color: #E8E7EB;
+                content: '';
+                position: absolute;
+                top: -40px;
+                bottom: 0;
+                left: -1000px;
+                right: -70px;
+                z-index: 0;
+                @include res-1280 {
+                    right: -30px;
+                }
+                @include res-1000 {
+                    top: -25px;
+                    right: -1000px;
+                }
+            }
+            .backwards {
+                margin: 0 0 15px 0;
+            }
+            .account-page-t-block {
+                display: flex;
+                align-items: center;
+                margin: 0;
+                .title,
+                .ava {
+                    margin: 0;
+                    z-index: 1;
+                }
+
+                .ava {
+                    margin-right: 14px;
+
+                    img {
+                        width: 32px;
+                        height: 32px;
+                    }
+                }
+                @include res-1000 {
+                    padding: 0;
+                }
+                @include res-500 {
+                    margin: 14px 0 24px;
+                    padding: 0;
+
+                    .title {
+                        padding: 0;
+                    }
+                }
+
+            }
+            .buttons-wrap {
+                display: flex;
+                margin-bottom: 21px;
+                flex-wrap: wrap;
+
+                .item {
+                    z-index: 1;
+                    &:not(:last-child) {
+                        margin-right: 21px;
+                    }
+                    @include res-320 {
+                        &:last-child {
+                            margin-top: 12px;
+                            .action-button-wrap {
+                                flex-direction: row-reverse;
+                                .action-label {
+                                    margin-left: -2px;
+                                    padding: 4px 14px 4px 12px;
+                                    & + .action-button {
+                                        margin: 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .tab-body {
+            margin-top: 30px;
+        }
+    }
+}
+
+.contract-page {
+    @include res-320 {
+        .backwards {
+            display: block;
+            padding-left: 0;
+
+            .backwards-link {
+                left: 0;
+                display: flex;
+                position: relative;
+                justify-content: flex-start;
+            }
+        }
+    }
+
+}
+
+.created-info  {
+    @include InterUI_Regular;
+    font-size: 13px;
+    margin: 14px 0 24px;
+    line-height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .no-wrap {
+        display: flex;
+        align-items: center;
+    }
+
+    .date,.time {
+        color: #848B94;
+        margin-left: 5px;
+    }
+    .time {
+        margin-right: 5px;
+        & + .plain-text {
+            margin-right: 5px;
+        }
+    }
+    .avatar-image {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+        line-height: 0;
+    }
+    .link {
+        @include InterUI_Medium;
+        color: #498FDF;
+    }
+
+    @include res-768 {
+        max-width: 278px;
+    }
+    @include res-500 {
+        max-width: none;
+    }
+
+}
+
+.contract-info-panel {
+    .row {
+        display: flex;
+        justify-content: space-between;
+        max-width: 798px;
+        flex-wrap: wrap;
+        @include res-500 {
+            width: auto;
+
+            .column-right {
+                margin-top: 24px;
+                width: 100%;
+            }
+        }
+    }
+    .description {
+        @include InterUI_Regular;
+        max-width: 360px;
+        font-size: 12.63px;
+        line-height: 1.5;
+        @include res-768 {
+            max-width: 278px;
+        }
+        @include res-500 {
+            max-width: none;
+        }
+        &.short {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            max-height: 2*1.6;
+        }
+
+        & + .text-button {
+            margin-top: 15px;
+        }
+    }
+
+    .assets-title {
+        @include Hack_Bold;
+        margin: 24px 0 20px;
+        text-transform: uppercase;
+        color: rgba(#263C4B, .8);
+        font-size: 9px;
+        display: block;
+        padding: 18px 0 16px;
+        border-bottom: 1px solid rgba(#3F465A, .15);
+        letter-spacing: 2.2px;
+        @include res-768 {
+            max-width: 278px;
+            margin: 12px 0;
+        }
+        @include res-320 {
+            max-width: 100%;
+        }
+    }
+    .assets-list {
+        max-width: 360px;
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        @include res-768 {
+            max-width: 278px;
+        }
+        @include res-500 {
+            max-width: none;
+        }
+        li {
+            @include InterUI_Regular;
+            font-size: 11.66px;
+            padding: 10px 0 12px;
+            border-bottom: 1px solid rgba(#3F465A, .15);
+            width: 170px;
+            text-transform: uppercase;
+            @include res-768 {
+                width: 100%;
+            }
+            @include res-500 {
+                width: 48%;
+            }
+            @include res-320 {
+                width: 100%;
+            }
+            .value {
+                color: #0E0936;
+                margin-right: 5px;
+            }
+
+            .currency {
+                color: #498FDF;
+            }
+        }
+
+        & + .text-button {
+            margin-top: 15px;
+        }
+    }
+}
+
+.contract-info-block {
+    background-color: #fff;
+    padding: 30px;
+    width: 356px;
+    @include res-500 {
+        width: 100%;
+    }
+    .line {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+
+    }
+    .key {
+        @include Hack_Bold;
+        font-size: 9px;
+        text-transform: uppercase;
+        color: rgba(#263C4B, .8);
+        white-space: nowrap;
+
+    }
+    .underline {
+        height: 1px;
+        background-color: rgba(#3F465A, .15);
+        width: 100%;
+        align-self: baseline;
+        margin: 0 7px;
+    }
+    .value {
+        @include InterUI_Medium;
+        font-size: 13px;
+        color: #000;
+        white-space: nowrap;
+        &.blue {
+            color: #498FDF;
+        }
+    }
+}
+.verify-contract-tooltip {
+    .rc-tooltip-inner {
+        max-width: none;
+        p {
+            @include InterUI_Regular;
+            font-size: 11px;
+            color: #93A9BB;
+            letter-spacing: 0;
+            & + p {
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+.dropdown-tab {
+    display: flex;
+    z-index: 1;
+    .dropdown-toggle {
+        z-index: 1;
+    }
+}
