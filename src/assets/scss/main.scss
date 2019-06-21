@@ -7,7 +7,7 @@
 
 @import "vendors/slick-slider/theme";
 @import "vendors/slick-slider/slick";
-
+@import "vendors/codemirror/codemirror";
 
 @import 'layout/header';
 @import 'layout/preparing-section';
@@ -25,7 +25,11 @@
 @import "components/tooltip";
 @import 'components/information-breadcrumbs';
 @import "components/internet-popup";
-@import 'components/action-button';
-@import 'components/text-button';
+@import 'components/buttons/action-button';
+@import 'components/buttons/text-button';
+@import 'components/buttons/copy-button';
+@import 'components/buttons/decline-button';
+@import 'components/buttons/approve-button';
 @import 'components/scroll-tabs';
+@import 'components/code-block';
 @import 'components/dropdown-tabs';

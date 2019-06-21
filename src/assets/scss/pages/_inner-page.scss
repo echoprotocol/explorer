@@ -1,0 +1,80 @@
+.recent-block-section {
+    .inner-page {
+        &.table-container {
+            min-height: calc(100vh - 305px);
+        }
+    }
+}
+
+.inner-page {
+    .backwards {
+        margin: 0 0 15px 0;
+    }
+    .account-page-t-block {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        .title,
+        .icon {
+            margin: 0;
+            z-index: 1;
+        }
+        .title {
+            @include InterUI_Bold;
+            font-size: 23px;
+            color: #18142a;
+
+            @include res-768 {
+                padding-left: 19px;
+            }
+        }
+        .icon {
+            margin-right: 14px;
+
+            img {
+                width: 32px;
+                height: 32px;
+            }
+        }
+        @include res-1000 {
+            padding: 0;
+        }
+        @include res-500 {
+            padding: 0;
+
+            .title {
+                padding: 0;
+            }
+        }
+    }
+    .page-helper-section {
+        background-color: #fff;
+        margin-top: 60px;
+        padding: 20px 47px 43px;
+    }
+    .section-description {
+        @include InterUI_Regular;
+        font-size: 15px;
+        color: #171529;
+        padding: 24px 0;
+        border-bottom: 1px solid rgba(#3F465A, .15);
+        margin-bottom: 35px;
+    }
+    .code-action {
+        display: flex;
+        align-items: center;
+        margin: 0 0 20px;
+        .action-description {
+            @include InterUI_Regular;
+            font-size: 13px;
+            color: #6E6D6F;
+            margin-left: 5px;
+        }
+    }
+    .buttons-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 33px 47px 43px;
+    }
+}

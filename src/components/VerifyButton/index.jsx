@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Tooltip from 'rc-tooltip';
+import classnames from 'classnames';
 import infoIcon from '../../assets/images/icons/info.svg';
 import infoHoverIcon from '../../assets/images/icons/info-hover.svg';
+import infoWhiteIcon from '../../assets/images/icons/info-white.svg';
 
 class Verify extends Component {
 
@@ -10,6 +12,7 @@ class Verify extends Component {
 		this.state = {
 			hovered: false,
 			tooltipSize: 290,
+			verified: true,
 		};
 		this.listener = this.updateTooltipSize.bind(this);
 	}
@@ -40,7 +43,7 @@ class Verify extends Component {
 	}
 
 	render() {
-		const { hovered, tooltipSize } = this.state;
+		const { hovered, tooltipSize, verified } = this.state;
 		const tip = (
 			<React.Fragment>
 				<p>
@@ -59,9 +62,13 @@ class Verify extends Component {
 		};
 
 		return (
-			<div className="action-button-wrap">
+			<div className={classnames('action-button-wrap', { verified })}>
 				<div className="action-label">
-					<span className="content">Unverified contract</span>
+					{
+						verified ?
+							<span className="content">Verified contract</span> :
+							<span className="content">Unverified contract</span>
+					}
 
 					<Tooltip
 						placement={tooltipSize === 200 ? 'rightTop' : 'rightBottom'}
@@ -75,7 +82,11 @@ class Verify extends Component {
 							onMouseLeave={() => this.changeHover(false)}
 							className="info-icon"
 						>
-							<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
+							{
+								verified ?
+									<img src={infoWhiteIcon} alt="" /> :
+									<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
+							}
 						</button>
 					</Tooltip>
 				</div>

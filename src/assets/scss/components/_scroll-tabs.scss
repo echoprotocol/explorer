@@ -83,7 +83,6 @@
             border-top: 2px solid #498FDF;
             a {
                 .menu-item-content {
-                    @include InterUI_Bold;
                     color: rgba(0, 0, 0, 1);
                 }
             }

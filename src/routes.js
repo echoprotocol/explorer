@@ -8,6 +8,7 @@ import Account from './containers/Account';
 import Asset from './containers/Asset';
 import Contract from './containers/Contract';
 import NotFound from './containers/NotFound';
+import UploadABI from './containers/UploadABI';
 
 import {
 	INDEX_PATH,
@@ -18,6 +19,7 @@ import {
 	ASSET_PATH,
 	NOT_FOUND_PATH,
 	CONTRACT_PATH_DETAIL,
+	UPLOAD_ABI_PATH,
 } from './constants/RouterConstants';
 
 
@@ -33,6 +35,7 @@ export default class extends React.Component {
 					<Route exact path={OBJECTS_PATH} component={Objects} />
 					<Route exact path={ACCOUNTS_PATH} component={Account} />
 					<Route exact path={ASSET_PATH} component={Asset} />
+					<Route exact path={UPLOAD_ABI_PATH} component={UploadABI} />
 					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
 					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
 					<Route component={NotFound} />

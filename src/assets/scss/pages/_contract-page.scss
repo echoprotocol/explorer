@@ -334,3 +334,24 @@
         z-index: 1;
     }
 }
+
+.abi-info {
+    @include InterUI_Regular;
+    color: #6E6D6F;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+.contract-abi-panel {
+    .line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 17px;
+    }
+}
+.contract-source-code-panel {
+    .line {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 17px;
+    }
+}

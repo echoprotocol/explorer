@@ -10,7 +10,15 @@
         cursor: pointer;
         white-space: nowrap;
 
-
+        .carret {
+            width: 6px;
+            height: 6px;
+            background-image: url(../images/icons/arrow-curet.svg);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-left: 17px;
+        }
     }
     .doropdown-tab-current {
         @include InterUI_Bold;

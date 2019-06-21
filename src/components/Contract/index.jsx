@@ -22,12 +22,15 @@ import {
 	CONTRACT_BYTECODE,
 	CONTRACT_TRANSACTIONS,
 	CONTRACT_DETAILS_NUMBERS_TAB,
+	CONTRACT_ABI, CONTRACT_SURCE_CODE,
 } from '../../constants/RouterConstants';
 
 import Star from '../StarButton';
 import Verify from '../VerifyButton';
 import tempAvatar from '../../assets/images/temp/avatar.png';
 import manageIcon from '../../assets/images/icons/pencil.svg';
+import ContractAbi from './ContractAbi';
+import ContractSourceCode from './ContractSourceCode';
 
 class Contract extends React.Component {
 
@@ -124,7 +127,6 @@ class Contract extends React.Component {
 			bytecode, history, balances, match: { params: { id, detail } },
 		} = this.props;
 
-
 		const tabList = [
 			{
 				tab: !loading ?
@@ -153,12 +155,22 @@ class Contract extends React.Component {
 					</div> : <Loader />,
 				key: 'tab-3',
 			},
+			{
+				tab: !loading ?
+					<ContractAbi /> : <Loader />,
+				key: 'tab-4',
+			},
+			{
+				tab: !loading ?
+					<ContractSourceCode /> : <Loader />,
+				key: 'tab-5',
+			},
 		];
 		const settings = {
 			dots: false,
 			infinite: false,
 			speed: 500,
-			slidesToShow: 4,
+			slidesToShow: tabList.length,
 			slidesToScroll: 1,
 			variableWidth: true,
 			touchMove: false,
@@ -172,7 +184,7 @@ class Contract extends React.Component {
 			],
 		};
 		return (
-			<div className="table-container inner-information-container block-information account-page contract-page with-d-table">
+			<div className="table-container inner-information-container account-page contract-page with-d-table">
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards">
@@ -195,7 +207,6 @@ class Contract extends React.Component {
 
 								<div className="title">Contract {id}: ‘Homer Simpson and Family’</div>
 							</div>
-
 						</div>
 						<div className="buttons-wrap">
 							<div className="item">
@@ -248,6 +259,22 @@ class Contract extends React.Component {
 													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
 												>
 													<span className="menu-item-content">Balances</span>
+												</Link>
+											</div>
+											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
+												<Link
+													onClick={() => this.goToSlide(4)}
+													to={URLHelper.createContractUrl(id, CONTRACT_ABI)}
+												>
+													<span className="menu-item-content">ABI</span>
+												</Link>
+											</div>
+											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}>
+												<Link
+													onClick={() => this.goToSlide(5)}
+													to={URLHelper.createContractUrl(id, CONTRACT_SURCE_CODE)}
+												>
+													<span className="menu-item-content">Source code</span>
 												</Link>
 											</div>
 										</Slider>

@@ -2,6 +2,8 @@
 .action-button-wrap {
     @include InterUI_Regular;
     display: flex;
+
+
     .content {
         letter-spacing: 0.2px;
     }
@@ -46,6 +48,7 @@
         padding: 4px 20px 4px 10px;
         color: #120E30;
         display: flex;
+        border-radius: 1px;
         .info-icon {
             padding: 0;
             border: 0;
@@ -63,6 +66,17 @@
         }
         & + .action-button {
             margin-left: -11px;
+        }
+    }
+
+    &.verified {
+        .action-label {
+            padding: 4px 6px;
+            color: #fff;
+            background-color: #498FDF;
+        }
+        .action-button {
+            display: none;
         }
     }
 }

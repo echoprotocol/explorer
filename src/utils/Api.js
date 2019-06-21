@@ -67,14 +67,18 @@ export function post(url, params) {
 		headers: {
 			Accept: 'application/json, text/plain, */*',
 			'Content-Type': 'application/json',
+			'Cache-Control': 'no-cache',
+			'accept-encoding': 'gzip, deflate',
+			'Access-Control-Allow-Origin': 'http://localhost:3000/',
 		},
 		cache: 'default',
 		credentials: 'include',
 		body: JSON.stringify(params),
 	};
+	console.log(options);
 
 	return new Promise((resolve, reject) => {
-		fetch(__API_URL__ + url, options).then((response) => {
+		fetch(`http://localhost:3000${url}`, options).then((response) => {
 			const contentType = response.headers.get('content-type');
 			if (response.ok) {
 				if (contentType && contentType.indexOf('application/json') !== -1) {

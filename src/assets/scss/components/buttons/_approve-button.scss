@@ -1,0 +1,33 @@
+.approve-button {
+    @include InterUI_Medium;
+    @include btn();
+    @include onFocus(4px, 2px, 2px, rgba(#3570B6, .3));
+
+    min-width: 135px;
+    height: 33px;
+    color: #fff;
+    background-color: #4588D7;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 13px;
+    border: 0;
+
+    &:hover {
+        background-color: #5A9AE2;
+    }
+
+    &:active {
+        background-color: #4182CE;
+        color: rgba(#fff, 0.6);
+    }
+    &:disabled {
+        color: rgba(#050505, 0.3);
+        background-color: #E8E6EB;
+    }
+    & + button {
+        margin-left: 8px;
+    }
+}
