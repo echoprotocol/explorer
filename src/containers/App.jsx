@@ -17,6 +17,9 @@ import InternetPopup from '../components/InternetPopup';
 import NotFound from '../containers/NotFound';
 
 import { NOT_FOUND_PATH, CONTRACT_PATH } from '../constants/RouterConstants';
+import Modal from '../containers/Modals';
+import { MODAL_EXTENSION_INFO, MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
+
 
 class App extends React.Component {
 
@@ -38,7 +41,7 @@ class App extends React.Component {
 
 	renderModals() {
 		return (
-			<div />
+			<Modal />
 		);
 	}
 
@@ -48,29 +51,33 @@ class App extends React.Component {
 		);
 	}
 
-	renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName) {
+
+	renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName, isShowModal) {
 		const parsedLocation = pathName.split('/')[1];
 		const fullWrapRouts = [CONTRACT_PATH.split('/')[1]];
 
 		return (
-			<div className="wrapper">
-				<Header />
-				<div className="recent-block-section">
-					<div
-						className={classnames('wrap', {
-							full: (fullWrapRouts.includes(parsedLocation)),
-						})}
-					>
-						{children}
-						<RecentBlockSidebar />
-					</div>
-				</div>
+			<React.Fragment>
 				{this.renderModals()}
-				<Toast />
-				{
-					showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />
-				}
-			</div>
+				<div className={classnames('wrapper', { 'wrapper-min': isShowModal })}>
+					<Header />
+					<div className="recent-block-section">
+						<div
+							className={classnames('wrap', {
+								full: (fullWrapRouts.includes(parsedLocation)),
+							})}
+						>
+							{children}
+							<RecentBlockSidebar />
+						</div>
+					</div>
+
+					<Toast />
+					{
+						showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />
+					}
+				</div>
+			</React.Fragment>
 		);
 	}
 
@@ -89,6 +96,7 @@ class App extends React.Component {
 			pathName,
 			subscribeConnect,
 			showInternetConnectionBar,
+			isShowModal,
 		} = this.props;
 
 
@@ -104,7 +112,7 @@ class App extends React.Component {
 			return this.renderNotFound();
 		}
 
-		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName);
+		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName, isShowModal);
 
 	}
 
@@ -121,10 +129,12 @@ App.propTypes = {
 	connected: PropTypes.bool.isRequired,
 	subscribeConnect: PropTypes.bool.isRequired,
 	showInternetConnectionBar: PropTypes.bool.isRequired,
+	isShowModal: PropTypes.bool.isRequired,
 };
 
 export default connect(
 	(state) => ({
+		isShowModal: state.modal.get(MODAL_ERROR).get('show') || state.modal.get(MODAL_SUCCESS).get('show') || state.modal.get(MODAL_EXTENSION_INFO).get('show'),
 		error: state.global.get('error'),
 		errorPath: state.global.get('errorPath'),
 		connected: state.global.get('connected'),

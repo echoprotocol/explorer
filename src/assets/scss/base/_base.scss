@@ -2,6 +2,11 @@ body {
 	letter-spacing: 0.025em;
 }
 
+.wrapper-min {
+	max-height: 100vh;
+	overflow-y: hidden;
+}
+
 main.inner {
 	display: inline-block;
 	min-width: 100%;
@@ -64,10 +69,11 @@ a {
 	white-space: nowrap;
 }
 
-@media (max-width: 499px) and (-webkit-min-device-pixel-ratio:0) {
+
+@include res-320 {
 	select,
 	textarea,
 	input {
-	  font-size: 16px !important;
+  		font-size: 16px !important;
 	}
-  }
+}

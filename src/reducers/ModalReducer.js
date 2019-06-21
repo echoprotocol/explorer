@@ -2,26 +2,27 @@ import { createModule } from 'redux-modules';
 import { Map } from 'immutable';
 import _ from 'lodash';
 
-import { MODAL_CONFIRM } from '../constants/ModalConstants';
+import {
+	MODAL_EXTENSION_INFO,
+	MODAL_SUCCESS,
+	MODAL_ERROR,
+} from '../constants/ModalConstants';
+
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
 	show: false,
 });
 
+const INITIAL_STATE = Map({
+	[MODAL_SUCCESS]: _.cloneDeep(DEFAULT_FIELDS),
+	[MODAL_ERROR]: _.cloneDeep(DEFAULT_FIELDS),
+	[MODAL_EXTENSION_INFO]: _.cloneDeep(DEFAULT_FIELDS),
+});
+
 export default createModule({
 	name: 'modal',
-	initialState: Map({
-		[MODAL_CONFIRM]: _.cloneDeep(DEFAULT_FIELDS).merge({
-			title: null,
-			content: null,
-			btnTitleSuccess: null,
-			btnTitleCancel: null,
-			successCallback: () => {},
-			cancelCallback: () => {},
-		}),
-		currentOpens: [],
-	}),
+	initialState: INITIAL_STATE,
 	transformations: {
 		..._.cloneDeep(TransformModules(DEFAULT_FIELDS)),
 		setIn: {
@@ -35,19 +36,17 @@ export default createModule({
 		},
 		open: {
 			reducer: (state, { payload }) => {
-				state = state.setIn([payload.type, 'show'], true);
-				const currentOpens = state.get('currentOpens');
-				currentOpens.push(payload.type);
-				state = state.set('currentOpens', currentOpens);
+				const { type, params } = payload;
+				state = state.setIn([type, 'show'], true);
+				Object.keys(params).forEach((key) => {
+					state = state.setIn([type, key], params[key]);
+				});
 				return state;
 			},
 		},
 		close: {
-			reducer: (state, { payload }) => {
-				state = state.setIn([payload.type, 'show'], false);
-				const currentOpens = state.get('currentOpens');
-				currentOpens.splice(currentOpens.length - 1, 1);
-				state = state.set('currentOpens', currentOpens);
+			reducer: (state) => {
+				state = INITIAL_STATE;
 				return state;
 			},
 		},
