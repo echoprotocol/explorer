@@ -458,8 +458,8 @@ export default {
 		value: OPERATIONS_IDS.CREATE_ETH_ADDRESS,
 		name: 'Create eth address',
 		options: {
-			from: 'account',
-			subject: ['committee_member_id'],
+			from: 'committee_member_id',
+			subject: ['account', 'name'],
 			value: null,
 			asset: null,
 		},
@@ -468,8 +468,8 @@ export default {
 		value: OPERATIONS_IDS.DEPOSIT_ETH,
 		name: 'Deposit eth',
 		options: {
-			from: 'account',
-			subject: ['committee_member_id'],
+			from: 'committee_member_id',
+			subject: ['account', 'name'],
 			value: 'value',
 			asset: null,
 		},
@@ -488,8 +488,8 @@ export default {
 		value: OPERATIONS_IDS.APPROVE_WITHDRAW_ETH,
 		name: 'Approve withdraw eth',
 		options: {
-			from: null,
-			subject: ['committee_member_id'],
+			from: ['committee_member_id', 'name'],
+			subject: null,
 			value: null,
 			asset: null,
 		},
@@ -532,6 +532,56 @@ export default {
 			subject: ['withdraw_id'],
 			amount: 'amount.value',
 			asset: 'fee.asset_id',
+		},
+	},
+	register_erc20_token: {
+		value: OPERATIONS_IDS.REGISTER_ERC20_TOKEN,
+		name: 'Register erc20 token',
+		options: {
+			from: 'account',
+			subject: ['eth_addr'],
+			amount: 'value.amount',
+			asset: 'value.asset_id',
+		},
+	},
+	deposit_erc20_token: {
+		value: OPERATIONS_IDS.DEPOSIT_ERC20_TOKEN,
+		name: 'Deposit erc20 token',
+		options: {
+			from: 'account',
+			subject: ['erc20_token_addr'],
+			amount: 'value.amount',
+			asset: 'value.asset_id',
+		},
+	},
+	withdraw_erc20_token: {
+		value: OPERATIONS_IDS.WITHDRAW_ERC20_TOKEN,
+		name: 'Withdraw erc20 token',
+		options: {
+			from: 'account',
+			subject: ['to'],
+			amount: null,
+			asset: null,
+		},
+	},
+	approve_erc20_token_withdraw: {
+		value: OPERATIONS_IDS.APPROVE_ERC20_TOKEN_WITHDRAW,
+		name: 'Approve erc20 token withdraw',
+		options: {
+			from: 'committee_member_id',
+			subject: ['to'],
+			amount: null,
+			asset: null,
+		},
+	},
+	contract_update: {
+		value: OPERATIONS_IDS.CONTRACT_UPDATE,
+		name: 'Contract update',
+		options: {
+			from: 'sender',
+			subject: ['contract'],
+			amount: null,
+			asset: null,
 		},
 	},
 };
