@@ -1,7 +1,7 @@
 {
 	"name": "echo-explorer",
 	"description": "Echo Explorer",
-	"version": "0.9.2",
+	"version": "0.9.3",
 	"scripts": {
 		"start": "cross-env NODE_ENV=local webpack-dev-server --mode development --progress --colors --history-api-fallback --hot --inline",
 		"build": "webpack --progress --display-error-details --colors --mode production",
