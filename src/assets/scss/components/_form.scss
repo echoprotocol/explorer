@@ -1,0 +1,118 @@
+.form {
+    input, textarea {
+        @include InterUI_Regular;
+        width: 100%;
+        border-radius: 2px;
+        border: 1px solid #B0B7BD;
+        font-size: 13px;
+        color: #000;
+        padding: 10px 12px;
+        line-height: 18px;
+        transition: border .2s, background-color .2s;
+        background-color: transparent;
+
+        &::placeholder {
+          color: rgba(#000, 0.5);
+        }
+
+        &:hover {
+            border: 1px solid #9EA5AA;
+        }
+
+
+
+        &:focus {
+            border: 1px solid #4588D7;
+        }
+
+        &:disabled {
+            background-color: #E6E5E8;
+            border: 1px solid #E6E5E8;
+            color: rgba(#000, 0.5);
+        }
+
+    }
+
+    input {
+        &[type="file"] {
+            position: absolute;
+            z-index: -1;
+        }
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    .field {
+        font-size: 0;
+        width: 100%;
+        position: relative;
+    }
+
+    .field-label {
+        @include InterUI_Regular;
+        line-height: 18px;
+        font-size: 13px;
+    }
+
+    .error {
+        @include InterUI_Regular;
+        color: #E83425;
+        padding: 3px 5px;
+        background-color: #fff;
+        position: absolute;
+        left: 8px;
+        bottom: -8px;
+        font-size: 10px;
+        line-height: 14px;
+    }
+
+    .hint {
+        @include InterUI_Regular;
+        line-height: 18px;
+        font-size: 12px;
+        color: #848B94;
+        margin-top: 4px;
+    }
+
+}
+
+.page-helper-section {
+    .form {
+        .row {
+            display: flex;
+            @include res-500 {
+                flex-direction: column;
+            }
+            &:not(:last-child) {
+                margin-bottom: 16px;
+            }
+
+            .field-label {
+                white-space: nowrap;
+                padding: 10px 20px 10px 0;
+
+            }
+
+            .field-wrap {
+                width: 100%;
+                max-width: 467px;
+                margin-left: auto;
+
+                @include res-768 {
+                    max-width: 317px;
+                }
+                @include res-500 {
+                    max-width: none;
+                }
+
+            }
+
+            textarea {
+                min-height: 110px;
+
+            }
+        }
+    }
+}

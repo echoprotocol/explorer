@@ -140,3 +140,18 @@ $res-1440: 1535px;
 		}
 	}
 }
+
+@mixin onDropAreaFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
+	@include hardware-accel();
+
+	&:before {
+		top: -($outerBorderWidth + $innerBorderWidth);
+		right: -($outerBorderWidth + $innerBorderWidth);
+		bottom: -($outerBorderWidth + $innerBorderWidth);
+		left: -($outerBorderWidth + $innerBorderWidth);
+		border: $outerBorderWidth solid $color;
+		border-radius: $angular + 2px;
+
+	}
+
+}

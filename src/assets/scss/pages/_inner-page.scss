@@ -9,6 +9,9 @@
 .inner-page {
     .backwards {
         margin: 0 0 15px 0;
+        @include res-768 {
+            margin: 30px 0 0 0;
+        }
     }
     .account-page-t-block {
         display: flex;
@@ -51,6 +54,33 @@
         background-color: #fff;
         margin-top: 60px;
         padding: 20px 47px 43px;
+
+        .page-helper-info {
+            @include InterUI_Regular;
+            background-color: #F3F2F5;
+            color: #171529;
+            font-size: 13px;
+            line-height: 23px;
+            padding: 17px 33px;
+            border: 1px solid #E2E3E7;
+            margin: 15px 0 32px;
+
+            div {
+                display: inline;
+            }
+            .link {
+                text-decoration: underline;
+                color: #171529;
+            }
+            .avatar-image {
+                width: 16px;
+                height: 16px;
+                margin-right: 5px;
+                line-height: 0;
+            }
+        }
+
+
     }
     .section-description {
         @include InterUI_Regular;

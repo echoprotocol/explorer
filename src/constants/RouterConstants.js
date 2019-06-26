@@ -13,6 +13,7 @@ export const OBJECTS_PATH = '/objects';
 export const ASSET_PATH = '/asset/:id/info';
 export const NOT_FOUND_PATH = '/not-found';
 export const UPLOAD_ABI_PATH = '/upload-abi';
+export const MANAGE_CONTRACT_PATH = '/manage-contract';
 
 export const CONTRACT_DETAILS_NUMBERS_TAB = {
 	[CONTRACT_TRANSACTIONS]: 1,
