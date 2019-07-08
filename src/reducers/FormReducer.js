@@ -2,7 +2,8 @@ import { createModule } from 'redux-modules';
 import { Map } from 'immutable';
 import _ from 'lodash';
 
-import { FORM_ABI, FORM_LOGIN } from '../constants/FormConstants';
+import { FORM_LOGIN, FORM_MANAGE_CONTRACT, FORM_ABI } from '../constants/FormConstants';
+
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
@@ -21,6 +22,25 @@ const DEFAULT_FORM_FIELDS = {
 			error: null,
 		},
 	}),
+	[FORM_MANAGE_CONTRACT]: new Map({
+		isChangedForm: false,
+		isErrorForm: false,
+		name: {
+			value: '',
+			error: '',
+		},
+		description: {
+			value: '',
+			error: '',
+		},
+		icon: {
+			value: null,
+			error: '',
+		},
+		iconBase64: {
+			value: '',
+		},
+	}),
 	[FORM_ABI]: Map({
 		abi: {
 			value: '',
@@ -33,6 +53,7 @@ export default createModule({
 	name: 'form',
 	initialState: Map({
 		[FORM_LOGIN]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_LOGIN]),
+		[FORM_MANAGE_CONTRACT]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_MANAGE_CONTRACT]),
 		[FORM_ABI]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_ABI]),
 	}),
 	transformations: {
@@ -62,6 +83,7 @@ export default createModule({
 				const field = state.getIn([payload.form, payload.field]);
 
 				state = state.setIn([payload.form, payload.field], Object.assign({}, field, {
+					...field,
 					value: payload.value,
 					error: null,
 				}));
@@ -141,6 +163,19 @@ export default createModule({
 		clearByField: {
 			reducer: (state, { payload }) => {
 				state = state.setIn([payload.form, payload.field], _.cloneDeep(DEFAULT_FORM_FIELDS[payload.form].get(payload.field)));
+
+				return state;
+			},
+		},
+
+		setMultipleFormValue: {
+			reducer: (state, { payload }) => {
+				Object.entries(payload.fields).forEach(([key, value]) => {
+					state = state.setIn([payload.form, key], {
+						value,
+						error: null,
+					});
+				});
 
 				return state;
 			},

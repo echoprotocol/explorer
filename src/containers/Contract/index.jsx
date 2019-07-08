@@ -31,7 +31,7 @@ export default withRouter(connect(
 		loading: state.contract.get('loading'),
 		isFullHistory: state.contract.get('isFullHistory'),
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
-		history: state.contract.get('history'),
+		contractHistory: state.contract.get('history'),
 		bytecode: state.contract.get('bytecode'),
 
 		registrar: state.contract.get('registrar'),

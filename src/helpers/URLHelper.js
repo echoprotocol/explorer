@@ -5,8 +5,10 @@ import {
 	ASSET_PATH,
 	BLOCK_INFORMATION_PATH,
 	CONTRACT_PATH,
+	MANAGE_CONTRACT_PATH,
 	UPLOAD_ABI_PATH,
 } from '../constants/RouterConstants';
+
 import config from '../config/chain';
 
 class URLHelper {
@@ -104,6 +106,15 @@ class URLHelper {
 	 */
 	static getUrlContractIcon(icon) {
 		return `${config.SERVER_URL}${icon}`;
+	}
+
+	/**
+	 *
+	 * @param contractId
+	 * @returns {string}
+	 */
+	static createManageContractUrl(contractId) {
+		return MANAGE_CONTRACT_PATH.replace(/:id/, contractId);
 	}
 
 }

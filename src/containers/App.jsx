@@ -16,7 +16,7 @@ import ErrorScreen from '../components/ErrorScreen';
 import InternetPopup from '../components/InternetPopup';
 import NotFound from '../containers/NotFound';
 
-import { NOT_FOUND_PATH, CONTRACT_PATH } from '../constants/RouterConstants';
+import { NOT_FOUND_PATH, CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
 import Modal from '../containers/Modals';
 import { MODAL_EXTENSION_INFO, MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 
@@ -52,7 +52,7 @@ class App extends React.Component {
 
 	renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName, isShowModal) {
 		const parsedLocation = pathName.split('/')[1];
-		const fullWrapRouts = [CONTRACT_PATH.split('/')[1]];
+		const full = Object.keys(CONTRACT_DETAILS_NUMBERS_TAB).includes(parsedLocation);
 
 		return (
 			<React.Fragment>
@@ -61,9 +61,7 @@ class App extends React.Component {
 					<Header />
 					<div className="recent-block-section">
 						<div
-							className={classnames('wrap', {
-								full: (fullWrapRouts.includes(parsedLocation)),
-							})}
+							className={classnames('wrap', { full })}
 						>
 							{children}
 							<RecentBlockSidebar />

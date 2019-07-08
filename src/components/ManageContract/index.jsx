@@ -1,12 +1,85 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
-import BackwardIcon from '../BackwardIcon';
 
+import { INDEX_PATH } from '../../constants/RouterConstants';
+import { MAX_KB_CONTRACT_ICON, MAX_LENGTH_CONTRACT_DESCRIPTION } from '../../constants/GlobalConstants';
+
+import URLHelper from '../../helpers/URLHelper';
+import { BridgeService } from '../../services/BridgeService';
+
+import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
+import { ContractIcon } from '../Contract/ContractIcon';
 
 class ManageContract extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.onSave = this.onSave.bind(this);
+		this.cancelForm = this.cancelForm.bind(this);
+		this.removeIcon = this.removeIcon.bind(this);
+	}
+
+	componentDidMount() {
+		this.initData();
+	}
+
+	componentWillUnmount() {
+		BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
+	}
+
+	async onSave() {
+		const { match: { params: { id } } } = this.props;
+		const { name, icon, description } = this.props;
+
+		this.props.manageContract(id, name.value, icon.value, description.value);
+	}
+
+	onChange(field, value) {
+		this.props.setFormValue(field, value);
+		this.props.validateContract(field, value);
+	}
+
+	onChangeIcon(value) {
+		this.props.validateContract('icon', value);
+		this.props.setContractIcon(value);
+	}
+
+	removeIcon() {
+		this.props.clearByField('icon');
+		this.props.clearByField('iconBase64');
+		this.props.checkChangesForm();
+		this.props.checkValidateForm();
+	}
+
+	goBack(e) {
+		e.preventDefault();
+		if (!this.props.historyLength) {
+			this.props.history.push(INDEX_PATH);
+		} else {
+			this.props.history.goBack();
+		}
+	}
+
+	cancelForm() {
+		this.props.cancelFieldsContract();
+	}
+
+	async initData() {
+		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
+		this.props.loadActiveAccount();
+		await this.props.getContractInfo();
+		this.cancelForm();
+	}
+
 	render() {
+		const {
+			match: { params: { id } }, owner, name, description, iconBase64, icon, contractIcon, isChangedForm, isErrorForm,
+		} = this.props;
 
 		return (
 			<div className="table-container inner-information-container inner-page with-d-table">
@@ -14,15 +87,17 @@ class ManageContract extends React.Component {
 					<a
 						href=""
 						className="backwards-link"
-						onClick={(e) => { e.preventDefault(); }}
+						onClick={(e) => this.goBack(e)}
 					>
 						<BackwardIcon />
 					</a>
 					<div className="account-page-t-block">
 
-						<div className="icon" />
+						<div className="icon">
+							<ContractIcon icon={contractIcon} />
+						</div>
 
-						<div className="title">Manage contract 1.16.1231</div>
+						<div className="title">Manage contract { id }</div>
 					</div>
 				</div>
 
@@ -31,8 +106,8 @@ class ManageContract extends React.Component {
 						<div className="content">
 							<span className="plain-text">Only {' '}</span>
 							<span className="no-wrap">
-								<Avatar accountName="Homersimpson3342" />
-								<a className="link" href="">Homersimpson3342</a>
+								<Avatar accountName={owner.get('name')} />
+								<Link className="link" to={URLHelper.createAccountUrl(owner.get('name'))} >{owner.get('name')}</Link>
 							</span>
 							<span className="plain-text">
 								{' '} can manage this contract.
@@ -49,9 +124,9 @@ class ManageContract extends React.Component {
 							<div className="field-label">Contract name:</div>
 							<div className="field-wrap">
 								<div className="field">
-									<input placeholder="Contract name" type="text" />
+									<input placeholder="Contract name" value={name.value} type="text" onChange={(e) => this.onChange('name', e.target.value)} />
 									{
-										true && <div className="error">Some error</div>
+										name.error && <div className="error">{name.error}</div>
 									}
 								</div>
 							</div>
@@ -60,13 +135,13 @@ class ManageContract extends React.Component {
 							<div className="field-label">Contract description:</div>
 							<div className="field-wrap">
 								<div className="field">
-									<textarea placeholder="Contract description" />
+									<textarea placeholder="Contract description" value={description.value} onChange={(e) => this.onChange('description', e.target.value)} />
 									{
-										false && <div className="error">Some error</div>
+										description.error && <div className="error">{description.error}</div>
 									}
 
 								</div>
-								<div className="hint">123 of 256 symbols used</div>
+								{description.value && <div className="hint">{`${description.value.length} of ${MAX_LENGTH_CONTRACT_DESCRIPTION} symbols used`}</div>}
 							</div>
 						</div>
 						<div className="row">
@@ -74,22 +149,27 @@ class ManageContract extends React.Component {
 							<div className="field-wrap">
 								<div className="field">
 									<div className="drop-area-wrap">
-										<Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
+										<Dropzone accept="image/png, image/jpeg" onDrop={(acceptedFiles) => this.onChangeIcon(acceptedFiles[0])}>
 											{({ getRootProps, getInputProps }) => (
-												<div className="drop-area loading" {...getRootProps()}>
+												<div className="drop-area" {...getRootProps()}>
 													<input {...getInputProps()} />
-													<span className="image-preview" />
+													<span className="image-preview">
+														{typeof icon.value === 'string' && icon.value !== '' && !icon.error ?
+															<ContractIcon icon={contractIcon} />
+															: <img src={iconBase64.value} alt="" />}
+													</span>
 													<div className="info">
 														<div className="action-description">Drop file here or click to add file</div>
-														<div className="file-description">.jpg, .png formats. 253.5 Kb max</div>
+														<div className="file-description">{`.jpg, .png formats. ${MAX_KB_CONTRACT_ICON} Kb max`}</div>
 													</div>
 												</div>
 											)}
 										</Dropzone>
-										<button className="text-button blue">Remove icon</button>
+										{
+											icon.error && <div className={classnames('error', 'error-icon')}>{icon.error}</div>
+										}
+										<button className="text-button blue" onClick={() => this.removeIcon()}>Remove icon</button>
 									</div>
-
-
 								</div>
 							</div>
 						</div>
@@ -97,8 +177,13 @@ class ManageContract extends React.Component {
 				</div>
 
 				<div className="buttons-wrap">
-					<button className="decline-button">Cancel</button>
-					<button disabled className="approve-button">Save Changes</button>
+					<button className="decline-button" onClick={this.cancelForm}>Cancel</button>
+					<button
+						onClick={() => this.onSave()}
+						disabled={isErrorForm || !isChangedForm}
+						className="approve-button"
+					>Save Changes
+					</button>
 				</div>
 			</div>
 		);
@@ -106,8 +191,37 @@ class ManageContract extends React.Component {
 
 }
 
-ManageContract.propTypes = {};
+ManageContract.propTypes = {
+	match: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired,
+	owner: PropTypes.object,
+	validateContract: PropTypes.func.isRequired,
+	setFormValue: PropTypes.func.isRequired,
+	manageContract: PropTypes.func.isRequired,
+	setContractIcon: PropTypes.func.isRequired,
+	cancelFieldsContract: PropTypes.func.isRequired,
+	clearByField: PropTypes.func.isRequired,
+	setActiveAccount: PropTypes.func.isRequired,
+	loadActiveAccount: PropTypes.func.isRequired,
+	checkValidateForm: PropTypes.func.isRequired,
+	checkChangesForm: PropTypes.func.isRequired,
+	getContractInfo: PropTypes.func.isRequired,
+	activeAccount: PropTypes.object,
+	name: PropTypes.object.isRequired,
+	description: PropTypes.object.isRequired,
+	icon: PropTypes.object.isRequired,
+	iconBase64: PropTypes.object.isRequired,
+	contractIcon: PropTypes.string.isRequired,
+	isErrorForm: PropTypes.bool,
+	isChangedForm: PropTypes.bool,
+	historyLength: PropTypes.number.isRequired,
+};
 
-ManageContract.defaultProps = {};
+ManageContract.defaultProps = {
+	owner: new Map(),
+	isChangedForm: false,
+	isErrorForm: false,
+	activeAccount: null,
+};
 
 export default ManageContract;

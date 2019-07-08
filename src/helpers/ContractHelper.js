@@ -1,4 +1,8 @@
-import { LIKE_CONTRACT_MESSAGE, UNLIKE_CONTRACT_MESSAGE } from '../constants/ModalConstants';
+import {
+	MANAGE_CONTRACT_MESSAGE,
+	LIKE_CONTRACT_MESSAGE,
+	UNLIKE_CONTRACT_MESSAGE,
+} from '../constants/ModalConstants';
 
 class ContractHelper {
 
@@ -7,6 +11,10 @@ class ContractHelper {
 			return `${LIKE_CONTRACT_MESSAGE} ${contractId}`;
 		}
 		return `${UNLIKE_CONTRACT_MESSAGE} ${contractId}`;
+	}
+
+	static getMessageToManageContract(contractId) {
+		return `${MANAGE_CONTRACT_MESSAGE} ${contractId}`;
 	}
 
 }

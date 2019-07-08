@@ -11,7 +11,6 @@ import NotFound from './containers/NotFound';
 import UploadABI from './containers/UploadABI';
 import ManageContract from './containers/ManageContract';
 
-
 import {
 	INDEX_PATH,
 	BLOCK_INFORMATION_PATH,

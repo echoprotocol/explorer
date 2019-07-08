@@ -61,8 +61,19 @@ export const NATHAN = {
 export const DEFAULT_ROWS_COUNT = 50;
 export const DEFAULT_OPERATION_HISTORY_ID = '1.10.0';
 
+export const CONTRACT_FIELDS = {
+	NAME: 'name',
+	DESCRIPTION: 'description',
+	ICON: 'icon',
+};
 
-export const BRIDGE_NO_ACCESS = 'No access';
+export const KILO_BYTE = 1024;
+export const MAX_LENGTH_CONTRACT_DESCRIPTION = 256;
+export const MIN_LENGTH_CONTRACT_NAME = 2;
+export const MAX_LENGTH_CONTRACT_NAME = 16;
+export const MAX_KB_CONTRACT_ICON = 200;
+
+
 export const MAX_RETRIES = 999999999;
 
 export const MAX_WIDTH_SCREEN = 768;

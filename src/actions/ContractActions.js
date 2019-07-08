@@ -2,27 +2,35 @@ import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 
-import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
+import {
+	CONTRACT_FIELDS,
+	DEFAULT_OPERATION_HISTORY_ID,
+	DEFAULT_ROWS_COUNT,
+} from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
+import { FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
 import { MODAL_SUCCESS, MODAL_ERROR } from '../constants/ModalConstants';
 import { CONTRACT_ABI } from '../constants/RouterConstants';
-
-import ContractHelper from '../helpers/ContractHelper';
-import URLHelper from '../helpers/URLHelper';
-import FormatHelper from '../helpers/FormatHelper';
-import { jsonParse } from '../helpers/FunctionHelper';
 
 import ContractReducer from '../reducers/ContractReducer';
 
 import BaseActionsClass from './BaseActionsClass';
 import { formatOperation } from './BlockActions';
 import ModalActions from './ModalActions';
+import FormActions from './FormActions';
 import GlobalActions from './GlobalActions';
 import AccountActions from './AccountActions';
 
-import { getTotalHistory, getContractInfo } from '../services/queries/contract';
-import { BridgeService } from '../services/BridgeService';
+import FormatHelper from '../helpers/FormatHelper';
+import ContractHelper from '../helpers/ContractHelper';
+import URLHelper from '../helpers/URLHelper';
+import { jsonParse } from '../helpers/FunctionHelper';
+import FileLoaderHelper from '../helpers/FileLoaderHelper';
+import { validateContractDescription, validateContractIcon, validateContractName } from '../helpers/ValidateHelper';
+
 import ApiService from '../services/ApiService';
+import { BridgeService } from '../services/BridgeService';
+import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
 import browserHistory from '../history';
 
@@ -77,9 +85,11 @@ class ContractActions extends BaseActionsClass {
 				await dispatch(this.getContractInfoFromGraphql(id));
 
 				const balances = await echo.api.getContractBalances(id);
+				await echo.api.getObjects(balances.map((b) => b.asset_id));
+
 				let { owner } = await echo.api.getObject(id);
 				owner = new Map(await echo.api.getObject(owner));
-				await echo.api.getObjects(balances.map((b) => b.asset_id));
+
 
 				dispatch(this.setMultipleValue({
 					bytecode: contract[1].code,
@@ -197,6 +207,116 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
+	manageContract(contractId, name, icon, description) {
+		return async (dispatch, getState) => {
+			try {
+				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
+				if (!isAccessBridge) return;
+
+				const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
+				if (!isExistActiveAccount) return;
+
+				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
+				const message = ContractHelper.getMessageToManageContract(contractId);
+				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
+				const formData = new FormData();
+				formData.append('signature', signature);
+				formData.append('message', message);
+				formData.append('name', name);
+				formData.append('icon', icon);
+				formData.append('description', description);
+				formData.append('accountId', activeAccountId);
+				const result = await ApiService.changeContract(contractId, formData);
+
+				dispatch(this.setMultipleValue({
+					name: result.name,
+					description: result.description,
+					icon: result.icon,
+				}));
+
+				dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
+			} catch (err) {
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title: err.message }));
+			}
+		};
+	}
+
+	validateContract(field, newValue) {
+		return (dispatch) => {
+			let error = null;
+
+			switch (field) {
+				case CONTRACT_FIELDS.NAME:
+					error = validateContractName(newValue);
+					break;
+				case CONTRACT_FIELDS.DESCRIPTION:
+					error = validateContractDescription(newValue);
+					break;
+				case CONTRACT_FIELDS.ICON:
+					error = validateContractIcon(newValue);
+					break;
+				default:
+			}
+
+			dispatch(FormActions.setFormError(FORM_MANAGE_CONTRACT, field, error));
+			dispatch(this.checkValidateForm());
+			dispatch(this.checkChangesForm());
+		};
+	}
+
+	cancelFieldsContract() {
+		return (dispatch, getState) => {
+			const name = getState().contract.get('name');
+			const description = getState().contract.get('description');
+			const icon = getState().contract.get('icon');
+
+			dispatch(FormActions.setMultipleFormValue(FORM_MANAGE_CONTRACT, {
+				name, description, icon, iconBase64: '',
+			}));
+			dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
+		};
+	}
+
+	checkValidateForm() {
+		return async (dispatch, getState) => {
+			const name = getState().form.getIn([FORM_MANAGE_CONTRACT, 'name']);
+			const description = getState().form.getIn([FORM_MANAGE_CONTRACT, 'description']);
+			const icon = getState().form.getIn([FORM_MANAGE_CONTRACT, 'icon']);
+
+			const isValidForm = !name.error && !!name.value &&
+				!icon.error && !!icon.value &&
+				!description.error && !!description.value;
+
+			dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isErrorForm', !isValidForm));
+		};
+	}
+
+	checkChangesForm() {
+		return async (dispatch, getState) => {
+			const nameContract = getState().contract.get('name');
+			const descriptionContract = getState().contract.get('description');
+			const iconContract = getState().contract.get('icon');
+
+			const name = getState().form.getIn([FORM_MANAGE_CONTRACT, 'name']);
+			const description = getState().form.getIn([FORM_MANAGE_CONTRACT, 'description']);
+			const icon = getState().form.getIn([FORM_MANAGE_CONTRACT, 'icon']);
+
+			const isChangedForm = nameContract !== name.value || descriptionContract !== description.value || iconContract !== icon.value;
+			dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', isChangedForm));
+		};
+	}
+
+	setContractIcon(file) {
+		return (dispatch) => {
+			FileLoaderHelper.loadFile(file).then((loadIcon) => {
+				dispatch(FormActions.setFormValue(FORM_MANAGE_CONTRACT, 'icon', file));
+				dispatch(FormActions.setFormValue(FORM_MANAGE_CONTRACT, 'iconBase64', loadIcon));
+				dispatch(this.checkValidateForm());
+				dispatch(this.checkChangesForm());
+			}).catch((error) => dispatch(FormActions.setFormError(FORM_MANAGE_CONTRACT, 'icon', error.message)));
+		};
+	}
+
 	abiApprove(id, abi) {
 		return async (dispatch) => {
 			try {
@@ -222,6 +342,7 @@ class ContractActions extends BaseActionsClass {
 			}
 		};
 	}
+
 	/**
 	 *
 	 * @string contractId

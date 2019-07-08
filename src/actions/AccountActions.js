@@ -3,15 +3,15 @@ import { List, fromJS } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
-import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
+import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
 import AccountReducer from '../reducers/AccountReducer';
 
-import { formatOperation } from './BlockActions';
 import GlobalActions from './GlobalActions';
 import BaseActionsClass from './BaseActionsClass';
 import ModalActions from './ModalActions';
+import { formatOperation } from './BlockActions';
 
 import FormatHelper from '../helpers/FormatHelper';
 

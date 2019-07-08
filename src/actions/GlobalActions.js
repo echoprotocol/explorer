@@ -1,11 +1,8 @@
 import { MODAL_ERROR, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
-
 import GlobalReducer from '../reducers/GlobalReducer';
-
 import BaseActionsClass from './BaseActionsClass';
 import { connect } from './SocketActions';
 import ModalActions from './ModalActions';
-
 import { BridgeService } from '../services/BridgeService';
 
 class GlobalActionsClass extends BaseActionsClass {

@@ -130,37 +130,37 @@ export function patch(url, params) {
 	});
 }
 
-export function put(url, params) {
+export function put(url, body, contentType = 'application/json') {
 	const options = {
 		method: 'PUT',
 		headers: {
-			Accept: 'application/json, text/plain, */*',
-			'Content-Type': 'application/json',
+			'Content-Type': contentType,
 		},
 		cache: 'default',
-		credentials: 'include',
-		body: JSON.stringify(params),
+		mode: 'cors',
+		body,
 	};
+	delete options.headers['Content-Type'];
 
 	return new Promise((resolve, reject) => {
 		fetch(url, options).then((response) => {
-			const contentType = response.headers.get('content-type');
+			const contentTypeResp = response.headers.get('content-type');
 
 			if (response.ok) {
-				if (contentType && contentType.indexOf('application/json') !== -1) {
+				if (contentTypeResp && contentTypeResp.indexOf('application/json') !== -1) {
 					return response.json();
 				}
 				return response.text();
 
 			}
 			return response.json().then((error) => {
-				throw { status: error.status, message: error.error };
+				throw { status: error.status, message: error.error.message || error.error };
 			});
 
 		}).then((data) => {
 			resolve(data);
 		}).catch((error) => {
-			reject(parseServerError(error));
+			reject(error);
 		});
 	});
 }
@@ -218,7 +218,7 @@ export function del(url, params) {
 	};
 
 	return new Promise((resolve, reject) => {
-		fetch(`${url}${query}`, options).then((response) => {
+		fetch(`${url}?${query}`, options).then((response) => {
 			const contentType = response.headers.get('content-type');
 
 			if (response.ok) {

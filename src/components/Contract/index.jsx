@@ -39,6 +39,7 @@ class Contract extends React.Component {
 		super(props);
 		this.subscriber = this.updateInfo.bind(this);
 		this.slider = React.createRef();
+		this.manageContract = this.manageContract.bind(this);
 	}
 
 	componentDidMount() {
@@ -68,7 +69,7 @@ class Contract extends React.Component {
 	}
 
 	onLoadMoreHistory() {
-		this.props.loadContractHistory(this.props.history.last()[0].id.split('.')[2]);
+		this.props.loadContractHistory(this.props.contractHistory.last()[0].id.split('.')[2]);
 	}
 
 	initContract() {
@@ -82,8 +83,8 @@ class Contract extends React.Component {
 
 
 	updateInfo() {
-		const { history, loading } = this.props;
-		const first = history.first();
+		const { contractHistory, loading } = this.props;
+		const first = contractHistory.first();
 
 		if (loading) { return; }
 
@@ -92,6 +93,11 @@ class Contract extends React.Component {
 
 	goToSlide(slide) {
 		this.slider.current.slickGoTo(slide);
+	}
+
+	async manageContract() {
+		const { match: { params: { id } } } = this.props;
+		this.props.history.push(URLHelper.createManageContractUrl(id));
 	}
 
 	renderArrow({ text, className }) {
@@ -119,9 +125,9 @@ class Contract extends React.Component {
 		const elment = tabList.map((el) => {
 			const { tab, key } = el;
 			return key === `tab-${selected}` &&
-			<div key={key} className="tab-item">
-				{tab}
-			</div>;
+				<div key={key} className="tab-item">
+					{tab}
+				</div>;
 		});
 		return elment[selected];
 	}
@@ -129,7 +135,7 @@ class Contract extends React.Component {
 	render() {
 		const {
 			loading, isFullHistory, loadingMoreHistory,
-			bytecode, history, balances, match: { params: { id, detail } }, abi, sourceCode, icon,
+			bytecode, contractHistory, balances, match: { params: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner,
 			activeAccount,
@@ -163,9 +169,9 @@ class Contract extends React.Component {
 			{
 				tab: !loading ?
 					<TransactionsTable
-						transactions={history}
+						transactions={contractHistory}
 						loading={loadingMoreHistory}
-						loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+						loadMore={contractHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 						hasMore={!isFullHistory}
 					/> : <Loader />,
 				key: 'tab-1',
@@ -245,7 +251,7 @@ class Contract extends React.Component {
 							</div>
 							<div className="item">
 								<div className="action-button-wrap">
-									<button className="action-button">
+									<button className="action-button" onClick={this.manageContract}>
 										<img src={manageIcon} alt="" />
 										<span className="content">Manage</span>
 									</button>
@@ -355,7 +361,7 @@ Contract.propTypes = {
 	isFullHistory: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
-	history: PropTypes.object.isRequired,
+	contractHistory: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
 	getContractInfo: PropTypes.func.isRequired,
@@ -363,6 +369,7 @@ Contract.propTypes = {
 	loadContractHistory: PropTypes.func.isRequired,
 	updateContractInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	history: PropTypes.object.isRequired,
 	setStarToContract: PropTypes.func.isRequired,
 	setActiveAccount: PropTypes.func.isRequired,
 	loadActiveAccount: PropTypes.func.isRequired,

@@ -1,7 +1,6 @@
 .decline-button {
     @include InterUI_Medium;
     @include btn();
-    @include onFocus(4px, 2px, 2px, rgba(#62686D, .3));
 
     min-width: 135px;
     height: 33px;

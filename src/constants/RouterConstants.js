@@ -13,7 +13,7 @@ export const CONTRACT_SURCE_CODE = 'source-code';
 export const OBJECTS_PATH = '/objects';
 export const ASSET_PATH = '/asset/:id/info';
 export const NOT_FOUND_PATH = '/not-found';
-export const MANAGE_CONTRACT_PATH = '/manage-contract';
+export const MANAGE_CONTRACT_PATH = '/contracts/:id/manage';
 
 export const CONTRACT_DETAILS_NUMBERS_TAB = {
 	[CONTRACT_TRANSACTIONS]: 1,

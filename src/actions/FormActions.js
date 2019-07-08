@@ -1,5 +1,5 @@
-import FormReducer from '../reducers/FormReducer';
 import BaseActionsClass from './BaseActionsClass';
+import FormReducer from '../reducers/FormReducer';
 
 class FormActionsClass extends BaseActionsClass {
 
@@ -80,6 +80,17 @@ class FormActionsClass extends BaseActionsClass {
 		};
 	}
 
+	/**
+	 *
+	 * @param form
+	 * @param payload
+	 * @returns {Function}
+	 */
+	setMultipleFormValue(form, payload) {
+		return (dispatch) => {
+			dispatch(this.reducer.actions.setMultipleFormValue({ form, fields: payload }));
+		};
+	}
 	/**
 	 * Clear by field
 	 * @param {String} form
