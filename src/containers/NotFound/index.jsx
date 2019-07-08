@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import NotFound from '../../components/NotFound';
-import GlobalReducer from '../../reducers/GlobalReducer';
+import GlobalActions from '../../actions/GlobalActions';
 
 export default withRouter(connect(
 	() => ({}),
 	(dispatch) => ({
-		resetErrorPath: () => dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: false })),
+		resetErrorPath: () => dispatch(GlobalActions.toggleErrorPath(false)),
 	})
 	,
 )(NotFound));

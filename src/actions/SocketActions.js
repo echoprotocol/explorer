@@ -116,7 +116,6 @@ export const connect = () => async (dispatch) => {
 
 		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
 		const producers = global._creator_count;
-
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'connected', value: true }),
 			RoundReducer.actions.set({ field: 'producers', value: producers }),
@@ -138,6 +137,5 @@ export const connect = () => async (dispatch) => {
  */
 export const disconnect = () => async (dispatch) => {
 	await echo.disconnect();
-
 	dispatch(GlobalReducer.actions.set({ field: 'connected', value: false }));
 };

@@ -1,3 +1,7 @@
 {
-  "API_URL": "wss://devnet.echo-dev.io/ws"
+  "API_URL": "wss://testnet.echo-dev.io/ws",
+  "LANDING_BRIDGE": "http://649-bridge-landing.pixelplexlabs.com",
+  "HTTP_LINK": "https://645-echodb.pixelplexlabs.com/graphql",
+  "WS_LINK": "wss://645-echodb.pixelplexlabs.com/graphql",
+  "SERVER_URL": ""
 }

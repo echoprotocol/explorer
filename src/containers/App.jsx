@@ -20,7 +20,6 @@ import { NOT_FOUND_PATH, CONTRACT_PATH } from '../constants/RouterConstants';
 import Modal from '../containers/Modals';
 import { MODAL_EXTENSION_INFO, MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 
-
 class App extends React.Component {
 
 	componentDidMount() {
@@ -50,7 +49,6 @@ class App extends React.Component {
 			<ErrorScreen error={error} />
 		);
 	}
-
 
 	renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName, isShowModal) {
 		const parsedLocation = pathName.split('/')[1];

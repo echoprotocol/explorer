@@ -1,5 +1,5 @@
 import echo from 'echojs-lib';
-import GlobalReducer from '../reducers/GlobalReducer';
+import GlobalActions from './GlobalActions';
 
 /**
  *  @method setLatestBlock
@@ -12,13 +12,13 @@ export const getFullAssetInformation = (assetId) => async (dispatch) => {
 		const asset = await echo.api.getObject(assetId);
 
 		if (!asset) {
-			dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+			dispatch(GlobalActions.toggleErrorPath(true));
 			return;
 		}
 
 		await echo.api.getObject(asset.issuer);
 
 	} catch (_) {
-		dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+		dispatch(GlobalActions.toggleErrorPath(true));
 	}
 };

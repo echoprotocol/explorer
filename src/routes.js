@@ -38,9 +38,11 @@ export default class extends React.Component {
 					<Route exact path={OBJECTS_PATH} component={Objects} />
 					<Route exact path={ACCOUNTS_PATH} component={Account} />
 					<Route exact path={ASSET_PATH} component={Asset} />
+
 					<Route exact path={UPLOAD_ABI_PATH} component={UploadABI} />
 					<Route exact path={MANAGE_CONTRACT_PATH} component={ManageContract} />
 					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
+
 					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
 					<Route component={NotFound} />
 				</Switch>

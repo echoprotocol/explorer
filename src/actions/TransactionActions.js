@@ -12,7 +12,7 @@ import TransactionReducer from '../reducers/TransactionReducer';
 import BaseActionsClass from './BaseActionsClass';
 
 import FormatHelper from '../helpers/FormatHelper';
-import GlobalReducer from '../reducers/GlobalReducer';
+import GlobalActions from './GlobalActions';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -28,7 +28,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			const block = await echo.api.getBlock(blockNumber);
 
 			if (!block || !block.transactions[index - 1]) {
-				dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+				dispatch(GlobalActions.toggleErrorPath(true));
 				return;
 			}
 

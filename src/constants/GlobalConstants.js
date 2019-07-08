@@ -60,4 +60,9 @@ export const NATHAN = {
 
 export const DEFAULT_ROWS_COUNT = 50;
 export const DEFAULT_OPERATION_HISTORY_ID = '1.10.0';
-export const BROWSER_EXTENSIONS_PATH = 'https://chrome.google.com/webstore/category/extensions?hl=en';
+
+
+export const BRIDGE_NO_ACCESS = 'No access';
+export const MAX_RETRIES = 999999999;
+
+export const MAX_WIDTH_SCREEN = 768;

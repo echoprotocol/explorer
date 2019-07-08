@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import BackwardIcon from '../BackwardIcon';
-import contractIcon from '../../assets/images/temp/avatar.png';
+import verifyIcon from '../../assets/images/icons/default-icn.svg';
 
 require('codemirror/mode/xml/xml.js');
 require('codemirror/mode/javascript/javascript.js');
@@ -47,7 +47,7 @@ class UploadABI extends React.Component {
 					<div className="account-page-t-block">
 
 						<div className="icon">
-							<img src={contractIcon} alt="" />
+							<img src={verifyIcon} alt="" />
 						</div>
 
 						<div className="title">Contract 1.16.1231 — Upload ABI</div>

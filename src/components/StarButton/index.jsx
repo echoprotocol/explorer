@@ -8,20 +8,16 @@ class Star extends Component {
 		const { star } = this.props;
 		return (
 			<div className="action-button-wrap">
-				<button className="action-button">
+				<button className="action-button" onClick={this.props.onClick}>
 					<img src={starIcon} alt="" />
 					{
 						star ?
-							<React.Fragment>
-								<span className="content">Start</span>
-							</React.Fragment>
+							<span className="content">Unstar</span>
 							:
-							<React.Fragment>
-								<span className="content">Unstar</span>
-							</React.Fragment>
+							<span className="content">Star</span>
 					}
 				</button>
-				<div className="action-label">245</div>
+				<div className="action-label">{this.props.countStar}</div>
 			</div>
 		);
 	}
@@ -30,10 +26,13 @@ class Star extends Component {
 
 Star.propTypes = {
 	star: PropTypes.bool,
+	countStar: PropTypes.number,
+	onClick: PropTypes.func.isRequired,
 };
 
 Star.defaultProps = {
 	star: false,
+	countStar: 0,
 };
 
 export default Star;

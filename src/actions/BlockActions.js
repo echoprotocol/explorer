@@ -32,7 +32,7 @@ import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
-import GlobalReducer from '../reducers/GlobalReducer';
+import GlobalActions from './GlobalActions';
 
 /**
  *
@@ -266,7 +266,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		const planeBlock = await echo.api.getBlock(round);
 		if (!planeBlock) {
-			dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+			dispatch(GlobalActions.toggleErrorPath(true));
 			return;
 		}
 
@@ -311,7 +311,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
-		dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+		dispatch(GlobalActions.toggleErrorPath(true));
 	}
 };
 

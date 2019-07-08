@@ -1,7 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import BackwardIcon from '../BackwardIcon';
-import contractIcon from '../../assets/images/temp/avatar.png';
 
 import Avatar from '../Avatar';
 
@@ -21,9 +20,7 @@ class ManageContract extends React.Component {
 					</a>
 					<div className="account-page-t-block">
 
-						<div className="icon">
-							<img src={contractIcon} alt="" />
-						</div>
+						<div className="icon" />
 
 						<div className="title">Manage contract 1.16.1231</div>
 					</div>
@@ -81,9 +78,7 @@ class ManageContract extends React.Component {
 											{({ getRootProps, getInputProps }) => (
 												<div className="drop-area loading" {...getRootProps()}>
 													<input {...getInputProps()} />
-													<span className="image-preview">
-														<img src={contractIcon} alt="" />
-													</span>
+													<span className="image-preview" />
 													<div className="info">
 														<div className="action-description">Drop file here or click to add file</div>
 														<div className="file-description">.jpg, .png formats. 253.5 Kb max</div>

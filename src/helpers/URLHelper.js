@@ -6,7 +6,7 @@ import {
 	BLOCK_INFORMATION_PATH,
 	CONTRACT_PATH,
 } from '../constants/RouterConstants';
-
+import config from '../config/chain';
 
 class URLHelper {
 
@@ -86,6 +86,15 @@ class URLHelper {
 
 		return url;
 
+	}
+
+	/**
+	 *
+	 * @param icon
+	 * @returns {string}
+	 */
+	static getUrlContractIcon(icon) {
+		return `${config.SERVER_URL}${icon}`;
 	}
 
 }

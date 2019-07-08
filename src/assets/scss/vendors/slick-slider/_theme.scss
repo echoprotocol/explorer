@@ -180,10 +180,10 @@
     }
     &.slick-next {
         box-shadow:
-            -10px 0px 73px 0px #fff,
-            -10px 0px 33px 0px #E5E5E8,
-            -10px 0px 33px 0px #fff,
-            -10px 0px 33px 0px #E5E5E8;
+                -10px 0px 73px 0px #fff,
+                -10px 0px 33px 0px #E5E5E8,
+                -10px 0px 33px 0px #fff,
+                -10px 0px 33px 0px #E5E5E8;
 
         &:before {
             content: '>';
@@ -191,10 +191,10 @@
     }
     &.slick-prev {
         box-shadow:
-            10px 0px 73px 0px #fff,
-            10px 0px 33px 0px #E5E5E8,
-            10px 0px 33px 0px #fff,
-            10px 0px 33px 0px #E5E5E8;
+                10px 0px 73px 0px #fff,
+                10px 0px 33px 0px #E5E5E8,
+                10px 0px 33px 0px #fff,
+                10px 0px 33px 0px #E5E5E8;
         &:before {
             content: '<';
         }

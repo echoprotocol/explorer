@@ -1,15 +1,27 @@
 import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
-import { List, fromJS } from 'immutable';
+import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
-
-import ContractReducer from '../reducers/ContractReducer';
-import BaseActionsClass from './BaseActionsClass';
 
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
+import { MODAL_ERROR } from '../constants/ModalConstants';
+
+import ContractReducer from '../reducers/ContractReducer';
+
+import BaseActionsClass from './BaseActionsClass';
 import { formatOperation } from './BlockActions';
+import ModalActions from './ModalActions';
+import GlobalActions from './GlobalActions';
+import AccountActions from './AccountActions';
+
+import { getTotalHistory, getContractInfo } from '../services/queries/contract';
+
+import ContractHelper from '../helpers/ContractHelper';
+import ApiService from '../services/ApiService';
+
 import FormatHelper from '../helpers/FormatHelper';
-import GlobalReducer from '../reducers/GlobalReducer';
+import { BridgeService } from '../services/BridgeService';
+
 
 class ContractActions extends BaseActionsClass {
 
@@ -45,7 +57,7 @@ class ContractActions extends BaseActionsClass {
 		return async (dispatch) => {
 
 			if (!validators.isContractId(id)) {
-				dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+				dispatch(GlobalActions.toggleErrorPath(true));
 				return;
 			}
 
@@ -54,17 +66,22 @@ class ContractActions extends BaseActionsClass {
 				const contract = await echo.api.getContract(id);
 
 				if (!contract) {
-					dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
 				}
 
-				const balances = await echo.api.getContractBalances(id);
+				await dispatch(this.getContractInfoFromExplorer(id));
+				await dispatch(this.getContractInfoFromGraphql(id));
 
+				const balances = await echo.api.getContractBalances(id);
+				let { owner } = await echo.api.getObject(id);
+				owner = new Map(await echo.api.getObject(owner));
 				await echo.api.getObjects(balances.map((b) => b.asset_id));
 
 				dispatch(this.setMultipleValue({
 					bytecode: contract[1].code,
 					balances: fromJS(balances),
+					owner,
 				}));
 
 				let history = await echo.api.getContractHistory(
@@ -173,6 +190,137 @@ class ContractActions extends BaseActionsClass {
 				]));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
+			}
+		};
+	}
+
+	/**
+	 *
+	 * @string contractId
+	 * @returns {Function}
+	 */
+	getContractInfoFromExplorer(contractId) {
+		return async (dispatch) => {
+			try {
+				const contract = await ApiService.getContractInfo(contractId);
+
+				/* eslint-disable*/
+				const {
+					users_has_liked: stars = [],
+					name = '',
+					description = '',
+					icon = '',
+					source_code: sourceCode = '',
+					abi = [],
+					compiler_version: compilerVersion = '',
+					verified = false,
+				} = contract;
+				/* eslint-disable */
+
+				dispatch(this.setMultipleValue({
+					name,
+					description,
+					icon,
+					sourceCode,
+					abi: fromJS(abi),
+					compilerVersion,
+					verified,
+					stars: fromJS(stars),
+				}));
+
+
+			} catch (err) {
+				dispatch(this.setValue('error', FormatHelper.formatError(err)));
+			}
+		};
+	}
+
+	/**
+	 *
+	 * @param contractId
+	 * @returns {Function}
+	 */
+	setStarToContract(contractId) {
+		return async (dispatch, getState) => {
+			try {
+				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
+				if (!isAccessBridge) return;
+
+				const isExistActiveAcount = await dispatch(AccountActions.checkActiveAccount());
+				if (!isExistActiveAcount) return;
+
+				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
+				const stars = getState().contract.get('stars');
+				const isLike =!stars.includes(activeAccountId);
+				const message = ContractHelper.getMessageToLikeContract(isLike, contractId);
+
+				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
+
+				const { users_has_liked } = await ApiService.setStarToContract({
+					signature,
+					message,
+					contractId,
+					accountId: activeAccountId,
+				});
+
+				dispatch(this.setValue('stars', fromJS(users_has_liked)));
+			} catch (err) {
+				const title = typeof err === 'string' ? err : err.message;
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title }));
+			}
+		};
+	}
+
+
+	/**
+	 *
+	 * @param {string} id
+	 * @returns {Function}
+	 */
+	getContractInfoFromGraphql(id) {
+		return async (dispatch) => {
+			try {
+				const contract = await echo.api.getObject(id);
+
+				if (!contract) {
+					dispatch(GlobalActions.toggleErrorPath(true));
+					return;
+				}
+
+				let { history, contractInfo } = await getContractInfo(id);
+				const contractTxs = (await getTotalHistory([id])).total;
+
+				const creationFee = history.items[0].body.fee;
+				const feeAsset = await echo.api.getObject(creationFee.asset_id);
+
+				const {
+					registrar, block, calling_accounts, type, eth_accuracy: ethAccuracy,
+				} = contractInfo;
+
+				let { supported_asset_id: supportedAsset } = contractInfo;
+
+				if (supportedAsset !== null) {
+					supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
+				}
+
+				dispatch(this.setMultipleValue({
+					registrar: registrar.name,
+					blockNumber: block.round,
+					countUsedByAccount: calling_accounts.length,
+					type: fromJS([contract.type, type]),
+					supportedAsset,
+					ethAccuracy,
+					contractTxs,
+					creationFee: new Map({
+						amount: creationFee.amount,
+						precision: feeAsset.precision,
+						symbol: feeAsset.symbol,
+					}),
+					createdAt: block.timestamp,
+				}));
+
+			} catch (err) {
+				dispatch(this.setValue('error', FormatHelper.formatError(err)));
 			}
 		};
 	}

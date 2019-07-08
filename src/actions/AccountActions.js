@@ -2,14 +2,20 @@ import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import { List, fromJS } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 
-import AccountReducer from '../reducers/AccountReducer';
-import BaseActionsClass from './BaseActionsClass';
-
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
+import { MODAL_ERROR } from '../constants/ModalConstants';
+
+import AccountReducer from '../reducers/AccountReducer';
+
 import { formatOperation } from './BlockActions';
+import GlobalActions from './GlobalActions';
+import BaseActionsClass from './BaseActionsClass';
+import ModalActions from './ModalActions';
+
 import FormatHelper from '../helpers/FormatHelper';
-import GlobalReducer from '../reducers/GlobalReducer';
+
+import { BridgeService } from '../services/BridgeService';
 
 class AccountActions extends BaseActionsClass {
 
@@ -55,7 +61,7 @@ class AccountActions extends BaseActionsClass {
 	getAccountInfo(id) {
 		return async (dispatch) => {
 			if (!validators.isAccountId(id) && !validators.isAccountName(id)) {
-				dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: 'true' }));
+				dispatch(GlobalActions.toggleErrorPath(true));
 				return;
 			}
 
@@ -65,7 +71,7 @@ class AccountActions extends BaseActionsClass {
 				const [account] = await echo.api.getFullAccounts([id]);
 
 				if (!account) {
-					dispatch(GlobalReducer.actions.set({ field: 'errorPath', value: true }));
+					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
 				}
 
@@ -164,6 +170,42 @@ class AccountActions extends BaseActionsClass {
 			} finally {
 				dispatch(this.setValue('loadingMoreHistory', false));
 			}
+		};
+	}
+
+	loadActiveAccount() {
+		return async (dispatch) => {
+			if (!BridgeService.isExist()) return;
+
+			const accounts = await BridgeService.getAccounts();
+
+			dispatch(this.setActiveAccount(accounts.find((a) => a.active)));
+		};
+	}
+
+	checkActiveAccount() {
+		return async (dispatch, getState) => {
+			const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
+
+			if (!activeAccountId) {
+				const accounts = await BridgeService.getAccounts();
+
+				if (!accounts.length) {
+					dispatch(ModalActions.openModal(MODAL_ERROR, { title: 'No accounts' }));
+					return false;
+				}
+
+				dispatch(this.setActiveAccount(accounts.find((a) => a.active)));
+				return true;
+			}
+
+			return true;
+		};
+	}
+
+	setActiveAccount(account) {
+		return (dispatch) => {
+			dispatch(GlobalActions.setValue('activeAccount', fromJS(account)));
 		};
 	}
 

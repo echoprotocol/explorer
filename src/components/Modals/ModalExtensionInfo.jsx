@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import ModalBase from './ModalBase';
-import { BROWSER_EXTENSIONS_PATH } from '../../constants/GlobalConstants';
 import headerBg from '../../assets/images/modal-ext-header.png';
+import config from '../../config/chain';
 
 class ModalExtensionInfo extends React.PureComponent {
 
@@ -14,13 +14,13 @@ class ModalExtensionInfo extends React.PureComponent {
 	}
 
 	openBrowserExtensions() {
-		window.open(BROWSER_EXTENSIONS_PATH, '_blank');
+		window.open(config.LANDING_BRIDGE, '_blank');
 	}
 
 	renderModal() {
 
 		return (
-			<ModalBase {...this.props} >
+			<ModalBase onClose={() => this.props.onClose()} >
 				<section className={classnames('modal', 'modal-extension')}>
 					<div className="modal-header">
 						<img src={headerBg} alt="bridge" />

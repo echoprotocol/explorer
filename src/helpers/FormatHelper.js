@@ -73,6 +73,16 @@ class FormatHelper {
 		return moment.utc(timestamp).local().format('D MMM, YYYY hh:mm:ss A');
 	}
 
+
+	/** *
+	 *
+	 * @param timestamp
+	 * @returns {{date: string, time: string}}
+	 */
+	static timestampToContractCreationTime(timestamp) {
+		const [date, time] = moment(timestamp).format('DD.MM.YYYY HH:mm').split(' ');
+		return { date, time };
+	}
 	/**
 	 *
 	 * @param time

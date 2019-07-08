@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ModalSuccess from './ModalError';
-import ModalError from './ModalSuccess';
+import ModalSuccess from './ModalSuccess';
+import ModalError from './ModalError';
 import { MODAL_EXTENSION_INFO, MODAL_SUCCESS, MODAL_ERROR } from '../../constants/ModalConstants';
 import ModalExtensionInfo from '../../components/Modals/ModalExtensionInfo';
 
@@ -18,21 +18,20 @@ class Modals extends React.Component {
 			<React.Fragment>
 				{successForm.get('show') &&
 				<ModalSuccess
-					{...successForm}
+					title={successForm.get('title')}
 					onClose={() => this.onClose(MODAL_SUCCESS)}
 				/>
 				}
 
 				{errorForm.get('show') &&
 				<ModalError
-					{...errorForm}
+					title={errorForm.get('title')}
 					onClose={() => this.onClose(MODAL_ERROR)}
 				/>
 				}
 
 				{extensionInfo.get('show') &&
 				<ModalExtensionInfo
-					{...extensionInfo}
 					onClose={() => this.onClose(MODAL_EXTENSION_INFO)}
 				/>
 				}

@@ -8,7 +8,7 @@ class ModalSuccess extends React.PureComponent {
 
 	render() {
 		return (
-			<ModalBase {...this.props} >
+			<ModalBase onClose={() => this.props.onClose()} >
 				<section className={classnames('modal', 'modal-success')}>
 					<div className="modal-header">
 						<img className="icon" src={check} alt="check" />

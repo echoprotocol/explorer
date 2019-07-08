@@ -11,6 +11,7 @@ const DEFAULT_FIELDS = Map({
 	connected: false,
 	error: '',
 	errorPath: false,
+	activeAccount: new Map(),
 });
 
 export default createModule({

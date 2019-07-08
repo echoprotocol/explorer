@@ -1,6 +1,12 @@
+import { MODAL_ERROR, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
+
 import GlobalReducer from '../reducers/GlobalReducer';
+
 import BaseActionsClass from './BaseActionsClass';
 import { connect } from './SocketActions';
+import ModalActions from './ModalActions';
+
+import { BridgeService } from '../services/BridgeService';
 
 class GlobalActionsClass extends BaseActionsClass {
 
@@ -54,6 +60,30 @@ class GlobalActionsClass extends BaseActionsClass {
 	setTitle(title) {
 		return (dispatch) => {
 			dispatch(this.setValue('title', title));
+		};
+	}
+
+	toggleErrorPath(value) {
+		return (dispatch) => {
+			dispatch(this.setValue('errorPath', value));
+		};
+	}
+
+	checkAccessToBridge() {
+		return async (dispatch) => {
+			if (!BridgeService.isExist()) {
+				dispatch(ModalActions.openModal(MODAL_EXTENSION_INFO, {}));
+				return false;
+			}
+
+			const access = await BridgeService.getAccess();
+
+			if (!access) {
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title: 'No access' }));
+				return false;
+			}
+
+			return true;
 		};
 	}
 

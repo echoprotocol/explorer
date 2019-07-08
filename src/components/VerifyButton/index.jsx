@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip';
 import classnames from 'classnames';
 import infoIcon from '../../assets/images/icons/info.svg';
@@ -12,7 +13,6 @@ class Verify extends Component {
 		this.state = {
 			hovered: false,
 			tooltipSize: 290,
-			verified: true,
 		};
 		this.listener = this.updateTooltipSize.bind(this);
 	}
@@ -43,7 +43,9 @@ class Verify extends Component {
 	}
 
 	render() {
-		const { hovered, tooltipSize, verified } = this.state;
+		const { hovered, tooltipSize } = this.state;
+		const { verified } = this.props;
+
 		const tip = (
 			<React.Fragment>
 				<p>
@@ -99,5 +101,14 @@ class Verify extends Component {
 	}
 
 }
+
+Verify.propTypes = {
+	verified: PropTypes.bool,
+};
+
+Verify.defaultProps = {
+	verified: false,
+};
+
 
 export default Verify;

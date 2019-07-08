@@ -7,6 +7,7 @@ import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
 import Contract from '../../components/Contract';
 import ContractActions from '../../actions/ContractActions';
 import GlobalActions from '../../actions/GlobalActions';
+import AccountActions from '../../actions/AccountActions';
 
 const filteredObjects = createSelector(
 	(state) => state.contract.get('balances'),
@@ -32,7 +33,29 @@ export default withRouter(connect(
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
 		history: state.contract.get('history'),
 		bytecode: state.contract.get('bytecode'),
+
+		registrar: state.contract.get('registrar'),
+		blockNumber: state.contract.get('blockNumber'),
+		countUsedByAccount: state.contract.get('countUsedByAccount'),
+		supportedAsset: state.contract.get('supportedAsset'),
+		ethAccuracy: state.contract.get('ethAccuracy'),
+		contractTxs: state.contract.get('contractTxs'),
+		creationFee: state.contract.get('creationFee'),
+		createdAt: state.contract.get('createdAt'),
+		type: state.contract.get('type'),
 		balances: balanceSelector(state),
+		owner: state.contract.get('owner'),
+
+		name: state.contract.get('name'),
+		description: state.contract.get('description'),
+		icon: state.contract.get('icon'),
+		sourceCode: state.contract.get('sourceCode'),
+		abi: state.contract.get('abi'),
+		compilerVersion: state.contract.get('compilerVersion'),
+		verified: state.contract.get('verified'),
+		stars: state.contract.get('stars'),
+
+		activeAccount: state.global.get('activeAccount'),
 	}),
 	(dispatch, props) => ({
 		getContractInfo: () => dispatch(ContractActions.getContractInfo(props.match.params.id)),
@@ -41,10 +64,14 @@ export default withRouter(connect(
 			props.match.params.id,
 			lastOperationId,
 		)),
+		getActiveAccount: () => dispatch(AccountActions.getActiveAccount()),
+		setStarToContract: () => dispatch(ContractActions.setStarToContract(props.match.params.id)),
 		updateContractInfo: (recetOperationId) => dispatch(ContractActions.updateContractInfo(
 			props.match.params.id,
 			recetOperationId,
 		)),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
+		setActiveAccount: (account) => dispatch(AccountActions.setActiveAccount(account)),
+		loadActiveAccount: () => dispatch(AccountActions.loadActiveAccount()),
 	}),
 )(Contract));

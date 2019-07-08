@@ -7,7 +7,13 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const { API_URL } = require('config');
+const {
+	API_URL,
+	LANDING_BRIDGE,
+	HTTP_LINK,
+	WS_LINK,
+	SERVER_URL,
+} = require('config');
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 	template: `${__dirname}/src/assets/index.html`,
@@ -117,6 +123,10 @@ module.exports = {
 		new CleanWebpackPlugin(['dist']),
 		new webpack.DefinePlugin({
 			__API_URL__: JSON.stringify(API_URL),
+			__LANDING_BRIDGE__: JSON.stringify(LANDING_BRIDGE),
+			__HTTP_LINK__: JSON.stringify(HTTP_LINK),
+			__WS_LINK__: JSON.stringify(WS_LINK),
+			__SERVER_URL__: JSON.stringify(SERVER_URL),
 		}),
 		HTMLWebpackPluginConfig,
 		extractSass,

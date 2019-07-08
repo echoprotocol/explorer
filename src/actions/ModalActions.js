@@ -1,5 +1,5 @@
-import BaseActionsClass from './BaseActionsClass';
 import ModalReducer from './../reducers/ModalReducer';
+import BaseActionsClass from './BaseActionsClass';
 
 class ModalActionsClass extends BaseActionsClass {
 
@@ -24,14 +24,12 @@ class ModalActionsClass extends BaseActionsClass {
 
 	/**
 	 * Close modal
-	 * @param {String} type
 	 */
 	closeModal() {
 		return (dispatch) => {
 			dispatch(this.reducer.actions.close());
 		};
 	}
-
 
 }
 

@@ -7,8 +7,9 @@ import cross from '../../assets/images/icons/cross.svg';
 class ModalError extends React.PureComponent {
 
 	render() {
+
 		return (
-			<ModalBase {...this.props} >
+			<ModalBase onClose={() => this.props.onClose()} >
 				<section className={classnames('modal', 'modal-error')}>
 					<div className="modal-header">
 						<img className="icon" src={cross} alt="error" />
