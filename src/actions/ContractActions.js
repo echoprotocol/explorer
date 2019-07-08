@@ -431,7 +431,7 @@ class ContractActions extends BaseActionsClass {
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'ABI successfully uploaded' }));
 				browserHistory.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
 			} catch (err) {
-				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatError(err) }));
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));
 			}
 		};
 	}

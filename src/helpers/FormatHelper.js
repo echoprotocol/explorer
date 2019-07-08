@@ -46,8 +46,15 @@ class FormatHelper {
 		return err instanceof Error || (_.isObject(err) && err.message) ? err.message : err;
 	}
 
-	static formatServerError(err, customError) {
-		return (_.isObject(err) && err.error && err.error.message) ? err.error.message : customError;
+	static formatServerError(err) {
+		if (_.isObject(err) && err.message) {
+			if (Array.isArray(err.message)) {
+				return err.message[0].message;
+			}
+			return err.message;
+		}
+
+		return err;
 	}
 
 
