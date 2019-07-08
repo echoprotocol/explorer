@@ -5,6 +5,7 @@ import {
 	ASSET_PATH,
 	BLOCK_INFORMATION_PATH,
 	CONTRACT_PATH,
+	VERIFY_CONTRACT_PATH,
 	MANAGE_CONTRACT_PATH,
 	UPLOAD_ABI_PATH,
 } from '../constants/RouterConstants';
@@ -68,6 +69,15 @@ class URLHelper {
 	}
 
 	/**
+	 * @param contractId
+	 * @returns {string}
+	 */
+	static createVerifyContractUrl(contractId) {
+		return `${VERIFY_CONTRACT_PATH.replace(/:id/, contractId)}`;
+	}
+
+	/**
+	 *
 	 * @param contractId
 	 * @returns {string}
 	 */

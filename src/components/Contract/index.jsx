@@ -8,13 +8,16 @@ import classnames from 'classnames';
 import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
+import { withRouter } from 'react-router';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
 	CONTRACT_BALANCES,
 	CONTRACT_BYTECODE,
 	CONTRACT_TRANSACTIONS,
-	CONTRACT_DETAILS_NUMBERS_TAB, CONTRACT_SURCE_CODE, CONTRACT_ABI,
+	CONTRACT_DETAILS_NUMBERS_TAB,
+	CONTRACT_SOURCE_CODE,
+	CONTRACT_ABI,
 } from '../../constants/RouterConstants';
 
 import ContractBytecode from './ContractBytecode';
@@ -42,10 +45,15 @@ class Contract extends React.Component {
 		this.manageContract = this.manageContract.bind(this);
 	}
 
-	componentDidMount() {
-		const { match: { params: { detail } } } = this.props;
+	async componentDidMount() {
+		const { match: { params: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
-		this.initContract();
+		await this.initContract();
+		const { verified } = this.props;
+
+		if (!verified && detail === CONTRACT_SOURCE_CODE) {
+			this.props.history.push(URLHelper.createContractUrl(id));
+		}
 
 		this.props.loadActiveAccount();
 		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
@@ -72,11 +80,11 @@ class Contract extends React.Component {
 		this.props.loadContractHistory(this.props.contractHistory.last()[0].id.split('.')[2]);
 	}
 
-	initContract() {
+	async initContract() {
 		const { id } = this.props.match.params;
 
 		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
-		this.props.getContractInfo();
+		await this.props.getContractInfo();
 		echo.subscriber.removeContractSubscribe(this.subscriber);
 		echo.subscriber.setContractSubscribe([id], this.subscriber);
 	}
@@ -193,12 +201,14 @@ class Contract extends React.Component {
 					<ContractAbi id={id} abi={abi} verified={verified} /> : <Loader />,
 				key: 'tab-4',
 			},
-			{
-				tab: !loading ?
-					<ContractSourceCode value={sourceCode} /> : <Loader />,
-				key: 'tab-5',
-			},
 		];
+		if (verified) {
+			tabList.push({
+				tab: !loading ?
+					<ContractSourceCode sourceCode={sourceCode} /> : <Loader />,
+				key: 'tab-5',
+			});
+		}
 		const settings = {
 			dots: false,
 			infinite: false,
@@ -258,7 +268,7 @@ class Contract extends React.Component {
 								</div>
 							</div>
 							<div className="item">
-								<Verify verified={verified} />
+								<Verify id={id} verified={verified} />
 							</div>
 						</div>
 						<Media query="(max-width: 500px)">
@@ -306,14 +316,19 @@ class Contract extends React.Component {
 													<span className="menu-item-content">ABI</span>
 												</Link>
 											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}>
-												<Link
-													onClick={() => this.goToSlide(5)}
-													to={URLHelper.createContractUrl(id, CONTRACT_SURCE_CODE)}
+											{
+												verified &&
+												<div
+													className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}
 												>
-													<span className="menu-item-content">Source code</span>
-												</Link>
-											</div>
+													<Link
+														onClick={() => this.goToSlide(5)}
+														to={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}
+													>
+														<span className="menu-item-content">Source code</span>
+													</Link>
+												</div>
+											}
 										</Slider>
 									</div> :
 									<Dropdown className="dropdown-tab">
@@ -361,6 +376,7 @@ Contract.propTypes = {
 	isFullHistory: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
+	history: PropTypes.object.isRequired,
 	contractHistory: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
@@ -369,7 +385,6 @@ Contract.propTypes = {
 	loadContractHistory: PropTypes.func.isRequired,
 	updateContractInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
-	history: PropTypes.object.isRequired,
 	setStarToContract: PropTypes.func.isRequired,
 	setActiveAccount: PropTypes.func.isRequired,
 	loadActiveAccount: PropTypes.func.isRequired,
@@ -387,7 +402,7 @@ Contract.propTypes = {
 	name: PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,
 	icon: PropTypes.string.isRequired,
-	sourceCode: PropTypes.string.isRequired,
+	sourceCode: PropTypes.string,
 	abi: PropTypes.string.isRequired,
 	compilerVersion: PropTypes.string.isRequired,
 	verified: PropTypes.bool.isRequired,
@@ -402,8 +417,9 @@ Contract.defaultProps = {
 	isFullHistory: false,
 	loadingMoreHistory: false,
 	bytecode: null,
+	sourceCode: null,
 	supportedAsset: '',
 	activeAccount: new Map(),
 };
 
-export default Contract;
+export default withRouter(Contract);

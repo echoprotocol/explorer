@@ -13,6 +13,8 @@ const {
 	HTTP_LINK,
 	WS_LINK,
 	SERVER_URL,
+	SOLC_LIST_URL,
+	SOLC_BIN_URL,
 } = require('config');
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
@@ -31,6 +33,9 @@ const timeCache = Date.now();
 module.exports = {
 	node: {
 		fs: 'empty',
+		module: 'empty',
+		net: 'empty',
+		tls: 'empty',
 	},
 	entry: {
 		babel: '@babel/polyfill',
@@ -123,10 +128,12 @@ module.exports = {
 		new CleanWebpackPlugin(['dist']),
 		new webpack.DefinePlugin({
 			__API_URL__: JSON.stringify(API_URL),
+			__SERVER_URL__: JSON.stringify(SERVER_URL),
+			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),
+			__SOLC_BIN_URL__: JSON.stringify(SOLC_BIN_URL),
 			__LANDING_BRIDGE__: JSON.stringify(LANDING_BRIDGE),
 			__HTTP_LINK__: JSON.stringify(HTTP_LINK),
 			__WS_LINK__: JSON.stringify(WS_LINK),
-			__SERVER_URL__: JSON.stringify(SERVER_URL),
 		}),
 		HTMLWebpackPluginConfig,
 		extractSass,

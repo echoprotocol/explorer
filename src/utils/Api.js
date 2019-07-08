@@ -27,7 +27,7 @@ const parseServerError = (error) => {
 	return { status: error.status, message: error.message };
 };
 
-export function get(url, params) {
+export function get(url, params, credentials) {
 	const query = qs.stringify(params);
 
 	const headers = new Headers();
@@ -36,6 +36,10 @@ export function get(url, params) {
 		headers,
 		cache: 'default',
 	};
+
+	if (credentials) {
+		options.credentials = 'include';
+	}
 
 	return new Promise((resolve, reject) => {
 		fetch(`${url}?${query}`, options).then((response) => {

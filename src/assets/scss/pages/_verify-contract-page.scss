@@ -1,0 +1,112 @@
+.inner-page.verify-contract {
+  padding-top: 45px;
+
+  @include res-320 {
+    padding-top: 30px;
+  }
+
+  .page-helper-section {
+    margin-top: 40px;
+    padding-bottom: 50px;
+
+    @include res-320 {
+      margin-top: 30px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
+  .backwards {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 15px;
+  }
+
+  .section-description {
+    line-height: 23px;
+    padding: 20px 135px 20px 0;
+    margin-bottom: 30px;
+
+    @include res-500 {
+      padding-right: 0;
+    }
+
+    @include res-320 {
+      font-size: 14px;  
+    }
+  }
+
+  .code-block {
+    margin-bottom: 30px;
+
+    @include res-320 {
+      margin-bottom: 10px;
+    }
+  }
+
+  .verify-contract-table {
+
+    &.mb40 {
+      margin-bottom: 40px;
+
+      @include res-320 {
+        margin-bottom: 20px;
+      }
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+
+      @include res-500 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+
+    .t-name {
+      width: 255px;
+      padding-right: 20px;
+      font-size: 13px;
+      flex-shrink: 0;
+      color: #18142a;
+      @include InterUI_Regular;
+      line-height: 18px;
+
+      @include res-500 {
+        margin-bottom: 10px;
+      }
+    }
+
+    .t-value {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      > div {
+        &:not(:last-child) {
+          margin-right: 15px;
+        }
+      }
+
+      .ui.selection.dropdown {
+        width: 100%;
+      }
+    }
+  }
+
+  .buttons-wrap {
+    @include res-320 {
+      padding-left: 0;
+      padding-right: 0;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -33,6 +33,7 @@
         }
         .icon {
             margin-right: 14px;
+            display: flex;
 
             img {
                 width: 32px;
@@ -102,7 +103,11 @@
             @include InterUI_Regular;
             font-size: 13px;
             color: #6E6D6F;
-            margin-left: 5px;
+            margin-left: 10px;
+        }
+
+        .blue-loader {
+            margin-left: auto;
         }
     }
     .buttons-wrap {

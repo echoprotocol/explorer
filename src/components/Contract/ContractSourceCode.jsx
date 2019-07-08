@@ -1,28 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+import PropTypes from 'prop-types';
+import copy from 'copy-to-clipboard';
 
 require('codemirror/mode/xml/xml.js');
 require('codemirror/mode/javascript/javascript.js');
 
 class ContractSourceCode extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (nextProps.value !== prevState.value) {
-			return ({
-				value: nextProps.value,
-			});
-		}
-		return null;
-	}
-
-
 	render() {
+		const { sourceCode } = this.props;
 		const CODEMIRROR_OPTIONS = {
 			mode: 'javascript',
 			lineNumbers: true,
@@ -32,17 +19,14 @@ class ContractSourceCode extends React.Component {
 
 				<div className="line">
 					<div className="action-button-wrap">
-						<button className="action-button">Copy code</button>
+						<button className="action-button" onClick={() => copy(sourceCode)}>Copy code</button>
 					</div>
 				</div>
 
 				<div className="code-block">
 					<CodeMirror
-						value={this.state.value}
+						value={sourceCode}
 						options={CODEMIRROR_OPTIONS}
-						onBeforeChange={(editor, data, value) => {
-							this.setState({ value });
-						}}
 					/>
 				</div>
 
@@ -53,12 +37,11 @@ class ContractSourceCode extends React.Component {
 }
 
 ContractSourceCode.propTypes = {
-	// eslint-disable-next-line react/no-unused-prop-types
-	value: PropTypes.string,
+	sourceCode: PropTypes.string,
 };
 
 ContractSourceCode.defaultProps = {
-	value: '',
+	sourceCode: null,
 };
 
 export default ContractSourceCode;

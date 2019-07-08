@@ -1,3 +1,5 @@
 {
-  "API_URL": "wss://testnet.echo-dev.io/ws"
+  "API_URL": "wss://testnet.echo-dev.io/ws",
+  "SOLC_LIST_URL": "https://solc-bin.ethereum.org/bin/list.json",
+  "SOLC_BIN_URL": "https://solc-bin.ethereum.org/bin/"
 }

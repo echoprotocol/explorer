@@ -1,6 +1,7 @@
 import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
+import * as wrapper from 'solc/wrapper';
 
 import {
 	CONTRACT_FIELDS,
@@ -8,9 +9,13 @@ import {
 	DEFAULT_ROWS_COUNT,
 } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
-import { FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
-import { MODAL_SUCCESS, MODAL_ERROR } from '../constants/ModalConstants';
+import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
+import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
 import { CONTRACT_ABI } from '../constants/RouterConstants';
+
+import FormatHelper from '../helpers/FormatHelper';
+import URLHelper from '../helpers/URLHelper';
+import { jsonParse } from '../helpers/FunctionHelper';
 
 import ContractReducer from '../reducers/ContractReducer';
 
@@ -21,17 +26,15 @@ import FormActions from './FormActions';
 import GlobalActions from './GlobalActions';
 import AccountActions from './AccountActions';
 
-import FormatHelper from '../helpers/FormatHelper';
 import ContractHelper from '../helpers/ContractHelper';
-import URLHelper from '../helpers/URLHelper';
-import { jsonParse } from '../helpers/FunctionHelper';
 import FileLoaderHelper from '../helpers/FileLoaderHelper';
-import { validateContractDescription, validateContractIcon, validateContractName } from '../helpers/ValidateHelper';
+import ValidateHelper, { validateContractDescription, validateContractIcon, validateContractName } from '../helpers/ValidateHelper';
 
 import ApiService from '../services/ApiService';
 import { BridgeService } from '../services/BridgeService';
 import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
+import { loadScript } from '../api/ContractApi';
 import browserHistory from '../history';
 
 class ContractActions extends BaseActionsClass {
@@ -207,6 +210,95 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
+	contractCompilerInit() {
+		return async (dispatch) => {
+			const list = await ApiService.getSolcList();
+			dispatch(this.setValue('compilersList', list));
+			const solcLatestRelease = list.latestRelease ? list.releases[list.latestRelease] : list.builds[list.builds.length - 1].path;
+			const lastVersion = list.builds.find((b) => b.path === solcLatestRelease);
+			dispatch(FormActions.setFormValue(
+				FORM_CONTRACT_VERIFY,
+				'currentCompiler',
+				lastVersion && lastVersion.longVersion,
+			));
+			await loadScript(`${__SOLC_BIN_URL__}${solcLatestRelease}`); // eslint-disable-line no-undef
+		};
+	}
+
+	changeContractCompiler(version) {
+		return async (dispatch, getState) => {
+			const buildsList = getState().contract.getIn(['compilersList', 'builds']);
+			dispatch(FormActions.setFormValue(
+				FORM_CONTRACT_VERIFY,
+				'currentCompiler',
+				version,
+			));
+			const compilerBuild = buildsList.find((build) => build.get('longVersion') === version);
+			await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
+			const code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
+			if (!code) {
+				return;
+			}
+			await this.contractCodeCompile(code);
+		};
+	}
+
+	contractCodeCompile(code, filename = 'test.sol') {
+		return async (dispatch, getState) => {
+			if (!code) {
+				code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
+			}
+			try {
+				const input = {
+					language: 'Solidity',
+					sources: {
+						[filename]: {
+							content: code,
+						},
+					},
+					settings: {
+						outputSelection: {
+							'*': {
+								'*': ['*'],
+							},
+						},
+					},
+				};
+
+				if (code) {
+					dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'code', code));
+				}
+
+				if (!code) {
+					dispatch(this.setValue('contracts', new Map({})));
+					dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', ''));
+					dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', null));
+					return;
+				}
+
+				const solc = wrapper(window.Module);
+				const output = JSON.parse(solc.compile(JSON.stringify(input)));
+				let contracts = new Map({});
+				contracts = contracts.withMutations((contractsMap) => {
+					Object.entries(output.contracts[filename]).forEach(([name, contract]) => {
+						const construct = contract.abi.find((abi) => abi.type === 'constructor');
+						if (!construct) {
+							return contractsMap.set(name, []);
+						}
+						return contractsMap.set(name, construct.inputs);
+					});
+				});
+				dispatch(this.setValue('contracts', contracts));
+				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', contracts.keySeq().first()));
+				dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', null));
+			} catch (err) {
+				dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', 'Invalid contract code'));
+				dispatch(this.setValue('contracts', new Map({})));
+				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', ''));
+			}
+		};
+	}
+
 	manageContract(contractId, name, icon, description) {
 		return async (dispatch, getState) => {
 			try {
@@ -314,6 +406,7 @@ class ContractActions extends BaseActionsClass {
 				dispatch(this.checkValidateForm());
 				dispatch(this.checkChangesForm());
 			}).catch((error) => dispatch(FormActions.setFormError(FORM_MANAGE_CONTRACT, 'icon', error.message)));
+
 		};
 	}
 
@@ -380,6 +473,82 @@ class ContractActions extends BaseActionsClass {
 
 			} catch (err) {
 				dispatch(this.setValue('error', FormatHelper.formatError(err)));
+			}
+		};
+	}
+
+	updateConstructorParamsForm() {
+		return (dispatch, getState) => {
+			const contractName = getState().form.getIn([FORM_CONTRACT_VERIFY, 'contractName']);
+			const contracts = getState().contract.get('contracts');
+
+			if (!contractName || !contracts.size) {
+				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractInputs', new Map({})));
+				return;
+			}
+
+			let contractInputs = new Map({});
+
+			if (!contracts.get(contractName)) {
+				return;
+			}
+
+			contractInputs = contractInputs.withMutations((contractsMap) => {
+				contracts.get(contractName).forEach(({ name, type }) => {
+					contractsMap.set(name, { value: '', error: null, type });
+				});
+			});
+
+			dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractInputs', contractInputs));
+		};
+	}
+
+	contractVerifyApprove(id) {
+		return async (dispatch, getState) => {
+			const contractInputs = getState().form.getIn([FORM_CONTRACT_VERIFY, 'contractInputs']);
+			let isError = false;
+
+			contractInputs.forEach((input, name) => {
+				if (!input.value) {
+					return;
+				}
+
+				const error = ValidateHelper.validateByType(input.value, input.type);
+
+				if (error) {
+					isError = true;
+					dispatch(FormActions.setInFormError(FORM_CONTRACT_VERIFY, ['contractInputs', name], error));
+				}
+			});
+
+			if (isError) {
+				return;
+			}
+
+			const form = getState().form.get(FORM_CONTRACT_VERIFY);
+
+			try {
+				const response = await ApiService.verifyContract({
+					id,
+					name: form.get('contractName'),
+					compiler_version: `v${form.get('currentCompiler').value}`,
+					source_code: form.get('code'),
+					inputs: form.get('contractInputs').filter((i) => i.value).map((input) => ({
+						arg: input.value,
+						type: input.type,
+					})).toArray(),
+				});
+
+				dispatch(this.setMultipleValue({
+					verified: response.verified,
+					abi: FormatHelper.formatAbi(response.abi),
+					sourceCode: response.source_code,
+				}));
+				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'Contract verified' }));
+				browserHistory.push(URLHelper.createContractUrl(id));
+
+			} catch (err) {
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatError(err) }));
 			}
 		};
 	}

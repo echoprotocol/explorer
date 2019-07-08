@@ -44,6 +44,32 @@ class FormActionsClass extends BaseActionsClass {
 	}
 
 	/**
+	 * Set multiple params by field
+	 * @param {String} form
+	 * @param {Array} fields
+	 * @param value
+	 * @returns {Function}
+	 */
+	setInFormValue(form, fields, value) {
+		return (dispatch) => {
+			dispatch(this.reducer.actions.setInFormValue({ form, fields, value }));
+		};
+	}
+
+	/**
+	 * Set multiple params by field
+	 * @param {String} form
+	 * @param {Array} fields
+	 * @param value
+	 * @returns {Function}
+	 */
+	setInFormError(form, fields, value) {
+		return (dispatch) => {
+			dispatch(this.reducer.actions.setInFormError({ form, fields, value }));
+		};
+	}
+
+	/**
 	 * Toggle loading
 	 * This function used for form and button loading.
 	 * You can call this with 2 params(without loading for button loading)

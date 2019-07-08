@@ -2,7 +2,7 @@ import { createModule } from 'redux-modules';
 import { Map } from 'immutable';
 import _ from 'lodash';
 
-import { FORM_LOGIN, FORM_MANAGE_CONTRACT, FORM_ABI } from '../constants/FormConstants';
+import { FORM_CONTRACT_VERIFY, FORM_LOGIN, FORM_ABI, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
 
 import TransformModules from '../utils/TransformModules';
 
@@ -21,6 +21,15 @@ const DEFAULT_FORM_FIELDS = {
 			value: '',
 			error: null,
 		},
+	}),
+	[FORM_CONTRACT_VERIFY]: Map({
+		code: '',
+		currentCompiler: {
+			value: '',
+			error: null,
+		},
+		contractName: '',
+		contractInputs: Map({}),
 	}),
 	[FORM_MANAGE_CONTRACT]: new Map({
 		isChangedForm: false,
@@ -53,6 +62,7 @@ export default createModule({
 	name: 'form',
 	initialState: Map({
 		[FORM_LOGIN]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_LOGIN]),
+		[FORM_CONTRACT_VERIFY]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_CONTRACT_VERIFY]),
 		[FORM_MANAGE_CONTRACT]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_MANAGE_CONTRACT]),
 		[FORM_ABI]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_ABI]),
 	}),
@@ -104,6 +114,37 @@ export default createModule({
 						error: payload.value,
 					}));
 				}
+
+				return state;
+			},
+		},
+
+		setInFormValue: {
+			reducer: (state, { payload }) => {
+				const path = [payload.form].concat(payload.fields);
+
+				const field = state.getIn(path) || {};
+
+				state = state.setIn(path, Object.assign({}, field, {
+					...field,
+					value: payload.value,
+					error: null,
+				}));
+
+				return state;
+			},
+		},
+
+		setInFormError: {
+			reducer: (state, { payload }) => {
+				const path = [payload.form].concat(payload.fields);
+
+				const field = state.getIn(path);
+
+				state = state.setIn(path, Object.assign({}, field, {
+					...field,
+					error: payload.value,
+				}));
 
 				return state;
 			},

@@ -1,3 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+import { validators } from 'echojs-lib';
+import { objectIdRegEx } from '../constants/TypeConstants';
+
 import {
 	KILO_BYTE,
 	MAX_KB_CONTRACT_ICON,
@@ -5,6 +9,101 @@ import {
 	MAX_LENGTH_CONTRACT_NAME,
 	MIN_LENGTH_CONTRACT_NAME,
 } from '../constants/GlobalConstants';
+
+class ValidateHelper {
+
+	static _validateInt(value, isUint, size = 256) {
+		value = Number(value);
+		if (!Number.isInteger(value)) return 'value should be integer';
+
+		if (isUint && value < 0) return 'value should be unsigned integer';
+
+		if (size % 8 !== 0) return 'various sizes should be in in steps of 8';
+
+		const maxLimit = isUint ? (2 ** size) - 1 : ((2 ** (size - 1)) - 1);
+		const minLimit = isUint ? 0 : -(2 ** (size - 1));
+
+		if (value > maxLimit && value < minLimit) return `value should be in ${isUint ? 'u' : ''}int${size} format`;
+
+		return null;
+	}
+
+	static _validateString(value) {
+		return (typeof value === 'string' ? null : 'value should be a string');
+	}
+	static _validateAddress(value) {
+		return (validators.isObjectId(value) ? null : 'value should be in object id format');
+	}
+	static _validateBool(value) {
+		return (typeof value === 'boolean' ? null : 'value should be a boolean');
+	}
+	static _validateArray(value) {
+		return (Array.isArray(value) ? null : 'value should be an array');
+	}
+	static _validateBytes(value) {
+		return ((typeof value === 'string' && objectIdRegEx.test(value)) ? null : 'value should be a hex string');
+	}
+
+	static validateByType(value, type) {
+		if (!value) return 'Value should not be empty';
+
+		let method = null;
+		let isUint = null;
+		let size = null;
+		let isBytesArray = false;
+
+		const intMark = type.search('int');
+		if (type.search('string') !== -1 || type.search('bytes32') !== -1) {
+			method = this._validateString;
+		} else if (type.search('address') !== -1) {
+			method = this._validateAddress;
+		} else if (type.search('bool') !== -1) {
+			method = this._validateBool;
+		} else if (type.search('byte') !== -1) {
+			isBytesArray = type !== 'bytes';
+			method = this._validateBytes;
+		} else if (intMark !== -1) {
+			method = this._validateInt;
+			isUint = (intMark === 1);
+			const match = type.match(/\d+/);
+			size = match && match[0];
+		} else {
+			return 'value could not be validated';
+		}
+
+		const arrayMark = type.search('\\[\\]');
+
+		if (type.search('bool') !== -1) {
+			try {
+				value = JSON.parse(value);
+			} catch (e) {
+				return `value should be a ${type}`;
+			}
+		}
+
+		if (arrayMark !== -1 || isBytesArray) {
+			try {
+				value = JSON.parse(value);
+			} catch (e) {
+				return `value should be an ${type} array`;
+			}
+			let error = this._validateArray(value);
+			if (error) return error;
+			value.some((v) => {
+				error = method(v, isUint, size);
+				return error;
+			});
+
+			return error ? `in array ${error}` : error;
+		}
+
+		return method(value, isUint, size);
+
+	}
+
+}
+
+export default ValidateHelper;
 
 export const validateContractName = (name) => {
 	if (!name) {

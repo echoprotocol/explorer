@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Tooltip from 'rc-tooltip';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+
 import infoIcon from '../../assets/images/icons/info.svg';
 import infoHoverIcon from '../../assets/images/icons/info-hover.svg';
 import infoWhiteIcon from '../../assets/images/icons/info-white.svg';
+import URLHelper from '../../helpers/URLHelper';
 
 class Verify extends Component {
 
@@ -43,9 +46,8 @@ class Verify extends Component {
 	}
 
 	render() {
+		const { verified, id } = this.props;
 		const { hovered, tooltipSize } = this.state;
-		const { verified } = this.props;
-
 		const tip = (
 			<React.Fragment>
 				<p>
@@ -92,7 +94,7 @@ class Verify extends Component {
 						</button>
 					</Tooltip>
 				</div>
-				<button className="action-button">
+				<button className="action-button" onClick={() => this.props.history.push(URLHelper.createVerifyContractUrl(id))}>
 					<span className="content">Verify</span>
 				</button>
 
@@ -104,11 +106,12 @@ class Verify extends Component {
 
 Verify.propTypes = {
 	verified: PropTypes.bool,
+	id: PropTypes.string.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 Verify.defaultProps = {
 	verified: false,
 };
 
-
-export default Verify;
+export default withRouter(Verify);

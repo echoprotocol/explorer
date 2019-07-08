@@ -274,7 +274,7 @@ class TransactionsTable extends React.Component {
 TransactionsTable.propTypes = {
 	isBlockTable: PropTypes.bool,
 	hasMore: PropTypes.bool,
-	transactions: PropTypes.any.isRequired,
+	transactions: PropTypes.any,
 	objectId: PropTypes.string,
 	blockTime: PropTypes.string,
 	loading: PropTypes.bool,
@@ -288,6 +288,7 @@ TransactionsTable.defaultProps = {
 	blockTime: '',
 	loadMore: null,
 	objectId: null,
+	transactions: [],
 };
 
 export default TransactionsTable;

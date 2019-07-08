@@ -13,6 +13,8 @@ const DEFAULT_FIELDS = new Map({
 	history: new List([]),
 	bytecode: null,
 	lastOperationId: '',
+	compilersList: new Map({}),
+	contracts: new Map({}),
 	name: '',
 	description: '',
 	icon: '',

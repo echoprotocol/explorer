@@ -83,6 +83,7 @@
 		"redux-thunk": "^2.3.0",
 		"reselect": "^4.0.0",
 		"semantic-ui-react": "^0.84.0",
+		"solc": "^0.5.10",
 		"subscriptions-transport-ws": "^0.9.16",
 		"uglifyjs-webpack-plugin": "^1.2.2",
 		"utf8": "^3.0.0"

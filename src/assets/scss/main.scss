@@ -8,6 +8,8 @@
 @import "vendors/slick-slider/theme";
 @import "vendors/slick-slider/slick";
 @import "vendors/codemirror/codemirror";
+@import "vendors/select-semantic-ui";
+@import "vendors/input-semantic-ui";
 
 @import 'layout/header';
 @import 'layout/preparing-section';
@@ -40,3 +42,6 @@
 @import 'components/code-block';
 @import 'components/dropdown-tabs';
 @import 'components/drop-area';
+@import 'components/select-input';
+@import 'components/input-wrapper';
+@import 'components/checkbox';

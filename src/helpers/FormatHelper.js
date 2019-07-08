@@ -46,6 +46,11 @@ class FormatHelper {
 		return err instanceof Error || (_.isObject(err) && err.message) ? err.message : err;
 	}
 
+	static formatServerError(err, customError) {
+		return (_.isObject(err) && err.error && err.error.message) ? err.error.message : customError;
+	}
+
+
 	static roundNumber(value, decimals) {
 		return Number(`${Math.ceil(`${value}e${decimals}`)}e-${decimals}`);
 	}

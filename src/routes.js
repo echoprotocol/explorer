@@ -10,6 +10,7 @@ import Contract from './containers/Contract';
 import NotFound from './containers/NotFound';
 import UploadABI from './containers/UploadABI';
 import ManageContract from './containers/ManageContract';
+import VerifyContract from './containers/VerifyContract';
 
 import {
 	INDEX_PATH,
@@ -21,7 +22,7 @@ import {
 	NOT_FOUND_PATH,
 	CONTRACT_PATH_DETAIL,
 	UPLOAD_ABI_PATH,
-	MANAGE_CONTRACT_PATH,
+	MANAGE_CONTRACT_PATH, VERIFY_CONTRACT_PATH,
 } from './constants/RouterConstants';
 
 
@@ -40,6 +41,7 @@ export default class extends React.Component {
 
 					<Route exact path={UPLOAD_ABI_PATH} component={UploadABI} />
 					<Route exact path={MANAGE_CONTRACT_PATH} component={ManageContract} />
+					<Route exact path={VERIFY_CONTRACT_PATH} component={VerifyContract} />
 					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
 
 					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
