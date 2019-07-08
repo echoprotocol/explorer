@@ -1,7 +1,7 @@
 {
 	"name": "echo-explorer",
 	"description": "Echo Explorer",
-	"version": "0.9.2",
+	"version": "0.9.3",
 	"scripts": {
 		"start": "cross-env NODE_ENV=local webpack-dev-server --mode development --progress --colors --history-api-fallback --hot --inline",
 		"build": "webpack --progress --display-error-details --colors --mode production",
@@ -35,7 +35,7 @@
 		"config": "^1.30.0",
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.6.3",
-		"echojs-lib": "^1.1.9",
+		"echojs-lib": "^1.1.11",
 		"echojs-ping": "^0.1.5",
 		"es6-promise": "^4.2.4",
 		"es6-promise-promise": "^1.0.0",
