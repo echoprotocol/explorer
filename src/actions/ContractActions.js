@@ -4,7 +4,13 @@ import { batchActions } from 'redux-batched-actions';
 
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
-import { MODAL_ERROR } from '../constants/ModalConstants';
+import { MODAL_SUCCESS, MODAL_ERROR } from '../constants/ModalConstants';
+import { CONTRACT_ABI } from '../constants/RouterConstants';
+
+import ContractHelper from '../helpers/ContractHelper';
+import URLHelper from '../helpers/URLHelper';
+import FormatHelper from '../helpers/FormatHelper';
+import { jsonParse } from '../helpers/FunctionHelper';
 
 import ContractReducer from '../reducers/ContractReducer';
 
@@ -15,13 +21,10 @@ import GlobalActions from './GlobalActions';
 import AccountActions from './AccountActions';
 
 import { getTotalHistory, getContractInfo } from '../services/queries/contract';
-
-import ContractHelper from '../helpers/ContractHelper';
+import { BridgeService } from '../services/BridgeService';
 import ApiService from '../services/ApiService';
 
-import FormatHelper from '../helpers/FormatHelper';
-import { BridgeService } from '../services/BridgeService';
-
+import browserHistory from '../history';
 
 class ContractActions extends BaseActionsClass {
 
@@ -194,6 +197,31 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
+	abiApprove(id, abi) {
+		return async (dispatch) => {
+			try {
+				const parsedAbi = jsonParse(abi);
+
+				if (!parsedAbi) {
+					dispatch(ModalActions.openModal(MODAL_ERROR, { title: 'Invalid JSON' }));
+					return;
+				}
+
+				const response = await ApiService.setAbi({ id, abi: parsedAbi });
+
+				if (response.error) {
+					dispatch(ModalActions.openModal(MODAL_ERROR, { title: response.error.message }));
+					return;
+				}
+
+				dispatch(this.setValue('abi', FormatHelper.formatAbi(response.abi)));
+				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'ABI successfully uploaded' }));
+				browserHistory.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+			} catch (err) {
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatError(err) }));
+			}
+		};
+	}
 	/**
 	 *
 	 * @string contractId
@@ -211,7 +239,7 @@ class ContractActions extends BaseActionsClass {
 					description = '',
 					icon = '',
 					source_code: sourceCode = '',
-					abi = [],
+					abi = '',
 					compiler_version: compilerVersion = '',
 					verified = false,
 				} = contract;
@@ -222,7 +250,7 @@ class ContractActions extends BaseActionsClass {
 					description,
 					icon,
 					sourceCode,
-					abi: fromJS(abi),
+					abi: FormatHelper.formatAbi(abi),
 					compilerVersion,
 					verified,
 					stars: fromJS(stars),

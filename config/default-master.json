@@ -3,5 +3,5 @@
   "LANDING_BRIDGE": "http://649-bridge-landing.pixelplexlabs.com",
   "HTTP_LINK": "https://645-echodb.pixelplexlabs.com/graphql",
   "WS_LINK": "wss://645-echodb.pixelplexlabs.com/graphql",
-  "SERVER_URL": ""
+  "SERVER_URL": "https://656-echo-explorer.pixelplexlabs.com"
 }

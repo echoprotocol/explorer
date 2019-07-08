@@ -54,3 +54,16 @@ export const extendObjectKey = (extendedKey, extendedObj) => Object.keys(extende
 		obj[`${extendedKey}.${key}`] = extendedObj[key];
 		return obj;
 	}, {});
+
+/**
+ *
+ * @param value
+ * @returns {string}
+ */
+export const jsonParse = (value) => {
+	try {
+		return JSON.parse(value);
+	} catch (e) {
+		return '';
+	}
+};

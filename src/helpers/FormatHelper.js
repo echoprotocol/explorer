@@ -142,6 +142,18 @@ class FormatHelper {
 		return str.replace(/\./g, '');
 	}
 
+	/**
+	 *
+	 * @param {Array} abi
+	 * @returns {string}
+	 */
+	static formatAbi(abi) {
+		if (!abi) {
+			return '';
+		}
+		return JSON.stringify(abi, null, 4);
+	}
+
 }
 
 export default FormatHelper;

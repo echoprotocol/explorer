@@ -1,39 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import { setAbi } from '../../api/ContractApi';
+import copy from 'copy-to-clipboard';
+import { withRouter } from 'react-router';
+
+import URLHelper from '../../helpers/URLHelper';
 
 require('codemirror/mode/xml/xml.js');
 require('codemirror/mode/javascript/javascript.js');
 
 class ContractAbi extends React.Component {
 
-	uploadFile(event) {
-		const file = event.target.files[0];
-
-		if (file) {
-			const data = new FileReader();
-			data.onload = (e) => {
-				setAbi('1.14.13', JSON.parse(e.target.result));
-			};
-			data.readAsText(file);
-		}
-	}
-
-	renderWhithoutABI() {
+	renderWithoutABI() {
+		const { id } = this.props;
 		return (
 			<React.Fragment>
 				<div className="abi-info">
-					Please, be aware. This contract has not been verified. <span className="warn"> ABI can not be fully trusted.</span>
+					This contract has not been verified but you can upload ABI.
 				</div>
 				<div className="action-button-wrap">
-					<label className="action-button" htmlFor="upload-abi">Upload ABI</label>
+					<label
+						className="action-button"
+						htmlFor="upload-abi"
+						onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+					>
+						Upload ABI
+					</label>
 				</div>
 			</React.Fragment>
 		);
 	}
 	renderWithABI() {
-		const { abi } = this.props;
+		const { id, abi, verified } = this.props;
 		const CODEMIRROR_OPTIONS = {
 			mode: 'javascript',
 			lineNumbers: true,
@@ -41,21 +39,33 @@ class ContractAbi extends React.Component {
 		return (
 			<React.Fragment>
 
-				<div className="abi-info">
-					Please, be aware. This contract has not been verified. <span className="warn"> ABI can not be fully trusted.</span>
-				</div>
+				{
+					!verified &&
+					<div className="abi-info">
+						Please, be aware. This contract has not been verified. <span className="warn"> ABI can not be fully trusted.</span>
+					</div>
+				}
 
 				<div className="line">
 					<div className="action-button-wrap">
-						<label className="action-button" htmlFor="upload-abi">Upload new ABI</label>
+						{
+							!verified &&
+							<label
+								className="action-button"
+								htmlFor="upload-abi"
+								onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+							>
+								Upload new ABI
+							</label>
+						}
 					</div>
-					<button className="copy-button">Copy code</button>
+					<button className="copy-button" onClick={() => copy(abi)}>Copy code</button>
 				</div>
 
 				{/* If code-block readonly add class uncontrolled */}
 				<div className="code-block uncontrolled">
 					<CodeMirror
-						value={abi.toJS().toString()}
+						value={abi}
 						options={CODEMIRROR_OPTIONS}
 					/>
 				</div>
@@ -67,19 +77,9 @@ class ContractAbi extends React.Component {
 		const { abi } = this.props;
 		return (
 			<div className="contract-abi-panel">
-				<input
-					type="file"
-					name="upload-abi"
-					id="upload-abi"
-					className="hidden"
-					onChange={this.uploadFile}
-				/>
-
 				{
-					abi ? this.renderWithABI() : this.renderWhithoutABI()
+					abi ? this.renderWithABI() : this.renderWithoutABI()
 				}
-
-
 			</div>
 		);
 	}
@@ -87,7 +87,12 @@ class ContractAbi extends React.Component {
 }
 
 ContractAbi.propTypes = {
-	abi: PropTypes.object.isRequired,
+	id: PropTypes.string.isRequired,
+	abi: PropTypes.string.isRequired,
+	verified: PropTypes.bool.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
-export default ContractAbi;
+ContractAbi.defaultProps = {};
+
+export default withRouter(ContractAbi);

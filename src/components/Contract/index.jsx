@@ -184,7 +184,7 @@ class Contract extends React.Component {
 			},
 			{
 				tab: !loading ?
-					<ContractAbi abi={abi} /> : <Loader />,
+					<ContractAbi id={id} abi={abi} verified={verified} /> : <Loader />,
 				key: 'tab-4',
 			},
 			{
@@ -381,7 +381,7 @@ Contract.propTypes = {
 	description: PropTypes.string.isRequired,
 	icon: PropTypes.string.isRequired,
 	sourceCode: PropTypes.string.isRequired,
-	abi: PropTypes.object.isRequired,
+	abi: PropTypes.string.isRequired,
 	compilerVersion: PropTypes.string.isRequired,
 	verified: PropTypes.bool.isRequired,
 	stars: PropTypes.object.isRequired,

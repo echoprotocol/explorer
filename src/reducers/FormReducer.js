@@ -2,7 +2,7 @@ import { createModule } from 'redux-modules';
 import { Map } from 'immutable';
 import _ from 'lodash';
 
-import { FORM_LOGIN } from '../constants/FormConstants';
+import { FORM_ABI, FORM_LOGIN } from '../constants/FormConstants';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
@@ -21,12 +21,19 @@ const DEFAULT_FORM_FIELDS = {
 			error: null,
 		},
 	}),
+	[FORM_ABI]: Map({
+		abi: {
+			value: '',
+			error: '',
+		},
+	}),
 };
 
 export default createModule({
 	name: 'form',
 	initialState: Map({
 		[FORM_LOGIN]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_LOGIN]),
+		[FORM_ABI]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_FORM_FIELDS[FORM_ABI]),
 	}),
 	transformations: {
 		..._.cloneDeep(TransformModules(DEFAULT_FIELDS)),

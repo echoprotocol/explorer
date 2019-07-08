@@ -17,7 +17,7 @@ const DEFAULT_FIELDS = new Map({
 	description: '',
 	icon: '',
 	sourceCode: '',
-	abi: new List(),
+	abi: '',
 	compilerVersion: '',
 	verified: false,
 	stars: new List(),

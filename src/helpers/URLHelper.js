@@ -5,6 +5,7 @@ import {
 	ASSET_PATH,
 	BLOCK_INFORMATION_PATH,
 	CONTRACT_PATH,
+	UPLOAD_ABI_PATH,
 } from '../constants/RouterConstants';
 import config from '../config/chain';
 
@@ -62,6 +63,14 @@ class URLHelper {
 	 */
 	static createContractUrl(contractId, detail = '') {
 		return `${CONTRACT_PATH.replace(/:id/, contractId)}${`${detail}` || ''}`;
+	}
+
+	/**
+	 * @param contractId
+	 * @returns {string}
+	 */
+	static createUploadAbiUrl(contractId) {
+		return `${UPLOAD_ABI_PATH.replace(/:id/, contractId)}`;
 	}
 
 	/**

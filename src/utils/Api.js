@@ -70,6 +70,7 @@ export function post(url, params) {
 		cache: 'default',
 		mode: 'cors',
 		body: JSON.stringify(params),
+
 	};
 
 	return new Promise((resolve, reject) => {
