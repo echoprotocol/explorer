@@ -93,22 +93,22 @@ class SearchActions extends BaseActionsClass {
 					return;
 				}
 
-				if (TypesHelper.isStartWithLetter(str) && str.length > 2) {
+				if (!TypesHelper.isStartWithLetter(str)) return;
 
-					const regExp = new RegExp(str);
-					hints = (await echo.api.lookupAccounts(str, HEADER_SEARCH_ACCOUNT_LIMIT))
-						.filter(([name]) => regExp.exec(name))
-						.map(([name, id]) => {
-							const { index } = regExp.exec(name);
-							return {
-								section: 'Account',
-								prefix: name.slice(0, index),
-								postfix: name.slice(index + str.length),
-								value: name.slice(index, index + str.length),
-								to: URLHelper.createAccountUrl(id),
-							};
-						});
-				}
+				const regExp = new RegExp(str);
+				hints = (await echo.api.lookupAccounts(str, HEADER_SEARCH_ACCOUNT_LIMIT))
+					.filter(([name]) => regExp.exec(name))
+					.map(([name, id]) => {
+						const { index } = regExp.exec(name);
+						return {
+							section: 'Account',
+							prefix: name.slice(0, index),
+							postfix: name.slice(index + str.length),
+							value: name.slice(index, index + str.length),
+							to: URLHelper.createAccountUrl(id),
+						};
+					});
+
 			} catch (error) {
 				dispatch(SearchReducer.actions.set({ field: ['headerSearch', 'error'], value: FormatHelper.formatError(error) }));
 			} finally {
