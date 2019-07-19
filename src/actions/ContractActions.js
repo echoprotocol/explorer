@@ -239,7 +239,7 @@ class ContractActions extends BaseActionsClass {
 			if (!code) {
 				return;
 			}
-			await this.contractCodeCompile(code);
+			await dispatch(this.contractCodeCompile(code));
 		};
 	}
 
@@ -527,11 +527,16 @@ class ContractActions extends BaseActionsClass {
 
 			const form = getState().form.get(FORM_CONTRACT_VERIFY);
 
+			dispatch(FormActions.toggleLoading(FORM_CONTRACT_VERIFY, true));
+
 			try {
+				const version = getState().contract.getIn(['compilersList', 'builds'])
+					.find((build) => build.get('longVersion') === form.get('currentCompiler').value);
+
 				const response = await ApiService.verifyContract({
 					id,
 					name: form.get('contractName'),
-					compiler_version: `v${form.get('currentCompiler').value}`,
+					compiler_version: version.toJS(),
 					source_code: form.get('code'),
 					inputs: form.get('contractInputs').filter((i) => i.value).map((input) => ({
 						arg: input.value,
@@ -548,7 +553,9 @@ class ContractActions extends BaseActionsClass {
 				browserHistory.push(URLHelper.createContractUrl(id));
 
 			} catch (err) {
-				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatError(err) }));
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));
+			} finally {
+				dispatch(FormActions.toggleLoading(FORM_CONTRACT_VERIFY, false));
 			}
 		};
 	}

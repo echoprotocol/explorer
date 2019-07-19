@@ -15,7 +15,6 @@ class VerifyContract extends React.Component {
 		super(props);
 		this.state = {
 			loader: false,
-			requestLoading: false,
 		};
 	}
 
@@ -76,10 +75,8 @@ class VerifyContract extends React.Component {
 		this.setState({ loader: false });
 	}
 
-	async onApprove(id) {
-		this.setState({ requestLoading: true });
-		await this.props.contractVerifyApprove(id);
-		this.setState({ requestLoading: false });
+	onApprove(id) {
+		this.props.contractVerifyApprove(id);
 	}
 
 	getCompilersOptions() {
@@ -108,13 +105,13 @@ class VerifyContract extends React.Component {
 
 	isDisabled() {
 		const { form } = this.props;
-		const { requestLoading } = this.state;
+		const { loader } = this.state;
 
 		return form.get('currentCompiler').error
 			|| form.get('contractInputs').some((input) => input.error)
 			|| !form.get('code')
 			|| form.get('loading')
-			|| requestLoading;
+			|| loader;
 	}
 
 	uploadFile(event) {
@@ -135,11 +132,11 @@ class VerifyContract extends React.Component {
 		const {
 			match: { params: { id } }, form, contracts,
 		} = this.props;
-		const { loader, requestLoading } = this.state;
+		const { loader } = this.state;
 		const CODEMIRROR_OPTIONS = {
 			mode: 'javascript',
 			lineNumbers: true,
-			readOnly: requestLoading,
+			readOnly: form.get('loading'),
 		};
 
 		return (
@@ -174,7 +171,7 @@ class VerifyContract extends React.Component {
 								className="hidden"
 								onChange={(e) => this.uploadFile(e)}
 								accept=".sol"
-								disabled={requestLoading}
+								disabled={form.get('loading')}
 							/>
 						</div>
 						<span className="action-description">or copy/past contract code in textarea</span>
@@ -226,7 +223,7 @@ class VerifyContract extends React.Component {
 										search
 										selection
 										onChange={(e) => this.onChangeCompiler(e)}
-										disabled={requestLoading}
+										disabled={form.get('loading')}
 									/>
 									{form.get('currentCompiler').error && <div className="error-field">{form.get('currentCompiler').error}</div>}
 								</div>
@@ -279,7 +276,7 @@ class VerifyContract extends React.Component {
 					<button
 						className="decline-button"
 						onClick={(e) => this.onBack(e, id)}
-						disabled={requestLoading}
+						disabled={form.get('loading')}
 					>
 						Cancel
 					</button>
