@@ -83,7 +83,7 @@ class Objects extends React.Component {
 			base00: '#ebeaee', // Background color
 			base01: '#383830',
 			base02: '#49483e',
-			base03: '#7a7664;',
+			base03: '#7a7664',
 			base04: '#7a7664',
 			base05: '#f8f8f2',
 			base06: '#f5f4f1',
@@ -93,10 +93,9 @@ class Objects extends React.Component {
 			base0A: '#f4bf75',
 			base0B: '#7a7664',
 			base0C: '#a1efe4',
-			base0D: '#0c7f95',
+			base0D: '#377D92',
 			base0E: '#ae81ff',
 			base0F: '#cc6633',
-			// #ebeaee
 		};
 
 		return (
@@ -122,7 +121,6 @@ class Objects extends React.Component {
 									return (
 										<Link
 											to={url}
-											className="blue"
 										>
 											{raw}
 										</Link>
@@ -132,7 +130,7 @@ class Objects extends React.Component {
 								return raw;
 
 							}}
-							data={data}
+							data={data || {}}
 						/>
 						<button className="copy-bytecode" onClick={this.copy}>Copy</button>
 					</div>

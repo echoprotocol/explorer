@@ -1,12 +1,12 @@
 .recent-block-section {
-    &.object-view {
+    .object-view {
         padding-top: 47px;
 
         padding-bottom: 25px;
 
         // overflow: visible !important;
 
-        .table-container {
+        &.table-container {
             flex-shrink: 0;
 
             > h2 {
@@ -51,7 +51,7 @@
                     margin: 0 !important;
                     max-width: calc(100% - 140px);
                     width: 100%;
-                    
+
                     @include res-500 {
                         max-width: calc(100% - 125px);
                     }
@@ -70,6 +70,9 @@
                     li {
                         padding-top: 3px !important;
                         padding-bottom: 3px !important;
+                        & > div > div {
+                            top: -1px;    
+                        }
                     }
 
                     a {
