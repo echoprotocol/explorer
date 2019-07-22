@@ -41,11 +41,13 @@ class PreparingSection extends React.Component {
 			producing: PROGRESS_STATUS,
 			verifyingGC: PROGRESS_STATUS,
 			verifyingBBA: PROGRESS_STATUS,
+			readyProducers: 0,
 		};
 		this.progressInterval = null;
 		this.producingTimeout = null;
 		this.verifyingGCTimeout = null;
 		this.pverifyingBBATimeout = null;
+		this.readyProducers = null;
 	}
 
 	componentDidMount() {
@@ -75,6 +77,18 @@ class PreparingSection extends React.Component {
 
 		return true;
 	}
+
+	componentDidUpdate(prevProps) {
+		const { readyProducers } = this.props;
+		if (prevProps.readyProducers !== readyProducers && readyProducers) {
+			this.readyProducers = setTimeout(() => this.updateReadyProducers(readyProducers), SET_VERIFYING_STATUS_DELAY);
+			return;
+		}
+		if (prevProps.readyProducers !== this.props.readyProducers) {
+			this.updateReadyProducers(readyProducers);
+		}
+	}
+
 
 	setProducingWithDelay(status, delay = SET_VERIFYING_STATUS_DELAY) {
 		this.producingTimeout = setTimeout(() => this.setState({ producing: status }), delay);
@@ -135,6 +149,7 @@ class PreparingSection extends React.Component {
 		clearInterval(this.producingTimeout);
 		clearInterval(this.verifyingGCTimeout);
 		clearInterval(this.verifyingBBATimeout);
+		clearInterval(this.readyProducers);
 		this.setState(() => ({
 			progressBar: MIN_PERCENT_PROGRESS_BAR,
 			status: MIN_PERCENT_PROGRESS_BAR,
@@ -144,13 +159,17 @@ class PreparingSection extends React.Component {
 		}));
 	}
 
+	updateReadyProducers(readyProducers) {
+		this.setState({ readyProducers });
+	}
+
 	render() {
 		const {
-			producers, stepProgress, readyProducers, preparingBlock, averageBlockTime,
+			producers, stepProgress, preparingBlock, averageBlockTime,
 		} = this.props;
 
 		const {
-			progressBar, producing, verifyingGC, verifyingBBA, status,
+			progressBar, producing, verifyingGC, verifyingBBA, status, readyProducers,
 		} = this.state;
 
 		if (!stepProgress) {
