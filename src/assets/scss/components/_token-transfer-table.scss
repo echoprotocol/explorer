@@ -1,0 +1,41 @@
+.token-transfer-table {
+    display: table;
+    .tt-row {
+        display: table-row;
+        font-weight: 400;
+    }
+    .tt-col {
+        display: table-row;
+        display: table-cell;
+        padding-bottom: 10px;
+
+        &:first-child{
+            padding-right: 50px;
+        }
+        &:last-child {
+            .transfer-direction {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+            .direction {
+                margin: 0 8px;
+            }
+            @include res-500 {
+                .direction + .avatar-wrap {
+                    margin: 8px 0 0;
+                }
+            }
+        }
+    }
+}
+
+@include res-320 {
+    .token-transfer-table {
+        .tt-col {
+            &:first-child{
+                padding-right: 20px;
+            }
+        }
+    }
+}

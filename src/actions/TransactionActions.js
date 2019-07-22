@@ -13,6 +13,7 @@ import BaseActionsClass from './BaseActionsClass';
 
 import FormatHelper from '../helpers/FormatHelper';
 import GlobalActions from './GlobalActions';
+import { formatOperation } from './BlockActions';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -41,6 +42,10 @@ class TransactionActionsClass extends BaseActionsClass {
 				delete options.extensions;
 				delete options.gasPrice;
 				delete options.eth_accuracy;
+
+				const {
+					from, subject, value: opValue, asset: opAsset,
+				} = await formatOperation([type, options]);
 
 				options = Object.entries(options).map(async ([key, value]) => {
 					let link = null;
@@ -92,6 +97,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				});
 
 				options = await Promise.all(options);
+
 				options = options.reduce((obj, op) => ({ ...obj, ...op }), {});
 
 				if ([
@@ -102,6 +108,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					const [, resultId] = transaction.operation_results[opIndex];
 
 					const [contractResultType, result] = await echo.api.getContractResult(resultId);
+
 
 					if (contractResultType === CONTRACT_RESULT_TYPE_0) {
 						const { exec_res: { excepted, code_deposit, new_address }, tr_receipt: { log } } = result;
@@ -124,7 +131,25 @@ class TransactionActionsClass extends BaseActionsClass {
 					}
 				}
 
+				let result = null;
+				switch (type) {
+					case OPERATIONS_IDS.CREATE_CONTRACT:
+						result = options.Name;
+						break;
+					case OPERATIONS_IDS.ACCOUNT_CREATE:
+						result = options['new contract id'];
+						break;
+					default:
+				}
+
 				return {
+					mainInfo: {
+						from,
+						subject,
+						asset: opAsset,
+						value: opValue,
+						result,
+					},
 					type: operation.name,
 					block: block.round,
 					time: FormatHelper.timestampToBlockInformationTime(block.timestamp),
@@ -136,7 +161,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			dispatch(this.setValue('operations', new List(operations)));
 		};
 	}
-
 
 }
 

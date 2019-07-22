@@ -3,7 +3,7 @@
         width: 945px;
         padding-right: 20px;
         margin-top: 30px;
-        
+
         &:not(:last-child) {
             margin-bottom: 67px;
 
@@ -109,7 +109,7 @@
                 display: flex;
                 flex-shrink: 0;
                 letter-spacing: 0.25em;
-                
+
                 @include res-500 {
                     width: 140px;
                 }
@@ -184,7 +184,7 @@
     &:hover {
         background-color: #d9d8dc;
     }
-    
+
     &:active {
         background-color: #d9d8dc;
         color: rgba(0, 0, 0, 0.5);

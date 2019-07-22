@@ -185,3 +185,9 @@ $res-1440: 1535px;
 	}
 
 }
+
+@mixin text-overflow() {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

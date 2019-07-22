@@ -20,6 +20,7 @@
 @import 'layout/account-page';
 @import 'layout/account-asset';
 @import 'layout/modals';
+@import 'layout/transaction-component';
 
 @import "pages/all";
 
@@ -42,3 +43,7 @@
 @import 'components/select-input';
 @import 'components/input-wrapper';
 @import 'components/checkbox';
+@import 'components/accordion-table';
+@import 'components/avatar';
+@import 'components/operation-detail-table';
+@import 'components/token-transfer-table';
