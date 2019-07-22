@@ -18,7 +18,8 @@ import NotFound from '../containers/NotFound';
 import Modal from '../containers/Modals';
 import Loader from '../components/Loader';
 
-import { NOT_FOUND_PATH, CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
+
+import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
 import { MODAL_EXTENSION_INFO, MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 
 
@@ -106,7 +107,7 @@ class App extends React.Component {
 			return <Loader global />;
 		}
 
-		if ((pathName && pathName.search(NOT_FOUND_PATH) !== -1) || errorPath) {
+		if (errorPath) {
 			return this.renderNotFound();
 		}
 
