@@ -9,6 +9,7 @@ import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
 import { withRouter } from 'react-router';
+import MetaTags from 'react-meta-tags';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
@@ -31,9 +32,10 @@ import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';
 import ContractInfo from './ContractInfo';
 import { ContractIcon } from './ContractIcon';
+import { BridgeService } from '../../services/BridgeService';
 
 import URLHelper from '../../helpers/URLHelper';
-import { BridgeService } from '../../services/BridgeService';
+import { resetTags } from '../../helpers/GlobalHelper';
 
 class Contract extends React.Component {
 
@@ -74,6 +76,10 @@ class Contract extends React.Component {
 		this.props.clearContractInfo();
 		BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
 		echo.subscriber.removeContractSubscribe(this.subscriber);
+
+		const metaTags = document.getElementsByTagName('meta');
+
+		resetTags(metaTags, 'meta-temp');
 	}
 
 	onLoadMoreHistory() {
@@ -138,6 +144,31 @@ class Contract extends React.Component {
 				</div>;
 		});
 		return elment[selected];
+	}
+
+	renderMetaData() {
+		const {
+			match: { params: { id } }, name, icon, description,
+		} = this.props;
+
+		const contractTitle = name || id;
+		const contractDesc = description || 'ECHO contract page';
+
+		return (
+			<MetaTags>
+				<title>{`Contract ${contractTitle} | Echo Explorer`}</title>
+				<meta id="meta-temp" name="title" content={`Contract ${contractTitle} | Echo Explorer`} />
+				<meta id="meta-temp" property="og:title" content={`Contract ${contractTitle} | Echo Explorer`} />
+				<meta id="meta-temp" property="twitter:title" content={`Contract ${contractTitle} | Echo Explorer`} />
+
+				<meta id="meta-temp" name="description" content={contractDesc} />
+				<meta id="meta-temp" property="og:description" content={contractDesc} />
+				<meta id="meta-temp" property="twitter:description" content={contractDesc} />
+
+				<meta id="meta-temp" property="og:image" content={URLHelper.getUrlContractIcon(icon)} />
+				<meta id="meta-temp" property="twitter:image" content={URLHelper.getUrlContractIcon(icon)} />
+			</MetaTags>
+		);
 	}
 
 	render() {
@@ -239,6 +270,7 @@ class Contract extends React.Component {
 
 		return (
 			<div className="table-container inner-information-container account-page contract-page with-d-table">
+				{this.renderMetaData()}
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards">
