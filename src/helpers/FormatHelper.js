@@ -156,6 +156,14 @@ class FormatHelper {
 
 	/**
 	 *
+	 * @param transactions
+	 * @returns {string}
+	 */
+	static getFormatTransactionsTitle(transactions) {
+		return `${transactions && transactions.length} Transaction${transactions.length !== 1 ? 's' : ''}`;
+	}
+	/**
+	 *
 	 * @param {Array} abi
 	 * @returns {string}
 	 */

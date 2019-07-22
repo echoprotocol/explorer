@@ -12,6 +12,7 @@ import { DEFAULT_TABLE_LENGTH } from '../../constants/LoadMoreConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 
 class BlockInformation extends React.Component {
 
@@ -115,7 +116,7 @@ class BlockInformation extends React.Component {
 						<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
 					</div>
 				</div>
-				<h2>{`${transactions && transactions.length} Transactions`}</h2>
+				<h2>{FormatHelper.getFormatTransactionsTitle(transactions)}</h2>
 				<div className="help-table-wrapper">
 					{
 						(slicedTransactions && slicedTransactions.length) ?
