@@ -9,6 +9,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
+import FilterBlock from '../../../components/FilterCheckbox';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 import TypesHelper from '../../../helpers/TypesHelper';
@@ -18,7 +19,7 @@ import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
-import { resetDisplayedBlocks, setMaxDisplayedBlocks } from '../../../actions/BlockActions';
+import { toggleEmptyBlocks, resetDisplayedBlocks, setMaxDisplayedBlocks } from '../../../actions/BlockActions';
 
 class RecentBlockTable extends React.Component {
 
@@ -65,8 +66,9 @@ class RecentBlockTable extends React.Component {
 		});
 	}
 
+
 	render() {
-		const { hasMore } = this.props;
+		const { hasMore, isHideEmptyBlocks } = this.props;
 
 		return (
 			<InfiniteScroll loadMore={() => this.props.loadBlocks()} hasMore={hasMore}>
@@ -74,6 +76,11 @@ class RecentBlockTable extends React.Component {
 					<h2>Recent blocks
 						<SmallSearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
 					</h2>
+					<FilterBlock
+						checked={isHideEmptyBlocks}
+						title="Hide empty blocks"
+						onChange={() => this.props.toggleEmptyBlocks(isHideEmptyBlocks)}
+					/>
 					<div className="table">
 						<Media query="(max-width: 767px)">
 							{(matches) =>
@@ -195,22 +202,26 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
+	isHideEmptyBlocks: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
-	resetDisplayedBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	resetDisplayedBlocks: PropTypes.func.isRequired,
+	toggleEmptyBlocks: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
 		blocks: state.block.get('blocks'),
 		hasMore: state.block.get('hasMore'),
+		isHideEmptyBlocks: state.block.get('isHideEmptyBlocks'),
 	}),
 	(dispatch) => ({
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
 		resetDisplayedBlocks: () => dispatch(resetDisplayedBlocks()),
+		toggleEmptyBlocks: (value) => dispatch(toggleEmptyBlocks(value)),
 	}),
 )(RecentBlockTable));

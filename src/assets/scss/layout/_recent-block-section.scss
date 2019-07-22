@@ -37,11 +37,20 @@
         padding-bottom: 37px;
         flex-shrink: 0;
 
+        .checkbox {
+          margin-bottom: 20px;
+          padding-left: 30px;
+        }
+
         &.recent-block-table {
             @include res-320 {
                 h2 {
                     flex-direction: column;
                     align-items: flex-start;
+                }
+
+                .checkbox {
+                  padding-left: 30px;
                 }
             }
         }
@@ -58,6 +67,10 @@
             padding-left: 0;
             padding-right: 0;
             min-height: calc(100vh - 397px);
+
+            .checkbox {
+              padding-left: 0;
+            }
         }
 
         @include res-768 {
@@ -70,9 +83,13 @@
             min-height: calc(100vh - 511px);
         }
 
-        @include res-320 {
-            padding-top: 45px;
+      @include res-320 {
+        padding-top: 45px;
+
+        & > .checkbox {
+          margin-bottom: 20px;
         }
+      }
 
         &:before {
             content: '';
@@ -106,7 +123,7 @@
             font-size: 23px;
             color: #130d32;
             padding-left: 30px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
 
             display: flex;
             align-items: center;
@@ -118,17 +135,17 @@
 
             @include res-1000 {
                 padding-left: 0;
-                margin-bottom: 27px;
+                margin-bottom: 20px;
             }
 
             @include res-500 {
-                margin-bottom: 22px;
+                margin-bottom: 40px;
             }
 
             @include res-320 {
                 position: relative;
                 margin: 0 auto;
-                margin-bottom: 35px;
+                margin-bottom: 20px;
 
                 padding-left: 30px;
                 padding-right: 30px;

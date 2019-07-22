@@ -621,3 +621,12 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 	}
 
 };
+
+/**
+ *
+ * @param value
+ * @returns {Function}
+ */
+export const toggleEmptyBlocks = (value) => (dispatch) => {
+	dispatch(BlockReducer.actions.set({ field: 'isHideEmptyBlocks', value: !value }));
+};

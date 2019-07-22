@@ -66,3 +66,49 @@
     }
   }
 }
+
+
+.checkbox {
+  input[type='checkbox'] {
+    @include onFocus(2px, 3px, 0, rgba(#298fe5, .4));
+    width: 14px;
+    height: 14px;
+    border-radius: 1px;
+    background-color: #ffffff;
+    border: 2px solid #c1c1cb;
+    cursor: pointer;
+    transition: all .2s;
+
+    &:hover {
+      border-color: #9a9aac;
+    }
+
+    &:checked ~ label {
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 4px;
+        left: -19px;
+        width: 3px;
+        height: 7px;
+        border: 2px #298fe5;
+        border-style: none solid solid none;
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  label {
+    @include InterUI_Regular;
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 18px;
+    color: #0E0936;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    top: -3px;
+    left: 10px;
+  }
+}
