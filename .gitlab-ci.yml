@@ -89,7 +89,7 @@ deploy.production:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker pull $CI_REGISTRY_IMAGE:latest
-    - docker start explorer || docker run --name explorer -p 80:80 -d $CI_REGISTRY_IMAGE
+    - docker start explorer || docker run --name explorer -p 26564:80 -d $CI_REGISTRY_IMAGE
   after_script:
     - docker logout $CI_REGISTRY
   only:
