@@ -103,8 +103,7 @@ class SearchActions extends BaseActionsClass {
 
 				const regExp = new RegExp(str);
 				hints = (await echo.api.lookupAccounts(str, HEADER_SEARCH_ACCOUNT_LIMIT))
-					.filter(([name]) => regExp.exec(name))
-					.map(([name]) => {
+					.filter(([name]) => regExp.exec(name)).map(([name]) => {
 						const { index } = regExp.exec(name);
 						return {
 							section: 'Account',
