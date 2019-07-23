@@ -41,6 +41,8 @@ class SearchActions extends BaseActionsClass {
 					let section = 'Id';
 
 					if (validators.isAccountId(str)) {
+						const account = (await echo.api.getAccounts([str]))[0];
+						str = account ? account.name : str;
 						section = 'Account';
 					} else if (validators.isAssetId(str)) {
 						section = 'Asset';
@@ -61,11 +63,15 @@ class SearchActions extends BaseActionsClass {
 					const blockHint = {
 						section: 'Block', value: str, to: URLHelper.createBlockUrl(str),
 					};
+
+					const accountId = `${ACCOUNT_OBJECT_PREFIX}.${str}`;
+					const nameAccountHint = (await echo.api.getAccounts([accountId]))[0];
+
 					const accountHint = {
 						section: 'Account',
 						prefix: `${ACCOUNT_OBJECT_PREFIX}.`,
 						value: str,
-						to: URLHelper.createAccountUrl(`${ACCOUNT_OBJECT_PREFIX}.${str}`),
+						to: URLHelper.createAccountUrl(nameAccountHint ? nameAccountHint.name : accountId),
 					};
 
 					const assetHint = {
@@ -98,17 +104,16 @@ class SearchActions extends BaseActionsClass {
 				const regExp = new RegExp(str);
 				hints = (await echo.api.lookupAccounts(str, HEADER_SEARCH_ACCOUNT_LIMIT))
 					.filter(([name]) => regExp.exec(name))
-					.map(([name, id]) => {
+					.map(([name]) => {
 						const { index } = regExp.exec(name);
 						return {
 							section: 'Account',
 							prefix: name.slice(0, index),
 							postfix: name.slice(index + str.length),
 							value: name.slice(index, index + str.length),
-							to: URLHelper.createAccountUrl(id),
+							to: URLHelper.createAccountUrl(name),
 						};
 					});
-
 			} catch (error) {
 				dispatch(SearchReducer.actions.set({ field: ['headerSearch', 'error'], value: FormatHelper.formatError(error) }));
 			} finally {

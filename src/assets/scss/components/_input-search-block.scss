@@ -9,7 +9,7 @@
     @include res-768 {
         width: 355px;
     }
-    
+
 
     &.small {
         width: 40px;
@@ -26,7 +26,7 @@
             }
 
             &:hover {
-                border-color: transparent;                
+                border-color: transparent;
             }
         }
 
@@ -47,7 +47,7 @@
                 .icon {
                     opacity: 1;
                 }
-                
+
                 &:hover {
                     border-color: #383c57;
                 }
@@ -73,7 +73,7 @@
         .input-field {
             input {
                 &::placeholder {
-                    color: rgba(104, 108, 134, 0.6);                    
+                    color: rgba(104, 108, 134, 0.6);
                 }
             }
         }
@@ -85,7 +85,7 @@
                 &.focus {
                     border-color: #18142a;
                 }
-            
+
                 .icon {
                     opacity: 1;
                 }
@@ -106,7 +106,7 @@
         .input-container {
             // border: 1px solid rgba(56, 60, 87, 0.42);
             border: 1px solid #cccdd4;
-            
+
             &:hover {
                 border: 1px solid rgba(49, 53, 79, 0.4);
 
@@ -179,16 +179,16 @@
         height: 100%;
         border: 1px solid #31354f;
         @include transition;
-        
+
         &:hover {
             border-color: #383c57;
-    
+
             input {
                 &::placeholder {
                     color: #61657e;
                 }
             }
-        }    
+        }
 
         &.focus {
             background: #fff;
@@ -203,7 +203,7 @@
             }
             input {
                 color: #18142a;
-    
+
                 &::placeholder {
                     color: rgba(24, 20, 42, 0.4);
                 }
@@ -247,7 +247,7 @@
             cursor: pointer;
 
             display: none;
-            
+
             background: transparent;
             border: none;
             outline: none;
@@ -287,7 +287,7 @@
             }
         }
     }
-    
+
     input {
         border: none;
         outline: none;
@@ -323,11 +323,11 @@
                 &.selected {
                     .element {
                         background-color: #e8e8ec;
-    
+
                         .section-name {
                             color: #18142a;
                         }
-        
+
                         .value {
                             .select {
                                 background-color: #18142a;

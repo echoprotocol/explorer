@@ -76,7 +76,7 @@ class BlockInformation extends React.Component {
 		const slicedTransactions = transactions.slice(0, currentTransactionLength);
 
 		let verifiers = blockInformation.get('verifiers') || [];
-		verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(id) }));
+		verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(name) }));
 
 		const breadcrumbs = [
 			{
@@ -103,7 +103,7 @@ class BlockInformation extends React.Component {
 					</div>
 					<div className="container producer">
 						<div className="title">Producer</div>
-						<Link to={URLHelper.createAccountUrl(producer.id)}>
+						<Link to={URLHelper.createAccountUrl(producer.name)}>
 							<div className="value blue">{producer.name}</div>
 						</Link>
 					</div>
