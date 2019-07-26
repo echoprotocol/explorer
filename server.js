@@ -10,10 +10,10 @@ const {
 } = require('./src/constants/ExplorerServerConstans');
 
 let fileIndex = null;
-const filePath = `${__dirname}/index.html`;
+const filePath = `${__dirname}/html/index.html`;
 fs.readFile(filePath, 'utf8', (err, data) => fileIndex = data);
 
-app.use(express.static(`${__dirname}/`));
+app.use(express.static(`${__dirname}/html/`));
 
 app.get('*', async (req, res) => {
 	let result = fileIndex;
