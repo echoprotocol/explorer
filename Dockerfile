@@ -18,8 +18,6 @@ FROM nginx:stable
 RUN rm -rf /usr/share/nginx/html
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY .build/nginx.conf /etc/nginx/nginx.conf
-COPY /app/startScripts.sh /etc/nginx/script/startScripts.sh
-
-WORKDIR /etc/nginx
+COPY startScripts.sh /etc/nginx/script/startScripts.sh
 
 CMD ./script/startScripts.sh
