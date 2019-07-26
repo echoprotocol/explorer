@@ -23,4 +23,4 @@ COPY server.js /usr/share/nginx/server.js
 
 WORKDIR /etc/nginx
 
-CMD ["nginx", "-g", "daemon off;", "node", " /usr/share/nginx/server.js"]
+CMD ["nginx", "-g", "daemon off &&", "node", " /usr/share/nginx/server.js"]
