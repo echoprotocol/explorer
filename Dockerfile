@@ -18,6 +18,9 @@ FROM node:10.15-alpine
 
 WORKDIR /app
 
+ENV NODE_ENV="production"
+ENV NODE_APP_INSTANCE=$NODE_APP_INSTANCE
+
 COPY --from=builder /app/dist /app/dist
 COPY ./server.js /app/
 COPY ./config /app/config
