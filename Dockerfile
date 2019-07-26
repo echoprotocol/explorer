@@ -14,12 +14,10 @@ RUN git config --global http.sslverify "false"
 RUN NODE_ENV=development npm install
 RUN npm run build
 
-FROM nginx:stable
+#FROM nginx:stable
+#RUN rm -rf /usr/share/nginx/html
+#COPY --from=builder /app/dist /usr/share/nginx/html
+#COPY .build/nginx.conf /etc/nginx/nginx.conf
+#WORKDIR /etc/nginx
 
-RUN rm -rf /usr/share/nginx/html
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY .build/nginx.conf /etc/nginx/nginx.conf
-
-WORKDIR /etc/nginx
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server.js"]

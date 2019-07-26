@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MetaTags from 'react-meta-tags';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
-
-import URLHelper from '../../helpers/URLHelper';
-import { resetTags } from '../../helpers/GlobalHelper';
 
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
@@ -45,40 +41,11 @@ class Account extends React.Component {
 
 	componentWillUnmount() {
 		this.props.clearAccountInfo();
-
-		const metaTags = document.getElementsByTagName('meta');
-
-		resetTags(metaTags, 'meta-temp');
-
 	}
 
 	onLoadMoreHistory() {
 		const { account, history } = this.props;
 		this.props.loadAccountHistory(account.get('id'), history.last()[0].id.split('.')[2]);
-	}
-
-	renderMetaData() {
-		const { account } = this.props;
-
-		if (!account) {
-			return null;
-		}
-
-		return (
-			<MetaTags>
-				<title>{`Account ${account.get('name')} | Echo Explorer`}</title>
-				<meta id="meta-temp" name="title" content={`Account ${account.get('name')} | Echo Explorer`} />
-				<meta id="meta-temp" property="og:title" content={`Account ${account.get('name')} | Echo Explorer`} />
-				<meta id="meta-temp" property="twitter:title" content={`Account ${account.get('name')} | Echo Explorer`} />
-
-				<meta id="meta-temp" name="description" content="ECHO account page" />
-				<meta id="meta-temp" property="og:description" content="ECHO account page" />
-				<meta id="meta-temp" property="twitter:description" content="ECHO account page" />
-
-				<meta id="meta-temp" property="og:image" content={URLHelper.getUrlAccountAvatar(account.get('name'))} />
-				<meta id="meta-temp" property="twitter:image" content={URLHelper.getUrlAccountAvatar(account.get('name'))} />
-			</MetaTags>
-		);
 	}
 
 	renderLoader(loading) {
@@ -93,7 +60,6 @@ class Account extends React.Component {
 
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
-				{this.renderMetaData()}
 				<div className="account-page-t-block">
 					{account && <div className="title">Account {account.get('id')}</div>}
 					<div className="help-container">

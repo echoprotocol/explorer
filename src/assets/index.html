@@ -6,21 +6,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-	<script>
-		(() => {
-			if (!window.location.pathname || !window.location.pathname.startsWith('/accounts')) return;
-			const pathname = window.location.pathname.split('/');
-			if (pathname.length < 4) return;
-			const metaTitle = document.createElement('meta');
-			metaTitle.name = 'title';
-			metaTitle.content = 'Account ' + pathname[2] + ' | Echo Explorer';
-			document.head.appendChild(metaTitle);
-			const metaDescription = document.createElement('meta');
-			metaDescription.name = 'description';
-			metaDescription.content = 'ECHO account page';
-			document.head.appendChild(metaDescription);
-		})();
-	</script>
+	<meta property="og:title" content="OG_TITLE" />
+	<meta property="og:description" content="OG_DESCRIPTION" />
+	<meta property="og:image" content="OG_IMAGE" />
 </head>
 <body>
 <div id="root">

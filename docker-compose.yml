@@ -6,5 +6,5 @@ services:
     image: 656.echo-explorer.frontend
     container_name: "656.echo-explorer.frontend"
     ports:
-      - 26562:80
+      - 26562:3000
     restart: always

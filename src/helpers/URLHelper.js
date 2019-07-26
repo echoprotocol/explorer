@@ -9,7 +9,6 @@ import {
 	MANAGE_CONTRACT_PATH,
 	UPLOAD_ABI_PATH,
 } from '../constants/RouterConstants';
-import { ACCOUNT_PREFIX, API_PREFIX, AVATAR_PREFIX } from '../constants/ExplorerServerConstans';
 
 import config from '../config/chain';
 
@@ -138,15 +137,6 @@ class URLHelper {
 	 */
 	static getUrlContractIcon(icon) {
 		return `${config.SERVER_URL}${icon}`;
-	}
-
-	/**
-	 *
-	 * @param accountName
-	 * @returns {string}
-	 */
-	static getUrlAccountAvatar(accountName) {
-		return `${config.SERVER_URL}/${API_PREFIX}/${ACCOUNT_PREFIX}/${accountName}/${AVATAR_PREFIX}`;
 	}
 
 	/**

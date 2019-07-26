@@ -115,7 +115,7 @@ module.exports = {
 					chunks: 'all',
 				},
 			},
-		},
+		}
 	},
 	resolve: {
 		modules: [
