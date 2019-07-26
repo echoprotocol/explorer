@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 
 import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -7,16 +8,16 @@ import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import OperationsTable from './OperationsTable';
+import Loader from '../Loader';
 
 class TransactionsInfo extends React.Component {
 
-	// constructor(props) {
-	// 	super(props);
-	//
-	// 	this.state = {
-	// 		loadMore: [],
-	// 	};
-	// }
+	constructor(props) {
+		super(props);
+
+		this.tableRefs = [];
+	}
+
 
 	componentDidMount() {
 		const { round, index } = this.props.match.params;
@@ -26,17 +27,22 @@ class TransactionsInfo extends React.Component {
 		this.props.getTransaction();
 	}
 
+	componentDidUpdate(prevProps) {
+		const { loading, location: { search } } = this.props;
+		const { loading: prevLoading } = prevProps;
+
+		if (!loading && loading !== prevLoading) {
+			const parsed = queryString.parse(search);
+			if (!parsed.op || !this.tableRefs[parsed.op - 1]) {
+				return;
+			}
+			this.tableRefs[parsed.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
+	}
+
 	componentWillUnmount() {
 		this.props.clearTransaction();
 	}
-
-	// onToggleLoadMore(index, e) {
-	// 	e.preventDefault();
-	//
-	// 	const { loadMore } = this.state;
-	// 	loadMore[index] = !loadMore[index];
-	// 	this.setState({ loadMore });
-	// }
 
 	returnFunction() {
 		if (!this.props.historyLength) {
@@ -46,11 +52,16 @@ class TransactionsInfo extends React.Component {
 		}
 	}
 
+	renderLoader(loading) {
+		return loading ? <Loader /> : null;
+	}
 
 	render() {
 		const { round, index } = this.props.match.params;
 
-		const { operations, blockInformation } = this.props;
+		const {
+			operations, blockInformation, loading, history, location: { search },
+		} = this.props;
 
 		const breadcrumbs = [
 			{
@@ -63,7 +74,7 @@ class TransactionsInfo extends React.Component {
 			},
 		];
 
-		const timeBlockCreated = FormatHelper.timestampToContractCreationTime(blockInformation.get('time'));
+		const timeBlockCreated = FormatHelper.timestampToBlockCreationTime(blockInformation.get('time'));
 
 		return (
 			<React.Fragment>
@@ -73,9 +84,22 @@ class TransactionsInfo extends React.Component {
 						title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}
 						returnFunction={() => this.returnFunction()}
 					/>
-					<p className="transaction-time">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
-					<p className="transaction-title-operations">{`${!operations ? 0 : operations.size} Operations`}</p>
-					<OperationsTable operations={operations} />
+					{
+						!loading ?
+							<React.Fragment>
+								<p className="transaction-time">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
+								<p className="transaction-title-operations">{`${!operations ? 0 : operations.size} Operations`}</p>
+								<OperationsTable
+									operations={operations}
+									block={round}
+									transactionNum={index}
+									history={history}
+									tableRefs={this.tableRefs}
+									url={this.props.match.url}
+									queryProps={queryString.parse(search)}
+								/>
+							</React.Fragment> : this.renderLoader(loading)
+					}
 				</div>
 			</React.Fragment>
 		);
@@ -84,8 +108,10 @@ class TransactionsInfo extends React.Component {
 }
 
 TransactionsInfo.propTypes = {
+	loading: PropTypes.bool,
 	match: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 	operations: PropTypes.object,
 	historyLength: PropTypes.number,
 	getTransaction: PropTypes.func.isRequired,
@@ -98,6 +124,7 @@ TransactionsInfo.propTypes = {
 TransactionsInfo.defaultProps = {
 	operations: null,
 	historyLength: 0,
+	loading: false,
 };
 
 export default TransactionsInfo;

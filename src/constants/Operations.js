@@ -1,6 +1,6 @@
 import { OPERATIONS_IDS } from 'echojs-lib';
 
-export default {
+const Operations = {
 	transfer: {
 		value: OPERATIONS_IDS.TRANSFER,
 		name: 'Transfer',
@@ -585,3 +585,40 @@ export default {
 		},
 	},
 };
+
+export const accountOperations = [
+	Operations.account_create.name,
+	Operations.account_update.name,
+	Operations.account_whitelist.name,
+	Operations.account_upgrade.name,
+	Operations.account_transfer.name,
+];
+export const assetOperations = [
+	Operations.asset_create.name,
+	Operations.asset_update.name,
+	Operations.asset_update_bitasset.name,
+	Operations.asset_update_feed_producers.name,
+	Operations.asset_issue.name,
+	Operations.asset_reserve.name,
+	Operations.asset_fund_fee_pool.name,
+	Operations.asset_settle.name,
+	Operations.asset_global_settle.name,
+	Operations.asset_publish_feed.name,
+];
+export const contractOperations = [
+	Operations.contract_create.name,
+	Operations.call_contract.name,
+	Operations.contract_transfer.name,
+];
+export const committeeOperations = [
+	Operations.committee_member_create.name,
+	Operations.committee_member_update.name,
+	Operations.committee_member_update_global_parameters.name,
+];
+export const proposalOperations = [
+	Operations.proposal_create.name,
+	Operations.proposal_update.name,
+	Operations.proposal_delete.name,
+];
+
+export default Operations;

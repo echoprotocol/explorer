@@ -35,6 +35,27 @@ class URLHelper {
 
 	/**
 	 *
+	 * @return {String}
+	 * @param block
+	 * @param trNum
+	 * @param opNum
+	 */
+	static createOperationObjectsUrl(block, trNum, opNum) {
+		return `/objects?opId=${block}-${trNum}-${opNum}`;
+	}
+
+	/**
+	 *
+	 * @param currentUrl
+	 * @param op
+	 * @returns {string}
+	 */
+	static createTransactionOperationUrl(currentUrl, op) {
+		return `${currentUrl}?op=${op}`;
+	}
+
+	/**
+	 *
 	 * @param {String} accountId
 	 * @return {String}
 	 */

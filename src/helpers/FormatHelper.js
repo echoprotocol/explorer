@@ -95,6 +95,16 @@ class FormatHelper {
 		const [date, time] = moment.utc(timestamp).local().format('DD.MM.YYYY, hh:mm A').split(',');
 		return { date, time };
 	}
+
+	/** *
+	 *
+	 * @param timestamp
+	 * @returns {{date: string, time: string}}
+	 */
+	static timestampToBlockCreationTime(timestamp) {
+		const [date, time] = moment(new Date(timestamp)).format('DD.MM.YYYY HH:mm').split(' ');
+		return { date, time };
+	}
 	/**
 	 *
 	 * @param time

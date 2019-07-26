@@ -1,112 +1,194 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Media from 'react-media';
+import copy from 'copy-to-clipboard';
+import { validators } from 'echojs-lib';
+import classnames from 'classnames';
+
 import directionIcon from '../../assets/images/icons/direction-icon.svg';
+
+import FormatHelper from '../../helpers/FormatHelper';
+import URLHelper from '../../helpers/URLHelper';
+
+import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
+
 import Avatar from '../Avatar';
 
 class OperationInfo extends React.Component {
 
-	render() {
+	constructor(props) {
+		super(props);
 
+		this.state = {
+			loadMore: [],
+			showLogs: false,
+		};
+	}
+
+
+	onToggleLoadMore(index, e) {
+		e.preventDefault();
+
+		const { loadMore } = this.state;
+		loadMore[index] = !loadMore[index];
+		this.setState({ loadMore });
+	}
+
+	renderInternal(operations) {
+		return (
+			<div className="token-transfer-table">
+				{
+					operations.map((op, index) => (
+						<div className="tt-row" key={index.toString()}>
+							<div className="tt-col amount">
+								<span className="value">{FormatHelper.formatAmount(op.value.amount, op.value.precision)}</span>
+								<span className="currency">{op.value.symbol}</span>
+							</div>
+							<div className="tt-col">
+								<div className="transfer-direction">
+									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
+										<Avatar accountName={op.from.name} />
+										<span>{op.from.name}</span>
+									</Link>
+									<img src={directionIcon} alt="" className="direction" />
+									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
+										<Avatar accountName={op.subject.name} />
+										<span>{op.subject.name}</span>
+									</Link>
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		);
+	}
+
+	renderContractLogs(logs) {
+		const { showLogs } = this.state;
+		const formattedLogs = logs.map((log, index) => (
+			<div className="mono" key={log.data}>
+				<div className="mono-bold">Log [{index}]:</div>
+				<div className="mono-bold">Contract: <Link to={URLHelper.createUrlById(log.contract)}>{log.contract}</Link></div>
+				<div className="mono-bold">Topics:</div>
+				{log.topics.map((topic, i) => (<div key={topic}>[{i}]:{topic}</div>))}
+				<div className="mono-bold">Data:</div>
+				<div>{log.data}</div>
+			</div>
+		));
+
+		return (
+			<React.Fragment>
+				{
+					formattedLogs.length > 1 && !showLogs ? formattedLogs[0] : formattedLogs
+				}
+				{
+					(formattedLogs.length > 1 && !showLogs) &&
+					<button className="text-button" onClick={() => this.setState({ showLogs: true })}>View full log</button>
+				}
+			</React.Fragment>
+		);
+	}
+
+	renderOperationRowValue(key, value, index) {
+		if (key === 'token transfers') {
+			return this.renderInternal(value);
+		}
+
+		if (typeof value === 'object' && key !== 'logs') {
+			if (!value.link) {
+				value = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
+			} else {
+				const isAccount = validators.isAccountId(value.link);
+				value = (
+					<Link className={classnames({ 'avatar-wrap': isAccount })} to={URLHelper.createUrlById(value.link)}>
+						{validators.isAccountId(value.link) && <Avatar accountName={value.value} />}
+						<span>{value.value}</span>
+					</Link>
+				);
+			}
+		}
+
+		if (key === 'block') {
+			value = (
+				<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, value)} className="blue">
+					{FormatHelper.formatAmount(value, 0)}
+				</Link>
+			);
+		}
+
+		if (typeof value === 'number') {
+			value = FormatHelper.formatAmount(value, 0);
+		}
+
+		if (key === 'logs') {
+			return this.renderContractLogs(value);
+		}
+
+		if (key.toLowerCase() !== 'bytecode') {
+			return value;
+		}
+
+		const { loadMore } = this.state;
+
+		const bytecode = value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index] ?
+			value.slice(0, BYTECODE_SYMBOLS_LENGTH - 3).concat('...') : value;
+
+		return (
+			<React.Fragment>
+				<div className="mono">{ bytecode }</div>
+				{
+					(value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index]) &&
+					<a href="" className="load-more" onClick={(e) => this.onToggleLoadMore(index, e)}>
+						{loadMore[index] ? 'Collapse All' : 'Show All'}
+					</a>
+				}
+				<button className="copy-bytecode" onClick={() => copy(value)}>Copy</button>
+			</React.Fragment>
+		);
+	}
+
+	renderInfo() {
+		const { details, index } = this.props;
+		const opKey = `${details.type}_${index}`;
+
+		return (
+			<React.Fragment>
+				{
+					Object.entries(details).map(([key, value]) => (
+						key === 'Fee' ?
+							<Media query="(max-width: 1000px)" key={`${opKey}_${key}_media`}>
+								{
+									(matches) =>
+										(matches &&
+										<div className="od-row" key={`${opKey}_${key}`}>
+											<div className="od-col">{key}</div>
+											<div className="od-col">
+												{this.renderOperationRowValue(key, value, index)}
+											</div>
+										</div>)
+								}
+							</Media> :
+							<div className="od-row" key={`${opKey}_${key}`} >
+								<div className="od-col">{key}</div>
+								<div className="od-col">
+									{this.renderOperationRowValue(key, value, index)}
+								</div>
+							</div>
+					))
+				}
+			</React.Fragment>
+		);
+	}
+
+	render() {
 		return (
 			<div className="fold-operation-info">
 				<div className="fold-title">Operation info</div>
 				<div className="operation-detail-table">
-					<div className="od-row">
-						<div className="od-col">TO:</div>
-						<div className="od-col">
-							<Link className="avatar-wrap" to="/">
-								<Avatar accountName="Homersimpson3423" />
-								<span>Homersimpson3423</span>
-							</Link>
-						</div>
-					</div>
-					<Media query="(max-width: 1000px)">
-						{
-							(matches) =>
-								(matches &&
-								<div className="od-row">
-									<div className="od-col">Operation fee:</div>
-									<div className="od-col">1.23000 ECHO</div>
-								</div>)
-						}
-					</Media>
-					<div className="od-row">
-						<div className="od-col">Amount, ASSET:</div>
-						<div className="od-col">1.23000 ECHO</div>
-					</div>
-					<div className="od-row">
-						<div className="od-col">Status:</div>
-						<div className="od-col">Success</div>
-					</div>
-					<div className="od-row">
-						<div className="od-col">Token transfers:</div>
-						<div className="od-col">
-							<div className="token-transfer-table">
-								<div className="tt-row">
-									<div className="tt-col amount">
-										<span className="value">1.23000</span>
-										<span className="currency">ECHO</span>
-									</div>
-									<div className="tt-col">
-										<div className="transfer-direction">
-											<Link className="avatar-wrap" to="/">
-												<Avatar accountName="Homersimpson3423" />
-												<span>Homersimpson3423</span>
-											</Link>
-											<img src={directionIcon} alt="" className="direction" />
-											<Link className="avatar-wrap" to="/">
-												<Avatar accountName="gauto01" />
-												<span>gauto01</span>
-											</Link>
-										</div>
-									</div>
-								</div>
-								<div className="tt-row">
-									<div className="tt-col amount">
-										<span className="value">1231.003245</span>
-										<span className="currency">ECHO</span>
-									</div>
-									<div className="tt-col">
-										<div className="transfer-direction">
-											<Link className="avatar-wrap" to="/">
-												<Avatar accountName="Homersimpson3423" />
-												<span>Homersimpson3423</span>
-											</Link>
-											<img src={directionIcon} alt="" className="direction" />
-											<Link className="avatar-wrap" to="/">
-												<Avatar accountName="Igordulub34" />
-												<span>Igordulub34</span>
-											</Link>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="od-row">
-						<div className="od-col">Code:</div>
-						<div className="od-col">
-							<div className="mono">
-                                a9059cbb0000000000000000000000000000000000000000000000000000000000000029000000000000000000000000000000000000000000000001c9f78d2893e40000
-							</div>
-						</div>
-					</div>
-					<div className="od-row">
-						<div className="od-col">Logs:</div>
-						<div className="od-col">
-							<div className="mono">
-								<div className="mono-bold">Log [0]:</div>
-								<div className="mono-bold">Contract: <Link to="/">1.15.3</Link></div>
-								<div className="mono-bold">Topics:</div>
-								<div>[0]:ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef</div>
-								<div>[1]:0000000000000000000000000000000000000000000000000000000000000000</div>
-								<div>[2]:000000000000000000000000000000000000000000000000000000000000001e</div>
-							</div>
-							<button className="text-button">View full log</button>
-						</div>
-					</div>
+					{this.renderInfo()}
 				</div>
 
 			</div>
@@ -116,6 +198,9 @@ class OperationInfo extends React.Component {
 }
 
 
-OperationInfo.propTypes = {};
+OperationInfo.propTypes = {
+	details: PropTypes.object.isRequired,
+	index: PropTypes.number.isRequired,
+};
 
 export default OperationInfo;

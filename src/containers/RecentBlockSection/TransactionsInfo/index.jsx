@@ -12,6 +12,7 @@ export default withRouter(connect(
 		operations: state.transaction.get('operations'),
 		historyLength: state.global.get('historyLength'),
 		blockInformation: state.block.get('blockInformation'),
+		loading: state.transaction.get('loading'),
 	}),
 	(dispatch, props) => ({
 		getTransaction: () => dispatch(TransactionActions.getTransaction(

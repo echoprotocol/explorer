@@ -298,8 +298,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
-					Promise.all(operations.map((op, i) =>
-						formatOperation(op, null, planeBlock.round, trIndex, i, operation_results[i]))));
+					Promise.all(operations.map((op, i) => formatOperation(op, null, planeBlock.round, trIndex, i, operation_results[i]))));
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 

@@ -54,6 +54,10 @@ class Objects extends React.Component {
 		const parsed = queryString.parse(props.location.search);
 		const regExp = /^\d+\.\d+\.\d+$/;
 
+		if (parsed.opId) {
+			return parsed.opId.trim();
+		}
+
 		if (!parsed.id || parsed.id.trim().search(regExp) === -1) {
 			return null;
 		}
@@ -143,7 +147,7 @@ class Objects extends React.Component {
 }
 
 Objects.propTypes = {
-	data: PropTypes.object,
+	data: PropTypes.any,
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
 	error: PropTypes.string,
