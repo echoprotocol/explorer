@@ -14,13 +14,13 @@ RUN git config --global http.sslverify "false"
 RUN NODE_ENV=development npm install
 RUN npm run build
 
-FROM nginx:stable
+FROM node:10.15-alpine
 
-RUN rm -rf /usr/share/nginx/html
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY .build/nginx.conf /etc/nginx/nginx.conf
-COPY server.js /usr/share/nginx/server.js
+WORKDIR /app
 
-WORKDIR /etc/nginx
+COPY --from=builder /app/dist /app/dist
+COPY ./server.js /app/
+COPY ./config /app/config
+RUN NODE_ENV=development npm install config
 
-CMD ["nginx", "-g", "daemon off &&", "node", " /usr/share/nginx/server.js"]
+CMD ["node", "server.js"]

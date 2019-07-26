@@ -5,44 +5,49 @@ const app = express();
 const fs = require('fs');
 const fetch = require('node-fetch');
 
-const {
-	API_PREFIX, CONTRACT_PREFIX, ACCOUNT_PREFIX, AVATAR_PREFIX, OG_TITLE_REGEX, OG_DESCRIPTION_REGEX, OG_IMAGE_REGEX,
-} = require('./src/constants/ExplorerServerConstans');
+const accountRegex = RegExp(/\/accounts\/.*\/info/);
+const contractRegex = RegExp(/\/contracts\/.*\/info/);
+
+const OG_TITLE_REGEX = /OG_TITLE/g;
+const OG_DESCRIPTION_REGEX = /OG_DESCRIPTION/g;
+const OG_IMAGE_REGEX = /OG_IMAGE/g;
 
 let fileIndex = null;
-const filePath = `${__dirname}/html/index.html`;
-fs.readFile(filePath, 'utf8', (err, data) => fileIndex = data);
+const filePath = `${__dirname}/dist/index.html`;
+fs.readFile(filePath, 'utf8', (err, data) => { fileIndex = data; });
 
-app.use(express.static(`${__dirname}/html/`));
+app.use(express.static(`${__dirname}/dist/`, { index: false }));
 
 app.get('*', async (req, res) => {
 	let result = fileIndex;
+	let title = '';
+	let description = '';
+	let image = '';
 
 	const { url } = req;
-	const accountRegex = RegExp(/\/accounts\/.*\/info/);
-	const contractRegex = RegExp(/\/contracts\/.*\/info/);
 
 	if (accountRegex.test(url)) {
 		const accountName = url.split('/')[2];
-		result = result.replace(OG_TITLE_REGEX, `Account ${accountName} | Echo Explorer`);
-		result = result.replace(OG_DESCRIPTION_REGEX, 'ECHO account page');
-		result = result.replace(OG_IMAGE_REGEX, `${config.SERVER_URL}/${API_PREFIX}/${ACCOUNT_PREFIX}/${accountName}/${AVATAR_PREFIX}`);
+		title = `Account ${accountName} | Echo Explorer`;
+		description = 'ECHO account page';
+		image = `${config.SERVER_URL}/api/accounts/${accountName}/avatar.png`;
 
 	} else if (contractRegex.test(url)) {
 		const contractId = url.split('/')[2];
-		await fetch(`${config.SERVER_URL}/${API_PREFIX}/${CONTRACT_PREFIX}/${contractId}`)
+		await fetch(`${config.SERVER_URL}/api/contracts/${contractId}`)
 			.then((contract) => contract.json())
 			.then((contract) => {
-				const { name, description = 'ECHO contract page', icon } = contract;
-				const contractTitle = name || contractId;
-				result = result.replace(OG_TITLE_REGEX, `Contract ${contractTitle} | Echo Explorer`);
-				result = result.replace(OG_DESCRIPTION_REGEX, description);
-				result = result.replace(OG_IMAGE_REGEX, `${config.SERVER_URL}/${icon}`);
+				title = `Contract ${contract.name || contractId} | Echo Explorer`;
+				description = contract.description || 'ECHO contract page';
+				image = `${config.SERVER_URL}/${contract.icon}`;
 			});
 	}
+
+	result = result.replace(OG_TITLE_REGEX, title);
+	result = result.replace(OG_DESCRIPTION_REGEX, description);
+	result = result.replace(OG_IMAGE_REGEX, image);
 
 	res.send(result);
 });
 
 app.listen(3000);
-
