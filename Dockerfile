@@ -21,6 +21,8 @@ WORKDIR /app
 COPY --from=builder /app/dist /app/dist
 COPY ./server.js /app/
 COPY ./config /app/config
-RUN NODE_ENV=development npm install config
+COPY ./package.json /app/package.json
+
+RUN NODE_ENV=development npm install
 
 CMD ["node", "server.js"]
