@@ -18,6 +18,9 @@ FROM nginx:stable
 RUN rm -rf /usr/share/nginx/html
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY .build/nginx.conf /etc/nginx/nginx.conf
-COPY startScripts.sh /etc/nginx/script/startScripts.sh
+COPY /app/server.js /etc/nginx/server.js
+WORKDIR /etc/nginx
 
-CMD ./script/startScripts.sh
+WORKDIR /etc/nginx
+
+CMD ["nginx", "-g", "daemon off;", "node", "server.js"]
