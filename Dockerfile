@@ -16,6 +16,11 @@ RUN npm run build
 
 FROM node:10.15-alpine
 
+ARG NODE_APP_INSTANCE="production"
+
+ENV NODE_ENV="production"
+ENV NODE_APP_INSTANCE=$NODE_APP_INSTANCE
+
 WORKDIR /app
 
 ENV NODE_ENV="production"

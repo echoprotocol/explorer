@@ -39,7 +39,7 @@ app.get('*', async (req, res) => {
 			.then((contract) => {
 				title = `Contract ${contract.name || contractId} | Echo Explorer`;
 				description = contract.description || 'ECHO contract page';
-				image = `${config.SERVER_URL}/${contract.icon}`;
+				image = `${config.SERVER_URL}${contract.icon}`;
 			});
 	}
 
