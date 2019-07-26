@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
+import { fromJS } from 'immutable';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
@@ -19,7 +20,11 @@ import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
-import { toggleEmptyBlocks, resetDisplayedBlocks, setMaxDisplayedBlocks } from '../../../actions/BlockActions';
+import {
+	resetDisplayedBlocks,
+	setMaxDisplayedBlocks,
+	toggleEmptyBlocks,
+} from '../../../actions/BlockActions';
 
 class RecentBlockTable extends React.Component {
 
@@ -37,10 +42,15 @@ class RecentBlockTable extends React.Component {
 	}
 
 	getBlocks() {
-		const { blocks } = this.props;
+		const { blocks, isShowEmptyBlocks } = this.props;
 		const blocksResult = [];
+		let filterBlocks = fromJS(blocks.toJS());
 
-		blocks.mapEntries(([key, value]) => {
+		if (!isShowEmptyBlocks) {
+			filterBlocks = filterBlocks.filter((block) => block.get('transactions'));
+		}
+
+		filterBlocks.mapEntries(([key, value]) => {
 
 			blocksResult.push({
 				round: key,
@@ -68,7 +78,7 @@ class RecentBlockTable extends React.Component {
 
 
 	render() {
-		const { hasMore, isHideEmptyBlocks } = this.props;
+		const { hasMore, isShowEmptyBlocks } = this.props;
 
 		return (
 			<InfiniteScroll loadMore={() => this.props.loadBlocks()} hasMore={hasMore}>
@@ -77,9 +87,9 @@ class RecentBlockTable extends React.Component {
 						<SmallSearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
 					</h2>
 					<FilterBlock
-						checked={isHideEmptyBlocks}
+						checked={!isShowEmptyBlocks}
 						title="Hide empty blocks"
-						onChange={() => this.props.toggleEmptyBlocks(isHideEmptyBlocks)}
+						onChange={() => this.props.toggleEmptyBlocks(isShowEmptyBlocks)}
 					/>
 					<div className="table">
 						<Media query="(max-width: 767px)">
@@ -202,21 +212,21 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
-	isHideEmptyBlocks: PropTypes.bool.isRequired,
+	isShowEmptyBlocks: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
-	resetDisplayedBlocks: PropTypes.func.isRequired,
 	toggleEmptyBlocks: PropTypes.func.isRequired,
+	resetDisplayedBlocks: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
 		blocks: state.block.get('blocks'),
 		hasMore: state.block.get('hasMore'),
-		isHideEmptyBlocks: state.block.get('isHideEmptyBlocks'),
+		isShowEmptyBlocks: state.block.get('isShowEmptyBlocks'),
 	}),
 	(dispatch) => ({
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),

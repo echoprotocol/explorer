@@ -34,6 +34,8 @@ import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
 import GlobalActions from './GlobalActions';
 
+import LocalStorageService from '../services/LocalStorageService';
+
 /**
  *
  * @param {Object} log
@@ -529,6 +531,8 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
  * 	Initialize recent blocks and starting timestamp of latest block
  */
 export const initBlocks = () => async (dispatch) => {
+	const value = LocalStorageService.getData('isShowEmptyBlocks');
+	dispatch(BlockReducer.actions.set({ field: 'isShowEmptyBlocks', value: value === null ? true : value }));
 
 	const obj = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
 
@@ -539,7 +543,6 @@ export const initBlocks = () => async (dispatch) => {
 	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
 	const startBlockList = obj.head_block_number - PAGE_BLOCKS_COUNT;
-
 	await dispatch(updateBlockList(obj.head_block_number, startBlockList));
 
 	dispatch(BlockReducer.actions.set({
@@ -547,7 +550,6 @@ export const initBlocks = () => async (dispatch) => {
 		value: 0,
 	}));
 };
-
 /**
  *  @method setMaxDisplayedBlocks
  *
@@ -627,5 +629,7 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
  * @returns {Function}
  */
 export const toggleEmptyBlocks = (value) => (dispatch) => {
-	dispatch(BlockReducer.actions.set({ field: 'isHideEmptyBlocks', value: !value }));
+	LocalStorageService.setData('isShowEmptyBlocks', !value);
+	dispatch(BlockReducer.actions.set({ field: 'isShowEmptyBlocks', value: !value }));
 };
+

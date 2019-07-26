@@ -12,7 +12,7 @@ const DEFAULT_FIELDS = Map({
 	loading: false,
 	startTimestamp: 0,
 	hasMore: true,
-	isHideEmptyBlocks: false,
+	isShowEmptyBlocks: false,
 });
 
 export default createModule({
