@@ -78,9 +78,17 @@
                 height: 16px;
                 margin-right: 5px;
                 line-height: 0;
-
                 img {
                     width: 16px;
+                }
+                svg {
+                    margin-bottom: -3px;
+                }
+            }
+
+            .bridge-logo {
+                img {
+                    margin-bottom: -4px;
                 }
             }
         }

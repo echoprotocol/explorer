@@ -12,6 +12,7 @@ import { BridgeService } from '../../services/BridgeService';
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
 import { ContractIcon } from '../Contract/ContractIcon';
+import bridge from '../../assets/images/icons/bridge-logo.svg';
 
 class ManageContract extends React.Component {
 
@@ -114,7 +115,9 @@ class ManageContract extends React.Component {
 							</span>
 							<span className="no-wrap">
 								<a href="" className="link">Bridge</a>{' '}
-								<span className="brifge-logo">s</span>
+								<span className="bridge-logo">
+									<img src={bridge} alt="" />
+								</span>
 							</span>
 						</div>
 					</div>
