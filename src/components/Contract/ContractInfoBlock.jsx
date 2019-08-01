@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import FormatHelper from '../../helpers/FormatHelper';
+import URLHelper from '../../helpers/URLHelper';
 
 class ContractInfoBlock extends React.Component {
 
@@ -12,7 +15,14 @@ class ContractInfoBlock extends React.Component {
 				<div className="line">
 					<div className="key">Block:</div>
 					<div className="underline" />
-					<div className="value blue">{data.get('blockNumber')}</div>
+					<div className="value">
+						<Link
+							to={URLHelper.createBlockUrl(data.get('blockNumber'))}
+							className="blue"
+						>
+							{data.get('blockNumber')}
+						</Link>
+					</div>
 				</div>
 				<div className="line">
 					<div className="key">Creation FEE:</div>
