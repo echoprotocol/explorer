@@ -20,17 +20,15 @@
         padding-right: 25px;
         @include res-768 {
             margin-bottom: 30px;
-            padding-left: 20px;
         }
 
         @include res-500 {
             margin-bottom: 15px;
-            padding-left: 25px;
         }
 
         @include res-320 {
             margin-bottom: 25px;
-            padding-left: 31px;
+            padding-left: 30px;
         }
 
         > .element {

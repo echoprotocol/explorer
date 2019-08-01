@@ -221,6 +221,14 @@ class Contract extends React.Component {
 					breakpoint: 768,
 					settings: {
 						slidesToShow: 3,
+						slidesToScroll: 2,
+					},
+				},
+				{
+					breakpoint: 500,
+					settings: {
+						slidesToShow: 3,
+						slidesToScroll: 2,
 					},
 				},
 			],
@@ -231,7 +239,7 @@ class Contract extends React.Component {
 					<div className="tab-head">
 						<div className="backwards">
 							<div className="account-page-t-block">
-								<Media query="(max-width: 500px)">
+								<Media query="(max-width: 380px)">
 									{(matches) =>
 										!matches &&
 										<div className="ava">
@@ -263,7 +271,7 @@ class Contract extends React.Component {
 								<Verify id={id} verified={verified} />
 							</div>
 						</div>
-						<Media query="(max-width: 500px)">
+						<Media query="(max-width: 400px)">
 							{(matches) =>
 								(!matches ?
 									<div className="horizontal-tab-panel">

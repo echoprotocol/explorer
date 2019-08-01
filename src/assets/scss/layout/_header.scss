@@ -5,10 +5,8 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
-    @include res-1280 {
-        padding-left: 0;
-        padding-right: 0;
+    @include min-vw(1280) {
+        padding-left: 30px;
     }
 
     @include res-768 {
@@ -16,8 +14,6 @@ header {
     }
 
     @include res-500 {
-        padding-left: 30px;
-        padding-right: 30px;
         padding-bottom: 50px;
     }
 
@@ -41,7 +37,7 @@ header {
                     opacity: 1;
                 }
             }
-            
+
             &.is-active-small {
                 @include res-500 {
                     width: 185px;

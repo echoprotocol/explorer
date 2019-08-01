@@ -1,0 +1,226 @@
+.transaction.table-container {
+    @include InterUI_Regular;
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: 18px;
+
+    .underline-title {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e2e3e7;
+    }
+
+    .transaction-time {
+        @include InterUI_Medium;
+        color: #828b95;
+        margin-bottom: 50px;
+
+        @include max-vw(500){
+            padding-left: 30px;
+        }
+    }
+
+    .transaction-title-operations {
+        @include InterUI_Bold;
+        font-size: 16px;
+        line-height: 27px;
+        color: #130d32;
+        margin-bottom: 30px;
+
+        @include max-vw(500){
+            padding-left: 30px;
+        }
+    }
+
+  .divTable {
+    width: 980px;
+
+    .divider {
+      height: 10px;
+    }
+
+    .TableHeading {
+      font-size: 9px;
+      position: relative;
+
+      .divTableCell {
+        text-align: left;
+
+        &:nth-child(1) {
+          @include allWidth(20px);
+
+          padding-left: 0;
+        }
+
+
+        &:nth-child(2) {
+          @include allWidth(118px);
+        }
+
+        &:nth-child(3) {
+          @include allWidth(155px);
+        }
+
+        &:nth-child(4) {
+          @include allWidth(148px);
+        }
+
+        &:nth-child(5) {
+          @include allWidth(155px);
+        }
+
+        &:nth-child(6) {
+          @include allWidth(165px);
+        }
+
+        &:nth-child(7) {
+          @include allWidth(100px);
+        }
+
+        &:nth-child(8) {
+          @include allWidth(105px);
+        }
+      }
+
+      &:before {
+        position: absolute;
+        content: '';
+        height: 42px;
+        width: 33px;
+        background-color: #ebeaee;
+        left: -33px;
+      }
+    }
+
+
+    .divTableRow {
+      font-size: 12px;
+      transition: none;
+
+      &.active {
+        background-color: #ffffff;
+
+        &:before {
+          left: -30px;
+          width: 30px;
+          background-color: #ffffff
+        }
+
+        &:after {
+          content: '';
+          width: 30px;
+          background-color: #ffffff
+        }
+      }
+
+      &:before {
+        position: absolute;
+        content: '';
+        height: 40px;
+        width: 12px;
+        left: -12px;
+      }
+
+      .divTableCell {
+        text-align: left;
+
+
+        .avatar-image {
+          height: 20px;
+          display: inline-block;
+          border-radius: 13px;
+          width: 20px;
+          margin-right: 10px;
+          position: relative;
+          top: 5px;
+        }
+
+        &:nth-child(1) {
+          color: #18142a;
+          padding-left: 0;
+          @include allWidth(20px);
+        }
+
+
+        &:nth-child(2) {
+          color: #0f0739;
+          @include allWidth(118px);
+        }
+
+        &:nth-child(3) {
+          color: #2a90e6;
+          @include allWidth(155px);
+        }
+
+        &:nth-child(4) {
+          color: #549bd5;
+          @include allWidth(148px);
+        }
+
+        &:nth-child(5) {
+          color: #0f0739;
+          @include allWidth(155px);
+        }
+
+        &:nth-child(6) {
+          color: #2a90e6;
+          @include allWidth(165px);
+        }
+
+        &:nth-child(7) {
+          @include allWidth(100px);
+        }
+
+        &:nth-child(8) {
+          @include allWidth(105px);
+
+          span {
+            color: #2a84be;
+            letter-spacing: 1px;
+            background: #ebeaee;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            text-align: center;
+            padding-bottom: 15px;
+            position: relative;
+            top: -2px;
+            font-weight: 900;
+          }
+        }
+      }
+
+      &:hover:not(.active) {
+        box-shadow: none;
+        cursor: pointer;
+        background-color: #ebeaee;
+
+        .divTableCell {
+          &:nth-child(8) {
+            span {
+              color: #f3f2f5;
+              background-color: #016fb6;
+            }
+          }
+        }
+
+        &:before {
+          background-color: #ebeaee;
+        }
+      }
+
+      &:nth-child(even):hover:not(.active) {
+        background-color: #f3f2f5;
+
+        &:before {
+          background: #f3f2f5;
+        }
+      }
+    }
+  }
+
+
+  .operation-info {
+    @include allWidth(945px);
+  }
+}

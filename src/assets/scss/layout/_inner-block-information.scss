@@ -1,15 +1,15 @@
 .table-container.inner-information-container {
     padding-top: 25px;
 
-    @include res-768 {
+    @include min-vw(1000) {
         padding-top: 20px;
     }
 
-    @include res-500 {
+    @include min-vw(768) {
         padding-top: 15px;
     }
 
-    @include res-320 {
+    @include min-vw(500) {
         // padding-top: 65px;
         padding-top: 25px;
     }
@@ -20,16 +20,16 @@
         line-height: 27px;
         margin-bottom: 12px;
 
-        @include res-768 {
+        @include min-vw(1000) {
             padding-left: 20px;
         }
 
-        @include res-500 {
+        @include min-vw(768) {
             padding-left: 25px;
             margin-bottom: 18px;
         }
 
-        @include res-320 {
+        @include min-vw(500) {
             padding-left: 30px;
         }
     }
@@ -48,20 +48,20 @@
             justify-content: space-between;
 
 
-            @include res-768 {
+            @include min-vw(1000) {
                 flex-wrap: wrap;
                 padding-bottom: 0;
                 margin-bottom: 42px;
             }
 
-            @include res-500 {
+            @include min-vw(768) {
                  padding-left: 25px;
                  justify-content: flex-start;
                  padding-right: 15px;
                  margin-bottom: 28px;
             }
 
-            @include res-320 {
+            @include min-vw(500) {
                 width: calc(100% - 20px);
                 margin: 0 auto 28px;
                 padding-left: 20px;
@@ -71,18 +71,18 @@
                 flex-shrink: 0;
                 word-break: break-all;
 
-                @include res-768 {
+                @include min-vw(1000) {
                     margin-bottom: 25px;
                 }
 
-                @include res-320 {
+                @include min-vw(500) {
                     width: 100% !important;
                 }
 
                 &.time {
                     width: 215px;
 
-                    @include res-500 {
+                    @include min-vw(768) {
                         width: 180px;
                     }
                 }
@@ -90,7 +90,7 @@
                 &.size {
                     width: 115px;
 
-                    @include res-500 {
+                    @include min-vw(768) {
                         width: 110px;
                     }
                 }
@@ -98,7 +98,7 @@
                 &.producer {
                     width: 130px;
 
-                    @include res-500 {
+                    @include min-vw(768) {
                         width: 115px;
                     }
                 }
@@ -106,7 +106,7 @@
                 &.reward {
                     width: 125px;
 
-                    @include res-500 {
+                    @include min-vw(768) {
                         width: 180px;
                     }
                 }
@@ -138,7 +138,7 @@
                     .view-list-container {
                         position: relative;
                         flex-shrink: 0;
-                        
+
                         .view-list {
                             cursor: pointer;
                             text-align: left;
@@ -215,12 +215,12 @@
                                 }
                             }
 
-                            @include res-768 {
+                            @include min-vw(1000) {
                                 right: auto;
                                 left: -30px;
                             }
 
-                            @include res-320 {
+                            @include min-vw(500) {
                                 left: 16px;
                             }
 
@@ -316,7 +316,7 @@
                         @include res-1280 {
                             @include allWidth(10px);
                         }
-                        @include res-768 {
+                        @include min-vw(1000) {
                             padding-left: 20px;
                         }
                     }
@@ -328,7 +328,7 @@
                             @include allWidth(110px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(85px);
                         }
                     }
@@ -339,7 +339,7 @@
                             @include allWidth(130px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(100px);
                         }
                     }
@@ -350,7 +350,7 @@
                             @include allWidth(120px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(100px);
                         }
                     }
@@ -361,7 +361,7 @@
                             @include allWidth(135px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(110px);
                         }
                     }
@@ -371,8 +371,8 @@
                         @include res-1280 {
                             @include allWidth(150px);
                         }
-                        
-                        @include res-768 {
+
+                        @include min-vw(1000) {
                             @include allWidth(110px);
                         }
                     }
@@ -394,7 +394,7 @@
                     &:first-child {
                         padding-left: 30px;
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             padding-left: 20px;
                         }
                     }
@@ -406,7 +406,7 @@
                             @include allWidth(110px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(85px);
                         }
                     }
@@ -417,7 +417,7 @@
                             @include allWidth(130px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(100px);
                         }
                     }
@@ -428,7 +428,7 @@
                             @include allWidth(120px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(100px);
                         }
                     }
@@ -439,7 +439,7 @@
                             @include allWidth(135px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(110px);
                         }
                     }
@@ -450,7 +450,7 @@
                             @include allWidth(150px);
                         }
 
-                        @include res-768 {
+                        @include min-vw(1000) {
                             @include allWidth(110px);
                         }
                     }
@@ -574,7 +574,7 @@
         .help-table-wrapper {
             min-height: 255px;
 
-            @include res-768 {
+            @include min-vw(1000) {
                 min-height: 240px;
             }
         }
@@ -613,13 +613,12 @@
                 }
             }
 
-            @include res-320 {
+            @include min-vw(500) {
                 justify-content: flex-start;
             }
 
             &.is-subtransfer {
                 padding: 45px 0px 0px 15px;
-                width: calc(100% - 25px);
                 margin-left: auto;
 
                 .subtransfer-type {
@@ -639,7 +638,7 @@
                 .container {
                     &.amount {
                         width: 138px;
-                        @include res-320 {
+                        @include min-vw(500) {
                             width: 120px;
                         }
                     }
@@ -703,7 +702,7 @@
                     }
                 }
 
-                @include res-320 {
+                @include min-vw(500) {
                     width: 140px;
                 }
 
@@ -718,14 +717,14 @@
                 }
 
                 &:nth-child(2) {
-                    @include res-320 {
+                    @include min-vw(500) {
                         // width: calc(100% - 45px);
                     }
                 }
 
                 &.amount {
                     // width: 153px;
-                    // @include res-320 {
+                    // @include min-vw(500) {
                         // width: 140px;
                     // }
                 }

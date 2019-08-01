@@ -228,23 +228,7 @@
             }
         }
 
-        &.contract-page {
-            .account-page-t-block {
-                .title {
-                    padding-left: 0;
 
-                    @include res-320 {
-                        padding-left: 19px;
-                    }
-                }
-
-                .help-container {
-                    .right-container {
-                        margin-left: 0;
-                    }
-                }
-            }
-        }
 
         .react-tabs {
             position: relative;
@@ -624,5 +608,27 @@
 				}
 			}
 		}
+    }
+    &.contract-page {
+        @include max-vw(500) {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .account-page-t-block {
+            .title {
+                padding-left: 0;
+
+                @include min-vw(500) {
+                    padding-left: 19px;
+                }
+            }
+
+            .help-container {
+                .right-container {
+                    margin-left: 0;
+                }
+            }
+        }
     }
 }

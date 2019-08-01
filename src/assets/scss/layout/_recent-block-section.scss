@@ -98,7 +98,7 @@
                 right: -1000vw;
                 width: 1000vw;
             }
-    
+
         }
 
         h2 {
@@ -111,7 +111,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            
+
             @include res-1280 {
                 padding-left: 28px;
             }
@@ -160,7 +160,7 @@
                         @include res-500 {
                             width: 200px;
                         }
-        
+
                         @include res-320 {
                             width: calc(100% - 60px);
                         }
@@ -209,7 +209,7 @@
                         width: 160px;
                         min-width: 160px;
                         max-width: 160px;
-                        
+
                         @include res-1280 {
                             width: 130px;
                             min-width: 130px;
@@ -253,13 +253,13 @@
                         width: 115px;
                         max-width: 115px;
                         min-width: 115px;
-                        
+
                         @include res-1280 {
                             width: 110px;
                             max-width: 110px;
                             min-width: 110px;
                         }
-                        
+
                         @include res-768 {
                             width: 100px;
                             max-width: 100px;
@@ -326,7 +326,7 @@
 
     .recent-block-mobile-view {
         @include res-320 {
-            margin: 0 auto; 
+            margin: 0 auto;
             width: 100%;
             padding: 0 10px 0 10px;
         }
@@ -346,7 +346,7 @@
 
             &.fade-anim {
                 animation: addd .4s ease-out;
-          
+
                 @keyframes addd {
                     from {
                         opacity: 0;
@@ -367,7 +367,7 @@
                         margin-bottom: 13px;
                     }
                 }
-                
+
                 .title {
                     user-select: none;
                     background-color: transparent;
@@ -403,114 +403,93 @@
         padding-left: 70px;
         padding-top: 25px;
 
-        @include res-1280 {
+        @include max-vw(1535) {
             padding-left: 50px;
         }
 
-        @include res-1000 {
+        @include max-vw(1280) {
             padding-left: 0;
             padding-top: 30px;
         }
 
-        @include res-768 {
-            // padding-bottom: 5px;
-            // padding-top: 25px;
+
+        @include max-vw(1000) {
             padding-bottom: 28px;
             padding-top: 28px;
         }
 
-        @include res-500 {
-            padding-top: 30px;
-            padding-bottom: 30px;
-            padding-left: 30px;
-            padding-right: 30px;
+        @include max-vw(768) {
+            padding: 30px 0 30px;
         }
 
-        @include res-320 {
-            padding-left: 0;
-            padding-right: 0;
-            padding-top: 12px;
-            padding-bottom: 25px;
+
+        @include max-vw(500) {
+            padding: 12px 30px 25px;
+        }
+
+        @include max-vw(460) {
+            padding: 12px 0 25px;
         }
 
         .help-container {
             width: 360px;
 
-            @include res-1280 {
+            @include max-vw(1535) {
                 width: 260px;
             }
 
-            @include res-1000 {
+            @include max-vw(1280) {
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
             }
 
-            @include res-768 {
+            @include max-vw(1000) {
                 flex-wrap: wrap;
             }
 
-            @include res-320 {
-                flex-direction: column;
-            }
         }
 
         .sidebar-elem {
-            &:not(:last-child) {
-                margin-bottom: 25px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid #e2e3e7;
-                
-                @include res-1000 {
-                    border-bottom: none;
-                    max-width: 250px;
-                    margin-bottom: 30px;
-                }
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e3e7;
 
-                @include res-768 {
-                    padding-bottom: 0px;
-                    margin-bottom: 20px;
-
-                    &:first-child, &:nth-child(2) {
-                        padding-bottom: 5px;
-                        margin-bottom: 29px;
-                        border-bottom: 1px solid #e2e3e7;
-                    }
-                }
-
-                @include res-320 {
-                    border-bottom: 1px solid #e2e3e7;
-                    padding-bottom: 26px  !important;
-                    margin-bottom: 26px !important;
-                }
-
-                @include res-500 {
-                    width: 180px;
-                }
-
-                @include res-320 {
-                    width: 100%;
-                    max-width: none;
-                }
+            @include max-vw(1280) {
+                border-bottom: none;
+                max-width: 250px;
+                margin-bottom: 30px;
             }
 
-            @include res-768 {
+            @include max-vw(1000) {
+                padding-bottom: 0px;
                 display: flex;
                 flex-direction: column-reverse;
                 justify-content: space-between;
                 width: 250px;
                 margin-bottom: 20px;
+
+                &:first-child, &:nth-child(2) {
+                    padding-bottom: 5px;
+                    margin-bottom: 29px;
+                    border-bottom: 1px solid #e2e3e7;
+                }
             }
 
-            @include res-500 {
+            @include max-vw(768) {
                 width: 180px;
             }
 
-            @include res-320 {
+            @include max-vw(460) {
+                &:first-child,
+                &:nth-child(2),
+                &:nth-child(3) {
+                    padding-bottom: 26px;
+                    margin-bottom: 29px;
+                    border-bottom: 1px solid #e2e3e7;
+                }
                 width: 100%;
-                max-width: none;
-                flex-direction: column;
-                padding-left: 10px;
+                max-width: 100%;
             }
 
             .title {
@@ -518,29 +497,31 @@
                 font-size: 12px;
                 letter-spacing: 0.02em;
                 line-height: 15px;
-                // font-size: 9px;
-                // letter-spacing: 0.25em;
-                // text-transform: uppercase;
                 margin-bottom: 10px;
                 color: #130d32;
-                
-                @include res-1000 {
+
+                @include max-vw(1280) {
                     margin-bottom: 20px;
                 }
 
-                @include res-768 {
+                @include max-vw(1000) {
                     line-height: 16px;
                     margin-bottom: 0;
                     height: 35px;
                 }
 
-                @include res-320 {
-                    margin: 0 auto 25px;
-                    padding-left: 20px;
-                    padding-right: 20px;
+                @include max-vw(500) {
+                    margin: 0 0 auto;
+                    padding-left: 0;
+                    padding-right: 0;
                     width: 100%;
-                    height: auto;
                 }
+                @include max-vw(460) {
+                    height: auto;
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+
             }
 
             .value {
@@ -549,21 +530,26 @@
                 line-height: 45px;
                 color: #130d32;
 
-                @include res-1000 {
+                @include max-vw(1280) {
                     line-height: 25px;
                     word-break: break-all;
                 }
 
-                @include res-768 {
+                @include max-vw(1000) {
                     line-height: 21px;
                     margin-bottom: 21px;
                 }
 
-                @include res-320 {
+                @include max-vw(500) {
                     margin: 0 auto;
-                    padding-left: 20px;
-                    padding-right: 20px;
+                    padding-left: 0;
+                    padding-right: 0;
+                    padding-bottom: 26px;
                     width: 100%;
+                }
+                @include max-vw(460) {
+                    padding-left: 30px;
+                    padding-right: 30px;
                 }
 
                 .sm {

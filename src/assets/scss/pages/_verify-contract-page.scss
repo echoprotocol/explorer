@@ -3,6 +3,8 @@
 
   @include res-320 {
     padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
   }
 
   .page-helper-section {
@@ -32,7 +34,7 @@
     }
 
     @include res-320 {
-      font-size: 14px;  
+      font-size: 14px;
     }
   }
 
