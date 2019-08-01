@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import copy from 'copy-to-clipboard';
 import { withRouter } from 'react-router';
-
 import URLHelper from '../../helpers/URLHelper';
 
 require('codemirror/mode/xml/xml.js');
@@ -30,12 +29,14 @@ class ContractAbi extends React.Component {
 			</React.Fragment>
 		);
 	}
+
 	renderWithABI() {
 		const { id, abi, verified } = this.props;
 		const CODEMIRROR_OPTIONS = {
 			mode: 'javascript',
 			lineNumbers: true,
 		};
+
 		return (
 			<React.Fragment>
 

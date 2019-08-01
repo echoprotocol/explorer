@@ -22,7 +22,7 @@ class ApiService {
 	}
 
 	static verifyContract(data) {
-		return post(`${config.SERVER_URL}/api/${CONTRACT_PREFIX}/${VERIFY_PREFIX}`, data);
+		return post(`${config.SERVER_URL}/${API_PREFIX}/${CONTRACT_PREFIX}/${VERIFY_PREFIX}`, data);
 	}
 
 	static setAbi(data) {

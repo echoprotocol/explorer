@@ -15,6 +15,10 @@
         .CodeMirror-gutters {
             background-color: #E5E4E8;
         }
+
+        .CodeMirror-scroll {
+            max-height: none;
+        }
     }
 
 }
