@@ -92,7 +92,7 @@ class FormatHelper {
 	 * @returns {{date: string, time: string}}
 	 */
 	static timestampToContractCreationTime(timestamp) {
-		const [date, time] = moment(timestamp).format('DD.MM.YYYY HH:mm').split(' ');
+		const [date, time] = moment(timestamp).local().format('DD.MM.YYYY, hh:mm A').split(',');
 		return { date, time };
 	}
 	/**
