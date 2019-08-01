@@ -25,7 +25,6 @@ class BlockInformation extends React.Component {
 
 	componentDidMount() {
 		this.props.getBlockInfo();
-
 	}
 
 	componentDidUpdate(prevProps) {
