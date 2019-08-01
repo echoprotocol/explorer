@@ -399,14 +399,15 @@ class ContractActions extends BaseActionsClass {
 	}
 
 	setContractIcon(file) {
-		return (dispatch) => {
+		return (dispatch, getState) => {
+			const icon = getState().form.getIn([FORM_MANAGE_CONTRACT, 'icon']);
+			if (icon && icon.error) return;
 			FileLoaderHelper.loadFile(file).then((loadIcon) => {
 				dispatch(FormActions.setFormValue(FORM_MANAGE_CONTRACT, 'icon', file));
 				dispatch(FormActions.setFormValue(FORM_MANAGE_CONTRACT, 'iconBase64', loadIcon));
 				dispatch(this.checkValidateForm());
 				dispatch(this.checkChangesForm());
 			}).catch((error) => dispatch(FormActions.setFormError(FORM_MANAGE_CONTRACT, 'icon', error.message)));
-
 		};
 	}
 
