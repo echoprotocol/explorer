@@ -59,11 +59,6 @@ class VerifyContract extends React.Component {
 		this.props.setInFormValue(['contractInputs', name], e.target.value);
 	}
 
-	onBack(e, id) {
-		e.preventDefault();
-		this.props.history.push(URLHelper.createContractUrl(id));
-	}
-
 	onCodeChange(code) {
 		this.setState({ loader: true });
 		this.props.setValue('code', code);
@@ -101,6 +96,15 @@ class VerifyContract extends React.Component {
 			value: name,
 			text: name,
 		})).toArray();
+	}
+
+	goBack(e, id) {
+		e.preventDefault();
+		if (!this.props.historyLength) {
+			this.props.history.push(URLHelper.createContractUrl(id));
+		} else {
+			this.props.history.goBack();
+		}
 	}
 
 	isDisabled() {
@@ -145,7 +149,7 @@ class VerifyContract extends React.Component {
 					<a
 						href=""
 						className="backwards-link"
-						onClick={(e) => this.onBack(e, id)}
+						onClick={(e) => this.goBack(e, id)}
 					>
 						<BackwardIcon />
 					</a>
@@ -295,6 +299,7 @@ class VerifyContract extends React.Component {
 }
 
 VerifyContract.propTypes = {
+	historyLength: PropTypes.number,
 	form: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
@@ -310,6 +315,8 @@ VerifyContract.propTypes = {
 	updateConstructorParamsForm: PropTypes.func.isRequired,
 };
 
-VerifyContract.defaultProps = {};
+VerifyContract.defaultProps = {
+	historyLength: 0,
+};
 
 export default VerifyContract;

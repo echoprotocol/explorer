@@ -13,6 +13,7 @@ export default withRouter(connect(
 		compilersList: state.contract.get('compilersList'),
 		contracts: state.contract.get('contracts'),
 		verified: state.contract.get('verified'),
+		historyLength: state.global.get('historyLength'),
 	}),
 	(dispatch) => ({
 		setValue: (field, value) => dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, field, value)),

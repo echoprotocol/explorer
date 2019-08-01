@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import Dropzone from 'react-dropzone';
 
-import { INDEX_PATH } from '../../constants/RouterConstants';
 import { MAX_KB_CONTRACT_ICON, MAX_LENGTH_CONTRACT_DESCRIPTION } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
@@ -56,10 +55,10 @@ class ManageContract extends React.Component {
 		this.props.checkValidateForm();
 	}
 
-	goBack(e) {
+	goBack(e, id) {
 		e.preventDefault();
 		if (!this.props.historyLength) {
-			this.props.history.push(INDEX_PATH);
+			this.props.history.push(URLHelper.createContractUrl(id));
 		} else {
 			this.props.history.goBack();
 		}
@@ -87,7 +86,7 @@ class ManageContract extends React.Component {
 					<a
 						href=""
 						className="backwards-link"
-						onClick={(e) => this.goBack(e)}
+						onClick={(e) => this.goBack(e, id)}
 					>
 						<BackwardIcon />
 					</a>

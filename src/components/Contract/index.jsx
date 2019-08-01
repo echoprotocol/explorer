@@ -24,7 +24,6 @@ import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import TransactionsTable from '../BlockInformation/TransactionsTable';
 import Loader from '../Loader';
-import BackwardIcon from '../BackwardIcon';
 import Verify from '../VerifyButton';
 import manageIcon from '../../assets/images/icons/pencil.svg';
 import ContractStar from './ContractStar';
@@ -231,13 +230,6 @@ class Contract extends React.Component {
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards">
-							<a
-								href=""
-								className="backwards-link"
-								onClick={(e) => { e.preventDefault(); }}
-							>
-								<BackwardIcon />
-							</a>
 							<div className="account-page-t-block">
 								<Media query="(max-width: 500px)">
 									{(matches) =>
