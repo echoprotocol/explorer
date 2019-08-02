@@ -30,7 +30,7 @@ export default withRouter(connect(
 		setContractIcon: (value) => dispatch(ContractActions.setContractIcon(value)),
 		setFormValue: (field, value) => dispatch(FormActions.setFormValue(FORM_MANAGE_CONTRACT, field, value)),
 		clearByField: (field) => dispatch(FormActions.clearByField(FORM_MANAGE_CONTRACT, field)),
-		cancelFieldsContract: () => dispatch(ContractActions.cancelFieldsContract()),
+		setDefaultDateContract: () => dispatch(ContractActions.setDefaultDateContract()),
 		loadActiveAccount: () => dispatch(AccountActions.loadActiveAccount()),
 		checkValidateForm: () => dispatch(ContractActions.checkValidateForm()),
 		checkChangesForm: () => dispatch(ContractActions.checkChangesForm()),

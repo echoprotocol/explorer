@@ -236,6 +236,7 @@ class Contract extends React.Component {
 				},
 			],
 		};
+
 		return (
 			<div className="table-container inner-information-container account-page contract-page with-d-table">
 				<div className="react-tabs">

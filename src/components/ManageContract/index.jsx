@@ -21,7 +21,6 @@ class ManageContract extends React.Component {
 		super(props);
 
 		this.onSave = this.onSave.bind(this);
-		this.cancelForm = this.cancelForm.bind(this);
 		this.removeIcon = this.removeIcon.bind(this);
 	}
 
@@ -66,15 +65,11 @@ class ManageContract extends React.Component {
 		}
 	}
 
-	cancelForm() {
-		this.props.cancelFieldsContract();
-	}
-
 	async initData() {
 		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		await this.props.getContractInfo();
-		this.cancelForm();
+		this.props.setDefaultDateContract();
 	}
 
 	render() {
@@ -180,7 +175,7 @@ class ManageContract extends React.Component {
 				</div>
 
 				<div className="buttons-wrap">
-					<button className="decline-button" onClick={this.cancelForm}>Close</button>
+					<button className="decline-button" onClick={(e) => this.goBack(e, id)}>Close</button>
 					<button
 						onClick={() => this.onSave()}
 						disabled={isErrorForm || !isChangedForm}
@@ -202,7 +197,7 @@ ManageContract.propTypes = {
 	setFormValue: PropTypes.func.isRequired,
 	manageContract: PropTypes.func.isRequired,
 	setContractIcon: PropTypes.func.isRequired,
-	cancelFieldsContract: PropTypes.func.isRequired,
+	setDefaultDateContract: PropTypes.func.isRequired,
 	clearByField: PropTypes.func.isRequired,
 	setActiveAccount: PropTypes.func.isRequired,
 	loadActiveAccount: PropTypes.func.isRequired,

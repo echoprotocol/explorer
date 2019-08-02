@@ -356,7 +356,7 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
-	cancelFieldsContract() {
+	setDefaultDateContract() {
 		return (dispatch, getState) => {
 			const name = getState().contract.get('name');
 			const description = getState().contract.get('description');

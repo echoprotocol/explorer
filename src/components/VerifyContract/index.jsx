@@ -279,10 +279,10 @@ class VerifyContract extends React.Component {
 				<div className="buttons-wrap">
 					<button
 						className="decline-button"
-						onClick={(e) => this.onBack(e, id)}
+						onClick={(e) => this.goBack(e, id)}
 						disabled={form.get('loading')}
 					>
-						Cancel
+						Close
 					</button>
 					<button
 						onClick={() => this.onApprove(id)}
