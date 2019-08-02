@@ -86,49 +86,47 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="table-container inner-information-container block-information account-page with-d-table">
-					<BreadCrumbs
-						breadcrumbs={breadcrumbs}
-						title={`Block ${blockNumber}`}
-						returnFunction={() => this.returnFunction()}
-					/>
-					<div className="block-description">
-						<div className="container time">
-							<div className="title">Date, Time</div>
-							<div className="value">{time}</div>
-						</div>
-						<div className="container size">
-							<div className="title">Size</div>
-							<div className="value">{size}</div>
-						</div>
-						<div className="container producer">
-							<div className="title">Producer</div>
-							<Link to={URLHelper.createAccountUrl(producer.id)}>
-								<div className="value blue">{producer.name}</div>
-							</Link>
-						</div>
-						<div className="container reward">
-							<div className="title">Reward</div>
-							<div className="value">{reward}</div>
-						</div>
-						<div className="container verifiers">
-							<div className="title">Verifiers</div>
-							<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
-						</div>
+				<BreadCrumbs
+					breadcrumbs={breadcrumbs}
+					title={`Block ${blockNumber}`}
+					returnFunction={() => this.returnFunction()}
+				/>
+				<div className="block-description">
+					<div className="container time">
+						<div className="title">Date, Time</div>
+						<div className="value">{time}</div>
 					</div>
-					<h2>{`${transactions && transactions.length} Transactions`}</h2>
-					<div className="help-table-wrapper">
-						{
-							(slicedTransactions && slicedTransactions.length) ?
-								<TransactionsTable
-									isBlockTable
-									transactions={slicedTransactions}
-									loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
-									blockTime={time}
-									hasMore={currentTransactionLength < transactions.length}
-								/> : null
-						}
+					<div className="container size">
+						<div className="title">Size</div>
+						<div className="value">{size}</div>
 					</div>
+					<div className="container producer">
+						<div className="title">Producer</div>
+						<Link to={URLHelper.createAccountUrl(producer.id)}>
+							<div className="value blue">{producer.name}</div>
+						</Link>
+					</div>
+					<div className="container reward">
+						<div className="title">Reward</div>
+						<div className="value">{reward}</div>
+					</div>
+					<div className="container verifiers">
+						<div className="title">Verifiers</div>
+						<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
+					</div>
+				</div>
+				<h2>{`${transactions && transactions.length} Transactions`}</h2>
+				<div className="help-table-wrapper">
+					{
+						(slicedTransactions && slicedTransactions.length) ?
+							<TransactionsTable
+								isBlockTable
+								transactions={slicedTransactions}
+								loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
+								blockTime={time}
+								hasMore={currentTransactionLength < transactions.length}
+							/> : null
+					}
 				</div>
 			</React.Fragment>
 		);
@@ -137,7 +135,14 @@ class BlockInformation extends React.Component {
 	render() {
 		const { blockInformation } = this.props;
 
-		return blockInformation.get('blockNumber') ? this.renderBlockInformation(blockInformation) : this.renderLoader();
+		return (
+			<div className="table-container inner-information-container block-information account-page with-d-table">
+				{
+					blockInformation.get('blockNumber') ?
+						this.renderBlockInformation(blockInformation) : this.renderLoader()
+				}
+			</div>
+		);
 	}
 
 }
