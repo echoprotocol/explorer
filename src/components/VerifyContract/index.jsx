@@ -221,6 +221,7 @@ class VerifyContract extends React.Component {
 							<div className="t-value">
 								<div className="select-container">
 									<Dropdown
+										className="compiler"
 										placeholder="Select compiler"
 										options={this.getCompilersOptions()}
 										value={form.get('currentCompiler').value}
@@ -238,6 +239,7 @@ class VerifyContract extends React.Component {
 							<div className="t-value">
 								<div className="select-container">
 									<Select
+										className="compiler"
 										placeholder="Select contract"
 										value={form.get('contractName')}
 										disabled={!contracts.size}
