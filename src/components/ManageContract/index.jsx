@@ -12,6 +12,7 @@ import { BridgeService } from '../../services/BridgeService';
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
 import { ContractIcon } from '../Contract/ContractIcon';
+import contractIconDefault from '../../assets/images/icons/contract-icon.svg';
 import bridge from '../../assets/images/icons/bridge-logo.svg';
 
 class ManageContract extends React.Component {
@@ -78,7 +79,7 @@ class ManageContract extends React.Component {
 
 	render() {
 		const {
-			match: { params: { id } }, owner, name, description, iconBase64, icon, contractIcon, isChangedForm, isErrorForm,
+			match: { params: { id } }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm,
 		} = this.props;
 
 		return (
@@ -158,7 +159,7 @@ class ManageContract extends React.Component {
 													<span className="image-preview">
 														{typeof icon.value === 'string' && icon.value !== '' && !icon.error ?
 															<ContractIcon icon={contractIcon} />
-															: <img src={iconBase64.value} alt="" />}
+															: <img src={contractIconDefault} alt="" />}
 													</span>
 													<div className="info">
 														<div className="action-description">Drop file here or click to add file</div>
@@ -179,7 +180,7 @@ class ManageContract extends React.Component {
 				</div>
 
 				<div className="buttons-wrap">
-					<button className="decline-button" onClick={this.cancelForm}>Cancel</button>
+					<button className="decline-button" onClick={this.cancelForm}>Close</button>
 					<button
 						onClick={() => this.onSave()}
 						disabled={isErrorForm || !isChangedForm}
@@ -212,7 +213,6 @@ ManageContract.propTypes = {
 	name: PropTypes.object.isRequired,
 	description: PropTypes.object.isRequired,
 	icon: PropTypes.object.isRequired,
-	iconBase64: PropTypes.object.isRequired,
 	contractIcon: PropTypes.string.isRequired,
 	isErrorForm: PropTypes.bool,
 	isChangedForm: PropTypes.bool,

@@ -27,18 +27,40 @@
     }
     .slick-slide {
         height: 28px;
+
         & > div {
             width: 100%;
             display: flex;
             align-items: center;
         }
+
+        &:not(:last-child) {
+            .menu-item:not(.active) {
+                &:after {
+                    content: '';
+                    width: 2px;
+                    height: 2px;
+                    background-color: #040404;
+                    opacity: 0.7;
+                    display: block;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                }
+            }
+        }
     }
+
     .menu-item {
         height: 28px;
         z-index: 1;
         background-color: transparent;
         border-top: 2px solid transparent;
         transition: border .2s;
+        position: relative;
+
         a {
             width: 100%;
             display: flex;
@@ -81,6 +103,7 @@
         &.active {
             background-color: #F3F2F5;
             border-top: 2px solid #498FDF;
+            margin-left: -2px;
             a {
                 .menu-item-content {
                     @include InterUI_Bold;

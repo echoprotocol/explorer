@@ -44,6 +44,7 @@ class Contract extends React.Component {
 		this.manageContract = this.manageContract.bind(this);
 	}
 
+
 	async componentDidMount() {
 		const { match: { params: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
@@ -57,7 +58,7 @@ class Contract extends React.Component {
 		this.props.loadActiveAccount();
 		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 
-		if (window.innerWidth > 500) {
+		if (window.innerWidth > 400) {
 			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
 		}
 	}
@@ -98,7 +99,7 @@ class Contract extends React.Component {
 		this.props.updateContractInfo(first ? first[0].id : first);
 	}
 
-	goToSlide(slide) {
+	goToSlide(e, slide) {
 		this.slider.current.slickGoTo(slide);
 	}
 
@@ -208,6 +209,7 @@ class Contract extends React.Component {
 				key: 'tab-5',
 			});
 		}
+
 		const settings = {
 			dots: false,
 			infinite: false,
@@ -216,6 +218,7 @@ class Contract extends React.Component {
 			slidesToScroll: 1,
 			variableWidth: true,
 			touchMove: false,
+			initialSlide: CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0,
 			responsive: [
 				{
 					breakpoint: 768,
@@ -275,9 +278,10 @@ class Contract extends React.Component {
 							{(matches) =>
 								(!matches ?
 									<div className="horizontal-tab-panel">
-										<Slider ref={this.slider} {...settings}>
+										<Slider ref={this.slider} {...settings} >
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
 												<Link
+													className="menu-item-content"
 													onClick={() => this.goToSlide(0)}
 													to={URLHelper.createContractUrl(id)}
 												>

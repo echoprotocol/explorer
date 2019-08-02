@@ -3,10 +3,10 @@
     @include InterUI_Regular;
     display: flex;
 
-
     .content {
         letter-spacing: 0.2px;
     }
+
     .action-button {
         @include btn();
         @include onFocus(4px, 2px, 2px, rgba(#498FDF, .53));
@@ -20,8 +20,7 @@
         cursor: pointer;
         display: flex;
         align-items: center;
-        border-radius: 12px;
-        
+
         img {
             width: 9px;
             & + .content {
@@ -33,6 +32,7 @@
         & + .action-label {
             margin-left: -11px;
             padding: 4px 5px 3px 16px;
+            line-height: 17px;
         }
 
         &:hover:not(:focus) {
@@ -61,6 +61,7 @@
         }
         .content {
             white-space: nowrap;
+            margin-top: 1px;
             & + img {
                 width: 9px;
                 margin-left: 4px;
