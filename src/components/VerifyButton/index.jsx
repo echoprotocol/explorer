@@ -84,6 +84,7 @@ class Verify extends Component {
 						<button
 							onMouseEnter={() => this.changeHover(true)}
 							onMouseLeave={() => this.changeHover(false)}
+							tabIndex={-1}
 							className="info-icon"
 						>
 							{

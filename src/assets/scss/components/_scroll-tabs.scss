@@ -60,7 +60,14 @@
         border-top: 2px solid transparent;
         transition: border .2s;
         position: relative;
-
+        &:not(.active) {
+            a:focus {
+                .menu-item-content {
+                    background-color: #CECCD2;
+                    color: #000;
+                }
+            }
+        }
         a {
             width: 100%;
             display: flex;
@@ -80,7 +87,6 @@
                 align-items: center;
                 color: rgba(0, 0, 0, 0.5);
             }
-
         }
 
         &:hover:not(.active) {
@@ -90,6 +96,7 @@
                     background-color: #CECCD2;
                     color: #000;
                 }
+
             }
         }
         &:active:not(.active) {

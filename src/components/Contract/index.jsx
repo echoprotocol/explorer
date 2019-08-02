@@ -284,6 +284,7 @@ class Contract extends React.Component {
 												<Link
 													className="menu-item-content"
 													onClick={() => this.goToSlide(0)}
+													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 && -1}
 													to={URLHelper.createContractUrl(id)}
 												>
 													<span className="menu-item-content">Contract info</span>
@@ -292,6 +293,7 @@ class Contract extends React.Component {
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
 												<Link
 													onClick={() => this.goToSlide(1)}
+													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 && -1}
 													to={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}
 												>
 													<span className="menu-item-content">Transactions (43)</span>
@@ -300,6 +302,7 @@ class Contract extends React.Component {
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
 												<Link
 													onClick={() => this.goToSlide(2)}
+													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 && -1}
 													to={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}
 												>
 													<span className="menu-item-content">Bytecode</span>
@@ -308,6 +311,7 @@ class Contract extends React.Component {
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
 												<Link
 													onClick={() => this.goToSlide(3)}
+													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 && -1}
 													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
 												>
 													<span className="menu-item-content">Balances</span>
@@ -316,6 +320,7 @@ class Contract extends React.Component {
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
 												<Link
 													onClick={() => this.goToSlide(4)}
+													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 && -1}
 													to={URLHelper.createContractUrl(id, CONTRACT_ABI)}
 												>
 													<span className="menu-item-content">ABI</span>
@@ -328,6 +333,7 @@ class Contract extends React.Component {
 												>
 													<Link
 														onClick={() => this.goToSlide(5)}
+														tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 && -1}
 														to={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}
 													>
 														<span className="menu-item-content">Source code</span>
