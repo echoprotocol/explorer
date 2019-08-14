@@ -64,7 +64,7 @@ class ContractAbi extends React.Component {
 				</div>
 
 				{/* If code-block readonly add class uncontrolled */}
-				<div className="code-block uncontrolled">
+				<div className="code-block uncontrolled max-height-none">
 					<CodeMirror
 						value={abi}
 						options={CODEMIRROR_OPTIONS}

@@ -5,6 +5,12 @@
     font-size: 12px;
     line-height: 20px;
 
+    &.max-height-none  {
+        .CodeMirror-scroll {
+            max-height: none;
+        }
+    }
+
     &.uncontrolled {
         .CodeMirror {
             background-color: #F3F2F5;
@@ -14,10 +20,6 @@
         }
         .CodeMirror-gutters {
             background-color: #E5E4E8;
-        }
-
-        .CodeMirror-scroll {
-            max-height: none;
         }
     }
 

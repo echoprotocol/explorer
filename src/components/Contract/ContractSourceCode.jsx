@@ -23,7 +23,7 @@ class ContractSourceCode extends React.Component {
 					</div>
 				</div>
 
-				<div className="code-block">
+				<div className="code-block max-height-none">
 					<CodeMirror
 						value={sourceCode}
 						options={CODEMIRROR_OPTIONS}
