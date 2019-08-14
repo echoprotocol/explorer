@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import BackwardIcon from '../BackwardIcon';
 import verifyIcon from '../../assets/images/icons/verify-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
+import { KEY_CODES } from '../../constants/GlobalConstants';
 
 require('codemirror/mode/xml/xml.js');
 require('codemirror/mode/javascript/javascript.js');
@@ -16,8 +17,10 @@ class VerifyContract extends React.Component {
 		this.state = {
 			loader: false,
 		};
-	}
 
+		this.backwards = React.createRef();
+		this.checkboxEVM = React.createRef();
+	}
 	componentDidMount() {
 		this.props.contractCompilerInit();
 
@@ -72,6 +75,17 @@ class VerifyContract extends React.Component {
 
 	onApprove(id) {
 		this.props.contractVerifyApprove(id);
+	}
+	onKeyDown(e) {
+		e.preventDefault();
+		if (e.shiftKey && e.which === KEY_CODES.TAB_CODE) {
+			this.backwards.current.focus();
+			return;
+		}
+
+		if (e.which === KEY_CODES.TAB_CODE) {
+			this.checkboxEVM.current.focus();
+		}
 	}
 
 	getCompilersOptions() {
@@ -150,6 +164,7 @@ class VerifyContract extends React.Component {
 						href=""
 						className="backwards-link"
 						onClick={(e) => this.goBack(e, id)}
+						ref={this.backwards}
 					>
 						<BackwardIcon />
 					</a>
@@ -186,6 +201,7 @@ class VerifyContract extends React.Component {
 						<CodeMirror
 							value={form.get('code')}
 							options={CODEMIRROR_OPTIONS}
+							onKeyDown={(editor, e) => this.onKeyDown(e)}
 							onBeforeChange={(editor, data, value) => {
 								this.onCodeChange(value);
 							}}
@@ -202,7 +218,7 @@ class VerifyContract extends React.Component {
 							<div className="t-value">
 								<div className="radio-button">
 									<label>
-										<input name="testCheckbox" type="radio" defaultChecked />
+										<input ref={this.checkboxEVM} name="testCheckbox" type="radio" defaultChecked />
 										<div className="radio-button-icon" />
 										<div className="radio-button-text">EVM</div>
 									</label>

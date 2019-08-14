@@ -2,6 +2,7 @@
 
 export const KEY_CODES = {
 	ENTER_CODE: 13,
+	TAB_CODE: 9,
 	ESC_CODE: 27,
 	MINUS_CODE: 189,
 	FIVE_NUMBER_CODE: 53,
