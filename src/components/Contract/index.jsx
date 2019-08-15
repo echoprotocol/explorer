@@ -296,7 +296,7 @@ class Contract extends React.Component {
 													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 && -1}
 													to={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}
 												>
-													<span className="menu-item-content">Transactions (43)</span>
+													<span className="menu-item-content">{`Transactions (${contractTxs})`}</span>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
@@ -354,7 +354,7 @@ class Contract extends React.Component {
 													<span className="doropdown-tab-item">Contract info</span>
 												</Dropdown.Item>
 												<Dropdown.Item eventKey={1}>
-													<span className="doropdown-tab-item">Transactions (43)</span>
+													<span className="doropdown-tab-item">{`Transactions (${contractTxs})`}</span>
 												</Dropdown.Item>
 												<Dropdown.Item eventKey={2}>
 													<span className="doropdown-tab-item">Bytecode</span>
