@@ -140,6 +140,10 @@ $res-1440: 1535px;
         color $speed,
         border $speed,
         background-color $speed;
+
+    &:not(:disabled) {
+        cursor: pointer;
+    }
 }
 
 @mixin onFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {

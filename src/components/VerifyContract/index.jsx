@@ -77,13 +77,14 @@ class VerifyContract extends React.Component {
 		this.props.contractVerifyApprove(id);
 	}
 	onKeyDown(e) {
-		e.preventDefault();
 		if (e.shiftKey && e.which === KEY_CODES.TAB_CODE) {
+			e.preventDefault();
 			this.backwards.current.focus();
 			return;
 		}
 
 		if (e.which === KEY_CODES.TAB_CODE) {
+			e.preventDefault();
 			this.checkboxEVM.current.focus();
 		}
 	}
@@ -218,14 +219,22 @@ class VerifyContract extends React.Component {
 							<div className="t-value">
 								<div className="radio-button">
 									<label>
-										<input ref={this.checkboxEVM} name="testCheckbox" type="radio" defaultChecked />
+										<input
+											ref={this.checkboxEVM}
+											name="testCheckbox"
+											type="radio"
+											defaultChecked
+										/>
 										<div className="radio-button-icon" />
 										<div className="radio-button-text">EVM</div>
 									</label>
 								</div>
 								<div className="radio-button">
 									<label>
-										<input name="testCheckbox" type="radio" />
+										<input
+											name="testCheckbox"
+											type="radio"
+										/>
 										<div className="radio-button-icon" />
 										<div className="radio-button-text">x64</div>
 									</label>
