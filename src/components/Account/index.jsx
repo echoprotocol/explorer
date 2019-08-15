@@ -35,7 +35,7 @@ class Account extends React.Component {
 		}
 
 		if (!prevAccount.get('balances').equals(account.get('balances'))) {
-			this.props.updateAccountBalances(account.get('id'), account.get('balances'));
+			this.props.updateAccountBalances(account.get('balances'));
 		}
 	}
 
