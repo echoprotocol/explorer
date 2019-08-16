@@ -31,7 +31,9 @@ import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';
 import ContractInfo from './ContractInfo';
 import { ContractIcon } from './ContractIcon';
+
 import { BridgeService } from '../../services/BridgeService';
+import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
 
@@ -39,6 +41,7 @@ class Contract extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.updateHistorySubscriber = null;
 		this.subscriber = this.updateInfo.bind(this);
 		this.slider = React.createRef();
 		this.manageContract = this.manageContract.bind(this);
@@ -56,11 +59,11 @@ class Contract extends React.Component {
 		}
 
 		this.props.loadActiveAccount();
-		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 
 		if (window.innerWidth > 400) {
 			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
 		}
+		this.subscribe(id);
 	}
 
 
@@ -72,8 +75,7 @@ class Contract extends React.Component {
 
 	componentWillUnmount() {
 		this.props.clearContractInfo();
-		BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
-		echo.subscriber.removeContractSubscribe(this.subscriber);
+		this.unsubscribe();
 	}
 
 	onLoadMoreHistory() {
@@ -95,7 +97,6 @@ class Contract extends React.Component {
 		const first = contractHistory.first();
 
 		if (loading) { return; }
-
 		this.props.updateContractInfo(first ? first[0].id : first);
 	}
 
@@ -106,6 +107,27 @@ class Contract extends React.Component {
 	async manageContract() {
 		const { match: { params: { id } } } = this.props;
 		this.props.history.push(URLHelper.createManageContractUrl(id));
+	}
+
+	async subscribe(id) {
+		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
+		const updateHistory = await subscribeContractHistoryUpdate(id);
+
+		const nextUpdate = ({ data: { contractHistoryUpdated } }) => this.props.updateContractHistory(contractHistoryUpdated);
+
+		this.updateHistorySubscriber = updateHistory.subscribe({
+			next: nextUpdate.bind(this),
+			error: (err) => { console.log('Update token error: ', err.message || err); },
+		});
+	}
+
+	unsubscribe() {
+		BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
+		echo.subscriber.removeContractSubscribe(this.subscriber);
+		if (this.updateHistorySubscriber) {
+			this.updateHistorySubscriber.unsubscribe();
+			this.updateHistorySubscriber = null;
+		}
 	}
 
 	renderArrow({ text, className }) {
@@ -421,6 +443,7 @@ Contract.propTypes = {
 
 	activeAccount: PropTypes.object,
 	owner: PropTypes.object.isRequired,
+	updateContractHistory: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {

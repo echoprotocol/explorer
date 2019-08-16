@@ -73,5 +73,6 @@ export default withRouter(connect(
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		setActiveAccount: (account) => dispatch(AccountActions.setActiveAccount(account)),
 		loadActiveAccount: () => dispatch(AccountActions.loadActiveAccount()),
+		updateContractHistory: (data) => dispatch(ContractActions.updateContractHistory(data)),
 	}),
 )(Contract));

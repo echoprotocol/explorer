@@ -651,6 +651,22 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
+
+	/**
+	 *
+	 * @param data
+	 * @returns {Function}
+	 */
+	updateContractHistory(data) {
+		return async (dispatch, getState) => {
+			const { calling_accounts } = data;
+			const contractTxs = getState().contract.get('contractTxs');
+			dispatch(this.setMultipleValue({
+				contractTxs: contractTxs + 1,
+				countUsedByAccount: calling_accounts.length,
+			}));
+		}
+	}
 }
 
 export default new ContractActions(ContractReducer);
