@@ -630,6 +630,7 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
  */
 export const toggleEmptyBlocks = (value) => (dispatch) => {
 	LocalStorageService.setData('isShowEmptyBlocks', !value);
+	dispatch(BlockReducer.actions.set({ field: 'hasMore', value: true }));
 	dispatch(BlockReducer.actions.set({ field: 'isShowEmptyBlocks', value: !value }));
 };
 

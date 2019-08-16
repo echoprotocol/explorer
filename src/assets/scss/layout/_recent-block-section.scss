@@ -338,6 +338,20 @@
                     }
                 }
             }
+
+            .title-no-transactions {
+                @include InterUI_Regular();
+                position: absolute;
+                padding-left: 25px;
+                font-size: 13px;
+                letter-spacing: 0;
+                line-height: 18px;
+                color: #0f0739;
+            }
+
+            &.no-border-bottom {
+                border-bottom: 0;
+            }
         }
     }
 

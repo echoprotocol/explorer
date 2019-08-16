@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import { fromJS } from 'immutable';
+import classnames from 'classnames';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
@@ -17,7 +18,8 @@ import TypesHelper from '../../../helpers/TypesHelper';
 import URLHelper from '../../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
-import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
+import BlockReducer from '../../../reducers/BlockReducer';
+import { PAGE_BLOCKS_COUNT, TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
 import {
@@ -48,6 +50,9 @@ class RecentBlockTable extends React.Component {
 
 		if (!isShowEmptyBlocks) {
 			filterBlocks = filterBlocks.filter((block) => block.get('transactions'));
+			if (filterBlocks.size < PAGE_BLOCKS_COUNT) {
+				this.props.setValue('hasMore', false);
+			}
 		}
 
 		filterBlocks.mapEntries(([key, value]) => {
@@ -79,6 +84,8 @@ class RecentBlockTable extends React.Component {
 
 	render() {
 		const { hasMore, isShowEmptyBlocks } = this.props;
+		const blocks = this.getBlocks();
+		const AreEmptyTransactions = !hasMore && !blocks.length;
 
 		return (
 			<InfiniteScroll loadMore={() => this.props.loadBlocks()} hasMore={hasMore}>
@@ -142,7 +149,7 @@ class RecentBlockTable extends React.Component {
 										}
 									</div>
 								) : (
-									<div className="divTable">
+									<div className={classnames('divTable', { 'no-border-bottom': AreEmptyTransactions })}>
 										<div className="divTableBody">
 											<div className="TableHeading">
 												<div className="divTableCell">
@@ -168,7 +175,7 @@ class RecentBlockTable extends React.Component {
 											</div>
 											<div className="divider" />
 											{
-												this.getBlocks().map((data) => (
+												blocks.map((data) => (
 													<React.Fragment key={data.round}>
 														<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow fade-anim">
 															<div className="divTableCell">
@@ -197,6 +204,9 @@ class RecentBlockTable extends React.Component {
 													</React.Fragment>
 												))
 											}
+											{AreEmptyTransactions && (
+												<p className="title-no-transactions">No transactions in recent blocks</p>
+											)}
 										</div>
 									</div>
 								))
@@ -220,6 +230,7 @@ RecentBlockTable.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	toggleEmptyBlocks: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
+	setValue: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
@@ -229,6 +240,7 @@ export default withRouter(connect(
 		isShowEmptyBlocks: state.block.get('isShowEmptyBlocks'),
 	}),
 	(dispatch) => ({
+		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
 		resetDisplayedBlocks: () => dispatch(resetDisplayedBlocks()),
