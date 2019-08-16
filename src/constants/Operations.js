@@ -11,46 +11,6 @@ const Operations = {
 			asset: 'amount.asset_id',
 		},
 	},
-	limit_order_create: {
-		value: OPERATIONS_IDS.LIMIT_ORDER_CREATE,
-		name: 'Place order',
-		options: {
-			from: 'seller',
-			subject: null,
-			value: 'amount_to_sell.amount',
-			asset: 'amount_to_sell.asset_id',
-		},
-	},
-	limit_order_cancel: {
-		value: OPERATIONS_IDS.LIMIT_ORDER_CANCEL,
-		name: 'Cancel order',
-		options: {
-			from: 'fee_paying_account',
-			subject: ['order', 'name'],
-			value: null,
-			asset: null,
-		},
-	},
-	call_order_update: {
-		value: OPERATIONS_IDS.CALL_ORDER_UPDATE,
-		name: 'Update margin',
-		options: {
-			from: 'funding_account',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
-	fill_order: {
-		value: OPERATIONS_IDS.FILL_ORDER,
-		name: 'Fill order',
-		options: {
-			from: 'account_id',
-			subject: ['order_id', null],
-			value: 'pays.amount',
-			asset: 'pays.asset_id',
-		},
-	},
 	account_create: {
 		value: OPERATIONS_IDS.ACCOUNT_CREATE,
 		name: 'Create account',
@@ -77,16 +37,6 @@ const Operations = {
 		options: {
 			from: 'authorizing_account',
 			subject: ['account_to_list', 'name'],
-			value: null,
-			asset: null,
-		},
-	},
-	account_upgrade: {
-		value: OPERATIONS_IDS.ACCOUNT_UPGRADE,
-		name: 'Upgrade Account',
-		options: {
-			from: 'account_to_upgrade',
-			subject: null,
 			value: null,
 			asset: null,
 		},
@@ -171,26 +121,6 @@ const Operations = {
 			asset: 'asset_id',
 		},
 	},
-	asset_settle: {
-		value: OPERATIONS_IDS.ASSET_SETTLE,
-		name: 'Asset settlement',
-		options: {
-			from: 'account',
-			subject: null,
-			value: 'amount.amount',
-			asset: 'amount.asset_id',
-		},
-	},
-	asset_global_settle: {
-		value: OPERATIONS_IDS.ASSET_GLOBAL_SETTLE,
-		name: 'Global asset settlement',
-		options: {
-			from: 'issuer',
-			subject: null,
-			value: 'settle_price',
-			asset: 'asset_to_settle',
-		},
-	},
 	asset_publish_feed: {
 		value: OPERATIONS_IDS.ASSET_PUBLISH_FEED,
 		name: 'Publish feed',
@@ -226,46 +156,6 @@ const Operations = {
 		name: 'Delete proposal',
 		options: {
 			from: 'fee_paying_account',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
-	withdraw_permission_create: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_CREATE,
-		name: 'Create withdrawal permission',
-		options: {
-			from: 'withdraw_from_account',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
-	withdraw_permission_update: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_UPDATE,
-		name: 'Update withdrawal permission',
-		options: {
-			from: 'withdraw_from_account',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
-	withdraw_permission_claim: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_CLAIM,
-		name: 'Claim withdrawal permission',
-		options: {
-			from: 'withdraw_from_account',
-			subject: ['withdraw_to_account', 'name'],
-			value: 'amount_to_withdraw.amount',
-			asset: 'amount_to_withdraw.asset_id',
-		},
-	},
-	withdraw_permission_delete: {
-		value: OPERATIONS_IDS.WITHDRAW_PERMISSION_DELETE,
-		name: 'Delete withdrawal permission',
-		options: {
-			from: 'withdraw_from_account',
 			subject: null,
 			value: null,
 			asset: null,
@@ -321,26 +211,6 @@ const Operations = {
 			asset: 'amount.asset_id',
 		},
 	},
-	custom: {
-		value: OPERATIONS_IDS.CUSTOM,
-		name: 'Custom',
-		options: {
-			from: 'payer',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
-	assert: {
-		value: OPERATIONS_IDS.ASSERT,
-		name: 'Assert operation',
-		options: {
-			from: 'fee_paying_account',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
 	balance_claim: {
 		value: OPERATIONS_IDS.BALANCE_CLAIM,
 		name: 'Claim balance',
@@ -361,16 +231,6 @@ const Operations = {
 			asset: 'amount.asset_id',
 		},
 	},
-	asset_settle_cancel: {
-		value: OPERATIONS_IDS.ASSET_SETTLE_CANCEL,
-		name: 'Cancel asset settlement',
-		options: {
-			from: 'account',
-			subject: null,
-			value: 'amount.amount',
-			asset: 'amount.asset_id',
-		},
-	},
 	asset_claim_fees: {
 		value: OPERATIONS_IDS.ASSET_CLAIM_FEES,
 		name: 'Claim asset fees',
@@ -381,11 +241,8 @@ const Operations = {
 			asset: 'amount_to_claim.asset_id',
 		},
 	},
-	// FBA_DISTRIBUTE = 44,
-	// BID_COLLATERAL = 45,
-	// EXECUTE_BID = 46,
 	contract_create: {
-		value: OPERATIONS_IDS.CREATE_CONTRACT,
+		value: OPERATIONS_IDS.CONTRACT_CREATE,
 		name: 'Contract create',
 		options: {
 			from: 'registrar',
@@ -394,8 +251,8 @@ const Operations = {
 			asset: 'value.asset_id',
 		},
 	},
-	call_contract: {
-		value: OPERATIONS_IDS.CALL_CONTRACT,
+	contract_call: {
+		value: OPERATIONS_IDS.CONTRACT_CALL,
 		name: 'Contract call',
 		options: {
 			from: 'registrar',
@@ -415,7 +272,7 @@ const Operations = {
 		},
 	},
 	change_sidechain_config: {
-		value: OPERATIONS_IDS.CHANGE_SIDECHAIN_CONFIG,
+		value: OPERATIONS_IDS.SIDECHAIN_CHANGE_CONFIG,
 		name: 'Change sidechain config',
 		options: {
 			from: null,
@@ -444,8 +301,8 @@ const Operations = {
 			asset: null,
 		},
 	},
-	generate_eth_address: {
-		value: OPERATIONS_IDS.GENERATE_ETH_ADDRESS,
+	sidechain_eth_create_address: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS,
 		name: 'Generate eth address',
 		options: {
 			from: 'account',
@@ -455,7 +312,7 @@ const Operations = {
 		},
 	},
 	create_eth_address: {
-		value: OPERATIONS_IDS.CREATE_ETH_ADDRESS,
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS,
 		name: 'Create eth address',
 		options: {
 			from: 'committee_member_id',
@@ -465,7 +322,7 @@ const Operations = {
 		},
 	},
 	deposit_eth: {
-		value: OPERATIONS_IDS.DEPOSIT_ETH,
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT,
 		name: 'Deposit eth',
 		options: {
 			from: 'committee_member_id',
@@ -475,7 +332,7 @@ const Operations = {
 		},
 	},
 	withdraw_eth: {
-		value: OPERATIONS_IDS.WITHDRAW_ETH,
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW,
 		name: 'Withdraw eth',
 		options: {
 			from: 'account',
@@ -485,7 +342,7 @@ const Operations = {
 		},
 	},
 	approve_withdraw_eth: {
-		value: OPERATIONS_IDS.APPROVE_WITHDRAW_ETH,
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW,
 		name: 'Approve withdraw eth',
 		options: {
 			from: ['committee_member_id', 'name'],
@@ -515,7 +372,7 @@ const Operations = {
 		},
 	},
 	sidechain_issue: {
-		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_ISSUE,
 		name: 'Sidechain issue',
 		options: {
 			from: 'account',
@@ -525,7 +382,7 @@ const Operations = {
 		},
 	},
 	sidechain_burn: {
-		value: OPERATIONS_IDS.SIDECHAIN_BURN,
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_BURN,
 		name: 'Sidechain burn',
 		options: {
 			from: 'account',
@@ -535,7 +392,7 @@ const Operations = {
 		},
 	},
 	register_erc20_token: {
-		value: OPERATIONS_IDS.REGISTER_ERC20_TOKEN,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN,
 		name: 'Register erc20 token',
 		options: {
 			from: 'account',
@@ -545,7 +402,7 @@ const Operations = {
 		},
 	},
 	deposit_erc20_token: {
-		value: OPERATIONS_IDS.DEPOSIT_ERC20_TOKEN,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_DEPOSIT_TOKEN,
 		name: 'Deposit erc20 token',
 		options: {
 			from: 'account',
@@ -555,7 +412,7 @@ const Operations = {
 		},
 	},
 	withdraw_erc20_token: {
-		value: OPERATIONS_IDS.WITHDRAW_ERC20_TOKEN,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN,
 		name: 'Withdraw erc20 token',
 		options: {
 			from: 'account',
@@ -565,7 +422,7 @@ const Operations = {
 		},
 	},
 	approve_erc20_token_withdraw: {
-		value: OPERATIONS_IDS.APPROVE_ERC20_TOKEN_WITHDRAW,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW,
 		name: 'Approve erc20 token withdraw',
 		options: {
 			from: 'committee_member_id',
@@ -590,7 +447,6 @@ export const accountOperations = [
 	Operations.account_create.name,
 	Operations.account_update.name,
 	Operations.account_whitelist.name,
-	Operations.account_upgrade.name,
 	Operations.account_transfer.name,
 ];
 export const assetOperations = [
@@ -601,13 +457,11 @@ export const assetOperations = [
 	Operations.asset_issue.name,
 	Operations.asset_reserve.name,
 	Operations.asset_fund_fee_pool.name,
-	Operations.asset_settle.name,
-	Operations.asset_global_settle.name,
 	Operations.asset_publish_feed.name,
 ];
 export const contractOperations = [
 	Operations.contract_create.name,
-	Operations.call_contract.name,
+	Operations.contract_call.name,
 	Operations.contract_transfer.name,
 ];
 export const committeeOperations = [

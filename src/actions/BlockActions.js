@@ -290,7 +290,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const producer = await echo.api.getObject(planeBlock.account);
 		value.producer = { id: producer.id, name: producer.name };
 
-		const verifiersIds = planeBlock.cert._signatures.map(({ _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_signer}`);
+		const verifiersIds = planeBlock.cert.map(({ _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
 		const { transactions } = planeBlock;
