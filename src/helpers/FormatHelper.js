@@ -59,7 +59,9 @@ class FormatHelper {
 
 
 	static roundNumber(value, decimals) {
-		return Number(`${Math.ceil(`${value}e${decimals}`)}e-${decimals}`);
+		const number = Number(`${Math.ceil(`${value}e${decimals}`)}e-${decimals}`);
+
+		return !Number.isNaN(number) ? number : 0;
 	}
 
 	static formatBlockSize(value) {
