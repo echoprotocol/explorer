@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
+import { constants } from 'echojs-lib';
+
 export const KEY_CODES = {
 	ENTER_CODE: 13,
 	TAB_CODE: 9,
@@ -60,7 +62,7 @@ export const NATHAN = {
 };
 
 export const DEFAULT_ROWS_COUNT = 50;
-export const DEFAULT_OPERATION_HISTORY_ID = '1.10.0';
+export const DEFAULT_OPERATION_HISTORY_ID = constants.API_CONFIG.STOP_OPERATION_HISTORY_ID;
 
 export const CONTRACT_FIELDS = {
 	NAME: 'name',

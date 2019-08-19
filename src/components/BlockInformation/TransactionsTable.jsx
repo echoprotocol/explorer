@@ -231,7 +231,7 @@ class TransactionsTable extends React.Component {
 
 	renderTables() {
 		const {
-			transactions, objectId, loading, loadMore, isBlockTable,
+			transactions, objectId, loading, hasMore, isBlockTable,
 		} = this.props;
 		const trs = isBlockTable ? transactions.reverse() : transactions;
 
@@ -245,7 +245,7 @@ class TransactionsTable extends React.Component {
 					)}
 				</Media>
 				{
-					loadMore ?
+					hasMore ?
 						<LoadMoreBtn
 							title="Load more transactions"
 							loading={loading}

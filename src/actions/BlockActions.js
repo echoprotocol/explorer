@@ -3,7 +3,6 @@ import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map } from 'immutable';
 import _ from 'lodash';
-
 import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
@@ -20,18 +19,16 @@ import {
 	ECHO_ASSET,
 	NATHAN,
 } from '../constants/GlobalConstants';
-
-import Operations from '../constants/Operations';
 import {
 	ACCOUNT_OBJECT_PREFIX,
 	CONTRACT_OBJECT_PREFIX,
 } from '../constants/ObjectPrefixesConstants';
-
-
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
+import Operations from '../constants/Operations';
 
 import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
+
 import GlobalActions from './GlobalActions';
 
 import LocalStorageService from '../services/LocalStorageService';
@@ -186,7 +183,7 @@ export const formatOperation = async (
 		return null;
 	}
 
-	if (resId && (type === OPERATIONS_IDS.CREATE_CONTRACT || type === OPERATIONS_IDS.CALL_CONTRACT)) {
+	if (resId && (type === OPERATIONS_IDS.CONTRACT_CREATE || type === OPERATIONS_IDS.CONTRACT_CALL)) {
 
 		const contractResult = await echo.api.getContractResult(resId);
 
@@ -205,7 +202,7 @@ export const formatOperation = async (
 		}
 
 
-		if (type === OPERATIONS_IDS.CALL_CONTRACT && round) {
+		if (type === OPERATIONS_IDS.CONTRACT_CALL && round) {
 			let contractHistory = [];
 
 			try {
@@ -444,6 +441,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
+	const isShowEmptyBlocks = getState().block.get('isShowEmptyBlocks');
 
 	const [...keys] = blocks.keys();
 	let startedBlock = startBlock || Math.max(...keys);
@@ -494,35 +492,41 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		}
 	});
 
+	let noEmptyBlocks = getState().block.get('noEmptyBlocks');
+	noEmptyBlocks = noEmptyBlocks.merge(blocks.filter((block) => block.get('transactions')));
+
+	if (!isShowEmptyBlocks && noEmptyBlocks.size < PAGE_BLOCKS_COUNT) {
+		dispatch(BlockReducer.actions.set({ field: 'hasMore', value: false }));
+	}
+
+	if (noEmptyBlocks.size >= PAGE_BLOCKS_COUNT) {
+		dispatch(BlockReducer.actions.set({ field: 'hasMore', value: true }));
+	}
+
+	dispatch(BlockReducer.actions.set({ field: 'noEmptyBlocks', value: noEmptyBlocks }));
+
 	const lastBlockStorage = blocksResult[blocksResult.length - 1];
 
 	if (lastBlockStorage) {
-
-		dispatch(BlockReducer.actions.set({
-			field: 'startTimestamp',
-			value: 0,
-		}));
+		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: 0 }));
 	}
 
 	const blocksToRemove = blocks.size - maxBlocks;
 
 	if (Math.sign(blocksToRemove) > 0) {
-		blocks = blocks.withMutations((mapBlocks) => {
-			for (let i = 0; i < blocksToRemove; i += 1) {
-				const [...blocksKeys] = mapBlocks.keys();
-				const minBlockNum = Math.min(...blocksKeys);
+		let blocksKeys = blocks.keySeq();
+		blocksKeys = blocksKeys.slice(0, blocksToRemove);
+		blocks = blocks.deleteAll(blocksKeys);
 
-				mapBlocks.delete(minBlockNum);
-
-				keys.splice(keys.indexOf(minBlockNum), 1);
-			}
-		});
+		if (noEmptyBlocks.size > maxBlocks) {
+			blocksKeys = noEmptyBlocks.keySeq();
+			blocksKeys = blocksKeys.slice(0, Math.sign(blocksToRemove));
+			noEmptyBlocks = noEmptyBlocks.deleteAll(blocksKeys);
+			dispatch(BlockReducer.actions.set({ field: 'noEmptyBlocks', value: noEmptyBlocks }));
+		}
 	}
 
-	dispatch(BlockReducer.actions.set({
-		field: 'blocks',
-		value: blocks,
-	}));
+	dispatch(BlockReducer.actions.set({ field: 'blocks', value: blocks }));
 };
 
 /**
@@ -570,10 +574,8 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 
 		const maxBlocks = getState().block.get('blocksCount');
 
-		dispatch(BlockReducer.actions.set({
-			field: 'blocksCount',
-			value: maxBlocks + PAGE_ADD_BLOCKS_COUNT,
-		}));
+		dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
+		dispatch(BlockReducer.actions.set({ field: 'blocksCount', value: maxBlocks + PAGE_ADD_BLOCKS_COUNT }));
 
 		const [...keys] = getState().block.get('blocks').keys();
 
@@ -590,6 +592,8 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 
 	} catch (_) {
 		return false;
+	} finally {
+		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 	}
 
 };

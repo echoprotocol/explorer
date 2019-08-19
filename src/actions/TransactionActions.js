@@ -221,8 +221,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					options = options.reduce((obj, op) => ({ ...obj, ...op }), {});
 
 					if ([
-						OPERATIONS_IDS.CREATE_CONTRACT,
-						OPERATIONS_IDS.CALL_CONTRACT,
+						OPERATIONS_IDS.CONTRACT_CREATE,
+						OPERATIONS_IDS.CONTRACT_CALL,
 						OPERATIONS_IDS.CONTRACT_TRANSFER,
 					].includes(type)) {
 						if (internal) {
@@ -262,7 +262,7 @@ class TransactionActionsClass extends BaseActionsClass {
 
 					let result = null;
 					switch (type) {
-						case OPERATIONS_IDS.CREATE_CONTRACT:
+						case OPERATIONS_IDS.CONTRACT_CREATE:
 							result = options['new contract id'].value;
 							break;
 						case OPERATIONS_IDS.ACCOUNT_CREATE:

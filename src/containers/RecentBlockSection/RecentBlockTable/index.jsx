@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
-import { fromJS } from 'immutable';
 import classnames from 'classnames';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
@@ -19,7 +18,7 @@ import URLHelper from '../../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import BlockReducer from '../../../reducers/BlockReducer';
-import { PAGE_BLOCKS_COUNT, TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
+import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
 import {
@@ -44,18 +43,10 @@ class RecentBlockTable extends React.Component {
 	}
 
 	getBlocks() {
-		const { blocks, isShowEmptyBlocks } = this.props;
+		const { blocks } = this.props;
 		const blocksResult = [];
-		let filterBlocks = fromJS(blocks.toJS());
 
-		if (!isShowEmptyBlocks) {
-			filterBlocks = filterBlocks.filter((block) => block.get('transactions'));
-			if (filterBlocks.size < PAGE_BLOCKS_COUNT) {
-				this.props.setValue('hasMore', false);
-			}
-		}
-
-		filterBlocks.mapEntries(([key, value]) => {
+		blocks.mapEntries(([key, value]) => {
 
 			blocksResult.push({
 				round: key,
@@ -83,7 +74,7 @@ class RecentBlockTable extends React.Component {
 
 
 	render() {
-		const { hasMore, isShowEmptyBlocks } = this.props;
+		const { hasMore, isShowEmptyBlocks, loading } = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
 
@@ -147,6 +138,9 @@ class RecentBlockTable extends React.Component {
 												</Link>
 											))
 										}
+										{AreEmptyTransactions && (
+											<p className="title-no-transactions">No transactions in recent blocks</p>
+										)}
 									</div>
 								) : (
 									<div className={classnames('divTable', { 'no-border-bottom': AreEmptyTransactions })}>
@@ -212,7 +206,7 @@ class RecentBlockTable extends React.Component {
 								))
 							}
 						</Media>
-						{hasMore && <LoadMoreBtn />}
+						{loading && <LoadMoreBtn />}
 					</div>
 				</div>
 			</InfiniteScroll>
@@ -222,6 +216,7 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
+	loading: PropTypes.bool.isRequired,
 	isShowEmptyBlocks: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
@@ -230,13 +225,13 @@ RecentBlockTable.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	toggleEmptyBlocks: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
-	setValue: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
-		blocks: state.block.get('blocks'),
+		blocks: state.block.get('isShowEmptyBlocks') ? state.block.get('blocks') : state.block.get('noEmptyBlocks'),
 		hasMore: state.block.get('hasMore'),
+		loading: state.block.get('loading'),
 		isShowEmptyBlocks: state.block.get('isShowEmptyBlocks'),
 	}),
 	(dispatch) => ({
