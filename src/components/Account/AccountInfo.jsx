@@ -39,6 +39,11 @@ class AccountInfo extends React.Component {
 							<div className="val"><span className="txt">None</span></div>
 					}
 				</div>
+				<div className="line">
+					<Link to="" className="raw-link blue">
+						Raw account object
+					</Link>
+				</div>
 			</div>
 		);
 	}

@@ -38,7 +38,6 @@
     .table-container {
         width: 1015px;
         padding-right: 70px;
-
         padding-top: 37px;
         min-height: calc(100vh - 275px);
         padding-left: 0;
@@ -46,7 +45,9 @@
         position: relative;
         padding-bottom: 37px;
         flex-shrink: 0;
-
+		@include min-vw(1279) {
+			padding-left: 30px;
+		}
         .checkbox {
           margin-bottom: 20px;
           padding-left: 30px;
@@ -64,10 +65,13 @@
                 }
             }
         }
-
+		&.contract-page {
+			@include res-1280 {
+				padding-left: 0px;
+			}
+		}
         @include res-1280 {
             padding-right: 30px;
-            padding-left: 0px;
             width: 830px;
             flex-shrink: 0;
         }

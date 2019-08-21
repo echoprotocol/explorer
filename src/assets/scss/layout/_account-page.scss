@@ -28,7 +28,6 @@
 
                 @include res-768 {
                     margin-bottom: 29px;
-                    padding-left: 19px;
                 }
             }
 
@@ -101,7 +100,12 @@
                                 flex-shrink: 0;
                             }
                         }
-                    }
+					}
+					.raw-link {
+						@include InterUI_Regular;
+						letter-spacing: 0.3px;
+						font-size: 12px;
+					}
                 }
 
                 .right-container {
@@ -616,12 +620,9 @@
         }
 
         .account-page-t-block {
+
             .title {
                 padding-left: 0;
-
-                @include min-vw(500) {
-                    padding-left: 19px;
-                }
             }
 
             .help-container {
