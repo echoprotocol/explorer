@@ -42,12 +42,17 @@ class RecentBlockTable extends React.Component {
 		this.props.history.push(`/blocks/${blockNumber}`);
 	}
 
+	onLink(e, path) {
+		e.preventDefault();
+		this.props.history.push(path);
+	}
+
 	getBlocks() {
 		const { blocks } = this.props;
 		const blocksResult = [];
 
-		blocks.mapEntries(([key, value]) => {
 
+		blocks.mapEntries(([key, value]) => {
 			blocksResult.push({
 				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
@@ -74,6 +79,7 @@ class RecentBlockTable extends React.Component {
 
 
 	render() {
+
 		const { hasMore, isShowEmptyBlocks, loading } = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
@@ -173,22 +179,19 @@ class RecentBlockTable extends React.Component {
 													<React.Fragment key={data.round}>
 														<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow fade-anim">
 															<div className="divTableCell">
-																<Link
-																	to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
-																	className="blue"
-																>
+																<span className="blue">
 																	{data.blockNumber}
-																</Link>
+																</span>
 															</div>
 															<div className="divTableCell">{data.time}</div>
 															<div className="divTableCell">
 																<div className="inner-container">
-																	<Link
-																		to={URLHelper.createAccountUrlByName(data.producer)}
+																	<button
 																		className="blue"
+																		onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
 																	>
 																		{data.producer}
-																	</Link>
+																	</button>
 																</div>
 															</div>
 															<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>

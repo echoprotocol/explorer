@@ -161,6 +161,7 @@ class TransactionsTable extends React.Component {
 	renderTableOperation(data, i, j) {
 
 		const key = data.id || `${i}-${j}`;
+		const { onLink } = this.props;
 
 		return (
 			<React.Fragment key={key}>
@@ -174,15 +175,24 @@ class TransactionsTable extends React.Component {
 					}
 					<div className="divTableCell">{data.name}</div>
 					<div className="divTableCell">
-						<Link to={URLHelper.createAccountUrlByName(data.from.name)} className="inner-container">
-							<div className="blue">{data.from.name || data.from.id}</div>
-						</Link>
+						<div className="inner-container">
+							<button
+								className="blue"
+								onClick={(e) => { onLink(e, URLHelper.createAccountUrlByName(data.from.name)); }}
+							>
+								{data.from.name || data.from.id}
+							</button>
+						</div>
 					</div>
 					<div className="divTableCell transaction-to">
-
-						<Link to={URLHelper.createUrlById(data.subject.name || data.subject.id)} className="inner-container">
-							<div className="blue">{data.subject.name || data.subject.id}</div>
-						</Link>
+						<div className="inner-container">
+							<button
+								className="blue"
+								onClick={(e) => { onLink(e, URLHelper.createUrlById(data.subject.name || data.subject.id)); }}
+							>
+								{data.subject.name || data.subject.id}
+							</button>
+						</div>
 					</div>
 					<div className="divTableCell">
 						{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)}
@@ -279,6 +289,7 @@ TransactionsTable.propTypes = {
 	blockTime: PropTypes.string,
 	loading: PropTypes.bool,
 	loadMore: PropTypes.func,
+	onLink: PropTypes.func,
 };
 
 TransactionsTable.defaultProps = {
@@ -287,6 +298,7 @@ TransactionsTable.defaultProps = {
 	loading: false,
 	blockTime: '',
 	loadMore: null,
+	onLink: null,
 	objectId: null,
 	transactions: [],
 };

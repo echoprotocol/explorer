@@ -43,9 +43,15 @@ class Account extends React.Component {
 		this.props.clearAccountInfo();
 	}
 
+
 	onLoadMoreHistory() {
-		const { account, history } = this.props;
-		this.props.loadAccountHistory(account.get('id'), history.last()[0].id.split('.')[2]);
+		const { account, accountHistory } = this.props;
+		this.props.loadAccountHistory(account.get('id'), accountHistory.last()[0].id.split('.')[2]);
+	}
+
+	onLink(e, path) {
+		e.preventDefault();
+		this.props.history.push(path);
 	}
 
 	renderLoader(loading) {
@@ -55,7 +61,7 @@ class Account extends React.Component {
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
-			account, balances, history,
+			account, balances, accountHistory,
 		} = this.props;
 
 		return (
@@ -83,11 +89,12 @@ class Account extends React.Component {
 						<React.Fragment>
 							<h2>Transactions</h2>
 							{
-								history.size ?
+								accountHistory.size ?
 									<TransactionsTable
-										transactions={history}
+										transactions={accountHistory}
 										loading={loadingMoreHistory}
-										loadMore={history.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+										onLink={(e, path) => this.onLink(e, path)}
+										loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 										hasMore={!isFullHistory}
 									/> : null
 							}
@@ -106,6 +113,7 @@ Account.propTypes = {
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	history: PropTypes.object,
+	accountHistory: PropTypes.object,
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
@@ -122,6 +130,7 @@ Account.defaultProps = {
 	account: null,
 	balances: null,
 	history: null,
+	accountHistory: null,
 };
 
 export default Account;
