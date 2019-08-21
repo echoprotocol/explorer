@@ -40,6 +40,10 @@ class VerifyContract extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.props.clear();
+	}
+
 	async onChangeCompiler(e) {
 		if (!e.target.textContent) {
 			return;
@@ -335,6 +339,7 @@ VerifyContract.propTypes = {
 	verified: PropTypes.bool.isRequired,
 	setValue: PropTypes.func.isRequired,
 	setInFormValue: PropTypes.func.isRequired,
+	clear: PropTypes.func.isRequired,
 	contractCodeCompile: PropTypes.func.isRequired,
 	contractCompilerInit: PropTypes.func.isRequired,
 	changeContractCompiler: PropTypes.func.isRequired,

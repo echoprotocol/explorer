@@ -18,6 +18,7 @@ export default withRouter(connect(
 	(dispatch) => ({
 		setValue: (field, value) => dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, field, value)),
 		setInFormValue: (fields, value) => dispatch(FormActions.setInFormValue(FORM_CONTRACT_VERIFY, fields, value)),
+		clear: () => dispatch(FormActions.clearForm(FORM_CONTRACT_VERIFY)),
 		contractCodeCompile: (code) => dispatch(ContractActions.contractCodeCompile(code)),
 		contractCompilerInit: () => dispatch(ContractActions.contractCompilerInit()),
 		changeContractCompiler: (version) => dispatch(ContractActions.changeContractCompiler(version)),
