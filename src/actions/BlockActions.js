@@ -637,4 +637,3 @@ export const toggleEmptyBlocks = (value) => (dispatch) => {
 	dispatch(BlockReducer.actions.set({ field: 'hasMore', value: true }));
 	dispatch(BlockReducer.actions.set({ field: 'isShowEmptyBlocks', value: !value }));
 };
-

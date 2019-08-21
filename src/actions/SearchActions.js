@@ -124,4 +124,3 @@ class SearchActions extends BaseActionsClass {
 }
 
 export default new SearchActions();
-
