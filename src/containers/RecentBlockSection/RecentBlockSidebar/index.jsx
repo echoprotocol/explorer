@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import Media from 'react-media';
 import FormatHelper from '../../../helpers/FormatHelper';
 
 class RecentBlockSidebar extends React.Component {
@@ -61,6 +61,16 @@ class RecentBlockSidebar extends React.Component {
 						</div>
 					</div>
 				</div>
+				<Media query="(max-width: 1279px)">
+					{
+						(matches) => !matches &&
+						<div className="info-container">
+							<div className="version">v0.11.1</div>
+							<div className="copyright">©ECHO DEVELOPMENT LTD, 2019</div>
+						</div>
+					}
+				</Media>
+
 			</div>
 		);
 	}
