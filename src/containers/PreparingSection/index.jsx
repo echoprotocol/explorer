@@ -178,6 +178,10 @@ class PreparingSection extends React.Component {
 
 		const mobileData = this.getMobileData(status, producing, verifyingGC);
 
+		const isVerifyingGC = verifyingGC === DONE_STATUS && status >= rounderSteps[DONE].progress;
+		const isVerifyingBBA = verifyingBBA === DONE_STATUS && status >= rounderSteps[BBA_STARTED].maxProgress;
+		const isProducingBlock = producing === DONE_STATUS && status >= rounderSteps[GC_STARTED].progress;
+
 		return (
 			<React.Fragment>
 				<div className="wrap">
@@ -209,7 +213,7 @@ class PreparingSection extends React.Component {
 										<SimplePreparingBlock
 											title="Producing block"
 											description={`Producers: ${readyProducers}/${producers}`}
-											status={producing === DONE_STATUS && status >= rounderSteps[GC_STARTED].progress ? producing : PROGRESS_STATUS}
+											status={isProducingBlock ? producing : PROGRESS_STATUS}
 											tooltip
 											tip={PRODUCING_TIP}
 										/>
@@ -217,10 +221,8 @@ class PreparingSection extends React.Component {
 											className="sm-border"
 											title="Verifying block: GC"
 											smallTitle="Verifying: GC"
-											description="Verifying"
-											stat
-											us={rounderSteps[stepProgress].verifying}
-											status={verifyingGC === DONE_STATUS && status >= rounderSteps[DONE].progress ? verifyingGC : PROGRESS_STATUS}
+											description={isVerifyingGC ? 'Verifying' : 'Pending'}
+											status={isVerifyingGC ? verifyingGC : PROGRESS_STATUS}
 											tooltip
 											tip={GC_TIP}
 										/>
@@ -228,8 +230,8 @@ class PreparingSection extends React.Component {
 											tip={BBA_TIP}
 											title="Verifying block: BBA"
 											smallTitle="Verifying: BBA"
-											description="Pending"
-											status={verifyingBBA === DONE_STATUS && status >= rounderSteps[BBA_STARTED].maxProgress ? verifyingBBA : PROGRESS_STATUS}
+											description={isVerifyingBBA ? 'Verifying' : 'Pending'}
+											status={isVerifyingBBA ? verifyingBBA : PROGRESS_STATUS}
 											tooltip
 										/>
 									</React.Fragment>
