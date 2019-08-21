@@ -10,7 +10,7 @@ import { DebounceInput } from 'react-debounce-input';
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT } from '../../constants/SearchConstants';
 import { NOT_FOUND_PATH } from '../../constants/RouterConstants';
-
+import loadingIcon from '../../assets/images/icons/loader.png';
 
 class SearchField extends React.Component {
 
@@ -121,6 +121,24 @@ class SearchField extends React.Component {
 		this.props.getHints();
 	}
 
+	renderIcon() {
+		const { goToBlock, loading } = this.props;
+
+		if (!goToBlock) {
+			return (
+				loading ?
+					<span className="search-loading" /> :
+					<button tabIndex="0" className="close-icn" onClick={() => this.cleareInput()} />
+			);
+		}
+
+		return (
+			loading ?
+				<img src={loadingIcon} alt="" /> :
+				<button tabIndex="0" className="g-t-btn" onClick={(e) => this.onClick(e)} />
+
+		);
+	}
 	render() {
 
 		const {
@@ -145,6 +163,17 @@ class SearchField extends React.Component {
 					</Link>
 				),
 			}));
+		options.push({
+			key: options.length + 1,
+			selected: false,
+			value: '',
+			content: (
+				<div className="element no-results">
+					<div className="warn" />
+					<div className="text">There is no block with such number</div>
+				</div>
+			),
+		});
 
 		return (
 			<div
@@ -182,13 +211,8 @@ class SearchField extends React.Component {
 							debounceTimeout={DEBOUNCE_TIMEOUT}
 							inputRef={(node) => { this.inputEl = node; }}
 						/>
-						{
-							(!goToBlock) ? (
-								<button tabIndex="0" className="close-icn" onClick={() => this.cleareInput()} />
-							) : (
-								<button tabIndex="0" className="g-t-btn" onClick={(e) => this.onClick(e)} />
-							)
-						}
+						{ this.renderIcon() }
+
 					</div>
 				</div>
 
@@ -213,6 +237,7 @@ class SearchField extends React.Component {
 
 SearchField.propTypes = {
 	small: PropTypes.bool,
+	loading: PropTypes.bool,
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
@@ -224,6 +249,7 @@ SearchField.propTypes = {
 
 SearchField.defaultProps = {
 	small: false,
+	loading: true,
 	placeholder: '',
 	white: false,
 	withHelp: false,

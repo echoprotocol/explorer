@@ -87,7 +87,13 @@ class RecentBlockTable extends React.Component {
 			<InfiniteScroll loadMore={() => this.props.loadBlocks()} hasMore={hasMore}>
 				<div className="table-container recent-block-table">
 					<h2>Recent blocks
-						<SmallSearchField onSearch={(blockNumber) => this.onSearch(blockNumber)} goToBlock white placeholder="Go to block" />
+						<SmallSearchField
+							withHelp
+							onSearch={(blockNumber) => this.onSearch(blockNumber)}
+							goToBlock
+							white
+							placeholder="Go to block"
+						/>
 					</h2>
 					<FilterBlock
 						checked={!isShowEmptyBlocks}

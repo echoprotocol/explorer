@@ -77,7 +77,21 @@
                 }
             }
         }
+		.search-block-result {
 
+			&.no-results-wrap {
+				width: auto;
+				right: 0;
+				left: initial;
+			}
+			.element {
+				&.no-results {
+					height: 30px;
+					padding: 0;
+					white-space: nowrap;
+				}
+			}
+		}
         &.is-active-small {
             .input-container {
                 border-color:rgba(49, 53, 79, 0.4);
@@ -89,7 +103,8 @@
                 .icon {
                     opacity: 1;
                 }
-            }
+			}
+
         }
     }
 
@@ -210,6 +225,9 @@
             }
 
             .input-field {
+				.search-loading {
+					display: block;
+				}
                 .close-icn {
                     opacity: 1;
                     visibility: visible;
@@ -237,12 +255,35 @@
             }
         }
     }
-
+	.search-loading {
+		position: relative;
+		width: 40px;
+		height: 100%;
+		&:before {
+			animation: spin 1s infinite;
+			content: "";
+			position: absolute;
+			background-image: url(../images/icons/loader.png);
+			width: 15px;
+			height: 15px;
+			background-size: 15px;
+			background-repeat: no-repeat;
+			background-position: center;
+			margin: auto;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+		}
+	}
     .input-field {
         width: 100%;
         height: 100%;
         display: flex;
 
+		.search-loading {
+			display: none;
+		}
         .close-icn {
             cursor: pointer;
 
@@ -339,30 +380,35 @@
         }
 
         .element {
-            cursor: pointer;
+			@include transition;
+			@include res-1280 {
+				height: 46px;
+			}
+			@include res-768 {
+				height: 41px;
+			}
             width: 100%;
             height: 50px;
             display: flex;
             align-items: center;
             background-color: #f3f2f5;
-            @include transition;
+			
+			&:not(.no-results) {
+				cursor: pointer;
+			}
 
-            @include res-1280 {
-                height: 46px;
-            }
+			&:not(.no-results) {
+				&:hover {
+					background-color: #e8e8ec;
+				}
+			}
 
-            @include res-768 {
-                height: 41px;
-            }
-
-            &:hover {
-                background-color: #e8e8ec;
-
+			&:hover {
                 .section-name {
                     color: #18142a;
                 }
 
-                .value {
+				.value {
                     .select {
                         background-color: #18142a;
                     }
@@ -393,6 +439,22 @@
                     @include transition;
                 }
             }
-        }
+		}
+		
+		.no-results {
+			@include InterUI_Regular;
+			font-size: 12px;
+			letter-spacing: 0.3px;
+			color: #18142a;
+			padding: 0 15px;
+			background-color: #F3F2F5;
+			.warn {
+				width: 9px;
+				height: 9px;
+				min-width: 9px;
+				background-image: url(../images/icons/warn.svg);
+				margin-right: 7px;
+			}
+		}
     }
 }

@@ -153,8 +153,8 @@ class SearchField extends React.Component {
 				{
 					(withHelp) && (
 						(isChange) && (
-							<div className="search-block-result">
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
+							<div className="search-block-result no-results-wrap">
+								{/* <a href="" className="element" onClick={(e) => e.preventDefault()}>
 									<div className="section-name">Block</div>
 									<div className="value">1.16.<span className="select">5</span></div>
 								</a>
@@ -165,7 +165,11 @@ class SearchField extends React.Component {
 								<a href="" className="element" onClick={(e) => e.preventDefault()}>
 									<div className="section-name">Transaction</div>
 									<div className="value"><span className="select">15</span>289378929384</div>
-								</a>
+								</a> */}
+								<div className="element no-results">
+									<div className="warn" />
+									<div className="text">There is no block with such number</div>
+								</div>
 							</div>)
 					)
 				}

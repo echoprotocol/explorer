@@ -11,10 +11,9 @@ import Toast from '../components/Toast';
 import Header from './Header';
 import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
 
-import ErrorScreen from '../components/ErrorScreen';
-
 import InternetPopup from '../components/InternetPopup';
-import NotFound from '../containers/NotFound';
+import NotFoundScreen from '../containers/Error/NotFoundScreen';
+import ErrorScreen from '../components/Error/ErrorScreen';
 import Modal from '../containers/Modals';
 import Loader from '../components/Loader';
 
@@ -85,7 +84,7 @@ class App extends React.Component {
 
 	renderNotFound() {
 		return (
-			<NotFound />
+			<NotFoundScreen />
 		);
 	}
 

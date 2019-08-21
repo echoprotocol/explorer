@@ -7,7 +7,7 @@ import Objects from './containers/Objects';
 import Account from './containers/Account';
 import Asset from './containers/Asset';
 import Contract from './containers/Contract';
-import NotFound from './containers/NotFound';
+import NotFound from './containers/Error/NotFoundScreen';
 import UploadABI from './containers/UploadABI';
 import ManageContract from './containers/ManageContract';
 import VerifyContract from './containers/VerifyContract';
