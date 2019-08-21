@@ -87,11 +87,18 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<BreadCrumbs
-					breadcrumbs={breadcrumbs}
-					title={`Block ${blockNumber}`}
-					returnFunction={() => this.returnFunction()}
-				/>
+				<div className="block-navigation-wrap">
+					<BreadCrumbs
+						breadcrumbs={breadcrumbs}
+						title={`Block ${blockNumber}`}
+						returnFunction={() => this.returnFunction()}
+					/>
+					<div className="block-navigation">
+						<button className="prev active">Older <span>block</span></button>
+						<button disabled className="next">Next <span>block</span></button>
+					</div>
+				</div>
+
 				<div className="block-description">
 					<div className="container time">
 						<div className="title">Date, Time</div>

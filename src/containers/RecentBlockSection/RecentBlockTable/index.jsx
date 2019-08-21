@@ -51,7 +51,6 @@ class RecentBlockTable extends React.Component {
 		const { blocks } = this.props;
 		const blocksResult = [];
 
-
 		blocks.mapEntries(([key, value]) => {
 			blocksResult.push({
 				round: key,
