@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import classnames from 'classnames';
 
 import TransactionsTable from './TransactionsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
@@ -42,6 +43,13 @@ class BlockInformation extends React.Component {
 		this.props.clearBlockInfo();
 	}
 
+	onBlockLink(blockNumber, increment, e) {
+		e.preventDefault();
+
+		const round = Number(FormatHelper.removeCommas(blockNumber)) + increment;
+		this.props.history.push(URLHelper.createBlockUrl(round));
+	}
+
 	returnFunction() {
 		if (!this.props.historyLength) {
 			this.props.history.push(INDEX_PATH);
@@ -60,7 +68,7 @@ class BlockInformation extends React.Component {
 		return <Loader />;
 	}
 
-	renderBlockInformation(blockInformation) {
+	renderBlockInformation(blockInformation, latestBlock) {
 
 		const {
 			currentTransactionLength,
@@ -94,8 +102,19 @@ class BlockInformation extends React.Component {
 						returnFunction={() => this.returnFunction()}
 					/>
 					<div className="block-navigation">
-						<button className="prev active">Older <span>block</span></button>
-						<button disabled className="next">Next <span>block</span></button>
+						<button
+							className={classnames('prev', { active: blockNumber > 1 })}
+							onClick={(e) => this.onBlockLink(blockNumber, -1, e)}
+						>
+							Older <span>block</span>
+						</button>
+						<button
+							className={classnames('next', { active: latestBlock !== blockNumber })}
+							disabled={latestBlock === blockNumber}
+							onClick={(e) => this.onBlockLink(blockNumber, 1, e)}
+						>
+							Next <span>block</span>
+						</button>
 					</div>
 				</div>
 
@@ -141,13 +160,13 @@ class BlockInformation extends React.Component {
 	}
 
 	render() {
-		const { blockInformation } = this.props;
+		const { blockInformation, latestBlock } = this.props;
 
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
 				{
 					blockInformation.get('blockNumber') ?
-						this.renderBlockInformation(blockInformation) : this.renderLoader()
+						this.renderBlockInformation(blockInformation, latestBlock) : this.renderLoader()
 				}
 			</div>
 		);
@@ -156,12 +175,13 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
+	historyLength: PropTypes.number,
+	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
+	match: PropTypes.object.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
-	historyLength: PropTypes.number,
-	match: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 

@@ -9,6 +9,7 @@ export default withRouter(connect(
 	(state) => ({
 		blockInformation: state.block.get('blockInformation'),
 		historyLength: state.global.get('historyLength'),
+		latestBlock: state.round.get('latestBlock'),
 	}),
 	(dispatch, props) => ({
 		getBlockInfo: (round = props.match.params.round) => dispatch(getBlockInformation(round)),
