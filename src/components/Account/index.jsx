@@ -75,6 +75,7 @@ class Account extends React.Component {
 									<AccountInfo
 										echo={balances.get(ECHO_ASSET.ID)}
 										name={account.get('name')}
+										id={account.get('id')}
 									/>
 									<AccountBalances
 										balances={balances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}

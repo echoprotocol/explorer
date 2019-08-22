@@ -9,7 +9,7 @@ import URLHelper from '../../helpers/URLHelper';
 class AccountInfo extends React.Component {
 
 	render() {
-		const { name, echo } = this.props;
+		const { id, name, echo } = this.props;
 
 		return (
 			<div className="left-card">
@@ -40,7 +40,7 @@ class AccountInfo extends React.Component {
 					}
 				</div>
 				<div className="line">
-					<Link to="" className="raw-link blue">
+					<Link to={URLHelper.createObjectsUrl(id)} className="raw-link blue">
 						Raw account object
 					</Link>
 				</div>
@@ -53,6 +53,7 @@ class AccountInfo extends React.Component {
 AccountInfo.propTypes = {
 	echo: PropTypes.object,
 	name: PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired,
 };
 
 AccountInfo.defaultProps = {
