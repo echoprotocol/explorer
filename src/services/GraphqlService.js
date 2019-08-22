@@ -26,10 +26,10 @@ const defaultOptions = {
 class Graphql {
 
 	constructor() {
-		const httpLink = new HttpLink({ uri: config.HTTP_LINK });
+		const httpLink = new HttpLink({ uri: config.GRAPHQL_URL.HTTP });
 
 		const wsLink = new WebSocketLink({
-			uri: config.WS_LINK,
+			uri: config.GRAPHQL_URL.WS,
 			options: {
 				reconnect: true,
 				reconnectionAttempts: MAX_RETRIES,

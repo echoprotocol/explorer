@@ -10,8 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {
 	API_URL,
 	LANDING_BRIDGE,
-	HTTP_LINK,
-	WS_LINK,
+	GRAPHQL_URL,
 	SERVER_URL,
 	SOLC_LIST_URL,
 	SOLC_BIN_URL,
@@ -115,7 +114,7 @@ module.exports = {
 					chunks: 'all',
 				},
 			},
-		}
+		},
 	},
 	resolve: {
 		modules: [
@@ -132,8 +131,8 @@ module.exports = {
 			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),
 			__SOLC_BIN_URL__: JSON.stringify(SOLC_BIN_URL),
 			__LANDING_BRIDGE__: JSON.stringify(LANDING_BRIDGE),
-			__HTTP_LINK__: JSON.stringify(HTTP_LINK),
-			__WS_LINK__: JSON.stringify(WS_LINK),
+			__GRAPHQL_URL_HTTP_LINK__: JSON.stringify(GRAPHQL_URL.HTTP),
+			__GRAPHQL_URL_WS_LINK__: JSON.stringify(GRAPHQL_URL.WS),
 		}),
 		HTMLWebpackPluginConfig,
 		extractSass,

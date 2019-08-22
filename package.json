@@ -1,7 +1,11 @@
 {
-	"name": "echo-explorer",
-	"description": "Echo Explorer",
+	"name": "explorer",
+	"author": "PixelPlex, Inc. <info@pixelplex.by>",
+	"description": "Explorer for Echo platform",
+	"homepage": "https://github.com/echoprotocol/explorer",
 	"version": "0.11.1",
+	"license": "MIT",
+	"main": "server.js",
 	"scripts": {
 		"start": "cross-env NODE_ENV=local webpack-dev-server --mode development --progress --colors --history-api-fallback --hot --inline",
 		"build": "webpack --progress --display-error-details --colors --mode production ",
@@ -11,15 +15,6 @@
 		"lint": "$(npm bin)/eslint 'src/**/*.jsx' 'src/**/*.js'",
 		"lint-win": "cross-env eslint 'src/**/*.jsx' 'src/**/*.js' --fix"
 	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/echoprotocol/explorer.git"
-	},
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/echoprotocol/explorer/issues"
-	},
-	"author": "PixelPlex",
 	"dependencies": {
 		"@babel/runtime": "^7.3.4",
 		"apollo-cache-inmemory": "^1.5.1",
@@ -118,5 +113,12 @@
 		"webpack-cli": "^3.2.3",
 		"webpack-dev-middleware": "^3.5.1",
 		"webpack-dev-server": "^3.1.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/echoprotocol/explorer.git"
+	},
+	"bugs": {
+		"url": "https://github.com/echoprotocol/explorer/issues"
 	}
 }

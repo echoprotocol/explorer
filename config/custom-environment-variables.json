@@ -1,7 +1,9 @@
 {
   "API_URL": "API_URL",
   "SERVER_URL": "SERVER_URL",
-  "HTTP_LINK": "HTTP_LINK",
-  "WS_LINK": "WS_LINK",
+  "GRAPHQL_URL": {
+    "HTTP": "HTTP_LINK",
+    "WS": "WS_LINK"
+  },
   "LANDING_BRIDGE": "LANDING_BRIDGE"
 }
