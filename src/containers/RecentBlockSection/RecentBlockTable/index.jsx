@@ -78,6 +78,7 @@ class RecentBlockTable extends React.Component {
 
 
 	render() {
+
 		const { hasMore, isShowEmptyBlocks, loading } = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;

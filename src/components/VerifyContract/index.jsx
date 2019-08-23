@@ -1,7 +1,8 @@
 import React from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
+import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Select, Input, Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+
 import BackwardIcon from '../BackwardIcon';
 import verifyIcon from '../../assets/images/icons/verify-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
@@ -16,6 +17,7 @@ class VerifyContract extends React.Component {
 		super(props);
 		this.state = {
 			loader: false,
+			timeout: null,
 		};
 
 		this.backwards = React.createRef();
@@ -29,6 +31,15 @@ class VerifyContract extends React.Component {
 		if (verified) {
 			this.props.history.push(URLHelper.createContractUrl(id));
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { form } = this.props;
+		const { form: nextForm } = nextProps;
+		const { timeout, loader } = this.state;
+		const { timeout: nextTimeout, loader: nextLoader } = nextState;
+
+		return !(form.get('code') !== nextForm.get('code') || timeout !== nextTimeout || (loader === nextLoader && nextLoader));
 	}
 
 	componentDidUpdate(prevProps) {
@@ -66,15 +77,31 @@ class VerifyContract extends React.Component {
 		this.props.setInFormValue(['contractInputs', name], e.target.value);
 	}
 
-	onCodeChange(code) {
-		this.setState({ loader: true });
+	onContractCodeCompile(code, name) {
+		const { form } = this.props;
+		if (code === form.get('code')) {
+			return;
+		}
 		this.props.setValue('code', code);
-	}
+		if (code) {
+			setTimeout(() => {
+				this.setState({ loader: true });
+			}, 0);
+		}
 
-	async onContractCodeCompile(code, name) {
-		this.setState({ loader: true });
-		await this.props.contractCodeCompile(code, name);
-		this.setState({ loader: false });
+		const { timeout } = this.state;
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+
+		this.setState({
+			timeout: setTimeout(async () => {
+				await this.props.contractCodeCompile(code, name);
+				setTimeout(() => {
+					this.setState({ loader: false });
+				}, 0);
+			}, 600),
+		});
 	}
 
 	onApprove(id) {
@@ -110,11 +137,15 @@ class VerifyContract extends React.Component {
 	getContractsOptions() {
 		const { contracts } = this.props;
 
-		return contracts.map((properties, name) => ({
-			key: name,
-			value: name,
-			text: name,
-		})).toArray();
+		const contractsToShow = [];
+		contracts.forEach((properties, name) => {
+			contractsToShow.push({
+				key: name,
+				value: name,
+				text: name,
+			});
+		});
+		return contractsToShow;
 	}
 
 	goBack(e, id) {
@@ -207,10 +238,7 @@ class VerifyContract extends React.Component {
 							value={form.get('code')}
 							options={CODEMIRROR_OPTIONS}
 							onKeyDown={(editor, e) => this.onKeyDown(e)}
-							onBeforeChange={(editor, data, value) => {
-								this.onCodeChange(value);
-							}}
-							onChange={() => this.onContractCodeCompile()}
+							onChange={(editor, metadata, value) => this.onContractCodeCompile(value)}
 						/>
 					</div>
 
