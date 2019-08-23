@@ -74,8 +74,9 @@ class ManageContract extends React.Component {
 
 	render() {
 		const {
-			match: { params: { id } }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm,
+			match: { params: { id } }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm, iconBase64,
 		} = this.props;
+		const defaultIcon = iconBase64.value || contractIconDefault;
 
 		return (
 			<div className="table-container inner-information-container inner-page with-d-table">
@@ -154,11 +155,11 @@ class ManageContract extends React.Component {
 													<span className="image-preview">
 														{typeof icon.value === 'string' && icon.value !== '' && !icon.error ?
 															<ContractIcon icon={contractIcon} />
-															: <img src={contractIconDefault} alt="" />}
+															: <img src={defaultIcon} alt="" />}
 													</span>
 													<div className="info">
 														<div className="action-description">Drop file here or click to add file</div>
-														<div className="file-description">{`.jpg, .png formats. ${MAX_KB_CONTRACT_ICON} Kb max`}</div>
+														<div className="file-description">{`.JPG, JPEG or .PNG formats. ${MAX_KB_CONTRACT_ICON} Kb max`}</div>
 													</div>
 												</div>
 											)}
@@ -191,6 +192,7 @@ class ManageContract extends React.Component {
 
 ManageContract.propTypes = {
 	match: PropTypes.object.isRequired,
+	iconBase64: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	owner: PropTypes.object,
 	validateContract: PropTypes.func.isRequired,

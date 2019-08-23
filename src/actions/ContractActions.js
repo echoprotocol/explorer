@@ -346,6 +346,10 @@ class ContractActions extends BaseActionsClass {
 					break;
 				case CONTRACT_FIELDS.ICON:
 					error = validateContractIcon(newValue);
+					if (error) {
+						dispatch(FormActions.setFormValue(FORM_MANAGE_CONTRACT, 'icon', ''));
+						dispatch(FormActions.setFormValue(FORM_MANAGE_CONTRACT, 'iconBase64', ''));
+					}
 					break;
 				default:
 			}

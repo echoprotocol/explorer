@@ -136,13 +136,13 @@ export const validateContractDescription = (description) => {
 
 export const validateContractIcon = (file) => {
 	if (!file) {
-		return 'Choose file.';
+		return 'Choose JPG, JPEG or PNG file.';
 	}
 
 	const { size, type } = file;
 
 	if (!type.match(/(jpg|jpeg|png)/)) {
-		return 'File should be jpg or png.';
+		return 'File should be JPG, JPEG or PNG.';
 	}
 
 	if (size > KILO_BYTE * MAX_KB_CONTRACT_ICON) {
