@@ -105,6 +105,11 @@ class ValidateHelper {
 
 export default ValidateHelper;
 
+/**
+ * s
+ * @param name
+ * @returns {string|null}
+ */
 export const validateContractName = (name) => {
 	if (!name) {
 		return 'Contract name should not be empty';
@@ -125,7 +130,11 @@ export const validateContractName = (name) => {
 	return null;
 };
 
-
+/**
+ *
+ * @param description
+ * @returns {string|null}
+ */
 export const validateContractDescription = (description) => {
 	if (description.length > MAX_LENGTH_CONTRACT_DESCRIPTION) {
 		return 'Description must be less than 256 symbol.';
@@ -134,6 +143,11 @@ export const validateContractDescription = (description) => {
 	return null;
 };
 
+/**
+ *
+ * @param file
+ * @returns {string|null}
+ */
 export const validateContractIcon = (file) => {
 	if (!file) {
 		return 'Choose JPG, JPEG or PNG file.';
@@ -152,3 +166,14 @@ export const validateContractIcon = (file) => {
 	return null;
 };
 
+/**
+ *
+ * @param version
+ * @param minAccessVersion
+ * @returns {boolean}
+ */
+export const checkAccessVersion = (version, minAccessVersion) => {
+	const [major, minor, patch] = [...version.split('.')].map((part) => parseInt(part, 10));
+	const [minMajor, minMinor, minPatch] = [...minAccessVersion.split('.')].map((part) => parseInt(part, 10));
+	return !(minMajor > major || minMinor > minor || minPatch > patch);
+};

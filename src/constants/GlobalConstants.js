@@ -80,3 +80,4 @@ export const MAX_KB_CONTRACT_ICON = 200;
 export const MAX_RETRIES = 999999999;
 
 export const MAX_WIDTH_SCREEN = 768;
+export const MIN_ACCESS_VERSION_BUILD = '0.4.0';

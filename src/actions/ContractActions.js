@@ -7,6 +7,7 @@ import {
 	CONTRACT_FIELDS,
 	DEFAULT_OPERATION_HISTORY_ID,
 	DEFAULT_ROWS_COUNT,
+	MIN_ACCESS_VERSION_BUILD,
 } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
@@ -28,7 +29,12 @@ import AccountActions from './AccountActions';
 
 import ContractHelper from '../helpers/ContractHelper';
 import FileLoaderHelper from '../helpers/FileLoaderHelper';
-import ValidateHelper, { validateContractDescription, validateContractIcon, validateContractName } from '../helpers/ValidateHelper';
+import ValidateHelper, {
+	validateContractDescription,
+	validateContractIcon,
+	validateContractName,
+	checkAccessVersion,
+} from '../helpers/ValidateHelper';
 
 import ApiService from '../services/ApiService';
 import { BridgeService } from '../services/BridgeService';
@@ -213,6 +219,7 @@ class ContractActions extends BaseActionsClass {
 	contractCompilerInit() {
 		return async (dispatch) => {
 			const list = await ApiService.getSolcList();
+			list.builds = list.builds.filter(({ version }) => checkAccessVersion(version, MIN_ACCESS_VERSION_BUILD));
 			dispatch(this.setValue('compilersList', list));
 			const solcLatestRelease = list.latestRelease ? list.releases[list.latestRelease] : list.builds[list.builds.length - 1].path;
 			const lastVersion = list.builds.find((b) => b.path === solcLatestRelease);
