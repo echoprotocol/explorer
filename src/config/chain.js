@@ -9,4 +9,5 @@ export default {
 	SERVER_URL: __SERVER_URL__,
 	SOLC_LIST_URL: __SOLC_LIST_URL__,
 	SOLC_BIN_URL: __SOLC_BIN_URL__,
+	APP_VERSION: __APP_VERSION__,
 };

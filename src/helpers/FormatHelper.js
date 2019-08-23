@@ -107,6 +107,14 @@ class FormatHelper {
 		const [date, time] = moment(new Date(timestamp)).format('DD.MM.YYYY HH:mm').split(' ');
 		return { date, time };
 	}
+
+	/**
+	 *
+	 * @returns {string} year
+	 */
+	static getYear(date) {
+		return moment(date).format('YYYY');
+	}
 	/**
 	 *
 	 * @param time

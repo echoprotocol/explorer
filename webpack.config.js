@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const packageJson = require('./package.json');
 
 const {
 	API_URL,
@@ -133,6 +134,7 @@ module.exports = {
 			__LANDING_BRIDGE__: JSON.stringify(LANDING_BRIDGE),
 			__GRAPHQL_URL_HTTP_LINK__: JSON.stringify(GRAPHQL_URL.HTTP),
 			__GRAPHQL_URL_WS_LINK__: JSON.stringify(GRAPHQL_URL.WS),
+			__APP_VERSION__: JSON.stringify(packageJson.version),
 		}),
 		HTMLWebpackPluginConfig,
 		extractSass,

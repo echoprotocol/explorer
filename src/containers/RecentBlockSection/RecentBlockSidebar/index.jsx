@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
 import FormatHelper from '../../../helpers/FormatHelper';
+import { getAppVersion } from '../../../helpers/GlobalHelper';
+
 
 class RecentBlockSidebar extends React.Component {
 
@@ -38,6 +40,7 @@ class RecentBlockSidebar extends React.Component {
 		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
 		const averageOp = FormatHelper.roundNumber(averageTransactions.getIn(['operations', 'value']), 1);
 		const averageTime = FormatHelper.roundNumber(averageTransactions.get('averageTime'), 1);
+		const appVersion = getAppVersion();
 
 		return (
 			<div className="recent-block-sidebar">
@@ -65,8 +68,8 @@ class RecentBlockSidebar extends React.Component {
 					{
 						(matches) => !matches &&
 						<div className="info-container">
-							<div className="version">v0.11.1</div>
-							<div className="copyright">©ECHO DEVELOPMENT LTD, 2019</div>
+							<div className="version">v{appVersion}</div>
+							<div className="copyright">©ECHO DEVELOPMENT LTD, {FormatHelper.getYear(new Date())}</div>
 						</div>
 					}
 				</Media>
