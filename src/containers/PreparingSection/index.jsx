@@ -18,14 +18,13 @@ import {
 	rounderSteps,
 	MIN_PERCENT_PROGRESS_BAR,
 	MAX_PERCENT_PROGRESS_BAR,
-	PROGRESS_BAR_STEP_RANGE,
-	PROGRESS_BAR_END_DELAY,
-	SET_VERIFYING_STATUS_DELAY,
-	PROGRESS_BAR_START_DELAY,
-	AVERAGE_TIME,
 	MS,
 	PROGRESS_STATUS,
 	DONE_STATUS,
+	PROGRESS_BAR_START_DELAY,
+	GC_START_DELAY,
+	INTERVAL_PERIODS,
+	PROGRESS_BAR_END_RATE,
 } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -36,17 +35,20 @@ class PreparingSection extends React.Component {
 		super(props);
 
 		this.state = {
-			progressBar: MIN_PERCENT_PROGRESS_BAR,
 			status: MIN_PERCENT_PROGRESS_BAR,
 			producing: PROGRESS_STATUS,
 			verifyingGC: PROGRESS_STATUS,
 			verifyingBBA: PROGRESS_STATUS,
 			readyProducers: 0,
 		};
+
+		this.roundStartedTimeout = null;
+		this.gcStartedTimeout = null;
+
 		this.progressInterval = null;
 		this.producingTimeout = null;
 		this.verifyingGCTimeout = null;
-		this.pverifyingBBATimeout = null;
+		this.verifyingBBATimeout = null;
 		this.readyProducers = null;
 	}
 
@@ -62,16 +64,28 @@ class PreparingSection extends React.Component {
 			if (
 				(nextProps.stepProgress === ROUND_STARTED)
 			) {
+				this.setVerifyingBBA(DONE_STATUS);
 				this.resetProgressBar();
 				this.startProgressBar(averageBlockTime && averageBlockTime * MS);
 			} else if (
 				(nextProps.stepProgress === GC_STARTED)
 			) {
-				this.setProducingWithDelay(DONE_STATUS);
+				this.gcStartedTimeout = setTimeout(() => {
+					clearTimeout(this.roundStartedTimeout);
+					this.setState({ status: rounderSteps[GC_STARTED].progress });
+					this.setProducing(DONE_STATUS);
+				}, GC_START_DELAY);
 			} else if (
-				(rounderSteps[nextProps.stepProgress].step === rounderSteps[DONE].step)
+				(nextProps.stepProgress === DONE)
 			) {
-				this.setVerifyingGCWithDelay(DONE_STATUS);
+				setTimeout(() => {
+					if (this.state.producing === PROGRESS_STATUS) {
+						return;
+					}
+					this.setVerifyingGC(DONE_STATUS);
+				}, GC_START_DELAY);
+			} else if (nextProps.stepProgress === BBA_STARTED) {
+				this.setState({ status: rounderSteps[BBA_STARTED].progress });
 			}
 		}
 
@@ -81,26 +95,23 @@ class PreparingSection extends React.Component {
 	componentDidUpdate(prevProps) {
 		const { readyProducers } = this.props;
 		if (prevProps.readyProducers !== readyProducers && readyProducers) {
-			this.readyProducers = setTimeout(() => this.updateReadyProducers(readyProducers), SET_VERIFYING_STATUS_DELAY);
-			return;
-		}
-		if (prevProps.readyProducers !== this.props.readyProducers) {
-			this.updateReadyProducers(readyProducers);
+			setTimeout(() => {
+				this.updateReadyProducers(readyProducers);
+			}, GC_START_DELAY);
 		}
 	}
 
 
-	setProducingWithDelay(status, delay = SET_VERIFYING_STATUS_DELAY) {
-		this.producingTimeout = setTimeout(() => this.setState({ producing: status }), delay);
+	setProducing(status) {
+		this.setState({ producing: status });
 	}
 
-	setVerifyingGCWithDelay(status, delay = SET_VERIFYING_STATUS_DELAY) {
-		this.verifyingGCTimeout = setTimeout(() => this.setState({ verifyingGC: status }), delay);
-		this.setVerifyingBBAWithDelay(DONE_STATUS);
+	setVerifyingGC(status) {
+		this.setState({ verifyingGC: status });
 	}
 
-	setVerifyingBBAWithDelay(status, delay = SET_VERIFYING_STATUS_DELAY) {
-		this.verifyingBBATimeout = setTimeout(() => this.setState({ verifyingBBA: status }), delay);
+	setVerifyingBBA(status) {
+		this.setState({ verifyingBBA: status });
 	}
 
 	getMobileData(status, producing, verifyingGC) {
@@ -126,37 +137,41 @@ class PreparingSection extends React.Component {
 		};
 	}
 
-	startProgressBar(averageBlockTime = AVERAGE_TIME) {
-		averageBlockTime -= PROGRESS_BAR_END_DELAY * MS;
-		setTimeout(() => {
-			this.setState(() => ({ progressBar: MAX_PERCENT_PROGRESS_BAR }));
-		}, PROGRESS_BAR_START_DELAY);
-
-		const intervalPeriods = averageBlockTime / (MAX_PERCENT_PROGRESS_BAR / PROGRESS_BAR_STEP_RANGE);
-
+	startProgressBar() {
 		this.progressInterval = setInterval(() => {
 			if (this.state.status < MAX_PERCENT_PROGRESS_BAR) {
-				this.setState({ status: this.state.status += PROGRESS_BAR_STEP_RANGE });
+				if (this.state.producing === PROGRESS_STATUS && this.state.status >= rounderSteps[ROUND_STARTED].maxProgress) {
+					return;
+				}
+				if (this.state.verifyingGC === PROGRESS_STATUS && this.state.status >= rounderSteps[GC_STARTED].maxProgress) {
+					return;
+				}
+				this.setState({ status: this.state.status += 1 });
 			} else {
 				clearInterval(this.progressInterval);
 			}
-		}, intervalPeriods);
+		}, INTERVAL_PERIODS);
 
 	}
 
 	resetProgressBar() {
-		clearInterval(this.progressInterval);
-		clearInterval(this.producingTimeout);
-		clearInterval(this.verifyingGCTimeout);
-		clearInterval(this.verifyingBBATimeout);
-		clearInterval(this.readyProducers);
-		this.setState(() => ({
-			progressBar: MIN_PERCENT_PROGRESS_BAR,
-			status: MIN_PERCENT_PROGRESS_BAR,
-			producing: PROGRESS_STATUS,
-			verifyingGC: PROGRESS_STATUS,
-			verifyingBBA: PROGRESS_STATUS,
-		}));
+
+		clearTimeout(this.gcStartedTimeout);
+
+		clearTimeout(this.producingTimeout);
+		clearTimeout(this.verifyingGCTimeout);
+		clearTimeout(this.verifyingBBATimeout);
+		clearTimeout(this.readyProducers);
+		this.roundStartedTimeout = setTimeout(() => {
+			clearInterval(this.progressInterval);
+			this.setState(() => ({
+				status: MIN_PERCENT_PROGRESS_BAR,
+				producing: PROGRESS_STATUS,
+				verifyingGC: PROGRESS_STATUS,
+				verifyingBBA: PROGRESS_STATUS,
+				readyProducers: 0,
+			}));
+		}, PROGRESS_BAR_START_DELAY);
 	}
 
 	updateReadyProducers(readyProducers) {
@@ -169,7 +184,7 @@ class PreparingSection extends React.Component {
 		} = this.props;
 
 		const {
-			progressBar, producing, verifyingGC, verifyingBBA, status, readyProducers,
+			producing, verifyingGC, verifyingBBA, status, readyProducers,
 		} = this.state;
 
 		if (!stepProgress) {
@@ -240,7 +255,7 @@ class PreparingSection extends React.Component {
 						</Media>
 					</div>
 				</div>
-				<Loader status={progressBar} executeTime={averageBlockTime - PROGRESS_BAR_END_DELAY} />
+				<Loader status={status} executeTime={averageBlockTime / PROGRESS_BAR_END_RATE} />
 			</React.Fragment>
 		);
 	}

@@ -12,6 +12,7 @@ class Loader extends React.Component {
 		}
 
 		return true;
+
 	}
 
 	render() {

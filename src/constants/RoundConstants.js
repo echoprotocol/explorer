@@ -32,7 +32,7 @@ export const rounderSteps = {
 	},
 	[BBA_STARTED]: {
 		step: 3,
-		progress: 70,
+		progress: 98,
 		maxProgress: 99,
 		producing: 'done',
 		verifying: 'done',
@@ -51,13 +51,11 @@ export const rounderSteps = {
 
 export const MIN_PERCENT_PROGRESS_BAR = 0;
 export const MAX_PERCENT_PROGRESS_BAR = 100;
-export const PROGRESS_BAR_STEP_RANGE = 10;
+export const INTERVAL_PERIODS = 300;
 
-
-export const AVERAGE_TIME = 3000;
-export const PROGRESS_BAR_END_DELAY = 0.5;
-export const SET_VERIFYING_STATUS_DELAY = 300;
-export const PROGRESS_BAR_START_DELAY = 100;
+export const PROGRESS_BAR_START_DELAY = 500;
+export const PROGRESS_BAR_END_RATE = 7;
+export const GC_START_DELAY = 800;
 export const MS = 1000;
 
 export const PROGRESS_STATUS = 'progress';
