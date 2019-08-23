@@ -31,6 +31,10 @@ class App extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		if (prevProps.children !== this.props.children && this.props.errorPath) {
+			this.props.resetErrorPath();
+		}
+
 		if (prevProps.title !== this.props.title) {
 			document.title = this.props.title;
 		}
@@ -128,6 +132,7 @@ App.propTypes = {
 	subscribeConnect: PropTypes.bool.isRequired,
 	showInternetConnectionBar: PropTypes.bool.isRequired,
 	isShowModal: PropTypes.bool.isRequired,
+	resetErrorPath: PropTypes.func.isRequired,
 };
 
 export default connect(
@@ -143,6 +148,7 @@ export default connect(
 	}),
 	(dispatch) => ({
 		init: () => dispatch(GlobalActions.init()),
+		resetErrorPath: () => dispatch(GlobalActions.toggleErrorPath(false)),
 		disconnect: () => dispatch(disconnect()),
 	}),
 )(App);
