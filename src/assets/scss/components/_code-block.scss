@@ -1,9 +1,9 @@
 .code-block {
     @include Hack_Regular;
-    border: 1px solid #B0B7BD;
-    border-radius: 2px;
     font-size: 12px;
     line-height: 20px;
+    border: 1px solid #B0B7BD;
+    border-radius: 2px;
 
     &.max-height-none  {
         .CodeMirror-scroll {
@@ -14,9 +14,6 @@
     &.uncontrolled {
         .CodeMirror {
             background-color: #F3F2F5;
-            textarea {
-                display: none;
-            }
         }
         .CodeMirror-gutters {
             background-color: #E5E4E8;

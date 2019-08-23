@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 import copy from 'copy-to-clipboard';
 import { withRouter } from 'react-router';
 import URLHelper from '../../helpers/URLHelper';
@@ -63,10 +63,11 @@ class ContractAbi extends React.Component {
 					<button className="copy-button" onClick={() => copy(abi)}>Copy code</button>
 				</div>
 
-				{/* If code-block readonly add class uncontrolled */}
-				<div className="code-block uncontrolled max-height-none">
+				{/* If code-block readonly add class uncontrolled  */}
+				<div className="code-block uncontrolled">
 					<CodeMirror
 						value={abi}
+						onFocus={(editor) => { editor.refresh(); }}
 						options={CODEMIRROR_OPTIONS}
 					/>
 				</div>
