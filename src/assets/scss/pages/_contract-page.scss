@@ -37,15 +37,15 @@
                 }
             }
             .backwards {
-                margin: 0 0 15px 0;
+				margin: 0 0 15px 0;
+				@include max-vw(999) {
+					padding-left: 0;
+				}
             }
             .account-page-t-block {
                 display: flex;
                 align-items: center;
                 margin: 0;
-                @include max-vw(500) {
-                    margin-left: 20px;
-                }
                 @include max-vw(380) {
                     margin: 10px 0 0;
                 }
@@ -56,8 +56,6 @@
                 }
 
                 .ava {
-                    margin-right: 14px;
-
                     img {
                         width: 32px;
                         height: 32px;
@@ -78,14 +76,28 @@
 
                 display: flex;
                 margin-bottom: 21px;
-                flex-wrap: wrap;
+				flex-wrap: wrap;
+				
+				@include min-vw(400) {
+                    margin-bottom: 33px;
+                }
 
                 .item {
-                    z-index: 1;
-                    &:not(:last-child) {
-                        margin-right: 17px;
+					z-index: 1;
+
+					&:first-child {
+                        margin-right: 22px;
                     }
-                    @include res-320 {
+					&:nth-child(2) {
+                        margin-right: 9px;
+                        .action-button {
+                            img + .content {
+                                margin-left: 5px;
+                            }
+                        }
+                    }
+
+					@include max-vw(412) {
                         &:last-child {
                             margin-top: 12px;
                             .action-button-wrap {
@@ -136,11 +148,15 @@
 .created-info  {
     @include InterUI_Regular;
     font-size: 13px;
-    margin: 14px 0 24px;
+    margin: 6px 0 24px;
     line-height: 30px;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+	align-items: center;
+	
+    @include min-vw(412) {
+        margin: 6px 0 24px;
+    }
 
     .no-wrap {
         display: flex;
@@ -286,7 +302,7 @@
 
 .contract-info-block {
     background-color: #fff;
-    padding: 30px;
+    padding: 29px 30px;
     width: 356px;
     @include res-500 {
         width: 100%;
@@ -296,7 +312,7 @@
         justify-content: space-between;
         align-items: baseline;
         &:not(:last-child) {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
     }
@@ -306,7 +322,7 @@
         text-transform: uppercase;
         color: rgba(#263C4B, .8);
         white-space: nowrap;
-
+		letter-spacing: 2px;
     }
     .underline {
         height: 1px;

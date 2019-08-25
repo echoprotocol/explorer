@@ -8,7 +8,7 @@ class Star extends Component {
 		const { star } = this.props;
 		return (
 			<div className="action-button-wrap">
-				<button className="action-button" onClick={this.props.onClick}>
+				<button className="action-button start" onClick={this.props.onClick}>
 					<img src={starIcon} alt="" />
 					{
 						star ?

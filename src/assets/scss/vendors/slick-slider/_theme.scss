@@ -38,23 +38,25 @@
 
 
 .slick-prev {
-    left: 0;
+	left: 0;
+	@include min-vw(499) {
+        left: -15px;
+    }
+
 }
 
 .slick-next {
-    right: 0;
+	right: 0;
+	@include min-vw(499) {
+        right: -15px;
+    }
+
 }
 
 .slick-next:before {
     content: '';
 }
-// .slick-slider {
-//     &:hover {
-//         .slick-arrow {
-//             opacity: 1;
-//         }
-//     }
-// }
+
 .slick-arrow {
     height: 22px;
     width: 22px;

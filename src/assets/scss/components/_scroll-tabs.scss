@@ -26,7 +26,15 @@
         }
     }
     .slick-slide {
-        height: 28px;
+        height: 26px;
+        &:not(:first-child) {
+            .menu-item {
+                margin-left: -3px;
+                &.active {
+                    margin-left: -4px;
+                }
+            }
+        }
 
         & > div {
             width: 100%;
@@ -44,7 +52,7 @@
                     opacity: 0.7;
                     display: block;
                     position: absolute;
-                    right: 0;
+					right: -1px;
                     top: 0;
                     bottom: 0;
                     margin: auto;
@@ -54,7 +62,7 @@
     }
 
     .menu-item {
-        height: 28px;
+		height: 26px;
         z-index: 1;
         background-color: transparent;
         border-top: 2px solid transparent;
@@ -73,14 +81,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 15px;
+			padding: 0 10px;
             height: 100%;
 
             .menu-item-content {
                 @include InterUI_Regular;
                 border-radius: 3px;
                 background-color: transparent;
-                padding: 3px 5px;
+				padding: 1px 4px 2px;
                 white-space: nowrap;
                 cursor: pointer;
                 font-size: 13px;
@@ -110,7 +118,6 @@
         &.active {
             background-color: #F3F2F5;
             border-top: 2px solid #498FDF;
-            margin-left: -2px;
             a {
                 .menu-item-content {
                     @include InterUI_Bold;

@@ -66,9 +66,9 @@
             }
         }
 		&.contract-page {
-			@include res-1280 {
-				padding-left: 0px;
-			}
+			// @include res-1280 {
+			// 	padding-left: 0px;
+			// }
 		}
         @include res-1280 {
             padding-right: 30px;
@@ -463,7 +463,7 @@
         }
 
 
-        @include max-vw(500) {
+        @include max-vw(499) {
             padding: 12px 30px 25px;
         }
 

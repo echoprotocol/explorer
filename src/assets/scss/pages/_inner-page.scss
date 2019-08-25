@@ -65,6 +65,9 @@
             padding: 17px 33px;
             border: 1px solid #E2E3E7;
             margin: 15px 0 32px;
+			.no-wrap {
+                white-space: nowrap;
+            }
 
             div {
                 display: inline;

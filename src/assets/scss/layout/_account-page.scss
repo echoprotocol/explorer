@@ -614,15 +614,22 @@
 		}
     }
     &.contract-page {
-        @include max-vw(500) {
-            padding-left: 30px;
-            padding-right: 30px;
+		@include max-vw(499) {
+            padding-left: 15px;
+            padding-right: 15px;
         }
+
 
         .account-page-t-block {
 
             .title {
-                padding-left: 0;
+				padding-left: 0;
+				@include min-vw(500) {
+                    line-height: 28px;
+                    padding-left: 11px;
+                    position: relative;
+                }
+
             }
 
             .help-container {
