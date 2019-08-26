@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Media from 'react-media';
 import ContractDescription from './ContractDescription';
 import ContractAssets from './ContractAssets';
 import ContractGeneralInfo from './ContractGeneralInfo';
@@ -15,9 +16,29 @@ class ContractInfo extends React.Component {
 					<div className="column-left">
 						<ContractDescription data={dataDescription} />
 						<ContractGeneralInfo data={dataGeneral} matches />
-						<ContractAssets data={dataAssets} />
+						<Media query="(max-width: 768px)">
+							{(matches) =>
+								(
+									!matches && <ContractAssets data={dataAssets} />
+								)
+							}
+						</Media>
+
 					</div>
-					<ContractGeneralInfo data={dataGeneral} matches={false} />
+					<div className="column-right">
+						<Media query="(max-width: 768px)">
+							{(matches) =>
+								(
+									matches ?
+										<React.Fragment>
+											<ContractGeneralInfo data={dataGeneral} matches={false} />
+											<ContractAssets data={dataAssets} />
+										</React.Fragment> :
+										<ContractGeneralInfo data={dataGeneral} matches={false} />
+								)
+							}
+						</Media>
+					</div>
 				</div>
 			</div>
 		);

@@ -11,10 +11,8 @@ class ContractGeneralInfo extends React.Component {
 
 		return (
 			<Media query={`(max-width: ${MAX_WIDTH_SCREEN})`}>
-				{(matches) => matches === this.props.matches &&
-					<div className="column-right">
-						<ContractInfoBlock data={data} />
-					</div>
+				{
+					(matches) => matches === this.props.matches && <ContractInfoBlock data={data} />
 				}
 			</Media>
 		);

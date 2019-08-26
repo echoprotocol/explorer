@@ -34,10 +34,13 @@
                 @include res-1000 {
                     top: -25px;
                     right: -1000px;
-                }
+				}
+				@include max-vw(380) {
+					top: -35px;
+				}
             }
             .backwards {
-				margin: 0 0 15px 0;
+				margin: 0 0 3px 0;
 				@include max-vw(999) {
 					padding-left: 0;
 				}
@@ -84,7 +87,7 @@
 
                 .item {
 					z-index: 1;
-
+					margin-top: 12px;
 					&:first-child {
                         margin-right: 22px;
                     }
@@ -97,16 +100,14 @@
                         }
                     }
 
-					@include max-vw(412) {
+					@include max-vw(415) {
                         &:last-child {
-                            margin-top: 12px;
                             .action-button-wrap {
-                                flex-direction: row-reverse;
                                 .action-label {
-                                    margin-left: -8px;
+                                    margin-left: 0;
                                     padding: 4px 14px 4px 14px;
                                     & + .action-button {
-                                        margin: 0;
+										margin: 0 0 0 -4px;
                                     }
                                 }
                             }
@@ -202,7 +203,12 @@
         display: flex;
         justify-content: space-between;
         max-width: 798px;
-        flex-wrap: wrap;
+		flex-wrap: wrap;
+
+		@include max-vw(1280) {
+			max-width: 100%;
+		}
+
         @include res-500 {
             width: auto;
 

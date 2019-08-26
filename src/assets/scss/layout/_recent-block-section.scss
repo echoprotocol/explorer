@@ -65,11 +65,7 @@
                 }
             }
         }
-		&.contract-page {
-			// @include res-1280 {
-			// 	padding-left: 0px;
-			// }
-		}
+
         @include res-1280 {
             padding-right: 30px;
             width: 830px;

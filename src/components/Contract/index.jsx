@@ -10,6 +10,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
 import { withRouter } from 'react-router';
 
+import { CONTRACT_TABS } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
 	CONTRACT_BALANCES,
@@ -104,6 +105,10 @@ class Contract extends React.Component {
 		this.props.updateContractInfo(first ? first[0].id : first);
 	}
 
+	changeTab(id, index) {
+
+		this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_TABS[index].path));
+	}
 	goToSlide(e, slide) {
 		this.slider.current.slickGoTo(slide);
 	}
@@ -371,23 +376,30 @@ class Contract extends React.Component {
 									</div> :
 									<Dropdown className="dropdown-tab">
 										<Dropdown.Toggle variant="Info">
-											<span className="doropdown-tab-current">Contract info</span>
+											<span className="doropdown-tab-current">
+												{
+													CONTRACT_TABS[CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0].title
+												}
+											</span>
 											<span className="carret" />
 										</Dropdown.Toggle>
 
 										<Dropdown.Menu>
 											<PerfectScrollbar className="contract-tab-scroll">
-												<Dropdown.Item eventKey={0}>
+												<Dropdown.Item onClick={() => this.changeTab(id, 0)} eventKey={0}>
 													<span className="doropdown-tab-item">Contract info</span>
 												</Dropdown.Item>
-												<Dropdown.Item eventKey={1}>
+												<Dropdown.Item onClick={() => this.changeTab(id, 1)} eventKey={1}>
 													<span className="doropdown-tab-item">{`Transactions (${contractTxs})`}</span>
 												</Dropdown.Item>
-												<Dropdown.Item eventKey={2}>
+												<Dropdown.Item onClick={() => this.changeTab(id, 2)} eventKey={2}>
 													<span className="doropdown-tab-item">Bytecode</span>
 												</Dropdown.Item>
-												<Dropdown.Item eventKey={3}>
+												<Dropdown.Item onClick={() => this.changeTab(id, 3)} eventKey={3}>
 													<span className="doropdown-tab-item">Balances</span>
+												</Dropdown.Item>
+												<Dropdown.Item onClick={() => this.changeTab(id, 4)} eventKey={4}>
+													<span className="doropdown-tab-item">ABI</span>
 												</Dropdown.Item>
 											</PerfectScrollbar>
 										</Dropdown.Menu>
