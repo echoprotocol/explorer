@@ -287,7 +287,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const producer = await echo.api.getObject(planeBlock.account);
 		value.producer = { id: producer.id, name: producer.name };
 
-		const verifiersIds = planeBlock.cert.map(({ _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_signer}`);
+		const verifiersIds = planeBlock.cert.map(({ _producer }) => `${ACCOUNT_OBJECT_PREFIX}.${_producer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
 		const { transactions } = planeBlock;
@@ -515,11 +515,13 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 	if (Math.sign(blocksToRemove) > 0) {
 		let blocksKeys = blocks.keySeq();
+		blocksKeys = blocksKeys.sort((a, b) => a - b);
 		blocksKeys = blocksKeys.slice(0, blocksToRemove);
 		blocks = blocks.deleteAll(blocksKeys);
 
 		if (noEmptyBlocks.size > maxBlocks) {
 			blocksKeys = noEmptyBlocks.keySeq();
+			blocksKeys = blocksKeys.sort((a, b) => a - b);
 			blocksKeys = blocksKeys.slice(0, Math.sign(blocksToRemove));
 			noEmptyBlocks = noEmptyBlocks.deleteAll(blocksKeys);
 			dispatch(BlockReducer.actions.set({ field: 'noEmptyBlocks', value: noEmptyBlocks }));
