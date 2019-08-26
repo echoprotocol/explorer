@@ -2,19 +2,22 @@ import echo, { validators } from 'echojs-lib';
 
 import SearchReducer from '../reducers/SearchReducer';
 
-import { SEARCH_LIMIT } from '../constants/SearchConstants';
 import {
 	ACCOUNT_OBJECT_PREFIX,
 	ASSET_OBJECT_PREFIX,
 	CONTRACT_OBJECT_PREFIX,
 } from '../constants/ObjectPrefixesConstants';
+import { SEARCH_LIMIT } from '../constants/SearchConstants';
 
 import BaseActionsClass from './BaseActionsClass';
-
 
 import URLHelper from '../helpers/URLHelper';
 import FormatHelper from '../helpers/FormatHelper';
 import TypesHelper from '../helpers/TypesHelper';
+import { getLimitHints } from '../helpers/SearchHelper';
+
+import { getContractBySymbol } from '../services/queries/contract';
+import { getAssetsBySymbols } from '../services/queries/asset';
 
 import ApiService from '../services/ApiService';
 
@@ -104,42 +107,64 @@ class SearchActions extends BaseActionsClass {
 					return;
 				}
 
-				const contracts = await ApiService.searchContracts({ name: str, limit: SEARCH_LIMIT.MAX });
-				let contractHints = contracts.map((c) => ({
-					section: 'Contract',
-					value: c.id,
-					to: URLHelper.createContractUrl(c.id),
+				const [contractFromServer, contractFromGraphql] = await Promise.all([
+					ApiService.searchContracts({ name: str, limit: SEARCH_LIMIT.MAX }),
+					getContractBySymbol(str.toUpperCase(), SEARCH_LIMIT.MAX),
+				]);
+
+				let contractHints = contractFromGraphql.items.map(({ contract, symbol }) => ({
+					id: contract.id,
+					section: 'ERC20 Token',
+					value: symbol,
+					postfix: ` (${contract.id})`,
+					to: URLHelper.createContractUrl(contract.id),
 				}));
+
+				const regExp = new RegExp(str);
+
+				contractHints = contractFromServer
+					.filter(({ id }) => !contractHints.find(({ id: contractId }) => contractId === id))
+					.reduce((arr, { id, name }) => {
+						const { index } = regExp.exec(name);
+
+						const item = {
+							prefix: name.slice(0, index),
+							postfix: `${name.slice(index + str.length)} (${id})`,
+							section: 'Contract',
+							value: str,
+							to: URLHelper.createContractUrl(id),
+						};
+						return [...arr, item];
+					}, contractHints)
+					.slice(0, SEARCH_LIMIT.MAX);
 
 				if (!TypesHelper.isStartWithLetter(str)) {
 					hints = hints.concat(contractHints);
 					return;
 				}
 
-				const regExp = new RegExp(str);
 				const accounts = await echo.api.lookupAccounts(str, SEARCH_LIMIT.MAX);
-				let accountHints = accounts.filter(([name]) => regExp.exec(name)).map(([name]) => {
+				const accountHints = accounts.filter(([name]) => regExp.exec(name)).map(([name, id]) => {
 					const { index } = regExp.exec(name);
 					return {
 						section: 'Account',
 						prefix: name.slice(0, index),
-						postfix: name.slice(index + str.length),
+						postfix: `${name.slice(index + str.length)} (${id})`,
 						value: name.slice(index, index + str.length),
 						to: URLHelper.createAccountUrl(name),
 					};
 				});
 
-				if (accountHints.length <= SEARCH_LIMIT.MIN) {
-					contractHints = contractHints.slice(0, SEARCH_LIMIT.MAX - accountHints.length);
-				} else if (contractHints.length <= SEARCH_LIMIT.MIN) {
-					accountHints = accountHints.slice(0, SEARCH_LIMIT.MAX - contractHints.length);
-				} else {
-					contractHints = contractHints.slice(0, SEARCH_LIMIT.MIN);
-					accountHints = accountHints.slice(0, SEARCH_LIMIT.MIN);
-				}
+				const assets = await getAssetsBySymbols(SEARCH_LIMIT.MAX, str.toUpperCase());
 
-				hints = hints.concat(accountHints).concat(contractHints);
+				const assetHints = assets.items.map(({ id }) => ({
+					section: 'Asset',
+					value: str.toUpperCase(),
+					postfix: ` (${id})`,
+					to: URLHelper.createAssetUrl(id),
+				}));
 
+				hints = getLimitHints(accountHints, contractHints, assetHints);
 			} catch (error) {
 				dispatch(SearchReducer.actions.set({ field: ['headerSearch', 'error'], value: FormatHelper.formatError(error) }));
 			} finally {
