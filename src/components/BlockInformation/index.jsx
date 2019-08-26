@@ -43,11 +43,10 @@ class BlockInformation extends React.Component {
 		this.props.clearBlockInfo();
 	}
 
-	onBlockLink(blockNumber, increment, e) {
+	onBlockLink(blockNumber, e) {
 		e.preventDefault();
 
-		const round = Number(FormatHelper.removeCommas(blockNumber)) + increment;
-		this.props.history.push(URLHelper.createBlockUrl(round));
+		this.props.history.push(URLHelper.createBlockUrl(blockNumber));
 	}
 
 	returnFunction() {
@@ -74,7 +73,7 @@ class BlockInformation extends React.Component {
 			currentTransactionLength,
 		} = this.state;
 
-		const blockNumber = blockInformation.get('blockNumber') || '';
+		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
@@ -93,25 +92,28 @@ class BlockInformation extends React.Component {
 			},
 		];
 
+		const blockNumber = Number(FormatHelper.removeCommas(formattedBlockNumber));
+
 		return (
 			<React.Fragment>
 				<div className="block-navigation-wrap">
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
-						title={`Block ${blockNumber}`}
+						title={`Block ${formattedBlockNumber}`}
 						returnFunction={() => this.returnFunction()}
 					/>
 					<div className="block-navigation">
 						<button
 							className={classnames('prev', { active: blockNumber > 1 })}
-							onClick={(e) => this.onBlockLink(blockNumber, -1, e)}
+							disabled={blockNumber <= 1}
+							onClick={(e) => this.onBlockLink(blockNumber - 1, e)}
 						>
 							Older <span>block</span>
 						</button>
 						<button
 							className={classnames('next', { active: latestBlock !== blockNumber })}
 							disabled={latestBlock === blockNumber}
-							onClick={(e) => this.onBlockLink(blockNumber, 1, e)}
+							onClick={(e) => this.onBlockLink(blockNumber + 1, e)}
 						>
 							Next <span>block</span>
 						</button>
