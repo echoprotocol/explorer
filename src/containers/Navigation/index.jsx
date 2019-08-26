@@ -8,11 +8,13 @@ class Navigation extends React.Component {
 
 	render() {
 		const {
-			history, hints, getHints,
+			history, hints, getHints, loadingSearch, errorSearch,
 		} = this.props;
 		return (
 			<div className="wrap">
 				<Header
+					errorSearch={errorSearch}
+					loadingSearch={loadingSearch}
 					hints={hints}
 					history={history}
 					getHints={getHints}
@@ -25,13 +27,17 @@ class Navigation extends React.Component {
 
 Navigation.propTypes = {
 	history: PropTypes.object,
+	errorSearch: PropTypes.string,
 	hints: PropTypes.array,
+	loadingSearch: PropTypes.bool,
 	getHints: PropTypes.func,
 };
 
 Navigation.defaultProps = {
 	hints: [],
+	errorSearch: '',
 	history: {},
+	loadingSearch: false,
 	getHints: () => {},
 };
 

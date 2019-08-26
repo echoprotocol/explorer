@@ -12,7 +12,7 @@ class Header extends React.Component {
 	render() {
 
 		const {
-			history, hints, getHints,
+			history, hints, getHints, loadingSearch, errorSearch,
 		} = this.props;
 		return (
 			<header>
@@ -21,6 +21,8 @@ class Header extends React.Component {
 					{(matches) =>
 						(matches ? (
 							<HeaderSearch
+								loadingSearch={loadingSearch}
+								errorSearch={errorSearch}
 								withHelp
 								getHints={getHints}
 								hints={hints}
@@ -30,6 +32,8 @@ class Header extends React.Component {
 							/>
 						) : (
 							<HeaderSearch
+								loadingSearch={loadingSearch}
+								errorSearch={errorSearch}
 								withHelp
 								hints={hints}
 								history={history}
@@ -46,6 +50,8 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+	errorSearch: PropTypes.string,
+	loadingSearch: PropTypes.bool,
 	history: PropTypes.object,
 	hints: PropTypes.array,
 	getHints: PropTypes.func,
@@ -53,6 +59,8 @@ Header.propTypes = {
 
 Header.defaultProps = {
 	hints: [],
+	loadingSearch: false,
+	errorSearch: '',
 	history: {},
 	getHints: () => {},
 };

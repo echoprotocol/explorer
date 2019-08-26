@@ -13,12 +13,11 @@ import SmallSearchField from '../../../components/SmallSearchField';
 import FilterBlock from '../../../components/FilterCheckbox';
 
 import FormatHelper from '../../../helpers/FormatHelper';
-import TypesHelper from '../../../helpers/TypesHelper';
 import URLHelper from '../../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import BlockReducer from '../../../reducers/BlockReducer';
-import { TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
+import { NO_TRANSACTIONS, TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
 import {
@@ -26,6 +25,8 @@ import {
 	setMaxDisplayedBlocks,
 	toggleEmptyBlocks,
 } from '../../../actions/BlockActions';
+import SearchActions from '../../../actions/SearchActions';
+
 
 class RecentBlockTable extends React.Component {
 
@@ -34,12 +35,6 @@ class RecentBlockTable extends React.Component {
 	}
 	componentWillUnmount() {
 		this.props.resetDisplayedBlocks();
-	}
-	onSearch(blockNumber) {
-		if (TypesHelper.isCommaNumberRepresentation(blockNumber)) {
-			blockNumber = FormatHelper.removeCommas(blockNumber);
-		}
-		this.props.history.push(`/blocks/${blockNumber}`);
 	}
 
 	onLink(e, path) {
@@ -55,7 +50,6 @@ class RecentBlockTable extends React.Component {
 			blocksResult.push({
 				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
-				// time: FormatHelper.timestampToLocalTime(value.get('time')),
 				time: value.get('time'),
 				producer: value.get('producer'),
 				producerId: value.get('producerId'),
@@ -76,10 +70,16 @@ class RecentBlockTable extends React.Component {
 		});
 	}
 
+	transitionToBlock() {
+		const { errorSearch, hints: [hint] } = this.props;
+		if (errorSearch) return;
+		this.props.history.push(hint.to);
+	}
 
 	render() {
-
-		const { hasMore, isShowEmptyBlocks, loading } = this.props;
+		const {
+			hasMore, isShowEmptyBlocks, loading, loadingSearch, errorSearch,
+		} = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
 
@@ -88,8 +88,11 @@ class RecentBlockTable extends React.Component {
 				<div className="table-container recent-block-table">
 					<h2>Recent blocks
 						<SmallSearchField
+							errorSearch={errorSearch}
+							loadingSearch={loadingSearch}
+							getHints={(str) => this.props.getHints(str)}
+							transitionToBlock={() => this.transitionToBlock()}
 							withHelp
-							onSearch={(blockNumber) => this.onSearch(blockNumber)}
 							goToBlock
 							white
 							placeholder="Go to block"
@@ -207,7 +210,7 @@ class RecentBlockTable extends React.Component {
 												))
 											}
 											{AreEmptyTransactions && (
-												<p className="title-no-transactions">No transactions in recent blocks</p>
+												<p className="title-no-transactions">{NO_TRANSACTIONS}</p>
 											)}
 										</div>
 									</div>
@@ -224,25 +227,33 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
+	hints: PropTypes.array.isRequired,
+	errorSearch: PropTypes.string.isRequired,
 	loading: PropTypes.bool.isRequired,
 	isShowEmptyBlocks: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
+	loadingSearch: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	toggleEmptyBlocks: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
+	getHints: PropTypes.func.isRequired,
 };
 
 export default withRouter(connect(
 	(state) => ({
-		blocks: state.block.get('isShowEmptyBlocks') ? state.block.get('blocks') : state.block.get('noEmptyBlocks'),
 		hasMore: state.block.get('hasMore'),
 		loading: state.block.get('loading'),
+		hints: state.search.getIn(['blockSearch', 'hints']),
+		errorSearch: state.search.getIn(['blockSearch', 'error']),
+		loadingSearch: state.search.getIn(['blockSearch', 'loading']),
 		isShowEmptyBlocks: state.block.get('isShowEmptyBlocks'),
+		blocks: state.block.get('isShowEmptyBlocks') ? state.block.get('blocks') : state.block.get('noEmptyBlocks'),
 	}),
 	(dispatch) => ({
+		getHints: (str) => dispatch(SearchActions.blockSearchHint(str)),
 		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),

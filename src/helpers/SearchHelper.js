@@ -5,7 +5,7 @@ import { SEARCH_LIMIT } from '../constants/SearchConstants';
  * @param accountHints
  * @param contractHints
  * @param assetHints
- * @returns {*[]}
+ * @returns {[]}
  */
 export const getLimitHints = (accountHints, contractHints, assetHints) => {
 	let accountCount = accountHints.length < SEARCH_LIMIT.MIN ? accountHints.length : SEARCH_LIMIT.MIN;

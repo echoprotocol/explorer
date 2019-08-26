@@ -7,6 +7,12 @@ const DEFAULT_FIELDS = Map({
 	headerSearch: Map({
 		hints: [],
 		error: '',
+		loading: false,
+	}),
+	blockSearch: Map({
+		hints: [],
+		error: '',
+		loading: false,
 	}),
 });
 

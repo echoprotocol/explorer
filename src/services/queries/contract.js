@@ -48,6 +48,20 @@ export const getTotalHistory = async (contracts) => {
 	return client.getClient().query({ query, variables: { contracts } }).then(({ data }) => data.getHistory);
 };
 
+export const getToken = async (id) => {
+	const query = gql`
+		query getContract($id: ContractId!) {
+			getContract(id: $id) {
+				type
+				token {
+					symbol
+				}
+			}
+		}
+	`;
+	return client.getClient().query({ query, variables: { id } }).then(({ data }) => data.getContract);
+};
+
 export const getContractBySymbol = (name, count) => {
 	const query = gql`
 		query getTokens($count: Int, $name: String) {
@@ -61,6 +75,5 @@ export const getContractBySymbol = (name, count) => {
 			}
 		}
 	`;
-
 	return client.getClient().query({ query, variables: { count, name } }).then(({ data }) => data.getTokens);
 };

@@ -1,8 +1,11 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
+import { ERROR_BLOCK_SEARCH } from '../../constants/SearchConstants';
+
 
 class SearchField extends React.Component {
 
@@ -14,9 +17,8 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 			inputValue: '',
-			inputError: '',
 		};
-
+		this.searchTimeout = null;
 		this.setWrapperRef = this.setWrapperRef.bind(this);
 		this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
@@ -26,6 +28,7 @@ class SearchField extends React.Component {
 	}
 
 	componentWillUnmount() {
+		clearTimeout(this.searchTimeout);
 		document.removeEventListener('mousedown', this.handleClickOutside);
 	}
 
@@ -37,9 +40,14 @@ class SearchField extends React.Component {
 		const { value } = e.target;
 
 		this.setState({
-			isChange: true,
+			isChange: !!value.length,
 			inputValue: value,
 		});
+
+		clearTimeout(this.searchTimeout);
+		this.searchTimeout = setTimeout(() => {
+			this.props.getHints(value);
+		}, 300);
 	}
 
 	onClick(e) {
@@ -48,16 +56,15 @@ class SearchField extends React.Component {
 		this.setState({ focus: true });
 		this.inputEl.focus();
 
-		if (this.state.inputValue) {
-			this.props.onSearch(this.state.inputValue);
-		}
+		if (!this.state.inputValue) return;
+		this.props.transitionToBlock();
 	}
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
 
 		if (this.state.inputValue && KEY_CODE_ENTER === code) {
-			this.props.onSearch(this.state.inputValue);
+			this.props.transitionToBlock();
 		}
 
 		if (KEY_CODE_ESC === code) {
@@ -99,14 +106,12 @@ class SearchField extends React.Component {
 	render() {
 
 		const {
-			focus, isChange, isActiveSmall, inputError, // eslint-disable-line no-unused-vars
+			focus, isChange, isActiveSmall,
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock,
+			small, placeholder, white, withHelp, goToBlock, errorSearch,
 		} = this.props;
-
-		// ВЫДЕЛЕНИЕ СОВПАВШИХ ЭЛЕМЕНТОВ --> <span className="select"></span>
 
 		return (
 			<div
@@ -152,24 +157,14 @@ class SearchField extends React.Component {
 				</div>
 				{
 					(withHelp) && (
-						(isChange) && (
-							<div className="search-block-result no-results-wrap">
-								{/* <a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Block</div>
-									<div className="value">1.16.<span className="select">5</span></div>
-								</a>
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Account</div>
-									<div className="value"><span className="select">15</span>homersimpson</div>
-								</a>
-								<a href="" className="element" onClick={(e) => e.preventDefault()}>
-									<div className="section-name">Transaction</div>
-									<div className="value"><span className="select">15</span>289378929384</div>
-								</a> */}
-								<div className="element no-results">
-									<div className="warn" />
-									<div className="text">There is no block with such number</div>
-								</div>
+						(isChange || focus) && (
+							<div className={classnames('search-block-result', { 'no-results-wrap': errorSearch })}>
+								{errorSearch && (
+									<div className="element no-results">
+										<div className="warn" />
+										<div className="text">{ERROR_BLOCK_SEARCH}</div>
+									</div>
+								)}
 							</div>)
 					)
 				}
@@ -181,20 +176,24 @@ class SearchField extends React.Component {
 
 SearchField.propTypes = {
 	small: PropTypes.bool,
-	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
-	onSearch: PropTypes.func,
 	goToBlock: PropTypes.bool,
+	errorSearch: PropTypes.string,
+	placeholder: PropTypes.string,
+	getHints: PropTypes.func,
+	transitionToBlock: PropTypes.func,
 };
 
 SearchField.defaultProps = {
 	small: false,
-	placeholder: '',
 	white: false,
 	withHelp: false,
 	goToBlock: null,
-	onSearch: null,
+	errorSearch: '',
+	placeholder: '',
+	getHints: () => {},
+	transitionToBlock: () => {},
 };
 
 export default SearchField;

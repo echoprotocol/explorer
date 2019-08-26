@@ -8,8 +8,7 @@ import { DebounceInput } from 'react-debounce-input';
 
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
-import { DEBOUNCE_TIMEOUT } from '../../constants/SearchConstants';
-import { NOT_FOUND_PATH } from '../../constants/RouterConstants';
+import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
 import loadingIcon from '../../assets/images/icons/loader.png';
 
 class SearchField extends React.Component {
@@ -24,7 +23,7 @@ class SearchField extends React.Component {
 			inputValue: '',
 			to: '',
 		};
-
+		this.timeoutSearch = null;
 		this.setWrapperRef = this.setWrapperRef.bind(this);
 		this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
@@ -34,6 +33,9 @@ class SearchField extends React.Component {
 	}
 
 	componentWillUnmount() {
+		if (this.timeoutSearch) {
+			clearTimeout(this.timeoutSearch);
+		}
 		document.removeEventListener('mousedown', this.handleClickOutside);
 	}
 
@@ -49,11 +51,17 @@ class SearchField extends React.Component {
 		const { value } = e.target;
 
 		this.setState({
-			isChange: true,
+			isChange: !!value.length,
 			inputValue: value,
 		});
 
-		this.props.getHints(value);
+		if (this.timeoutSearch) {
+			clearTimeout(this.timeoutSearch);
+		}
+
+		this.timeoutSearch = setTimeout(() => {
+			this.props.getHints(value);
+		}, 300);
 	}
 
 	onClick(e) {
@@ -64,16 +72,14 @@ class SearchField extends React.Component {
 	}
 
 	onKeyPress(e) {
+		const { loadingSearch } = this.props;
 		const code = e.keyCode || e.which;
 
-		if (KEY_CODE_ENTER === code && this.state.inputValue && this.state.to) {
+		if (!loadingSearch && KEY_CODE_ENTER === code && this.state.inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
 				this.props.history.push(this.state.to);
 				this.setState({ focus: false, isChange: false });
 				this.inputEl.blur();
-			} else {
-				this.props.history.push(NOT_FOUND_PATH);
-				return;
 			}
 		}
 
@@ -110,7 +116,7 @@ class SearchField extends React.Component {
 		this.inputEl.focus();
 	}
 
-	cleareInput() {
+	clearInput() {
 		this.setState({
 			inputValue: '',
 			focus: false,
@@ -122,23 +128,24 @@ class SearchField extends React.Component {
 	}
 
 	renderIcon() {
-		const { goToBlock, loading } = this.props;
+		const { goToBlock, loadingSearch } = this.props;
 
 		if (!goToBlock) {
 			return (
-				loading ?
+				loadingSearch ?
 					<span className="search-loading" /> :
-					<button tabIndex="0" className="close-icn" onClick={() => this.cleareInput()} />
+					<button tabIndex="0" className="close-icn" onClick={() => this.clearInput()} />
 			);
 		}
 
 		return (
-			loading ?
+			loadingSearch ?
 				<img src={loadingIcon} alt="" /> :
 				<button tabIndex="0" className="g-t-btn" onClick={(e) => this.onClick(e)} />
 
 		);
 	}
+
 	render() {
 
 		const {
@@ -146,9 +153,8 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, hints,
+			small, placeholder, white, withHelp, goToBlock, hints, errorSearch,
 		} = this.props;
-
 
 		const options = hints
 			.map(({
@@ -163,17 +169,20 @@ class SearchField extends React.Component {
 					</Link>
 				),
 			}));
-		options.push({
-			key: options.length + 1,
-			selected: false,
-			value: '',
-			content: (
-				<div className="element no-results">
-					<div className="warn" />
-					<div className="text">There is no block with such number</div>
-				</div>
-			),
-		});
+
+		if (errorSearch) {
+			options.push({
+				key: options.length + 1,
+				selected: false,
+				value: '',
+				content: (
+					<div className="element no-results">
+						<div className="warn" />
+						<div className="text">{DEFAULT_ERROR_SEARCH}</div>
+					</div>
+				),
+			});
+		}
 
 		return (
 			<div
@@ -237,19 +246,21 @@ class SearchField extends React.Component {
 
 SearchField.propTypes = {
 	small: PropTypes.bool,
-	loading: PropTypes.bool,
+	loadingSearch: PropTypes.bool,
+	errorSearch: PropTypes.string,
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
 	goToBlock: PropTypes.bool,
 	hints: PropTypes.array,
-	getHints: PropTypes.func,
 	history: PropTypes.object,
+	getHints: PropTypes.func,
 };
 
 SearchField.defaultProps = {
+	loadingSearch: false,
 	small: false,
-	loading: true,
+	errorSearch: '',
 	placeholder: '',
 	white: false,
 	withHelp: false,
