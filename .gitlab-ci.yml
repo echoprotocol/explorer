@@ -9,13 +9,15 @@ build.develop:
     NODE_ENV: production
     NODE_APP_INSTANCE: develop
     CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    EXTERNAL_PORT: 26562
   script:
     - docker build --cache-from $CI_FULL_REGISTRY --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t $CI_FULL_REGISTRY .
-    - docker-compose -p 656-echo-explorer up -d
+    - docker-compose -p 656-echo-explorer-develop up -d
   only:
     - develop
+    - EEX-535
   tags:
-    - pp-develop
+    - echo-linux
   environment:
     name: develop
     url: https://656-echo-explorer.pixelplex-test.by
@@ -27,13 +29,15 @@ build.master:
     NODE_ENV: production
     NODE_APP_INSTANCE: master
     CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    EXTERNAL_PORT: 36562
   script:
     - docker build --cache-from $CI_FULL_REGISTRY --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t $CI_FULL_REGISTRY .
-    - docker-compose -p 656-echo-explorer up -d
+    - docker-compose -p 656-echo-explorer-stage up -d
   only:
     - master
+    - EEX-535
   tags:
-    - pp-stage
+    - echo-linux
   environment:
     name: master
     url: http://656-echo-explorer.pixelplexlabs.com
