@@ -56,7 +56,6 @@ build.production:
     - docker logout $CI_REGISTRY
   only:
     - tags
-    - EEX-535
   tags:
     - echo-linux
   environment:
@@ -80,7 +79,6 @@ deploy.production:
     - docker logout $CI_REGISTRY
   only:
     - tags
-    - EEX-535
   tags:
     - echo-explorer-1
   when: manual
