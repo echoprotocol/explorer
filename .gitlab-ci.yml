@@ -15,7 +15,6 @@ build.develop:
     - docker-compose -p 656-echo-explorer-develop up -d
   only:
     - develop
-    - EEX-535
   tags:
     - echo-linux
   environment:
@@ -35,7 +34,6 @@ build.master:
     - docker-compose -p 656-echo-explorer-stage up -d
   only:
     - master
-    - EEX-535
   tags:
     - echo-linux
   environment:
@@ -58,6 +56,7 @@ build.production:
     - docker logout $CI_REGISTRY
   only:
     - tags
+    - EEX-535
   tags:
     - echo-linux
   environment:
@@ -80,6 +79,7 @@ deploy.production:
     - docker logout $CI_REGISTRY
   only:
     - tags
+    - EEX-535
   tags:
     - echo-explorer-1
   when: manual
