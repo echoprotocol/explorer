@@ -69,7 +69,7 @@ class RecentBlockSidebar extends React.Component {
 						(matches) => !matches &&
 						<div className="info-container">
 							<div className="version">v{appVersion}</div>
-							<div className="copyright">©ECHO DEVELOPMENT LTD, {FormatHelper.getYear(new Date())}</div>
+							<div className="copyright">©Echo Technological Solutions LLC, {FormatHelper.getYear(new Date())}</div>
 						</div>
 					}
 				</Media>
