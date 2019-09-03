@@ -1,25 +1,6 @@
 stages:
-  - test
   - build
   - deploy
-
-
-test:
-  image: node:10.15
-  stage: test
-  cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-    - node_modules/
-  script:
-    - npm i --silent
-    - npm run lint
-  tags:
-    - docker
-  only:
-    - merge_requests
-    - develop
-    - master
 
 
 build.develop:
@@ -28,13 +9,14 @@ build.develop:
     NODE_ENV: production
     NODE_APP_INSTANCE: develop
     CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    EXTERNAL_PORT: 26562
   script:
     - docker build --cache-from $CI_FULL_REGISTRY --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t $CI_FULL_REGISTRY .
-    - docker-compose -p 656-echo-explorer up -d
+    - docker-compose -p 656-echo-explorer-develop up -d
   only:
     - develop
   tags:
-    - pp-develop
+    - echo-linux
   environment:
     name: develop
     url: https://656-echo-explorer.pixelplex-test.by
@@ -46,13 +28,14 @@ build.master:
     NODE_ENV: production
     NODE_APP_INSTANCE: master
     CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    EXTERNAL_PORT: 36562
   script:
     - docker build --cache-from $CI_FULL_REGISTRY --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t $CI_FULL_REGISTRY .
-    - docker-compose -p 656-echo-explorer up -d
+    - docker-compose -p 656-echo-explorer-stage up -d
   only:
     - master
   tags:
-    - pp-stage
+    - echo-linux
   environment:
     name: master
     url: http://656-echo-explorer.pixelplexlabs.com
@@ -86,6 +69,7 @@ deploy.production:
     NODE_ENV: production
     NODE_APP_INSTANCE: production
     CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:latest
+    EXTERNAL_PORT: 26562
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:

@@ -5,5 +5,5 @@ services:
   frontend:
     image: $CI_FULL_REGISTRY
     ports:
-      - 26562:3000
+      - $EXTERNAL_PORT:3000
     restart: always

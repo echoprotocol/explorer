@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "10"
+
+stages:
+  - test
+
+jobs:
+  include:
+
+    - stage: test
+      name: "Lint"
+      if: type = push
+      script:
+        - npm run lint
