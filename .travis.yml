@@ -7,7 +7,6 @@ stages:
 
 jobs:
   include:
-
     - stage: test
       name: "Lint"
       if: type = push
