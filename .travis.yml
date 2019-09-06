@@ -7,9 +7,7 @@ stages:
 
 jobs:
   include:
-
     - stage: test
       name: "Lint"
       if: type = push
-      script:
-        - npm run lint
+      script: npm run lint

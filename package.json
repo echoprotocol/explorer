@@ -3,7 +3,7 @@
 	"author": "PixelPlex, Inc. <info@pixelplex.by>",
 	"description": "Explorer for Echo platform",
 	"homepage": "https://github.com/echoprotocol/explorer",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"main": "server.js",
 	"scripts": {
