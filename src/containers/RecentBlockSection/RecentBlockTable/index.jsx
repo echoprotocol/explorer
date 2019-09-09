@@ -131,7 +131,7 @@ class RecentBlockTable extends React.Component {
 														<div className="value">
 															<Link
 																to={URLHelper.createAccountUrlByName(data.producer)}
-																className="blue"
+																className="blue" 
 															>
 																{data.producer}
 															</Link>

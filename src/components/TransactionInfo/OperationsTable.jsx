@@ -21,12 +21,21 @@ class OperationsTable extends React.Component {
 		this.state = {
 			showedOperations: [],
 			airRows: [],
+			width: 0,
 		};
+		this.Ref = React.createRef();
+		this.updateWidth = this.updateWidth.bind(this);
 	}
+
+	updateWidth() {
+		const width = window.innerWidth;
+		this.setState({ width });
+	  }
 
 	componentDidMount() {
 		const { showedOperations } = this.state;
 		const { queryProps } = this.props;
+
 		if (!queryProps.op) {
 			return;
 		}
@@ -36,6 +45,9 @@ class OperationsTable extends React.Component {
 		}
 		showedOperations.push(op - 1);
 		this.setState({ showedOperations }); // eslint-disable-line react/no-did-mount-set-state
+
+		this.updateWidth();
+		window.addEventListener('resize', this.updateWidth);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -45,6 +57,19 @@ class OperationsTable extends React.Component {
 		if (!queryProps.op && prevQuery.op) {
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
 		}
+		
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWidth);
+	}
+
+	cutNameForDesktop(object) {
+		return (
+			object.length > 8
+			? object.slice(0,8).concat('...')
+			: object
+		);
 	}
 
 	toggleOperationDetails(index) {
@@ -120,9 +145,19 @@ class OperationsTable extends React.Component {
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
-						<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
-							<Avatar accountName={mainInfo.from.name} />
-							<span>{mainInfo.from.name}</span>
+						<Link 
+							className="td-in avatar-wrap"
+							
+							to={URLHelper.createAccountUrl(mainInfo.from.name)}
+							onClick={(e) => e.stopPropagation()}>
+							<Avatar 
+								accountName={mainInfo.from.name} />
+							<span ref={this.Ref}>{ 
+								(this.state.width>1280 && this.state.width<1550) || (this.state.width>0 && this.state.width<=767)?
+								this.cutNameForDesktop(mainInfo.from.name)
+								:mainInfo.from.name
+								}
+							</span>
 						</Link>
 					</td>
 					<td className="reciever">
