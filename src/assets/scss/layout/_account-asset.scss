@@ -9,7 +9,7 @@
             min-height: calc(100vh - 484px);
             padding-top: 40px;
         }
-        
+
         @include res-500 {
             padding-top: 48px;
             min-height: calc(100vh - 509px);
@@ -17,7 +17,7 @@
 
         .asset-container {
             margin-bottom: 30px;
-            
+
             @include res-500 {
                 margin-bottom: 43px;
             }
@@ -27,7 +27,7 @@
                 margin-bottom: 0;
             }
 
-            > .title {
+            >.title {
                 @include InterUI_Bold;
                 font-size: 23px;
                 color: #18142a;
@@ -68,7 +68,7 @@
                         width: 100%;
                     }
 
-                    > .title {
+                    >.title {
                         @include InterUI_Bold;
                         font-size: 16px;
                         color: #130d32;
@@ -97,7 +97,7 @@
                             justify-content: space-between;
                             align-items: flex-start;
                             min-width: 135px;
-                            
+
                             &:not(:last-child) {
                                 margin-right: 65px;
 
@@ -128,13 +128,13 @@
                                 letter-spacing: 0.25em;
                                 margin-bottom: 15px;
                             }
-    
+
                             .val {
                                 @include InterUI_Medium;
                                 font-size: 16px;
                                 color: #130d32;
                                 display: flex;
-    
+
                                 .txt {
                                     margin-right: 5px;
                                 }

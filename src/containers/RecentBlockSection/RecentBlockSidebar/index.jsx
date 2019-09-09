@@ -11,15 +11,36 @@ class RecentBlockSidebar extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { timer: 0 };
+		this.state = {
+			timer: 0,
+			width: 0,
+			height: 0,
+		 };
 
 		this.intervalId = 0;
+		// this.Ref = React.createRef();
+		this.updateWidth = this.updateWidth.bind(this);
+		this.updateHeight = this.updateHeight.bind(this);
+	}
+
+	updateWidth() {
+		const width = window.innerWidth;
+		this.setState({ width });
+	}
+
+	updateHeight() {
+		const height = window.pageYOffset;
+		this.setState({ height });
 	}
 
 	componentDidMount() {
 		this.intervalId = setInterval(() => {
 			this.setState({ timer: this.state.timer += 1 });
 		}, 1000);
+		this.updateWidth();
+		window.addEventListener('resize', this.updateWidth);
+		this.updateHeight();
+		window.addEventListener('scroll', this.updateHeight);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -32,6 +53,8 @@ class RecentBlockSidebar extends React.Component {
 
 	componentWillUnmount() {
 		clearInterval(this.intervalId);
+		window.removeEventListener('resize', this.updateWidth);
+		window.removeEventListener('scroll', this.updateHeight);
 	}
 
 	render() {
@@ -43,7 +66,11 @@ class RecentBlockSidebar extends React.Component {
 		const appVersion = getAppVersion();
 
 		return (
-			<div className="recent-block-sidebar">
+			<div ref={this.Ref} className={
+				(this.state.width > 1280 && this.state.height > 275)?
+				"sticky recent-block-sidebar"
+				:"recent-block-sidebar"
+			}>
 				<div className="help-container">
 					<div className="sidebar-elem">
 						<div className="title">Latest block number</div>
