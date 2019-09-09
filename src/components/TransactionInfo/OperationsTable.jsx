@@ -27,11 +27,6 @@ class OperationsTable extends React.Component {
 		this.updateWidth = this.updateWidth.bind(this);
 	}
 
-	updateWidth() {
-		const width = window.innerWidth;
-		this.setState({ width });
-	  }
-
 	componentDidMount() {
 		const { showedOperations } = this.state;
 		const { queryProps } = this.props;
@@ -57,18 +52,22 @@ class OperationsTable extends React.Component {
 		if (!queryProps.op && prevQuery.op) {
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
 		}
-		
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.updateWidth);
 	}
 
+	updateWidth() {
+		const width = window.innerWidth;
+		this.setState({ width });
+	}
+
 	cutNameForDesktop(object) {
 		return (
 			object.length > 8
-			? object.slice(0,8).concat('...')
-			: object
+				? object.slice(0, 8).concat('...')
+				: object
 		);
 	}
 
@@ -145,17 +144,18 @@ class OperationsTable extends React.Component {
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
-						<Link 
+						<Link
 							className="td-in avatar-wrap"
-							
 							to={URLHelper.createAccountUrl(mainInfo.from.name)}
-							onClick={(e) => e.stopPropagation()}>
-							<Avatar 
-								accountName={mainInfo.from.name} />
+							onClick={(e) => e.stopPropagation()}
+						>
+							<Avatar
+								accountName={mainInfo.from.name}
+							/>
 							<span ref={this.Ref}>{
-								(this.state.width>1280 && this.state.width<1550) || (this.state.width>0 && this.state.width<=1000)?
-								this.cutNameForDesktop(mainInfo.from.name)
-								:mainInfo.from.name}
+								(this.state.width > 1280 && this.state.width < 1550) || (this.state.width > 0 && this.state.width <= 1000) ?
+									this.cutNameForDesktop(mainInfo.from.name)
+									: mainInfo.from.name}
 							</span>
 						</Link>
 					</td>
@@ -167,10 +167,10 @@ class OperationsTable extends React.Component {
 							(mainInfo.subject && mainInfo.subject.name) ?
 								<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.subject.name)} onClick={(e) => e.stopPropagation()}>
 									{mainInfo.subject && <Avatar accountName={mainInfo.subject.name} />}
-									<span ref={this.Ref}>{mainInfo.subject &&
-										(this.state.width>1280 && this.state.width<1550) || (this.state.width>0 && this.state.width<=1000)?
-										this.cutNameForDesktop(mainInfo.subject.name)
-										:mainInfo.subject.name}
+									<span ref={this.Ref}>
+										{mainInfo.subject && ((this.state.width > 1280 && this.state.width < 1550) || (this.state.width > 0 && this.state.width <= 1000) ?
+											this.cutNameForDesktop(mainInfo.subject.name)
+											: mainInfo.subject.name)}
 									</span>
 								</Link> : '—'
 						}
