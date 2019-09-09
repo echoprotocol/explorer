@@ -73,15 +73,14 @@ class PreparingSection extends React.Component {
 				this.gcStartedTimeout = setTimeout(() => {
 					clearTimeout(this.roundStartedTimeout);
 					this.setState({ status: rounderSteps[GC_STARTED].progress });
-					this.setProducing(DONE_STATUS);
+					if (nextProps.readyProducers) {
+						this.setProducing(DONE_STATUS);
+					}
 				}, GC_START_DELAY);
 			} else if (
 				(nextProps.stepProgress === DONE)
 			) {
 				setTimeout(() => {
-					if (this.state.producing === PROGRESS_STATUS) {
-						return;
-					}
 					this.setVerifyingGC(DONE_STATUS);
 				}, GC_START_DELAY);
 			} else if (nextProps.stepProgress === BBA_STARTED) {
@@ -140,9 +139,6 @@ class PreparingSection extends React.Component {
 	startProgressBar() {
 		this.progressInterval = setInterval(() => {
 			if (this.state.status < MAX_PERCENT_PROGRESS_BAR) {
-				if (this.state.producing === PROGRESS_STATUS && this.state.status >= rounderSteps[ROUND_STARTED].maxProgress) {
-					return;
-				}
 				if (this.state.verifyingGC === PROGRESS_STATUS && this.state.status >= rounderSteps[GC_STARTED].maxProgress) {
 					return;
 				}
