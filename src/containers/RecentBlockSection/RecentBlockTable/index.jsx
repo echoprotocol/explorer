@@ -84,7 +84,7 @@ class RecentBlockTable extends React.Component {
 		const AreEmptyTransactions = !hasMore && !blocks.length;
 
 		return (
-			<InfiniteScroll loadMore={() => this.props.loadBlocks()} hasMore={hasMore}>
+			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
 				<div className="table-container recent-block-table">
 					<h2>Recent blocks
 						<SmallSearchField

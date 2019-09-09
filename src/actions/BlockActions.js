@@ -351,7 +351,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 
 	try {
-		for (let i = startedBlock; i <= latestBlock; i += 1) {
+		for (let i = startedBlock; i < latestBlock; i += 1) {
 			blocks.push(echo.api.getBlock(i));
 		}
 
@@ -616,10 +616,12 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 			value: PAGE_BLOCKS_COUNT,
 		}));
 
-		const [...keys] = getState().block.get('blocks').keys();
-		const startedBlock = Math.min(...keys) - PAGE_BLOCKS_COUNT;
-
-		await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
+		let blocks = getState().block.get('blocks');
+		let [...keys] = blocks.keys();
+		keys = keys.sort((a, b) => a - b)
+			.slice(0, PAGE_BLOCKS_COUNT);
+		blocks = blocks.deleteAll(keys);
+		dispatch(BlockReducer.actions.set({ field: 'blocks', value: blocks }));
 
 		return true;
 
