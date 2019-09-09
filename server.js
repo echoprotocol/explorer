@@ -1,6 +1,7 @@
 const express = require('express');
 const config = require('config');
 const axios = require('axios');
+
 const app = express();
 const fs = require('fs');
 
@@ -8,7 +9,7 @@ const fs = require('fs');
 const accountRegex = RegExp(/\/accounts\/.*\/info/);
 const contractRegex = RegExp(/\/contracts\/.*\/info/);
 
-const DELAY_AXIOS = 3000;
+const TIMEOUT_FETCH = 3000;
 
 let fileIndex = null;
 const filePath = `${__dirname}/dist/index.html`;
@@ -33,9 +34,7 @@ app.get('*', async (req, res) => {
 	} else if (contractRegex.test(url)) {
 		const contractId = url.split('/')[2];
 		try {
-			const fetchContract = await axios.get(`${config.SERVER_URL}/api/contracts/${contractId}`);
-			const fetchContractDelay = new Promise((resolve) => setTimeout(resolve, DELAY_AXIOS));
-			const contract = await Promise.race([fetchContract, fetchContractDelay]);
+			const contract = await axios.get(`${config.SERVER_URL}/api/contracts/${contractId}`, { timeout: TIMEOUT_FETCH });
 
 			if (contract) {
 				title = `Contract ${contract.name || contractId} | Echo Explorer`;
@@ -43,7 +42,7 @@ app.get('*', async (req, res) => {
 				image = `${config.SERVER_URL}${contract.icon}`;
 			}
 		} catch (err) {
-			console.log('Error: ', err.response.statusText);
+			console.log('Error: ', err.code);
 		}
 	}
 
