@@ -152,11 +152,10 @@ class OperationsTable extends React.Component {
 							onClick={(e) => e.stopPropagation()}>
 							<Avatar 
 								accountName={mainInfo.from.name} />
-							<span ref={this.Ref}>{ 
-								(this.state.width>1280 && this.state.width<1550) || (this.state.width>0 && this.state.width<=767)?
+							<span ref={this.Ref}>{
+								(this.state.width>1280 && this.state.width<1550) || (this.state.width>0 && this.state.width<=1000)?
 								this.cutNameForDesktop(mainInfo.from.name)
-								:mainInfo.from.name
-								}
+								:mainInfo.from.name}
 							</span>
 						</Link>
 					</td>
@@ -168,7 +167,11 @@ class OperationsTable extends React.Component {
 							(mainInfo.subject && mainInfo.subject.name) ?
 								<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.subject.name)} onClick={(e) => e.stopPropagation()}>
 									{mainInfo.subject && <Avatar accountName={mainInfo.subject.name} />}
-									<span>{mainInfo.subject && mainInfo.subject.name}</span>
+									<span ref={this.Ref}>{mainInfo.subject &&
+										(this.state.width>1280 && this.state.width<1550) || (this.state.width>0 && this.state.width<=1000)?
+										this.cutNameForDesktop(mainInfo.subject.name)
+										:mainInfo.subject.name}
+									</span>
 								</Link> : '—'
 						}
 					</td>
