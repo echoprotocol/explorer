@@ -450,6 +450,10 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		latestBlock -= 1;
 	}
 
+	if (latestBlock - startedBlock > MAX_BLOCK_REQUESTS) {
+		startedBlock = latestBlock - MAX_BLOCK_REQUESTS;
+	}
+
 	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
 	}
