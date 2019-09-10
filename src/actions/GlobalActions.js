@@ -66,6 +66,12 @@ class GlobalActionsClass extends BaseActionsClass {
 		};
 	}
 
+	toggleErrorScreen(value) {
+		return (dispatch) => {
+			dispatch(this.setValue('errorScreen', value));
+		};
+	}
+
 	checkAccessToBridge() {
 		return async (dispatch) => {
 			if (!BridgeService.isExist()) {
