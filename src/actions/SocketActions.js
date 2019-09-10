@@ -83,9 +83,8 @@ const roundSubscribe = (notification) => (dispatch) => {
 const blockRelease = () => async (dispatch) => {
 	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
-	await dispatch(updateAverageTransactions());
-	dispatch(updateBlockList(global.head_block_number));
-
+	await dispatch(updateBlockList(global.head_block_number));
+	dispatch(updateAverageTransactions());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE }));
 };
 
@@ -96,6 +95,7 @@ const blockRelease = () => async (dispatch) => {
  */
 export const connect = () => async (dispatch) => {
 	try {
+		console.log('connect');
 		await echo.connect(config.API_URL, {
 			connectionTimeout: 5000,
 			maxRetries: 1e10,

@@ -342,8 +342,6 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 	const latestBlock = lastBlock || getState().round.get('latestBlock');
 
-	let blocks = [];
-
 	let startedBlock = startBlock || transactions.get('block') + 1;
 
 	if ((getState().round.get('latestBlock') - transactions.get('block')) > MAX_BLOCK_REQUESTS) {
@@ -351,36 +349,35 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 
 	try {
-		for (let i = startedBlock; i < latestBlock; i += 1) {
-			blocks.push(echo.api.getBlock(i));
-		}
+		let blocks = getState().block.get('blocks');
 
-		blocks = await Promise.all(blocks);
+		const blocksToRemove = blocks.keySeq()
+			.filter((key) => key < startedBlock || key > latestBlock);
+		blocks = blocks.deleteAll(blocksToRemove);
 
 		let trLengths = averageTransactions.get('lengthsList');
 		let opLengths = averageOperations.get('lengthsList');
 		let unixTimestamps = transactions.get('unixTimestamps');
 
-		const sumResults = blocks
-			.filter((block) => moment(block.timestamp).unix() - moment(new Date(null)).unix() > 0)
-			.reduce(({ sum, sumOps }, block) => {
-				trLengths = trLengths.push(block.transactions.length);
+		blocks = blocks
+			.filter((block) => moment(block.get('timestamp')).unix() - moment(new Date(null)).unix() > 0).toJS();
 
-				const opLength = block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
-				opLengths = opLengths.push(opLength);
+		const sumResults = Object.values(blocks).reduce(({ sum, sumOps }, block) => {
+			trLengths = trLengths.push(block.transactions);
+			const opLength = block.transactionsInfo.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
+			opLengths = opLengths.push(opLength);
 
-				const unixTimeStamp = moment(block.timestamp).unix();
+			const unixTimeStamp = moment(block.timestamp).unix();
 
-				if (Math.sign(unixTimeStamp) > 0) {
-					unixTimestamps = unixTimestamps.push(unixTimeStamp);
-				}
+			if (Math.sign(unixTimeStamp) > 0) {
+				unixTimestamps = unixTimestamps.push(unixTimeStamp);
+			}
 
-				return ({
-					sum: sum.plus(block.transactions.length),
-					sumOps: sumOps.plus(opLength),
-				});
-			}, { sum: new BN(averageTransactions.get('sum')), sumOps: new BN(averageOperations.get('sum')) });
-
+			return ({
+				sum: sum.plus(block.transactions),
+				sumOps: sumOps.plus(opLength),
+			});
+		}, { sum: new BN(averageTransactions.get('sum')), sumOps: new BN(averageOperations.get('sum')) });
 
 		if (trLengths.size > MAX_AVERAGE_TRS_BLOCKS) {
 			sumResults.sum = sumResults.sum.minus(trLengths.get(0));
@@ -482,13 +479,15 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
 				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
+				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
 				.setIn([blockNumber, 'weightSize'], 'bytes')
-				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
+				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length)
+				.setIn([blockNumber, 'transactionsInfo'], blocksResult[i].transactions);
 		}
 	});
 
@@ -544,12 +543,11 @@ export const initBlocks = () => async (dispatch) => {
 
 	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj.head_block_number }));
 
-	const startBlockAverage = obj.head_block_number - START_AVERAGE_TRS_BLOCKS;
-
-	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
-
 	const startBlockList = obj.head_block_number - PAGE_BLOCKS_COUNT;
 	await dispatch(updateBlockList(obj.head_block_number, startBlockList));
+
+	const startBlockAverage = obj.head_block_number - START_AVERAGE_TRS_BLOCKS;
+	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
