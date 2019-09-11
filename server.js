@@ -5,15 +5,18 @@ const axios = require('axios');
 const app = express();
 const fs = require('fs');
 
-
 const accountRegex = RegExp(/\/accounts\/.*\/info/);
 const contractRegex = RegExp(/\/contracts\/.*\/info/);
 
 const TIMEOUT_FETCH = 3000;
 
-let fileIndex = null;
 const filePath = `${__dirname}/dist/index.html`;
-fs.readFile(filePath, 'utf8', (err, data) => { fileIndex = data; });
+let fileIndex = null;
+
+fs.readFile(filePath, 'utf8', async (error, data) => {
+	fileIndex = data;
+	app.listen(3000);
+});
 
 app.use(express.static(`${__dirname}/dist/`, { index: false }));
 
@@ -42,7 +45,7 @@ app.get('*', async (req, res) => {
 				image = `${config.SERVER_URL}${contract.icon}`;
 			}
 		} catch (err) {
-			console.log('Error: ', err.code);
+			console.warn('Error: ', err.code);
 		}
 	}
 
@@ -56,5 +59,3 @@ app.get('*', async (req, res) => {
 
 	res.send(result);
 });
-
-app.listen(3000);
