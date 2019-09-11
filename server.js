@@ -13,11 +13,6 @@ const TIMEOUT_FETCH = 3000;
 const filePath = `${__dirname}/dist/index.html`;
 let fileIndex = null;
 
-fs.readFile(filePath, 'utf8', async (error, data) => {
-	fileIndex = data;
-	app.listen(3000);
-});
-
 app.use(express.static(`${__dirname}/dist/`, { index: false }));
 
 app.get('*', async (req, res) => {
@@ -58,4 +53,9 @@ app.get('*', async (req, res) => {
 	}
 
 	res.send(result);
+});
+
+fs.readFile(filePath, 'utf8', async (error, data) => {
+	fileIndex = data;
+	app.listen(3000);
 });
