@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { NONE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import Avatar from '../Avatar';
 
@@ -20,8 +21,12 @@ class ContractDescription extends React.Component {
 	render() {
 		const { showMore } = this.state;
 		const { data } = this.props;
-		const { date, time } = FormatHelper.timestampToContractCreationTime(data.get('createdAt'));
-
+		let date = NONE_SYMBOL;
+		let time = '';
+		if (!data.get('error')) {
+			const contractCreationTime = FormatHelper.timestampToContractCreationTime(data.get('createdAt'));
+			({ date, time } = contractCreationTime);
+		}
 		return (
 			<React.Fragment>
 				<div className="created-info">
