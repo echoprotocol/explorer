@@ -54,18 +54,31 @@ class GlobalActionsClass extends BaseActionsClass {
 		};
 	}
 
+	/**
+	 * Set title browser tab
+	 * @param title
+	 * @returns {Function}
+	 */
 	setTitle(title) {
 		return (dispatch) => {
 			dispatch(this.setValue('title', title));
 		};
 	}
 
+	/**
+	 * Show not found screen
+	 * @returns {function(*=): Promise<any>}
+	 */
 	toggleErrorPath(value) {
 		return (dispatch) => {
 			dispatch(this.setValue('errorPath', value));
 		};
 	}
 
+	/**
+	 * Show error screen
+	 * @returns {function(*=): Promise<any>}
+	 */
 	toggleErrorScreen(value) {
 		return (dispatch) => {
 			dispatch(this.setValue('errorScreen', value));
