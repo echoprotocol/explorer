@@ -95,7 +95,6 @@ const blockRelease = () => async (dispatch) => {
  */
 export const connect = () => async (dispatch) => {
 	try {
-		console.log('connect');
 		await echo.connect(config.API_URL, {
 			connectionTimeout: 5000,
 			maxRetries: 1e10,
