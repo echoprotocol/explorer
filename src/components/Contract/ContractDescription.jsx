@@ -23,13 +23,10 @@ class ContractDescription extends React.Component {
 		const { data } = this.props;
 		let date = NONE_SYMBOL;
 		let time = '';
-		/* eslint-disable */
 		if (!data.get('error')) {
-			const contractCreationTim = FormatHelper.timestampToContractCreationTime(data.get('createdAt'));
-			date = contractCreationTim.date;
-			time = contractCreationTim.time;
+			const contractCreationTime = FormatHelper.timestampToContractCreationTime(data.get('createdAt'));
+			({ date, time } = contractCreationTime);
 		}
-		/* eslint-enable */
 		return (
 			<React.Fragment>
 				<div className="created-info">
