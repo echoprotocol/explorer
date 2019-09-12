@@ -177,7 +177,7 @@ class Contract extends React.Component {
 			bytecode, contractHistory, balances, match: { params: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner,
-			activeAccount,
+			activeAccount, error,
 		} = this.props;
 
 		const tabList = [
@@ -185,6 +185,7 @@ class Contract extends React.Component {
 				tab: !loading ?
 					<ContractInfo
 						dataGeneral={new Map({
+							error,
 							blockNumber,
 							creationFee,
 							type,
@@ -195,6 +196,7 @@ class Contract extends React.Component {
 							compilerVersion,
 						})}
 						dataDescription={new Map({
+							error,
 							description,
 							createdAt,
 							owner,
@@ -422,6 +424,7 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
+	error: PropTypes.string,
 	loading: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
@@ -464,6 +467,7 @@ Contract.propTypes = {
 };
 
 Contract.defaultProps = {
+	error: '',
 	loading: false,
 	isFullHistory: false,
 	loadingMoreHistory: false,
