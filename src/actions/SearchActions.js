@@ -55,6 +55,7 @@ class SearchActions extends BaseActionsClass {
 		if (!validators.isObjectId(str)) return [];
 		let section = 'Id';
 		let isAccount = false;
+		let isAsset = false;
 		let prefix = '';
 		const to = str;
 
@@ -62,6 +63,7 @@ class SearchActions extends BaseActionsClass {
 			isAccount = true;
 			section = 'Account';
 		} else if (validators.isAssetId(str)) {
+			isAsset = true;
 			section = 'Asset';
 		} else if (validators.isContractId(str)) {
 			section = 'Contract';
@@ -72,7 +74,14 @@ class SearchActions extends BaseActionsClass {
 		if (!object) throw new Error(DEFAULT_ERROR_SEARCH);
 
 		if (validators.isContractId(object.id)) {
-			const { token } = await getToken(object.id);
+			let token = null;
+
+			try {
+				// eslint-disable-next-line prefer-destructuring
+				token = (await getToken(object.id)).token;
+			} catch (err) {
+				console.warn('Error getting token by id from graphql');
+			}
 
 			if (token) {
 				section = 'ERC20 token';
@@ -85,6 +94,11 @@ class SearchActions extends BaseActionsClass {
 		if (isAccount) {
 			prefix = `${object.name} `;
 			str = `(${str})`;
+		}
+
+		if (isAsset) {
+			prefix = `${object.symbol} `;
+			str = `(${object.id})`;
 		}
 
 		const hint = [{
@@ -155,7 +169,15 @@ class SearchActions extends BaseActionsClass {
 
 		if (contract) {
 			const id = `${CONTRACT_OBJECT_PREFIX}.${str}`;
-			const { token } = await getToken(id);
+
+			let token = null;
+			try {
+				// eslint-disable-next-line prefer-destructuring
+				token = (await getToken(id)).token;
+			} catch (err) {
+				console.warn('Error getting token by id from graphql');
+			}
+
 			let section = 'Contract';
 			let prefix = `${CONTRACT_OBJECT_PREFIX}.`;
 
@@ -189,8 +211,19 @@ class SearchActions extends BaseActionsClass {
 			ApiService.searchContracts({
 				name: str,
 				limit: SEARCH_LIMIT.MAX,
+			}), new Promise(async (resolve) => {
+				let contracts = {
+					items: [],
+				};
+				try {
+					contracts = await getContractBySymbol(str.toUpperCase(), SEARCH_LIMIT.MAX);
+
+				} catch (err) {
+					console.warn('Error getting contract by name from graphql');
+				} finally {
+					resolve(contracts);
+				}
 			}),
-			getContractBySymbol(str.toUpperCase(), SEARCH_LIMIT.MAX),
 		]);
 
 		let contractHints = contractFromGraphql.items.map(({ contract, symbol }) => ({
@@ -238,7 +271,14 @@ class SearchActions extends BaseActionsClass {
 				};
 			});
 
-		const assets = await getAssetsBySymbols(SEARCH_LIMIT.MAX, str.toUpperCase());
+		let assets = {
+			items: [],
+		};
+		try {
+			assets = await getAssetsBySymbols(SEARCH_LIMIT.MAX, str.toUpperCase());
+		} catch (err) {
+			console.warn('Error getting asset by symbol from graphql');
+		}
 
 		const assetHints = assets.items.map(({ id }) => ({
 			section: 'Asset',

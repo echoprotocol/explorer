@@ -287,7 +287,8 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const producer = await echo.api.getObject(planeBlock.account);
 		value.producer = { id: producer.id, name: producer.name };
 
-		const verifiersIds = planeBlock.cert.map(({ _producer }) => `${ACCOUNT_OBJECT_PREFIX}.${_producer}`);
+		// remove after go to 0.10 testnet
+		const verifiersIds = planeBlock.cert.map(({ _producer, _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_producer || _signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
 		const { transactions } = planeBlock;
@@ -620,8 +621,8 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 
 		let blocks = getState().block.get('blocks');
 		let [...keys] = blocks.keys();
-		keys = keys.sort((a, b) => a - b)
-			.slice(0, PAGE_BLOCKS_COUNT);
+		keys = keys.sort((a, b) => b - a)
+			.slice(PAGE_BLOCKS_COUNT);
 		blocks = blocks.deleteAll(keys);
 		dispatch(BlockReducer.actions.set({ field: 'blocks', value: blocks }));
 
