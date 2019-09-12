@@ -617,7 +617,7 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		let blocks = getState().block.get('blocks');
 		let [...keys] = blocks.keys();
 		keys = keys.sort((a, b) => a - b)
-			.slice(0, PAGE_BLOCKS_COUNT);
+			.slice(PAGE_BLOCKS_COUNT);
 		blocks = blocks.deleteAll(keys);
 		dispatch(BlockReducer.actions.set({ field: 'blocks', value: blocks }));
 
