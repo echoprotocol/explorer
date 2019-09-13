@@ -18,7 +18,6 @@ import {
 	rounderSteps,
 	MIN_PERCENT_PROGRESS_BAR,
 	MAX_PERCENT_PROGRESS_BAR,
-	MS,
 	PROGRESS_STATUS,
 	DONE_STATUS,
 	PROGRESS_BAR_START_DELAY,
@@ -53,12 +52,11 @@ class PreparingSection extends React.Component {
 	}
 
 	componentDidMount() {
-		const { averageBlockTime } = this.props;
-		this.startProgressBar(averageBlockTime && averageBlockTime * MS);
+		this.startProgressBar();
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { stepProgress, averageBlockTime } = this.props;
+		const { stepProgress } = this.props;
 
 		if (stepProgress && nextProps.stepProgress !== stepProgress) {
 			if (
@@ -66,25 +64,19 @@ class PreparingSection extends React.Component {
 			) {
 				this.setVerifyingBBA(DONE_STATUS);
 				this.resetProgressBar();
-				this.startProgressBar(averageBlockTime && averageBlockTime * MS);
+				this.startProgressBar();
 			} else if (
 				(nextProps.stepProgress === GC_STARTED)
 			) {
 				this.gcStartedTimeout = setTimeout(() => {
 					clearTimeout(this.roundStartedTimeout);
 					this.setState({ status: rounderSteps[GC_STARTED].progress });
-					this.setProducing(DONE_STATUS);
-				}, GC_START_DELAY);
-			} else if (
-				(nextProps.stepProgress === DONE)
-			) {
-				setTimeout(() => {
-					if (this.state.producing === PROGRESS_STATUS) {
-						return;
+					if (nextProps.readyProducers) {
+						this.setProducing(DONE_STATUS);
 					}
-					this.setVerifyingGC(DONE_STATUS);
 				}, GC_START_DELAY);
 			} else if (nextProps.stepProgress === BBA_STARTED) {
+				this.setVerifyingGC(DONE_STATUS);
 				this.setState({ status: rounderSteps[BBA_STARTED].progress });
 			}
 		}
@@ -140,10 +132,10 @@ class PreparingSection extends React.Component {
 	startProgressBar() {
 		this.progressInterval = setInterval(() => {
 			if (this.state.status < MAX_PERCENT_PROGRESS_BAR) {
-				if (this.state.producing === PROGRESS_STATUS && this.state.status >= rounderSteps[ROUND_STARTED].maxProgress) {
+				if (this.state.verifyingGC === PROGRESS_STATUS && this.state.status >= rounderSteps[GC_STARTED].maxProgress) {
 					return;
 				}
-				if (this.state.verifyingGC === PROGRESS_STATUS && this.state.status >= rounderSteps[GC_STARTED].maxProgress) {
+				if (this.props.disconnected) {
 					return;
 				}
 				this.setState({ status: this.state.status += 1 });
@@ -268,6 +260,7 @@ PreparingSection.propTypes = {
 	readyProducers: PropTypes.number.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
 	averageBlockTime: PropTypes.number.isRequired,
+	disconnected: PropTypes.bool.isRequired,
 };
 
 export default connect(
@@ -277,6 +270,7 @@ export default connect(
 		stepProgress: state.round.get('stepProgress'),
 		readyProducers: state.round.get('readyProducers'),
 		preparingBlock: state.round.get('preparingBlock'),
+		disconnected: state.internetPopup.get('show'),
 	}),
 	() => ({}),
 )(PreparingSection);
