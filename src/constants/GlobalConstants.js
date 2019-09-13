@@ -83,3 +83,4 @@ export const MAX_WIDTH_SCREEN = 768;
 export const MIN_ACCESS_VERSION_BUILD = '0.4.0';
 
 export const NO_TRANSACTIONS = 'No transactions in recent blocks';
+export const NONE_SYMBOL = '-';

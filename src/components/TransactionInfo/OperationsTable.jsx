@@ -87,6 +87,7 @@ class OperationsTable extends React.Component {
 		const { showedOperations, airRows } = this.state;
 		const { block, transactionNum } = this.props;
 
+		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 		this.props.tableRefs[index] = React.createRef();
 
 		return (
@@ -130,10 +131,10 @@ class OperationsTable extends React.Component {
 							{ (matches) => matches && <div className="col-title">Reciever</div>}
 						</Media>
 						{
-							(mainInfo.subject && mainInfo.subject.name) ?
-								<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.subject.name)} onClick={(e) => e.stopPropagation()}>
-									{mainInfo.subject && <Avatar accountName={mainInfo.subject.name} />}
-									<span>{mainInfo.subject && mainInfo.subject.name}</span>
+							(subjectValue) ?
+								<Link className="td-in avatar-wrap" to={URLHelper.createUrlById(subjectValue)} onClick={(e) => e.stopPropagation()}>
+									{mainInfo.subject.name && <Avatar accountName={subjectValue} />}
+									<span>{subjectValue}</span>
 								</Link> : '—'
 						}
 					</td>
