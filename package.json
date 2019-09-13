@@ -1,6 +1,10 @@
 {
 	"name": "explorer",
-	"author": "PixelPlex, Inc. <info@pixelplex.by>",
+	"author": {
+		"name": "PixelPlex, Inc.",
+		"email": "info@pixelplex.io",
+		"url": "https://pixelplex.io"
+	},
 	"description": "Explorer for Echo platform",
 	"homepage": "https://github.com/echoprotocol/explorer",
 	"version": "1.0.0",
