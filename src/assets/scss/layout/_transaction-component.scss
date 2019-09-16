@@ -1,35 +1,38 @@
-.transaction.table-container {
-    @include InterUI_Regular;
-    font-size: 13px;
-    letter-spacing: 0;
-    line-height: 18px;
+.transaction.table-container,
+.table-container.contract-page {
+  @include InterUI_Regular;
+  font-size: 13px;
+  letter-spacing: 0;
+  line-height: 18px;
 
-    .underline-title {
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e2e3e7;
+  .underline-title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e3e7;
+  }
+
+  .transaction-time {
+    @include InterUI_Medium;
+    color: #828b95;
+    margin-bottom: 50px;
+
+    @include max-vw(500) {
+      padding-left: 30px;
     }
 
-    .transaction-time {
-        @include InterUI_Medium;
-        color: #828b95;
-        margin-bottom: 50px;
 
-        @include max-vw(500){
-            padding-left: 30px;
-        }
+  }
+
+  .transaction-title-operations {
+    @include InterUI_Bold;
+    font-size: 16px;
+    line-height: 27px;
+    color: #130d32;
+    margin-bottom: 30px;
+
+    @include max-vw(500) {
+      padding-left: 30px;
     }
-
-    .transaction-title-operations {
-        @include InterUI_Bold;
-        font-size: 16px;
-        line-height: 27px;
-        color: #130d32;
-        margin-bottom: 30px;
-
-        @include max-vw(500){
-            padding-left: 30px;
-        }
-    }
+  }
 
   .divTable {
     width: 980px;

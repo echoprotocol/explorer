@@ -1,306 +1,328 @@
 import React from 'react';
-import Media from 'react-media';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Media from 'react-media';
 import classnames from 'classnames';
-import InfiniteScroll from 'react-infinite-scroller';
+import _ from 'lodash';
 
-import { TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
-import URLHelper from '../../helpers/URLHelper';
-import FormatHelper from '../../helpers/FormatHelper';
-import LoadMoreBtn from '../LoadMoreBtn';
+import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
+import Avatar from '../Avatar';
+// import OperationInfo from './OperationInfo';
+// import ObjectInfo from './ObjectInfo';
+// import URLHelper from '../../helpers/URLHelper';
+// import FormatHelper from '../../helpers/FormatHelper';
 
 class TransactionsTable extends React.Component {
 
-	renderMobileViewInternalOperation(io, id, key, last) {
+	// constructor(props) {
+	// 	super(props);
+
+	// 	this.state = {
+	// 		showedOperations: [],
+	// 		airRows: [],
+	// 	};
+	// }
+
+	// componentDidMount() {
+	// 	const { showedOperations } = this.state;
+	// 	const { queryProps } = this.props;
+	// 	if (!queryProps.op) {
+	// 		return;
+	// 	}
+	// 	const op = parseInt(queryProps.op, 10);
+	// 	if (!this.props.tableRefs[op - 1]) {
+	// 		return;
+	// 	}
+	// 	showedOperations.push(op - 1);
+	// 	this.setState({ showedOperations }); // eslint-disable-line react/no-did-mount-set-state
+	// }
+
+	// componentDidUpdate(prevProps) {
+	// 	const { queryProps } = this.props;
+	// 	const { queryProps: prevQuery } = prevProps;
+
+	// 	if (!queryProps.op && prevQuery.op) {
+	// 		this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
+	// 	}
+	// }
+
+	// toggleOperationDetails(index) {
+	// 	const { url, queryProps } = this.props;
+	// 	const { showedOperations, airRows } = this.state;
+	// 	const v = showedOperations.indexOf(index);
+
+	// 	if (v !== -1) {
+	// 		showedOperations.splice(v, 1);
+
+	// 		if (queryProps.op && parseInt(queryProps.op, 10) - 1 === index) {
+	// 			this.props.history.push(url);
+	// 		}
+
+	// 		[index - 1, index].forEach((i) => {
+	// 			const airIndex = airRows.indexOf(i);
+
+	// 			if (airIndex !== -1) {
+	// 				airRows.splice(airIndex, 1);
+	// 			}
+	// 		});
+	// 	} else {
+	// 		showedOperations.push(index);
+	// 		this.props.history.push(URLHelper.createTransactionOperationUrl(url, index + 1));
+	// 	}
+
+	// 	if (showedOperations.includes(index) && airRows.indexOf(index - 1) === -1) {
+	// 		airRows.push(index - 1);
+	// 	}
+
+	// 	if (showedOperations.includes(index) && airRows.indexOf(index) === -1) {
+	// 		airRows.push(index);
+	// 	}
+
+	// 	this.setState({ showedOperations, airRows });
+	// }
+
+	renderRowOperation() {
+		// const { mainInfo, objectInfo, ...detailInfo } = operation;
+		// const { showedOperations, airRows } = this.state;
+		// const { block, transactionNum } = this.props;
+
+		// const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
+		// this.props.tableRefs[index] = React.createRef();
+
 		return (
-			<div
-				key={`${id}_${key}`}
-				className={classnames('recent-block-element', 'fade-anim', 'is-subtransfer', { 'is-subtransfer_last': key === last })}
+			<React.Fragment 
+			// key={index.toString()}
 			>
-				<div className="subtransfer-type">
-					{io.label}
-				</div>
-				<div className="line-arrow" />
-				<div className="container amount">
-					<div className="title">Amount</div>
-					<div className="value">
-						{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
-						<span className="gray">{io.value.symbol}</span>
-					</div>
-				</div>
-				<div className="container">
-					<div className="title">From</div>
-					<div className="value">
-						<Link
-							to={URLHelper.createAccountUrlByName(io.from.name)}
-							className="blue"
-						>
-							{io.from.name || io.from.id}
-						</Link>
-					</div>
-				</div>
-				<div className="container">
-					<div className="title">To</div>
-					<div className="value">
-						<Link
-							to={URLHelper.createUrlById(io.subject.name || io.subject.id)}
-							className="blue"
-						>
-							{io.subject.name || io.subject.id}
-						</Link>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	renderMobileViewOperation(data, i, j) {
-
-		const key = data.id || `${i}-${j}`;
-
-		return (
-			<React.Fragment key={key} >
-				<Link
-					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
-					className={classnames('recent-block-element', 'fade-anim', { 'with-subtransfer': data.internal && data.internal.length })}
+				<tr
+					className={classnames('view',
+					//  { active: showedOperations.includes(index)}
+					 )}
+					// onClick={() => this.toggleOperationDetails(index)}
+					// ref={this.props.tableRefs[index]}
 				>
+					<Media query="(max-width: 767px)">
+						{ (matches) => !matches && <td className="number"><div className="td-in">
+						{/* {index + 1}. */}
+						1.
+						</div></td> }
+					</Media>
+					<td className="type">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches &&
+								<React.Fragment>
 
-					<div className="container">
+									<div className="col-title">
+										<span className="index">#</span>
+										<span>Type</span>
+									</div>
+									<span className="index">
+									{/* {index + 1} */}
+									1.
+									</span>
+								</React.Fragment>
+							}
+						</Media>
+						<div className="td-in">
+						Call contract
+							{/* {operation.type} */}
+						</div>
+					</td>
 
+					<td className="time">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches && <div className="col-title">DATA, TIME</div>}
+						</Media>
+						<div className="td-in"><span>
+							12.03.19 15:43
+						</span></div>
+						
+					</td>
+
+					<td className="sender">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches && <div className="col-title">Sender</div>}
+						</Media>
+						<Link 
+						className="td-in avatar-wrap" 
+						to='#'
+						// to={URLHelper.createAccountUrl(mainInfo.from.name)} 
+						// onClick={(e) => e.stopPropagation()}
+						>
+							<Avatar 
+							// accountName={mainInfo.from.name} 
+							/>
+							<span>
+							{/* {mainInfo.from.name} */}
+							gauto01
+							</span>
+						</Link>
+					</td>
+					<td className="reciever">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches && <div className="col-title">Reciever</div>}
+						</Media>
 						{
-							j === 0 &&
-							<React.Fragment>
-								<div className="title">Time</div>
-								<div className="value">{this.props.isBlockTable ? this.props.blockTime : (data.timestamp || i + 1)}</div>
-							</React.Fragment>
+							// (subjectValue) ?
+								<Link 
+								className="td-in avatar-wrap"
+								to='#'
+								// to={URLHelper.createUrlById(subjectValue)} 
+								// onClick={(e) => e.stopPropagation()}
+								>
+									{/* {mainInfo.subject.name && <Avatar accountName={subjectValue} />} */}
+									<span>
+									{/* {subjectValue} */}
+									—
+									</span>
+								</Link> 
+								// : '—'
 						}
-					</div>
-					<div className="container">
-						<div className="title">Type</div>
-						<div className="value">{data.name}</div>
-					</div>
-					<div className="container">
-						<div className="title">From</div>
-						<div className="value"><div className="blue">{data.from.name || data.from.id}</div></div>
-					</div>
-					<div className="container">
-						<div className="title">To</div>
-						<div className="value"><div className="blue">{data.subject.name || data.subject.id}</div></div>
-					</div>
-					<div className="container amount">
-						<div className="title">Amount</div>
-						<div className="value">
-							{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)}
-							<span className="gray">&#32;{data.value.symbol}</span>
+					</td>
+					<td className="amount">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches && <div className="col-title">Amount</div>}
+						</Media>
+						{
+							// mainInfo.value.amount ?
+								<div className="td-in">
+									<span
+										className="value"
+									>
+									532.000082..
+									{/* {FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)} */}
+									</span>
+									<span className="currency">
+									ECHO
+									{/* {mainInfo.value.symbol} */}
+									</span>
+								</div> 
+								// : '—'
+						}
+					</td>
+					<td className="rezult">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches && <div className="col-title">Result</div>}
+						</Media>
+						{
+							// (mainInfo.result && !_.isEmpty(mainInfo.result)) ?
+								<Link
+								to='#'
+								// to={URLHelper.createUrlById(mainInfo.result)} 
+								className="td-in" 
+								// onClick={(e) => e.stopPropagation()}
+								>
+								{/* {mainInfo.result} */}
+								1.15.3
+								</Link>
+								// : '—'
+						}
+					</td>
+					<td className="json">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches && <div className="col-title">Json</div>}
+						</Media><Link
+							to='#'
+							// to={URLHelper.createOperationObjectsUrl(block, transactionNum, index + 1)}
+							// onClick={(e) => e.stopPropagation()}
+							className="td-in"
+						/>
+					</td>
+					<td className="dd">
+						<div className="td-in">
+							<img src={ddIcon} alt="" />
 						</div>
-					</div>
-					<div className="container">
-						<div className="title">Fee amount</div>
-						<div className="value">
-							{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)}
-							<span className="gray">&#32;{data.fee.symbol}</span>
-						</div>
-					</div>
-					<div className={`container ${(data.status ? '' : ('fail'))}`}>
-						<div className="title">Status</div>
-						<div className="value">{data.status ? 'Success' : 'Fail'}</div>
-					</div>
-				</Link>
-				{
-					data.internal && data.internal.length ?
-						(data.internal.map((io, l) => (
-							this.renderMobileViewInternalOperation(io, key, l, data.internal.length - 1)
-						))
-						) : null
-				}
+					</td>
+				</tr>
+				{/* {
+					// showedOperations.includes(index) &&
+					<tr className="fold">
+						<Media query="(max-width: 767px)">
+							{(matches) => !matches && <td />}
+						</Media>
+
+						<Media query="(max-width: 1000px)">
+							{
+								(matches) => (
+									<React.Fragment>
+										<td colSpan={!matches ? 7 : 6}>
+											<OperationInfo details={detailInfo} index={index} />
+											<ObjectInfo details={detailInfo} object={objectInfo} />
+										</td>
+										<Media query="(max-width: 767px)">
+											{(matchesIn) => !matchesIn && <td />}
+										</Media>
+									</React.Fragment>
+								)
+							}
+						</Media>
+					</tr>
+				} 
+				 {
+					airRows.includes(index) &&
+					<tr className="air">
+						<td colSpan="9" />
+					</tr>
+				} */}
 			</React.Fragment>
-		);
-	}
-
-	renderMobileView(transactions) {
-		return (
-			<div className="recent-block-mobile-view">
-				{transactions.map((operations, i) => operations.map((data, j) => this.renderMobileViewOperation(data, i, j)))}
-			</div>
-		);
-	}
-
-	renderInternalOperation(io, id, key) {
-		return (
-			<div key={`${id}_${key}`} className="divTableRow  fade-anim">
-				<div className="divTableCell" />
-				<div className="divTableCell" />
-				<div className="divTableCell">
-					<Link to={URLHelper.createAccountUrlByName(io.from.name)} className="inner-container">
-						<div className="blue">{io.from.name || io.from.id}</div>
-					</Link>
-				</div>
-				<div className="divTableCell transaction-to">
-					<div className="inner-container">
-						<div className="line-arrow" />
-						<Link to={URLHelper.createUrlById(io.subject.name || io.subject.id)}>
-							<div className="blue">{io.subject.name || io.subject.id}</div>
-						</Link>
-					</div>
-				</div>
-				<div className="divTableCell">
-					<div className="inner-container">
-						{FormatHelper.formatAmount(io.value.amount, io.value.precision)}
-						<span className="gray">{` ${io.value.symbol}`}</span>
-						<div className="subtransfer-type">{io.label}</div>
-					</div>
-				</div>
-				<div className="divTableCell" />
-				<div className="divTableCell success" />
-			</div>
-		);
-	}
-
-	renderTableOperation(data, i, j) {
-
-		const key = data.id || `${i}-${j}`;
-		const { onLink } = this.props;
-
-		return (
-			<React.Fragment key={key}>
-				<Link
-					to={TRANSACTION_INFORMATION_PATH.replace(/:round/, data.round).replace(/:index/, data.trIndex + 1)}
-					className="divTableRow fade-anim"
-				>
-					{
-						j === 0 &&
-							<div className="divTableCell">{this.props.isBlockTable ? this.props.blockTime : (data.timestamp || i + 1)}</div>
-					}
-					<div className="divTableCell">{data.name}</div>
-					<div className="divTableCell">
-						<div className="inner-container">
-							<button
-								className="blue"
-								onClick={(e) => { onLink(e, URLHelper.createAccountUrlByName(data.from.name)); }}
-							>
-								{data.from.name || data.from.id}
-							</button>
-						</div>
-					</div>
-					<div className="divTableCell transaction-to">
-						<div className="inner-container">
-							<button
-								className="blue"
-								onClick={(e) => { onLink(e, URLHelper.createUrlById(data.subject.name || data.subject.id)); }}
-							>
-								{data.subject.name || data.subject.id}
-							</button>
-						</div>
-					</div>
-					<div className="divTableCell">
-						{data.value.amount && FormatHelper.formatAmount(data.value.amount, data.value.precision)}
-						<span className="gray">&#32;{data.value.symbol}</span>
-					</div>
-					<div className="divTableCell">
-						{FormatHelper.formatAmount(data.fee.amount, data.fee.precision)}
-						<span className="gray">&#32;{data.fee.symbol}</span>
-					</div>
-					<div className={classnames('divTableCell', { fail: !data.status })}>
-						{data.status ? 'Success' : 'Fail'}
-					</div>
-				</Link>
-				{
-					data.internal && data.internal.length ?
-						data.internal.map((io, k) => (
-							this.renderInternalOperation(io, key, k)
-						)) : null
-				}
-			</React.Fragment>
-		);
-	}
-
-	renderTable(transactions) {
-		return (
-			<React.Fragment>
-				<div className={`divTable ${!this.props.loadMore ? 'n-l-more' : ''}`}>
-					<div className="divTableBody">
-						<div className="TableHeading">
-							<div className="divTableCell">Time</div>
-							<div className="divTableCell">Type</div>
-							<div className="divTableCell">From</div>
-							<div className="divTableCell">To</div>
-							<div className="divTableCell">Amount</div>
-							<div className="divTableCell">Fee amount</div>
-							<div className="divTableCell">Status</div>
-						</div>
-						<div className="divider" />
-						{transactions.map((operations, i) => operations.map((data, j) => this.renderTableOperation(data, i, j)))}
-					</div>
-				</div>
-			</React.Fragment>
-		);
-
-	}
-
-	renderTables() {
-		const {
-			transactions, objectId, loading, hasMore, isBlockTable,
-		} = this.props;
-		const trs = isBlockTable ? transactions.reverse() : transactions;
-
-		return (
-			<div className="table">
-				<Media query="(max-width: 767px)">
-					{(matches) => (
-						matches ?
-							this.renderMobileView(trs, objectId) :
-							this.renderTable(trs, objectId)
-					)}
-				</Media>
-				{
-					hasMore ?
-						<LoadMoreBtn
-							title="Load more transactions"
-							loading={loading}
-							loadMore={() => this.props.loadMore()}
-						/> : null
-				}
-			</div>
 		);
 	}
 
 	render() {
-		const { hasMore, loadMore } = this.props;
-
+		// const { operations } = this.props;
 
 		return (
-			loadMore ?
-				<InfiniteScroll loadMore={() => this.props.loadMore()} hasMore={hasMore} >
-					{this.renderTables()}
-				</InfiniteScroll> :
-				this.renderTables()
+			<div className="accordion-table-wrap table-contract">
+				<table>
+					<Media query="(max-width: 767px)">
+						{ (matches) => !matches &&
+							<thead>
+								<tr>
+									<td className="number"><div className="td-in">#</div></td>
+									<td className="type"><div className="td-in">Type</div></td>
+									<td className="time"><div className="td-in">data, time</div></td>
+									<td className="sender"><div className="td-in">Sender</div></td>
+									<td className="reciever"><div className="td-in">Reciever</div></td>
+									<td className="amount"><div className="td-in">Amount</div></td>
+								 	<td className="rezult"><div className="td-in">Result</div></td>
+									<td className="json"><div className="td-in">JSON</div></td>
+									<td className="dd" />
+								</tr>
+							</thead>
+
+						}
+					</Media>
+
+
+					<tbody>
+						<Media query="(max-width: 767px)">
+							{
+								(matches) =>
+									(!matches &&
+									<tr className="air">
+										<td colSpan="9" />
+									</tr>)
+							}
+						</Media>
+						{this.renderRowOperation()}
+						{/* {operations ? operations.map((op, i) => this.renderRowOperation(op, i)) : null} */}
+					</tbody>
+				</table>
+			</div>
 		);
 	}
 
 }
 
-TransactionsTable.propTypes = {
-	isBlockTable: PropTypes.bool,
-	hasMore: PropTypes.bool,
-	transactions: PropTypes.any,
-	objectId: PropTypes.string,
-	blockTime: PropTypes.string,
-	loading: PropTypes.bool,
-	loadMore: PropTypes.func,
-	onLink: PropTypes.func,
-};
 
-TransactionsTable.defaultProps = {
-	isBlockTable: false,
-	hasMore: false,
-	loading: false,
-	blockTime: '',
-	loadMore: null,
-	onLink: null,
-	objectId: null,
-	transactions: [],
-};
+// TransactionsTable.propTypes = {
+// 	block: PropTypes.string.isRequired,
+// 	transactionNum: PropTypes.string.isRequired,
+// 	url: PropTypes.string.isRequired,
+// 	tableRefs: PropTypes.array.isRequired,
+// 	operations: PropTypes.object.isRequired,
+// 	history: PropTypes.object.isRequired,
+// 	queryProps: PropTypes.object.isRequired,
+// };
 
 export default TransactionsTable;

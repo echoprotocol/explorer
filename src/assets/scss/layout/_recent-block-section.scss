@@ -45,12 +45,14 @@
         position: relative;
         padding-bottom: 37px;
         flex-shrink: 0;
-		@include min-vw(1279) {
-			padding-left: 30px;
-		}
+
+        @include max-vw(1279) {
+            padding-left: 30px;
+        }
+
         .checkbox {
-          margin-bottom: 20px;
-          padding-left: 30px;
+            margin-bottom: 20px;
+            padding-left: 30px;
         }
 
         &.recent-block-table {
@@ -61,7 +63,7 @@
                 }
 
                 .checkbox {
-                  padding-left: 30px;
+                    padding-left: 30px;
                 }
             }
         }
@@ -74,12 +76,12 @@
 
         @include res-1000 {
             width: 100%;
-            padding-left: 0;
+            // padding-left: 0;
             padding-right: 0;
             min-height: calc(100vh - 397px);
 
             .checkbox {
-              padding-left: 0;
+                padding-left: 0;
             }
         }
 
@@ -93,13 +95,17 @@
             min-height: calc(100vh - 511px);
         }
 
-      @include res-320 {
-        padding-top: 45px;
+        @include res-320 {
+            padding-top: 45px;
 
-        & > .checkbox {
-          margin-bottom: 20px;
+            &>.checkbox {
+                margin-bottom: 20px;
+            }
         }
-      }
+
+        @include max-vw(360) {
+            padding-left: 0;
+        }
 
         &:before {
             content: '';
@@ -182,6 +188,7 @@
                     margin-right: 0;
                     background-color: #f3f2f5;
                 }
+
                 &.small {
                     &.is-active-small {
                         @include res-500 {
@@ -361,6 +368,7 @@
             width: 100%;
             padding: 0 10px 0 10px;
         }
+
         .recent-block-element {
             @include InterUI_Medium;
             background-color: #e7e7e9;
@@ -382,6 +390,7 @@
                     from {
                         opacity: 0;
                     }
+
                     to {
                         opacity: 1;
                     }
@@ -409,6 +418,7 @@
                     color: #828b95;
                     margin-bottom: 12px;
                 }
+
                 .value {
                     color: #0f0739;
                     font-size: 12px;
@@ -442,6 +452,7 @@
             padding-left: 0;
             padding-top: 30px;
         }
+
         @include min-vw(1279) {
             display: flex;
             flex-direction: column;
@@ -488,6 +499,7 @@
         .info-container {
             padding-top: 60px;
             padding-bottom: 30px;
+
             .version {
                 @include InterUI_Medium;
                 color: #828b95;
@@ -497,6 +509,7 @@
                 letter-spacing: 0.3px;
                 margin-bottom: 18px;
             }
+
             .copyright {
                 @include Hack_Bold;
                 text-transform: uppercase;
@@ -525,7 +538,8 @@
                 width: 250px;
                 margin-bottom: 20px;
 
-                &:first-child, &:nth-child(2) {
+                &:first-child,
+                &:nth-child(2) {
                     padding-bottom: 5px;
                     margin-bottom: 29px;
                     border-bottom: 1px solid #e2e3e7;
@@ -537,6 +551,7 @@
             }
 
             @include max-vw(460) {
+
                 &:first-child,
                 &:nth-child(2),
                 &:nth-child(3) {
@@ -544,6 +559,7 @@
                     margin-bottom: 29px;
                     border-bottom: 1px solid #e2e3e7;
                 }
+
                 width: 100%;
                 max-width: 100%;
             }
@@ -572,6 +588,7 @@
                     padding-right: 0;
                     width: 100%;
                 }
+
                 @include max-vw(460) {
                     height: auto;
                     padding-left: 30px;
@@ -603,6 +620,7 @@
                     padding-bottom: 26px;
                     width: 100%;
                 }
+
                 @include max-vw(460) {
                     padding-left: 30px;
                     padding-right: 30px;
