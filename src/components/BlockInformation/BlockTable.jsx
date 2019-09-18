@@ -244,14 +244,12 @@ class BlockTable extends React.Component {
 					<td />
 				</tr>
 				<tr className="fold">
-					<Media query="(max-width: 767px)">
-						{(matches) => !matches && <td colSpan="2" />}
-					</Media>
+					<td colSpan="2" />
 					<Media query="(max-width: 1000px)">
 						{
 							(matches) => (
 								<React.Fragment>
-									<td colSpan={!matches ? 9 : 8}>
+									<td colSpan={!matches ? 8 : 7}>
 										<div className="fold-operation-info">
 											<div className="fold-title">Operation info</div>
 											<div className="operation-detail-table">
@@ -288,12 +286,8 @@ class BlockTable extends React.Component {
 													<div className="od-col">amount</div><div className="od-col">1 ECHO</div>
 												</div>
 											</div>
-										</div><div className="fold-operation-info" />
+										</div>
 									</td>
-									<td />
-									<Media query="(max-width: 767px)">
-										{(matchesIn) => !matchesIn && <td />}
-									</Media>
 								</React.Fragment>
 							)
 						}

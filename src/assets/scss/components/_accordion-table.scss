@@ -25,6 +25,16 @@
                 width: 13px;
                 min-width: 13px;
             }
+
+            @include res-768 {
+
+                &:first-child,
+                &:last-child {
+                    max-width: 8px;
+                    width: 8px;
+                    min-width: 8px;
+                }
+            }
         }
     }
 
@@ -55,6 +65,7 @@
 
     .air {
         background-color: transparent;
+        height: 8px;
 
         &:hover {
             background-color: transparent;
@@ -62,7 +73,6 @@
 
         td {
             height: 8px;
-
         }
     }
 
@@ -81,6 +91,8 @@
 
     .dd {
         img {
+            margin: auto 1px;
+            display: block;
             transform: rotate(60deg);
             transition: transform .2s;
         }
@@ -95,7 +107,7 @@
         &:hover:not(.active) {
 
             td:not(:first-child):not(:last-child) {
-                background-color: #ebebee;
+                background-color: #e0dfe3;
             }
 
             .json {
@@ -169,7 +181,7 @@
             }
 
             &:nth-child(2) {
-                padding: 15px 7px;
+                padding: 15px 30px;
             }
         }
 
@@ -455,7 +467,7 @@
         }
 
         .fold-operation-info {
-            padding: 20px 22px;
+            padding: 0px 7px;
             width: 100%;
         }
     }
@@ -474,6 +486,14 @@
                     margin-bottom: 28px;
                 }
             }
+        }
+
+        .fold-operation-info {
+            padding: 0px;
+        }
+
+        .fold>td:nth-child(2) {
+            padding: 15px 16px;
         }
     }
 }
@@ -525,7 +545,7 @@
         table {
             thead {
                 tr {
-                    line-height: 10px;
+
                     letter-spacing: 2.25px;
                 }
 
@@ -755,9 +775,9 @@
                         }
 
                         @include max-vw(1280) {
-                            max-width: 15px;
-                            width: 15px;
-                            min-width: 15px;
+                            max-width: 25px;
+                            width: 25px;
+                            min-width: 25px;
                         }
 
                         @include max-vw(768) {

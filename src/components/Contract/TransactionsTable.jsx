@@ -94,7 +94,7 @@ class TransactionsTable extends React.Component {
 			<React.Fragment>
 				{/* key={index.toString()} */}
 				<tr
-					className={classnames('view')}
+					className={classnames('view active')}
 					// { active: showedOperations.includes(index)}
 					// onClick={() => this.toggleOperationDetails(index)}
 					// ref={this.props.tableRefs[index]}
@@ -231,7 +231,104 @@ class TransactionsTable extends React.Component {
 						</div>
 					</td>
 					<td />
+					
 				</tr>
+				
+				<tr class="fold">
+					<td />
+					<Media query="(max-width: 1000px)">
+							{
+								(matches) => (
+								<React.Fragment>										
+										<td colSpan={!matches ? 9 : 8}>
+											<div class="fold-operation-info">
+												<div class="fold-title">Operation info</div>
+												<div class="operation-detail-table">
+													<div class="od-row">
+														<div class="od-col">type</div>
+														<div class="od-col">Contract call</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">fee</div>
+														<div class="od-col">0.00000223 ECHO</div>
+													</div>
+														<div class="od-row">
+															<div class="od-col">registrar</div>
+															<div class="od-col"><a class="avatar-wrap" href="/accounts/1.2.80/info"><span>sdasd-asd</span></a></div>
+														</div>
+													<div class="od-row">
+														<div class="od-col">value</div>
+														<div class="od-col">0 ECHO</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">bytecode</div>
+														<div class="od-col">
+															<div class="mono">5c19a95c0000000000000000000000000000000000000000000000000000000000000001</div>
+															<button class="copy-bytecode">Copy</button>
+														</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">contract id</div>
+														<div class="od-col"><a class="" href="/contracts/1.9.1/info/"><span>1.9.1</span></a></div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">token transfers</div>
+														<div class="od-col">
+															<div class="token-transfer-table"></div>
+														</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">excepted</div>
+														<div class="od-col">None</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">code deposit</div>
+														<div class="od-col">None</div>
+													</div>
+												</div>
+											</div>
+											<div class="fold-operation-info">
+												<div class="fold-title">Object: contract</div>
+												<div class="operation-detail-table">
+													<div class="od-row"><div class="od-col">ID:</div>
+													<div class="od-col"><a href="/contracts/1.9.1/info/">1.9.1</a></div>
+												</div>
+													<div class="od-row">
+														<div class="od-col">Contract type:</div>
+														<div class="od-col">—</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">Supported asset:</div>
+														<div class="od-col">None</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">Eth Accuracy:</div>
+														<div class="od-col">No</div>
+													</div>
+													<div class="od-row">
+														<div class="od-col">ERC20:</div>
+														<div class="od-col">No</div>
+													</div>
+													<div class="od-row bytecode">
+														<div class="od-col">Bytecode:<button class="copy-bytecode">Copy code</button></div>
+														<div class="od-col">
+															<div class="mono">608060405260043610610062576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680635c19a95c14610067578063609ff1bd146100aa5780639e7b8d61146100db578063b3f98adc1461011e575b600080fd5b34801561007357600080fd5b506100a8600480360381019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061014e565b005b3480156100b657600080fd5b506100bf6104a0565b604051808260ff1660ff16815260200191505060405180910390f35b3480156100e757600080fd5b5061011c600480360381019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061051c565b005b34801561012a57600080fd5b5061014c60048036..</div>
+															<button class="text-button">Expand</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>										
+									</React.Fragment>
+								)
+							}
+						</Media>
+						<td />
+								</tr>
+				{/* airRows.includes(index) && */}
+					<tr className="air">
+						<td colSpan="9" />
+					</tr>
 				{/* {
 					// showedOperations.includes(index) &&
 					<tr className="fold">
@@ -257,12 +354,7 @@ class TransactionsTable extends React.Component {
 						</Media>
 					</tr>
 				}
-				 {
-					airRows.includes(index) &&
-					<tr className="air">
-						<td colSpan="9" />
-					</tr>
-				} */}
+				 */}
 			</React.Fragment>
 		);
 	}
