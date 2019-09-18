@@ -18,6 +18,7 @@ import {
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	ECHO_ASSET,
 	NATHAN,
+	NETWORK_CONNECTED_ERROR,
 } from '../constants/GlobalConstants';
 import {
 	ACCOUNT_OBJECT_PREFIX,
@@ -32,6 +33,7 @@ import TypesHelper from '../helpers/TypesHelper';
 import GlobalActions from './GlobalActions';
 
 import LocalStorageService from '../services/LocalStorageService';
+import GlobalReducer from '../reducers/GlobalReducer';
 
 /**
  *
@@ -263,7 +265,15 @@ export const formatOperation = async (
  */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
-		const planeBlock = await echo.api.getBlock(round);
+		let planeBlock = null;
+		try {
+			planeBlock = await echo.api.getBlock(round);
+		} catch (err) {
+			dispatch(GlobalReducer.actions.set({ field: 'error', value: NETWORK_CONNECTED_ERROR }));
+			dispatch(GlobalActions.toggleErrorScreen(true));
+			return;
+		}
+
 		if (!planeBlock) {
 			dispatch(GlobalActions.toggleErrorPath(true));
 			return;
