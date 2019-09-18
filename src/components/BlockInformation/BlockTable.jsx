@@ -94,7 +94,7 @@ class BlockTable extends React.Component {
 			<React.Fragment>
 				{/* key={index.toString()} */}
 				<tr
-					className={classnames('view')}
+					className={classnames('view active')}
 					// { active: showedOperations.includes(index)}
 					// onClick={() => this.toggleOperationDetails(index)}
 					// ref={this.props.tableRefs[index]}
@@ -242,6 +242,66 @@ class BlockTable extends React.Component {
 						</div>
 					</td>
 					<td />
+				</tr>
+				<tr className="fold">
+					<Media query="(max-width: 767px)">
+						{(matches) => !matches && <td colSpan="2" />}
+					</Media>
+					<Media query="(max-width: 1000px)">
+						{
+							(matches) => (
+								<React.Fragment>
+									<td colSpan={!matches ? 9 : 8}>
+										<div className="fold-operation-info">
+											<div className="fold-title">Operation info</div>
+											<div className="operation-detail-table">
+												<div className="od-row">
+													<div className="od-col">type</div>
+													<div className="od-col">Transfer</div>
+												</div>
+												<div className="od-row">
+													<div className="od-col">fee</div><div className="od-col">0.0000002 ECHO</div>
+												</div>
+												<div className="od-row">
+													<div className="od-col">from</div>
+													<div className="od-col">
+														<a className="avatar-wrap" href="/accounts/1.2.131/info">
+															<div className="avatar-image">
+																<div />
+															</div>
+															<span>test17</span>
+														</a>
+													</div>
+												</div>
+												<div className="od-row">
+													<div className="od-col">to</div>
+													<div className="od-col">
+														<a className="avatar-wrap" href="/accounts/1.2.352/info">
+															<div className="avatar-image">
+																<div />
+															</div>
+															<span>n</span>
+														</a>
+													</div>
+												</div>
+												<div className="od-row">
+													<div className="od-col">amount</div><div className="od-col">1 ECHO</div>
+												</div>
+											</div>
+										</div><div className="fold-operation-info" />
+									</td>
+									<td />
+									<Media query="(max-width: 767px)">
+										{(matchesIn) => !matchesIn && <td />}
+									</Media>
+								</React.Fragment>
+							)
+						}
+					</Media>
+
+				</tr>
+				<tr className="air">
+					<td colSpan="9" />
 				</tr>
 				{/* {
 					// showedOperations.includes(index) &&
