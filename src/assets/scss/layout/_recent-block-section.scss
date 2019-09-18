@@ -1,5 +1,5 @@
 .recent-block-section {
-    padding-top: 25px;
+    padding-top: 18px;
     background-color: #fff;
 
     .title-no-transactions {
@@ -36,10 +36,10 @@
     }
 
     .table-container {
-        width: 1015px;
-        padding-right: 70px;
+        width: 1010px;
+        padding-right: 30px;
         padding-top: 37px;
-        min-height: calc(100vh - 275px);
+        min-height: calc(100vh - 290px);
         padding-left: 0;
         background-color: #f3f2f5;
         position: relative;
@@ -47,7 +47,7 @@
         flex-shrink: 0;
 
         @include max-vw(1279) {
-            padding-left: 30px;
+            min-height: calc(100vh - 403px);
         }
 
         .checkbox {
@@ -70,7 +70,7 @@
 
         @include res-1280 {
             padding-right: 30px;
-            width: 830px;
+            width: 867px;
             flex-shrink: 0;
         }
 
@@ -78,7 +78,7 @@
             width: 100%;
             // padding-left: 0;
             padding-right: 0;
-            min-height: calc(100vh - 397px);
+            min-height: calc(100vh - 377px);
 
             .checkbox {
                 padding-left: 0;
@@ -87,12 +87,11 @@
 
         @include res-768 {
             padding-top: 50px;
-            min-height: calc(100vh - 484px);
         }
 
         @include res-500 {
             padding-top: 40px;
-            min-height: calc(100vh - 511px);
+            min-height: calc(100vh - 487px);
         }
 
         @include res-320 {
@@ -453,30 +452,24 @@
             padding-top: 30px;
         }
 
-        @include min-vw(1279) {
+        @include max-vw(1000) {
+            padding: 30px 18px 5px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-        }
 
-
-        @include max-vw(1000) {
-            padding-bottom: 28px;
-            padding-top: 28px;
         }
 
         @include max-vw(768) {
-            padding: 30px 0 30px;
+            padding: 28px 18px 7px;
         }
 
-
-        @include max-vw(499) {
-            padding: 12px 30px 25px;
+        @include max-vw(500) {
+            width: calc(100% + 40px);
+            padding: 0px;
+            margin: 0 -20px;
         }
 
-        @include max-vw(460) {
-            padding: 12px 0 25px;
-        }
 
         .help-container {
             width: 360px;
@@ -491,7 +484,7 @@
                 justify-content: space-between;
             }
 
-            @include max-vw(1000) {
+            @include max-vw(768) {
                 flex-wrap: wrap;
             }
         }
@@ -527,16 +520,20 @@
             @include max-vw(1279) {
                 border-bottom: none;
                 max-width: 250px;
+                min-width: 167px;
                 margin-bottom: 30px;
             }
 
-            @include max-vw(1000) {
+            @include max-vw(1279) {
                 padding-bottom: 0px;
                 display: flex;
                 flex-direction: column-reverse;
                 justify-content: space-between;
-                width: 250px;
                 margin-bottom: 20px;
+            }
+
+            @include max-vw(768) {
+                min-width: 250px;
 
                 &:first-child,
                 &:nth-child(2) {
@@ -546,20 +543,23 @@
                 }
             }
 
-            @include max-vw(768) {
-                width: 180px;
+            @include max-vw(580) {
+                min-width: 180px;
+                max-width: 250px;
             }
 
-            @include max-vw(460) {
+            @include max-vw(500) {
 
                 &:first-child,
                 &:nth-child(2),
                 &:nth-child(3) {
                     padding-bottom: 26px;
-                    margin-bottom: 29px;
+                    margin-bottom: 2px;
                     border-bottom: 1px solid #e2e3e7;
                 }
 
+                padding-left: 35px;
+                flex-direction: column;
                 width: 100%;
                 max-width: 100%;
             }
@@ -571,12 +571,12 @@
                 line-height: 15px;
                 margin-bottom: 10px;
                 color: #130d32;
+                text-transform: uppercase;
 
                 @include max-vw(1279) {
                     margin-bottom: 20px;
-                }
-
-                @include max-vw(1000) {
+                    font-size: 9px;
+                    letter-spacing: 2.25px;
                     line-height: 16px;
                     margin-bottom: 0;
                     height: 35px;
@@ -585,16 +585,12 @@
                 @include max-vw(500) {
                     margin: 0 0 auto;
                     padding-left: 0;
-                    padding-right: 0;
-                    width: 100%;
-                }
-
-                @include max-vw(460) {
-                    height: auto;
-                    padding-left: 30px;
                     padding-right: 30px;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                    width: 100%;
+                    height: auto;
                 }
-
             }
 
             .value {
@@ -610,20 +606,19 @@
 
                 @include max-vw(1000) {
                     line-height: 21px;
-                    margin-bottom: 21px;
+                    margin-bottom: 22px;
+                }
+
+                @include max-vw(768) {
+                    margin-bottom: 27px;
                 }
 
                 @include max-vw(500) {
                     margin: 0 auto;
-                    padding-left: 0;
-                    padding-right: 0;
-                    padding-bottom: 26px;
-                    width: 100%;
-                }
-
-                @include max-vw(460) {
-                    padding-left: 30px;
                     padding-right: 30px;
+                    padding-bottom: 8px;
+                    width: 100%;
+
                 }
 
                 .sm {

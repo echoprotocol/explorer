@@ -6,11 +6,13 @@
             transform: translate3d(0, 0, 0) !important;
         }
     }
+
     @include min-res-768 {
         .scroll-menu-arrow {
             display: none;
         }
     }
+
     .scroll-menu-arrow {
         &.disabled {
             display: none;
@@ -21,19 +23,23 @@
 .horizontal-tab-panel {
     .slick-slider {
         max-width: 798px;
+
         @include res-500 {
             width: auto;
+            padding-left: 10px;
         }
     }
+
     .slick-slide {
-        height: 26px;
+        height: 27px;
+
         &:not(:first-child) {
             .menu-item {
                 margin-left: -3px;
             }
         }
 
-        & > div {
+        &>div {
             width: 100%;
             display: flex;
             align-items: center;
@@ -49,7 +55,7 @@
                     opacity: 0.7;
                     display: block;
                     position: absolute;
-					right: 0;
+                    right: 0;
                     top: 0;
                     bottom: 0;
                     margin: auto;
@@ -59,12 +65,13 @@
     }
 
     .menu-item {
-		height: 26px;
+        height: 26px;
         z-index: 1;
         background-color: transparent;
         border-top: 2px solid transparent;
         transition: border .2s;
         position: relative;
+
         &:not(.active) {
             a:focus {
                 .menu-item-content {
@@ -73,37 +80,40 @@
                 }
             }
         }
+
         a {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-			padding: 0 10px;
+            padding: 0 10px;
             height: 100%;
 
             .menu-item-content {
                 @include InterUI_Regular;
                 border-radius: 3px;
                 background-color: transparent;
-				padding: 1px 4px 2px;
+                padding: 1px 4px 2px;
                 white-space: nowrap;
                 cursor: pointer;
                 font-size: 13px;
                 align-items: center;
                 color: rgba(0, 0, 0, 0.5);
+                letter-spacing: 0.33px;
             }
         }
 
         &:hover:not(.active) {
             background-color: transparent;
+
             a {
                 .menu-item-content {
                     background-color: #CECCD2;
                     color: #000;
                 }
-
             }
         }
+
         &:active:not(.active) {
             a {
                 .menu-item-content {
@@ -114,8 +124,9 @@
 
         &.active {
             background-color: #F3F2F5;
-			border-top: 2px solid #498FDF;
-			&:before {
+            border-top: 2px solid #498FDF;
+
+            &:before {
                 content: "";
                 width: 2px;
                 height: 2px;

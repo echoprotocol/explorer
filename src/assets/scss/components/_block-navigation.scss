@@ -1,21 +1,24 @@
 .block-navigation-wrap {
     position: relative;
+
     .block-navigation {
         position: absolute;
         right: 0;
         top: 0;
         display: flex;
         align-items: center;
+
         @include max-vw(500) {
             right: 15px;
         }
+
         button {
             display: inline-flex;
             font-family: "Hack";
             font-weight: 700;
             font-style: normal;
-            font-size: 10px;
-            letter-spacing: 0.250em;
+            font-size: 9px;
+            letter-spacing: 2.25px;
             text-transform: uppercase;
             padding-top: 5px;
             padding-bottom: 5px;
@@ -25,9 +28,11 @@
             position: relative;
             align-items: center;
             color: #2a90e6;
+
             span {
                 margin-left: 8px;
             }
+
             @include max-vw(450) {
                 span {
                     display: none;
@@ -40,6 +45,7 @@
 
             &:hover {
                 color: #095494;
+
                 &:before,
                 &:after {
                     background-image: url(../images/icons/nav-arrow-active-hover.svg);
@@ -50,13 +56,16 @@
             &:after {
                 background-image: url(../images/icons/nav-arrow-active.svg);
             }
+
             &:active {
                 color: #fb0707;
+
                 &:before,
                 &:after {
                     background-image: url(../images/icons/nav-arrow-active-active.svg);
                 }
             }
+
             &[disabled] {
                 color: #828b95;
 
@@ -86,6 +95,7 @@
                     margin-right: 9px;
                 }
             }
+
             &.next {
                 margin-left: 14px;
 
@@ -94,6 +104,7 @@
                         transform: rotate(180deg);
                     }
                 }
+
                 &:after {
                     margin-top: -1px;
                     display: block;
@@ -105,5 +116,9 @@
             }
 
         }
+    }
+
+    @include res-320 {
+        margin-bottom: 35px;
     }
 }

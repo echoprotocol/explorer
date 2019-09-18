@@ -1,19 +1,7 @@
 .table-container.contract-page {
     .react-tabs {
-        margin-top: 15px;
-
-        @include res-1000 {
-            width: 900px;
-            margin: auto;
-        }
-
-        @include res-768 {
-            width: 668px;
-        }
-
-        @include res-500 {
-            width: 100%;
-        }
+        margin-top: 40px;
+        margin: auto;
 
         .tab-head {
             position: relative;
@@ -23,10 +11,10 @@
                 background-color: #E8E7EB;
                 content: '';
                 position: absolute;
-                top: -40px;
+                top: -58px;
                 bottom: 0;
                 left: -1000px;
-                right: -70px;
+                right: -30px;
                 z-index: 0;
 
                 @include res-1280 {
@@ -34,20 +22,57 @@
                 }
 
                 @include res-1000 {
-                    top: -25px;
                     right: -1000px;
+                    top: -58px;
                 }
 
-                @include max-vw(380) {
-                    top: -35px;
+                @include res-500 {
+                    top: -8px;
+                }
+
+                @include res-320 {
+                    top: -8px;
                 }
             }
 
+            @include max-vw(380) {
+                padding: 0 15px;
+            }
+
             .backwards {
-                margin: 0 0 3px 0;
+                margin: 43px 0 3px 0;
+                padding: 7px 0 2px 0;
 
                 @include max-vw(999) {
-                    padding-left: 0;
+                    padding-top: 34px;
+                }
+
+                @include max-vw(768) {
+                    margin-top: -7px;
+                    margin-bottom: 17px;
+                    padding-top: 62px;
+                }
+
+                .backwards-link {
+                    display: block;
+                    left: 0px;
+                    top: 12px;
+
+                    @include max-vw(999) {
+                        top: -13px;
+                    }
+
+                    @include max-vw(768) {
+                        top: 20px;
+                    }
+
+                    @include max-vw(500) {
+                        top: 18px;
+                    }
+
+                    @include max-vw(380) {
+                        top: -20px;
+                    }
                 }
             }
 
@@ -55,6 +80,11 @@
                 display: flex;
                 align-items: center;
                 margin: 0;
+                margin-left: 26px;
+
+                @include max-vw(999) {
+                    margin-left: 0px;
+                }
 
                 @include max-vw(380) {
                     margin: 10px 0 0;
@@ -64,12 +94,20 @@
                 .ava {
                     margin: 0;
                     z-index: 1;
+
+                    @include max-vw(768) {
+                        margin: 0 15px 0 0;
+                    }
                 }
 
                 .ava {
                     img {
                         width: 32px;
                         height: 32px;
+                    }
+
+                    @include max-vw(500) {
+                        display: none;
                     }
                 }
 
@@ -83,7 +121,6 @@
                         padding: 0;
                     }
                 }
-
             }
 
             .buttons-wrap {
@@ -93,7 +130,7 @@
                 flex-wrap: wrap;
 
                 @include min-vw(400) {
-                    margin-bottom: 33px;
+                    margin: 0 0 21px
                 }
 
                 .item {
@@ -119,7 +156,6 @@
                             .action-button-wrap {
                                 .action-label {
                                     margin-left: 0;
-                                    padding: 4px 14px 4px 14px;
 
                                     &+.action-button {
                                         margin: 0 0 0 -4px;
@@ -133,10 +169,10 @@
         }
 
         .tab-body {
-            margin-top: 28px;
+            margin-top: 29px;
 
-            @include max-vw(1280) {
-                margin-top: 18px;
+            @include max-vw(1000) {
+                margin-top: 21px;
             }
         }
     }
@@ -444,260 +480,5 @@
         display: flex;
         justify-content: flex-end;
         margin-bottom: 17px;
-    }
-}
-
-.table-container.contract-page {
-    .table-contract {
-        table {
-            thead {
-                tr {
-                    line-height: 10px;
-                    letter-spacing: 2.25px;
-                }
-
-                &:after,
-                &:before {
-                    height: 34px;
-
-                    @include max-vw(1280) {
-                        width: 21px;
-
-                    }
-                }
-
-                @include max-vw(1280) {
-                    &:after {
-                        left: -21px;
-                    }
-                }
-
-            }
-
-            tr {
-
-                td {
-                    &.number {
-                        max-width: 32px;
-                        width: 32px;
-                        min-width: 32px;
-
-                        .td-in {
-                            padding-left: 15px;
-                        }
-
-                        @include max-vw(1280) {
-                            max-width: 23px;
-                            width: 23px;
-                            min-width: 23px;
-
-                            .td-in {
-                                padding-left: 4px;
-                            }
-                        }
-                    }
-
-                    &.type {
-                        max-width: 12.5%;
-                        width: 12.5%;
-                        min-width: 12.5%;
-
-                        @include max-vw(1280) {
-                            max-width: 14%;
-                            width: 14%;
-                            min-width: 14%;
-                        }
-
-                        @include max-vw(768) {
-                            order: 1;
-                            max-width: 36.7%;
-                            width: 36.7%;
-                            min-width: 36.7%;
-
-                            .td-in {
-                                padding-left: 1px;
-                            }
-
-                        }
-                    }
-
-                    &.time {
-                        max-width: 15%;
-                        width: 15%;
-                        min-width: 15%;
-
-                        .td-in {
-                            padding-left: 2px;
-                        }
-
-                        @include max-vw(1280) {
-                            max-width: 17.5%;
-                            width: 17.5%;
-                            min-width: 17.5%;
-
-                            .td-in {
-                                padding-left: 8px;
-                            }
-                        }
-
-                        @include max-vw(768) {
-                            order: 2;
-                            max-width: 32%;
-                            width: 32%;
-                            min-width: 32%;
-
-                            .td-in {
-                                padding-left: 0px;
-                            }
-                        }
-                    }
-
-                    &.sender {
-                        max-width: 18.5%;
-                        width: 18.5%;
-                        min-width: 18.5%;
-
-                        @include max-vw(1280) {
-                            max-width: 19.5%;
-                            width: 19.5%;
-                            min-width: 19.5%;
-                        }
-
-                        @include max-vw(768) {
-                            order: 4;
-                            max-width: 37%;
-                            width: 37%;
-                            min-width: 37%;
-                            padding-left: 21px;
-
-                            .td-in {
-                                padding-left: 0px 5px;
-                            }
-                        }
-                    }
-
-                    &.reciever {
-                        max-width: 17.4%;
-                        width: 17.4%;
-                        min-width: 17.4%;
-
-                        @include max-vw(1280) {
-                            max-width: 22.4%;
-                            width: 22.4%;
-                            min-width: 22.4%;
-                        }
-
-                        @include max-vw(768) {
-                            order: 5;
-                            max-width: 32%;
-                            width: 32%;
-                            min-width: 32%;
-                        }
-                    }
-
-                    &.amount {
-                        max-width: 17%;
-                        width: 17%;
-                        min-width: 17%;
-
-                        .td-in {
-                            padding-left: 5px
-                        }
-
-                        @include max-vw(1280) {
-                            max-width: 20%;
-                            width: 20%;
-                            min-width: 20%;
-                        }
-
-                        @include max-vw(768) {
-                            order: 3;
-                            max-width: 30%;
-                            width: 30%;
-                            min-width: 30%;
-
-                            .td-in {
-                                padding-left: 0px
-                            }
-                        }
-                    }
-
-                    &.rezult {
-                        max-width: 8.6%;
-                        width: 8.6%;
-                        min-width: 8.6%;
-
-                        @include max-vw(1280) {
-                            display: none;
-                        }
-                    }
-
-                    &.json {
-                        max-width: 20px;
-                        width: 20px;
-                        min-width: 20px;
-
-                        @include max-vw(768) {
-                            order: 6;
-                            max-width: 30%;
-                            width: 30%;
-                            min-width: 30%;
-                        }
-                    }
-
-                    &.dd {
-                        max-width: 34px;
-                        width: 34px;
-                        min-width: 34px;
-
-                        .td-in {
-                            padding-left: 5px
-                        }
-
-                        @include max-vw(1280) {
-                            max-width: 10px;
-                            width: 10px;
-                            min-width: 10px;
-                        }
-
-                        @include max-vw(768) {
-                            right: 16px;
-                            top: 5px;
-                        }
-                    }
-
-                }
-            }
-
-            tbody {
-                td {
-                    letter-spacing: 0.3px;
-                    line-height: 10px;
-
-                    .td-in {
-                        padding: 9px 7px;
-
-                    }
-
-                    @include max-vw(768) {
-                        margin-bottom: 18px;
-                    }
-                }
-
-                @include max-vw(768) {
-                    .view {
-                        padding: 18px 15px;
-
-                        .col-title {
-                            margin-bottom: 6px;
-                        }
-                    }
-                }
-
-
-
-
-            }
-        }
     }
 }

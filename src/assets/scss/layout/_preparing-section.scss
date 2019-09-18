@@ -2,23 +2,22 @@
     padding-bottom: 10px;
     display: flex;
     padding-right: 0;
-    @include min-vw(1280) {
-        padding-left: 30px;
-    }
+
     @include res-768 {
         display: flex;
         justify-content: space-between;
+        padding: 0px 18px 11px;
     }
 
-    @include res-768 {
-        padding-bottom: 13px;
+    @include res-500 {
+        padding: 0px 29px 0px 18px;
     }
 
     @include res-320 {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
         flex-direction: column;
-        padding-bottom: 19px;
+        padding-bottom: 0px;
     }
 
     .mobile-title {
@@ -105,10 +104,15 @@
                         @include res-768 {
                             display: none;
                         }
+
                         @include res-500 {
                             display: block;
                         }
                     }
+                }
+
+                @include res-320 {
+                    display: none;
                 }
             }
         }
@@ -157,19 +161,19 @@
                         width: 14px;
                         height: 14px;
 
-                        @keyframes spin{
-                            0%{
-                              -webkit-transform: rotate(0deg);
-                              -ms-transform: rotate(0deg);
-                              -o-transform: rotate(0deg);
-                              transform: rotate(0deg);
+                        @keyframes spin {
+                            0% {
+                                -webkit-transform: rotate(0deg);
+                                -ms-transform: rotate(0deg);
+                                -o-transform: rotate(0deg);
+                                transform: rotate(0deg);
                             }
 
-                            100%{
-                              -webkit-transform: rotate(360deg);
-                              -ms-transform: rotate(360deg);
-                              -o-transform: rotate(360deg);
-                              transform: rotate(360deg);
+                            100% {
+                                -webkit-transform: rotate(360deg);
+                                -ms-transform: rotate(360deg);
+                                -o-transform: rotate(360deg);
+                                transform: rotate(360deg);
                             }
                         }
 
@@ -184,6 +188,7 @@
                             z-index: 2;
                             animation: spin 1s infinite;
                         }
+
                         &:after {
                             content: "";
                             position: absolute;
@@ -216,6 +221,10 @@
             @include res-768 {
                 white-space: nowrap;
                 margin-bottom: 19px;
+            }
+
+            @include res-500 {
+                margin-bottom: 14px;
             }
 
             &:active {
@@ -294,9 +303,11 @@
                     @include res-768 {
                         position: relative;
                     }
+
                     @include res-500 {
                         position: absolute;
                     }
+
                     @include res-320 {
                         right: 11px;
                     }
@@ -320,5 +331,13 @@
         width: 0px;
         // transition: all .3s ease-out;
         background-color: #5eb3e8;
+
+        @include res-500 {
+            top: 16px;
+        }
+
+        @include res-320 {
+            top: 5px;
+        }
     }
 }

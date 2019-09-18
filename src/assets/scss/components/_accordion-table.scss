@@ -1,11 +1,9 @@
 .accordion-table-wrap {
     position: relative;
 
-
     table {
-        width: calc(100% + 36px);
+        width: 100%;
         border-collapse: collapse;
-        margin-left: -36px;
         z-index: 1;
 
         td {
@@ -18,19 +16,14 @@
             }
 
             .td-in {
-                padding: 12px 7px;
+                padding: 9px 7px;
             }
 
-            &:first-child {
-                .td-in {
-                    padding-left: 14px;
-                }
-            }
-
+            &:first-child,
             &:last-child {
-                .td-in {
-                    padding-right: 14px;
-                }
+                max-width: 13px;
+                width: 13px;
+                min-width: 13px;
             }
         }
     }
@@ -46,26 +39,7 @@
         letter-spacing: 0.22em;
         color: #828b95;
         position: relative;
-
-        &:before,
-        &:after {
-            content: "";
-            width: 10px;
-            height: 42px;
-            background-color: rgba(#A2A6AD, .1);
-            position: absolute;
-            top: 0;
-            z-index: 1;
-
-        }
-
-        &:before {
-            left: 100%;
-        }
-
-        &:after {
-            left: -46px;
-        }
+        line-height: 15px;
     }
 
     tbody {
@@ -112,13 +86,17 @@
         }
     }
 
-    .view {
+    :not(.table-block).view {
         transition: background-color .3s;
         cursor: pointer;
+        font-family: InterUI;
         z-index: 1;
 
-        &:hover {
-            background-color: rgba(#A2A6AD, .1);
+        &:hover:not(.active) {
+
+            td:not(:first-child):not(:last-child) {
+                background-color: #ebebee;
+            }
 
             .json {
                 a {
@@ -131,7 +109,11 @@
         }
 
         &.active {
-            background-color: #fff;
+
+            td {
+                background-color: #fff;
+            }
+
 
             .dd {
                 img {
@@ -188,7 +170,6 @@
 
             &:nth-child(2) {
                 padding: 15px 7px;
-
             }
         }
 
@@ -247,10 +228,6 @@
             width: 100%;
             margin-left: 0;
 
-            thead::after {
-                left: -10px;
-            }
-
             td {
                 &.number {
                     max-width: 32px;
@@ -302,7 +279,7 @@
                 &.type,
                 &.sender,
                 &.reciever {
-                    margin-bottom: 20px;
+                    margin-bottom: 22px;
                 }
 
                 &.sender,
@@ -354,18 +331,26 @@
             display: flex;
             flex-wrap: wrap;
             position: relative;
-            background-color: #E0DFE3;
+            background-color: #e7e6e9;
             padding: 22px 36px;
 
             &.active {
                 &+.fold {
                     display: block;
                 }
+
+                transition: background-color 1s;
+                background-color: #fff;
             }
 
             &:hover {
                 &:not(.active) {
-                    background-color: #E7E6E9;
+                    background-color: #e0dfe3;
+
+                    td:not(:first-child):not(:last-child) {
+                        transition: background-color 1s;
+                        background-color: #e0dfe3;
+                    }
                 }
             }
 
@@ -388,7 +373,6 @@
                     }
                 }
             }
-
         }
 
         .fold-operation-info {
@@ -438,39 +422,41 @@
 
 @include max-vw(768) {
     .accordion-table-wrap {
-        .fold {
-            td {
+        width: 100%;
 
-                &:nth-child(1),
-                &:nth-child(2),
-                &:nth-child(3) {
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
+        table {
+
+            .view {
+                background-color: #e7e6e9;
+                padding: 18px 15px 0px 18px;
+            }
+
+            td {
+                margin-bottom: 18px;
+
+                &:first-child,
+                &:last-child {
+                    display: none;
+                }
+            }
+
+            .fold {
+                td {
+
+                    &:nth-child(1),
+                    &:nth-child(2),
+                    &:nth-child(3) {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                    }
                 }
             }
         }
 
         .fold-operation-info {
-            width: 100%;
-        }
-    }
-}
-
-@include max-vw(530) {
-    .accordion-table-wrap {
-        width: calc(100% - 50px);
-        margin: 0 25px;
-
-        table {
-
-            .view {
-                padding: 22px;
-            }
-        }
-
-        .fold-operation-info {
             padding: 20px 22px;
+            width: 100%;
         }
     }
 }
@@ -481,10 +467,11 @@
         table {
 
             .view {
-                padding: 17px 24px;
+                padding: 17px 22px 0 22px;
 
-                .col-title {
-                    margin-bottom: 6px;
+
+                td {
+                    margin-bottom: 28px;
                 }
             }
         }
@@ -493,19 +480,15 @@
 
 @include max-vw(360) {
     .accordion-table-wrap {
-        width: calc(100% - 20px);
-        margin: 0 10px;
+        width: 100%;
+        margin: 0;
 
         table {
-            width: calc(100% - 20px);
-            margin: 0 10px;
 
             .view {
-                padding: 19px;
+                padding: 22px 17px 0px;
 
                 td {
-                    margin-bottom: 29px;
-
                     &:not(.dd):nth-child(odd) {
                         max-width: 55%;
                         width: 55%;
@@ -519,13 +502,280 @@
                     }
 
                     &.json,
-                    &.rezult {
+                    &.amount {
                         margin-bottom: 10px;
                     }
 
                     &.dd .td-in {
                         right: 15px;
                         top: 16px;
+                    }
+                }
+
+                .td-in {
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+}
+
+.table-container {
+    .accordion-table-wrap.table-contract {
+        table {
+            thead {
+                tr {
+                    line-height: 10px;
+                    letter-spacing: 2.25px;
+                }
+
+                &:after,
+                &:before {
+                    height: 34px;
+                }
+            }
+
+            tr {
+
+                td {
+                    &.number {
+                        max-width: 32px;
+                        width: 32px;
+                        min-width: 32px;
+
+                        .td-in {
+                            padding-left: 15px;
+                        }
+
+                        @include max-vw(1280) {
+                            max-width: 23px;
+                            width: 23px;
+                            min-width: 23px;
+
+                            .td-in {
+                                padding-left: 4px;
+                            }
+                        }
+                    }
+
+                    &.type {
+                        max-width: 12.5%;
+                        width: 12.5%;
+                        min-width: 12.5%;
+
+                        @include max-vw(1280) {
+                            max-width: 14%;
+                            width: 14%;
+                            min-width: 14%;
+                        }
+
+                        @include max-vw(768) {
+                            order: 1;
+                            max-width: 36.7%;
+                            width: 36.7%;
+                            min-width: 36.7%;
+
+                            .td-in {
+                                padding-left: 1px;
+                            }
+                        }
+
+                        @include max-vw(500) {
+                            max-width: 55%;
+                            width: 55%;
+                            min-width: 55%;
+                        }
+                    }
+
+                    &.time {
+                        max-width: 15%;
+                        width: 15%;
+                        min-width: 15%;
+
+                        .td-in {
+                            padding-left: 2px;
+                        }
+
+                        @include max-vw(1280) {
+                            max-width: 17.5%;
+                            width: 17.5%;
+                            min-width: 17.5%;
+
+                            .td-in {
+                                padding-left: 8px;
+                            }
+                        }
+
+                        @include max-vw(768) {
+                            order: 2;
+                            max-width: 32%;
+                            width: 32%;
+                            min-width: 32%;
+
+                            .td-in {
+                                padding-left: 0px;
+                            }
+                        }
+
+                        @include max-vw(500) {
+                            max-width: 45%;
+                            width: 45%;
+                            min-width: 45%;
+                        }
+                    }
+
+                    &.sender {
+                        max-width: 18.5%;
+                        width: 18.5%;
+                        min-width: 18.5%;
+
+                        @include max-vw(1280) {
+                            max-width: 19.5%;
+                            width: 19.5%;
+                            min-width: 19.5%;
+                        }
+
+                        @include max-vw(768) {
+                            order: 4;
+                            max-width: 37%;
+                            width: 37%;
+                            min-width: 37%;
+                            padding-left: 21px;
+
+                            .td-in {
+                                padding-left: 0px;
+                            }
+
+                            @include max-vw(500) {
+                                order: 3;
+                                max-width: 55%;
+                                width: 55%;
+                                min-width: 55%;
+                                padding-left: 0px;
+                            }
+                        }
+                    }
+
+                    &.reciever {
+                        max-width: 17.4%;
+                        width: 17.4%;
+                        min-width: 17.4%;
+
+                        @include max-vw(1280) {
+                            max-width: 22.4%;
+                            width: 22.4%;
+                            min-width: 22.4%;
+                        }
+
+                        @include max-vw(768) {
+                            order: 5;
+                            max-width: 32%;
+                            width: 32%;
+                            min-width: 32%;
+                        }
+
+                        @include max-vw(500) {
+                            order: 4;
+                            max-width: 45%;
+                            width: 45%;
+                            min-width: 45%;
+                        }
+                    }
+
+                    &.amount {
+                        max-width: 17%;
+                        width: 17%;
+                        min-width: 17%;
+
+                        .td-in {
+                            padding-left: 5px
+                        }
+
+                        @include max-vw(1280) {
+                            max-width: 20%;
+                            width: 20%;
+                            min-width: 20%;
+                        }
+
+                        @include max-vw(768) {
+                            order: 3;
+                            max-width: 30%;
+                            width: 30%;
+                            min-width: 30%;
+
+                            .td-in {
+                                padding-left: 0px
+                            }
+                        }
+
+                        @include max-vw(500) {
+                            order: 5;
+                            max-width: 55%;
+                            width: 55%;
+                            min-width: 55%;
+                        }
+                    }
+
+                    &.rezult {
+                        max-width: 8.6%;
+                        width: 8.6%;
+                        min-width: 8.6%;
+
+                        @include res-768 {
+                            display: none;
+                        }
+                    }
+
+                    &.json {
+                        max-width: 20px;
+                        width: 20px;
+                        min-width: 20px;
+
+                        @include max-vw(768) {
+                            order: 6;
+                            max-width: 30%;
+                            width: 30%;
+                            min-width: 30%;
+                        }
+
+                        @include max-vw(500) {
+                            max-width: 45%;
+                            width: 45%;
+                            min-width: 45%;
+                        }
+                    }
+
+                    &.dd {
+                        max-width: 34px;
+                        width: 34px;
+                        min-width: 34px;
+
+                        .td-in {
+                            padding-left: 5px
+                        }
+
+                        @include max-vw(1280) {
+                            max-width: 15px;
+                            width: 15px;
+                            min-width: 15px;
+                        }
+
+                        @include max-vw(768) {
+                            right: 16px;
+                            top: 5px;
+                        }
+                    }
+                }
+            }
+
+            tbody {
+                td {
+                    letter-spacing: 0.3px;
+                    line-height: 10px;
+
+                    .td-in {
+                        padding: 9px 7px;
+
                     }
                 }
             }

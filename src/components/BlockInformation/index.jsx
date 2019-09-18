@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
-import TransactionsTable from './TransactionsTable';
+import BlockTable from './BlockTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import ViewListPopover from '../ViewListPopover';
 import Loader from '../Loader';
@@ -147,14 +147,15 @@ class BlockInformation extends React.Component {
 				<h2>{FormatHelper.getFormatTransactionsTitle(transactions)}</h2>
 				<div className="help-table-wrapper">
 					{
-						(slicedTransactions && slicedTransactions.length) ?
-							<TransactionsTable
-								isBlockTable
-								transactions={slicedTransactions}
-								loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
-								blockTime={time}
-								hasMore={currentTransactionLength < transactions.length}
-							/> : null
+					// (slicedTransactions && slicedTransactions.length) ?
+						<BlockTable
+							isBlockTable
+							transactions={slicedTransactions}
+							loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
+							blockTime={time}
+							hasMore={currentTransactionLength < transactions.length}
+						/>
+						// : null
 					}
 				</div>
 			</React.Fragment>

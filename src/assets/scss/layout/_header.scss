@@ -1,27 +1,20 @@
 header {
-    padding-top: 40px;
-    padding-bottom: 70px;
-
+    padding: 38px 0px 68px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    @include min-vw(1280) {
-        padding-left: 30px;
-    }
 
     @include res-768 {
-        padding-bottom: 55px;
+        padding: 38px 24px 48px;
     }
 
     @include res-500 {
-        padding-bottom: 50px;
+        padding: 38px 18px 48px;
     }
 
     @include res-320 {
         position: relative;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-bottom: 55px;
+        padding: 38px 15px 55px 15px;
     }
 
     .input-search-block {
@@ -30,11 +23,16 @@ header {
             right: 20px;
             background-color: #18142a;
         }
+
         &.small {
 
             .input-container {
                 .icon {
                     opacity: 1;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
 
@@ -54,11 +52,4 @@ header {
 .logotype {
     display: inline-block;
     height: 41px;
-
-    @include res-500 {
-        width: 175px;
-            svg {
-                width: 100%;
-            }
-    }
 }

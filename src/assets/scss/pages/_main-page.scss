@@ -1,25 +1,20 @@
 .wrap:not(.full) {
-    width: 1440px;
+    max-width: 1440px;
+    width: 100%;
     margin: 0 auto;
+    padding: 0;
 
     @include res-1280 {
-        width: 1140px;
-    }
-
-    @include res-1000 {
-        width: 931px;
+        width: 100%;
+        padding: 0 30px;
     }
 
     @include res-768 {
-        width: 699px;
+        padding: 0 12px;
     }
 
     @include res-500 {
-        width: 472px;
-    }
-
-    @include res-320 {
-        width: 100%;
+        padding: 0 10px;
     }
 }
 
@@ -28,7 +23,7 @@
     min-height: 245px;
 
     @include res-768 {
-        min-height: 216px;
+        min-height: 205px;
     }
 
     @include res-500 {
@@ -38,8 +33,8 @@
     @include res-320 {
         position: relative;
         z-index: 2;
-        min-height: 240px;
     }
+
 
     .wrap {
         @include res-320 {

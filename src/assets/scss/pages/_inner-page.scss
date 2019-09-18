@@ -9,19 +9,23 @@
 .inner-page {
     .backwards {
         margin: 0 0 15px 0;
+
         @include res-768 {
             margin: 30px 0 0 0;
         }
     }
+
     .account-page-t-block {
         display: flex;
         align-items: center;
         margin: 0;
+
         .title,
         .icon {
             margin: 0;
             z-index: 1;
         }
+
         .title {
             @include InterUI_Bold;
             font-size: 23px;
@@ -31,6 +35,7 @@
                 padding-left: 19px;
             }
         }
+
         .icon {
             margin-right: 14px;
             display: flex;
@@ -40,9 +45,11 @@
                 height: 32px;
             }
         }
+
         @include res-1000 {
             padding: 0;
         }
+
         @include res-500 {
             padding: 0;
 
@@ -51,6 +58,7 @@
             }
         }
     }
+
     .page-helper-section {
         background-color: #fff;
         margin-top: 60px;
@@ -65,25 +73,30 @@
             padding: 17px 33px;
             border: 1px solid #E2E3E7;
             margin: 15px 0 32px;
-			.no-wrap {
+
+            .no-wrap {
                 white-space: nowrap;
             }
 
             div {
                 display: inline;
             }
+
             .link {
                 text-decoration: underline;
                 color: #171529;
             }
+
             .avatar-image {
                 width: 16px;
                 height: 16px;
                 margin-right: 5px;
                 line-height: 0;
+
                 img {
                     width: 16px;
                 }
+
                 svg {
                     margin-bottom: -3px;
                 }
@@ -98,6 +111,7 @@
 
 
     }
+
     .section-description {
         @include InterUI_Regular;
         font-size: 15px;
@@ -106,10 +120,12 @@
         border-bottom: 1px solid rgba(#3F465A, .15);
         margin-bottom: 35px;
     }
+
     .code-action {
         display: flex;
         align-items: center;
         margin: 0 0 20px;
+
         .action-description {
             @include InterUI_Regular;
             font-size: 13px;
@@ -121,6 +137,7 @@
             margin-left: auto;
         }
     }
+
     .buttons-wrap {
         display: flex;
         align-items: center;

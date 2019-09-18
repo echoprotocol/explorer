@@ -1,4 +1,3 @@
-
 .action-button-wrap {
     @include InterUI_Regular;
     display: flex;
@@ -20,24 +19,27 @@
         cursor: pointer;
         display: flex;
         align-items: center;
-		padding: 0 9px 0 7px;
+        padding: 0 9px 0 7px;
+
         img {
-			padding-bottom: 1px;
+            padding-bottom: 1px;
             width: 9px;
-            & + .content {
+
+            &+.content {
                 margin-left: 4px;
             }
         }
 
-        & + .action-label {
+        &+.action-label {
             margin-left: -2px;
             padding: 0 6px 0 10px;
             line-height: 22px;
         }
 
         &:hover:not(:focus) {
-            box-shadow: 0px 1px 1px 0px rgba(176,183,189,1);
+            box-shadow: 0px 1px 1px 0px rgba(176, 183, 189, 1);
         }
+
         &.star {
             padding: 0 6px 0 7px;
         }
@@ -45,15 +47,17 @@
         &:active {
             background-color: #D8DADF;
         }
-
     }
+
     .action-label {
         background-color: rgba(#CFCDD4, .6);
         font-size: 12px;
-        padding: 4px 20px 4px 10px;
+        padding: 0px 20px 0px 8px;
+        line-height: 22px;
         color: #120E30;
         display: flex;
         border-radius: 1px;
+
         .info-icon {
             padding: 0;
             border: 0;
@@ -62,14 +66,17 @@
             margin-left: 6px;
             cursor: pointer;
         }
+
         .content {
             white-space: nowrap;
-            & + img {
+
+            &+img {
                 width: 9px;
                 margin-left: 4px;
             }
         }
-        & + .action-button {
+
+        &+.action-button {
             margin-left: -11px;
         }
     }
@@ -80,6 +87,7 @@
             color: #fff;
             background-color: #498FDF;
         }
+
         .action-button {
             display: none;
         }

@@ -23,7 +23,7 @@ import {
 
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
-import TransactionsTable from '../BlockInformation/TransactionsTable';
+import TransactionsTable from './TransactionsTable';
 import Loader from '../Loader';
 import Verify from '../VerifyButton';
 import manageIcon from '../../assets/images/icons/pencil.svg';
@@ -34,6 +34,7 @@ import ContractInfo from './ContractInfo';
 import { ContractIcon } from './ContractIcon';
 import { BridgeService } from '../../services/BridgeService';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
+import BackwardIcon from '../BackwardIcon';
 
 import URLHelper from '../../helpers/URLHelper';
 
@@ -274,6 +275,13 @@ class Contract extends React.Component {
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards">
+							<a
+								href=""
+								className="backwards-link"
+								onClick={(e) => this.onBack(e, id)}
+							>
+								<BackwardIcon />
+							</a>
 							<div className="account-page-t-block">
 								<Media query="(max-width: 380px)">
 									{(matches) =>
@@ -328,7 +336,7 @@ class Contract extends React.Component {
 													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}
 													to={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}
 												>
-													<span className="menu-item-content">{`Transactions (${contractTxs})`}</span>
+													<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
@@ -337,16 +345,7 @@ class Contract extends React.Component {
 													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}
 													to={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}
 												>
-													<span className="menu-item-content">Bytecode</span>
-												</Link>
-											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
-												<Link
-													onClick={() => this.goToSlide(3)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
-												>
-													<span className="menu-item-content">Balances</span>
+													<span className="menu-item-content">Byte Сode</span>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
@@ -372,6 +371,15 @@ class Contract extends React.Component {
 													</Link>
 												</div>
 											}
+											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
+												<Link
+													onClick={() => this.goToSlide(3)}
+													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
+													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
+												>
+													<span className="menu-item-content">Balances</span>
+												</Link>
+											</div>
 										</Slider>
 									</div> :
 									<Dropdown className="dropdown-tab">

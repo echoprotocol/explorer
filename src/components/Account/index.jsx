@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import TransactionsTable from '../BlockInformation/TransactionsTable';
+import TransactionsTable from '../Contract/TransactionsTable';
 
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
