@@ -18,7 +18,6 @@ class RecentBlockSidebar extends React.Component {
 		};
 
 		this.intervalId = 0;
-		// this.Ref = React.createRef();
 		this.updateWidth = this.updateWidth.bind(this);
 		this.updateHeight = this.updateHeight.bind(this);
 	}
@@ -98,7 +97,7 @@ class RecentBlockSidebar extends React.Component {
 						(matches) => !matches &&
 						<div className="info-container">
 							<div className="version">v{appVersion}</div>
-							<div className="copyright">©ECHO DEVELOPMENT LTD, {FormatHelper.getYear(new Date())}</div>
+							<div className="copyright">©Echo Technological Solutions LLC, {FormatHelper.getYear(new Date())}</div>
 						</div>
 					}
 				</Media>

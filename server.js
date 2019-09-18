@@ -1,20 +1,17 @@
 const express = require('express');
 const config = require('config');
+const axios = require('axios');
 
 const app = express();
 const fs = require('fs');
-const fetch = require('node-fetch');
 
 const accountRegex = RegExp(/\/accounts\/.*\/info/);
 const contractRegex = RegExp(/\/contracts\/.*\/info/);
 
-const OG_TITLE_REGEX = /OG_TITLE/g;
-const OG_DESCRIPTION_REGEX = /OG_DESCRIPTION/g;
-const OG_IMAGE_REGEX = /OG_IMAGE/g;
+const TIMEOUT_FETCH = 3000;
 
-let fileIndex = null;
 const filePath = `${__dirname}/dist/index.html`;
-fs.readFile(filePath, 'utf8', (err, data) => { fileIndex = data; });
+let fileIndex = null;
 
 app.use(express.static(`${__dirname}/dist/`, { index: false }));
 
@@ -34,20 +31,31 @@ app.get('*', async (req, res) => {
 
 	} else if (contractRegex.test(url)) {
 		const contractId = url.split('/')[2];
-		await fetch(`${config.SERVER_URL}/api/contracts/${contractId}`)
-			.then((contract) => contract.json())
-			.then((contract) => {
+		try {
+			const contract = await axios.get(`${config.SERVER_URL}/api/contracts/${contractId}`, { timeout: TIMEOUT_FETCH });
+
+			if (contract) {
 				title = `Contract ${contract.name || contractId} | Echo Explorer`;
 				description = contract.description || 'ECHO contract page';
 				image = `${config.SERVER_URL}${contract.icon}`;
-			});
+			}
+		} catch (err) {
+			console.warn('Error: ', err.code);
+		}
 	}
 
-	result = result.replace(OG_TITLE_REGEX, title);
-	result = result.replace(OG_DESCRIPTION_REGEX, description);
-	result = result.replace(OG_IMAGE_REGEX, image);
+	if (title) {
+		const metaTags = `\n<meta property="og:title" content=${title} />
+						<meta property="og:description" content=${description} />
+						<meta property="og:image" content=${image} />\n`;
+		const indexInsert = result.indexOf('</head>');
+		result = result.slice(0, indexInsert) + metaTags + result.slice(indexInsert);
+	}
 
 	res.send(result);
 });
 
-app.listen(3000);
+fs.readFile(filePath, 'utf8', async (error, data) => {
+	fileIndex = data;
+	app.listen(3000);
+});

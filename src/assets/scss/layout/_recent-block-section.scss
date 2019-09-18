@@ -644,10 +644,24 @@
         width: 260px;
         margin: 0;
         top: 0px;
-        left: calc(((830px + ((100vw - 1140px)/2))) - 7px);
+        left: calc(((830px + ((100vw - 1140px)/2))) - 8px);
 
         @include min-vw(1534) {
-            left: calc((1015px + ((100vw - 1440px)/2)) - 7px);
+            left: calc((1015px + ((100vw - 1440px)/2)) - 8px);
         }
     }
+
+    //  for safari
+    @media only screen and (-webkit-min-device-pixel-ratio: 1) {
+
+        ::i-block-chrome,
+        .sticky {
+            left: calc(((830px + ((100vw - 1127px)/2))) - 7px);
+
+            @include min-vw(1534) {
+                left: calc((1015px + ((100vw - 1427px)/2)) - 7px);
+            }
+        }
+    }
+
 }

@@ -30,7 +30,7 @@ export const MAX_AVERAGE_TRS_BLOCKS = 100;
 export const PAGE_BLOCKS_COUNT = 20;
 export const PAGE_ADD_BLOCKS_COUNT = 10;
 
-export const MAX_BLOCK_REQUESTS = 100;
+export const MAX_BLOCK_REQUESTS = PAGE_BLOCKS_COUNT;
 
 export const KEY_CODE_ENTER = 13;
 export const KEY_CODE_ESC = 27;
@@ -83,3 +83,5 @@ export const MAX_WIDTH_SCREEN = 768;
 export const MIN_ACCESS_VERSION_BUILD = '0.4.0';
 
 export const NO_TRANSACTIONS = 'No transactions in recent blocks';
+export const NETWORK_CONNECTED_ERROR = 'Could\'t reach server or bad internet access';
+export const NONE_SYMBOL = '-';
