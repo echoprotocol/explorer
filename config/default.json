@@ -7,5 +7,6 @@
     "HTTP": "http://localhost:3000/graphql",
     "WS": "ws://localhost:3000/graphql"
   },
-  "SERVER_URL": "http://localhost:26563"
+  "SERVER_URL": "http://localhost:26563",
+  "ORIGIN": "http://localhost:8080"
 }

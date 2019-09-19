@@ -23,7 +23,7 @@ import {
 
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
-import TransactionsTable from './TransactionsTable';
+import OperationsTable from '../TransactionInfo/OperationsTable';
 import Loader from '../Loader';
 import Verify from '../VerifyButton';
 import manageIcon from '../../assets/images/icons/pencil.svg';
@@ -55,6 +55,10 @@ class Contract extends React.Component {
 		await this.initContract();
 		const { verified } = this.props;
 
+		if (this.props.location.search) {
+			this.props.history.push(this.props.location.pathname);
+		}
+
 		if (!verified && detail === CONTRACT_SOURCE_CODE) {
 			this.props.history.push(URLHelper.createContractUrl(id));
 		}
@@ -80,12 +84,7 @@ class Contract extends React.Component {
 	}
 
 	onLoadMoreHistory() {
-		this.props.loadContractHistory(this.props.contractHistory.last()[0].id.split('.')[2]);
-	}
-
-	onLink(e, path) {
-		e.preventDefault();
-		this.props.history.push(path);
+		this.props.loadContractHistory(this.props.contractHistory.last().id.split('.')[2]);
 	}
 
 	async initContract() {
@@ -208,10 +207,11 @@ class Contract extends React.Component {
 			},
 			{
 				tab: !loading ?
-					<TransactionsTable
-						transactions={contractHistory}
+					<OperationsTable
+						operations={contractHistory}
+						history={this.props.history}
+						location={this.props.location}
 						loading={loadingMoreHistory}
-						onLink={(e, path) => this.onLink(e, path)}
 						loadMore={contractHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 						hasMore={!isFullHistory}
 					/> : <Loader />,
@@ -435,6 +435,7 @@ Contract.propTypes = {
 	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
 	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 	contractHistory: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,

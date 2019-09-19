@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 
 import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -12,11 +12,11 @@ import Loader from '../Loader';
 
 class TransactionsInfo extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.tableRefs = [];
-	}
+	// constructor(props) {
+	// 	super(props);
+	//
+	// 	// this.tableRefs = [];
+	// }
 
 
 	componentDidMount() {
@@ -27,18 +27,18 @@ class TransactionsInfo extends React.Component {
 		this.props.getTransaction();
 	}
 
-	componentDidUpdate(prevProps) {
-		const { loading, location: { search } } = this.props;
-		const { loading: prevLoading } = prevProps;
-
-		if (!loading && loading !== prevLoading) {
-			const parsed = queryString.parse(search);
-			if (!parsed.op || !this.tableRefs[parsed.op - 1]) {
-				return;
-			}
-			this.tableRefs[parsed.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		}
-	}
+	// componentDidUpdate(prevProps) {
+	// 	const { loading, location: { search } } = this.props;
+	// 	const { loading: prevLoading } = prevProps;
+	//
+	// 	if (!loading && loading !== prevLoading) {
+	// 		const parsed = queryString.parse(search);
+	// 		if (!parsed.op || !this.tableRefs[parsed.op - 1]) {
+	// 			return;
+	// 		}
+	// 		this.tableRefs[parsed.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		this.props.clearTransaction();
@@ -60,7 +60,7 @@ class TransactionsInfo extends React.Component {
 		const { round, index } = this.props.match.params;
 
 		const {
-			operations, blockInformation, loading, history, location: { search },
+			operations, blockInformation, loading, history, location,
 		} = this.props;
 
 		const breadcrumbs = [
@@ -91,12 +91,10 @@ class TransactionsInfo extends React.Component {
 								<p className="transaction-title-operations">{`${!operations ? 0 : operations.size} Operations`}</p>
 								<OperationsTable
 									operations={operations}
-									block={round}
-									transactionNum={index}
 									history={history}
-									tableRefs={this.tableRefs}
-									url={this.props.match.url}
-									queryProps={queryString.parse(search)}
+									location={location}
+									loading={loading}
+									changeUrl
 								/>
 							</React.Fragment> : this.renderLoader(loading)
 					}

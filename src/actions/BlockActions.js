@@ -2,8 +2,7 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map } from 'immutable';
-import _ from 'lodash';
-import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
+import echo from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -14,248 +13,17 @@ import {
 	PAGE_BLOCKS_COUNT,
 	PAGE_ADD_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
-	ERC20_HASHES,
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	ECHO_ASSET,
-	NATHAN,
 } from '../constants/GlobalConstants';
-import {
-	ACCOUNT_OBJECT_PREFIX,
-	CONTRACT_OBJECT_PREFIX,
-} from '../constants/ObjectPrefixesConstants';
-import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
-import Operations from '../constants/Operations';
+import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
-import TypesHelper from '../helpers/TypesHelper';
 
 import GlobalActions from './GlobalActions';
+import TransactionActions from './TransactionActions';
 
 import LocalStorageService from '../services/LocalStorageService';
-
-/**
- *
- * @param {Object} log
- * @param {Object} data
- * @param {String} symbol
- * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
- */
-const _parseTransferEvent = async ({ log, data }, symbol = '', precision = 0) => {
-	const [, hexFrom, hexTo] = log;
-	const value = { amount: new BN(data, 16).toString(10), symbol, precision };
-	const fromInt = parseInt(hexFrom.slice(26), 16);
-	const toInt = parseInt(hexTo.slice(26), 16);
-
-	let from = { id: `${CONTRACT_OBJECT_PREFIX}.${fromInt}` };
-	let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
-
-	if (hexFrom[25] === '0') {
-		const id = `${ACCOUNT_OBJECT_PREFIX}.${fromInt}`;
-		const { name } = (await echo.api.getObject(id));
-		from = { id, name };
-	}
-
-	if (hexTo[25] === '0') {
-		const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
-		const { name } = (await echo.api.getObject(id));
-		to = { id, name };
-	}
-
-	return {
-		from, subject: to, value, label: 'ERC 20 Token transfer',
-	};
-};
-
-/**
- *
- * @param {Array} data
- * @param {String} accountId
- * @param {Number} round
- * @param {Number} trIndex
- * @param {Number} opIndex
- * @param {Array} operationResult
- * @param {String} id
- * @returns {Promise.<{type: *, fee: {amount, precision, symbol}, from: {id: string}, subject: {id: string}, name, value: {}, status: boolean}>}
- */
-export const formatOperation = async (
-	data,
-	accountId = undefined,
-	round = undefined,
-	trIndex = undefined,
-	opIndex = undefined,
-	operationResult = [],
-	id = undefined,
-	timestamp = undefined,
-) => {
-	const [type, operation] = data;
-	const [, resId] = operationResult;
-	const feeAsset = await echo.api.getObject(operation.fee.asset_id);
-
-	const { name, options } = Object.values(Operations).find((i) => i.value === type);
-	const result = {
-		type,
-		fee: {
-			amount: operation.fee.amount,
-			precision: feeAsset.precision,
-			symbol: feeAsset.symbol,
-		},
-		from: {
-			id: '',
-		},
-		subject: {
-			id: '',
-		},
-		name,
-		value: {},
-		status: true,
-		round,
-		trIndex,
-		id,
-		timestamp,
-	};
-
-	if (options.from) {
-
-		if (Array.isArray(options.from)) {
-			if (options.from[1]) {
-				const request = _.get(operation, options.from[0]);
-				const response = await echo.api.getObject(request);
-				result.from = { id: request, name: response[options.from[1]] };
-			} else {
-				result.from = { id: operation[options.from[0]] };
-			}
-		} else {
-			const request = _.get(operation, options.from);
-			const response = await echo.api.getObject(request);
-
-			result.from = { id: request };
-			if (response) {
-				result.from.name = response.name;
-			}
-		}
-	}
-
-
-	if (options.subject) {
-		if (options.subject[1]) {
-			const request = _.get(operation, options.subject[0]);
-			const response = await echo.api.getObject(request);
-			result.subject = { id: request, name: response[options.subject[1]] };
-		} else if (!validators.isObjectId(operation[options.subject[0]])) {
-			const request = _.get(operation, options.subject[0]);
-			let response = null;
-			switch (options.subject[0]) {
-				case 'name':
-					response = await echo.api.getAccountByName(request);
-					break;
-				case 'symbol':
-					[response] = await echo.api.lookupAssetSymbols([request]);
-					break;
-				default:
-					response = await echo.api.getObject(request);
-					break;
-			}
-			result.subject = { id: response.id, name: request };
-		} else {
-			result.subject = { id: operation[options.subject[0]] };
-		}
-	}
-
-	if (options.value) {
-		result.value = {
-			...result.value,
-			amount: _.get(operation, options.value),
-		};
-	}
-
-	if (options.asset) {
-		const request = _.get(operation, options.asset);
-		const response = await echo.api.getObject(request);
-		result.value = {
-			...result.value,
-			precision: response.precision,
-			symbol: response.symbol,
-		};
-	}
-
-	// filter sub-operations by account
-	if (accountId && ![result.from.id, result.subject.id].includes(accountId) && !round) {
-		return null;
-	}
-
-	if (resId && (type === OPERATIONS_IDS.CONTRACT_CREATE || type === OPERATIONS_IDS.CONTRACT_CALL)) {
-
-		const contractResult = await echo.api.getContractResult(resId);
-
-		const [contractResultType, contractResultObject] = contractResult;
-
-		let log;
-
-		if (contractResultType === CONTRACT_RESULT_TYPE_0) {
-
-			const { exec_res: { excepted } } = contractResultObject;
-			({ log } = contractResultObject.tr_receipt);
-			result.status = excepted === 'None';
-
-		} else {
-			result.status = true;
-		}
-
-
-		if (type === OPERATIONS_IDS.CONTRACT_CALL && round) {
-			let contractHistory = [];
-
-			try {
-				contractHistory = await echo.api.getContractHistory(result.subject.id);
-			} catch (e) {
-				//
-			}
-
-			let internalOperations = contractHistory
-				.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
-				.map(({ op }) => formatOperation(op, accountId));
-
-			internalOperations = await Promise.all(internalOperations);
-			internalOperations = internalOperations.filter((op) => op);
-			let internalTransactions = internalOperations;
-			let code = '';
-			try {
-				([, { code }] = await echo.api.getContract(result.subject.id));
-
-			} catch (e) {
-				//
-			}
-
-			if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
-
-				const symbol = FormatHelper
-					.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['symbol()'])).slice(128));
-				const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['decimals()']), 16);
-
-				let internalTransfers = log
-					.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id)
-					// eslint-disable-next-line no-shadow
-					.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-					.map((event) => _parseTransferEvent(event, symbol, precision));
-
-				internalTransfers = await Promise.all(internalTransfers);
-				internalTransactions = [...internalTransactions, ...internalTransfers];
-			}
-
-			result.internal = internalTransactions;
-		}
-	}
-
-	// if (type === 0 && operation.memo && operation.memo.message) {
-	// 	result.memo = operation.memo;
-	// }
-
-	// if (operation.code) {
-	// 	result.bytecode = operation.code;
-	// }
-
-	return result;
-};
 
 /**
  *
@@ -297,11 +65,18 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
-					Promise.all(operations.map((op, i) => formatOperation(op, null, planeBlock.round, trIndex, i, operation_results[i]))));
+					Promise.all(operations.map((op, i) => TransactionActions.getOperation(
+						op,
+						planeBlock.round,
+						trIndex,
+						i,
+						operation_results[i],
+						i ? '' : trIndex + 1,
+					))));
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 
-		value.transactions = resultTransactions;
+		value.operations = resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []);
 		value.verifiers = verifiers.map(({ name, id }) => ({ id, name }));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);

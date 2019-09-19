@@ -5,5 +5,6 @@
     "HTTP": "https://645-echodb.pixelplexlabs.com/graphql",
     "WS": "wss://645-echodb.pixelplexlabs.com/graphql"
   },
-  "SERVER_URL": "https://explorer.echo.org"
+  "SERVER_URL": "https://explorer.echo.org",
+  "ORIGIN": "https://explorer.echo.org"
 }

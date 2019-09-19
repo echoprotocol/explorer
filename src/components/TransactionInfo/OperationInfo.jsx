@@ -6,6 +6,8 @@ import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
 import classnames from 'classnames';
 
+import config from '../../config/chain';
+
 import directionIcon from '../../assets/images/icons/direction-icon.svg';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -54,8 +56,8 @@ class OperationInfo extends React.Component {
 									</Link>
 									<img src={directionIcon} alt="" className="direction" />
 									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
-										<Avatar accountName={op.subject.name} />
-										<span>{op.subject.name}</span>
+										{ op.subject.name ? <Avatar accountName={op.subject.name} /> : null }
+										<span>{op.subject.name || op.subject.id}</span>
 									</Link>
 								</div>
 							</div>
@@ -151,8 +153,9 @@ class OperationInfo extends React.Component {
 	}
 
 	renderInfo() {
-		const { details, index } = this.props;
+		const { details, index, block } = this.props;
 		const opKey = `${details.type}_${index}`;
+		const transactionUrl = URLHelper.createTransactionUrl(block, index + 1);
 
 		return (
 			<React.Fragment>
@@ -179,6 +182,12 @@ class OperationInfo extends React.Component {
 							</div>
 					))
 				}
+				<div className="od-row">
+					<div className="od-col">TRANSACTION</div>
+					<div className="od-col">
+						<Link target="_blank" to={transactionUrl}>{`${config.ORIGIN}${transactionUrl}`}</Link>
+					</div>
+				</div>
 			</React.Fragment>
 		);
 	}
@@ -201,6 +210,7 @@ class OperationInfo extends React.Component {
 OperationInfo.propTypes = {
 	details: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
+	block: PropTypes.number.isRequired,
 };
 
 export default OperationInfo;
