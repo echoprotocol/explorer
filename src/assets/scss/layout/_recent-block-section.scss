@@ -648,7 +648,7 @@
 		}
         .info-container {
 			z-index: 0;
-			@include max-vh(785) {
+			@include max-vh(800) {
 				opacity: 0;
 				transition: opacity .2s;
 				&.fixed {
