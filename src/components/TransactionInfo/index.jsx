@@ -12,13 +12,6 @@ import Loader from '../Loader';
 
 class TransactionsInfo extends React.Component {
 
-	// constructor(props) {
-	// 	super(props);
-	//
-	// 	// this.tableRefs = [];
-	// }
-
-
 	componentDidMount() {
 		const { round, index } = this.props.match.params;
 
@@ -26,19 +19,6 @@ class TransactionsInfo extends React.Component {
 		this.props.getBlockInfo(round);
 		this.props.getTransaction();
 	}
-
-	// componentDidUpdate(prevProps) {
-	// 	const { loading, location: { search } } = this.props;
-	// 	const { loading: prevLoading } = prevProps;
-	//
-	// 	if (!loading && loading !== prevLoading) {
-	// 		const parsed = queryString.parse(search);
-	// 		if (!parsed.op || !this.tableRefs[parsed.op - 1]) {
-	// 			return;
-	// 		}
-	// 		this.tableRefs[parsed.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-	// 	}
-	// }
 
 	componentWillUnmount() {
 		this.props.clearTransaction();
@@ -88,7 +68,7 @@ class TransactionsInfo extends React.Component {
 						!loading ?
 							<React.Fragment>
 								<p className="transaction-time">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
-								<p className="transaction-title-operations">{`${!operations ? 0 : operations.size} Operations`}</p>
+								<p className="transaction-title-operations">{FormatHelper.getFormaOperationsTitle(operations.size)}</p>
 								<OperationsTable
 									operations={operations}
 									history={history}

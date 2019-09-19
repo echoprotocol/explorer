@@ -76,6 +76,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 
+		value.transactionCount = resultTransactions.length;
 		value.operations = resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []);
 		value.verifiers = verifiers.map(({ name, id }) => ({ id, name }));
 		value.round = planeBlock.round;

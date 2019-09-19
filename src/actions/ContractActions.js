@@ -62,7 +62,7 @@ class ContractActions extends BaseActionsClass {
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
 			}
 
-			return TransactionActions.getOperation(operation, t.block_num, t.trx_in_block, t.op_in_trx, result, t.op_in_trx + 1);
+			return TransactionActions.getOperation(operation, t.block_num, t.trx_in_block, t.op_in_trx, result);
 		});
 
 		history = await Promise.all(history);

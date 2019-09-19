@@ -185,7 +185,7 @@ class OperationInfo extends React.Component {
 				<div className="od-row">
 					<div className="od-col">TRANSACTION</div>
 					<div className="od-col">
-						<Link target="_blank" to={transactionUrl}>{`${config.ORIGIN}${transactionUrl}`}</Link>
+						<Link to={transactionUrl}>{`${config.ORIGIN}${transactionUrl}`}</Link>
 					</div>
 				</div>
 			</React.Fragment>

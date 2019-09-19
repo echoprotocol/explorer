@@ -368,7 +368,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		return result;
 	}
 
-	async getOperation([type, options], blockNumber, trIndex, opIndex, operationResult, number = opIndex + 1, accountId = null, trId = null) {
+	async getOperation([type, options], blockNumber, trIndex, opIndex, operationResult, number = null, accountId = null, trId = null) {
 		const operation = Object.values(Operations).find((i) => i.value === type);
 
 		delete options.memo;

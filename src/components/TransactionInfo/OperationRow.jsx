@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import Media from 'react-media';
 import classnames from 'classnames';
 import _ from 'lodash';
+import { validators } from 'echojs-lib';
 
 import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
 import OperationInfo from './OperationInfo';
 import ObjectInfo from './ObjectInfo';
+
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 
@@ -43,7 +45,7 @@ class OperationRow extends React.Component {
 					<Media query="(max-width: 767px)">
 						{(matches) => !matches && (
 							<td className="number">
-								<div className="td-in">{number !== '' ? `${number}.` : null}</div>
+								<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
 							</td>
 						)}
 					</Media>
@@ -79,8 +81,19 @@ class OperationRow extends React.Component {
 						</Media>
 						{
 							(mainInfo.subject && mainInfo.subject.name) ?
-								<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.subject.name)} onClick={(e) => e.stopPropagation()}>
-									{mainInfo.subject && <Avatar accountName={mainInfo.subject.name} />}
+								<Link
+									className="td-in avatar-wrap"
+									to={
+										validators.isAccountId(mainInfo.subject.id) ?
+											URLHelper.createAccountUrl(mainInfo.subject.name) :
+											URLHelper.createUrlById(mainInfo.subject.id)
+									}
+									onClick={(e) => e.stopPropagation()}
+								>
+									{
+										mainInfo.subject && validators.isAccountId(mainInfo.subject.id) &&
+										<Avatar accountName={mainInfo.subject.name} />
+									}
 									<span>{mainInfo.subject && mainInfo.subject.name}</span>
 								</Link> : '—'
 						}

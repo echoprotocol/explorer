@@ -45,7 +45,16 @@ class AccountActions extends BaseActionsClass {
 				}
 			}
 
-			return TransactionActions.getOperation(operation, t.block_num, t.trx_in_block, t.op_in_trx, result, t.op_in_trx + 1, accountId, t.id);
+			return TransactionActions.getOperation(
+				operation,
+				t.block_num,
+				t.trx_in_block,
+				t.op_in_trx,
+				result,
+				null,
+				accountId,
+				t.id,
+			);
 		});
 
 		accountHistory = await Promise.all(accountHistory);

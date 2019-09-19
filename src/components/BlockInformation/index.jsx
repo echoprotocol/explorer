@@ -79,7 +79,7 @@ class BlockInformation extends React.Component {
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
 		const operations = blockInformation.get('operations') || [];
-
+		const transactionCount = blockInformation.get('transactionCount') || 0;
 		const slicedOperations = operations.slice(0, currentTransactionLength);
 
 		let verifiers = blockInformation.get('verifiers') || [];
@@ -144,7 +144,7 @@ class BlockInformation extends React.Component {
 						<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
 					</div>
 				</div>
-				<h2>{FormatHelper.getFormatTransactionsTitle(operations)}</h2>
+				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
 				<div className="help-table-wrapper">
 					{
 						(slicedOperations && slicedOperations.length) ?
