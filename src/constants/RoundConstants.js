@@ -56,7 +56,6 @@ export const INTERVAL_PERIODS = 300;
 export const PROGRESS_BAR_START_DELAY = 500;
 export const PROGRESS_BAR_END_RATE = 7;
 export const GC_START_DELAY = 800;
-export const MS = 1000;
 
 export const PROGRESS_STATUS = 'progress';
 export const DONE_STATUS = 'done';

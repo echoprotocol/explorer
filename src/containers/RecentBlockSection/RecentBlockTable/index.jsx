@@ -76,6 +76,12 @@ class RecentBlockTable extends React.Component {
 		this.props.history.push(hint.to);
 	}
 
+	goToBlock(e, block) {
+		e.preventDefault();
+		window.scrollTo(0, 0);
+		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
+	}
+
 	render() {
 		const {
 			hasMore, isShowEmptyBlocks, loading, loadingSearch, errorSearch,
@@ -84,7 +90,7 @@ class RecentBlockTable extends React.Component {
 		const AreEmptyTransactions = !hasMore && !blocks.length;
 
 		return (
-			<InfiniteScroll loadMore={() => this.props.loadBlocks()} hasMore={hasMore}>
+			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
 				<div className="table-container recent-block-table">
 					<h2>Recent blocks
 						<SmallSearchField
@@ -109,13 +115,14 @@ class RecentBlockTable extends React.Component {
 								(matches ? (
 									<div className="recent-block-mobile-view">
 										{
-											this.getBlocks().map((data) => (
-												<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} key={data.round} className="recent-block-element fade-anim">
+											blocks.map((data) => (
+												<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="recent-block-element fade-anim">
 													<div className="container">
 														<div className="title">Block #</div>
 														<div className="value">
 															<Link
-																to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+																onClick={(e) => this.goToBlock(e, data.round)}
+																to=""
 																className="blue"
 															>
 																{data.blockNumber}
@@ -185,7 +192,7 @@ class RecentBlockTable extends React.Component {
 											{
 												blocks.map((data) => (
 													<React.Fragment key={data.round}>
-														<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)} className="divTableRow fade-anim">
+														<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="divTableRow fade-anim">
 															<div className="divTableCell">
 																<span className="blue">
 																	{data.blockNumber}
