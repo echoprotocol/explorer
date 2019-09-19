@@ -75,7 +75,7 @@ export const MAX_LENGTH_CONTRACT_DESCRIPTION = 256;
 export const MIN_LENGTH_CONTRACT_NAME = 2;
 export const MAX_LENGTH_CONTRACT_NAME = 16;
 export const MAX_KB_CONTRACT_ICON = 200;
-
+export const MAIN_HEADER_HEIGHT = 250;
 
 export const MAX_RETRIES = 999999999;
 

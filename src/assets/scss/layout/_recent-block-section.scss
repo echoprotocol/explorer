@@ -641,12 +641,30 @@
         flex-direction: column;
         justify-content: space-between;
         height: calc(100vh - 250px);
-
+		.help-container {
+			position: relative;
+			z-index: 2;
+			background-color: #fff;
+		}
         .info-container {
-            @include min-vh(750) {
-                position: fixed;
-                bottom: 0;
-            }
+			z-index: 0;
+			@include max-vh(785) {
+				opacity: 0;
+				transition: opacity .2s;
+				&.fixed {
+					display: block;
+					opacity: 1;
+				}
+			}
+
+			@include max-vh(640) {
+				&.fixed {
+					opacity: 0;
+					display: none
+				}
+			}
+			position: fixed;
+			bottom: 0;
         }
 
         &.sticky {
