@@ -499,11 +499,6 @@
             padding-top: 60px;
             padding-bottom: 30px;
 
-            @include min-vw(1279) {
-                position: fixed;
-                bottom: 0;
-            }
-
 
             .version {
                 @include InterUI_Medium;
@@ -638,30 +633,30 @@
         }
     }
 
-    .sticky {
-        position: fixed;
-        height: 100vh;
-        width: 260px;
-        margin: 0;
-        top: 0px;
-        left: calc(((830px + ((100vw - 1140px)/2))) - 8px);
+}
 
-        @include min-vw(1534) {
-            left: calc((1015px + ((100vw - 1440px)/2)) - 8px);
+.sticky-wrap {
+    @include min-vw(1279) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(100vh - 250px);
+
+        .info-container {
+            @include min-vh(750) {
+                position: fixed;
+                bottom: 0;
+            }
         }
-    }
 
-    //  for safari
-    @media only screen and (-webkit-min-device-pixel-ratio: 1) {
+        &.sticky {
+            height: calc(100vh - 50px);
+            position: fixed;
+            top: 50px;
 
-        ::i-block-chrome,
-        .sticky {
-            left: calc(((830px + ((100vw - 1127px)/2))) - 7px);
-
-            @include min-vw(1534) {
-                left: calc((1015px + ((100vw - 1427px)/2)) - 7px);
+            .info-container {
+                position: relative;
             }
         }
     }
-
 }

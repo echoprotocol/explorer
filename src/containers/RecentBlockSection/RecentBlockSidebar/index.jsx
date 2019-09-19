@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
 import FormatHelper from '../../../helpers/FormatHelper';
@@ -13,23 +14,19 @@ class RecentBlockSidebar extends React.Component {
 
 		this.state = {
 			timer: 0,
-			width: 0,
-			height: 0,
+			offsetTop: 0,
 		};
 
 		this.intervalId = 0;
-		this.updateWidth = this.updateWidth.bind(this);
-		this.updateHeight = this.updateHeight.bind(this);
+		this.updateOffsetTop = this.updateOffsetTop.bind(this);
 	}
 
 	componentDidMount() {
 		this.intervalId = setInterval(() => {
 			this.setState({ timer: this.state.timer += 1 });
 		}, 1000);
-		this.updateWidth();
-		window.addEventListener('resize', this.updateWidth);
-		this.updateHeight();
-		window.addEventListener('scroll', this.updateHeight);
+		this.updateOffsetTop();
+		window.addEventListener('scroll', this.updateOffsetTop);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -42,66 +39,58 @@ class RecentBlockSidebar extends React.Component {
 
 	componentWillUnmount() {
 		clearInterval(this.intervalId);
-		window.removeEventListener('resize', this.updateWidth);
-		window.removeEventListener('scroll', this.updateHeight);
+		window.removeEventListener('scroll', this.updateOffsetTop);
 	}
 
-	updateWidth() {
-		const width = window.innerWidth;
-		this.setState({ width });
-	}
-
-	updateHeight() {
-		const height = window.pageYOffset;
-		this.setState({ height });
+	updateOffsetTop() {
+		const offsetTop = window.pageYOffset;
+		this.setState({ offsetTop });
 	}
 
 	render() {
 		const { latestBlock, averageTransactions, startTimestamp } = this.props;
+		const { offsetTop } = this.state;
 
 		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
 		const averageOp = FormatHelper.roundNumber(averageTransactions.getIn(['operations', 'value']), 1);
 		const averageTime = FormatHelper.roundNumber(averageTransactions.get('averageTime'), 1);
 		const appVersion = getAppVersion();
-
 		return (
 			<div
 				ref={this.Ref}
-				className={
-					(this.state.width > 1280 && this.state.height > 275) ?
-						'sticky recent-block-sidebar'
-						: 'recent-block-sidebar'}
+				className="recent-block-sidebar"
 			>
-				<div className="help-container">
-					<div className="sidebar-elem">
-						<div className="title">Latest block number</div>
-						<div className="value">{FormatHelper.formatAmount(latestBlock, 0)}</div>
-					</div>
-					<div className="sidebar-elem">
-						<div className="title">Latest block time</div>
-						<div className="value">{FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)}</div>
-					</div>
-					<div className="sidebar-elem">
-						<div className="title">Average transactions / operations count</div>
-						<div className="value">{`${averageTr}/${averageOp}`}</div>
-					</div>
-					<div className="sidebar-elem">
-						<div className="title">Average block time</div>
-						<div className="value">
-							{averageTime ? (<React.Fragment>{averageTime}&nbsp;<span className="sm">sec</span></React.Fragment>) : '-'}
+				<div className={classnames('sticky-wrap', { sticky: offsetTop > 250 })}>
+					<div className="help-container">
+						<div className="sidebar-elem">
+							<div className="title">Latest block number</div>
+							<div className="value">{FormatHelper.formatAmount(latestBlock, 0)}</div>
+						</div>
+						<div className="sidebar-elem">
+							<div className="title">Latest block time</div>
+							<div className="value">{FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)}</div>
+						</div>
+						<div className="sidebar-elem">
+							<div className="title">Average transactions / operations count</div>
+							<div className="value">{`${averageTr}/${averageOp}`}</div>
+						</div>
+						<div className="sidebar-elem">
+							<div className="title">Average block time</div>
+							<div className="value">
+								{averageTime ? (<React.Fragment>{averageTime}&nbsp;<span className="sm">sec</span></React.Fragment>) : '-'}
+							</div>
 						</div>
 					</div>
+					<Media query="(max-width: 1279px)">
+						{
+							(matches) => !matches &&
+							<div className="info-container">
+								<div className="version">v{appVersion}</div>
+								<div className="copyright">©Echo Technological Solutions LLC, {FormatHelper.getYear(new Date())}</div>
+							</div>
+						}
+					</Media>
 				</div>
-				<Media query="(max-width: 1279px)">
-					{
-						(matches) => !matches &&
-						<div className="info-container">
-							<div className="version">v{appVersion}</div>
-							<div className="copyright">©Echo Technological Solutions LLC, {FormatHelper.getYear(new Date())}</div>
-						</div>
-					}
-				</Media>
-
 			</div>
 		);
 	}
