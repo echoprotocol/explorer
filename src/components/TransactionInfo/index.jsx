@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import queryString from 'query-string';
 
 import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
