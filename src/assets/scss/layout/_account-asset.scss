@@ -2,11 +2,11 @@
     &.account-asset-page {
 
         @include res-1000 {
-            min-height: calc(100vh - 405px);
+            min-height: calc(100vh - 390px);
         }
 
         @include res-768 {
-            min-height: calc(100vh - 484px);
+            min-height: calc(100vh - 390px);
             padding-top: 40px;
         }
 

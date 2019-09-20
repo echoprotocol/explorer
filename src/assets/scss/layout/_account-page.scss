@@ -17,17 +17,20 @@
             }
 
             @include res-320 {
-                padding: 0 10px 0 10px;
+                padding: 0px;
             }
 
-            > .title {
+            >.title {
                 @include InterUI_Bold;
                 font-size: 23px;
                 color: #18142a;
                 margin-bottom: 33px;
+                letter-spacing: 0.59px;
+                margin-top: 50px;
 
                 @include res-768 {
                     margin-bottom: 29px;
+                    margin-left: 18px;
                 }
             }
 
@@ -74,7 +77,7 @@
                             }
                         }
 
-                        > .title {
+                        >.title {
                             @include Hack_Bold;
                             color: #1f3c4d;
                             font-size: 10px;
@@ -100,12 +103,13 @@
                                 flex-shrink: 0;
                             }
                         }
-					}
-					.raw-link {
-						@include InterUI_Regular;
-						letter-spacing: 0.3px;
-						font-size: 12px;
-					}
+                    }
+
+                    .raw-link {
+                        @include InterUI_Regular;
+                        letter-spacing: 0.3px;
+                        font-size: 12px;
+                    }
                 }
 
                 .right-container {
@@ -141,7 +145,7 @@
                             }
                         }
 
-                        > .title {
+                        >.title {
                             @include Hack_Bold;
                             font-size: 10px;
                             text-transform: uppercase;
@@ -214,8 +218,29 @@
                                         letter-spacing: 0.25em;
                                     }
                                 }
+
                                 .txt {
                                     margin-right: 5px;
+                                }
+
+                                .accent {
+                                    a {
+                                        text-overflow: ellipsis;
+                                        overflow: hidden;
+                                        max-width: 70px;
+
+                                        @include res-768 {
+                                            max-width: 180px;
+                                        }
+
+                                        @include res-500 {
+                                            max-width: 90px;
+                                        }
+
+                                        @include res-320 {
+                                            overflow: unset;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -242,9 +267,6 @@
                 margin-top: 45px;
             }
 
-            @include res-768 {
-                margin-top: 40px;
-            }
         }
 
         .tab-panel {
@@ -425,7 +447,7 @@
                     }
                 }
 
-                > .title {
+                >.title {
                     @include Hack_Bold;
                     font-size: 10px;
                     text-transform: uppercase;
@@ -510,6 +532,7 @@
                                 letter-spacing: 0.25em;
                             }
                         }
+
                         .txt {
                             margin-right: 5px;
                         }
@@ -526,110 +549,123 @@
             }
         }
 
-		&.with-d-table {
-			.divTable {
-				.TableHeading .divTableCell, .divTableRow .divTableCell{
-						&:first-child {
-							min-width: 110px;
-                            max-width: 110px;
+        &.with-d-table {
+            .divTable {
+
+                .TableHeading .divTableCell,
+                .divTableRow .divTableCell {
+                    &:first-child {
+                        min-width: 110px;
+                        max-width: 110px;
+                        width: 110px;
+                        padding-left: 20px;
+
+                        @include res-768 {
+                            width: 95px;
+                            max-width: 95px;
+                            min-width: 95px;
+                            padding-left: 10px;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        @include res-768 {
+                            width: 85px;
+                            max-width: 85px;
+                            min-width: 85px;
+                        }
+                    }
+
+                    &:nth-child(3),
+                    &:nth-child(4) {
+                        max-width: 140px;
+                        min-width: 140px;
+                        width: 140px;
+
+                        @include res-1280 {
+                            max-width: 105px;
+                            min-width: 105px;
+                            width: 105px;
+                        }
+
+                        @include res-768 {
+                            width: 85px;
+                            max-width: 85px;
+                            min-width: 85px;
+                        }
+                    }
+
+                    &:nth-child(5),
+                    &:nth-child(6) {
+                        width: 125px;
+                        max-width: 125px;
+                        min-width: 125px;
+
+                        @include res-768 {
                             width: 110px;
-                            padding-left: 20px;
-
-                            @include res-768 {
-                                width: 95px;
-                                max-width: 95px;
-                                min-width: 95px;
-                                padding-left: 10px;
-                            }
+                            max-width: 110px;
+                            min-width: 110px;
                         }
+                    }
 
-                        &:nth-child(2) {
-                            @include res-768 {
-                                width: 85px;
-                                max-width: 85px;
-                                min-width: 85px;
-                            }
+                    &:nth-child(7) {
+                        @include res-768 {
+                            width: 95px;
+                            max-width: 95px;
+                            min-width: 95px;
                         }
+                    }
+                }
 
-						&:nth-child(3),
-						&:nth-child(4) {
-							max-width: 140px;
-                            min-width: 140px;
-                            width: 140px;
-
-                            @include res-1280 {
-                                max-width: 105px;
-                                min-width: 105px;
-                                width: 105px;
-                            }
-
-                            @include res-768 {
-                                width: 85px;
-                                max-width: 85px;
-                                min-width: 85px;
-                            }
-                        }
-
-                        &:nth-child(5), &:nth-child(6) {
-                            width: 125px;
-                            max-width: 125px;
-                            min-width: 125px;
-
-                            @include res-768 {
-                                width: 110px;
-                                max-width: 110px;
-                                min-width: 110px;
-                            }
-                        }
-
-                        &:nth-child(7) {
-                            @include res-768 {
-                                width: 95px;
-                                max-width: 95px;
-                                min-width: 95px;
-                            }
-                        }
-				}
-
-				.divTableRow {
-					.divTableCell{
+                .divTableRow {
+                    .divTableCell {
 
                         @include res-768 {
                             word-break: break-word;
                         }
 
-						&:nth-child(3),
-						&:nth-child(4) {
+                        &:nth-child(3),
+                        &:nth-child(4) {
 
-							.blue {
-								overflow: hidden;
-								white-space: nowrap;
-								text-overflow: ellipsis;
-								display: block;
-							}
-						}
-					}
-				}
-			}
-		}
+                            .blue {
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+
     &.contract-page {
-		@include max-vw(499) {
+        @include max-vw(999) {
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        @include max-vw(768) {
             padding-left: 15px;
             padding-right: 15px;
         }
 
+        @include max-vw(380) {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
 
         .account-page-t-block {
 
             .title {
-				padding-left: 0;
-				@include min-vw(500) {
+                padding-left: 0;
+
+                @include min-vw(500) {
                     line-height: 28px;
                     padding-left: 11px;
                     position: relative;
                 }
-
             }
 
             .help-container {

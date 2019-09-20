@@ -67,11 +67,11 @@ class RecentBlockSidebar extends React.Component {
 							<div className="value">{FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)}</div>
 						</div>
 						<div className="sidebar-elem">
-							<div className="title">Average transactions / operations count</div>
+							<div className="title">Average transactions amount</div>
 							<div className="value">{`${averageTr}/${averageOp}`}</div>
 						</div>
 						<div className="sidebar-elem">
-							<div className="title">Average block time</div>
+							<div className="title">Average block time (24h)</div>
 							<div className="value">
 								{averageTime ? (<React.Fragment>{averageTime}&nbsp;<span className="sm">sec</span></React.Fragment>) : '-'}
 							</div>

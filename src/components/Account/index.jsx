@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import TransactionsTable from '../BlockInformation/TransactionsTable';
+import OperationsTable from '../TransactionInfo/OperationsTable';
 
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
@@ -12,6 +12,10 @@ class Account extends React.Component {
 
 	componentDidMount() {
 		this.props.getAccountInfo();
+
+		if (this.props.location.search) {
+			this.props.history.push(this.props.location.pathname);
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -46,12 +50,7 @@ class Account extends React.Component {
 
 	onLoadMoreHistory() {
 		const { account, accountHistory } = this.props;
-		this.props.loadAccountHistory(account.get('id'), accountHistory.last()[0].id.split('.')[2]);
-	}
-
-	onLink(e, path) {
-		e.preventDefault();
-		this.props.history.push(path);
+		this.props.loadAccountHistory(account.get('id'), accountHistory.last().id.split('.')[2]);
 	}
 
 	renderLoader(loading) {
@@ -91,10 +90,11 @@ class Account extends React.Component {
 							<h2>Transactions</h2>
 							{
 								accountHistory.size ?
-									<TransactionsTable
-										transactions={accountHistory}
+									<OperationsTable
+										operations={accountHistory}
+										history={this.props.history}
+										location={this.props.location}
 										loading={loadingMoreHistory}
-										onLink={(e, path) => this.onLink(e, path)}
 										loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 										hasMore={!isFullHistory}
 									/> : null
@@ -115,6 +115,7 @@ Account.propTypes = {
 	balances: PropTypes.object,
 	history: PropTypes.object,
 	accountHistory: PropTypes.object,
+	location: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
