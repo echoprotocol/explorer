@@ -6,8 +6,6 @@ import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
 import classnames from 'classnames';
 
-import config from '../../config/chain';
-
 import directionIcon from '../../assets/images/icons/direction-icon.svg';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -153,7 +151,7 @@ class OperationInfo extends React.Component {
 	}
 
 	renderInfo() {
-		const { details, index, block } = this.props;
+		const {	details, index, block } = this.props;
 		const opKey = `${details.type}_${index}`;
 		const transactionUrl = URLHelper.createTransactionUrl(block, index + 1);
 
@@ -167,7 +165,7 @@ class OperationInfo extends React.Component {
 									(matches) =>
 										(matches &&
 										<div className="od-row" key={`${opKey}_${key}`}>
-											<div className="od-col">{key}</div>
+											<div className="od-col">{key}:</div>
 											<div className="od-col">
 												{this.renderOperationRowValue(key, value, index)}
 											</div>
@@ -175,7 +173,7 @@ class OperationInfo extends React.Component {
 								}
 							</Media> :
 							<div className="od-row" key={`${opKey}_${key}`} >
-								<div className="od-col">{key}</div>
+								<div className="od-col">{key}:</div>
 								<div className="od-col">
 									{this.renderOperationRowValue(key, value, index)}
 								</div>
@@ -183,9 +181,9 @@ class OperationInfo extends React.Component {
 					))
 				}
 				<div className="od-row">
-					<div className="od-col">TRANSACTION</div>
+					<div className="od-col">TRANSACTION:</div>
 					<div className="od-col">
-						<Link to={transactionUrl}>{`${config.ORIGIN}${transactionUrl}`}</Link>
+						<Link to={transactionUrl}>{`${window.location.origin}${transactionUrl}`}</Link>
 					</div>
 				</div>
 			</React.Fragment>

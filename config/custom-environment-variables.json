@@ -1,7 +1,6 @@
 {
   "API_URL": "API_URL",
   "SERVER_URL": "SERVER_URL",
-  "ORIGIN": "SERVER_URL",
   "GRAPHQL_URL": {
     "HTTP": "HTTP_LINK",
     "WS": "WS_LINK"

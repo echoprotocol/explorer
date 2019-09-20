@@ -13,7 +13,6 @@ const {
 	LANDING_BRIDGE,
 	GRAPHQL_URL,
 	SERVER_URL,
-	ORIGIN,
 	SOLC_LIST_URL,
 	SOLC_BIN_URL,
 } = require('config');
@@ -130,7 +129,6 @@ module.exports = {
 		new webpack.DefinePlugin({
 			__API_URL__: JSON.stringify(API_URL),
 			__SERVER_URL__: JSON.stringify(SERVER_URL),
-			__ORIGIN__: JSON.stringify(ORIGIN),
 			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),
 			__SOLC_BIN_URL__: JSON.stringify(SOLC_BIN_URL),
 			__LANDING_BRIDGE__: JSON.stringify(LANDING_BRIDGE),
