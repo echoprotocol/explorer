@@ -35,6 +35,7 @@ class OperationRow extends React.Component {
 				blockNumber: block,
 				trIndex: transactionNum,
 				number,
+				blockTimestamp,
 				...detailInfo
 			},
 			index,
@@ -87,7 +88,7 @@ class OperationRow extends React.Component {
 								</Media>
 								<div className="td-in">
 									<span>
-										12.03.19 15:43
+										{FormatHelper.timestampToOperationRowTime(blockTimestamp)}
 									</span>
 								</div>
 							</td>

@@ -79,6 +79,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 					Promise.all(operations.map((op, i) => TransactionActions.getOperation(
 						op,
 						planeBlock.round,
+						planeBlock.timestamp,
 						trIndex,
 						i,
 						operation_results[i],
