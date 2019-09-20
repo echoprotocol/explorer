@@ -222,6 +222,26 @@
                                 .txt {
                                     margin-right: 5px;
                                 }
+
+                                .accent {
+                                    a {
+                                        text-overflow: ellipsis;
+                                        overflow: hidden;
+                                        max-width: 70px;
+
+                                        @include res-768 {
+                                            max-width: 180px;
+                                        }
+
+                                        @include res-500 {
+                                            max-width: 90px;
+                                        }
+
+                                        @include res-320 {
+                                            overflow: unset;
+                                        }
+                                    }
+                                }
                             }
                         }
 
