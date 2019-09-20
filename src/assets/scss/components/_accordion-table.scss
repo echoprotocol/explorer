@@ -279,6 +279,26 @@
                 width: 34px;
                 min-width: 34px;
             }
+
+            &.sender,
+            &.reciever,
+            &.amount {
+                span {
+                    max-width: 90px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    line-height: 15px;
+                    white-space: nowrap;
+
+                    @include res-1280 {
+                        max-width: 80px;
+                    }
+                }
+            }
+
+            &.type {
+                white-space: nowrap;
+            }
         }
 
         @include res-1280 {
@@ -286,12 +306,6 @@
             margin-left: 0;
 
             td {
-                &.number {
-                    max-width: 32px;
-                    width: 32px;
-                    min-width: 32px;
-                }
-
                 &.type {
                     max-width: 120px;
                     width: 120px;
