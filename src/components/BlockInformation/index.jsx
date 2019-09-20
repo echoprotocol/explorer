@@ -149,6 +149,7 @@ class BlockInformation extends React.Component {
 					{
 						(slicedOperations && slicedOperations.length) ?
 							<OperationsTable
+								isBlock
 								operations={slicedOperations}
 								history={this.props.history}
 								location={this.props.location}

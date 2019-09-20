@@ -17,6 +17,15 @@ import FormatHelper from '../../helpers/FormatHelper';
 
 class OperationRow extends React.Component {
 
+	getColSpan(matches) {
+		const { isBlock } = this.props;
+
+		if (isBlock) {
+			return !matches ? 7 : 6;
+		}
+		return !matches ? 9 : 8;
+	}
+
 	render() {
 		const {
 			operation: {
@@ -42,6 +51,7 @@ class OperationRow extends React.Component {
 					onClick={() => this.props.toggleOperationDetails(index)}
 					ref={this.props.tableRefs[index]}
 				>
+					<td />
 					<Media query="(max-width: 767px)">
 						{(matches) => !matches && (
 							<td className="number">
@@ -149,19 +159,17 @@ class OperationRow extends React.Component {
 							<img src={ddIcon} alt="" />
 						</div>
 					</td>
+					<td />
 				</tr>
 				{
 					active &&
 					<tr className="fold">
-						<Media query="(max-width: 767px)">
-							{(matches) => !matches && <td />}
-						</Media>
-
+						<td colSpan="2" />
 						<Media query="(max-width: 1000px)">
 							{
 								(matches) => (
 									<React.Fragment>
-										<td colSpan={!matches ? 7 : 6}>
+										<td colSpan={this.getColSpan(matches)}>
 											<OperationInfo details={detailInfo} index={index} block={block} transaction={transactionNum} />
 											<ObjectInfo details={detailInfo} object={objectInfo} />
 										</td>
@@ -194,6 +202,11 @@ OperationRow.propTypes = {
 	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
+	isBlock: PropTypes.bool,
+};
+
+OperationRow.defaultProps = {
+	isBlock: false,
 };
 
 

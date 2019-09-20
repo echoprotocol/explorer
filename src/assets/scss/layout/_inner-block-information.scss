@@ -775,6 +775,10 @@
                 @include res-768 {
                     padding: 9px 30px;
                 }
+
+                @include res-320 {
+                    padding: 9px 15px;
+                }
             }
 
             .fold-operation-info {
@@ -786,7 +790,9 @@
         }
 
         td {
-            &.number {
+
+            &.number,
+            &.dd {
                 max-width: 30px;
                 width: 30px;
                 min-width: 30px;
@@ -948,7 +954,9 @@
                 }
 
                 &.dd {
-                    top: 18px;
+                    max-width: 8px;
+                    width: 8px;
+                    min-width: 8px;
                 }
             }
 

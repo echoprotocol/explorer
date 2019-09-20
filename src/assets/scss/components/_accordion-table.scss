@@ -135,7 +135,7 @@
                     padding: 13px 7px;
 
                     @include res-500 {
-                        padding: 9px 7px;
+                        padding: 0px;
                     }
                 }
 
@@ -150,9 +150,6 @@
 
 
             .dd {
-                .td-in {
-                    padding: 13px 7px;
-                }
 
                 img {
                     transform: rotate(0);
@@ -196,7 +193,7 @@
     .fold {
         display: none;
         background-color: #fff;
-        animation: fade-in .3s;
+        animation: fade-in .4s;
         position: relative;
         z-index: 1;
 
@@ -284,6 +281,10 @@
                 width: 20px;
                 min-width: 20px;
             }
+
+            .td-in {
+                padding: 9px 7px;
+            }
         }
 
         @include res-1280 {
@@ -337,11 +338,7 @@
         table {
 
             td {
-                &.type {
-                    .td-in {
-                        padding-left: 13px;
-                    }
-                }
+                &.type {}
 
                 &.type,
                 &.sender,
@@ -372,9 +369,13 @@
                     min-width: 37%;
                 }
 
+                &.amount {
+                    padding-left: 20px;
+                }
+
                 &.dd {
                     position: absolute;
-                    top: 11px;
+                    top: 18px;
                     right: 23px;
                     text-align: center;
                     line-height: 10px;
@@ -492,7 +493,7 @@
 
             .view {
                 background-color: #e7e6e9;
-                padding: 18px 15px 0px 18px;
+                padding: 18px 15px 15px 18px;
             }
 
             td {
@@ -562,20 +563,24 @@
 
                 td {
                     &:not(.dd):nth-child(odd) {
-                        max-width: 55%;
-                        width: 55%;
-                        min-width: 55%;
+                        max-width: 50%;
+                        width: 50%;
+                        min-width: 50%;
                     }
 
                     &:not(.dd):nth-child(even) {
-                        max-width: 45%;
-                        width: 45%;
-                        min-width: 45%;
+                        max-width: 50%;
+                        width: 50%;
+                        min-width: 50%;
                     }
 
                     &.json,
                     &.amount {
                         margin-bottom: 10px;
+                    }
+
+                    &.amount {
+                        padding-left: 0;
                     }
 
                     &.dd .td-in {
@@ -653,9 +658,9 @@
                         }
 
                         @include max-vw(500) {
-                            max-width: 55%;
-                            width: 55%;
-                            min-width: 55%;
+                            max-width: 50%;
+                            width: 50%;
+                            min-width: 50%;
                         }
                     }
 
@@ -690,9 +695,9 @@
                         }
 
                         @include max-vw(500) {
-                            max-width: 45%;
-                            width: 45%;
-                            min-width: 45%;
+                            max-width: 50%;
+                            width: 50%;
+                            min-width: 50%;
                         }
                     }
 
@@ -720,9 +725,9 @@
 
                             @include max-vw(500) {
                                 order: 3;
-                                max-width: 55%;
-                                width: 55%;
-                                min-width: 55%;
+                                max-width: 50%;
+                                width: 50%;
+                                min-width: 50%;
                                 padding-left: 0px;
                             }
                         }
@@ -748,9 +753,9 @@
 
                         @include max-vw(500) {
                             order: 4;
-                            max-width: 45%;
-                            width: 45%;
-                            min-width: 45%;
+                            max-width: 50%;
+                            width: 50%;
+                            min-width: 50%;
                         }
                     }
 
@@ -776,15 +781,19 @@
                             min-width: 30%;
 
                             .td-in {
-                                padding-left: 0px
+                                padding-left: 12px
                             }
                         }
 
                         @include max-vw(500) {
                             order: 5;
-                            max-width: 55%;
-                            width: 55%;
-                            min-width: 55%;
+                            max-width: 50%;
+                            width: 50%;
+                            min-width: 50%;
+
+                            td-in {
+                                padding-left: 0px
+                            }
                         }
                     }
 
@@ -811,9 +820,9 @@
                         }
 
                         @include max-vw(500) {
-                            max-width: 45%;
-                            width: 45%;
-                            min-width: 45%;
+                            max-width: 50%;
+                            width: 50%;
+                            min-width: 50%;
                         }
                     }
 

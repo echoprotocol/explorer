@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Media from 'react-media';
 import queryString from 'query-string';
 import InfiniteScroll from 'react-infinite-scroller';
-
+import classnames from 'classnames';
 import OperationRow from './OperationRow';
 import LoadMoreBtn from '../LoadMoreBtn';
 
@@ -94,11 +94,11 @@ class OperationsTable extends React.Component {
 	}
 
 	renderTable() {
-		const { operations, hasMore, loading } = this.props;
+		const { operations, hasMore, loading, isBlock } = this.props;
 		const { showedOperations, airRows } = this.state;
 
 		return (
-			<div className="accordion-table-wrap">
+			<div className={classnames('accordion-table-wrap table-container', { 'table-block': isBlock })} >
 				<table>
 					<Media query="(max-width: 767px)">
 						{ (matches) => !matches &&
@@ -116,14 +116,12 @@ class OperationsTable extends React.Component {
 												(!matchesIn && <td className="fee"><div className="td-in">Operation fee</div></td>)
 										}
 									</Media>
-
 									<td className="rezult"><div className="td-in">Result</div></td>
 									<td className="json"><div className="td-in">JSON</div></td>
 									<td className="dd" />
 									<td />
 								</tr>
 							</thead>
-
 						}
 					</Media>
 
@@ -144,6 +142,7 @@ class OperationsTable extends React.Component {
 									key={i.toString()}
 									operation={op}
 									index={i}
+									isBlock={isBlock}
 									active={showedOperations.includes(i)}
 									air={airRows.includes(i)}
 									tableRefs={this.tableRefs}
@@ -187,6 +186,7 @@ OperationsTable.propTypes = {
 	loading: PropTypes.bool,
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,
+	isBlock: PropTypes.bool,
 	loadMore: PropTypes.func,
 };
 
@@ -195,6 +195,7 @@ OperationsTable.defaultProps = {
 	hasMore: false,
 	changeUrl: false,
 	loading: false,
+	isBlock: false,
 	loadMore: null,
 };
 
