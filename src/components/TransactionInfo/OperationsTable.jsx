@@ -94,7 +94,9 @@ class OperationsTable extends React.Component {
 	}
 
 	renderTable() {
-		const { operations, hasMore, loading, isBlock } = this.props;
+		const {
+			operations, hasMore, loading, isBlock,
+		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
 		return (
