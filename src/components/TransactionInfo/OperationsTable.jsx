@@ -104,6 +104,7 @@ class OperationsTable extends React.Component {
 						{ (matches) => !matches &&
 							<thead>
 								<tr>
+									<td />
 									<td className="number"><div className="td-in">#</div></td>
 									<td className="type"><div className="td-in">Type</div></td>
 									<td className="sender"><div className="td-in">Sender</div></td>
@@ -119,6 +120,7 @@ class OperationsTable extends React.Component {
 									<td className="rezult"><div className="td-in">Result</div></td>
 									<td className="json"><div className="td-in">JSON</div></td>
 									<td className="dd" />
+									<td />
 								</tr>
 							</thead>
 

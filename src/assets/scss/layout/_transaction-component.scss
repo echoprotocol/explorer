@@ -14,12 +14,6 @@
     @include InterUI_Medium;
     color: #828b95;
     margin-bottom: 50px;
-
-    @include max-vw(500) {
-      padding-left: 30px;
-    }
-
-
   }
 
   .transaction-title-operations {
@@ -28,10 +22,6 @@
     line-height: 27px;
     color: #130d32;
     margin-bottom: 30px;
-
-    @include max-vw(500) {
-      padding-left: 30px;
-    }
   }
 
   .divTable {

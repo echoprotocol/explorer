@@ -21,12 +21,16 @@
             font-weight: 700;
             font-size: 9px;
             text-transform: uppercase;
-            letter-spacing: 0.16em;
+            letter-spacing: 2.25px;
             font-style: normal;
             color: rgba(#263C4B, .8);
             text-align: right;
             white-space: nowrap;
-            padding-left: 23px;
+            padding-left: 28px;
+
+            @include res-768 {
+                padding-left: 40px;
+            }
         }
 
         &:nth-child(2) {
@@ -34,6 +38,7 @@
             font-weight: 500;
             font-size: 13px;
             font-style: normal;
+            letter-spacing: 0.33px;
             color: #000;
             padding-left: 28px;
             width: 100%;
