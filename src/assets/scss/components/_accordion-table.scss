@@ -543,6 +543,10 @@
 
         .fold-operation-info {
             padding: 0px;
+
+            &:not(:first-child) {
+                padding-top: 20px;
+            }
         }
 
         .fold>td:nth-child(2) {
@@ -831,16 +835,9 @@
                         width: 30px;
                         min-width: 30px;
 
-
-                        // @include max-vw(1280) {
-                        //     max-width: 25px;
-                        //     width: 25px;
-                        //     min-width: 25px;
-                        // }
-
                         @include max-vw(768) {
                             right: 16px;
-                            top: 5px;
+                            top: 6px;
                         }
                     }
                 }
@@ -851,7 +848,7 @@
                     letter-spacing: 0.3px;
                     line-height: 10px;
 
-                    .td-in {
+                    :not(.dd).td-in {
                         padding: 9px 7px;
 
                     }

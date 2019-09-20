@@ -23,7 +23,7 @@ class OperationRow extends React.Component {
 		if (isBlock) {
 			return !matches ? 7 : 6;
 		}
-		return !matches ? 9 : 8;
+		return !matches ? 8 : 7;
 	}
 
 	render() {
@@ -76,6 +76,17 @@ class OperationRow extends React.Component {
 							{detailInfo.type}
 						</div>
 					</td>
+					{/* FOR ACCOUNT AND CONTRACT */}
+					{/* <td className="time">
+						<Media query="(max-width: 767px)">
+							{ (matches) => matches && <div className="col-title">DATA, TIME</div>}
+						</Media>
+						<div className="td-in">
+							<span>
+								12.03.19 15:43
+							</span>
+						</div>
+					</td> */}
 					<td className="sender">
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Sender</div>}
@@ -122,7 +133,8 @@ class OperationRow extends React.Component {
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : '—'
 						}
-					</td>
+					</td>	
+							{/* FOR BLOCK ONLY  */}
 					<Media query="(max-width: 1000px)">
 						{
 							(matches) =>

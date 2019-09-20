@@ -64,7 +64,7 @@
 
 
                 &.time {
-                    width: 205px;
+                    width: 210px;
 
                     @include res-500 {
                         width: 195px;
@@ -968,7 +968,6 @@
                     max-width: 45%;
                     width: 45%;
                     min-width: 45%;
-
                 }
 
                 &.type,
@@ -993,7 +992,7 @@
 
                 &.amount {
                     order: 2;
-                    padding-left: 0
+                    padding-left: 0px;
                 }
 
                 &.rezult {

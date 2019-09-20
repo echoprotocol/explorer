@@ -119,6 +119,7 @@
                 }
 
             }
+
             .value {
                 @include InterUI_Medium;
                 font-size: 14px;
@@ -145,8 +146,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 84px;
+    width: 85px;
     height: 21px;
     margin-top: 20px;
     border-radius: 11px;
@@ -157,6 +157,7 @@
     border: none;
     outline: none;
     transition: all .2s ease-out;
+    padding: 0 5px;
 
     @include res-500 {
         margin-top: 20px;
