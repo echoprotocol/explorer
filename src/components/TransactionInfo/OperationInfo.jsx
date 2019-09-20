@@ -151,9 +151,11 @@ class OperationInfo extends React.Component {
 	}
 
 	renderInfo() {
-		const {	details, index, block } = this.props;
+		const {
+			details, index, block, transaction,
+		} = this.props;
 		const opKey = `${details.type}_${index}`;
-		const transactionUrl = URLHelper.createTransactionUrl(block, index + 1);
+		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
 
 		return (
 			<React.Fragment>
@@ -209,6 +211,7 @@ OperationInfo.propTypes = {
 	details: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	block: PropTypes.number.isRequired,
+	transaction: PropTypes.number.isRequired,
 };
 
 export default OperationInfo;

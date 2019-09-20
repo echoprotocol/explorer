@@ -162,7 +162,7 @@ class OperationRow extends React.Component {
 								(matches) => (
 									<React.Fragment>
 										<td colSpan={!matches ? 7 : 6}>
-											<OperationInfo details={detailInfo} index={index} block={block} />
+											<OperationInfo details={detailInfo} index={index} block={block} transaction={transactionNum} />
 											<ObjectInfo details={detailInfo} object={objectInfo} />
 										</td>
 										<Media query="(max-width: 767px)">
