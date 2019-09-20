@@ -1,5 +1,7 @@
 .accordion-table-wrap {
     position: relative;
+    transition: background-color 0.3s,
+        padding 0.8s linear;
 
     table {
         width: 100%;
@@ -8,10 +10,10 @@
 
         td {
             &.json {
-                padding: 0;
+                padding: 0px;
 
                 .td-in {
-                    padding: 0;
+                    padding: 0px;
                 }
             }
 
@@ -99,7 +101,6 @@
     }
 
     :not(.table-block).view {
-        transition: background-color .3s;
         cursor: pointer;
         font-family: InterUI;
         z-index: 1;
@@ -124,10 +125,30 @@
 
             td {
                 background-color: #fff;
+
+                .td-in {
+                    padding: 13px 7px;
+
+                    @include res-500 {
+                        padding: 9px 7px;
+                    }
+                }
+
+                .fold-operation-info {
+                    .fold-title {
+                        padding-left: 17px;
+                        font-size: 13px;
+                        letter-spacing: 0.33px;
+                    }
+                }
             }
 
 
             .dd {
+                .td-in {
+                    padding: 13px 7px;
+                }
+
                 img {
                     transform: rotate(0);
                 }
@@ -138,6 +159,10 @@
             }
 
             .json {
+                .td-in {
+                    padding: 0px;
+                }
+
                 a {
                     background-image: url(../images/icons/json-white.svg);
                     background-color: #2E6EB1;
@@ -181,7 +206,19 @@
             }
 
             &:nth-child(2) {
-                padding: 15px 30px;
+                padding: 12px 33px 12px 63px;
+
+                @include res-1280 {
+                    padding: 9px 33px 9px 44px;
+                }
+
+                @include res-500 {
+                    padding: 9px 30px;
+                }
+
+                @include res-320 {
+                    padding: 9px 18px;
+                }
             }
         }
 
@@ -196,7 +233,15 @@
             font-weight: 700;
 
             &+.operation-detail-table {
-                margin-top: 10px;
+                margin-top: 8px;
+
+                @include res-768 {
+                    margin-top: 19px;
+                }
+
+                @include res-500 {
+                    margin-top: 13px;
+                }
             }
         }
     }
@@ -287,6 +332,11 @@
         table {
 
             td {
+                &.type {
+                    .td-in {
+                        padding-left: 13px;
+                    }
+                }
 
                 &.type,
                 &.sender,
@@ -343,15 +393,14 @@
             display: flex;
             flex-wrap: wrap;
             position: relative;
-            background-color: #e7e6e9;
             padding: 22px 36px;
+            background-color: #e7e6e9;
 
             &.active {
                 &+.fold {
                     display: block;
                 }
 
-                transition: background-color 1s;
                 background-color: #fff;
             }
 
@@ -360,7 +409,6 @@
                     background-color: #e0dfe3;
 
                     td:not(:first-child):not(:last-child) {
-                        transition: background-color 1s;
                         background-color: #e0dfe3;
                     }
                 }
@@ -388,6 +436,7 @@
         }
 
         .fold-operation-info {
+            padding: 20px 36px;
             margin-bottom: 0;
         }
 
@@ -427,9 +476,6 @@
         }
     }
 
-    .fold-operation-info {
-        padding: 20px 36px;
-    }
 }
 
 @include max-vw(768) {
@@ -766,19 +812,16 @@
                     }
 
                     &.dd {
-                        max-width: 34px;
-                        width: 34px;
-                        min-width: 34px;
+                        max-width: 30px;
+                        width: 30px;
+                        min-width: 30px;
 
-                        .td-in {
-                            padding-left: 5px
-                        }
 
-                        @include max-vw(1280) {
-                            max-width: 25px;
-                            width: 25px;
-                            min-width: 25px;
-                        }
+                        // @include max-vw(1280) {
+                        //     max-width: 25px;
+                        //     width: 25px;
+                        //     min-width: 25px;
+                        // }
 
                         @include max-vw(768) {
                             right: 16px;

@@ -96,6 +96,7 @@ class OperationsTable extends React.Component {
 					onClick={() => this.toggleOperationDetails(index)}
 					ref={this.props.tableRefs[index]}
 				>
+					<td />
 					<Media query="(max-width: 767px)">
 						{ (matches) => !matches && <td className="number"><div className="td-in">{index + 1}.</div></td> }
 					</Media>
@@ -188,19 +189,17 @@ class OperationsTable extends React.Component {
 							<img src={ddIcon} alt="" />
 						</div>
 					</td>
+					<td />
 				</tr>
 				{
 					showedOperations.includes(index) &&
 					<tr className="fold">
-						<Media query="(max-width: 767px)">
-							{(matches) => !matches && <td />}
-						</Media>
-
+						<td />
 						<Media query="(max-width: 1000px)">
 							{
 								(matches) => (
 									<React.Fragment>
-										<td colSpan={!matches ? 7 : 6}>
+										<td colSpan={!matches ? 9 : 8}>
 											<OperationInfo details={detailInfo} index={index} />
 											<ObjectInfo details={detailInfo} object={objectInfo} />
 										</td>
@@ -233,6 +232,7 @@ class OperationsTable extends React.Component {
 						{ (matches) => !matches &&
 							<thead>
 								<tr>
+									<td />
 									<td className="number"><div className="td-in">#</div></td>
 									<td className="type"><div className="td-in">Type</div></td>
 									<td className="sender"><div className="td-in">Sender</div></td>
@@ -248,6 +248,7 @@ class OperationsTable extends React.Component {
 									<td className="rezult"><div className="td-in">Result</div></td>
 									<td className="json"><div className="td-in">JSON</div></td>
 									<td className="dd" />
+									<td />
 								</tr>
 							</thead>
 
