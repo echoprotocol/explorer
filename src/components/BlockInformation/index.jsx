@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
-import BlockTable from './BlockTable';
+import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import ViewListPopover from '../ViewListPopover';
 import Loader from '../Loader';
@@ -31,7 +31,7 @@ class BlockInformation extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.blockInformation) {
-			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.blockInformation.get('round')));
+			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.match.params.round));
 		}
 
 		if (this.props.match.params.round !== prevProps.match.params.round) {
@@ -78,9 +78,9 @@ class BlockInformation extends React.Component {
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
-		const transactions = blockInformation.get('transactions') || [];
-
-		const slicedTransactions = transactions.slice(0, currentTransactionLength);
+		const operations = blockInformation.get('operations') || [];
+		const transactionCount = blockInformation.get('transactionCount') || 0;
+		const slicedOperations = operations.slice(0, currentTransactionLength);
 
 		let verifiers = blockInformation.get('verifiers') || [];
 		verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(name) }));
@@ -144,18 +144,17 @@ class BlockInformation extends React.Component {
 						<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
 					</div>
 				</div>
-				<h2>{FormatHelper.getFormatTransactionsTitle(transactions)}</h2>
+				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
 				<div className="help-table-wrapper">
 					{
-					// (slicedTransactions && slicedTransactions.length) ?
-						<BlockTable
-							isBlockTable
-							transactions={slicedTransactions}
-							loadMore={currentTransactionLength < transactions.length ? () => this.loadMoreTransactions() : null}
-							blockTime={time}
-							hasMore={currentTransactionLength < transactions.length}
-						/>
-						// : null
+						(slicedOperations && slicedOperations.length) ?
+							<OperationsTable
+								operations={slicedOperations}
+								history={this.props.history}
+								location={this.props.location}
+								loadMore={currentTransactionLength < operations.length ? () => this.loadMoreTransactions() : null}
+								hasMore={currentTransactionLength < operations.length}
+							/> : null
 					}
 				</div>
 			</React.Fragment>
@@ -185,6 +184,7 @@ BlockInformation.propTypes = {
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 

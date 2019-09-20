@@ -93,6 +93,7 @@ class App extends React.Component {
 			children,
 			error,
 			errorPath,
+			errorScreen,
 			connected,
 			pathName,
 			subscribeConnect,
@@ -100,8 +101,7 @@ class App extends React.Component {
 			isShowModal,
 		} = this.props;
 
-
-		if (!connected && error) {
+		if ((!connected && error) || errorScreen) {
 			return this.renderErrorScreen(error);
 		}
 
@@ -126,6 +126,7 @@ App.propTypes = {
 	init: PropTypes.func.isRequired,
 	error: PropTypes.string.isRequired,
 	errorPath: PropTypes.bool.isRequired,
+	errorScreen: PropTypes.bool.isRequired,
 	pathName: PropTypes.string.isRequired,
 	connected: PropTypes.bool.isRequired,
 	subscribeConnect: PropTypes.bool.isRequired,
@@ -139,6 +140,7 @@ export default connect(
 		isShowModal: state.modal.get(MODAL_ERROR).get('show') || state.modal.get(MODAL_SUCCESS).get('show') || state.modal.get(MODAL_EXTENSION_INFO).get('show'),
 		error: state.global.get('error'),
 		errorPath: state.global.get('errorPath'),
+		errorScreen: state.global.get('errorScreen'),
 		connected: state.global.get('connected'),
 		title: state.global.get('title'),
 		pathName: state.router.location.pathname,

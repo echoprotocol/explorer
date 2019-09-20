@@ -163,7 +163,10 @@ class ObjectInfo extends React.Component {
 						<div className="od-col">{object.get('echorandKey')}</div>
 					</div>
 					<div className="od-row">
-						<div className="od-col">Authority list:</div>
+						<div className="od-col">
+							{ object.get('activeKeys').length > 1 ?
+								'Authority keys:' : 'Authority key:' }
+						</div>
 						<div className="od-col">
 							<div className="authority">
 								{
@@ -184,7 +187,6 @@ class ObjectInfo extends React.Component {
 											</ul>
 										</React.Fragment> : null
 								}
-								<div className="title">Keys:</div>
 								<ul className="keys">
 									{
 										object.get('activeKeys').map((key) => (

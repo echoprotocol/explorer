@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
 
 import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -12,32 +11,12 @@ import Loader from '../Loader';
 
 class TransactionsInfo extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.tableRefs = [];
-	}
-
-
 	componentDidMount() {
 		const { round, index } = this.props.match.params;
 
 		this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
 		this.props.getBlockInfo(round);
 		this.props.getTransaction();
-	}
-
-	componentDidUpdate(prevProps) {
-		const { loading, location: { search } } = this.props;
-		const { loading: prevLoading } = prevProps;
-
-		if (!loading && loading !== prevLoading) {
-			const parsed = queryString.parse(search);
-			if (!parsed.op || !this.tableRefs[parsed.op - 1]) {
-				return;
-			}
-			this.tableRefs[parsed.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		}
 	}
 
 	componentWillUnmount() {
@@ -60,7 +39,7 @@ class TransactionsInfo extends React.Component {
 		const { round, index } = this.props.match.params;
 
 		const {
-			operations, blockInformation, loading, history, location: { search },
+			operations, blockInformation, loading, history, location,
 		} = this.props;
 
 		const breadcrumbs = [
@@ -88,15 +67,13 @@ class TransactionsInfo extends React.Component {
 						!loading ?
 							<React.Fragment>
 								<p className="transaction-time">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
-								<p className="transaction-title-operations">{`${!operations ? 0 : operations.size} Operations`}</p>
+								<p className="transaction-title-operations">{FormatHelper.getFormaOperationsTitle(operations.size)}</p>
 								<OperationsTable
 									operations={operations}
-									block={round}
-									transactionNum={index}
 									history={history}
-									tableRefs={this.tableRefs}
-									url={this.props.match.url}
-									queryProps={queryString.parse(search)}
+									location={location}
+									loading={loading}
+									changeUrl
 								/>
 							</React.Fragment> : this.renderLoader(loading)
 					}

@@ -11,9 +11,7 @@ import AccountReducer from '../reducers/AccountReducer';
 import GlobalActions from './GlobalActions';
 import BaseActionsClass from './BaseActionsClass';
 import ModalActions from './ModalActions';
-import { formatOperation } from './BlockActions';
-
-import FormatHelper from '../helpers/FormatHelper';
+import TransactionActions from './TransactionActions';
 
 import { BridgeService } from '../services/BridgeService';
 
@@ -47,10 +45,20 @@ class AccountActions extends BaseActionsClass {
 				}
 			}
 
-			return formatOperation(operation, accountId, t.block_num, t.trx_in_block, t.op_in_trx, result, t.id, FormatHelper.timestampToBlockInformationTime(block.timestamp));
+			return TransactionActions.getOperation(
+				operation,
+				t.block_num,
+				t.trx_in_block,
+				t.op_in_trx,
+				result,
+				null,
+				accountId,
+				t.id,
+			);
 		});
+
 		accountHistory = await Promise.all(accountHistory);
-		return accountHistory.filter((t) => t).reduce((arr, t) => ([...arr, [t]]), []);
+		return accountHistory.filter((t) => t);
 	}
 
 	/**

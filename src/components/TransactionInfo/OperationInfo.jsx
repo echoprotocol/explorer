@@ -54,8 +54,8 @@ class OperationInfo extends React.Component {
 									</Link>
 									<img src={directionIcon} alt="" className="direction" />
 									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
-										<Avatar accountName={op.subject.name} />
-										<span>{op.subject.name}</span>
+										{ op.subject.name ? <Avatar accountName={op.subject.name} /> : null }
+										<span>{op.subject.name || op.subject.id}</span>
 									</Link>
 								</div>
 							</div>
@@ -151,8 +151,11 @@ class OperationInfo extends React.Component {
 	}
 
 	renderInfo() {
-		const { details, index } = this.props;
+		const {
+			details, index, block, transaction,
+		} = this.props;
 		const opKey = `${details.type}_${index}`;
+		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
 
 		return (
 			<React.Fragment>
@@ -164,7 +167,7 @@ class OperationInfo extends React.Component {
 									(matches) =>
 										(matches &&
 										<div className="od-row" key={`${opKey}_${key}`}>
-											<div className="od-col">{key}</div>
+											<div className="od-col">{key}:</div>
 											<div className="od-col">
 												{this.renderOperationRowValue(key, value, index)}
 											</div>
@@ -172,13 +175,19 @@ class OperationInfo extends React.Component {
 								}
 							</Media> :
 							<div className="od-row" key={`${opKey}_${key}`} >
-								<div className="od-col">{key}</div>
+								<div className="od-col">{key}:</div>
 								<div className="od-col">
 									{this.renderOperationRowValue(key, value, index)}
 								</div>
 							</div>
 					))
 				}
+				<div className="od-row">
+					<div className="od-col">TRANSACTION:</div>
+					<div className="od-col">
+						<Link to={transactionUrl}>{`${window.location.origin}${transactionUrl}`}</Link>
+					</div>
+				</div>
 			</React.Fragment>
 		);
 	}
@@ -201,6 +210,8 @@ class OperationInfo extends React.Component {
 OperationInfo.propTypes = {
 	details: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
+	block: PropTypes.string.isRequired,
+	transaction: PropTypes.number.isRequired,
 };
 
 export default OperationInfo;

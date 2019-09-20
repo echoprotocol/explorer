@@ -176,11 +176,11 @@ class FormatHelper {
 
 	/**
 	 *
-	 * @param transactions
+	 * @param count
 	 * @returns {string}
 	 */
-	static getFormatTransactionsTitle(transactions) {
-		return `${transactions && transactions.length} Transaction${transactions.length !== 1 ? 's' : ''}`;
+	static getFormatTransactionsTitle(count) {
+		return `${count} Transaction${count !== 1 ? 's' : ''}`;
 	}
 	/**
 	 *
@@ -192,6 +192,15 @@ class FormatHelper {
 			return '';
 		}
 		return JSON.stringify(abi, null, 4);
+	}
+
+	/**
+	 *
+	 * @param count
+	 * @returns {string}
+	 */
+	static getFormaOperationsTitle(count) {
+		return `${count} Operation${count !== 1 ? 's' : ''}`;
 	}
 
 }

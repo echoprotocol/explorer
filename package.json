@@ -1,9 +1,13 @@
 {
 	"name": "explorer",
-	"author": "PixelPlex, Inc. <info@pixelplex.by>",
+	"author": {
+		"name": "PixelPlex, Inc.",
+		"email": "info@pixelplex.io",
+		"url": "https://pixelplex.io"
+	},
 	"description": "Explorer for Echo platform",
 	"homepage": "https://github.com/echoprotocol/explorer",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"main": "server.js",
 	"scripts": {
@@ -24,6 +28,7 @@
 		"apollo-link-ws": "^1.0.17",
 		"apollo-utilities": "^1.2.1",
 		"autoprefixer": "^8.1.0",
+		"axios": "^0.19.0",
 		"bignumber.js": "^8.0.1",
 		"classnames": "^2.2.6",
 		"codemirror": "^5.48.0",
@@ -46,7 +51,6 @@
 		"isomorphic-fetch": "^2.2.1",
 		"lodash": "^4.17.10",
 		"moment": "^2.24.0",
-		"node-fetch": "latest",
 		"prop-types": "^15.6.1",
 		"qs": "^6.5.2",
 		"query-string": "^5.1.1",
