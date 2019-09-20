@@ -26,11 +26,10 @@
             color: rgba(#263C4B, .8);
             text-align: right;
             white-space: nowrap;
-            padding-left: 28px;
+            max-width: 125px;
+            min-width: 125px;
+            line-height: 15px;
 
-            @include res-768 {
-                padding-left: 40px;
-            }
         }
 
         &:nth-child(2) {
@@ -42,6 +41,7 @@
             color: #000;
             padding-left: 28px;
             width: 100%;
+            vertical-align: bottom;
         }
 
     }

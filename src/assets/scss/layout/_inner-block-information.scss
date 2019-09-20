@@ -137,6 +137,7 @@
 
                     @include res-768 {
                         font-size: 14px;
+                        line-height: 20px;
                     }
 
                     .view-list-container {
@@ -847,9 +848,6 @@
             }
 
             &.dd {
-                max-width: 30px;
-                width: 30px;
-                min-width: 30px;
 
                 .td-in {
                     padding-left: 0px;
@@ -950,7 +948,6 @@
                 }
 
                 &.dd {
-                    right: 18px;
                     top: 18px;
                 }
             }
@@ -1070,53 +1067,12 @@
                 }
             }
 
-            // LINES
-
-            // &:before {
-            //     content: '';
-            //     left: -23px;
-            //     top: 17px;
-            //     position: absolute;
-            //     width: 7px;
-            //     height: 1px;
-            //     display: block;
-            //     border-bottom: 1px dotted #929293;
-            //     box-sizing: border-box;
-            // }
-
-            // &:after {
-            //     content: '';
-            //     left: -25px;
-            //     top: 8px;
-            //     position: absolute;
-            //     width: 1px;
-            //     // height: 18px;
-            //     // height: 100%;
-            //     height: calc(100% + 6px);
-
-            //     display: block;
-            //     border-right: 1px dotted #929293;
-            //     box-sizing: border-box;
-            // }
 
             &_last {
                 &:after {
                     height: 10px;
                 }
             }
-
-            // LINES
-
-            // .line-arrow {
-            //     background-image: url(../images/icons/subtransfer-line-arrow.svg);
-            //     background-position: 0 0;
-            //     background-repeat: no-repeat;
-            //     width: 3px;
-            //     height: 5px;
-            //     position: absolute;
-            //     left: -15px;
-            //     top: 15px;
-            // }
         }
 
         .container {
@@ -1134,13 +1090,7 @@
             }
 
             &:first-child {
-                // width: auto;
                 min-width: 10px;
-                // padding-right: 13px;
-
-                // .title {
-                //     margin-bottom: 15px;
-                // }
             }
 
             &:nth-child(2) {
@@ -1148,13 +1098,6 @@
                     // width: calc(100% - 45px);
                 }
             }
-
-            // &.amount {
-            //     // width: 153px;
-            //     // @include min-vw(500) {
-            //     // width: 140px;
-            //     // }
-            // }
 
             .value {
                 .blue {
