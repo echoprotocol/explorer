@@ -165,7 +165,7 @@ class TransactionActionsClass extends BaseActionsClass {
 
 					const {
 						from, subject, value: opValue, asset: opAsset, internal,
-					} = await formatOperation([type, options], null, blockNumber, index - 1, opIndex, transaction.operation_results[opIndex]);
+					} = await formatOperation([type, options], null, block.round, index - 1, opIndex, transaction.operation_results[opIndex]);
 
 					let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
 

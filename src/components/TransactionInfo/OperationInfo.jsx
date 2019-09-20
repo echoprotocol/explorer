@@ -54,8 +54,14 @@ class OperationInfo extends React.Component {
 									</Link>
 									<img src={directionIcon} alt="" className="direction" />
 									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
-										<Avatar accountName={op.subject.name} />
-										<span>{op.subject.name}</span>
+										{
+											op.subject.name ?
+												<React.Fragment>
+													<Avatar accountName={op.subject.name} />
+													<span>{op.subject.name}</span>
+												</React.Fragment> :
+												<span>Contract {op.subject.id}</span>
+										}
 									</Link>
 								</div>
 							</div>
