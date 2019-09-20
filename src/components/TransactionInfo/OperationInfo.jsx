@@ -210,7 +210,7 @@ class OperationInfo extends React.Component {
 OperationInfo.propTypes = {
 	details: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
-	block: PropTypes.number.isRequired,
+	block: PropTypes.string.isRequired,
 	transaction: PropTypes.number.isRequired,
 };
 
