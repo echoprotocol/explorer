@@ -39,6 +39,8 @@ class OperationRow extends React.Component {
 			},
 			index,
 			active,
+			timestamp,
+			fee,
 			air,
 		} = this.props;
 
@@ -77,16 +79,20 @@ class OperationRow extends React.Component {
 						</div>
 					</td>
 					{/* FOR ACCOUNT AND CONTRACT */}
-					{/* <td className="time">
-						<Media query="(max-width: 767px)">
-							{ (matches) => matches && <div className="col-title">DATA, TIME</div>}
-						</Media>
-						<div className="td-in">
-							<span>
-								12.03.19 15:43
-							</span>
-						</div>
-					</td> */}
+					{
+						timestamp ? (
+							<td className="time">
+								<Media query="(max-width: 767px)">
+									{ (matches) => matches && <div className="col-title">DATA, TIME</div>}
+								</Media>
+								<div className="td-in">
+									<span>
+										12.03.19 15:43
+									</span>
+								</div>
+							</td>
+						) : null
+					}
 					<td className="sender">
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Sender</div>}
@@ -133,20 +139,23 @@ class OperationRow extends React.Component {
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : '—'
 						}
-					</td>	
-							{/* FOR BLOCK ONLY  */}
-					<Media query="(max-width: 1000px)">
-						{
-							(matches) =>
-								(!matches &&
-									<td className="fee">
-										<div className="td-in">
-											<span className="value">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
-											<span className="currency">{detailInfo.fee.symbol}</span>
-										</div>
-									</td>)
-						}
-					</Media>
+					</td>
+					{
+						fee ? (
+							<Media query="(max-width: 1000px)">
+								{
+									(matches) => (!matches && (
+										<td className="fee">
+											<div className="td-in">
+												<span className="value">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
+												<span className="currency">{detailInfo.fee.symbol}</span>
+											</div>
+										</td>
+									))
+								}
+							</Media>
+						) : null
+					}
 					<td className="rezult">
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Result</div>}
@@ -208,13 +217,15 @@ class OperationRow extends React.Component {
 
 
 OperationRow.propTypes = {
+	isBlock: PropTypes.bool,
+	timestamp: PropTypes.bool.isRequired,
+	fee: PropTypes.bool.isRequired,
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
 	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
-	isBlock: PropTypes.bool,
 };
 
 OperationRow.defaultProps = {

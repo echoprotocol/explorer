@@ -95,7 +95,7 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading, isBlock,
+			operations, hasMore, loading, isBlock, timestamp, fee,
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
@@ -108,16 +108,25 @@ class OperationsTable extends React.Component {
 								<tr>
 									<td />
 									<td className="number"><div className="td-in">#</div></td>
-									<td className="type"><div className="td-in">Type</div></td>
+									<td className="type">
+										<div className="td-in">
+											{ fee ? 'Type' : 'Operation' }
+										</div>
+									</td>
+									{timestamp ? <td className=""><div className="td-in">Date, time</div></td> : null}
 									<td className="sender"><div className="td-in">Sender</div></td>
 									<td className="reciever"><div className="td-in">Reciever</div></td>
 									<td className="amount"><div className="td-in">Amount</div></td>
-									<Media query="(max-width: 1000px)">
-										{
-											(matchesIn) =>
-												(!matchesIn && <td className="fee"><div className="td-in">Operation fee</div></td>)
-										}
-									</Media>
+									{
+										fee ? (
+											<Media query="(max-width: 1000px)">
+												{
+													(matchesIn) =>
+														(!matchesIn && <td className="fee"><div className="td-in">Operation fee</div></td>)
+												}
+											</Media>
+										) : null
+									}
 									<td className="rezult"><div className="td-in">Result</div></td>
 									<td className="json"><div className="td-in">JSON</div></td>
 									<td className="dd" />
@@ -142,9 +151,11 @@ class OperationsTable extends React.Component {
 							operations ? operations.map((op, i) => (
 								<OperationRow
 									key={i.toString()}
+									isBlock={isBlock}
+									timestamp={timestamp}
+									fee={fee}
 									operation={op}
 									index={i}
-									isBlock={isBlock}
 									active={showedOperations.includes(i)}
 									air={airRows.includes(i)}
 									tableRefs={this.tableRefs}
@@ -189,6 +200,8 @@ OperationsTable.propTypes = {
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,
 	isBlock: PropTypes.bool,
+	timestamp: PropTypes.bool,
+	fee: PropTypes.bool,
 	loadMore: PropTypes.func,
 };
 
@@ -198,6 +211,8 @@ OperationsTable.defaultProps = {
 	changeUrl: false,
 	loading: false,
 	isBlock: false,
+	timestamp: false,
+	fee: false,
 	loadMore: null,
 };
 

@@ -216,6 +216,7 @@ class Contract extends React.Component {
 						loading={loadingMoreHistory}
 						loadMore={contractHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 						hasMore={!isFullHistory}
+						timestamp
 					/> : <Loader />,
 				key: 'tab-1',
 			},

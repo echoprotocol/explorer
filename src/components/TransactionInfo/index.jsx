@@ -74,6 +74,7 @@ class TransactionsInfo extends React.Component {
 									location={location}
 									loading={loading}
 									changeUrl
+									fee
 								/>
 							</React.Fragment> : this.renderLoader(loading)
 					}
