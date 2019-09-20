@@ -15,6 +15,7 @@ import {
 	MAX_BLOCK_REQUESTS,
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	ECHO_ASSET,
+	NETWORK_CONNECTED_ERROR,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -24,6 +25,7 @@ import GlobalActions from './GlobalActions';
 import TransactionActions from './TransactionActions';
 
 import LocalStorageService from '../services/LocalStorageService';
+import GlobalReducer from '../reducers/GlobalReducer';
 
 /**
  *
@@ -31,7 +33,15 @@ import LocalStorageService from '../services/LocalStorageService';
  */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
-		const planeBlock = await echo.api.getBlock(round);
+		let planeBlock = null;
+		try {
+			planeBlock = await echo.api.getBlock(round);
+		} catch (err) {
+			dispatch(GlobalReducer.actions.set({ field: 'error', value: NETWORK_CONNECTED_ERROR }));
+			dispatch(GlobalActions.toggleErrorScreen(true));
+			return;
+		}
+
 		if (!planeBlock) {
 			dispatch(GlobalActions.toggleErrorPath(true));
 			return;
@@ -55,7 +65,8 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const producer = await echo.api.getObject(planeBlock.account);
 		value.producer = { id: producer.id, name: producer.name };
 
-		const verifiersIds = planeBlock.cert.map(({ _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_signer}`);
+		// remove after go to 0.10 testnet
+		const verifiersIds = planeBlock.cert.map(({ _producer, _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_producer || _signer}`);
 
 		const verifiers = await echo.api.getAccounts(verifiersIds);
 		const { transactions } = planeBlock;
@@ -118,8 +129,6 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 
 	const latestBlock = lastBlock || getState().round.get('latestBlock');
 
-	let blocks = [];
-
 	let startedBlock = startBlock || transactions.get('block') + 1;
 
 	if ((getState().round.get('latestBlock') - transactions.get('block')) > MAX_BLOCK_REQUESTS) {
@@ -127,36 +136,35 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 	}
 
 	try {
-		for (let i = startedBlock; i <= latestBlock; i += 1) {
-			blocks.push(echo.api.getBlock(i));
-		}
+		let blocks = getState().block.get('blocks');
 
-		blocks = await Promise.all(blocks);
+		const blocksToRemove = blocks.keySeq()
+			.filter((key) => key < startedBlock || key > latestBlock);
+		blocks = blocks.deleteAll(blocksToRemove);
 
 		let trLengths = averageTransactions.get('lengthsList');
 		let opLengths = averageOperations.get('lengthsList');
 		let unixTimestamps = transactions.get('unixTimestamps');
 
-		const sumResults = blocks
-			.filter((block) => moment(block.timestamp).unix() - moment(new Date(null)).unix() > 0)
-			.reduce(({ sum, sumOps }, block) => {
-				trLengths = trLengths.push(block.transactions.length);
+		blocks = blocks
+			.filter((block) => moment(block.get('timestamp')).unix() - moment(new Date(null)).unix() > 0).toJS();
 
-				const opLength = block.transactions.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
-				opLengths = opLengths.push(opLength);
+		const sumResults = Object.values(blocks).reduce(({ sum, sumOps }, block) => {
+			trLengths = trLengths.push(block.transactions);
+			const opLength = block.transactionsInfo.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
+			opLengths = opLengths.push(opLength);
 
-				const unixTimeStamp = moment(block.timestamp).unix();
+			const unixTimeStamp = moment(block.timestamp).unix();
 
-				if (Math.sign(unixTimeStamp) > 0) {
-					unixTimestamps = unixTimestamps.push(unixTimeStamp);
-				}
+			if (Math.sign(unixTimeStamp) > 0) {
+				unixTimestamps = unixTimestamps.push(unixTimeStamp);
+			}
 
-				return ({
-					sum: sum.plus(block.transactions.length),
-					sumOps: sumOps.plus(opLength),
-				});
-			}, { sum: new BN(averageTransactions.get('sum')), sumOps: new BN(averageOperations.get('sum')) });
-
+			return ({
+				sum: sum.plus(block.transactions),
+				sumOps: sumOps.plus(opLength),
+			});
+		}, { sum: new BN(averageTransactions.get('sum')), sumOps: new BN(averageOperations.get('sum')) });
 
 		if (trLengths.size > MAX_AVERAGE_TRS_BLOCKS) {
 			sumResults.sum = sumResults.sum.minus(trLengths.get(0));
@@ -229,6 +237,10 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		latestBlock -= 1;
 	}
 
+	if (latestBlock - startedBlock > MAX_BLOCK_REQUESTS) {
+		startedBlock = latestBlock - MAX_BLOCK_REQUESTS;
+	}
+
 	for (let i = startedBlock + 1; i <= latestBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
 	}
@@ -258,13 +270,15 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
 				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
+				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
 				.setIn([blockNumber, 'weightSize'], 'bytes')
-				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length);
+				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length)
+				.setIn([blockNumber, 'transactionsInfo'], blocksResult[i].transactions);
 		}
 	});
 
@@ -291,11 +305,13 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 	if (Math.sign(blocksToRemove) > 0) {
 		let blocksKeys = blocks.keySeq();
+		blocksKeys = blocksKeys.sort((a, b) => a - b);
 		blocksKeys = blocksKeys.slice(0, blocksToRemove);
 		blocks = blocks.deleteAll(blocksKeys);
 
 		if (noEmptyBlocks.size > maxBlocks) {
 			blocksKeys = noEmptyBlocks.keySeq();
+			blocksKeys = blocksKeys.sort((a, b) => a - b);
 			blocksKeys = blocksKeys.slice(0, Math.sign(blocksToRemove));
 			noEmptyBlocks = noEmptyBlocks.deleteAll(blocksKeys);
 			dispatch(BlockReducer.actions.set({ field: 'noEmptyBlocks', value: noEmptyBlocks }));
@@ -318,12 +334,11 @@ export const initBlocks = () => async (dispatch) => {
 
 	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: obj.head_block_number }));
 
-	const startBlockAverage = obj.head_block_number - START_AVERAGE_TRS_BLOCKS;
-
-	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
-
 	const startBlockList = obj.head_block_number - PAGE_BLOCKS_COUNT;
 	await dispatch(updateBlockList(obj.head_block_number, startBlockList));
+
+	const startBlockAverage = obj.head_block_number - START_AVERAGE_TRS_BLOCKS;
+	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
@@ -390,10 +405,12 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 			value: PAGE_BLOCKS_COUNT,
 		}));
 
-		const [...keys] = getState().block.get('blocks').keys();
-		const startedBlock = Math.min(...keys) - PAGE_BLOCKS_COUNT;
-
-		await dispatch(updateBlockList(Math.min(...keys), startedBlock, true));
+		let blocks = getState().block.get('blocks');
+		let [...keys] = blocks.keys();
+		keys = keys.sort((a, b) => b - a)
+			.slice(PAGE_BLOCKS_COUNT);
+		blocks = blocks.deleteAll(keys);
+		dispatch(BlockReducer.actions.set({ field: 'blocks', value: blocks }));
 
 		return true;
 

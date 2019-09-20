@@ -642,6 +642,7 @@ class ContractActions extends BaseActionsClass {
 				}
 
 				dispatch(this.setMultipleValue({
+					error: '',
 					registrar: registrar.name,
 					blockNumber: block.round,
 					countUsedByAccount: calling_accounts.length,

@@ -6,6 +6,7 @@ import TransformModules from '../utils/TransformModules';
 import { DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 
 const DEFAULT_FIELDS = new Map({
+	error: '',
 	loading: false,
 	loadingMoreHistory: false,
 	isFullHistory: false,
