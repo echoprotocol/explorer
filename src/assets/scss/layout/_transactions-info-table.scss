@@ -146,7 +146,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 85px;
+    min-width: 85px;
     height: 21px;
     margin-top: 20px;
     border-radius: 11px;
@@ -157,7 +157,7 @@
     border: none;
     outline: none;
     transition: all .2s ease-out;
-    padding: 0 5px;
+    padding: 0 12px;
 
     @include res-500 {
         margin-top: 20px;

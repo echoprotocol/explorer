@@ -278,12 +278,6 @@
                 }
             }
 
-            &.number {
-                max-width: 32px;
-                width: 32px;
-                min-width: 32px;
-            }
-
             &.json {
                 max-width: 20px;
                 width: 20px;
@@ -300,11 +294,6 @@
             margin-left: 0;
 
             td {
-                &.number {
-                    max-width: 32px;
-                    width: 32px;
-                    min-width: 32px;
-                }
 
                 &.type {
                     max-width: 120px;
@@ -444,7 +433,7 @@
 
                     .index {
                         display: inline-block;
-                        width: 20px
+                        padding-right: 5px;
                     }
                 }
             }
@@ -646,26 +635,6 @@
             tr {
 
                 td {
-
-                    &.number {
-                        max-width: 32px;
-                        width: 32px;
-                        min-width: 32px;
-
-                        .td-in {
-                            padding-left: 15px;
-                        }
-
-                        @include max-vw(1280) {
-                            max-width: 23px;
-                            width: 23px;
-                            min-width: 23px;
-
-                            .td-in {
-                                padding-left: 4px;
-                            }
-                        }
-                    }
 
                     &.type {
                         max-width: 12.5%;

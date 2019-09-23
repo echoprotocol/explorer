@@ -254,7 +254,6 @@ class ObjectInfo extends React.Component {
 					<div className="od-row bytecode">
 						<div className="od-col">
 							Bytecode:
-							<button className="copy-bytecode" onClick={() => copy(object.get('bytecode'))}>Copy code</button>
 						</div>
 						<div className="od-col">
 							<div className="mono">
@@ -267,6 +266,7 @@ class ObjectInfo extends React.Component {
 								object.get('bytecode').length > BYTECODE_SYMBOLS_LENGTH && !isExpanded ?
 									<button className="text-button" onClick={() => this.toggleBytecode()}>Expand</button> : null
 							}
+							<button className="copy-bytecode" onClick={() => copy(object.get('bytecode'))}>Copy code</button>
 						</div>
 					</div>
 				</div>
