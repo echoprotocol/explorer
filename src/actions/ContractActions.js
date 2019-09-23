@@ -21,7 +21,7 @@ import { jsonParse } from '../helpers/FunctionHelper';
 import ContractReducer from '../reducers/ContractReducer';
 
 import BaseActionsClass from './BaseActionsClass';
-import { formatOperation } from './BlockActions';
+import TransactionActions from './TransactionActions';
 import ModalActions from './ModalActions';
 import FormActions from './FormActions';
 import GlobalActions from './GlobalActions';
@@ -62,10 +62,11 @@ class ContractActions extends BaseActionsClass {
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
 			}
 
-			return formatOperation(operation, null, t.block_num, t.trx_in_block, t.op_in_trx, result, t.id, FormatHelper.timestampToBlockInformationTime(block.timestamp));
+			return TransactionActions.getOperation(operation, t.block_num, block.timestamp, t.trx_in_block, t.op_in_trx, result);
 		});
+
 		history = await Promise.all(history);
-		return history.reduce((arr, t) => ([...arr, [t]]), []);
+		return history;
 	}
 
 	/**

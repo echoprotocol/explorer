@@ -23,7 +23,7 @@ import {
 
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
-import TransactionsTable from '../BlockInformation/TransactionsTable';
+import OperationsTable from '../TransactionInfo/OperationsTable';
 import Loader from '../Loader';
 import Verify from '../VerifyButton';
 import manageIcon from '../../assets/images/icons/pencil.svg';
@@ -54,6 +54,10 @@ class Contract extends React.Component {
 		await this.initContract();
 		const { verified } = this.props;
 
+		if (this.props.location.search) {
+			this.props.history.push(this.props.location.pathname);
+		}
+
 		if (!verified && detail === CONTRACT_SOURCE_CODE) {
 			this.props.history.push(URLHelper.createContractUrl(id));
 		}
@@ -79,12 +83,7 @@ class Contract extends React.Component {
 	}
 
 	onLoadMoreHistory() {
-		this.props.loadContractHistory(this.props.contractHistory.last()[0].id.split('.')[2]);
-	}
-
-	onLink(e, path) {
-		e.preventDefault();
-		this.props.history.push(path);
+		this.props.loadContractHistory(this.props.contractHistory.last().id.split('.')[2]);
 	}
 
 	async initContract() {
@@ -209,12 +208,14 @@ class Contract extends React.Component {
 			},
 			{
 				tab: !loading ?
-					<TransactionsTable
-						transactions={contractHistory}
+					<OperationsTable
+						operations={contractHistory}
+						history={this.props.history}
+						location={this.props.location}
 						loading={loadingMoreHistory}
-						onLink={(e, path) => this.onLink(e, path)}
 						loadMore={contractHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 						hasMore={!isFullHistory}
+						timestamp
 					/> : <Loader />,
 				key: 'tab-1',
 			},
@@ -285,7 +286,6 @@ class Contract extends React.Component {
 										</div>
 									}
 								</Media>
-
 								<div className="title">Contract {id} {name && `:  ${name}`}</div>
 							</div>
 						</div>
@@ -330,7 +330,7 @@ class Contract extends React.Component {
 													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}
 													to={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}
 												>
-													<span className="menu-item-content">{`Transactions (${contractTxs})`}</span>
+													<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
@@ -339,16 +339,7 @@ class Contract extends React.Component {
 													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}
 													to={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}
 												>
-													<span className="menu-item-content">Bytecode</span>
-												</Link>
-											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
-												<Link
-													onClick={() => this.goToSlide(3)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
-												>
-													<span className="menu-item-content">Balances</span>
+													<span className="menu-item-content">Byte Сode</span>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
@@ -374,6 +365,15 @@ class Contract extends React.Component {
 													</Link>
 												</div>
 											}
+											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
+												<Link
+													onClick={() => this.goToSlide(3)}
+													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
+													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
+												>
+													<span className="menu-item-content">Balances</span>
+												</Link>
+											</div>
 										</Slider>
 									</div> :
 									<Dropdown className="dropdown-tab">
@@ -430,6 +430,7 @@ Contract.propTypes = {
 	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
 	history: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
 	contractHistory: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,

@@ -163,7 +163,10 @@ class ObjectInfo extends React.Component {
 						<div className="od-col">{object.get('echorandKey')}</div>
 					</div>
 					<div className="od-row">
-						<div className="od-col">Authority list:</div>
+						<div className="od-col">
+							{ object.get('activeKeys').length > 1 ?
+								'Authority keys:' : 'Authority key:' }
+						</div>
 						<div className="od-col">
 							<div className="authority">
 								{
@@ -184,7 +187,6 @@ class ObjectInfo extends React.Component {
 											</ul>
 										</React.Fragment> : null
 								}
-								<div className="title">Keys:</div>
 								<ul className="keys">
 									{
 										object.get('activeKeys').map((key) => (
@@ -252,7 +254,6 @@ class ObjectInfo extends React.Component {
 					<div className="od-row bytecode">
 						<div className="od-col">
 							Bytecode:
-							<button className="copy-bytecode" onClick={() => copy(object.get('bytecode'))}>Copy code</button>
 						</div>
 						<div className="od-col">
 							<div className="mono">
@@ -265,6 +266,7 @@ class ObjectInfo extends React.Component {
 								object.get('bytecode').length > BYTECODE_SYMBOLS_LENGTH && !isExpanded ?
 									<button className="text-button" onClick={() => this.toggleBytecode()}>Expand</button> : null
 							}
+							<button className="copy-bytecode" onClick={() => copy(object.get('bytecode'))}>Copy code</button>
 						</div>
 					</div>
 				</div>

@@ -8,6 +8,7 @@ import {
 	VERIFY_CONTRACT_PATH,
 	MANAGE_CONTRACT_PATH,
 	UPLOAD_ABI_PATH,
+	TRANSACTION_INFORMATION_PATH,
 } from '../constants/RouterConstants';
 
 import config from '../config/chain';
@@ -146,6 +147,16 @@ class URLHelper {
 	 */
 	static createManageContractUrl(contractId) {
 		return MANAGE_CONTRACT_PATH.replace(/:id/, contractId);
+	}
+
+	/**
+	 *
+	 * @param round
+	 * @param index
+	 * @returns {string}
+	 */
+	static createTransactionUrl(round, index) {
+		return TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, index);
 	}
 
 }

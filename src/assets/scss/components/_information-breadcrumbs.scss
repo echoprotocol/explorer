@@ -1,5 +1,5 @@
 .information-breadcrumbs {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 
     @include res-768 {
         margin-bottom: 25px;
@@ -14,29 +14,35 @@
     }
 
     .breadcrumbs-container {
-        margin-bottom: 23px;
         display: flex;
         align-items: center;
         padding-right: 25px;
+        position: absolute;
+        margin: 0;
+        top: 9px;
+        left: 32px;
+        z-index: 10;
+
         @include res-768 {
-            margin-bottom: 30px;
+            top: 3px;
+            left: 55px;
         }
 
         @include res-500 {
-            margin-bottom: 15px;
+            top: 8px;
+            left: 44px;
         }
 
         @include res-320 {
-            margin-bottom: 25px;
-            padding-left: 30px;
+            top: 49px;
         }
 
-        > .element {
+        >.element {
             position: relative;
             display: inline-block;
             @include Hack_Bold;
-            font-size: 10px;
-            letter-spacing: 0.250em;
+            font-size: 9px;
+            letter-spacing: 2.25px;
             color: #2a90e6;
             text-transform: uppercase;
             padding-top: 5px;
@@ -45,15 +51,16 @@
             transition: .2s ease-out;
 
             &:hover {
-              color: #095494;
+                color: #095494;
             }
 
             &:active {
-              color: #fb0707;
+                color: #fb0707;
             }
 
             &:not(:last-child) {
                 margin-right: 25px;
+
                 &:after {
                     content: '';
                     position: absolute;
@@ -73,6 +80,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    padding-top: 50px;
 
     @include res-768 {
         padding-left: 18px;
@@ -83,7 +91,8 @@
     }
 
     @include res-320 {
-        padding-left: 30px;
+        padding-top: 86px;
+        padding-left: 25px;
     }
 
     &-link {
@@ -92,7 +101,8 @@
         position: absolute;
         width: 30px;
         height: 30px;
-        left: -53px;
+        top: 51px;
+        left: -8px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -100,20 +110,23 @@
         transition: background-color .2s;
         border-radius: 4px;
 
-        @include res-1000 {
-            left: -45px;
+        @include res-1280 {
+            left: -5px
         }
 
         @include res-768 {
-            left: -39px;
+            top: -2px;
+            left: 20px;
         }
 
         @include res-500 {
-            left: -16px;
+            top: 3px;
+            left: 8px;
         }
 
         @include res-320 {
-            display: none;
+            top: 44px;
+            left: 10px;
         }
 
         &:focus {
@@ -121,17 +134,58 @@
         }
     }
 
-    > .title {
+    >.title {
         @include InterUI_Bold;
         font-size: 23px;
         // line-height: 45px;
         color: #130d32;
         line-height: 33px;
         letter-spacing: 0.025em;
+        margin-left: 32px;
+
+        @include res-768 {
+            margin-left: 8px;
+        }
+
+        @include res-500 {
+            margin-left: -9px;
+        }
 
         @include res-320 {
             width: 100%;
+            margin-left: -9px;
             padding-right: 30px;
+        }
+    }
+}
+
+.transaction-information {
+    .information-breadcrumbs {
+        margin-bottom: 20px;
+
+        .breadcrumbs-container {
+            top: 18px;
+
+            @include res-768 {
+                top: 15px;
+            }
+
+            @include res-500 {
+                top: 19px;
+            }
+
+            @include res-320 {
+                top: 60px;
+            }
+        }
+    }
+
+    .transaction-time,
+    .transaction-title-operations {
+        padding-left: 32px;
+
+        @include res-500 {
+            padding-left: 16px;
         }
     }
 }

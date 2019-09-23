@@ -9,19 +9,24 @@
 .inner-page {
     .backwards {
         margin: 0 0 15px 0;
+
         @include res-768 {
             margin: 30px 0 0 0;
         }
     }
+
     .account-page-t-block {
         display: flex;
         align-items: center;
         margin: 0;
+        margin-left: 26px;
+
         .title,
         .icon {
             margin: 0;
             z-index: 1;
         }
+
         .title {
             @include InterUI_Bold;
             font-size: 23px;
@@ -31,6 +36,7 @@
                 padding-left: 19px;
             }
         }
+
         .icon {
             margin-right: 14px;
             display: flex;
@@ -40,9 +46,11 @@
                 height: 32px;
             }
         }
+
         @include res-1000 {
             padding: 0;
         }
+
         @include res-500 {
             padding: 0;
 
@@ -51,9 +59,10 @@
             }
         }
     }
+
     .page-helper-section {
         background-color: #fff;
-        margin-top: 60px;
+        margin-top: 40px;
         padding: 20px 47px 43px;
 
         .page-helper-info {
@@ -65,25 +74,30 @@
             padding: 17px 33px;
             border: 1px solid #E2E3E7;
             margin: 15px 0 32px;
-			.no-wrap {
+
+            .no-wrap {
                 white-space: nowrap;
             }
 
             div {
                 display: inline;
             }
+
             .link {
                 text-decoration: underline;
                 color: #171529;
             }
+
             .avatar-image {
                 width: 16px;
                 height: 16px;
                 margin-right: 5px;
                 line-height: 0;
+
                 img {
                     width: 16px;
                 }
+
                 svg {
                     margin-bottom: -3px;
                 }
@@ -98,6 +112,7 @@
 
 
     }
+
     .section-description {
         @include InterUI_Regular;
         font-size: 15px;
@@ -106,10 +121,12 @@
         border-bottom: 1px solid rgba(#3F465A, .15);
         margin-bottom: 35px;
     }
+
     .code-action {
         display: flex;
         align-items: center;
         margin: 0 0 20px;
+
         .action-description {
             @include InterUI_Regular;
             font-size: 13px;
@@ -121,10 +138,51 @@
             margin-left: auto;
         }
     }
+
     .buttons-wrap {
         display: flex;
         align-items: center;
         justify-content: flex-end;
         padding: 33px 47px 43px;
+    }
+}
+
+.inner-information-container.inner-page {
+    .backwards {
+        @include res-320 {
+            padding-top: 50px;
+            padding-left: 17px;
+        }
+
+        .account-page-t-block {
+
+            @include res-1000 {
+                padding-left: 0px;
+            }
+
+            @include res-768 {
+                padding-left: 0px;
+                margin-left: 0px;
+            }
+
+            @include res-320 {
+                padding: 0;
+            }
+        }
+    }
+
+    .backwards-link {
+        @include res-768 {
+            left: 14px;
+        }
+
+        @include res-500 {
+            left: 17px;
+        }
+
+        @include res-320 {
+            top: 0px;
+            left: 12px;
+        }
     }
 }
