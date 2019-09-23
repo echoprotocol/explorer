@@ -62,7 +62,7 @@
 
     .page-helper-section {
         background-color: #fff;
-        margin-top: 60px;
+        margin-top: 40px;
         padding: 20px 47px 43px;
 
         .page-helper-info {
@@ -151,7 +151,7 @@
     .backwards {
         @include res-320 {
             padding-top: 50px;
-            padding-left: 15px;
+            padding-left: 17px;
         }
 
         .account-page-t-block {
@@ -182,7 +182,7 @@
 
         @include res-320 {
             top: 0px;
-            left: 10px;
+            left: 12px;
         }
     }
 }
