@@ -141,11 +141,9 @@ class OperationInfo extends React.Component {
 				<div className="mono">{ bytecode }</div>
 				{
 					(value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index]) &&
-					<a href="" className="load-more" onClick={(e) => this.onToggleLoadMore(index, e)}>
-						{loadMore[index] ? 'Collapse All' : 'Show All'}
-					</a>
+					<button className="text-button" onClick={(e) => this.onToggleLoadMore(index, e)}>Expand</button>
 				}
-				<button className="copy-bytecode" onClick={() => copy(value)}>Copy</button>
+				<button className="copy-bytecode" onClick={() => copy(value)}>Copy code</button>
 			</React.Fragment>
 		);
 	}

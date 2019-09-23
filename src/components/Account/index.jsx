@@ -97,6 +97,7 @@ class Account extends React.Component {
 										loading={loadingMoreHistory}
 										loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 										hasMore={!isFullHistory}
+										timestamp
 									/> : null
 							}
 						</React.Fragment> : this.renderLoader(loading)

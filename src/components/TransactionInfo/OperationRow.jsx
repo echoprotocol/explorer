@@ -17,6 +17,15 @@ import FormatHelper from '../../helpers/FormatHelper';
 
 class OperationRow extends React.Component {
 
+	getColSpan(matches) {
+		const { isBlock } = this.props;
+
+		if (isBlock) {
+			return !matches ? 7 : 6;
+		}
+		return !matches ? 8 : 7;
+	}
+
 	render() {
 		const {
 			operation: {
@@ -26,10 +35,13 @@ class OperationRow extends React.Component {
 				blockNumber: block,
 				trIndex: transactionNum,
 				number,
+				blockTimestamp,
 				...detailInfo
 			},
 			index,
 			active,
+			timestamp,
+			fee,
 			air,
 		} = this.props;
 
@@ -42,6 +54,7 @@ class OperationRow extends React.Component {
 					onClick={() => this.props.toggleOperationDetails(index)}
 					ref={this.props.tableRefs[index]}
 				>
+					<td />
 					<Media query="(max-width: 767px)">
 						{(matches) => !matches && (
 							<td className="number">
@@ -58,7 +71,7 @@ class OperationRow extends React.Component {
 										<span className="index">#</span>
 										<span>Type</span>
 									</div>
-									<span className="index">{index + 1}</span>
+									<span className="index">{index + 1}.</span>
 								</React.Fragment>
 							}
 						</Media>
@@ -66,6 +79,21 @@ class OperationRow extends React.Component {
 							{detailInfo.type}
 						</div>
 					</td>
+					{/* FOR ACCOUNT AND CONTRACT */}
+					{
+						timestamp ? (
+							<td className="time">
+								<Media query="(max-width: 767px)">
+									{ (matches) => matches && <div className="col-title">DATA, TIME</div>}
+								</Media>
+								<div className="td-in">
+									<span>
+										{FormatHelper.timestampToOperationRowTime(blockTimestamp)}
+									</span>
+								</div>
+							</td>
+						) : null
+					}
 					<td className="sender">
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Sender</div>}
@@ -95,7 +123,7 @@ class OperationRow extends React.Component {
 										<Avatar accountName={mainInfo.subject.name} />
 									}
 									<span>{mainInfo.subject && mainInfo.subject.name}</span>
-								</Link> : '—'
+								</Link> : <div className="td-in">—</div>
 						}
 					</td>
 					<td className="amount">
@@ -110,21 +138,25 @@ class OperationRow extends React.Component {
 									>{FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
-								</div> : '—'
+								</div> : <div className="td-in">—</div>
 						}
 					</td>
-					<Media query="(max-width: 1000px)">
-						{
-							(matches) =>
-								(!matches &&
-									<td className="fee">
-										<div className="td-in">
-											<span className="value">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
-											<span className="currency">{detailInfo.fee.symbol}</span>
-										</div>
-									</td>)
-						}
-					</Media>
+					{
+						fee ? (
+							<Media query="(max-width: 1000px)">
+								{
+									(matches) => (!matches && (
+										<td className="fee">
+											<div className="td-in">
+												<span className="value">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
+												<span className="currency">{detailInfo.fee.symbol}</span>
+											</div>
+										</td>
+									))
+								}
+							</Media>
+						) : null
+					}
 					<td className="rezult">
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Result</div>}
@@ -132,7 +164,7 @@ class OperationRow extends React.Component {
 						{
 							(mainInfo.result && !_.isEmpty(mainInfo.result)) ?
 								<Link to={URLHelper.createUrlById(mainInfo.result)} className="td-in" onClick={(e) => e.stopPropagation()}>{mainInfo.result}</Link>
-								: '—'
+								: <div className="td-in">—</div>
 						}
 					</td>
 					<td className="json">
@@ -149,19 +181,17 @@ class OperationRow extends React.Component {
 							<img src={ddIcon} alt="" />
 						</div>
 					</td>
+					<td />
 				</tr>
 				{
 					active &&
 					<tr className="fold">
-						<Media query="(max-width: 767px)">
-							{(matches) => !matches && <td />}
-						</Media>
-
+						<td colSpan="2" />
 						<Media query="(max-width: 1000px)">
 							{
 								(matches) => (
 									<React.Fragment>
-										<td colSpan={!matches ? 7 : 6}>
+										<td colSpan={this.getColSpan(matches)}>
 											<OperationInfo details={detailInfo} index={index} block={block} transaction={transactionNum} />
 											<ObjectInfo details={detailInfo} object={objectInfo} />
 										</td>
@@ -188,12 +218,19 @@ class OperationRow extends React.Component {
 
 
 OperationRow.propTypes = {
+	isBlock: PropTypes.bool,
+	timestamp: PropTypes.bool.isRequired,
+	fee: PropTypes.bool.isRequired,
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
 	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
+};
+
+OperationRow.defaultProps = {
+	isBlock: false,
 };
 
 

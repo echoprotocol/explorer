@@ -80,7 +80,6 @@
                 display: flex;
                 align-items: center;
                 margin: 0;
-                margin-left: 26px;
 
                 @include max-vw(999) {
                     margin-left: 0px;
@@ -260,6 +259,9 @@
         max-width: none;
     }
 
+    @include max-vw(380) {
+        margin-left: 16px;
+    }
 }
 
 .contract-info-panel {

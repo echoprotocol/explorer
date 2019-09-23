@@ -228,6 +228,7 @@
                                         text-overflow: ellipsis;
                                         overflow: hidden;
                                         max-width: 70px;
+                                        line-height: 9px;
 
                                         @include res-768 {
                                             max-width: 180px;

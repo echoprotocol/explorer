@@ -203,6 +203,15 @@ class FormatHelper {
 		return `${count} Operation${count !== 1 ? 's' : ''}`;
 	}
 
+	/**
+	 *
+	 * @param timestamp
+	 * @returns {string}
+	 */
+	static timestampToOperationRowTime(timestamp) {
+		return moment.utc(timestamp).local().format('DD.MM.YYYY HH:mm');
+	}
+
 }
 
 export default FormatHelper;
