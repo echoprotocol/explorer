@@ -48,7 +48,7 @@
         font-style: normal;
         font-size: 9px;
         text-transform: uppercase;
-        letter-spacing: 0.22em;
+        letter-spacing: 2.25px;
         color: #828b95;
         position: relative;
         line-height: 15px;
@@ -562,7 +562,7 @@
         table {
 
             .view {
-                padding: 22px 17px 0px;
+                padding: 22px 17px 8px;
 
                 td {
                     &:not(.dd):nth-child(odd) {
@@ -628,10 +628,6 @@
     .accordion-table-wrap.table-contract {
         table {
             thead {
-                tr {
-
-                    letter-spacing: 2.25px;
-                }
 
                 &:after,
                 &:before {
@@ -642,6 +638,7 @@
             tr {
 
                 td {
+
                     &.number {
                         max-width: 32px;
                         width: 32px;
@@ -698,6 +695,8 @@
 
                         .td-in {
                             padding-left: 2px;
+                            opacity: 0.6;
+                            color: #0f0739;
                         }
 
                         @include max-vw(1280) {
@@ -858,10 +857,17 @@
                 }
             }
 
+
             tbody {
                 td {
                     letter-spacing: 0.3px;
                     line-height: 10px;
+
+                    .td-in {
+                        font-size: 12px;
+                        font-weight: 400;
+                        letter-spacing: 0.3px;
+                    }
                 }
             }
         }
