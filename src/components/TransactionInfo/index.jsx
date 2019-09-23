@@ -69,6 +69,7 @@ class TransactionsInfo extends React.Component {
 								<p className="transaction-time">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
 								<p className="transaction-title-operations">{FormatHelper.getFormaOperationsTitle(operations.size)}</p>
 								<OperationsTable
+									isTransaction
 									operations={operations}
 									history={history}
 									location={location}

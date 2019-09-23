@@ -532,8 +532,7 @@
         table {
 
             .view {
-                padding: 17px 22px 0 22px;
-
+                padding: 17px 17px 0 17px;
 
                 td {
                     margin-bottom: 28px;
@@ -555,7 +554,7 @@
     }
 }
 
-@include max-vw(360) {
+@include max-vw(500) {
     .accordion-table-wrap {
         width: 100%;
         margin: 0;
@@ -590,6 +589,30 @@
                     &.dd .td-in {
                         right: 15px;
                         top: 16px;
+                    }
+
+                    &.type {
+                        order: 1;
+                    }
+
+                    &.amount {
+                        order: 2;
+                    }
+
+                    &.reciever {
+                        order: 3;
+                    }
+
+                    &.sender {
+                        order: 4;
+                    }
+
+                    &.rezult {
+                        order: 5;
+                    }
+
+                    &.json {
+                        order: 6;
                     }
                 }
 
@@ -768,10 +791,6 @@
                         width: 17%;
                         min-width: 17%;
 
-                        .td-in {
-                            padding-left: 5px
-                        }
-
                         @include max-vw(1280) {
                             max-width: 20%;
                             width: 20%;
@@ -783,10 +802,7 @@
                             max-width: 30%;
                             width: 30%;
                             min-width: 30%;
-
-                            .td-in {
-                                padding-left: 12px
-                            }
+                            padding-left: 0px;
                         }
 
                         @include max-vw(500) {
@@ -794,10 +810,11 @@
                             max-width: 50%;
                             width: 50%;
                             min-width: 50%;
+                            padding-left: 0px;
 
-                            td-in {
-                                padding-left: 0px
-                            }
+                            // td-in {
+                            //     padding-left: 0px;
+                            // }
                         }
                     }
 
@@ -837,7 +854,9 @@
 
                         @include max-vw(768) {
                             right: 16px;
-                            top: 6px;
+                            max-width: 8px;
+                            width: 8px;
+                            min-width: 8px;
                         }
                     }
                 }
@@ -848,10 +867,10 @@
                     letter-spacing: 0.3px;
                     line-height: 10px;
 
-                    :not(.dd).td-in {
-                        padding: 9px 7px;
+                    // :not(.dd).td-in {
+                    //     padding: 9px 7px;
 
-                    }
+                    // }
                 }
             }
         }

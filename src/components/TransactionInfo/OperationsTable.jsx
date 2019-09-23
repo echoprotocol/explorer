@@ -95,12 +95,12 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading, isBlock, timestamp, fee,
+			operations, hasMore, loading, isBlock, isTransaction, timestamp, fee,
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
 		return (
-			<div className={classnames('accordion-table-wrap table-contract', { 'table-block': isBlock })} >
+			<div className={classnames('accordion-table-wrap', {'table-contract': !isTransaction}, { 'table-block': isBlock })} >
 				<table>
 					<Media query="(max-width: 767px)">
 						{ (matches) => !matches &&
@@ -152,6 +152,7 @@ class OperationsTable extends React.Component {
 								<OperationRow
 									key={i.toString()}
 									isBlock={isBlock}
+									isTransaction={isTransaction}
 									timestamp={timestamp}
 									fee={fee}
 									operation={op}
@@ -200,6 +201,7 @@ OperationsTable.propTypes = {
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,
 	isBlock: PropTypes.bool,
+	isTransaction: PropTypes.bool,
 	timestamp: PropTypes.bool,
 	fee: PropTypes.bool,
 	loadMore: PropTypes.func,
@@ -211,6 +213,7 @@ OperationsTable.defaultProps = {
 	changeUrl: false,
 	loading: false,
 	isBlock: false,
+	isTransaction: false,
 	timestamp: false,
 	fee: false,
 	loadMore: null,

@@ -123,7 +123,7 @@ class OperationRow extends React.Component {
 										<Avatar accountName={mainInfo.subject.name} />
 									}
 									<span>{mainInfo.subject && mainInfo.subject.name}</span>
-								</Link> : '—'
+								</Link> : <div className="td-in">—</div> 
 						}
 					</td>
 					<td className="amount">
@@ -138,7 +138,7 @@ class OperationRow extends React.Component {
 									>{FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
-								</div> : '—'
+								</div> : <div className="td-in">—</div> 
 						}
 					</td>
 					{
@@ -164,7 +164,7 @@ class OperationRow extends React.Component {
 						{
 							(mainInfo.result && !_.isEmpty(mainInfo.result)) ?
 								<Link to={URLHelper.createUrlById(mainInfo.result)} className="td-in" onClick={(e) => e.stopPropagation()}>{mainInfo.result}</Link>
-								: '—'
+								:  <div className="td-in">—</div> 
 						}
 					</td>
 					<td className="json">
