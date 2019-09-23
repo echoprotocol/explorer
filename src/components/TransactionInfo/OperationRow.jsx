@@ -71,7 +71,7 @@ class OperationRow extends React.Component {
 										<span className="index">#</span>
 										<span>Type</span>
 									</div>
-									<span className="index">{index + 1}</span>
+									<span className="index">{index + 1}.</span>
 								</React.Fragment>
 							}
 						</Media>
