@@ -83,6 +83,7 @@
 
                         @include res-768 {
                             flex-wrap: wrap;
+                            flex-direction: column;
                         }
 
                         &:not(:last-child) {
