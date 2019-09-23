@@ -287,6 +287,26 @@
             .td-in {
                 padding: 9px 7px;
             }
+
+            &.sender,
+            &.reciever,
+            &.amount {
+                span {
+                    max-width: 90px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    line-height: 15px;
+                    white-space: nowrap;
+
+                    @include res-1280 {
+                        max-width: 80px;
+                    }
+                }
+            }
+
+            &.type {
+                white-space: nowrap;
+            }
         }
 
         @include res-1280 {
