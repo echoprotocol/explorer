@@ -3,8 +3,6 @@
 
   @include res-320 {
     padding-top: 30px;
-    padding-left: 30px;
-    padding-right: 30px;
   }
 
   .page-helper-section {
@@ -21,7 +19,23 @@
   .backwards {
     margin-bottom: 0;
     margin-top: 0;
-    padding-left: 15px;
+
+    @include res-500 {
+      padding-top: 50px;
+      padding-left: 17px;
+
+      .backwards-link {
+        top: 0;
+        left: 12px;
+      }
+    }
+
+    @include res-320 {
+
+      .backwards-link {
+        left: 12px;
+      }
+    }
   }
 
   .section-description {
@@ -89,7 +103,7 @@
       align-items: center;
       width: 100%;
 
-      > div {
+      >div {
         &:not(:last-child) {
           margin-right: 15px;
         }

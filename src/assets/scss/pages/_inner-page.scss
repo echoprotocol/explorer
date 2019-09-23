@@ -19,6 +19,7 @@
         display: flex;
         align-items: center;
         margin: 0;
+        margin-left: 26px;
 
         .title,
         .icon {
@@ -143,5 +144,45 @@
         align-items: center;
         justify-content: flex-end;
         padding: 33px 47px 43px;
+    }
+}
+
+.inner-information-container.inner-page {
+    .backwards {
+        @include res-320 {
+            padding-top: 50px;
+            padding-left: 15px;
+        }
+
+        .account-page-t-block {
+
+            @include res-1000 {
+                padding-left: 0px;
+            }
+
+            @include res-768 {
+                padding-left: 0px;
+                margin-left: 0px;
+            }
+
+            @include res-320 {
+                padding: 0;
+            }
+        }
+    }
+
+    .backwards-link {
+        @include res-768 {
+            left: 14px;
+        }
+
+        @include res-500 {
+            left: 17px;
+        }
+
+        @include res-320 {
+            top: 0px;
+            left: 10px;
+        }
     }
 }
