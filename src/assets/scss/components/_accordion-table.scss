@@ -270,6 +270,14 @@
 
     table {
         td {
+
+            &.type,
+            &.time {
+                .td-in {
+                    white-space: nowrap;
+                }
+            }
+
             &.number {
                 max-width: 32px;
                 width: 32px;

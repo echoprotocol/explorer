@@ -34,7 +34,6 @@ import ContractInfo from './ContractInfo';
 import { ContractIcon } from './ContractIcon';
 import { BridgeService } from '../../services/BridgeService';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
-import BackwardIcon from '../BackwardIcon';
 
 import URLHelper from '../../helpers/URLHelper';
 
@@ -278,13 +277,6 @@ class Contract extends React.Component {
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards">
-							<a
-								href=""
-								className="backwards-link"
-								onClick={(e) => this.onBack(e, id)}
-							>
-								<BackwardIcon />
-							</a>
 							<div className="account-page-t-block">
 								<Media query="(max-width: 380px)">
 									{(matches) =>
@@ -294,7 +286,6 @@ class Contract extends React.Component {
 										</div>
 									}
 								</Media>
-
 								<div className="title">Contract {id} {name && `:  ${name}`}</div>
 							</div>
 						</div>
