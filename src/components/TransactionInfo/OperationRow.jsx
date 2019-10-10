@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Media from 'react-media';
 import classnames from 'classnames';
 import _ from 'lodash';
-import { validators } from 'echojs-lib';
 
 import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
