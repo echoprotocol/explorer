@@ -517,7 +517,6 @@ export const accountOperations = [
 	Operations.account_create.name,
 	Operations.account_update.name,
 	Operations.account_whitelist.name,
-	Operations.account_transfer.name,
 ];
 export const assetOperations = [
 	Operations.asset_create.name,
