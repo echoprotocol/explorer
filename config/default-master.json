@@ -1,6 +1,6 @@
 {
 
-  "API_URL": "ws://195.201.164.54:36311/ws",
+  "API_URL": "wss://testnet.echo-dev.io/ws",
   "LANDING_BRIDGE": "http://649-bridge-landing.pixelplexlabs.com",
   "GRAPHQL_URL": {
     "HTTP": "https://645-echodb.pixelplexlabs.com/graphql",
