@@ -41,16 +41,6 @@ const Operations = {
 			asset: null,
 		},
 	},
-	account_transfer: {
-		value: OPERATIONS_IDS.ACCOUNT_TRANSFER,
-		name: 'Transfer Account',
-		options: {
-			from: 'account_id',
-			subject: ['new_owner', 'name'],
-			value: null,
-			asset: null,
-		},
-	},
 	asset_create: {
 		value: OPERATIONS_IDS.ASSET_CREATE,
 		name: 'Create asset',
@@ -269,16 +259,6 @@ const Operations = {
 			subject: ['to', 'name'],
 			value: 'amount.amount',
 			asset: 'amount.asset_id',
-		},
-	},
-	change_sidechain_config: {
-		value: OPERATIONS_IDS.SIDECHAIN_CHANGE_CONFIG,
-		name: 'Change sidechain config',
-		options: {
-			from: null,
-			subject: null,
-			value: null,
-			asset: null,
 		},
 	},
 	account_address_create: {
