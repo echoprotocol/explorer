@@ -352,7 +352,7 @@ const Operations = {
 		},
 	},
 	sidechain_issue: {
-		value: OPERATIONS_IDS.SIDECHAIN_ETH_ISSUE,
+		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
 		name: 'Sidechain issue',
 		options: {
 			from: 'account',
@@ -362,7 +362,7 @@ const Operations = {
 		},
 	},
 	sidechain_burn: {
-		value: OPERATIONS_IDS.SIDECHAIN_ETH_BURN,
+		value: OPERATIONS_IDS.SIDECHAIN_BURN,
 		name: 'Sidechain burn',
 		options: {
 			from: 'account',
