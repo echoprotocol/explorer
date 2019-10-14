@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Media from 'react-media';
 import classnames from 'classnames';
 import _ from 'lodash';
-import { validators } from 'echojs-lib';
 
 import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
@@ -46,6 +45,7 @@ class OperationRow extends React.Component {
 		} = this.props;
 
 		this.props.tableRefs[index] = React.createRef();
+		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
 		return (
 			<React.Fragment>
@@ -108,21 +108,14 @@ class OperationRow extends React.Component {
 							{ (matches) => matches && <div className="col-title">Reciever</div>}
 						</Media>
 						{
-							(mainInfo.subject && mainInfo.subject.name) ?
+							(subjectValue) ?
 								<Link
 									className="td-in avatar-wrap"
-									to={
-										validators.isAccountId(mainInfo.subject.id) ?
-											URLHelper.createAccountUrl(mainInfo.subject.name) :
-											URLHelper.createUrlById(mainInfo.subject.id)
-									}
+									to={URLHelper.createUrlById(subjectValue)}
 									onClick={(e) => e.stopPropagation()}
 								>
-									{
-										mainInfo.subject && validators.isAccountId(mainInfo.subject.id) &&
-										<Avatar accountName={mainInfo.subject.name} />
-									}
-									<span>{mainInfo.subject && mainInfo.subject.name}</span>
+									{mainInfo.subject.name && <Avatar accountName={subjectValue} />}
+									<span>{subjectValue}</span>
 								</Link> : <div className="td-in">—</div>
 						}
 					</td>
