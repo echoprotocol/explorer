@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {
 	COUNT_PAGE,
 	USERS_GRID,
-} from '../constants/GridConstants';
+} from '../constants/TableConstants';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({

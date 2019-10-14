@@ -9,7 +9,7 @@ import ViewListPopover from '../ViewListPopover';
 import Loader from '../Loader';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
-import { DEFAULT_TABLE_LENGTH } from '../../constants/LoadMoreConstants';
+import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';

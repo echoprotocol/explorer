@@ -41,16 +41,6 @@ const Operations = {
 			asset: null,
 		},
 	},
-	account_transfer: {
-		value: OPERATIONS_IDS.ACCOUNT_TRANSFER,
-		name: 'Transfer Account',
-		options: {
-			from: 'account_id',
-			subject: ['new_owner', 'name'],
-			value: null,
-			asset: null,
-		},
-	},
 	asset_create: {
 		value: OPERATIONS_IDS.ASSET_CREATE,
 		name: 'Create asset',
@@ -271,16 +261,6 @@ const Operations = {
 			asset: 'amount.asset_id',
 		},
 	},
-	change_sidechain_config: {
-		value: OPERATIONS_IDS.SIDECHAIN_CHANGE_CONFIG,
-		name: 'Change sidechain config',
-		options: {
-			from: null,
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
 	account_address_create: {
 		value: OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE,
 		name: 'Account address create',
@@ -372,7 +352,7 @@ const Operations = {
 		},
 	},
 	sidechain_issue: {
-		value: OPERATIONS_IDS.SIDECHAIN_ETH_ISSUE,
+		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
 		name: 'Sidechain issue',
 		options: {
 			from: 'account',
@@ -382,7 +362,7 @@ const Operations = {
 		},
 	},
 	sidechain_burn: {
-		value: OPERATIONS_IDS.SIDECHAIN_ETH_BURN,
+		value: OPERATIONS_IDS.SIDECHAIN_BURN,
 		name: 'Sidechain burn',
 		options: {
 			from: 'account',
