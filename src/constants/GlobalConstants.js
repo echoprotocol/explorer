@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 import { constants } from 'echojs-lib';
 
 export const KEY_CODES = {
@@ -22,7 +20,7 @@ export const TITLE_TEMPLATES = {
 	CONTRACT: `Contract id | ${DEFAULT_TITLE}`,
 };
 
-export const DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES = '2.1.0';
+export const DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES = constants.DYNAMIC_GLOBAL_OBJECT_ID;
 
 export const START_AVERAGE_TRS_BLOCKS = 10;
 export const MAX_AVERAGE_TRS_BLOCKS = 100;
@@ -52,13 +50,13 @@ export const ERC20_HASHES = {
 
 export const BYTECODE_SYMBOLS_LENGTH = 616;
 export const ECHO_ASSET = {
-	ID: '1.3.0',
+	ID: constants.CORE_ASSET_ID,
 	SYMBOL: 'ECHO',
 	PRECISION: 8,
 };
 
 export const NATHAN = {
-	ID: '1.2.12',
+	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ACCOUNT}.15`,
 };
 
 export const DEFAULT_ROWS_COUNT = 50;
