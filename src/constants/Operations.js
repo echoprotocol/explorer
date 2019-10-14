@@ -491,6 +491,16 @@ const Operations = {
 			asset: 'amount.asset_id',
 		},
 	},
+	balance_unfreeze: {
+		value: OPERATIONS_IDS.BALANCE_UNFREEZE,
+		name: 'Balance unfreeze',
+		options: {
+			from: 'account',
+			subject: null,
+			value: 'amount.amount',
+			asset: 'amount.asset_id',
+		},
+	},
 	sidechain_erc20_issue: {
 		value: OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE,
 		name: 'Erc20 issue',
@@ -508,6 +518,16 @@ const Operations = {
 			from: 'account',
 			subject: ['token'],
 			amount: 'amount',
+			asset: null,
+		},
+	},
+	block_reward: {
+		value: OPERATIONS_IDS.BLOCK_REWARD,
+		name: 'Block reward',
+		options: {
+			from: null,
+			subject: null,
+			amount: null,
 			asset: null,
 		},
 	},

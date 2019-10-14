@@ -35,7 +35,7 @@
 		"config": "^1.30.0",
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.6.3",
-		"echojs-lib": "^1.6.0",
+		"echojs-lib": "^1.8.1-rc.4",
 		"echojs-ping": "^0.1.5",
 		"es6-promise": "^4.2.4",
 		"es6-promise-promise": "^1.0.0",
