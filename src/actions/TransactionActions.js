@@ -271,13 +271,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 				result.subject = { id: response.id, name: request };
 			} else {
-				const request = _.get(operation, options.subject[0]);
-				result.subject = {};
-				if (options.subject[0] === 'reciever') {
-					const account = await echo.api.getObject(request);
-					result.subject.name = account.name;
-				}
-				result.id = operation[options.subject[0]];
+				result.subject = { id: operation[options.subject[0]] };
 			}
 		}
 
