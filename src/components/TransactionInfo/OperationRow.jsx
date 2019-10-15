@@ -98,10 +98,12 @@ class OperationRow extends React.Component {
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
-						<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
-							<Avatar accountName={mainInfo.from.name} />
-							<span>{mainInfo.from.name}</span>
-						</Link>
+						{mainInfo.from.id ?
+							<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
+								<Avatar accountName={mainInfo.from.name} />
+								<span>{mainInfo.from.name}</span>
+							</Link> : <div className="td-in">—</div>
+						}
 					</td>
 					<td className="reciever">
 						<Media query="(max-width: 767px)">
