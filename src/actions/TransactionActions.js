@@ -280,10 +280,6 @@ class TransactionActionsClass extends BaseActionsClass {
 				...result.value,
 				amount: _.get(operation, options.value),
 			};
-			if (!_.has(result.value, 'symbol')) {
-				result.value.precision = ECHO_ASSET.PRECISION;
-				result.value.symbol = ECHO_ASSET.SYMBOL;
-			}
 		}
 
 		if (options.asset) {
@@ -294,6 +290,9 @@ class TransactionActionsClass extends BaseActionsClass {
 				precision: response.precision,
 				symbol: response.symbol,
 			};
+		} else {
+			result.value.precision = ECHO_ASSET.PRECISION;
+			result.value.symbol = ECHO_ASSET.SYMBOL;
 		}
 
 		// filter sub-operations by account
