@@ -34,7 +34,11 @@ class Account extends React.Component {
 
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
-		if (!prevAccount.get('history').equals(account.get('history'))) {
+
+		const prevAccountHistory = prevAccount.get('history');
+		const accountHistory = account.get('history');
+
+		if (prevAccountHistory.size !== accountHistory.size) {
 			this.props.updateAccountHistory(account.get('id'), account.get('history'), prevAccount.get('history'));
 		}
 
