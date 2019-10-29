@@ -26,6 +26,16 @@ class OperationRow extends React.Component {
 		return !matches ? 8 : 7;
 	}
 
+	renderTransactionLink(block, transactionNum, index) {
+		return (
+			<Link
+				to={URLHelper.createOperationObjectsUrl(block, transactionNum + 1, index + 1)}
+				onClick={(e) => e.stopPropagation()}
+				className="td-in"
+			/>
+		);
+	}
+
 	render() {
 		const {
 			operation: {
@@ -185,11 +195,7 @@ class OperationRow extends React.Component {
 										matches.small &&
 										<React.Fragment>
 											<div className="col-title">Json</div>
-											<Link
-												to={URLHelper.createOperationObjectsUrl(block, transactionNum + 1, index + 1)}
-												onClick={(e) => e.stopPropagation()}
-												className="td-in"
-											/>
+											{this.renderTransactionLink(block, transactionNum, index)}
 										</React.Fragment>
 									} {
 										matches.large &&
@@ -200,11 +206,7 @@ class OperationRow extends React.Component {
 											overlayStyle={tooltipStyle}
 											overlayClassName="verify-contract-tooltip"
 										>
-											<Link
-												to={URLHelper.createOperationObjectsUrl(block, transactionNum + 1, index + 1)}
-												onClick={(e) => e.stopPropagation()}
-												className="td-in"
-											/>
+											{this.renderTransactionLink(block, transactionNum, index)}
 										</Tooltip>
 									}
 								</React.Fragment>
