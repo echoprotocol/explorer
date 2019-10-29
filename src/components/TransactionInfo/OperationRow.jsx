@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Media from 'react-media';
 import classnames from 'classnames';
 import _ from 'lodash';
+import Tooltip from 'rc-tooltip';
 
 import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
@@ -23,6 +24,16 @@ class OperationRow extends React.Component {
 			return !matches ? 7 : 6;
 		}
 		return !matches ? 8 : 7;
+	}
+
+	renderTransactionLink(block, transactionNum, index) {
+		return (
+			<Link
+				to={URLHelper.createOperationObjectsUrl(block, transactionNum + 1, index + 1)}
+				onClick={(e) => e.stopPropagation()}
+				className="td-in"
+			/>
+		);
 	}
 
 	render() {
@@ -46,6 +57,18 @@ class OperationRow extends React.Component {
 
 		this.props.tableRefs[index] = React.createRef();
 		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
+
+		const tip = (
+			<React.Fragment>
+				<p>
+					View raw JSON object
+				</p>
+			</React.Fragment>
+		);
+
+		const tooltipStyle = {
+			width: 175,
+		};
 
 		return (
 			<React.Fragment>
@@ -161,13 +184,34 @@ class OperationRow extends React.Component {
 						}
 					</td>
 					<td className="json">
-						<Media query="(max-width: 767px)">
-							{ (matches) => matches && <div className="col-title">Json</div>}
-						</Media><Link
-							to={URLHelper.createOperationObjectsUrl(block, transactionNum + 1, index + 1)}
-							onClick={(e) => e.stopPropagation()}
-							className="td-in"
-						/>
+						<Media queries={{
+							small: '(max-width: 767px)',
+							large: '(min-width: 768px)',
+						}}
+						>
+							{(matches) => (
+								<React.Fragment>
+									{
+										matches.small &&
+										<React.Fragment>
+											<div className="col-title">Json</div>
+											{this.renderTransactionLink(block, transactionNum, index)}
+										</React.Fragment>
+									} {
+										matches.large &&
+										<Tooltip
+											placement="top"
+											trigger={['hover']}
+											overlay={tip}
+											overlayStyle={tooltipStyle}
+											overlayClassName="verify-contract-tooltip"
+										>
+											{this.renderTransactionLink(block, transactionNum, index)}
+										</Tooltip>
+									}
+								</React.Fragment>
+							)}
+						</Media>
 					</td>
 					<td className="dd">
 						<div className="td-in">
