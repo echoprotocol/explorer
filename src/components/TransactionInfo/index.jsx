@@ -44,7 +44,7 @@ class TransactionsInfo extends React.Component {
 
 		const breadcrumbs = [
 			{
-				title: 'Block list',
+				title: 'Blocks list',
 				path: INDEX_PATH,
 			},
 			{
