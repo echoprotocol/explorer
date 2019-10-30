@@ -122,7 +122,7 @@ class OperationRow extends React.Component {
 							{ (matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
 						<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
-							<Avatar accountName={mainInfo.from.name} />
+							{mainInfo.from.name && <Avatar accountName={mainInfo.from.name} />}
 							<span>{mainInfo.from.name}</span>
 						</Link>
 					</td>
@@ -184,10 +184,11 @@ class OperationRow extends React.Component {
 						}
 					</td>
 					<td className="json">
-						<Media queries={{
-							small: '(max-width: 767px)',
-							large: '(min-width: 768px)',
-						}}
+						<Media
+							query={{
+								small: '(max-width: 767px)',
+								large: '(min-width: 768px)',
+							}}
 						>
 							{(matches) => (
 								<React.Fragment>

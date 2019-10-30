@@ -7,7 +7,7 @@ export const getContractInfo = async (contractId) => {
 			getContract(id: $contractId) {
 				id,
 				registrar {
-					name 
+					name
 				}
 				block {
           			round
