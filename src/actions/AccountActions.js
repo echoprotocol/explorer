@@ -113,7 +113,8 @@ class AccountActions extends BaseActionsClass {
 	 */
 	updateAccountHistory(accountId, newAccountHistory, oldAccountHistory) {
 		return async (dispatch) => {
-			const diff = newAccountHistory.filter((h) => !oldAccountHistory.includes(h));
+			const diff = newAccountHistory.filter((historyItem) =>
+				!oldAccountHistory.find((oldHistoryItem) => oldHistoryItem.get('id') === historyItem.get('id')));
 			const transactions = await this.formatAccountHistory(accountId, diff.toJS());
 			dispatch(this.reducer.actions.update({
 				field: 'history',
