@@ -1,5 +1,4 @@
 {
-
   "API_URL": "wss://testnet.echo-dev.io/ws",
   "LANDING_BRIDGE": "http://649-bridge-landing.pixelplexlabs.com",
   "GRAPHQL_URL": {
