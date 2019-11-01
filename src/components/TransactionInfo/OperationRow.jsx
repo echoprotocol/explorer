@@ -184,35 +184,39 @@ class OperationRow extends React.Component {
 						}
 					</td>
 					<td className="json">
-						<Media
-							query={{
-								small: '(max-width: 767px)',
-								large: '(min-width: 768px)',
-							}}
-						>
-							{(matches) => (
-								<React.Fragment>
-									{
-										matches.small &&
+						{
+							mainInfo.from.name ? (
+								<Media
+									queries={{
+										small: '(max-width: 767px)',
+										large: '(min-width: 768px)',
+									}}
+								>
+									{(matches) => (
 										<React.Fragment>
-											<div className="col-title">Json</div>
-											{this.renderTransactionLink(block, transactionNum, index)}
+											{
+												matches.small &&
+												<React.Fragment>
+													<div className="col-title">Json</div>
+													{this.renderTransactionLink(block, transactionNum, index)}
+												</React.Fragment>
+											} {
+												matches.large &&
+												<Tooltip
+													placement="top"
+													trigger={['hover']}
+													overlay={tip}
+													overlayStyle={tooltipStyle}
+													overlayClassName="verify-contract-tooltip"
+												>
+													{this.renderTransactionLink(block, transactionNum, index)}
+												</Tooltip>
+											}
 										</React.Fragment>
-									} {
-										matches.large &&
-										<Tooltip
-											placement="top"
-											trigger={['hover']}
-											overlay={tip}
-											overlayStyle={tooltipStyle}
-											overlayClassName="verify-contract-tooltip"
-										>
-											{this.renderTransactionLink(block, transactionNum, index)}
-										</Tooltip>
-									}
-								</React.Fragment>
-							)}
-						</Media>
+									)}
+								</Media>
+							) : <div className="td-in">—</div>
+						}
 					</td>
 					<td className="dd">
 						<div className="td-in">
