@@ -201,16 +201,10 @@ class TransactionActionsClass extends BaseActionsClass {
 	) {
 		const [type, operation] = data;
 		const [, resId] = operationResult;
-		const feeAsset = await echo.api.getObject(operation.fee.asset_id);
 
 		const { name, options } = Object.values(Operations).find((i) => i.value === type);
 		const result = {
 			type,
-			fee: {
-				amount: operation.fee.amount,
-				precision: feeAsset.precision,
-				symbol: feeAsset.symbol,
-			},
 			from: {
 				id: '',
 			},
@@ -225,6 +219,15 @@ class TransactionActionsClass extends BaseActionsClass {
 			id,
 			timestamp,
 		};
+
+		if (operation.fee) {
+			const feeAsset = await echo.api.getObject(operation.fee.asset_id);
+			result.fee = {
+				amount: operation.fee.amount,
+				precision: feeAsset.precision,
+				symbol: feeAsset.symbol,
+			};
+		}
 
 		if (options.from) {
 
@@ -287,6 +290,9 @@ class TransactionActionsClass extends BaseActionsClass {
 				precision: response.precision,
 				symbol: response.symbol,
 			};
+		} else {
+			result.value.precision = ECHO_ASSET.PRECISION;
+			result.value.symbol = ECHO_ASSET.SYMBOL;
 		}
 
 		// filter sub-operations by account
@@ -384,8 +390,14 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
-
 			switch (typeof value) {
+				case 'number':
+					value = {
+						precision: ECHO_ASSET.PRECISION,
+						symbol: ECHO_ASSET.SYMBOL,
+						amount: value,
+					};
+					break;
 				case 'string':
 					if (value === '') {
 						return {};
