@@ -83,3 +83,5 @@ export const MIN_ACCESS_VERSION_BUILD = '0.4.0';
 export const NO_TRANSACTIONS = 'No transactions in recent blocks';
 export const NETWORK_CONNECTED_ERROR = 'Could\'t reach server or bad internet access';
 export const NONE_SYMBOL = '-';
+
+export const TOKEN_TYPE = 'TOKEN';

@@ -11,6 +11,7 @@ const DEFAULT_FIELDS = new Map({
 	isFullHistory: false,
 	id: null,
 	balances: new Map({}),
+	tokens: new List([]),
 	history: new List([]),
 	lastOperationId: '',
 });
