@@ -25,7 +25,7 @@ class TokenBalances extends React.Component {
 
 	renderElement(amount, contract) {
 		const { id, token: { symbol, decimals } } = contract;
-		console.log(decimals);
+
 		return (
 			<div key={id} className={classnames('inner-elem')}>
 				<span className="txt">
