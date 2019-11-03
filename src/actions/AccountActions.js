@@ -91,16 +91,16 @@ class AccountActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
 
-				// const transactions = await this.formatAccountHistory(id, account.history.slice(0, DEFAULT_ROWS_COUNT));
+				const transactions = await this.formatAccountHistory(id, account.history.slice(0, DEFAULT_ROWS_COUNT));
 
-				// dispatch(this.setMultipleValue({
-				// 	history: new List(transactions),
-				// 	isFullHistory: account.history.length <= DEFAULT_ROWS_COUNT,
-				// }));
+				dispatch(this.setMultipleValue({
+					history: new List(transactions),
+					isFullHistory: account.history.length <= DEFAULT_ROWS_COUNT,
+				}));
 
 				const balances = await getBalances([account.id]);
 				const tokens = balances.data.getBalances.filter((balanceItem) => balanceItem.type === TOKEN_TYPE);
-				console.log(tokens)
+
 				dispatch(this.setMultipleValue({ tokens }));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
