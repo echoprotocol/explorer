@@ -41,7 +41,7 @@ class TokenBalances extends React.Component {
 	}
 
 	render() {
-		const { owner, tokens, title } = this.props;
+		const { tokens, title } = this.props;
 		const { isLoadedMore, DEFAULT_COUNT } = this.state;
 		const count = tokens.size || tokens.length;
 
@@ -74,13 +74,11 @@ class TokenBalances extends React.Component {
 
 TokenBalances.propTypes = {
 	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-	owner: PropTypes.object,
 	title: PropTypes.string.isRequired,
 };
 
 TokenBalances.defaultProps = {
 	tokens: null,
-	owner: null,
 };
 
 export default TokenBalances;
