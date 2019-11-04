@@ -189,7 +189,7 @@ class OperationRow extends React.Component {
 						{
 							mainInfo.from.name ? (
 								<Media
-									queries={{
+									query={{
 										small: '(max-width: 767px)',
 										large: '(min-width: 768px)',
 									}}
