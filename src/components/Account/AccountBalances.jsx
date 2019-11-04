@@ -2,20 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import AssetBalances from './AssetBalances';
+import TokenBalances from './TokenBalances';
 
 class AccountBalances extends React.Component {
 
 	render() {
-		const { owner, balances } = this.props;
+		const { owner, balances, tokens } = this.props;
 
 		return (
 			<div className="right-container">
 				<AssetBalances title="other assets" owner={owner} balances={balances} />
-				{/*
-					<div className="elem">
-						<div className="title">tokens: <span className="gray">none</span></div>
-					</div>
-				*/}
+				<TokenBalances title="tokens" tokens={tokens} />
 			</div>
 		);
 	}
@@ -24,11 +21,13 @@ class AccountBalances extends React.Component {
 
 AccountBalances.propTypes = {
 	balances: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	owner: PropTypes.object,
 };
 
 AccountBalances.defaultProps = {
 	balances: null,
+	tokens: null,
 	owner: null,
 };
 

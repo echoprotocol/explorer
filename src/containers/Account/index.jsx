@@ -37,6 +37,7 @@ export default withRouter(connect(
 		loadingMoreHistory: state.account.get('loadingMoreHistory'),
 		isFullHistory: state.account.get('isFullHistory'),
 		balances: balanceSelector(state),
+		tokens: state.account.get('tokens'),
 		accountHistory: state.account.get('history'),
 		account: state.echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, state.account.get('id')]),
 	}),
