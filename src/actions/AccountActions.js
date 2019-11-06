@@ -99,7 +99,9 @@ class AccountActions extends BaseActionsClass {
 				}));
 
 				const balances = await getBalances([account.id]);
-				const tokens = balances.data.getBalances.filter((balanceItem) => balanceItem.type === TOKEN_TYPE);
+				console.log(balances);
+				const tokens = balances.data.getBalances.filter((balanceItem) =>
+					balanceItem.type === TOKEN_TYPE && Number.parseInt(balanceItem.amount, 10) !== 0);
 
 				dispatch(this.setMultipleValue({ tokens }));
 			} catch (e) {
