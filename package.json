@@ -7,7 +7,7 @@
 	},
 	"description": "Explorer for Echo platform",
 	"homepage": "https://github.com/echoprotocol/explorer",
-	"version": "1.0.3",
+	"version": "1.1.0-rc.1",
 	"license": "MIT",
 	"main": "server.js",
 	"scripts": {
@@ -35,7 +35,7 @@
 		"config": "^1.30.0",
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.6.3",
-		"echojs-lib": "^1.9.1-echo.12.1",
+		"echojs-lib": "1.9.1-rc.1",
 		"echojs-ping": "^0.1.5",
 		"es6-promise": "^4.2.4",
 		"es6-promise-promise": "^1.0.0",
