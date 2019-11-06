@@ -53,3 +53,45 @@ header {
     display: inline-block;
     height: 41px;
 }
+
+.navigation-tabs {
+    margin-left: auto;
+    margin-right: 40px;
+
+    button {
+        background-color: transparent;
+        outline: transparent;
+        border: transparent;
+        font-size: 16px;
+        @include InterUI_Bold;
+        margin: 0 10px;
+        color: #82818A;
+
+        &.active {
+            color: #E2E3E7;
+        }
+
+        &:hover {
+            cursor: pointer;
+            color: #5EB3E8;
+        }
+
+        &:active {
+            color: #E85E5E;
+        }
+
+        &:focus {
+            box-shadow: 0px 0px 0px 3px rgba(26, 113, 188, .27);
+        }
+    }
+
+    @include res-768 {
+        position: absolute;
+        top: 100px;
+        left: 20px;
+    }
+
+    @include res-320 {
+        left: 5px;
+    }
+}
