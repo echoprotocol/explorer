@@ -14,7 +14,6 @@ import {
 	PAGE_ADD_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
-	ECHO_ASSET,
 	NETWORK_CONNECTED_ERROR,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
@@ -48,6 +47,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		}
 
 		const handledBlock = getState().block.getIn(['blocks', round]);
+		const blockReward = new BN(getState().round.get('blockReward'));
 
 		const value = {};
 
@@ -57,7 +57,14 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			value.reward = `0 ${ECHO_ASSET.SYMBOL}`;
+			const fee = planeBlock.transactions.reduce((trxAcc, trx) => {
+				if (trx.fees_collected) {
+					return trxAcc + trx.fees_collected;
+				}
+				return trxAcc;
+			}, 0);
+			const reward = blockReward.plus(new BN(fee));
+			value.reward = reward.toString(10);
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
@@ -254,15 +261,10 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 			const { round, transactions } = block;
 
 			const fee = transactions.reduce((trxAcc, trx) => {
-				const { operations } = trx;
-
-				return trxAcc + operations.reduce((opAcc, op) => {
-					if (op && op.fee) {
-						return opAcc + op.fee.amount;
-					}
-
-					return opAcc;
-				}, 0);
+				if (trx.fees_collected) {
+					return trxAcc + trx.fees_collected;
+				}
+				return trxAcc;
 			}, 0);
 			accounts[index] = block.account;
 
@@ -289,7 +291,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
-				.setIn([blockNumber, 'reward'], 0)
+				.setIn([blockNumber, 'reward'], blocksRewards[blockNumber] ? blocksRewards[blockNumber].toString(10) : 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
 				.setIn([blockNumber, 'weightSize'], 'bytes')

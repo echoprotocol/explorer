@@ -105,6 +105,13 @@ export const connect = () => async (dispatch) => {
 			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
 		});
 
+		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
+		const blockReward = globalParams.block_producer_reward_ratio;
+
+		await dispatch(batchActions([
+			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
+		]));
+
 		await dispatch(initBlocks());
 
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
@@ -116,15 +123,12 @@ export const connect = () => async (dispatch) => {
 
 		dispatch(blockRelease());
 
-		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const global = globalParams.echorand_config;
 		const producers = global._creator_count;
-		const blockReward = globalParams.block_producer_reward_ratio;
 
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'connected', value: true }),
 			RoundReducer.actions.set({ field: 'producers', value: producers }),
-			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
 		]));
 	} catch (err) {
 		dispatch(batchActions([
