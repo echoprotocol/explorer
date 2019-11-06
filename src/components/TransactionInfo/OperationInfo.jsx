@@ -152,7 +152,8 @@ class OperationInfo extends React.Component {
 		const {
 			details, index, block, transaction,
 		} = this.props;
-		const opKey = `${details.type}_${index}`;
+		const { type } = details;
+		const opKey = `${type}_${index}`;
 		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
 
 		return (
@@ -173,7 +174,7 @@ class OperationInfo extends React.Component {
 								}
 							</Media> :
 							<div className="od-row" key={`${opKey}_${key}`} >
-								<div className="od-col">{key}:</div>
+								<div className="od-col">{key === 'registrar' && type === 'Contract call' ? 'tx sender' : key}:</div>
 								<div className="od-col">
 									{this.renderOperationRowValue(key, value, index)}
 								</div>

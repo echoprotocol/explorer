@@ -11,6 +11,26 @@ const Operations = {
 			asset: 'amount.asset_id',
 		},
 	},
+	transfer_to_address: {
+		value: OPERATIONS_IDS.TRANSFER_TO_ADDRESS,
+		name: 'Transfer to address',
+		options: {
+			from: 'from',
+			subject: ['to'],
+			value: 'amount.amount',
+			asset: 'amount.asset_id',
+		},
+	},
+	override_transfer: {
+		value: OPERATIONS_IDS.OVERRIDE_TRANSFER,
+		name: 'Override transfer',
+		options: {
+			from: 'from',
+			subject: ['to', 'name'],
+			value: 'amount.amount',
+			asset: 'amount.asset_id',
+		},
+	},
 	account_create: {
 		value: OPERATIONS_IDS.ACCOUNT_CREATE,
 		name: 'Create account',
@@ -37,6 +57,16 @@ const Operations = {
 		options: {
 			from: 'authorizing_account',
 			subject: ['account_to_list', 'name'],
+			value: null,
+			asset: null,
+		},
+	},
+	account_address_create: {
+		value: OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE,
+		name: 'Account address create',
+		options: {
+			from: 'owner',
+			subject: ['label'],
 			value: null,
 			asset: null,
 		},
@@ -121,6 +151,16 @@ const Operations = {
 			asset: 'asset_id',
 		},
 	},
+	asset_claim_fees: {
+		value: OPERATIONS_IDS.ASSET_CLAIM_FEES,
+		name: 'Claim asset fees',
+		options: {
+			from: 'issuer',
+			subject: null,
+			value: 'amount_to_claim.amount',
+			asset: 'amount_to_claim.asset_id',
+		},
+	},
 	proposal_create: {
 		value: OPERATIONS_IDS.PROPOSAL_CREATE,
 		name: 'Create proposal',
@@ -181,6 +221,47 @@ const Operations = {
 			asset: null,
 		},
 	},
+	committee_member_activate: {
+		value: OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE,
+		name: 'Activate committee member',
+		options: {
+			from: null,
+			subject: ['committee_to_activate', 'name'],
+			value: null,
+			asset: null,
+		},
+	},
+	committee_member_deactivate: {
+		value: OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE,
+		name: 'Deactivate committee member',
+		options: {
+			from: null,
+			subject: ['committee_to_deactivate', 'name'],
+			value: null,
+			asset: null,
+		},
+	},
+	committee_frozen_balance_deposit: {
+		value: OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT,
+		name: 'Committee frozen balance deposit',
+		options: {
+			from: null,
+			subject: ['committee_member_account', 'name'],
+			value: 'amount.amount',
+			asset: 'amount.asset_id',
+		},
+	},
+	committee_frozen_balance_withdraw: {
+		value: OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_WITHDRAW,
+		name: 'Committee frozen balance withdraw',
+		options: {
+			from: null,
+			subject: ['committee_member_account', 'name'],
+			value: 'amount.amount',
+			asset: 'amount.asset_id',
+		},
+	},
+
 	vesting_balance_create: {
 		value: OPERATIONS_IDS.VESTING_BALANCE_CREATE,
 		name: 'Create vesting balance',
@@ -211,24 +292,24 @@ const Operations = {
 			asset: null,
 		},
 	},
-	override_transfer: {
-		value: OPERATIONS_IDS.OVERRIDE_TRANSFER,
-		name: 'Override transfer',
+	balance_freeze: {
+		value: OPERATIONS_IDS.BALANCE_FREEZE,
+		name: 'Balance freeze',
 		options: {
-			from: 'from',
-			subject: ['to', 'name'],
+			from: 'account',
+			subject: null,
 			value: 'amount.amount',
 			asset: 'amount.asset_id',
 		},
 	},
-	asset_claim_fees: {
-		value: OPERATIONS_IDS.ASSET_CLAIM_FEES,
-		name: 'Claim asset fees',
+	balance_unfreeze: {
+		value: OPERATIONS_IDS.BALANCE_UNFREEZE,
+		name: 'Balance unfreeze',
 		options: {
-			from: 'issuer',
+			from: 'account',
 			subject: null,
-			value: 'amount_to_claim.amount',
-			asset: 'amount_to_claim.asset_id',
+			value: 'amount.amount',
+			asset: 'amount.asset_id',
 		},
 	},
 	contract_create: {
@@ -251,39 +332,69 @@ const Operations = {
 			asset: 'value.asset_id',
 		},
 	},
-	contract_transfer: {
-		value: OPERATIONS_IDS.CONTRACT_TRANSFER,
-		name: 'Contract transfer',
+	contract_internal_create: {
+		value: OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE,
+		name: 'Contract internal create',
 		options: {
-			from: ['from'],
-			subject: ['to', 'name'],
-			value: 'amount.amount',
-			asset: 'amount.asset_id',
+			from: ['caller'],
+			subject: ['contractId'],
+			value: 'value.amount',
+			asset: 'value.asset_id',
 		},
 	},
-	account_address_create: {
-		value: OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE,
-		name: 'Account address create',
+	contract_internal_call: {
+		value: OPERATIONS_IDS.CONTRACT_INTERNAL_CALL,
+		name: 'Contract internal call',
 		options: {
-			from: 'owner',
-			subject: null,
+			from: ['caller'],
+			subject: ['method'],
+			value: 'value.amount',
+			asset: 'value.asset_id',
+		},
+	},
+	contract_selfdestruct: {
+		value: OPERATIONS_IDS.CONTRACT_SELFDESTRUCT,
+		name: 'Contract selfdestruct',
+		options: {
+			from: ['contract'],
+			subject: ['recipient'],
 			value: null,
 			asset: null,
 		},
 	},
-	transfer_to_address: {
-		value: OPERATIONS_IDS.TRANSFER_TO_ADDRESS,
-		name: 'Transfer to address',
+	contract_update: {
+		value: OPERATIONS_IDS.CONTRACT_UPDATE,
+		name: 'Contract update',
 		options: {
-			from: 'from',
-			subject: ['to', 'name'],
-			value: 'amount',
+			from: 'sender',
+			subject: ['contract'],
+			amount: null,
 			asset: null,
+		},
+	},
+	contract_fund_pool: {
+		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
+		name: 'Contract fund pool',
+		options: {
+			from: 'registrar',
+			subject: 'contract_to_modify',
+			amount: null,
+			asset: 'fee',
+		},
+	},
+	contract_whitelist: {
+		value: OPERATIONS_IDS.CONTRACT_WHITELIST,
+		name: 'Contract whitelist',
+		options: {
+			from: 'sender',
+			subject: 'callee',
+			amount: 'value',
+			asset: 'fee',
 		},
 	},
 	sidechain_eth_create_address: {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS,
-		name: 'Generate eth address',
+		name: 'Create eth address',
 		options: {
 			from: 'account',
 			subject: null,
@@ -291,9 +402,9 @@ const Operations = {
 			asset: null,
 		},
 	},
-	create_eth_address: {
+	sidechain_eth_approve_address: {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS,
-		name: 'Create eth address',
+		name: 'Approve eth address',
 		options: {
 			from: 'committee_member_id',
 			subject: ['account', 'name'],
@@ -329,26 +440,6 @@ const Operations = {
 			subject: null,
 			value: null,
 			asset: null,
-		},
-	},
-	contract_fund_pool: {
-		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
-		name: 'Contract fund pool',
-		options: {
-			from: 'registrar',
-			subject: 'contract_to_modify',
-			amount: null,
-			asset: 'fee',
-		},
-	},
-	contract_whitelist: {
-		value: OPERATIONS_IDS.CONTRACT_WHITELIST,
-		name: 'Contract whitelist',
-		options: {
-			from: 'sender',
-			subject: 'callee',
-			amount: 'value',
-			asset: 'fee',
 		},
 	},
 	sidechain_issue: {
@@ -411,13 +502,23 @@ const Operations = {
 			asset: null,
 		},
 	},
-	contract_update: {
-		value: OPERATIONS_IDS.CONTRACT_UPDATE,
-		name: 'Contract update',
+	sidechain_erc20_issue: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE,
+		name: 'Erc20 issue',
 		options: {
-			from: 'sender',
-			subject: ['contract'],
-			amount: null,
+			from: 'account',
+			ubject: ['token'],
+			amount: 'amount',
+			asset: null,
+		},
+	},
+	sidechain_erc20_burn: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_BURN,
+		name: 'Erc20 burn operation',
+		options: {
+			from: 'account',
+			subject: ['token'],
+			amount: 'amount',
 			asset: null,
 		},
 	},
@@ -431,12 +532,22 @@ const Operations = {
 			asset: null,
 		},
 	},
+	sidechain_btc_create_intermediate_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT,
+		name: 'BTC create intermediate deposit',
+		options: {
+			from: 'account',
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
 	sidechain_btc_intermediate_deposit: {
 		value: OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT,
 		name: 'BTC intermediate deposit',
 		options: {
-			from: 'account',
-			subject: ['intermediate_address'],
+			from: 'committee_member_id',
+			subject: ['intermediate_address_id'],
 			amount: null,
 			asset: null,
 		},
@@ -481,46 +592,6 @@ const Operations = {
 			asset: null,
 		},
 	},
-	balance_freeze: {
-		value: OPERATIONS_IDS.BALANCE_FREEZE,
-		name: 'Balance freeze',
-		options: {
-			from: 'account',
-			subject: null,
-			value: 'amount.amount',
-			asset: 'amount.asset_id',
-		},
-	},
-	balance_unfreeze: {
-		value: OPERATIONS_IDS.BALANCE_UNFREEZE,
-		name: 'Balance unfreeze',
-		options: {
-			from: 'account',
-			subject: null,
-			value: 'amount.amount',
-			asset: 'amount.asset_id',
-		},
-	},
-	sidechain_erc20_issue: {
-		value: OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE,
-		name: 'Erc20 issue',
-		options: {
-			from: 'account',
-			ubject: ['token'],
-			amount: 'amount',
-			asset: null,
-		},
-	},
-	sidechain_erc20_burn: {
-		value: OPERATIONS_IDS.SIDECHAIN_ERC20_BURN,
-		name: 'Erc20 burn operation',
-		options: {
-			from: 'account',
-			subject: ['token'],
-			amount: 'amount',
-			asset: null,
-		},
-	},
 	block_reward: {
 		value: OPERATIONS_IDS.BLOCK_REWARD,
 		name: 'Block reward',
@@ -537,6 +608,7 @@ export const accountOperations = [
 	Operations.account_create.name,
 	Operations.account_update.name,
 	Operations.account_whitelist.name,
+	Operations.account_address_create.name,
 ];
 export const assetOperations = [
 	Operations.asset_create.name,
@@ -551,12 +623,21 @@ export const assetOperations = [
 export const contractOperations = [
 	Operations.contract_create.name,
 	Operations.contract_call.name,
-	Operations.contract_transfer.name,
+	Operations.contract_internal_create.name,
+	Operations.contract_internal_call.name,
+	Operations.contract_selfdestruct.name,
+	Operations.contract_update.name,
+	Operations.contract_fund_pool.name,
+	Operations.contract_whitelist.name,
 ];
 export const committeeOperations = [
 	Operations.committee_member_create.name,
 	Operations.committee_member_update.name,
 	Operations.committee_member_update_global_parameters.name,
+	Operations.committee_member_activate.name,
+	Operations.committee_member_deactivate.name,
+	Operations.committee_frozen_balance_deposit.name,
+	Operations.committee_frozen_balance_withdraw.name,
 ];
 export const proposalOperations = [
 	Operations.proposal_create.name,

@@ -86,6 +86,7 @@ const blockRelease = () => async (dispatch) => {
 	await dispatch(updateBlockList(global.head_block_number));
 	dispatch(updateAverageTransactions());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE }));
+	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
 };
 
 /**
@@ -112,6 +113,8 @@ export const connect = () => async (dispatch) => {
 
 		echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
 		echo.subscriber.setStatusSubscribe('disconnect', () => dispatch(onDisconnectSubscriber()));
+
+		dispatch(blockRelease());
 
 		const global = (await echo.api.wsApi.database.getGlobalProperties()).parameters.echorand_config;
 		const producers = global._creator_count;

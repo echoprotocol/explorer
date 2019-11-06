@@ -2,7 +2,7 @@ import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import { List, fromJS } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 
-import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
+import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT, TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -14,6 +14,7 @@ import ModalActions from './ModalActions';
 import TransactionActions from './TransactionActions';
 
 import { BridgeService } from '../services/BridgeService';
+import { getBalances } from '../services/queries/balance';
 
 class AccountActions extends BaseActionsClass {
 
@@ -97,6 +98,10 @@ class AccountActions extends BaseActionsClass {
 					isFullHistory: account.history.length <= DEFAULT_ROWS_COUNT,
 				}));
 
+				const balances = await getBalances([account.id]);
+				const tokens = balances.data.getBalances.filter((balanceItem) => balanceItem.type === TOKEN_TYPE);
+
+				dispatch(this.setMultipleValue({ tokens }));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -113,7 +118,8 @@ class AccountActions extends BaseActionsClass {
 	 */
 	updateAccountHistory(accountId, newAccountHistory, oldAccountHistory) {
 		return async (dispatch) => {
-			const diff = newAccountHistory.filter((h) => !oldAccountHistory.includes(h));
+			const diff = newAccountHistory.filter((historyItem) =>
+				!oldAccountHistory.find((oldHistoryItem) => oldHistoryItem.get('id') === historyItem.get('id')));
 			const transactions = await this.formatAccountHistory(accountId, diff.toJS());
 			dispatch(this.reducer.actions.update({
 				field: 'history',

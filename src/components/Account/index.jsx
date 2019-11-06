@@ -34,13 +34,18 @@ class Account extends React.Component {
 
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
-		if (!prevAccount.get('history').equals(account.get('history'))) {
+
+		const prevAccountHistory = prevAccount.get('history');
+		const accountHistory = account.get('history');
+
+		if (prevAccountHistory.size !== accountHistory.size) {
 			this.props.updateAccountHistory(account.get('id'), account.get('history'), prevAccount.get('history'));
 		}
 
 		if (!prevAccount.get('balances').equals(account.get('balances'))) {
 			this.props.updateAccountBalances(account.get('balances'));
 		}
+
 	}
 
 	componentWillUnmount() {
@@ -60,7 +65,7 @@ class Account extends React.Component {
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
-			account, balances, accountHistory,
+			account, balances, tokens, accountHistory,
 		} = this.props;
 
 		return (
@@ -78,6 +83,7 @@ class Account extends React.Component {
 									/>
 									<AccountBalances
 										balances={balances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
+										tokens={tokens}
 										owner={account.get('assets')}
 									/>
 								</React.Fragment> : null
@@ -114,6 +120,7 @@ Account.propTypes = {
 	isFullHistory: PropTypes.bool,
 	account: PropTypes.object,
 	balances: PropTypes.object,
+	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	history: PropTypes.object,
 	accountHistory: PropTypes.object,
 	location: PropTypes.object.isRequired,
@@ -132,6 +139,7 @@ Account.defaultProps = {
 	isFullHistory: false,
 	account: null,
 	balances: null,
+	tokens: null,
 	history: null,
 	accountHistory: null,
 };
