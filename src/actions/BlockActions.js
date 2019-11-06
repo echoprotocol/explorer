@@ -226,6 +226,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
+	const blockReward = new BN(getState().round.get('blockReward'));
 	const isShowEmptyBlocks = getState().block.get('isShowEmptyBlocks');
 
 	const [...keys] = blocks.keys();
@@ -247,21 +248,47 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	}
 
 	blocksResult = await Promise.all(blocksResult);
-
+	console.log('eto lyba govorit', blocksResult);
+	console.log(blockReward);
+	const blocksRewards = {};
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
 		if (block) {
+			const { round, transactions } = block;
+
+			const fee = transactions.reduce((trxAcc, trx) => {
+				const { operations } = trx;
+
+				return trxAcc + operations.reduce((opAcc, op) => {
+					if (op && op.fee) {
+						return opAcc + op.fee.amount;
+					}
+
+					return opAcc;
+				}, 0);
+			}, 0);
 			accounts[index] = block.account;
+			const kek = blockReward.plus(new BN(fee)).toString(10);
+			if (fee !== 0) {
+				console.log(24041998)
+				console.log(kek);
+				console.log(fee);
+				console.log(24041998)
+			}
+			blocksRewards[round] = blockReward.plus(new BN(fee));
 		}
 
 		return accounts;
 	}, []);
+	console.log('+++++++++++++++++++++');
+	console.log(blocksRewards);
+	console.log('+++++++++++++++++++++');
 
 	const accounts = await echo.api.getAccounts(accountIds);
 
 	blocks = getState().block.get('blocks');
 
 	const maxBlocks = getState().block.get('blocksCount');
-
+	console.log('nu che, narod, pognali nahoy. EBANIY V ROOT!', blocks.toJS());
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			if (!blocksResult[i]) {
