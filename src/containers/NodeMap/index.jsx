@@ -8,7 +8,6 @@ const Map = ReactMapboxGl({
       'pk.eyJ1IjoibWF4c2hldiIsImEiOiJjazJsbnByY2cwODlpM2NwZWZhZndhZjhhIn0.RF3XIqcQtY2nTT8sKYL8wA',
 });
 const zoom = [1];
-
 class NodeMap extends React.Component {
 
 	constructor() {

@@ -79,10 +79,6 @@ header {
         &:active {
             color: #E85E5E;
         }
-
-        &:focus {
-            box-shadow: 0px 0px 0px 3px rgba(26, 113, 188, .27);
-        }
     }
 
     @include res-768 {
