@@ -54,7 +54,7 @@ class OperationInfo extends React.Component {
 									</Link>
 									<img src={directionIcon} alt="" className="direction" />
 									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
-										{ op.subject.name ? <Avatar accountName={op.subject.name} /> : null }
+										{op.subject.name ? <Avatar accountName={op.subject.name} /> : null}
 										<span>{op.subject.name || op.subject.id}</span>
 									</Link>
 								</div>
@@ -93,6 +93,7 @@ class OperationInfo extends React.Component {
 	}
 
 	renderOperationRowValue(key, value, index) {
+		const { objId } = this.props;
 		if (key === 'token transfers') {
 			return this.renderInternal(value);
 		}
@@ -127,6 +128,26 @@ class OperationInfo extends React.Component {
 			return this.renderContractLogs(value);
 		}
 
+		if (key === 'symbol') {
+			return (
+				<Link to={URLHelper.createUrlById(objId)}>
+					{value}
+				</Link>
+			);
+		}
+
+		if (key === 'asset_to_issue') {
+			const words = value.split(' ');
+			return (
+				<React.Fragment>
+					{words[0]}&nbsp;
+					<Link to={URLHelper.createUrlById(objId)}>
+						{words[1]}
+					</Link>
+				</React.Fragment>
+			);
+		}
+
 		if (key.toLowerCase() !== 'bytecode') {
 			return value;
 		}
@@ -138,7 +159,7 @@ class OperationInfo extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="mono">{ bytecode }</div>
+				<div className="mono">{bytecode}</div>
 				{
 					(value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index]) &&
 					<button className="text-button" onClick={(e) => this.onToggleLoadMore(index, e)}>Expand</button>
@@ -155,7 +176,6 @@ class OperationInfo extends React.Component {
 		const { type } = details;
 		const opKey = `${type}_${index}`;
 		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
-
 		return (
 			<React.Fragment>
 				{
@@ -165,12 +185,12 @@ class OperationInfo extends React.Component {
 								{
 									(matches) =>
 										(matches &&
-										<div className="od-row" key={`${opKey}_${key}`}>
-											<div className="od-col">{key}:</div>
-											<div className="od-col">
-												{this.renderOperationRowValue(key, value, index)}
-											</div>
-										</div>)
+											<div className="od-row" key={`${opKey}_${key}`}>
+												<div className="od-col">{key}:</div>
+												<div className="od-col">
+													{this.renderOperationRowValue(key, value, index)}
+												</div>
+											</div>)
 								}
 							</Media> :
 							<div className="od-row" key={`${opKey}_${key}`} >
@@ -205,12 +225,15 @@ class OperationInfo extends React.Component {
 
 }
 
-
+OperationInfo.defaultProps = {
+	objId: '',
+};
 OperationInfo.propTypes = {
 	details: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	block: PropTypes.number.isRequired,
 	transaction: PropTypes.number.isRequired,
+	objId: PropTypes.string,
 };
 
 export default OperationInfo;

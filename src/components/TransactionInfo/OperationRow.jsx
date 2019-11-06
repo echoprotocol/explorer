@@ -54,7 +54,7 @@ class OperationRow extends React.Component {
 			fee,
 			air,
 		} = this.props;
-
+		const objectId = objectInfo.get('id');
 		this.props.tableRefs[index] = React.createRef();
 		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
@@ -236,7 +236,13 @@ class OperationRow extends React.Component {
 								(matches) => (
 									<React.Fragment>
 										<td colSpan={this.getColSpan(matches)}>
-											<OperationInfo details={detailInfo} index={index} block={block} transaction={transactionNum} />
+											<OperationInfo
+												details={detailInfo}
+												index={index}
+												block={block}
+												transaction={transactionNum}
+												objId={objectId}
+											/>
 											<ObjectInfo details={detailInfo} object={objectInfo} />
 										</td>
 										<Media query="(max-width: 767px)">
