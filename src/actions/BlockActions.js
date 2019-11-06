@@ -326,8 +326,8 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	const lastBlockStorage = blocksResult[blocksResult.length - 1];
 
 	if (lastBlockStorage) {
-		const time = new Date().getTime() - new Date(lastBlockStorage.timestamp).getTime();
-		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: Math.floor(time / 1000) }));
+		const time = moment().unix() - moment.utc(lastBlockStorage.timestamp).unix();
+		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: time }));
 	}
 
 	const blocksToRemove = blocks.size - maxBlocks;
@@ -369,10 +369,10 @@ export const initBlocks = () => async (dispatch) => {
 	const startBlockAverage = obj.head_block_number - START_AVERAGE_TRS_BLOCKS;
 	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
-	const time = new Date().getTime() - new Date(obj.time).getTime();
+	const time = moment().unix() - moment.utc(obj.time).unix();
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
-		value: Math.floor(time / 1000),
+		value: time,
 	}));
 };
 /**
