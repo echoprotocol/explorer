@@ -179,7 +179,7 @@ class ManageContract extends React.Component {
 					<button className="decline-button" onClick={(e) => this.goBack(e, id)}>Close</button>
 					<button
 						onClick={() => this.onSave()}
-						disabled={isErrorForm || !isChangedForm}
+						disabled={isErrorForm || !isChangedForm || !name.value}
 						className="approve-button"
 					>Save Changes
 					</button>
