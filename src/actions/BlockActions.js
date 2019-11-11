@@ -59,10 +59,10 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		} else {
 			const fee = planeBlock.transactions.reduce((trxAcc, trx) => {
 				if (trx.fees_collected) {
-					return trxAcc + trx.fees_collected;
+					return trxAcc.plus(trx.fees_collected);
 				}
 				return trxAcc;
-			}, 0);
+			}, new BN(0));
 			const reward = blockReward.plus(new BN(fee));
 			value.reward = reward.toString(10);
 			const weight = JSON.stringify(planeBlock).length;
@@ -262,10 +262,10 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 			const fee = transactions.reduce((trxAcc, trx) => {
 				if (trx.fees_collected) {
-					return trxAcc + trx.fees_collected;
+					return trxAcc.plus(trx.fees_collected);
 				}
 				return trxAcc;
-			}, 0);
+			}, new BN(0));
 			accounts[index] = block.account;
 
 			blocksRewards[round] = blockReward.plus(new BN(fee));
