@@ -388,8 +388,7 @@ class ContractActions extends BaseActionsClass {
 			const icon = getState().form.getIn([FORM_MANAGE_CONTRACT, 'icon']);
 
 			const isValidForm = !name.error && !!name.value &&
-				!icon.error && !!icon.value &&
-				!description.error && !!description.value;
+				!icon.error && !description.error;
 
 			dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isErrorForm', !isValidForm));
 		};
