@@ -63,7 +63,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 				}
 				return trxAcc;
 			}, new BN(0));
-			const reward = blockReward.plus(new BN(fee));
+			const reward = blockReward.plus(fee);
 			value.reward = reward.toString(10);
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
@@ -268,7 +268,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 			}, new BN(0));
 			accounts[index] = block.account;
 
-			blocksRewards[round] = blockReward.plus(new BN(fee));
+			blocksRewards[round] = blockReward.plus(fee);
 		}
 
 		return accounts;
