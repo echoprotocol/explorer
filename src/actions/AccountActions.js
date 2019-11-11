@@ -38,6 +38,7 @@ class AccountActions extends BaseActionsClass {
 			if (OPERATIONS_IDS.CONTRACT_TRANSFER === t.op[0]) {
 
 				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
+
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
 
 				if (operation[1].registrar === accountId) {
