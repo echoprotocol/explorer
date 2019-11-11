@@ -14,14 +14,14 @@ class DistributionTable extends React.Component {
 				<tr className="view">
 					<td />
 					<td className="role">
-						<Media query="(max-width: 767px)">
+						<Media query="(max-width: 499px)">
 							{ (matches) => matches && <div className="col-title">role</div>}
 						</Media>
 						<div className="td-in">Producer</div>
 					</td>
 
 					<td className="origin">
-						<Media query="(max-width: 767px)">
+						<Media query="(max-width: 499px)">
 							{ (matches) => matches && <div className="col-title">origin</div>}
 						</Media>
 						<Link
@@ -34,7 +34,7 @@ class DistributionTable extends React.Component {
 						</Link>
 					</td>
 					<td className="delegate">
-						<Media query="(max-width: 767px)">
+						<Media query="(max-width: 499px)">
 							{ (matches) => matches && <div className="col-title">delegate</div>}
 						</Media>
 						<Link
@@ -47,13 +47,13 @@ class DistributionTable extends React.Component {
 						</Link>
 					</td>
 					<td className="reward">
-						<Media query="(max-width: 767px)">
-							{ (matches) => matches && <div className="col-title">reward</div>}
+						<Media query="(max-width: 499px)">
+							{ (matches) => matches && <div className="col-title">ORIGIN/DELEGATE REWARD</div>}
 						</Media>
 						<div className="td-in">
 							<span className="value"> 0.003245</span>
 							<span className="currency">ECHO</span>
-							<Media query="(min-width: 500px)">
+							<Media query="(min-width: 499px)">
 								{(matches) => (!matches && <br />)}
 							</Media>
 							&nbsp;/&nbsp;
@@ -63,9 +63,6 @@ class DistributionTable extends React.Component {
 					</td>
 					<td />
 				</tr>
-				{/* <tr className="air">
-					<td colSpan="9" />
-				</tr> */}
 			</React.Fragment>
 		);
 	}
@@ -78,7 +75,7 @@ class DistributionTable extends React.Component {
 				<h2>Reward distribution</h2>
 				<div className="distribution-table accordion-table-wrap table-contract" >
 					<table>
-						<Media query="(max-width: 767px)">
+						<Media query="(max-width: 499px)">
 							{ (matches) => !matches &&
 								<thead>
 									<tr>
@@ -113,7 +110,7 @@ class DistributionTable extends React.Component {
 
 
 						<tbody>
-							<Media query="(max-width: 767px)">
+							<Media query="(max-width: 499px)">
 								{
 									(matches) =>
 										(!matches &&
@@ -122,7 +119,6 @@ class DistributionTable extends React.Component {
 										</tr>)
 								}
 							</Media>
-							{this.renderRow()}
 							{this.renderRow()}
 						</tbody>
 					</table>

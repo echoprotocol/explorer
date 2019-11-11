@@ -641,7 +641,7 @@
                     .td-in {
                         padding: 13px 7px;
 
-                        @include max-vw(768) {
+                        @include res-500 {
                             padding: 0;
                         }
                     }
@@ -649,49 +649,53 @@
                     &:nth-child(2) {
                         .td-in {
                             padding: 13px 7px 13px 20px;
-                        }
-                    }
 
-                    @include min-vw(768) {
-
-
-                        &.type {
-                            .td-in {
-                                padding-left: 18px;
-                            }
-
-                        }
-
-                        &.sender {
-                            .td-in {
-                                padding-left: 29px;
-                            }
-                        }
-
-                        &.reciever {
-                            .td-in {
-                                padding-left: 19px;
-                            }
-                        }
-
-                        &.rezult {
-                            .td-in {
-                                padding-left: 14px;
-                            }
-                        }
-
-                        &.amount {
-                            .td-in {
-                                padding-left: 11px;
-                            }
-                        }
-
-                        &.dd {
-                            .td-in {
-                                padding-left: 0px;
+                            @include res-500 {
+                                padding: 0;
                             }
                         }
                     }
+
+                    // @include res-500 {
+
+
+                    //     &.type {
+                    //         .td-in {
+                    //             padding-left: 18px;
+                    //         }
+
+                    //     }
+
+                    //     &.sender {
+                    //         .td-in {
+                    //             padding-left: 29px;
+                    //         }
+                    //     }
+
+                    //     &.reciever {
+                    //         .td-in {
+                    //             padding-left: 19px;
+                    //         }
+                    //     }
+
+                    //     &.rezult {
+                    //         .td-in {
+                    //             padding-left: 14px;
+                    //         }
+                    //     }
+
+                    //     &.amount {
+                    //         .td-in {
+                    //             padding-left: 11px;
+                    //         }
+                    //     }
+
+                    //     &.dd {
+                    //         .td-in {
+                    //             padding-left: 0px;
+                    //         }
+                    //     }
+                    // }
 
                     &:nth-child(1),
                     &:nth-child(2),
@@ -808,9 +812,9 @@
                 width: 16%;
                 min-width: 16%;
 
-                .td-in {
-                    padding-left: 14px;
-                }
+                // .td-in {
+                //     padding-left: 14px;
+                // }
             }
 
             &.sender,
@@ -837,13 +841,14 @@
                 max-width: 10%;
                 width: 10%;
                 min-width: 10%;
+                padding-left: 15px;
 
                 @include res-1280 {
                     display: table-cell;
                 }
 
                 .td-in {
-                    padding-left: 14px;
+                    padding-left: 7px;
                 }
             }
 
@@ -858,31 +863,31 @@
                 }
             }
 
-            &.dd {
+            // &.dd {
 
-                .td-in {
-                    padding-left: 0px;
-                }
-            }
+            //     .td-in {
+            //         padding-left: 0px;
+            //     }
+            // }
 
 
-            &.sender {
-                .td-in {
-                    padding-left: 29px;
-                }
-            }
+            // &.sender {
+            //     .td-in {
+            //         padding-left: 29px;
+            //     }
+            // }
 
-            &.reciever {
-                .td-in {
-                    padding-left: 19px;
-                }
-            }
+            // &.reciever {
+            //     .td-in {
+            //         padding-left: 19px;
+            //     }
+            // }
 
-            &.amount {
-                .td-in {
-                    padding-left: 11px;
-                }
-            }
+            // &.amount {
+            //     .td-in {
+            //         padding-left: 11px;
+            //     }
+            // }
 
             &.fee {
                 @include res-768 {
@@ -1006,8 +1011,14 @@
         }
     }
 
+    // DISTRIBUTION TABLE AT BLOCK PAGE
+
     .distribution-table {
         margin-bottom: 55px;
+
+        .view {
+            cursor: default;
+        }
 
         .role {
             width: 22%;
@@ -1017,12 +1028,29 @@
         .delegate {
             width: 22%;
             max-width: 22%;
-            @include text-overflow;
+
+            span {
+                @include text-overflow;
+                max-width: 175px;
+
+                @include res-768 {
+                    max-width: 75px;
+                }
+
+                @include res-500 {
+                    max-width: 55px;
+                }
+
+                @include res-320 {
+                    max-width: 75px;
+                }
+            }
 
             .tooltip {
                 position: absolute;
-                margin: .5px 0 0 7px;
-                height: 9px;
+                margin-left: 5px;
+                margin-top: 1px;
+                height: 16px;
                 width: 9px;
             }
         }
@@ -1032,35 +1060,85 @@
         }
 
         @include res-500 {
-            margin-bottom: 18px;
+            margin-bottom: 28px;
 
-            table tbody td {
-                margin-bottom: 0px;
+            table {
+                td {
 
-                &:nth-child(2) .td-in {
-                    padding: 0;
+                    &:first-child,
+                    &:last-child {
+                        display: table-cell;
+                    }
+
+                    .td-in {
+                        padding: 9px 7px;
+                    }
                 }
 
-                &.role {
-                    width: 20%;
-                }
+                tbody {
+                    .view {
+                        background-color: transparent;
+                    }
 
-                &.origin,
-                &.delegate {
-                    width: 20%;
-                }
+                    tr {
+                        display: table-row;
+                    }
 
-                &.reward {
-                    width: 40%;
+                    td {
+                        margin-bottom: 0px;
+                        display: table-cell;
+
+                        &.role {
+                            width: 20%;
+                        }
+
+                        &.origin,
+                        &.delegate {
+                            width: 20%;
+                        }
+
+                        &.reward {
+                            width: 40%;
+                        }
+                    }
                 }
             }
         }
 
         @include res-320 {
-            margin-bottom: 15px;
+            margin-bottom: 33px;
 
-            table tbody td {
-                margin-bottom: 18px;
+            table {
+                td {
+
+                    &:first-child,
+                    &:last-child {
+                        display: none;
+                    }
+
+                    .td-in {
+                        padding: 0;
+                    }
+                }
+
+                tbody {
+                    .view {
+                        background-color: #e7e6e9;
+
+                        &:hover {
+                            background-color: #ebebee;
+                        }
+                    }
+
+                    tr {
+                        display: flex;
+
+                        td {
+                            display: block;
+                            margin-bottom: 18px;
+                        }
+                    }
+                }
             }
 
             .role {
@@ -1121,7 +1199,7 @@
             }
         }
 
-        @include min-vw(500) {
+        @include res-320 {
             justify-content: flex-start;
         }
 
@@ -1147,7 +1225,7 @@
                 &.amount {
                     width: 138px;
 
-                    @include min-vw(500) {
+                    @include res-320 {
                         width: 120px;
                     }
                 }
@@ -1171,7 +1249,7 @@
                 }
             }
 
-            @include min-vw(500) {
+            @include res-320 {
                 width: 140px;
             }
 
@@ -1180,7 +1258,7 @@
             }
 
             &:nth-child(2) {
-                @include min-vw(500) {
+                @include res-320 {
                     // width: calc(100% - 45px);
                 }
             }
