@@ -7,6 +7,7 @@ import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import ViewListPopover from '../ViewListPopover';
 import Loader from '../Loader';
+import DistributionTable from './DistributionTable';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
 import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
@@ -144,6 +145,7 @@ class BlockInformation extends React.Component {
 						<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
 					</div>
 				</div>
+				<DistributionTable />
 				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
 				<div className="help-table-wrapper">
 					{

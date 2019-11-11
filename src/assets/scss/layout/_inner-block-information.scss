@@ -2,7 +2,7 @@
     padding-top: 15px;
 
     h2 {
-        padding-left: 30px;
+        padding-left: 32px;
         font-size: 16px;
         line-height: 27px;
         margin-bottom: 15px;
@@ -646,6 +646,12 @@
                         }
                     }
 
+                    &:nth-child(2) {
+                        .td-in {
+                            padding: 13px 7px 13px 20px;
+                        }
+                    }
+
                     @include min-vw(768) {
 
 
@@ -731,14 +737,14 @@
                 background-color: #e7e6e9;
 
                 &:hover:not(.active) {
-                    background-color: #e0dfe3;
+                    background-color: #ebebee;
 
                     td:nth-child(2) {
-                        background-color: #e0dfe3;
+                        background-color: #ebebee;
                     }
 
                     td:not(:first-child):not(:nth-child(2)):not(:last-child) {
-                        background-color: #e0dfe3;
+                        background-color: #ebebee;
                     }
                 }
 
@@ -963,18 +969,13 @@
 
                 &.amount,
                 &.reciever,
-                &.json {
-                    max-width: 45%;
-                    width: 45%;
-                    min-width: 45%;
-                }
-
+                &.json,
                 &.type,
                 &.sender,
                 &.rezult {
-                    max-width: 55%;
-                    width: 55%;
-                    min-width: 55%;
+                    max-width: 50%;
+                    width: 50%;
+                    min-width: 50%;
                 }
 
                 &.type {
@@ -1001,6 +1002,86 @@
                 &.json {
                     order: 6;
                 }
+            }
+        }
+    }
+
+    .distribution-table {
+        margin-bottom: 55px;
+
+        .role {
+            width: 22%;
+        }
+
+        .origin,
+        .delegate {
+            width: 22%;
+            max-width: 22%;
+            @include text-overflow;
+
+            .tooltip {
+                position: absolute;
+                margin: .5px 0 0 7px;
+                height: 9px;
+                width: 9px;
+            }
+        }
+
+        .reward {
+            width: 34%;
+        }
+
+        @include res-500 {
+            margin-bottom: 18px;
+
+            table tbody td {
+                margin-bottom: 0px;
+
+                &:nth-child(2) .td-in {
+                    padding: 0;
+                }
+
+                &.role {
+                    width: 20%;
+                }
+
+                &.origin,
+                &.delegate {
+                    width: 20%;
+                }
+
+                &.reward {
+                    width: 40%;
+                }
+            }
+        }
+
+        @include res-320 {
+            margin-bottom: 15px;
+
+            table tbody td {
+                margin-bottom: 18px;
+            }
+
+            .role {
+                order: 1;
+            }
+
+            .reward {
+                order: 2;
+
+                .td-in {
+                    display: inline-block;
+                    line-height: 20px;
+                }
+            }
+
+            .origin {
+                order: 3;
+            }
+
+            .delegate {
+                order: 4;
             }
         }
     }
