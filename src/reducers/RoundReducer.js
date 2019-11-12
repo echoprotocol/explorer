@@ -13,6 +13,7 @@ const DEFAULT_FIELDS = Map({
 
 	latestBlock: 0,
 	blockTime: 0,
+	blockReward: 0,
 	averageTransactions: Map({
 		transactions: new Map({
 			value: 0,

@@ -17,7 +17,7 @@ import URLHelper from '../../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
 import BlockReducer from '../../../reducers/BlockReducer';
-import { NO_TRANSACTIONS, TITLE_TEMPLATES } from '../../../constants/GlobalConstants';
+import { NO_TRANSACTIONS, TITLE_TEMPLATES, ECHO_ASSET } from '../../../constants/GlobalConstants';
 
 import GlobalActions from '../../../actions/GlobalActions';
 import {
@@ -209,7 +209,7 @@ class RecentBlockTable extends React.Component {
 																	</button>
 																</div>
 															</div>
-															<div className="divTableCell">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
+															<div className="divTableCell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
 															<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
 															<div className="divTableCell">{data.transactions}</div>
 														</Link>
