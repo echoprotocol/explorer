@@ -111,7 +111,7 @@ class ManageContract extends React.Component {
 							Before updating contract info you need to verify your authority via {' '}
 							</span>
 							<span className="no-wrap">
-								<a href="" className="link">Bridge</a>{' '}
+								<a href="https://chrome.google.com/webstore/detail/echo-bridge/ginklfodpcgldnicehmlpehfmgjhbdcl" className="link" target="_blank">Bridge</a>{' '}
 								<span className="bridge-logo">
 									<img src={bridge} alt="" />
 								</span>
