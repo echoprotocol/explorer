@@ -2,9 +2,9 @@ import React from 'react';
 import Media from 'react-media';
 import PropTypes from 'prop-types';
 
-
 import Logotype from '../Logotype';
 import HeaderSearch from '../../components/SearchFields';
+import NavTabs from './NavTabs';
 import { INDEX_PATH } from '../../constants/RouterConstants';
 
 class Header extends React.Component {
@@ -17,6 +17,7 @@ class Header extends React.Component {
 		return (
 			<header>
 				<Logotype onClick={() => this.props.history.push(INDEX_PATH)} />
+				<NavTabs />
 				<Media query="(max-width: 767px)">
 					{(matches) =>
 						(matches ? (

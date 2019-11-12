@@ -14,7 +14,6 @@ import {
 	PAGE_ADD_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
-	ECHO_ASSET,
 	NETWORK_CONNECTED_ERROR,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
@@ -48,6 +47,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		}
 
 		const handledBlock = getState().block.getIn(['blocks', round]);
+		const blockReward = new BN(getState().round.get('blockReward'));
 
 		const value = {};
 
@@ -57,7 +57,14 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			value.reward = `0 ${ECHO_ASSET.SYMBOL}`;
+			const fee = planeBlock.transactions.reduce((trxAcc, trx) => {
+				if (trx.fees_collected) {
+					return trxAcc.plus(trx.fees_collected);
+				}
+				return trxAcc;
+			}, new BN(0));
+			const reward = blockReward.plus(fee);
+			value.reward = reward.toString(10);
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
 			value.blockNumber = FormatHelper.formatAmount(planeBlock.round, 0);
@@ -226,6 +233,7 @@ export const updateAverageTransactions = (lastBlock, startBlock) => async (dispa
 export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
+	const blockReward = new BN(getState().round.get('blockReward'));
 	const isShowEmptyBlocks = getState().block.get('isShowEmptyBlocks');
 
 	const [...keys] = blocks.keys();
@@ -247,10 +255,20 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	}
 
 	blocksResult = await Promise.all(blocksResult);
-
+	const blocksRewards = {};
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
 		if (block) {
+			const { round, transactions } = block;
+
+			const fee = transactions.reduce((trxAcc, trx) => {
+				if (trx.fees_collected) {
+					return trxAcc.plus(trx.fees_collected);
+				}
+				return trxAcc;
+			}, new BN(0));
 			accounts[index] = block.account;
+
+			blocksRewards[round] = blockReward.plus(fee);
 		}
 
 		return accounts;
@@ -261,7 +279,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	blocks = getState().block.get('blocks');
 
 	const maxBlocks = getState().block.get('blocksCount');
-
 	blocks = blocks.withMutations((mapBlocks) => {
 		for (let i = 0; i < blocksResult.length; i += 1) {
 			if (!blocksResult[i]) {
@@ -274,7 +291,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
-				.setIn([blockNumber, 'reward'], 0)
+				.setIn([blockNumber, 'reward'], blocksRewards[blockNumber] ? blocksRewards[blockNumber].toString(10) : 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
 				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
 				.setIn([blockNumber, 'weightSize'], 'bytes')
