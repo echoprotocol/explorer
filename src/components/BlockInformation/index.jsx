@@ -10,7 +10,7 @@ import Loader from '../Loader';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
 import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
-import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -137,7 +137,7 @@ class BlockInformation extends React.Component {
 					</div>
 					<div className="container reward">
 						<div className="title">Reward</div>
-						<div className="value">{reward}</div>
+						<div className="value">{`${FormatHelper.formatAmount(reward, ECHO_ASSET.PRECISION)} ${ECHO_ASSET.SYMBOL}`}</div>
 					</div>
 					<div className="container verifiers">
 						<div className="title">Verifiers</div>
