@@ -201,8 +201,6 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		const from = isReverse ? account : contract;
 		const to = isReverse ? contract : account;
-		console.log(from)
-		console.log(to)
 		return {
 			from, subject: to, value, label,
 		};
@@ -225,7 +223,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		accountId = undefined,
 		round = undefined,
 		trIndex = undefined,
-		opIndex = undefined,
+		// opIndex = undefined,
 		operationResult = [],
 		id = undefined,
 		timestamp = undefined,
