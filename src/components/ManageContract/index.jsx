@@ -210,7 +210,7 @@ ManageContract.propTypes = {
 	name: PropTypes.object.isRequired,
 	description: PropTypes.object.isRequired,
 	icon: PropTypes.object.isRequired,
-	contractIcon: PropTypes.string.isRequired,
+	contractIcon: PropTypes.string,
 	isErrorForm: PropTypes.bool,
 	isChangedForm: PropTypes.bool,
 	historyLength: PropTypes.number.isRequired,
@@ -221,6 +221,7 @@ ManageContract.defaultProps = {
 	isChangedForm: false,
 	isErrorForm: false,
 	activeAccount: null,
+	contractIcon: null,
 };
 
 export default ManageContract;
