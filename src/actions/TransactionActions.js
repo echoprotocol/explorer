@@ -151,7 +151,24 @@ class TransactionActionsClass extends BaseActionsClass {
 	 * @param {String} symbol
 	 * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
 	 */
-	async parseTransferEvent({ log, data }, symbol = '', precision = 0) {
+	async parseWithdrawalEvent({ log, data }, symbol = '', precision = 0, label) {
+		const [, hexTo] = log;
+		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
+		const toInt = parseInt(hexTo.slice(26), 16);
+
+		let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
+
+		if (hexTo[25] === '0') {
+			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
+			const { name } = (await echo.api.getObject(id));
+			to = { id, name };
+		}
+
+		return {
+			from, subject: to, value, label,
+		};
+	}
+	async parseTransferEvent({ log, data }, symbol = '', precision = 0, label) {
 		const [, hexFrom, hexTo] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 		const fromInt = parseInt(hexFrom.slice(26), 16);
@@ -173,7 +190,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		}
 
 		return {
-			from, subject: to, value, label: 'ERC 20 Token transfer',
+			from, subject: to, value, label,
 		};
 	}
 
@@ -320,21 +337,21 @@ class TransactionActionsClass extends BaseActionsClass {
 
 
 			if (type === OPERATIONS_IDS.CONTRACT_CALL && round) {
-				let contractHistory = [];
+				// let contractHistory = [];
 
-				try {
-					contractHistory = await echo.api.getContractHistory(result.subject.id);
-				} catch (e) {
-					//
-				}
+				// try {
+				// 	contractHistory = await echo.api.getContractHistory(result.subject.id);
+				// } catch (e) {
+				// 	//
+				// }
 
-				let internalOperations = contractHistory
-					.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
-					.map(({ op }) => this.formatOperation(op, accountId));
+				// let internalOperations = contractHistory
+				// 	.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
+				// 	.map(({ op }) => this.formatOperation(op, accountId));
 
-				internalOperations = await Promise.all(internalOperations);
-				internalOperations = internalOperations.filter((op) => op);
-				let internalTransactions = internalOperations;
+				// internalOperations = await Promise.all(internalOperations);
+				// internalOperations = internalOperations.filter((op) => op);
+				let internalTransactions = [];
 				let code = '';
 				try {
 					([, { code }] = await echo.api.getContract(result.subject.id));
@@ -348,13 +365,22 @@ class TransactionActionsClass extends BaseActionsClass {
 					const symbol = FormatHelper
 						.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['symbol()'])).slice(128));
 					const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['decimals()']), 16);
-
+console.log(symbol, precision);
 					let internalTransfers = log
-						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id)
-						// eslint-disable-next-line no-shadow
-						.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision));
-
+						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id);
+					console.log(internalTransfers);
+					const internalTransfersTransfer = internalTransfers
+						.filter(({ logs }) => logs[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
+						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token transfer'));
+					const internalTransfersApproval = internalTransfers
+						.filter(({ logs }) => logs[0].indexOf(ERC20_HASHES['Approval(address,address,uint256)']) === 0)
+						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token approval'));
+					// const internalTransfersWithdrawal = internalTransfers
+					// 	.filter(({ logs }) => logs[0].indexOf(ERC20_HASHES['Withdrawal(address,uint256)']) === 0)
+					// 	.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token withdrawal'));
+					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval];
+					
+					console.log(internalTransfers);
 					internalTransfers = await Promise.all(internalTransfers);
 					internalTransactions = [...internalTransactions, ...internalTransfers];
 				}
