@@ -223,6 +223,7 @@ class ObjectInfo extends React.Component {
 	renderContractObject() {
 		const { isExpanded } = this.state;
 		const { details, object } = this.props;
+
 		const contractId = details['contract id'] ? details['contract id'].value : details['new contract id'].value;
 
 		return (
@@ -237,7 +238,7 @@ class ObjectInfo extends React.Component {
 					</div>
 					<div className="od-row">
 						<div className="od-col">Contract type:</div>
-						<div className="od-col">{object.get('type') || '—'}</div>
+						<div className="od-col">{object.get('type') || object.get('erc20') === 'Yes' ? 'ERC20' : '—'}</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">Supported asset:</div>
