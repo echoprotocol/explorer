@@ -225,8 +225,7 @@ class ObjectInfo extends React.Component {
 		const { details, object } = this.props;
 
 		const contractId = details['contract id'] ? details['contract id'].value : details['new contract id'].value;
-		console.log(object.get('ethAccuracy'));
-		
+
 		return (
 			<React.Fragment>
 				<div className="fold-title">Object: contract</div>
