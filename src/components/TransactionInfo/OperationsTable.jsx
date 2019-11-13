@@ -99,6 +99,7 @@ class OperationsTable extends React.Component {
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
+		console.log(operations)
 		return (
 			<div className={classnames('accordion-table-wrap', { 'table-contract': !isTransaction }, { 'table-block': isBlock })} >
 				<table>

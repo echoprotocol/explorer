@@ -61,11 +61,14 @@ class ContractActions extends BaseActionsClass {
 				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
 				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
 			}
-
+			console.log(operation, t.block_num, block.timestamp, t.trx_in_block, t.op_in_trx, result)
+			await TransactionActions.getOperation(operation, t.block_num, block.timestamp, t.trx_in_block, t.op_in_trx, result);
 			return TransactionActions.getOperation(operation, t.block_num, block.timestamp, t.trx_in_block, t.op_in_trx, result);
 		});
 
+		console.log(history)
 		history = await Promise.all(history);
+		console.log(6)
 		return history;
 	}
 
@@ -123,6 +126,7 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({ history: new List(history), isFullHistory }));
 			} catch (e) {
+				console.log(e.message)
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));

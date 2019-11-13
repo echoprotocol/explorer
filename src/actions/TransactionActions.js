@@ -48,9 +48,14 @@ class TransactionActionsClass extends BaseActionsClass {
 			let { supported_asset_id: supportedAsset } = contractInfo;
 
 			if (supportedAsset !== null) {
+				console.log(22)
+
 				supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
 			}
+			console.log(21)
+
 			const chainContract = await echo.api.getContract(id);
+			console.log(25)
 			return new Map({})
 				.set('type', chainContract.type && chainContract.type.toUpperCase())
 				.set('supportedAsset', supportedAsset)
@@ -58,6 +63,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No')
 				.set('bytecode', chainContract[1].code);
 		} catch (e) {
+			console.log(23)
+
 			return null;
 		}
 	}
@@ -382,11 +389,13 @@ class TransactionActionsClass extends BaseActionsClass {
 		delete options.gasPrice;
 		delete options.eth_accuracy;
 
+		console.log(10)
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
 
 		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
+		console.log(11)
 
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
@@ -442,6 +451,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		});
 
 		options = await Promise.all(options);
+		console.log(12)
 
 		options = options.reduce((obj, op) => ({ ...obj, ...op }), {});
 
@@ -478,12 +488,17 @@ class TransactionActionsClass extends BaseActionsClass {
 
 			}
 		}
+		console.log(13)
 
 		if (options['new contract id']) {
+			console.log(17)
 			objectInfo = await this.setContractObject(options['new contract id'].value, opIndex);
 		} else if (options['contract id']) {
+			console.log(18)
+
 			objectInfo = await this.setContractObject(options['contract id'].value);
 		}
+		console.log(14)
 
 		let result = null;
 		switch (type) {
@@ -497,6 +512,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				[, result] = operationResult;
 				break;
 		}
+		console.log(154)
 
 		return {
 			mainInfo: {

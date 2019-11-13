@@ -179,6 +179,7 @@ class Contract extends React.Component {
 			activeAccount, error,
 		} = this.props;
 
+		console.log(contractHistory);
 		const tabList = [
 			{
 				tab: !loading ?

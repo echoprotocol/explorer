@@ -5,6 +5,7 @@ import Media from 'react-media';
 import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
 import classnames from 'classnames';
+import BN from 'bignumber.js';
 
 import directionIcon from '../../assets/images/icons/direction-icon.svg';
 
@@ -37,30 +38,35 @@ class OperationInfo extends React.Component {
 	}
 
 	renderInternal(operations) {
+		console.log('%', operations);
 		return (
 			<div className="token-transfer-table">
 				{
-					operations.map((op, index) => (
-						<div className="tt-row" key={index.toString()}>
-							<div className="tt-col amount">
-								<span className="value">{FormatHelper.formatAmount(op.value.amount, op.value.precision)}</span>
-								<span className="currency">{op.value.symbol}</span>
-							</div>
-							<div className="tt-col">
-								<div className="transfer-direction">
-									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
-										<Avatar accountName={op.from.name} />
-										<span>{op.from.name}</span>
-									</Link>
-									<img src={directionIcon} alt="" className="direction" />
-									<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
-										{ op.subject.name ? <Avatar accountName={op.subject.name} /> : null }
-										<span>{op.subject.name || op.subject.id}</span>
-									</Link>
+					operations.map((op, index) => {
+						const amount = new BN(op.value.amount).div(10 ** op.value.precision).toString(10);
+						return (
+							// op.label === 'ERC 20 Token transfer' &&
+							<div className="tt-row" key={index.toString()}>
+								<div className="tt-col amount">
+									<span className="value">{amount}</span>
+									<span className="currency">{op.value.symbol}</span>
+								</div>
+								<div className="tt-col">
+									<div className="transfer-direction">
+										<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
+											<Avatar accountName={op.from.name} />
+											<span>{op.from.name}</span>
+										</Link>
+										<img src={directionIcon} alt="" className="direction" />
+										<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
+											{op.subject.name ? <Avatar accountName={op.subject.name} /> : null}
+											<span>{op.subject.name || op.subject.id}</span>
+										</Link>
+									</div>
 								</div>
 							</div>
-						</div>
-					))
+						);
+					})
 				}
 			</div>
 		);
@@ -138,7 +144,7 @@ class OperationInfo extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="mono">{ bytecode }</div>
+				<div className="mono">{bytecode}</div>
 				{
 					(value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index]) &&
 					<button className="text-button" onClick={(e) => this.onToggleLoadMore(index, e)}>Expand</button>
@@ -165,12 +171,12 @@ class OperationInfo extends React.Component {
 								{
 									(matches) =>
 										(matches &&
-										<div className="od-row" key={`${opKey}_${key}`}>
-											<div className="od-col">{key}:</div>
-											<div className="od-col">
-												{this.renderOperationRowValue(key, value, index)}
-											</div>
-										</div>)
+											<div className="od-row" key={`${opKey}_${key}`}>
+												<div className="od-col">{key}:</div>
+												<div className="od-col">
+													{this.renderOperationRowValue(key, value, index)}
+												</div>
+											</div>)
 								}
 							</Media> :
 							<div className="od-row" key={`${opKey}_${key}`} >
