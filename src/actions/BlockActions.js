@@ -234,7 +234,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
 	const blockReward = new BN(getState().round.get('blockReward'));
-	const isShowEmptyBlocks = getState().block.get('isShowEmptyBlocks');
 
 	const [...keys] = blocks.keys();
 	let startedBlock = startBlock || Math.max(...keys);
@@ -300,19 +299,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		}
 	});
 
-	let noEmptyBlocks = getState().block.get('noEmptyBlocks');
-	noEmptyBlocks = noEmptyBlocks.merge(blocks.filter((block) => block.get('transactions')));
-
-	if (!isShowEmptyBlocks && noEmptyBlocks.size < PAGE_BLOCKS_COUNT) {
-		dispatch(BlockReducer.actions.set({ field: 'hasMore', value: false }));
-	}
-
-	if (noEmptyBlocks.size >= PAGE_BLOCKS_COUNT) {
-		dispatch(BlockReducer.actions.set({ field: 'hasMore', value: true }));
-	}
-
-	dispatch(BlockReducer.actions.set({ field: 'noEmptyBlocks', value: noEmptyBlocks }));
-
 	const lastBlockStorage = blocksResult[blocksResult.length - 1];
 
 	if (lastBlockStorage) {
@@ -326,14 +312,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		blocksKeys = blocksKeys.sort((a, b) => a - b);
 		blocksKeys = blocksKeys.slice(0, blocksToRemove);
 		blocks = blocks.deleteAll(blocksKeys);
-
-		if (noEmptyBlocks.size > maxBlocks) {
-			blocksKeys = noEmptyBlocks.keySeq();
-			blocksKeys = blocksKeys.sort((a, b) => a - b);
-			blocksKeys = blocksKeys.slice(0, Math.sign(blocksToRemove));
-			noEmptyBlocks = noEmptyBlocks.deleteAll(blocksKeys);
-			dispatch(BlockReducer.actions.set({ field: 'noEmptyBlocks', value: noEmptyBlocks }));
-		}
 	}
 
 	dispatch(BlockReducer.actions.set({ field: 'blocks', value: blocks }));
@@ -345,8 +323,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
  * 	Initialize recent blocks and starting timestamp of latest block
  */
 export const initBlocks = () => async (dispatch) => {
-	const value = LocalStorageService.getData('isShowEmptyBlocks');
-	dispatch(BlockReducer.actions.set({ field: 'isShowEmptyBlocks', value: value === null ? true : value }));
 
 	const obj = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
 
@@ -442,16 +418,4 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		return false;
 	}
 
-};
-
-/**
- *
- * @param value
- * @returns {Function}
- */
-export const toggleEmptyBlocks = (value) => (dispatch) => {
-	LocalStorageService.setData('isShowEmptyBlocks', !value);
-
-	dispatch(BlockReducer.actions.set({ field: 'hasMore', value: true }));
-	dispatch(BlockReducer.actions.set({ field: 'isShowEmptyBlocks', value: !value }));
 };

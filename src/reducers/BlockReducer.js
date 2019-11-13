@@ -8,12 +8,10 @@ const DEFAULT_FIELDS = Map({
 	error: '',
 	blockInformation: new Map({}),
 	blocks: new OrderedMap({}),
-	noEmptyBlocks: new OrderedMap({}),
 	blocksCount: PAGE_BLOCKS_COUNT,
 	loading: false,
 	startTimestamp: 0,
 	hasMore: true,
-	isShowEmptyBlocks: false,
 });
 
 export default createModule({
