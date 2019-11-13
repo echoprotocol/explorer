@@ -50,7 +50,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			if (supportedAsset !== null) {
 				supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
 			}
-
 			const chainContract = await echo.api.getContract(id);
 			return new Map({})
 				.set('type', chainContract.type && chainContract.type.toUpperCase())
