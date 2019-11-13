@@ -57,6 +57,7 @@ export const ERC20_HASHES = {
 	'Transfer(address,address,uint256)': 'ddf252ad',
 	'Approval(address,address,uint256)': '8c5be1e5',
 	'Withdrawal(address, uint256)': '7fcf532c',
+	'Deposit(address, uint256)': 'e1fffcc4',
 };
 
 export const BYTECODE_SYMBOLS_LENGTH = 616;

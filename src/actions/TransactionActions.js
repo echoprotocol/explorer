@@ -151,23 +151,6 @@ class TransactionActionsClass extends BaseActionsClass {
 	 * @param {String} symbol
 	 * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
 	 */
-	async parseWithdrawalEvent({ log, data }, symbol = '', precision = 0, label) {
-		const [, hexTo] = log;
-		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
-		const toInt = parseInt(hexTo.slice(26), 16);
-
-		let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
-
-		if (hexTo[25] === '0') {
-			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
-			const { name } = (await echo.api.getObject(id));
-			to = { id, name };
-		}
-
-		return {
-			from, subject: to, value, label,
-		};
-	}
 	async parseTransferEvent({ log, data }, symbol = '', precision = 0, label) {
 		const [, hexFrom, hexTo] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
@@ -189,6 +172,37 @@ class TransactionActionsClass extends BaseActionsClass {
 			to = { id, name };
 		}
 
+		return {
+			from, subject: to, value, label,
+		};
+	}
+	/**
+	 *
+	 * @param {Object} log
+	 * @param {Object} data
+	 * @param {String} symbol
+	 * @param {String} contractId
+	 * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
+	 */
+	async parseWithdrawalEvent({ log, data }, symbol = '', precision = 0, label, contractId, isReverse) {
+		const [, hex] = log;
+		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
+
+		const toInt = parseInt(hex.slice(26), 16);
+		let account = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
+
+		const contract = {};
+		contract.id = contractId;
+		if (hex[25] === '0') {
+			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
+			const { name } = (await echo.api.getObject(id));
+			account = { id, name };
+		}
+
+		const from = isReverse ? account : contract;
+		const to = isReverse ? contract : account;
+		console.log(from)
+		console.log(to)
 		return {
 			from, subject: to, value, label,
 		};
@@ -365,22 +379,23 @@ class TransactionActionsClass extends BaseActionsClass {
 					const symbol = FormatHelper
 						.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['symbol()'])).slice(128));
 					const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['decimals()']), 16);
-console.log(symbol, precision);
+
 					let internalTransfers = log
 						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id);
-					console.log(internalTransfers);
 					const internalTransfersTransfer = internalTransfers
-						.filter(({ logs }) => logs[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
 						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token transfer'));
 					const internalTransfersApproval = internalTransfers
-						.filter(({ logs }) => logs[0].indexOf(ERC20_HASHES['Approval(address,address,uint256)']) === 0)
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Approval(address,address,uint256)']) === 0)
 						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token approval'));
-					// const internalTransfersWithdrawal = internalTransfers
-					// 	.filter(({ logs }) => logs[0].indexOf(ERC20_HASHES['Withdrawal(address,uint256)']) === 0)
-					// 	.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token withdrawal'));
-					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval];
-					
-					console.log(internalTransfers);
+					const internalTransfersWithdrawal = internalTransfers
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Withdrawal(address, uint256)']) === 0)
+						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token withdrawal', result.subject.id, false));
+					const internalTransfersDeposit = internalTransfers
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Deposit(address, uint256)']) === 0)
+						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token deposit', result.subject.id, true));
+					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval, ...internalTransfersWithdrawal, ...internalTransfersDeposit];
+
 					internalTransfers = await Promise.all(internalTransfers);
 					internalTransactions = [...internalTransactions, ...internalTransfers];
 				}

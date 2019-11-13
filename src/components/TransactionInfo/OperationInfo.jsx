@@ -54,8 +54,8 @@ class OperationInfo extends React.Component {
 								<div className="tt-col">
 									<div className="transfer-direction">
 										<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
-											<Avatar accountName={op.from.name} />
-											<span>{op.from.name}</span>
+											{op.from.name ? <Avatar accountName={op.from.name} /> : null}
+											<span>{op.from.name || op.from.id}</span>
 										</Link>
 										<img src={directionIcon} alt="" className="direction" />
 										<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
