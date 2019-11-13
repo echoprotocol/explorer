@@ -225,7 +225,8 @@ class ObjectInfo extends React.Component {
 		const { details, object } = this.props;
 
 		const contractId = details['contract id'] ? details['contract id'].value : details['new contract id'].value;
-
+		console.log(object.get('ethAccuracy'));
+		
 		return (
 			<React.Fragment>
 				<div className="fold-title">Object: contract</div>
@@ -246,7 +247,7 @@ class ObjectInfo extends React.Component {
 					</div>
 					<div className="od-row">
 						<div className="od-col">Eth Accuracy:</div>
-						<div className="od-col">{object.get('ethAccuracy')}</div>
+						<div className="od-col">{object.get('ethAccuracy') === 'Yes' ? 'Activated' : 'Inactivated'}</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">ERC20:</div>
