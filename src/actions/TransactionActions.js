@@ -503,7 +503,11 @@ class TransactionActionsClass extends BaseActionsClass {
 		let result = null;
 		switch (type) {
 			case OPERATIONS_IDS.CONTRACT_CREATE:
-				result = options['new contract id'].value;
+				if (options['new contract id']) {
+					result = options['new contract id'].value;
+				} else {
+					[, result] = operationResult;
+				}
 				break;
 			case OPERATIONS_IDS.ACCOUNT_CREATE:
 				result = options.Name;
