@@ -327,6 +327,8 @@
             .divTableRow {
                 .divTableCell {
                     width: auto;
+                    white-space: nowrap;
+
 
                     .inner-container {
                         white-space: nowrap;
