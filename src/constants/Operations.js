@@ -41,6 +41,15 @@ const Operations = {
 			asset: null,
 		},
 	},
+	contract_transfer: {
+		value: OPERATIONS_IDS.CONTRACT_TRANSFER,
+		name: 'Contract transfer',
+		options: {
+			from: 'from',
+			to: 'to',
+			value: 'amount.amount',
+		},
+	},
 	account_update: {
 		value: OPERATIONS_IDS.ACCOUNT_UPDATE,
 		name: 'Update account',
