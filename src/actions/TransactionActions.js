@@ -524,6 +524,8 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		if (options['new contract id']) {
 			objectInfo = await this.setContractObject(options['new contract id'].value, opIndex);
+		} else if (options.caller) {
+			objectInfo = await this.setContractObject(options.caller);
 		} else if (options['contract id']) {
 			objectInfo = await this.setContractObject(options['contract id'].value);
 		}
