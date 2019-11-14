@@ -10,7 +10,6 @@ import classnames from 'classnames';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
-import FilterBlock from '../../../components/FilterCheckbox';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 import URLHelper from '../../../helpers/URLHelper';
@@ -23,7 +22,6 @@ import GlobalActions from '../../../actions/GlobalActions';
 import {
 	resetDisplayedBlocks,
 	setMaxDisplayedBlocks,
-	toggleEmptyBlocks,
 } from '../../../actions/BlockActions';
 import SearchActions from '../../../actions/SearchActions';
 
@@ -84,7 +82,7 @@ class RecentBlockTable extends React.Component {
 
 	render() {
 		const {
-			hasMore, isShowEmptyBlocks, loading, loadingSearch, errorSearch,
+			hasMore, loading, loadingSearch, errorSearch,
 		} = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
@@ -104,11 +102,6 @@ class RecentBlockTable extends React.Component {
 							placeholder="Go to block"
 						/>
 					</h2>
-					<FilterBlock
-						checked={!isShowEmptyBlocks}
-						title="Hide empty blocks"
-						onChange={() => this.props.toggleEmptyBlocks(isShowEmptyBlocks)}
-					/>
 					<div className="table">
 						<Media query="(max-width: 767px)">
 							{(matches) =>
@@ -237,14 +230,12 @@ RecentBlockTable.propTypes = {
 	hints: PropTypes.array.isRequired,
 	errorSearch: PropTypes.string.isRequired,
 	loading: PropTypes.bool.isRequired,
-	isShowEmptyBlocks: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	loadingSearch: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
-	toggleEmptyBlocks: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
 	getHints: PropTypes.func.isRequired,
 };
@@ -256,8 +247,7 @@ export default withRouter(connect(
 		hints: state.search.getIn(['blockSearch', 'hints']),
 		errorSearch: state.search.getIn(['blockSearch', 'error']),
 		loadingSearch: state.search.getIn(['blockSearch', 'loading']),
-		isShowEmptyBlocks: state.block.get('isShowEmptyBlocks'),
-		blocks: state.block.get('isShowEmptyBlocks') ? state.block.get('blocks') : state.block.get('noEmptyBlocks'),
+		blocks: state.block.get('blocks'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(SearchActions.blockSearchHint(str)),
@@ -265,6 +255,5 @@ export default withRouter(connect(
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		loadBlocks: () => dispatch(setMaxDisplayedBlocks()),
 		resetDisplayedBlocks: () => dispatch(resetDisplayedBlocks()),
-		toggleEmptyBlocks: (value) => dispatch(toggleEmptyBlocks(value)),
 	}),
 )(RecentBlockTable));

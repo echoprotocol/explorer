@@ -323,15 +323,19 @@ class ContractActions extends BaseActionsClass {
 				formData.append('signature', signature);
 				formData.append('message', message);
 				formData.append('name', name);
-				formData.append('icon', icon);
-				formData.append('description', description);
+				if (icon) {
+					formData.append('icon', icon);
+				}
+				if (description) {
+					formData.append('description', description);
+				}
 				formData.append('accountId', activeAccountId);
 				const result = await ApiService.changeContract(contractId, formData);
 
 				dispatch(this.setMultipleValue({
 					name: result.name,
-					description: result.description,
-					icon: result.icon,
+					description: result.description || '',
+					icon: result.icon || '',
 				}));
 
 				dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
@@ -388,8 +392,7 @@ class ContractActions extends BaseActionsClass {
 			const icon = getState().form.getIn([FORM_MANAGE_CONTRACT, 'icon']);
 
 			const isValidForm = !name.error && !!name.value &&
-				!icon.error && !!icon.value &&
-				!description.error && !!description.value;
+				!icon.error && !description.error;
 
 			dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isErrorForm', !isValidForm));
 		};
@@ -589,7 +592,7 @@ class ContractActions extends BaseActionsClass {
 
 				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 				const stars = getState().contract.get('stars');
-				const isLike =!stars.includes(activeAccountId);
+				const isLike = !stars.includes(activeAccountId);
 				const message = ContractHelper.getMessageToLikeContract(isLike, contractId);
 
 				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
