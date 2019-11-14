@@ -19,15 +19,25 @@ main.inner {
 }
 
 
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	margin: 0;
 }
 
-input:focus,select:focus, button{
+input:focus,
+select:focus,
+button {
 	outline: none;
 }
 
-input[type='text'], input[type='phone'],input[type='email'], textarea {
+input[type='text'],
+input[type='phone'],
+input[type='email'],
+textarea {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
@@ -53,12 +63,12 @@ a {
 }
 
 .pointer {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .hover {
-    opacity: 1;
-    transition: opacity .3s;
+	opacity: 1;
+	transition: opacity .3s;
 }
 
 .warn {
@@ -74,10 +84,11 @@ a {
 
 
 	@include res-320 {
+
 		select,
 		textarea,
 		input {
-			font-size: 16px !important;
+			font-size: 13px !important;
 		}
 	}
 }
@@ -92,19 +103,19 @@ a {
 	background-repeat: no-repeat;
 	animation: spin 1s infinite;
 
-	@keyframes spin{
-			0%{
-				-webkit-transform: rotate(0deg);
-				-ms-transform: rotate(0deg);
-				-o-transform: rotate(0deg);
-				transform: rotate(0deg);
-			}
+	@keyframes spin {
+		0% {
+			-webkit-transform: rotate(0deg);
+			-ms-transform: rotate(0deg);
+			-o-transform: rotate(0deg);
+			transform: rotate(0deg);
+		}
 
-			100%{
-				-webkit-transform: rotate(360deg);
-				-ms-transform: rotate(360deg);
-				-o-transform: rotate(360deg);
-				transform: rotate(360deg);
-			}
+		100% {
+			-webkit-transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			-o-transform: rotate(360deg);
+			transform: rotate(360deg);
+		}
 	}
 }
