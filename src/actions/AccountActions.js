@@ -1,6 +1,7 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import { List, fromJS } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
+import BN from 'bignumber.js';
 
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT, TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
@@ -99,7 +100,9 @@ class AccountActions extends BaseActionsClass {
 				}));
 
 				const balances = await getBalances([account.id]);
-				const tokens = balances.data.getBalances.filter((balanceItem) => balanceItem.type === TOKEN_TYPE);
+
+				const tokens = balances.data.getBalances.filter((balanceItem) =>
+					balanceItem.type === TOKEN_TYPE && !(new BN(balanceItem.amount)).isEqualTo(0));
 
 				dispatch(this.setMultipleValue({ tokens }));
 			} catch (e) {
