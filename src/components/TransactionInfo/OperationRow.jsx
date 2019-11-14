@@ -44,6 +44,7 @@ class OperationRow extends React.Component {
 				objectInfo,
 				blockNumber: block,
 				trIndex: transactionNum,
+				opIndex,
 				number,
 				blockTimestamp,
 				...detailInfo
@@ -153,7 +154,12 @@ class OperationRow extends React.Component {
 								<div className="td-in">
 									<span
 										className="value"
-									>{FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)}
+									>
+										{
+											FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
+												FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
+												FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)
+										}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : <div className="td-in">—</div>
@@ -200,7 +206,7 @@ class OperationRow extends React.Component {
 												matches.small &&
 												<React.Fragment>
 													<div className="col-title">Json</div>
-													{this.renderTransactionLink(block, transactionNum, index)}
+													{this.renderTransactionLink(block, transactionNum, opIndex)}
 												</React.Fragment>
 											} {
 												matches.large &&
@@ -211,7 +217,7 @@ class OperationRow extends React.Component {
 													overlayStyle={tooltipStyle}
 													overlayClassName="verify-contract-tooltip"
 												>
-													{this.renderTransactionLink(block, transactionNum, index)}
+													{this.renderTransactionLink(block, transactionNum, opIndex)}
 												</Tooltip>
 											}
 										</React.Fragment>
