@@ -154,7 +154,12 @@ class OperationRow extends React.Component {
 								<div className="td-in">
 									<span
 										className="value"
-									>{FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)}
+									>
+										{
+											FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
+												FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
+												FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)
+										}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : <div className="td-in">—</div>

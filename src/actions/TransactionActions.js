@@ -151,7 +151,7 @@ class TransactionActionsClass extends BaseActionsClass {
 	 * @param {String} symbol
 	 * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
 	 */
-	async parseTransferEvent({ log, data }, symbol = '', precision = 0) {
+	async parseTransferEvent({ log, data }, symbol = '', precision = 0, label) {
 		const [, hexFrom, hexTo] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 		const fromInt = parseInt(hexFrom.slice(26), 16);
@@ -173,10 +173,38 @@ class TransactionActionsClass extends BaseActionsClass {
 		}
 
 		return {
-			from, subject: to, value, label: 'ERC 20 Token transfer',
+			from, subject: to, value, label,
 		};
 	}
+	/**
+	 *
+	 * @param {Object} log
+	 * @param {Object} data
+	 * @param {String} symbol
+	 * @param {String} contractId
+	 * @returns {Promise.<{from: {id: string}, subject: {id: string}, value: {amount: string, symbol: string}, label: string}>}
+	 */
+	async parseWithdrawalEvent({ log, data }, symbol = '', precision = 0, label, contractId, isReverse) {
+		const [, hex] = log;
+		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 
+		const toInt = parseInt(hex.slice(26), 16);
+		let account = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
+
+		const contract = {};
+		contract.id = contractId;
+		if (hex[25] === '0') {
+			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
+			const { name } = (await echo.api.getObject(id));
+			account = { id, name };
+		}
+
+		const from = isReverse ? account : contract;
+		const to = isReverse ? contract : account;
+		return {
+			from, subject: to, value, label,
+		};
+	}
 
 	/**
 	 *
@@ -194,6 +222,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		accountId = undefined,
 		round = undefined,
 		trIndex = undefined,
+		// eslint-disable-next-line no-unused-vars
 		opIndex = undefined,
 		operationResult = [],
 		id = undefined,
@@ -320,21 +349,21 @@ class TransactionActionsClass extends BaseActionsClass {
 
 
 			if (type === OPERATIONS_IDS.CONTRACT_CALL && round) {
-				let contractHistory = [];
+				// let contractHistory = [];
 
-				try {
-					contractHistory = await echo.api.getContractHistory(result.subject.id);
-				} catch (e) {
-					//
-				}
+				// try {
+				// 	contractHistory = await echo.api.getContractHistory(result.subject.id);
+				// } catch (e) {
+				// 	//
+				// }
 
-				let internalOperations = contractHistory
-					.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
-					.map(({ op }) => this.formatOperation(op, accountId));
+				// let internalOperations = contractHistory
+				// 	.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
+				// 	.map(({ op }) => this.formatOperation(op, accountId));
 
-				internalOperations = await Promise.all(internalOperations);
-				internalOperations = internalOperations.filter((op) => op);
-				let internalTransactions = internalOperations;
+				// internalOperations = await Promise.all(internalOperations);
+				// internalOperations = internalOperations.filter((op) => op);
+				let internalTransactions = [];
 				let code = '';
 				try {
 					([, { code }] = await echo.api.getContract(result.subject.id));
@@ -350,11 +379,20 @@ class TransactionActionsClass extends BaseActionsClass {
 					const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['decimals()']), 16);
 
 					let internalTransfers = log
-						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id)
-						// eslint-disable-next-line no-shadow
-						.filter(({ log }) => log[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision));
-
+						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id);
+					const internalTransfersTransfer = internalTransfers
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
+						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token transfer'));
+					const internalTransfersApproval = internalTransfers
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Approval(address,address,uint256)']) === 0)
+						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token approval'));
+					const internalTransfersWithdrawal = internalTransfers
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Withdrawal(address, uint256)']) === 0)
+						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token withdrawal', result.subject.id, false));
+					const internalTransfersDeposit = internalTransfers
+						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Deposit(address, uint256)']) === 0)
+						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token deposit', result.subject.id, true));
+					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval, ...internalTransfersWithdrawal, ...internalTransfersDeposit];
 					internalTransfers = await Promise.all(internalTransfers);
 					internalTransactions = [...internalTransactions, ...internalTransfers];
 				}
@@ -370,7 +408,12 @@ class TransactionActionsClass extends BaseActionsClass {
 		// if (operation.code) {
 		// 	result.bytecode = operation.code;
 		// }
-
+		if (result.internal && result.internal[0]) {
+			if (Number.isNaN(result.internal[0].value.precision)) {
+				result.internal[0].value.precision = 18;
+			}
+			result.value = result.internal[0].value;
+		}
 		return result;
 	}
 
