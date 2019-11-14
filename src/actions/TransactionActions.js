@@ -54,7 +54,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			return new Map({})
 				.set('type', chainContract.type && chainContract.type.toUpperCase())
 				.set('supportedAsset', supportedAsset)
-				.set('ethAccuracy', ethAccuracy ? 'Yes' : 'No')
+				.set('ethAccuracy', ethAccuracy ? 'Activated' : 'Inactivated')
 				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No')
 				.set('bytecode', chainContract[1].code);
 		} catch (e) {
