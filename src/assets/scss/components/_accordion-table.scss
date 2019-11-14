@@ -19,6 +19,7 @@
 
             .td-in {
                 padding: 9px 7px;
+                transition: all 0.2s;
             }
 
             &:first-child,
@@ -26,6 +27,10 @@
                 max-width: 13px;
                 width: 13px;
                 min-width: 13px;
+            }
+
+            &:nth-child(2) .td-in {
+                padding: 9px 7px 9px 20px;
             }
 
             @include res-768 {
@@ -113,7 +118,7 @@
         &:hover:not(.active) {
 
             td:not(:first-child):not(:last-child) {
-                background-color: #e0dfe3;
+                background-color: #ebebee;
             }
 
             .json {
@@ -136,6 +141,16 @@
 
                     @include res-500 {
                         padding: 0px;
+                    }
+                }
+
+                &:nth-child(2) {
+                    .td-in {
+                        padding: 13px 7px 13px 20px;
+
+                        @include res-500 {
+                            padding: 0px;
+                        }
                     }
                 }
 
@@ -249,7 +264,8 @@
     }
 
     .amount,
-    .fee {
+    .fee,
+    .reward {
         .td-in {
             display: flex;
         }
@@ -270,6 +286,9 @@
 
     table {
         td {
+            &.number {
+                width: 20px;
+            }
 
             &.type,
             &.time {
@@ -284,10 +303,6 @@
                 min-width: 20px;
             }
 
-            .td-in {
-                padding: 9px 7px;
-            }
-
             &.sender,
             &.reciever,
             &.amount {
@@ -295,7 +310,6 @@
                     max-width: 90px;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    line-height: 15px;
                     white-space: nowrap;
 
                     @include res-1280 {
@@ -355,7 +369,6 @@
         table {
 
             td {
-                &.type {}
 
                 &.type,
                 &.sender,
@@ -392,7 +405,7 @@
 
                 &.dd {
                     position: absolute;
-                    top: 18px;
+                    top: 22px;
                     right: 23px;
                     text-align: center;
                     line-height: 10px;
@@ -430,10 +443,10 @@
 
             &:hover {
                 &:not(.active) {
-                    background-color: #e0dfe3;
+                    background-color: #ebebee;
 
                     td:not(:first-child):not(:last-child) {
-                        background-color: #e0dfe3;
+                        background-color: #ebebee;
                     }
                 }
             }
@@ -502,7 +515,7 @@
 
 }
 
-@include max-vw(768) {
+@include res-500 {
     .accordion-table-wrap {
         width: 100%;
 
@@ -571,7 +584,7 @@
     }
 }
 
-@include max-vw(500) {
+@include res-320 {
     .accordion-table-wrap {
         width: 100%;
         margin: 0;
@@ -661,13 +674,13 @@
                         width: 12.5%;
                         min-width: 12.5%;
 
-                        @include max-vw(1280) {
+                        @include res-1000 {
                             max-width: 14%;
                             width: 14%;
                             min-width: 14%;
                         }
 
-                        @include max-vw(768) {
+                        @include res-500 {
                             order: 1;
                             max-width: 36.7%;
                             width: 36.7%;
@@ -678,7 +691,7 @@
                             }
                         }
 
-                        @include max-vw(500) {
+                        @include res-320 {
                             max-width: 50%;
                             width: 50%;
                             min-width: 50%;
@@ -696,7 +709,7 @@
                             color: #0f0739;
                         }
 
-                        @include max-vw(1280) {
+                        @include res-1000 {
                             max-width: 17.5%;
                             width: 17.5%;
                             min-width: 17.5%;
@@ -706,7 +719,7 @@
                             }
                         }
 
-                        @include max-vw(768) {
+                        @include res-500 {
                             order: 2;
                             max-width: 32%;
                             width: 32%;
@@ -717,7 +730,7 @@
                             }
                         }
 
-                        @include max-vw(500) {
+                        @include res-320 {
                             max-width: 50%;
                             width: 50%;
                             min-width: 50%;
@@ -729,13 +742,13 @@
                         width: 18.5%;
                         min-width: 18.5%;
 
-                        @include max-vw(1280) {
+                        @include res-1000 {
                             max-width: 19.5%;
                             width: 19.5%;
                             min-width: 19.5%;
                         }
 
-                        @include max-vw(768) {
+                        @include res-500 {
                             order: 4;
                             max-width: 37%;
                             width: 37%;
@@ -746,7 +759,7 @@
                                 padding-left: 0px;
                             }
 
-                            @include max-vw(500) {
+                            @include res-320 {
                                 order: 3;
                                 max-width: 50%;
                                 width: 50%;
@@ -761,20 +774,20 @@
                         width: 17.4%;
                         min-width: 17.4%;
 
-                        @include max-vw(1280) {
+                        @include res-1000 {
                             max-width: 22.4%;
                             width: 22.4%;
                             min-width: 22.4%;
                         }
 
-                        @include max-vw(768) {
+                        @include res-500 {
                             order: 5;
                             max-width: 32%;
                             width: 32%;
                             min-width: 32%;
                         }
 
-                        @include max-vw(500) {
+                        @include res-320 {
                             order: 4;
                             max-width: 50%;
                             width: 50%;
@@ -787,13 +800,13 @@
                         width: 17%;
                         min-width: 17%;
 
-                        @include max-vw(1280) {
+                        @include res-1000 {
                             max-width: 20%;
                             width: 20%;
                             min-width: 20%;
                         }
 
-                        @include max-vw(768) {
+                        @include res-500 {
                             order: 3;
                             max-width: 30%;
                             width: 30%;
@@ -801,7 +814,7 @@
                             padding-left: 0px;
                         }
 
-                        @include max-vw(500) {
+                        @include res-320 {
                             order: 5;
                             max-width: 50%;
                             width: 50%;
@@ -825,14 +838,14 @@
                         width: 20px;
                         min-width: 20px;
 
-                        @include max-vw(768) {
+                        @include res-500 {
                             order: 6;
                             max-width: 30%;
                             width: 30%;
                             min-width: 30%;
                         }
 
-                        @include max-vw(500) {
+                        @include res-320 {
                             max-width: 50%;
                             width: 50%;
                             min-width: 50%;
@@ -864,6 +877,7 @@
                         font-size: 12px;
                         font-weight: 400;
                         letter-spacing: 0.3px;
+                        line-height: 16px;
                     }
                 }
             }
