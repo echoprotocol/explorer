@@ -42,6 +42,7 @@ class ManageContract extends React.Component {
 	onChange(field, value) {
 		this.props.setFormValue(field, value);
 		this.props.validateContract(field, value);
+		this.props.checkValidateForm();
 	}
 
 	onChangeIcon(value) {
@@ -77,7 +78,6 @@ class ManageContract extends React.Component {
 			match: { params: { id } }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm, iconBase64,
 		} = this.props;
 		const defaultIcon = iconBase64.value || contractIconDefault;
-
 		return (
 			<div className="table-container inner-information-container inner-page with-d-table">
 				<div className="backwards">

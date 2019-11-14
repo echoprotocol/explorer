@@ -1,4 +1,4 @@
-import { ERC20_HASHES } from '../constants/GlobalConstants';
+import { ERC20_HASHES, ERC20_REQIURED_HASHES } from '../constants/GlobalConstants';
 import {
 	commaNumberRepresentationRegEx,
 	startWithLetterRegEx,
@@ -14,7 +14,7 @@ class TypesHelper {
      */
 	static isErc20Contract(scriptHex) {
 		if (scriptHex) {
-			const hashes = Object.values(ERC20_HASHES);
+			const hashes = Object.values(ERC20_REQIURED_HASHES);
 			return hashes.every((hash) => scriptHex.includes(hash.toString()));
 		}
 

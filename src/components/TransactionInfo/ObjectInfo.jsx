@@ -106,7 +106,9 @@ class ObjectInfo extends React.Component {
 					</div>
 					<div className="od-row">
 						<div className="od-col">Name:</div>
-						<div className="od-col">{object.get('name')}</div>
+						<div className="od-col">
+							<Link to={URLHelper.createUrlById(object.get('id'))}>{object.get('name')}</Link>
+						</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">Type:</div>
