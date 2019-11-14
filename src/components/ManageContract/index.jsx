@@ -12,7 +12,7 @@ import { BridgeService } from '../../services/BridgeService';
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
 import { ContractIcon } from '../Contract/ContractIcon';
-import contractIconDefault from '../../assets/images/icons/contract-icon.svg';
+import contractIconDefault from '../../assets/images/icons/default-icn.svg';
 import bridge from '../../assets/images/icons/bridge-logo.svg';
 
 class ManageContract extends React.Component {
