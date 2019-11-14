@@ -55,7 +55,7 @@ class OperationRow extends React.Component {
 			fee,
 			air,
 		} = this.props;
-		const objectId = objectInfo.get('id');
+		const objectId = objectInfo ? objectInfo.get('id') : null;
 		this.props.tableRefs[index] = React.createRef();
 		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
