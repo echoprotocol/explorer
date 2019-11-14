@@ -222,7 +222,8 @@ class TransactionActionsClass extends BaseActionsClass {
 		accountId = undefined,
 		round = undefined,
 		trIndex = undefined,
-		// opIndex = undefined,
+		// eslint-disable-next-line no-unused-vars
+		opIndex = undefined,
 		operationResult = [],
 		id = undefined,
 		timestamp = undefined,
