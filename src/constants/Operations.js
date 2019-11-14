@@ -355,8 +355,8 @@ const Operations = {
 		value: OPERATIONS_IDS.CONTRACT_INTERNAL_CALL,
 		name: 'Contract internal call',
 		options: {
-			from: ['caller'],
-			subject: ['method'],
+			from: 'caller',
+			subject: null,
 			value: 'value.amount',
 			asset: 'value.asset_id',
 		},
