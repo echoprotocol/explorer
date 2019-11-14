@@ -23,7 +23,6 @@ import FormatHelper from '../helpers/FormatHelper';
 import GlobalActions from './GlobalActions';
 import TransactionActions from './TransactionActions';
 
-import LocalStorageService from '../services/LocalStorageService';
 import GlobalReducer from '../reducers/GlobalReducer';
 
 /**
