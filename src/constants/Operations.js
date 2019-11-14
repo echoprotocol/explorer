@@ -591,12 +591,12 @@ const Operations = {
 			asset: null,
 		},
 	},
-	sidechain_btc_approve_withdraw: {
-		value: OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_WITHDRAW,
-		name: 'BTC approve withdraw',
+	sidechain_btc_approve_aggregate: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE,
+		name: 'BTC approve aggregate',
 		options: {
 			from: 'committee_member_id',
-			subject: ['withdraw_id'],
+			subject: ['transaction_id'],
 			amount: null,
 			asset: null,
 		},
