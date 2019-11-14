@@ -298,7 +298,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		}
 	});
 
-	const lastBlockStorage = blocksResult[blocksResult.length - 1];
+	const lastBlockStorage = blocksResult.sort((b1, b2) => moment.utc(b2.timestamp).unix() - moment.utc(b1.timestamp).unix())[0];
 
 	if (lastBlockStorage) {
 		const time = moment().unix() - moment.utc(lastBlockStorage.timestamp).unix();
