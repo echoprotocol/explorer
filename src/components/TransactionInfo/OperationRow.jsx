@@ -44,6 +44,7 @@ class OperationRow extends React.Component {
 				objectInfo,
 				blockNumber: block,
 				trIndex: transactionNum,
+				opIndex,
 				number,
 				blockTimestamp,
 				...detailInfo
@@ -200,7 +201,7 @@ class OperationRow extends React.Component {
 												matches.small &&
 												<React.Fragment>
 													<div className="col-title">Json</div>
-													{this.renderTransactionLink(block, transactionNum, index)}
+													{this.renderTransactionLink(block, transactionNum, opIndex)}
 												</React.Fragment>
 											} {
 												matches.large &&
@@ -211,7 +212,7 @@ class OperationRow extends React.Component {
 													overlayStyle={tooltipStyle}
 													overlayClassName="verify-contract-tooltip"
 												>
-													{this.renderTransactionLink(block, transactionNum, index)}
+													{this.renderTransactionLink(block, transactionNum, opIndex)}
 												</Tooltip>
 											}
 										</React.Fragment>

@@ -518,6 +518,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			trIndex,
 			number,
 			blockTimestamp,
+			opIndex,
 		};
 
 	}
