@@ -44,6 +44,7 @@ export const ERC20_REQIURED_HASHES = {
 	'Approval(address,address,uint256)': '8c5be1e5',
 };
 export const ERC20_HASHES = {
+	'increaseAllowance(address,uint256)': '39509351',
 	'allowance(address,address)': 'dd62ed3e',
 	'approve(address,uint256)': '095ea7b3',
 	'balanceOf(address)': '70a08231',

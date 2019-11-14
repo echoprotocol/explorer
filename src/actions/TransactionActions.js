@@ -176,7 +176,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			from, subject: to, value, label,
 		};
 	}
-
 	/**
 	 *
 	 * @param {Object} log
@@ -223,7 +222,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		accountId = undefined,
 		round = undefined,
 		trIndex = undefined,
-		opIndex = undefined,
+		// opIndex = undefined,
 		operationResult = [],
 		id = undefined,
 		timestamp = undefined,
