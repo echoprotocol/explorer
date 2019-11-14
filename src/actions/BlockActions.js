@@ -298,12 +298,13 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		}
 	});
 
-	const lastBlockStorage = blocksResult.sort((b1, b2) => moment.utc(b2.timestamp).unix() - moment.utc(b1.timestamp).unix())[0];
-
-	if (lastBlockStorage) {
-		const time = moment().unix() - moment.utc(lastBlockStorage.timestamp).unix();
+	const blockArray = Object.values(blocks.toJS());
+	if (blockArray) {
+		const lastBlockStorage = blockArray.reduce((acc, val) => (acc > moment.utc(val.timestamp).unix() ? acc : moment.utc(val.timestamp).unix()), 0);
+		const time = moment().unix() - lastBlockStorage;
 		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: time }));
 	}
+
 
 	const blocksToRemove = blocks.size - maxBlocks;
 
