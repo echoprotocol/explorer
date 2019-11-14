@@ -41,21 +41,18 @@
         width: 100%;
         padding-top: 15px;
         padding-bottom: 11px;
-        // @include transition;
+        @include transition;
 
         &:hover {
             .title {
                 color: #5eb3e8;
-
-                .tooltip {
-                    svg {
-                        path {
-                            fill: #5eb3e8;
-                            opacity: 1;
-                        }
-                    }
-                }
             }
+        }
+
+        .title img {
+            width: 9px;
+            height: 9px;
+            margin: 2px 2px 2px 9px;
         }
 
         @include res-1280 {
