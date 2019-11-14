@@ -248,7 +248,7 @@ class ObjectInfo extends React.Component {
 					</div>
 					<div className="od-row">
 						<div className="od-col">Eth Accuracy:</div>
-						<div className="od-col">{object.get('ethAccuracy') === 'Yes' ? 'Activated' : 'Inactivated'}</div>
+						<div className="od-col">{object.get('ethAccuracy')}</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">ERC20:</div>
