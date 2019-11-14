@@ -301,7 +301,8 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 	const lastBlockStorage = blocksResult[blocksResult.length - 1];
 
 	if (lastBlockStorage) {
-		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: 0 }));
+		const time = moment().unix() - moment.utc(lastBlockStorage.timestamp).unix();
+		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: time }));
 	}
 
 	const blocksToRemove = blocks.size - maxBlocks;
