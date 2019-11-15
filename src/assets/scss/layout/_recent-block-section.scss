@@ -131,7 +131,6 @@
                 right: -1000vw;
                 width: 1000vw;
             }
-
         }
 
         h2 {
@@ -144,10 +143,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            @include res-1280 {
-                padding-left: 28px;
-            }
 
             @include res-1000 {
                 padding-left: 20px;
@@ -448,20 +443,20 @@
         }
 
         @include max-vw(1279) {
-            padding-left: 0;
-            padding-top: 30px;
+            padding: 30px 22px 5px;
         }
 
-        @include max-vw(1000) {
-            padding: 30px 18px 5px;
+        @include res-768 {
+            padding: 30px 22px 5px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
 
         }
 
-        @include max-vw(768) {
-            padding: 28px 18px 7px;
+        @include res-500 {
+            padding: 36px 18px 0px;
+
         }
 
         @include max-vw(500) {
@@ -469,9 +464,6 @@
             padding: 0px;
             margin: 0 -20px;
         }
-
-
-
 
         .help-container {
             width: 360px;
@@ -630,7 +622,6 @@
             }
         }
     }
-
 }
 
 .sticky-wrap {
