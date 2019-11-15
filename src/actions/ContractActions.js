@@ -47,10 +47,12 @@ class ContractActions extends BaseActionsClass {
 
 	/**
 	 * Format contract history
-	 * @param {Array} history
+	 * @param {Array} transactions
 	 * @returns {function}
 	 */
 	async formatContractHistory(transactions) {
+		await TransactionActions.fetchTransactionsObjects(transactions);
+
 		let history = transactions.map(async (t) => {
 			let { op: operation, result } = t;
 

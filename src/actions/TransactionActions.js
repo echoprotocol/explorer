@@ -35,6 +35,29 @@ class TransactionActionsClass extends BaseActionsClass {
 	}
 
 	/**
+	 * Fetch shallow transactions object ids for requests optimization
+	 * @method fetchTransactionsObjects
+	 * @param transactions
+	 * @returns {Promise<void>}
+	 */
+	async fetchTransactionsObjects(transactions) {
+		const objectIds = transactions.reduce((resultIds, t) => {
+			const { op: operation } = t;
+			const [, data] = operation;
+			const operationIds = Object.values(data).reduce((ids, id) => {
+				if (validators.isObjectId(id) && !resultIds.includes(id)) {
+					ids.push(id);
+					return ids;
+				}
+				return ids;
+			}, []);
+			return resultIds.concat(operationIds);
+		}, []);
+
+		await echo.api.getObjects(objectIds);
+	}
+
+	/**
 	 *
 	 * @param id
 	 * @returns {function(*, *): Map<string, any>}
@@ -83,7 +106,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					const acc = await echo.api.getObject(id);
 					return acc && acc.name;
 				}));
-				const accounts = await echo.api.getObjects([account.registrar, account.options.voting_account, account.options.delegating_account]);
+				const accounts = await echo.api.getObjects([account.registrar, account.options.delegating_account]);
 
 				object = object
 					.set('id', account.id)
@@ -92,8 +115,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('activeAccounts', activeAccounts)
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
-					.set('voting', accounts[1] && accounts[1].name)
-					.set('delegating', accounts[2] && accounts[2].name);
+					.set('delegating', accounts[1] && accounts[1].name);
 			} else if (assetOperations.includes(operation.name)) {
 				let assetId = null;
 				if (operation.options.asset) {
@@ -140,6 +162,7 @@ class TransactionActionsClass extends BaseActionsClass {
 
 			return object;
 		} catch (e) {
+			console.log(e);
 			return null;
 		}
 	}
