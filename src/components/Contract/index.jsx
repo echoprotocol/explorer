@@ -32,7 +32,7 @@ import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';
 import ContractInfo from './ContractInfo';
 import { ContractIcon } from './ContractIcon';
-import { BridgeService } from '../../services/BridgeService';
+// import { BridgeService } from '../../services/BridgeService';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
@@ -118,7 +118,7 @@ class Contract extends React.Component {
 	}
 
 	async subscribe(id) {
-		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
+		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		const updateHistory = await subscribeContractHistoryUpdate(id);
 
 		const nextUpdate = ({ data: { contractHistoryUpdated } }) => this.props.updateContractHistory(contractHistoryUpdated);
@@ -130,7 +130,7 @@ class Contract extends React.Component {
 	}
 
 	unsubscribe() {
-		BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
+		// BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
 		echo.subscriber.removeContractSubscribe(this.subscriber);
 		if (this.updateHistorySubscriber) {
 			this.updateHistorySubscriber.unsubscribe();

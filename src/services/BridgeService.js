@@ -22,7 +22,13 @@ export class BridgeService {
 	}
 
 	static getAccount() {
-		return window.echojslib.extension.activeAccount;
+		const { activeAccount } = window.echojslib.extension;
+		if (activeAccount) {
+			this.getAccess();
+		}
+		return {
+			id: activeAccount,
+		};
 	}
 
 
