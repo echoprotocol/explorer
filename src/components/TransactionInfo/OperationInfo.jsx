@@ -37,36 +37,28 @@ class OperationInfo extends React.Component {
 		this.setState({ loadMore });
 	}
 
-	renderInternal(operations) {
+	renderSingleInternal(op, index) {
+		const { precision, amount: amountData } = op.value;
+		const amount = new BN(amountData).div(10 ** precision).toString(10);
 		return (
-			<div className="token-transfer-table">
-				{
-					operations.map((op, index) => {
-						const { precision } = op.value;
-						const amount = new BN(parseInt(this.props.details.logs[index].data, 16)).div(10 ** precision).toString(10);
-						return (
-							<div className="tt-row" key={index.toString()}>
-								<div className="tt-col amount">
-									<span className="value">{amount}</span>
-									<span className="currency">{op.value.symbol}</span>
-								</div>
-								<div className="tt-col">
-									<div className="transfer-direction">
-										<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
-											{op.from.name && <Avatar accountName={op.from.name} />}
-											<span>{op.from.name || op.from.id}</span>
-										</Link>
-										<img src={directionIcon} alt="" className="direction" />
-										<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
-											{op.subject.name && <Avatar accountName={op.subject.name} />}
-											<span>{op.subject.name || op.subject.id}</span>
-										</Link>
-									</div>
-								</div>
-							</div>
-						);
-					})
-				}
+			<div className="tt-row token-transfer-table" key={index.toString()}>
+				<div className="tt-col amount">
+					<span className="value">{amount}</span>
+					<span className="currency">{op.value.symbol}</span>
+				</div>
+				<div className="tt-col">
+					<div className="transfer-direction">
+						<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
+							{op.from.name && <Avatar accountName={op.from.name} />}
+							<span>{op.from.name || op.from.id}</span>
+						</Link>
+						{(op.subject.name || op.subject.id) && <img src={directionIcon} alt="" className="direction" />}
+						<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
+							{op.subject.name && <Avatar accountName={op.subject.name} />}
+							<span>{op.subject.name || op.subject.id}</span>
+						</Link>
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -98,26 +90,15 @@ class OperationInfo extends React.Component {
 	}
 
 	renderOperationRowKey(key, value, index, type) {
-		if (key === 'token transfers') {
-			return (
-				<React.Fragment>
-					{
-						value.map((op) => <div className="tt-row" key={index.toString()}>{op.label.replace('ERC 20 ', '')} :</div>)
-					}
-				</React.Fragment>
-			);
-		}
 		return (
 			<React.Fragment>
-				{key === 'registrar' && type === 'Contract call' ? 'tx sender' : key} :
+				{key === 'registrar' && type === 'Contract call' ? 'tx sender' : key}:
 			</React.Fragment>
 		);
 	}
+
 	renderOperationRowValue(key, value, index) {
 		const { objId } = this.props;
-		if (key === 'token transfers') {
-			return this.renderInternal(value);
-		}
 
 		if (typeof value === 'object' && key !== 'logs') {
 			if (!value.link) {
@@ -200,20 +181,38 @@ class OperationInfo extends React.Component {
 		return (
 			<React.Fragment>
 				{
-					Object.entries(details).map(([key, value]) => (
-						key === 'Fee' ?
-							<Media query="(max-width: 1000px)" key={`${opKey}_${key}_media`}>
-								{
-									(matches) =>
-										(matches &&
-											<div className="od-row" key={`${opKey}_${key}`}>
-												<div className="od-col">{key}:</div>
-												<div className="od-col">
-													{this.renderOperationRowValue(key, value, index)}
-												</div>
-											</div>)
-								}
-							</Media> :
+					Object.entries(details).map(([key, value]) => {
+
+						if (key === 'Fee') {
+							return (
+								<Media query="(max-width: 1000px)" key={`${opKey}_${key}_media`}>
+									{
+										(matches) =>
+											(matches &&
+												<div className="od-row" key={`${opKey}_${key}`}>
+													<div className="od-col">{key}:</div>
+													<div className="od-col">
+														{this.renderOperationRowValue(key, value, index)}
+													</div>
+												</div>)
+									}
+								</Media>
+							);
+						} else if (key === 'token transfers') {
+							return (
+								value.map((op, opIndex) => (
+									<div className="od-row" key={`${opKey}_${key}_${opIndex.toString()}`} >
+										<div className="od-col">
+											<div className="tt-row" key={index.toString()}>{op.label}:</div>
+										</div>
+										<div className="od-col">
+											{this.renderSingleInternal(op, index)}
+										</div>
+									</div>
+								))
+							);
+						}
+						return (
 							<div className="od-row" key={`${opKey}_${key}`} >
 								<div className="od-col">
 									{this.renderOperationRowKey(key, value, index, type)}
@@ -222,7 +221,8 @@ class OperationInfo extends React.Component {
 									{this.renderOperationRowValue(key, value, index)}
 								</div>
 							</div>
-					))
+						);
+					})
 				}
 				<div className="od-row">
 					<div className="od-col">TRANSACTION:</div>
