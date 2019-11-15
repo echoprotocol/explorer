@@ -5,6 +5,7 @@ import Media from 'react-media';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Tooltip from 'rc-tooltip';
+import { validators } from 'echojs-lib';
 
 import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
@@ -44,6 +45,7 @@ class OperationRow extends React.Component {
 				objectInfo,
 				blockNumber: block,
 				trIndex: transactionNum,
+				opIndex,
 				number,
 				blockTimestamp,
 				...detailInfo
@@ -54,7 +56,7 @@ class OperationRow extends React.Component {
 			fee,
 			air,
 		} = this.props;
-
+		const objectId = objectInfo ? objectInfo.get('id') : null;
 		this.props.tableRefs[index] = React.createRef();
 		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
@@ -122,9 +124,9 @@ class OperationRow extends React.Component {
 							{ (matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
 						{mainInfo.from.id ?
-							<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
-								<Avatar accountName={mainInfo.from.name} />
-								<span>{mainInfo.from.name}</span>
+							<Link className="td-in avatar-wrap" to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
+								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
+								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
 							</Link> : <div className="td-in">—</div>
 						}
 					</td>
@@ -153,7 +155,12 @@ class OperationRow extends React.Component {
 								<div className="td-in">
 									<span
 										className="value"
-									>{FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)}
+									>
+										{
+											FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
+												FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
+												FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)
+										}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : <div className="td-in">—</div>
@@ -200,7 +207,7 @@ class OperationRow extends React.Component {
 												matches.small &&
 												<React.Fragment>
 													<div className="col-title">Json</div>
-													{this.renderTransactionLink(block, transactionNum, index)}
+													{this.renderTransactionLink(block, transactionNum, opIndex)}
 												</React.Fragment>
 											} {
 												matches.large &&
@@ -211,7 +218,7 @@ class OperationRow extends React.Component {
 													overlayStyle={tooltipStyle}
 													overlayClassName="verify-contract-tooltip"
 												>
-													{this.renderTransactionLink(block, transactionNum, index)}
+													{this.renderTransactionLink(block, transactionNum, opIndex)}
 												</Tooltip>
 											}
 										</React.Fragment>
@@ -236,7 +243,13 @@ class OperationRow extends React.Component {
 								(matches) => (
 									<React.Fragment>
 										<td colSpan={this.getColSpan(matches)}>
-											<OperationInfo details={detailInfo} index={index} block={block} transaction={transactionNum} />
+											<OperationInfo
+												details={detailInfo}
+												index={index}
+												block={block}
+												transaction={transactionNum}
+												objId={objectId}
+											/>
 											<ObjectInfo details={detailInfo} object={objectInfo} />
 										</td>
 										<Media query="(max-width: 767px)">

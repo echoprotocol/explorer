@@ -12,7 +12,7 @@ import { BridgeService } from '../../services/BridgeService';
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
 import { ContractIcon } from '../Contract/ContractIcon';
-import contractIconDefault from '../../assets/images/icons/contract-icon.svg';
+import contractIconDefault from '../../assets/images/icons/default-icn.svg';
 import bridge from '../../assets/images/icons/bridge-logo.svg';
 
 class ManageContract extends React.Component {
@@ -42,6 +42,7 @@ class ManageContract extends React.Component {
 	onChange(field, value) {
 		this.props.setFormValue(field, value);
 		this.props.validateContract(field, value);
+		this.props.checkValidateForm();
 	}
 
 	onChangeIcon(value) {
@@ -77,9 +78,8 @@ class ManageContract extends React.Component {
 			match: { params: { id } }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm, iconBase64,
 		} = this.props;
 		const defaultIcon = iconBase64.value || contractIconDefault;
-
 		return (
-			<div className="table-container inner-information-container inner-page with-d-table">
+			<div className="table-container inner-information-container inner-page with-d-table manage-contract">
 				<div className="backwards">
 					<a
 						href=""
@@ -111,7 +111,14 @@ class ManageContract extends React.Component {
 							Before updating contract info you need to verify your authority via {' '}
 							</span>
 							<span className="no-wrap">
-								<a href="" className="link">Bridge</a>{' '}
+								<a
+									href="https://chrome.google.com/webstore/detail/echo-bridge/ginklfodpcgldnicehmlpehfmgjhbdcl"
+									className="link"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Bridge
+								</a>{' '}
 								<span className="bridge-logo">
 									<img src={bridge} alt="" />
 								</span>
@@ -176,7 +183,7 @@ class ManageContract extends React.Component {
 				</div>
 
 				<div className="buttons-wrap">
-					<button className="decline-button" onClick={(e) => this.goBack(e, id)}>Close</button>
+					<button className="decline-button" onClick={(e) => this.goBack(e, id)}>Cancel</button>
 					<button
 						onClick={() => this.onSave()}
 						disabled={isErrorForm || !isChangedForm}

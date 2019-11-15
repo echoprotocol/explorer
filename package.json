@@ -7,7 +7,7 @@
 	},
 	"description": "Explorer for Echo platform",
 	"homepage": "https://github.com/echoprotocol/explorer",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"license": "MIT",
 	"main": "server.js",
 	"scripts": {
@@ -35,7 +35,7 @@
 		"config": "^1.30.0",
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.6.3",
-		"echojs-lib": "1.9.1-rc.1",
+		"echojs-lib": "1.9.1-echo.13-rc.1",
 		"echojs-ping": "^0.1.5",
 		"es6-promise": "^4.2.4",
 		"es6-promise-promise": "^1.0.0",
@@ -86,7 +86,7 @@
 		"redux-thunk": "^2.3.0",
 		"reselect": "^4.0.0",
 		"semantic-ui-react": "^0.84.0",
-		"solc": "^0.5.10",
+		"solc": "^0.5.12",
 		"subscriptions-transport-ws": "^0.9.16",
 		"uglifyjs-webpack-plugin": "^1.2.2",
 		"utf8": "^3.0.0"
