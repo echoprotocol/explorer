@@ -298,9 +298,8 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		}
 	});
 
-	const blockArray = Object.values(blocks.toJS());
-	if (blockArray) {
-		const lastBlockStorage = blockArray.reduce((acc, val) => (acc > moment.utc(val.timestamp).unix() ? acc : moment.utc(val.timestamp).unix()), 0);
+	if (blocks) {
+		const lastBlockStorage = blocks.reduce((acc, val) => Math.max(acc, moment.utc(val.get('timestamp')).unix()), moment.utc(blocks.first().get('timestamp')).unix());
 		const time = moment().unix() - lastBlockStorage;
 		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: time }));
 	}
