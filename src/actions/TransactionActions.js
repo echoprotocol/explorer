@@ -170,7 +170,6 @@ class TransactionActionsClass extends BaseActionsClass {
 
 			return object;
 		} catch (e) {
-			console.log(e);
 			return null;
 		}
 	}
