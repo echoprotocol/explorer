@@ -35,22 +35,30 @@ class TransactionActionsClass extends BaseActionsClass {
 	}
 
 	/**
-	 * Fetch shallow transactions object ids for requests optimization
+	 * Fetch deep transaction object ids for requests optimization
 	 * @method fetchTransactionsObjects
 	 * @param transactions
 	 * @returns {Promise<void>}
 	 */
 	async fetchTransactionsObjects(transactions) {
-		const objectIds = transactions.reduce((resultIds, t) => {
-			const { op: operation } = t;
-			const [, data] = operation;
-			const operationIds = Object.values(data).reduce((ids, id) => {
-				if (validators.isObjectId(id) && !resultIds.includes(id)) {
-					ids.push(id);
-					return ids;
-				}
+		const deepExtract = (data, result) => Object.values(data).reduce((ids, id) => {
+			if (validators.isObjectId(id) && !result.includes(id)) {
+				ids.push(id);
 				return ids;
-			}, []);
+			}
+
+			if (typeof id === 'object' && id !== null) {
+				ids = ids.concat(deepExtract(id, ids));
+			}
+
+			return ids;
+		}, []);
+
+		const objectIds = transactions.reduce((resultIds, tx) => {
+			const data = tx.op ? tx.op[1] : tx[1];
+
+			const operationIds = deepExtract(data, resultIds);
+
 			return resultIds.concat(operationIds);
 		}, []);
 
@@ -603,6 +611,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				const transaction = block.transactions[index - 1];
+
+				await this.fetchTransactionsObjects(transaction.operations);
 
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(

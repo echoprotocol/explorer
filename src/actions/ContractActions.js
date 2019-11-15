@@ -68,6 +68,7 @@ class ContractActions extends BaseActionsClass {
 		});
 
 		history = await Promise.all(history);
+
 		return history;
 	}
 
