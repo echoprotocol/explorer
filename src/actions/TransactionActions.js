@@ -356,14 +356,12 @@ class TransactionActionsClass extends BaseActionsClass {
 				result.status = true;
 			}
 
-			// console.log('type', type);
 			if ([
 				OPERATIONS_IDS.CONTRACT_CALL,
 				OPERATIONS_IDS.CONTRACT_CREATE,
 			].includes(type) && round) {
 				const contractId = newContractAddress || result.subject.id;
 
-				// console.log('result ', result);
 				let contractHistory = [];
 
 				try {
@@ -377,7 +375,6 @@ class TransactionActionsClass extends BaseActionsClass {
 					.map(({ op }) => this.formatOperation(op, accountId));
 				internalOperations = await Promise.all(internalOperations);
 				internalOperations = internalOperations.filter((op) => op);
-				// console.log('internalOperations ', internalOperations);
 
 
 				let internalTransactions = [...internalOperations];
@@ -411,29 +408,21 @@ class TransactionActionsClass extends BaseActionsClass {
 						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'Token deposit', contractId, true));
 					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval, ...internalTransfersWithdrawal, ...internalTransfersDeposit];
 					internalTransfers = await Promise.all(internalTransfers);
-					internalTransactions = [...internalTransactions, ...internalTransfers];
+					internalTransactions = [...internalTransfers, ...internalTransactions];
 				}
-				// console.log('internalTransactions ', internalTransactions);
 
 				result.internal = internalTransactions.map((i) => ({
 					from: i.from,
 					subject: i.subject,
-					value: i.value || { amount: 0, symbol: 'ECHO', precision: 0 },
+					value: Object.assign({ amount: 0, symbol: 'ECHO', precision: 0 }, i.value ? i.value : {}),
 					label: i.label || i.name,
 				}));
-				// console.log('result.internal ', result.internal);
 			}
 		}
 
-		// if (operation.code) {
-		// 	result.bytecode = operation.code;
-		// }
-		// if (result.internal && result.internal[0]) {
-		// 	if (Number.isNaN(result.internal[0].value.precision)) {
-		// 		result.internal[0].value.precision = 18;
-		// 	}
-		// 	result.value = result.internal[0].value;
-		// }
+		if (result.internal && result.internal[0]) {
+			result.value = result.internal[0].value;
+		}
 		return result;
 	}
 
