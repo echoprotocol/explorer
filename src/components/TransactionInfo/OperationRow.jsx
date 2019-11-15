@@ -5,6 +5,7 @@ import Media from 'react-media';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Tooltip from 'rc-tooltip';
+import { validators } from 'echojs-lib';
 
 import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
@@ -55,7 +56,7 @@ class OperationRow extends React.Component {
 			fee,
 			air,
 		} = this.props;
-		const objectId = objectInfo.get('id');
+		const objectId = objectInfo ? objectInfo.get('id') : null;
 		this.props.tableRefs[index] = React.createRef();
 		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
@@ -123,9 +124,9 @@ class OperationRow extends React.Component {
 							{ (matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
 						{mainInfo.from.id ?
-							<Link className="td-in avatar-wrap" to={URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
-								<Avatar accountName={mainInfo.from.name} />
-								<span>{mainInfo.from.name}</span>
+							<Link className="td-in avatar-wrap" to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
+								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
+								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
 							</Link> : <div className="td-in">—</div>
 						}
 					</td>

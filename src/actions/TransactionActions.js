@@ -77,7 +77,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			return new Map({})
 				.set('type', chainContract.type && chainContract.type.toUpperCase())
 				.set('supportedAsset', supportedAsset)
-				.set('ethAccuracy', ethAccuracy ? 'Yes' : 'No')
+				.set('ethAccuracy', ethAccuracy ? 'Activated' : 'Inactivated')
 				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No')
 				.set('bytecode', chainContract[1].code);
 		} catch (e) {
@@ -547,6 +547,8 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		if (options['new contract id']) {
 			objectInfo = await this.setContractObject(options['new contract id'].value, opIndex);
+		} else if (options.caller) {
+			objectInfo = await this.setContractObject(options.caller);
 		} else if (options['contract id']) {
 			objectInfo = await this.setContractObject(options['contract id'].value);
 		}

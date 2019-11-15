@@ -101,19 +101,21 @@
                 }
 
                 &.reward {
-                    width: 105px;
+                    width: 145px;
+                    white-space: nowrap;
 
                     @include res-500 {
                         width: 197px;
                     }
 
                     @include res-320 {
-                        width: 100px;
+                        width: 140px;
                     }
                 }
 
                 &.verifiers {
-                    width: 190px;
+                    width: 120px;
+                    white-space: nowrap;
                 }
 
                 .title {
@@ -160,7 +162,7 @@
                             transition: .2s ease-out;
                             padding-left: 14px;
                             padding-right: 12px;
-                            margin-left: 105px;
+                            margin-left: 15px;
 
                             &:hover {
                                 background-color: #e1e0e4;
