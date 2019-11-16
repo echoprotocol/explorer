@@ -79,6 +79,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 		let resultTransactions = [];
 		if (transactions.length !== 0) {
+
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
 					Promise.all(operations.map((op, i) => TransactionActions.getOperation(
