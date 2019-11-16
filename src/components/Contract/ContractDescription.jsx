@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { NONE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -11,15 +10,7 @@ import URLHelper from '../../helpers/URLHelper';
 
 class ContractDescription extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			showMore: false,
-		};
-	}
-
 	render() {
-		const { showMore } = this.state;
 		const { data } = this.props;
 		let date = NONE_SYMBOL;
 		let time = '';
@@ -40,14 +31,9 @@ class ContractDescription extends React.Component {
 					</span>
 				</div>
 				{data.get('description') && (
-					<React.Fragment>
-						<div className={classnames('description', { short: !showMore })}>
-							{data.get('description')}
-						</div>
-						<button className="text-button" onClick={() => this.setState({ showMore: !showMore })}>
-							{!showMore ? 'Read full description' : 'Show less'}
-						</button>
-					</React.Fragment>
+					<div className="description">
+						{data.get('description')}
+					</div>
 				)}
 			</React.Fragment>
 		);
