@@ -15,6 +15,8 @@ const {
 	SERVER_URL,
 	SOLC_LIST_URL,
 	SOLC_BIN_URL,
+	MAP_API_TOKEN,
+	INSTALL_NODE_LINK,
 } = require('config');
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
@@ -132,6 +134,8 @@ module.exports = {
 			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),
 			__SOLC_BIN_URL__: JSON.stringify(SOLC_BIN_URL),
 			__LANDING_BRIDGE__: JSON.stringify(LANDING_BRIDGE),
+			__INSTALL_NODE_LINK__: JSON.stringify(INSTALL_NODE_LINK),
+			__MAP_API_TOKEN__: JSON.stringify(MAP_API_TOKEN),
 			__GRAPHQL_URL_HTTP_LINK__: JSON.stringify(GRAPHQL_URL.HTTP),
 			__GRAPHQL_URL_WS_LINK__: JSON.stringify(GRAPHQL_URL.WS),
 			__APP_VERSION__: JSON.stringify(packageJson.version),
