@@ -3,9 +3,10 @@ import Media from 'react-media';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import PropTypes from 'prop-types';
 
+import config from '../../config/chain';
+
 const Map = ReactMapboxGl({
-	accessToken:
-      'pk.eyJ1IjoibWF4c2hldiIsImEiOiJjazJsbnByY2cwODlpM2NwZWZhZndhZjhhIn0.RF3XIqcQtY2nTT8sKYL8wA',
+	accessToken: config.MAP_API_TOKEN,
 });
 const zoom = [1];
 class NodeMap extends React.Component {
