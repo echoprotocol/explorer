@@ -8,5 +8,6 @@
     "WS": "ws://localhost:3000/graphql"
   },
   "SERVER_URL": "http://localhost:26563",
-  "MAP_API_TOKEN": "pk.eyJ1IjoibWF4c2hldiIsImEiOiJjazJsbnByY2cwODlpM2NwZWZhZndhZjhhIn0.RF3XIqcQtY2nTT8sKYL8wA"
+  "MAP_API_TOKEN": "pk.eyJ1IjoibWF4c2hldiIsImEiOiJjazJsbnByY2cwODlpM2NwZWZhZndhZjhhIn0.RF3XIqcQtY2nTT8sKYL8wA",
+  "INSTALL_NODE_LINK": "https://docs.echo.org/how-to/install-full-node"
 }

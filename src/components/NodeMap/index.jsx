@@ -69,7 +69,7 @@ class NodeMap extends React.Component {
 			<div className="distribution table-container recent-block-table">
 				<div className="distribution-header">
 					<h1>Nodes Distribution</h1>
-					<button>
+					<button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
 						<Media query="(max-width: 499px)">
 							{(matches) =>
 								(matches ? (
@@ -122,6 +122,7 @@ class NodeMap extends React.Component {
 
 NodeMap.propTypes = {
 	getPeers: PropTypes.func.isRequired,
+	history: PropTypes.object.isRequired,
 };
 
 export default NodeMap;
