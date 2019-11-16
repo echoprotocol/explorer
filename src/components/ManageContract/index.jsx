@@ -7,7 +7,7 @@ import Dropzone from 'react-dropzone';
 import { MAX_KB_CONTRACT_ICON, MAX_LENGTH_CONTRACT_DESCRIPTION } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
-import { BridgeService } from '../../services/BridgeService';
+// import { BridgeService } from '../../services/BridgeService';
 
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
@@ -29,7 +29,7 @@ class ManageContract extends React.Component {
 	}
 
 	componentWillUnmount() {
-		BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
+		// BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
 	}
 
 	async onSave() {
@@ -67,7 +67,7 @@ class ManageContract extends React.Component {
 	}
 
 	async initData() {
-		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
+		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		await this.props.getContractInfo();
 		this.props.setDefaultDateContract();

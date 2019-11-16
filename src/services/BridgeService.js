@@ -2,7 +2,7 @@
 export class BridgeService {
 
 	static isExist() {
-		return window.echojslib && window.echojslib.extension;
+		return !!window.echojslib && !!window.echojslib.extension;
 	}
 
 	static subscribeSwitchAccount(cb) {
@@ -21,8 +21,14 @@ export class BridgeService {
 		// window.echojslib.extension.unscribeSwitchAccount(cb);
 	}
 
-	static getAccounts() {
-		return window.echojslib.extension.getAccounts();
+	static getAccount() {
+		const { activeAccount } = window.echojslib.extension;
+		if (activeAccount) {
+			this.getAccess();
+		}
+		return {
+			id: activeAccount,
+		};
 	}
 
 
