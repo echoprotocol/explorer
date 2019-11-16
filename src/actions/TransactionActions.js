@@ -414,7 +414,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				result.internal = internalTransactions.map((i) => ({
 					from: i.from,
 					subject: i.subject,
-					value: Object.assign({ amount: 0, symbol: 'ECHO', precision: 0 }, i.value ? i.value : {}),
+					value: Object.assign({ amount: 0, symbol: ECHO_ASSET.SYMBOL, precision: ECHO_ASSET.PRECISION }, i.value ? i.value : {}),
 					label: i.label || i.name,
 				}));
 			}
