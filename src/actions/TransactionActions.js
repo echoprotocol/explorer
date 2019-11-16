@@ -154,19 +154,19 @@ class TransactionActionsClass extends BaseActionsClass {
 	async parseTransferEvent({ log, data }, symbol = '', precision = 0, label) {
 		const [, hexFrom, hexTo] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
-		const fromInt = parseInt(hexFrom.slice(26), 16);
-		const toInt = parseInt(hexTo.slice(26), 16);
+		const fromInt = parseInt(hexFrom.slice(3), 16);
+		const toInt = parseInt(hexTo.slice(3), 16);
 
 		let from = { id: `${CONTRACT_OBJECT_PREFIX}.${fromInt}` };
 		let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
-		if (hexFrom[25] === '0') {
+		if (hexFrom[2] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${fromInt}`;
 			const { name } = (await echo.api.getObject(id));
 			from = { id, name };
 		}
 
-		if (hexTo[25] === '0') {
+		if (hexTo[2] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 			const { name } = (await echo.api.getObject(id));
 			to = { id, name };
@@ -188,12 +188,12 @@ class TransactionActionsClass extends BaseActionsClass {
 		const [, hex] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 
-		const toInt = parseInt(hex.slice(26), 16);
+		const toInt = parseInt(hex.slice(3), 16);
 		let account = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
 		const contract = {};
 		contract.id = contractId;
-		if (hex[25] === '0') {
+		if (hex[2] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 			const { name } = (await echo.api.getObject(id));
 			account = { id, name };
@@ -328,45 +328,59 @@ class TransactionActionsClass extends BaseActionsClass {
 		if (accountId && ![result.from.id, result.subject.id].includes(accountId) && !round) {
 			return null;
 		}
+		if (resId && validators.isContractResultId(resId) && (type === OPERATIONS_IDS.CONTRACT_CREATE || type === OPERATIONS_IDS.CONTRACT_CALL)) {
 
-		if (resId && (type === OPERATIONS_IDS.CONTRACT_CREATE || type === OPERATIONS_IDS.CONTRACT_CALL)) {
-
-			const contractResult = await echo.api.getContractResult(resId);
+			let contractResult;
+			try {
+				contractResult = await echo.api.getContractResult(resId);
+			} catch (error) {
+				result.status = true;
+				return result;
+			}
 
 			const [contractResultType, contractResultObject] = contractResult;
-
 			let log;
+			let newContractAddress;
 
 			if (contractResultType === CONTRACT_RESULT_TYPE_0) {
 
-				const { exec_res: { excepted } } = contractResultObject;
+				const { exec_res: { excepted, new_address } } = contractResultObject;
 				({ log } = contractResultObject.tr_receipt);
 				result.status = excepted === 'None';
+
+				if (new_address) {
+					newContractAddress = `${CONTRACT_OBJECT_PREFIX}.${parseInt(new_address.slice(3), 16)}`;
+				}
 
 			} else {
 				result.status = true;
 			}
 
+			if ([
+				OPERATIONS_IDS.CONTRACT_CALL,
+				OPERATIONS_IDS.CONTRACT_CREATE,
+			].includes(type) && round) {
+				const contractId = newContractAddress || result.subject.id;
 
-			if (type === OPERATIONS_IDS.CONTRACT_CALL && round) {
-				// let contractHistory = [];
+				let contractHistory = [];
 
-				// try {
-				// 	contractHistory = await echo.api.getContractHistory(result.subject.id);
-				// } catch (e) {
-				// 	//
-				// }
+				try {
+					contractHistory = await echo.api.getContractHistory(contractId);
+				} catch (e) {
+					//
+				}
 
-				// let internalOperations = contractHistory
-				// 	.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
-				// 	.map(({ op }) => this.formatOperation(op, accountId));
+				let internalOperations = contractHistory
+					.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
+					.map(({ op }) => this.formatOperation(op, accountId));
+				internalOperations = await Promise.all(internalOperations);
+				internalOperations = internalOperations.filter((op) => op);
 
-				// internalOperations = await Promise.all(internalOperations);
-				// internalOperations = internalOperations.filter((op) => op);
-				let internalTransactions = [];
+
+				let internalTransactions = [...internalOperations];
 				let code = '';
 				try {
-					([, { code }] = await echo.api.getContract(result.subject.id));
+					([, { code }] = await echo.api.getContract(contractId));
 
 				} catch (e) {
 					//
@@ -375,43 +389,38 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (log && Array.isArray(log) && TypesHelper.isErc20Contract(code)) {
 
 					const symbol = FormatHelper
-						.toUtf8((await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['symbol()'])).slice(128));
-					const precision = parseInt(await echo.api.callContractNoChangingState(result.subject.id, NATHAN.ID, ECHO_ASSET.ID, ERC20_HASHES['decimals()']), 16);
+						.toUtf8((await echo.api.callContractNoChangingState(contractId, NATHAN.ID, { asset_id: ECHO_ASSET.ID, amount: 0 }, ERC20_HASHES['symbol()'])).slice(128));
+					const precision = parseInt(await echo.api.callContractNoChangingState(contractId, NATHAN.ID, { asset_id: ECHO_ASSET.ID, amount: 0 }, ERC20_HASHES['decimals()']), 16);
 
 					let internalTransfers = log
-						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === result.subject.id);
+						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === contractId);
 					const internalTransfersTransfer = internalTransfers
 						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token transfer'));
+						.map((event) => this.parseTransferEvent(event, symbol, precision, 'Token transfer'));
 					const internalTransfersApproval = internalTransfers
 						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Approval(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision, 'ERC 20 Token approval'));
+						.map((event) => this.parseTransferEvent(event, symbol, precision, 'Token approval'));
 					const internalTransfersWithdrawal = internalTransfers
 						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Withdrawal(address, uint256)']) === 0)
-						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token withdrawal', result.subject.id, false));
+						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'Token withdrawal', contractId, false));
 					const internalTransfersDeposit = internalTransfers
 						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Deposit(address, uint256)']) === 0)
-						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'ERC 20 Token deposit', result.subject.id, true));
+						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'Token deposit', contractId, true));
 					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval, ...internalTransfersWithdrawal, ...internalTransfersDeposit];
 					internalTransfers = await Promise.all(internalTransfers);
-					internalTransactions = [...internalTransactions, ...internalTransfers];
+					internalTransactions = [...internalTransfers, ...internalTransactions];
 				}
 
-				result.internal = internalTransactions;
+				result.internal = internalTransactions.map((i) => ({
+					from: i.from,
+					subject: i.subject,
+					value: Object.assign({ amount: 0, symbol: ECHO_ASSET.SYMBOL, precision: ECHO_ASSET.PRECISION }, i.value ? i.value : {}),
+					label: i.label || i.name,
+				}));
 			}
 		}
 
-		// if (type === 0 && operation.memo && operation.memo.message) {
-		// 	result.memo = operation.memo;
-		// }
-
-		// if (operation.code) {
-		// 	result.bytecode = operation.code;
-		// }
 		if (result.internal && result.internal[0]) {
-			if (Number.isNaN(result.internal[0].value.precision)) {
-				result.internal[0].value.precision = 18;
-			}
 			result.value = result.internal[0].value;
 		}
 		return result;
@@ -497,27 +506,32 @@ class TransactionActionsClass extends BaseActionsClass {
 				options['token transfers'] = internal;
 			}
 
-			const [, resultId] = operationResult;
+			try {
+				const [, resultId] = operationResult;
 
-			const [contractResultType, result] = await echo.api.getContractResult(resultId);
+				const [contractResultType, result] = await echo.api.getContractResult(resultId);
 
-			if (contractResultType === CONTRACT_RESULT_TYPE_0) {
-				const { exec_res: { excepted, code_deposit, new_address }, tr_receipt: { log } } = result;
+				if (contractResultType === CONTRACT_RESULT_TYPE_0) {
+					const { exec_res: { excepted, code_deposit, new_address }, tr_receipt: { log } } = result;
 
-				options.excepted = _.startCase(excepted);
-				options['code deposit'] = code_deposit;
+					options.excepted = _.startCase(excepted);
+					options['code deposit'] = code_deposit;
 
-				if (parseInt(new_address, 10)) {
-					const id = ConvertHelper.toContractId(new_address);
-					options['new contract id'] = { value: id, link: id };
+					if (parseInt(new_address, 10)) {
+						const id = ConvertHelper.toContractId(new_address);
+						options['new contract id'] = { value: id, link: id };
+					}
+
+					if (log.length) {
+						options.logs = log.map(({ address, data, log: topics }) => {
+							const convertedContract = ConvertHelper.toContractId(address);
+							return { topics, contract: convertedContract, data };
+						});
+					}
+
 				}
-
-				if (log.length) {
-					options.logs = log.map(({ address, data, log: topics }) => {
-						const convertedContract = ConvertHelper.toContractId(address);
-						return { topics, contract: convertedContract, data };
-					});
-				}
+			// eslint-disable-next-line no-empty
+			} catch (error) {
 
 			}
 		}
@@ -584,7 +598,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
 						operation,
-						blockNumber,
+						parseInt(blockNumber, 10),
 						block.timestamp,
 						index - 1,
 						opIndex,
