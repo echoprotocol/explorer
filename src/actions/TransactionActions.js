@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import echo, { OPERATIONS_IDS, validators, constants } from 'echojs-lib';
+import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, Map } from 'immutable';
 import _ from 'lodash';
 import BN from 'bignumber.js';

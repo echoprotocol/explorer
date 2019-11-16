@@ -15,7 +15,7 @@ class TransactionsInfo extends React.Component {
 		const { round, index } = this.props.match.params;
 
 		this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
-		// this.props.getBlockInfo(round);
+		this.props.getBlockInfo(round);
 		this.props.getTransaction();
 	}
 
