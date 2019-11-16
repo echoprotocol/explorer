@@ -173,11 +173,12 @@ class OperationInfo extends React.Component {
 
 	renderInfo() {
 		const {
-			details, index, block, transaction,
+			details, index, block, transaction, opIndex,
 		} = this.props;
 		const { type } = details;
 		const opKey = `${type}_${index}`;
 		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
+		const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
 		return (
 			<React.Fragment>
 				{
@@ -200,8 +201,8 @@ class OperationInfo extends React.Component {
 							);
 						} else if (key === 'token transfers') {
 							return (
-								value.map((op, opIndex) => (
-									<div className="od-row" key={`${opKey}_${key}_${opIndex.toString()}`} >
+								value.map((op, internalOpIndex) => (
+									<div className="od-row" key={`${opKey}_${key}_${internalOpIndex.toString()}`} >
 										<div className="od-col">
 											<div className="tt-row" key={index.toString()}>{op.label}:</div>
 										</div>
@@ -225,9 +226,9 @@ class OperationInfo extends React.Component {
 					})
 				}
 				<div className="od-row">
-					<div className="od-col">TRANSACTION:</div>
+					<div className="od-col">OPERATION:</div>
 					<div className="od-col">
-						<Link to={transactionUrl}>{`${window.location.origin}${transactionUrl}`}</Link>
+						<Link to={operationUrl}>{`${window.location.origin}${operationUrl}`}</Link>
 					</div>
 				</div>
 			</React.Fragment>
@@ -254,8 +255,9 @@ OperationInfo.defaultProps = {
 OperationInfo.propTypes = {
 	details: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
-	block: PropTypes.number.isRequired,
+	block: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 	transaction: PropTypes.number.isRequired,
+	opIndex: PropTypes.number.isRequired,
 	objId: PropTypes.string,
 };
 

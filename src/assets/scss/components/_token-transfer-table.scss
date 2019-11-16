@@ -1,12 +1,11 @@
 .token-transfer-table {
-    display: table;
+    display: flex;
+    align-items: flex-start;
+
     .tt-row {
-        display: table-row;
         font-weight: 400;
     }
     .tt-col {
-        display: table-row;
-        display: table-cell;
         padding-bottom: 10px;
 
         &:first-child{
@@ -21,11 +20,11 @@
             .direction {
                 margin: 0 8px;
             }
-            @include res-500 {
-                .direction + .avatar-wrap {
-                    margin: 8px 0 0;
-                }
-            }
+            // @include res-500 {
+            //     .direction + .avatar-wrap {
+            //         margin: 8px 0 0;
+            //     }
+            // }
         }
     }
 }

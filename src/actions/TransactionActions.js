@@ -598,7 +598,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
 						operation,
-						blockNumber,
+						parseInt(blockNumber, 10),
 						block.timestamp,
 						index - 1,
 						opIndex,
