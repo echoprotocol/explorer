@@ -206,12 +206,6 @@ class ObjectInfo extends React.Component {
 						</div>
 					</div>
 					<div className="od-row">
-						<div className="od-col">Voting Account:</div>
-						<div className="od-col">
-							<Link to={URLHelper.createAccountUrl(object.get('voting'))}>{object.get('voting')}</Link>
-						</div>
-					</div>
-					<div className="od-row">
 						<div className="od-col">Delegating Account:</div>
 						<div className="od-col">
 							<Link to={URLHelper.createAccountUrl(object.get('delegating'))}>{object.get('delegating')}</Link>

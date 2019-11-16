@@ -33,6 +33,8 @@ class AccountActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	async formatAccountHistory(accountId, transactions) {
+		await TransactionActions.fetchTransactionsObjects(transactions);
+
 		let accountHistory = transactions.map(async (t) => {
 			let { op: operation, result } = t;
 			const block = await echo.api.getBlock(t.block_num);
