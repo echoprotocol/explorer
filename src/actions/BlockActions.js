@@ -290,6 +290,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 			try {
 				weight = serializers.signedBlock.serialize(blocksResult[i]).length;
 			} catch (e) {
+				weight = JSON.stringify(blocksResult[i]).length;
 				//
 			}
 
