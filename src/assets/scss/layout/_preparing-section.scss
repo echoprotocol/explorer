@@ -3,10 +3,14 @@
     display: flex;
     padding-right: 0;
 
+    @include res-1280 {
+        padding: 0px 20px 10px;
+    }
+
     @include res-768 {
         display: flex;
         justify-content: space-between;
-        padding: 0px 18px 11px;
+        padding: 0px 23px 10px;
     }
 
     @include res-500 {
@@ -201,7 +205,6 @@
                 }
             }
         }
-
 
         .title {
             display: inline-flex;
