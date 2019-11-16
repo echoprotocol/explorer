@@ -11,6 +11,7 @@ import NotFound from './containers/Error/NotFoundScreen';
 import UploadABI from './containers/UploadABI';
 import ManageContract from './containers/ManageContract';
 import VerifyContract from './containers/VerifyContract';
+import NodeMap from './containers/NodeMap';
 
 import {
 	INDEX_PATH,
@@ -22,7 +23,9 @@ import {
 	NOT_FOUND_PATH,
 	CONTRACT_PATH_DETAIL,
 	UPLOAD_ABI_PATH,
-	MANAGE_CONTRACT_PATH, VERIFY_CONTRACT_PATH,
+	MANAGE_CONTRACT_PATH,
+	VERIFY_CONTRACT_PATH,
+	NODE_MAP,
 } from './constants/RouterConstants';
 
 
@@ -43,6 +46,7 @@ export default class extends React.Component {
 					<Route exact path={MANAGE_CONTRACT_PATH} component={ManageContract} />
 					<Route exact path={VERIFY_CONTRACT_PATH} component={VerifyContract} />
 					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
+					<Route path={NODE_MAP} component={NodeMap} />
 
 					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
 					<Route component={NotFound} />
