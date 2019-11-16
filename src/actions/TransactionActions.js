@@ -35,6 +35,48 @@ class TransactionActionsClass extends BaseActionsClass {
 	}
 
 	/**
+	 * Fetch deep transaction object ids for requests optimization
+	 * @method fetchTransactionsObjects
+	 * @param transactions
+	 * @returns {Promise<void>}
+	 */
+	async fetchTransactionsObjects(transactions) {
+		const deepExtract = (data, result) => Object.values(data).reduce((ids, id) => {
+			if (validators.isObjectId(id) && !result.includes(id)) {
+				ids.push(id);
+				return ids;
+			}
+
+			if (typeof id === 'object' && id !== null) {
+				ids = ids.concat(deepExtract(id, ids));
+			}
+
+			return ids;
+		}, []);
+
+		let blocks = [];
+		const objectIds = transactions.reduce((resultIds, tx) => {
+			const data = tx.op ? tx.op[1] : tx[1];
+			blocks.push(tx.block_num);
+
+			const operationIds = deepExtract(data, resultIds).filter((id) => !resultIds.includes(id));
+
+			return resultIds.concat(operationIds);
+		}, []);
+
+		blocks = blocks.reduce((resultBlocks, b, index, currentBlocks) => {
+			const blocksCount = currentBlocks.reduce((count, curBlock) => (curBlock === b ? count + 1 : count), 0);
+			if (blocksCount !== 1 && !resultBlocks.includes(b)) {
+				resultBlocks.push(b);
+			}
+			return resultBlocks;
+		}, []);
+
+		await Promise.all(blocks.map((b) => echo.api.getBlock(b)));
+		await echo.api.getObjects(objectIds);
+	}
+
+	/**
 	 *
 	 * @param id
 	 * @returns {function(*, *): Map<string, any>}
@@ -83,7 +125,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					const acc = await echo.api.getObject(id);
 					return acc && acc.name;
 				}));
-				const accounts = await echo.api.getObjects([account.registrar, account.options.voting_account, account.options.delegating_account]);
+				const accounts = await echo.api.getObjects([account.registrar, account.options.delegating_account]);
 
 				object = object
 					.set('id', account.id)
@@ -92,8 +134,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('activeAccounts', activeAccounts)
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
-					.set('voting', accounts[1] && accounts[1].name)
-					.set('delegating', accounts[2] && accounts[2].name);
+					.set('delegating', accounts[1] && accounts[1].name);
 			} else if (assetOperations.includes(operation.name)) {
 				let assetId = null;
 				if (operation.options.asset) {
@@ -594,6 +635,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				const transaction = block.transactions[index - 1];
+
+				await this.fetchTransactionsObjects(transaction.operations);
 
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
