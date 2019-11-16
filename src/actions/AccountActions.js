@@ -29,10 +29,12 @@ class AccountActions extends BaseActionsClass {
 	/**
 	 * Format account history
 	 * @param {String} accountId
-	 * @param {Array} history
+	 * @param {Array} transactions
 	 * @returns {function}
 	 */
 	async formatAccountHistory(accountId, transactions) {
+		await TransactionActions.fetchTransactionsObjects(transactions);
+
 		let accountHistory = transactions.map(async (t) => {
 			let { op: operation, result } = t;
 			const block = await echo.api.getBlock(t.block_num);
@@ -195,9 +197,9 @@ class AccountActions extends BaseActionsClass {
 		return async (dispatch) => {
 			if (!BridgeService.isExist()) return;
 
-			const accounts = await BridgeService.getAccounts();
+			const account = await BridgeService.getAccount();
 
-			dispatch(this.setActiveAccount(accounts.find((a) => a.active)));
+			dispatch(this.setActiveAccount(account));
 		};
 	}
 
@@ -206,14 +208,14 @@ class AccountActions extends BaseActionsClass {
 			const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 
 			if (!activeAccountId) {
-				const accounts = await BridgeService.getAccounts();
+				const account = await BridgeService.getAccount();
 
-				if (!accounts.length) {
+				if (!account) {
 					dispatch(ModalActions.openModal(MODAL_ERROR, { title: 'No accounts' }));
 					return false;
 				}
 
-				dispatch(this.setActiveAccount(accounts.find((a) => a.active)));
+				dispatch(this.setActiveAccount(account));
 				return true;
 			}
 

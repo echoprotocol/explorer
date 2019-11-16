@@ -2,7 +2,7 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map } from 'immutable';
-import echo from 'echojs-lib';
+import echo, { serializers } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -79,6 +79,8 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 		let resultTransactions = [];
 		if (transactions.length !== 0) {
+			const ops = transactions.reduce((resultIds, { operations }) => resultIds.concat(operations), []);
+			await TransactionActions.fetchTransactionsObjects(ops);
 
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
@@ -283,6 +285,15 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 				break;
 			}
 
+			// TODO remove!!!! try-catch after echojs-lib FIXED
+			let weight = 0;
+			try {
+				weight = serializers.signedBlock.serialize(blocksResult[i]).length;
+			} catch (e) {
+				weight = JSON.stringify(blocksResult[i]).length;
+				//
+			}
+
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
 				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
@@ -291,7 +302,7 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
 				.setIn([blockNumber, 'reward'], blocksRewards[blockNumber] ? blocksRewards[blockNumber].toString(10) : 0)
 				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
-				.setIn([blockNumber, 'weight'], JSON.stringify(blocksResult[i]).length)
+				.setIn([blockNumber, 'weight'], weight)
 				.setIn([blockNumber, 'weightSize'], 'bytes')
 				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length)
 				.setIn([blockNumber, 'transactionsInfo'], blocksResult[i].transactions);
