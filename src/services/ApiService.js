@@ -5,6 +5,8 @@ import {
 	ABI_PREFIX,
 	API_PREFIX,
 	SEARCH_PREFIX,
+	NETWORK_PREFIX,
+	PEERS_PREFIX,
 } from '../constants/ExplorerServerConstans';
 import { put, get, post } from '../utils/Api';
 
@@ -38,6 +40,10 @@ class ApiService {
 
 	static searchContracts(data) {
 		return post(`${config.SERVER_URL}/${API_PREFIX}/${CONTRACT_PREFIX}/${SEARCH_PREFIX}`, data);
+	}
+
+	static getPeers(data) {
+		return get(`${config.SERVER_URL}/${API_PREFIX}/${NETWORK_PREFIX}/${PEERS_PREFIX}`, data);
 	}
 
 }

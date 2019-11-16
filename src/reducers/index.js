@@ -10,6 +10,7 @@ import searchReducer from './SearchReducer';
 import accountReducer from './AccountReducer';
 import contractReducer from './ContractReducer';
 import internetPopupReducer from './InternetPopupReducer';
+import networkReducer from './NetworkReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -24,4 +25,5 @@ export default {
 	search: searchReducer.reducer,
 	contract: contractReducer.reducer,
 	internetPopup: internetPopupReducer.reducer,
+	network: networkReducer.reducer,
 };

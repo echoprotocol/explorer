@@ -248,6 +248,7 @@ class OperationRow extends React.Component {
 												index={index}
 												block={block}
 												transaction={transactionNum}
+												opIndex={opIndex}
 												objId={objectId}
 											/>
 											<ObjectInfo details={detailInfo} object={objectInfo} />
