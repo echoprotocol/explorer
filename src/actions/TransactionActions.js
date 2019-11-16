@@ -57,7 +57,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		const objectIds = transactions.reduce((resultIds, tx) => {
 			const data = tx.op ? tx.op[1] : tx[1];
 
-			const operationIds = deepExtract(data, resultIds);
+			const operationIds = deepExtract(data, resultIds).filter((id) => !resultIds.includes(id));
 
 			return resultIds.concat(operationIds);
 		}, []);
