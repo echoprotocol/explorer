@@ -5,7 +5,8 @@ import Media from 'react-media';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
-import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from 'react-infinite-scroller';
+import { InfiniteScroll } from 'react-simple-infinite-scroll';
 import classnames from 'classnames';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
@@ -88,7 +89,15 @@ class RecentBlockTable extends React.Component {
 		const AreEmptyTransactions = !hasMore && !blocks.length;
 
 		return (
-			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
+			<InfiniteScroll
+				onLoadMore={() => {
+					this.props.setValue('loading', true);
+					setTimeout(() => this.props.loadBlocks(), 1000);
+				}}
+				hasMore={hasMore}
+				throttle={1000}
+				isLoading={loading}
+			>
 				<div className="table-container recent-block-table">
 					<h2>Recent blocks
 						<SmallSearchField
@@ -236,6 +245,7 @@ RecentBlockTable.propTypes = {
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	setValue: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
 	getHints: PropTypes.func.isRequired,
 };

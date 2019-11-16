@@ -347,6 +347,7 @@ export const initBlocks = () => async (dispatch) => {
  */
 export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	try {
+		dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
 		const hasMore = getState().block.get('hasMore');
 
 		if (
@@ -360,7 +361,6 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 
 		const maxBlocks = getState().block.get('blocksCount');
 
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
 		dispatch(BlockReducer.actions.set({ field: 'blocksCount', value: maxBlocks + PAGE_ADD_BLOCKS_COUNT }));
 
 		const [...keys] = getState().block.get('blocks').keys();
@@ -384,7 +384,7 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	} catch (_) {
 		return false;
 	} finally {
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
+		setTimeout(() => dispatch(BlockReducer.actions.set({ field: 'loading', value: false })), 500);
 	}
 
 };
