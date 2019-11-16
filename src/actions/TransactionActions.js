@@ -54,14 +54,25 @@ class TransactionActionsClass extends BaseActionsClass {
 			return ids;
 		}, []);
 
+		let blocks = [];
 		const objectIds = transactions.reduce((resultIds, tx) => {
 			const data = tx.op ? tx.op[1] : tx[1];
+			blocks.push(tx.block_num);
 
 			const operationIds = deepExtract(data, resultIds).filter((id) => !resultIds.includes(id));
 
 			return resultIds.concat(operationIds);
 		}, []);
 
+		blocks = blocks.reduce((resultBlocks, b, index, currentBlocks) => {
+			const blocksCount = currentBlocks.reduce((count, curBlock) => (curBlock === b ? count + 1 : count), 0);
+			if (blocksCount !== 1 && !resultBlocks.includes(b)) {
+				resultBlocks.push(b);
+			}
+			return resultBlocks;
+		}, []);
+
+		await Promise.all(blocks.map((b) => echo.api.getBlock(b)));
 		await echo.api.getObjects(objectIds);
 	}
 
