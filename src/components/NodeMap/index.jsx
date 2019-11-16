@@ -122,7 +122,6 @@ class NodeMap extends React.Component {
 
 NodeMap.propTypes = {
 	getPeers: PropTypes.func.isRequired,
-	history: PropTypes.object.isRequired,
 };
 
 export default NodeMap;
