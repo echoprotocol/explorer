@@ -4,11 +4,11 @@ import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import PropTypes from 'prop-types';
 
 import config from '../../config/chain';
+import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
 
 const Map = ReactMapboxGl({
 	accessToken: config.MAP_API_TOKEN,
 });
-const zoom = [1];
 class NodeMap extends React.Component {
 
 	constructor(props) {
@@ -85,7 +85,7 @@ class NodeMap extends React.Component {
 					className="distribution-map"
 					// eslint-disable-next-line react/style-prop-object
 					style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
-					zoom={zoom}
+					zoom={DEFAULT_MAP_ZOOM}
 				>
 					{data.map((p, key) => (
 						<Layer
