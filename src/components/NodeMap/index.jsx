@@ -1,5 +1,4 @@
 import React from 'react';
-import Media from 'react-media';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import PropTypes from 'prop-types';
 
@@ -70,15 +69,7 @@ class NodeMap extends React.Component {
 				<div className="distribution-header">
 					<h1>Nodes Distribution</h1>
 					<button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
-						<Media query="(max-width: 499px)">
-							{(matches) =>
-								(matches ? (
-									'How to run full node'
-								) : (
-									'Join Full Nodes Incentive Program'
-								))
-							}
-						</Media>
+						How to run full node
 					</button>
 				</div>
 				<Map
