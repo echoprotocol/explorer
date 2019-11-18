@@ -243,7 +243,6 @@ RecentBlockTable.propTypes = {
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
-	setValue: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
 	getHints: PropTypes.func.isRequired,
 };
