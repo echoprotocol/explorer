@@ -79,6 +79,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 		let resultTransactions = [];
 		if (transactions.length !== 0) {
+			// TODO: didnt work with ops data
+			// const ops = transactions.reduce((resultIds, { operations }) => resultIds.concat(operations), []);
+			// await TransactionActions.fetchTransactionsObjects(ops);
 
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
