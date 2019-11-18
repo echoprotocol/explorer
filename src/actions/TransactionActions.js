@@ -388,8 +388,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				({ log } = contractResultObject.tr_receipt);
 				result.status = excepted === 'None';
 
-				if (new_address) {
-					newContractAddress = `${CONTRACT_OBJECT_PREFIX}.${parseInt(new_address.slice(3), 16)}`;
+				if (new_address && !result.subject.id) {
+					newContractAddress = `${CONTRACT_OBJECT_PREFIX}.${parseInt(new_address.slice(2), 16)}`;
 				}
 
 			} else {
