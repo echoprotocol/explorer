@@ -5,7 +5,6 @@ import Media from 'react-media';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
-// import InfiniteScroll from 'react-infinite-scroller';
 import { InfiniteScroll } from 'react-simple-infinite-scroll';
 import classnames from 'classnames';
 
