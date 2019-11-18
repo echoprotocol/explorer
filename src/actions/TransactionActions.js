@@ -195,19 +195,18 @@ class TransactionActionsClass extends BaseActionsClass {
 	async parseTransferEvent({ log, data }, symbol = '', precision = 0, label) {
 		const [, hexFrom, hexTo] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
-		const fromInt = parseInt(hexFrom.slice(3), 16);
-		const toInt = parseInt(hexTo.slice(3), 16);
-
+		const fromInt = parseInt(hexFrom.slice(26), 16);
+		const toInt = parseInt(hexTo.slice(26), 16);
 		let from = { id: `${CONTRACT_OBJECT_PREFIX}.${fromInt}` };
 		let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
-		if (hexFrom[2] === '0') {
+		if (hexFrom[25] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${fromInt}`;
 			const { name } = (await echo.api.getObject(id));
 			from = { id, name };
 		}
 
-		if (hexTo[2] === '0') {
+		if (hexTo[25] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 			const { name } = (await echo.api.getObject(id));
 			to = { id, name };
@@ -229,12 +228,12 @@ class TransactionActionsClass extends BaseActionsClass {
 		const [, hex] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 
-		const toInt = parseInt(hex.slice(3), 16);
+		const toInt = parseInt(hex.slice(26), 16);
 		let account = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
 		const contract = {};
 		contract.id = contractId;
-		if (hex[2] === '0') {
+		if (hex[25] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 			const { name } = (await echo.api.getObject(id));
 			account = { id, name };
@@ -412,7 +411,15 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				let internalOperations = contractHistory
-					.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
+					.filter((i) => (i.block_num === round
+						&& i.trx_in_block === trIndex
+						&& i.op_in_trx === opIndex
+						&& [
+							OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE,
+							OPERATIONS_IDS.CONTRACT_INTERNAL_CALL,
+							OPERATIONS_IDS.CONTRACT_SELFDESTRUCT,
+						].includes(i.op[0])
+					))
 					.map(({ op }) => this.formatOperation(op, accountId));
 				internalOperations = await Promise.all(internalOperations);
 				internalOperations = internalOperations.filter((op) => op);
@@ -461,7 +468,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			}
 		}
 
-		if (result.internal && result.internal[0]) {
+		if (result.internal && result.internal[0] && result.internal[0].value) {
 			result.value = result.internal[0].value;
 		}
 		return result;
@@ -573,7 +580,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 			// eslint-disable-next-line no-empty
 			} catch (error) {
-
+				console.log('12fwfwfwfwf')
 			}
 		}
 
