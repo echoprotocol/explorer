@@ -25,6 +25,17 @@ class NodeMap extends React.Component {
 
 	static getDerivedStateFromProps(props) {
 
+		const getCircleRadius = (nodeCount) => {
+			if (nodeCount > 1) {
+				return 11;
+			} else if (nodeCount > 10) {
+				return 13;
+			} else if (nodeCount > 20) {
+				return 17;
+			}
+			return 8;
+		};
+
 		const data = props.peers.map((p, i) => ({
 			id: i.toString(),
 			city: p.city,
@@ -34,7 +45,7 @@ class NodeMap extends React.Component {
 			node: p.node,
 			POSITION_CIRCLE_PAINT: {
 				'circle-stroke-width': 0,
-				'circle-radius': 10,
+				'circle-radius': getCircleRadius(p.node),
 				'circle-blur': 0.15,
 				'circle-stroke-color': 'white',
 				'circle-color': '#4588D7',
@@ -49,9 +60,11 @@ class NodeMap extends React.Component {
 		mapWithEvt.map.setPaintProperty(p.id, 'circle-stroke-width', 3);
 		this.showPopup(p);
 	}
+
 	showPopup(popupData) {
 		this.setState({ popupData });
 	}
+
 	hidePopup(mapWithEvt, p) {
 		mapWithEvt.map.setPaintProperty(p.id, 'circle-color', '#4588D7');
 		mapWithEvt.map.setPaintProperty(p.id, 'circle-stroke-width', 0);
