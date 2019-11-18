@@ -91,7 +91,6 @@ class RecentBlockTable extends React.Component {
 		return (
 			<InfiniteScroll
 				onLoadMore={() => {
-					this.props.setValue('loading', true);
 					setTimeout(() => this.props.loadBlocks(), 1000);
 				}}
 				hasMore={hasMore}
