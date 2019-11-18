@@ -580,7 +580,6 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 			// eslint-disable-next-line no-empty
 			} catch (error) {
-				console.log('12fwfwfwfwf')
 			}
 		}
 
