@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
+import BN from 'bignumber.js';
 
 import ddIcon from '../../assets/images/icons/curret-sm.svg';
 
@@ -157,9 +158,9 @@ class OperationRow extends React.Component {
 										className="value"
 									>
 										{
-											FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
-												FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
-												FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)
+											new BN(mainInfo.value.amount).div(10 ** mainInfo.value.precision).toString(10).length > 10 ?
+												FormatHelper.zipAmount(new BN(mainInfo.value.amount).div(10 ** mainInfo.value.precision).toString(10)) :
+												FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).toString(10)
 										}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
@@ -248,6 +249,7 @@ class OperationRow extends React.Component {
 												index={index}
 												block={block}
 												transaction={transactionNum}
+												opIndex={opIndex}
 												objId={objectId}
 											/>
 											<ObjectInfo details={detailInfo} object={objectInfo} />

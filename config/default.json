@@ -1,11 +1,13 @@
 {
   "API_URL": "wss://testnet.echo-dev.io/ws",
   "SOLC_LIST_URL": "https://echoprotocol.github.io/solc-bin/bin/list.json",
-  "SOLC_BIN_URL": "  https://echoprotocol.github.io/solc-bin/bin/",
+  "SOLC_BIN_URL": "https://echoprotocol.github.io/solc-bin/bin/",
   "LANDING_BRIDGE": "http://649-bridge-landing.pixelplexlabs.com",
   "GRAPHQL_URL": {
     "HTTP": "http://localhost:3000/graphql",
     "WS": "ws://localhost:3000/graphql"
   },
-  "SERVER_URL": "http://localhost:26563"
+  "SERVER_URL": "http://localhost:26563",
+  "MAP_API_TOKEN": "pk.eyJ1IjoibWF4c2hldiIsImEiOiJjazJsbnByY2cwODlpM2NwZWZhZndhZjhhIn0.RF3XIqcQtY2nTT8sKYL8wA",
+  "INSTALL_NODE_LINK": "https://docs.echo.org/how-to/install-full-node"
 }

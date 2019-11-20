@@ -29,7 +29,7 @@ class AccountActions extends BaseActionsClass {
 	/**
 	 * Format account history
 	 * @param {String} accountId
-	 * @param {Array} history
+	 * @param {Array} transactions
 	 * @returns {function}
 	 */
 	async formatAccountHistory(accountId, transactions) {

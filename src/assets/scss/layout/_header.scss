@@ -4,6 +4,10 @@ header {
     align-items: center;
     justify-content: space-between;
 
+    @include res-1280 {
+        padding: 38px 20px 68px;
+    }
+
     @include res-768 {
         padding: 38px 24px 48px;
     }

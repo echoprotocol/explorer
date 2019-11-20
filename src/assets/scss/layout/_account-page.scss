@@ -27,10 +27,19 @@
                 margin-bottom: 33px;
                 letter-spacing: 0.59px;
                 margin-top: 50px;
+                margin-left: 30px;
+
+                @include res-1280 {
+                    margin-left: 19px;
+                }
 
                 @include res-768 {
+                    margin-left: 23px;
                     margin-bottom: 29px;
-                    margin-left: 18px;
+                }
+
+                @include res-500 {
+                    margin-left: 17px;
                 }
             }
 
@@ -51,17 +60,20 @@
                     display: inline-flex;
                     flex-direction: column;
                     width: 366px;
-                    // min-height: 176px;
-                    padding: 25px;
+                    padding: 25px 32px;
                     flex-shrink: 0;
 
+                    @include res-1280 {
+                        padding: 20px;
+                    }
+
                     @include res-768 {
-                        // min-height: 190px;
+                        padding: 23px;
                     }
 
                     @include res-500 {
                         width: 220px;
-                        // min-height: 167px;
+                        padding: 18px;
                     }
 
                     @include res-320 {
@@ -414,8 +426,6 @@
         }
 
         .contract-asset-panel {
-            // width: 370px;
-            // width: 100%;
             margin-left: 30px;
             padding-top: 15px;
             width: 785px;
