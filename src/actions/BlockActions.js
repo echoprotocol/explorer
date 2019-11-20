@@ -2,7 +2,7 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map } from 'immutable';
-import echo, { serializers } from 'echojs-lib';
+import echo, { serializers, constants } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -27,13 +27,76 @@ import GlobalReducer from '../reducers/GlobalReducer';
 
 /**
  *
+ * @param {Object} targetBlock
+ * @param {Object|undefined} targetBlock
+ * @param {Object|undefined} targetBlockReward
+ */
+const getRewardDistribution = async (targetBlock, nextBlock) => {
+	if (!nextBlock) {
+		return null;
+	}
+
+	const { account: producerId, delegate: delegateId } = targetBlock;
+
+	const producer = {
+		type: 'Producer',
+		producer: undefined,
+		delegate: undefined,
+		producedByCommittee: false,
+	};
+
+	if (producerId) {
+		const account = await echo.api.getObject(producerId);
+		producer.producer = account ? account.name : undefined;
+	}
+
+	if (delegateId) {
+		const account = await echo.api.getObject(delegateId);
+		producer.delegate = account ? account.name : undefined;
+	}
+
+	const verifiers = nextBlock.prev_signatures
+		.map(async (s) => {
+			const res = {
+				type: 'Verifier',
+				producer: undefined,
+				delegate: undefined,
+				producedByCommittee: !!s._fallback,
+			};
+
+			if (s._producer) {
+				const id = `${ACCOUNT_OBJECT_PREFIX}.${s._producer}`;
+				const account = await echo.api.getObject(id);
+
+				res.producer = account ? account.name : undefined;
+			}
+
+			if (s._delegate) {
+				const id = `${ACCOUNT_OBJECT_PREFIX}.${s._delegate}`;
+				const account = await echo.api.getObject(id);
+
+				res.delegate = account ? account.name : undefined;
+			}
+
+			return res;
+		});
+
+	const result = [producer, ...verifiers];
+
+	return Promise.all(result);
+};
+
+/**
+ *
  * @param {Number} round
  */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
 		let planeBlock = null;
+		let nextPlaneBlock = null;
 		try {
 			planeBlock = await echo.api.getBlock(round);
+			nextPlaneBlock = await echo.api.getBlock(new BN(round).plus(1).toString(10));
 		} catch (err) {
 			dispatch(GlobalReducer.actions.set({ field: 'error', value: NETWORK_CONNECTED_ERROR }));
 			dispatch(GlobalActions.toggleErrorScreen(true));
@@ -102,6 +165,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.verifiers = verifiers.map(({ name, id }) => ({ id, name }));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
+		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
