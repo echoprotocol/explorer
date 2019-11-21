@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
 import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
-import Loader from './Loader';
 
 import {
 	BBA_STARTED,
@@ -17,13 +16,9 @@ import {
 	PRODUCING_TIP,
 	rounderSteps,
 	MIN_PERCENT_PROGRESS_BAR,
-	MAX_PERCENT_PROGRESS_BAR,
 	PROGRESS_STATUS,
 	DONE_STATUS,
-	PROGRESS_BAR_START_DELAY,
 	GC_START_DELAY,
-	INTERVAL_PERIODS,
-	PROGRESS_BAR_END_RATE,
 } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -41,18 +36,7 @@ class PreparingSection extends React.Component {
 			readyProducers: 0,
 		};
 
-		this.roundStartedTimeout = null;
-		this.gcStartedTimeout = null;
-
-		this.progressInterval = null;
-		this.producingTimeout = null;
-		this.verifyingGCTimeout = null;
-		this.verifyingBBATimeout = null;
 		this.readyProducers = null;
-	}
-
-	componentDidMount() {
-		this.startProgressBar();
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -63,18 +47,6 @@ class PreparingSection extends React.Component {
 				(nextProps.stepProgress === ROUND_STARTED)
 			) {
 				this.setVerifyingBBA(DONE_STATUS);
-				this.resetProgressBar();
-				this.startProgressBar();
-			} else if (
-				(nextProps.stepProgress === GC_STARTED)
-			) {
-				this.gcStartedTimeout = setTimeout(() => {
-					clearTimeout(this.roundStartedTimeout);
-					this.setState({ status: rounderSteps[GC_STARTED].progress });
-					if (nextProps.readyProducers) {
-						this.setProducing(DONE_STATUS);
-					}
-				}, GC_START_DELAY);
 			} else if (nextProps.stepProgress === BBA_STARTED) {
 				this.setVerifyingGC(DONE_STATUS);
 				this.setState({ status: rounderSteps[BBA_STARTED].progress });
@@ -91,11 +63,6 @@ class PreparingSection extends React.Component {
 				this.updateReadyProducers(readyProducers);
 			}, GC_START_DELAY);
 		}
-	}
-
-
-	setProducing(status) {
-		this.setState({ producing: status });
 	}
 
 	setVerifyingGC(status) {
@@ -123,47 +90,10 @@ class PreparingSection extends React.Component {
 		}
 
 		return {
-			titel: rounderSteps[stepProgress].title,
+			title: rounderSteps[stepProgress].title,
 			currentStep,
 			status: stepStatus,
 		};
-	}
-
-	startProgressBar() {
-		this.progressInterval = setInterval(() => {
-			if (this.state.status < MAX_PERCENT_PROGRESS_BAR) {
-				if (this.state.verifyingGC === PROGRESS_STATUS && this.state.status >= rounderSteps[GC_STARTED].maxProgress) {
-					return;
-				}
-				if (this.props.disconnected) {
-					return;
-				}
-				this.setState({ status: this.state.status += 1 });
-			} else {
-				clearInterval(this.progressInterval);
-			}
-		}, INTERVAL_PERIODS);
-
-	}
-
-	resetProgressBar() {
-
-		clearTimeout(this.gcStartedTimeout);
-
-		clearTimeout(this.producingTimeout);
-		clearTimeout(this.verifyingGCTimeout);
-		clearTimeout(this.verifyingBBATimeout);
-		clearTimeout(this.readyProducers);
-		this.roundStartedTimeout = setTimeout(() => {
-			clearInterval(this.progressInterval);
-			this.setState(() => ({
-				status: MIN_PERCENT_PROGRESS_BAR,
-				producing: PROGRESS_STATUS,
-				verifyingGC: PROGRESS_STATUS,
-				verifyingBBA: PROGRESS_STATUS,
-				readyProducers: 0,
-			}));
-		}, PROGRESS_BAR_START_DELAY);
 	}
 
 	updateReadyProducers(readyProducers) {
@@ -172,7 +102,7 @@ class PreparingSection extends React.Component {
 
 	render() {
 		const {
-			producers, stepProgress, preparingBlock, averageBlockTime,
+			producers, stepProgress, preparingBlock,
 		} = this.props;
 
 		const {
@@ -208,7 +138,7 @@ class PreparingSection extends React.Component {
 								(matches ? (
 									<CompositePreparingBlock
 										composite
-										title={mobileData.titel}
+										title={mobileData.title}
 										currentStep={mobileData.currentStep}
 										totalStep={rounderSteps.totalStep}
 										description={`Producers: ${readyProducers}/${producers}`}
@@ -247,7 +177,6 @@ class PreparingSection extends React.Component {
 						</Media>
 					</div>
 				</div>
-				<Loader status={status} executeTime={averageBlockTime / PROGRESS_BAR_END_RATE} />
 			</React.Fragment>
 		);
 	}
@@ -259,8 +188,6 @@ PreparingSection.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
 	readyProducers: PropTypes.number.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
-	averageBlockTime: PropTypes.number.isRequired,
-	disconnected: PropTypes.bool.isRequired,
 };
 
 export default connect(

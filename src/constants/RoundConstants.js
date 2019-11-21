@@ -50,11 +50,6 @@ export const rounderSteps = {
 };
 
 export const MIN_PERCENT_PROGRESS_BAR = 0;
-export const MAX_PERCENT_PROGRESS_BAR = 100;
-export const INTERVAL_PERIODS = 300;
-
-export const PROGRESS_BAR_START_DELAY = 500;
-export const PROGRESS_BAR_END_RATE = 7;
 export const GC_START_DELAY = 800;
 
 export const PROGRESS_STATUS = 'progress';
