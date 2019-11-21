@@ -21,6 +21,58 @@
         }
     }
 
+
+
+    .header-collapse {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+
+        h2 {
+            padding-left: 32px;
+            font-size: 16px;
+            line-height: 27px;
+            margin-bottom: 0;
+            @include res-1280 {
+                padding-left: 20px;
+            }
+
+            @include res-768 {
+                padding-left: 23px;
+            }
+
+            @include res-500 {
+                padding-left: 16px;
+                margin-bottom: 0;
+            }
+        }
+        
+        &.is-open {
+            &:after {
+                transform: rotate(0deg);
+            }
+        }
+
+        &:after {
+            content: '';
+            width: 5px;
+            height: 4px;
+            margin-left: 8px;
+            flex-shrink: 0;
+            transition: .2s ease-out;
+            background-image: url(../images/icons/show-list-arrow.svg);
+            background-size: auto;
+            background-position: center center;
+            background-repeat: no-repeat;
+            display: inline-block;
+            transform: rotate(180deg);
+            will-change: transform;
+            transition: transform .2s ease-out;
+        }
+    }
+
     &.block-information {
 
         .block-description {

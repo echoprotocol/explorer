@@ -2,7 +2,7 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map } from 'immutable';
-import echo, { serializers, constants } from 'echojs-lib';
+import echo, { serializers } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -176,6 +176,11 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 export const clearBlockInformation = () => (dispatch) => {
 	dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map({}) }));
+};
+
+export const toggleRewardDistribution = () => (dispatch, getState) => {
+	const isDistributionRewardOpen = getState().block.get('isDistributionRewardOpen');
+	dispatch(BlockReducer.actions.set({ field: 'isDistributionRewardOpen', value: !isDistributionRewardOpen }));
 };
 
 /**

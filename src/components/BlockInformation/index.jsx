@@ -70,9 +70,8 @@ class BlockInformation extends React.Component {
 
 	renderBlockInformation(blockInformation, latestBlock) {
 
-		const {
-			currentTransactionLength,
-		} = this.state;
+		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
+		const { currentTransactionLength } = this.state;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
@@ -148,7 +147,11 @@ class BlockInformation extends React.Component {
 				</div>
 				{
 					(rewardDistribution && rewardDistribution.length) ? (
-						<DistributionTable rewards={rewardDistribution} />
+						<DistributionTable
+							rewards={rewardDistribution}
+							toggleReward={toggleRewardDistribution}
+							isOpen={isDistributionRewardOpen}
+						/>
 					) : (
 						<h2>Certificate list will be available after next block will be produced</h2>
 					)
@@ -197,6 +200,8 @@ BlockInformation.propTypes = {
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	toggleRewardDistribution: PropTypes.func.isRequired,
+	isDistributionRewardOpen: PropTypes.bool.isRequired,
 };
 
 BlockInformation.defaultProps = {

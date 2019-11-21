@@ -12,18 +12,6 @@ import Avatar from '../Avatar';
 
 class DistributionTable extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			isOpen: true,
-		};
-	}
-
-	onOpen() {
-		this.setState({ isOpen: !this.state.isOpen });
-	}
-
 	renderRow({
 		type, delegate, producer, producedByCommittee,
 	}, index) {
@@ -87,16 +75,14 @@ class DistributionTable extends React.Component {
 
 	render() {
 
-		const { rewards } = this.props;
-
-
-		const { isOpen } = this.state;
+		const { rewards, isOpen, toggleReward } = this.props;
 
 		return (
 			<React.Fragment>
 				<a
+					className={`header-collapse ${isOpen ? 'is-open' : ''}`}
 					href=""
-					onClick={(e) => { e.preventDefault(); this.onOpen(); }}
+					onClick={(e) => { e.preventDefault(); toggleReward(); }}
 				>
 					<h2>Block Certificate</h2>
 				</a>
@@ -163,11 +149,14 @@ class DistributionTable extends React.Component {
 }
 
 DistributionTable.propTypes = {
+	toggleReward: PropTypes.func.isRequired,
+	isOpen: PropTypes.bool,
 	rewards: PropTypes.array,
 };
 
 DistributionTable.defaultProps = {
 	rewards: [],
+	isOpen: false,
 };
 
 export default DistributionTable;
