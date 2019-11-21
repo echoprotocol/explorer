@@ -423,8 +423,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				internalOperations = await Promise.all(internalOperations);
 				internalOperations = internalOperations
 					.filter((op) => op)
-					.sort((op1, op2) => op1.type - op2.type);
-				console.log('internalOperations', internalOperations);
+					.filter((op) => op.value && op.value.amount && !(new BN(op.value.amount).eq(0)))
+					.map((op, i) => ({ ...op, name: i === 0 ? 'Asset transfer' : '' }));
 
 				let internalTransactions = [...internalOperations];
 				let code = '';
@@ -444,17 +444,17 @@ class TransactionActionsClass extends BaseActionsClass {
 					let internalTransfers = log
 						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === contractId);
 					const internalTransfersTransfer = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision, 'Token transfer'));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Transfer(address,address,uint256)']))
+						.map((event, i) => this.parseTransferEvent(event, symbol, precision, i === 0 ? 'Token transfer' : ''));
 					const internalTransfersApproval = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Approval(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision, 'Token approval'));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Approval(address,address,uint256)']))
+						.map((event, i) => this.parseTransferEvent(event, symbol, precision, i === 0 ? 'Token approval' : ''));
 					const internalTransfersWithdrawal = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Withdrawal(address, uint256)']) === 0)
-						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'Token withdrawal', contractId, false));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Withdrawal(address, uint256)']))
+						.map((event, i) => this.parseWithdrawalEvent(event, symbol, precision, i === 0 ? 'Token withdrawal' : '', contractId, false));
 					const internalTransfersDeposit = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Deposit(address, uint256)']) === 0)
-						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'Token deposit', contractId, true));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Deposit(address, uint256)']))
+						.map((event, i) => this.parseWithdrawalEvent(event, symbol, precision, i === 0 ? 'Token deposit' : '', contractId, true));
 					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval, ...internalTransfersWithdrawal, ...internalTransfersDeposit];
 					internalTransfers = await Promise.all(internalTransfers);
 					internalTransactions = [...internalTransfers, ...internalTransactions];
