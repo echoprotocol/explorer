@@ -15,6 +15,7 @@ import {
 	MAX_BLOCK_REQUESTS,
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	NETWORK_CONNECTED_ERROR,
+	NULL_ACCOUNT,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -50,7 +51,7 @@ const getRewardDistribution = async (targetBlock, nextBlock) => {
 		producer.producer = account ? account.name : undefined;
 	}
 
-	if (delegateId) {
+	if (delegateId && delegateId !== NULL_ACCOUNT.ID) {
 		const account = await echo.api.getObject(delegateId);
 		producer.delegate = account ? account.name : undefined;
 	}
