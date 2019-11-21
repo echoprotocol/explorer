@@ -417,13 +417,14 @@ class TransactionActionsClass extends BaseActionsClass {
 						&& [
 							OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE,
 							OPERATIONS_IDS.CONTRACT_INTERNAL_CALL,
-							OPERATIONS_IDS.CONTRACT_SELFDESTRUCT,
 						].includes(i.op[0])
 					))
 					.map(({ op }) => this.formatOperation(op, accountId));
 				internalOperations = await Promise.all(internalOperations);
-				internalOperations = internalOperations.filter((op) => op);
-
+				internalOperations = internalOperations
+					.filter((op) => op)
+					.sort((op1, op2) => op1.type - op2.type);
+				console.log('internalOperations', internalOperations);
 
 				let internalTransactions = [...internalOperations];
 				let code = '';
