@@ -2,6 +2,7 @@
 export class BridgeService {
 
 	static isExist() {
+		console.log('--isExist--');
 		return !!window.echojslib && !!window.echojslib.extension;
 	}
 
@@ -22,6 +23,7 @@ export class BridgeService {
 	}
 
 	static getAccount() {
+		console.log('--getAccount--');
 		const { activeAccount } = window.echojslib.extension;
 		if (activeAccount) {
 			this.getAccess();
@@ -33,11 +35,13 @@ export class BridgeService {
 
 
 	static getAccess() {
+		console.log('--getAccess--');
 		return window.echojslib.extension.getAccess();
 	}
 
 
 	static proofOfAuthority(message, activeAccountId) {
+		console.log('--proofOfAuthority--');
 		return window.echojslib.extension.proofOfAuthority(message, activeAccountId);
 	}
 

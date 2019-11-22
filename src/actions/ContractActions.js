@@ -320,8 +320,13 @@ class ContractActions extends BaseActionsClass {
 				if (!isExistActiveAccount) return;
 
 				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
+				console.log('activeAccountId', activeAccountId);
 				const message = ContractHelper.getMessageToManageContract(contractId);
 				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
+
+
+				await dispatch(ContractActions.setValue());
+				console.log('signature', signature);
 				const formData = new FormData();
 				formData.append('signature', signature);
 				formData.append('message', message);
