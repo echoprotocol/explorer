@@ -15,7 +15,7 @@ class ContractInfoBlock extends React.Component {
 		if (!data.get('error')) {
 			blockNumber = data.get('blockNumber');
 			creationFee = FormatHelper.formatAmount(data.getIn(['creationFee', 'amount']), data.getIn(['creationFee', 'precision']), data.getIn(['creationFee', 'symbol']));
-			type = data.get('type').filter((typeKey) => typeKey !== 'common').join(',').toUpperCase();
+			type = data.get('type').filter((typeKey) => typeKey !== 'common').join(', ').toUpperCase();
 			contractTxs = data.get('contractTxs');
 			countUsedByAccount = data.get('countUsedByAccount');
 			assets = data.get('supportedAsset') || 'All';

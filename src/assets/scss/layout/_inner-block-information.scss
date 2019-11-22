@@ -185,6 +185,7 @@
                     color: #1f3c4d;
                     text-transform: uppercase;
                     margin-bottom: 14px;
+                    min-height: 10px;
                 }
 
                 .value {
@@ -1011,9 +1012,13 @@
     }
 
     // DISTRIBUTION TABLE AT BLOCK PAGE
-
+    @keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
     .distribution-table {
         margin-bottom: 55px;
+        animation: fadein $speed;
 
         .view {
             cursor: default;
