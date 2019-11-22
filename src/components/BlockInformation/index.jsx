@@ -7,7 +7,7 @@ import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import ViewListPopover from '../ViewListPopover';
 import Loader from '../Loader';
-// import DistributionTable from './DistributionTable';
+import DistributionTable from './DistributionTable';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
 import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
@@ -70,9 +70,8 @@ class BlockInformation extends React.Component {
 
 	renderBlockInformation(blockInformation, latestBlock) {
 
-		const {
-			currentTransactionLength,
-		} = this.state;
+		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
+		const { currentTransactionLength } = this.state;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
@@ -81,6 +80,7 @@ class BlockInformation extends React.Component {
 		const size = blockInformation.get('size');
 		const operations = blockInformation.get('operations') || [];
 		const transactionCount = blockInformation.get('transactionCount') || 0;
+		const rewardDistribution = blockInformation.get('rewardDistribution');
 		const slicedOperations = operations.slice(0, currentTransactionLength);
 
 		let verifiers = blockInformation.get('verifiers') || [];
@@ -145,7 +145,17 @@ class BlockInformation extends React.Component {
 						<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
 					</div>
 				</div>
-				{/* TO DO <DistributionTable /> */}
+				{
+					(rewardDistribution && rewardDistribution.length) ? (
+						<DistributionTable
+							rewards={rewardDistribution}
+							toggleReward={toggleRewardDistribution}
+							isOpen={isDistributionRewardOpen}
+						/>
+					) : (
+						<h2>Certificate list will be available after next block will be produced</h2>
+					)
+				}
 				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
 				<div className="help-table-wrapper">
 					{
@@ -190,6 +200,8 @@ BlockInformation.propTypes = {
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	toggleRewardDistribution: PropTypes.func.isRequired,
+	isDistributionRewardOpen: PropTypes.bool.isRequired,
 };
 
 BlockInformation.defaultProps = {

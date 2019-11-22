@@ -12,6 +12,7 @@ const DEFAULT_FIELDS = Map({
 	loading: false,
 	startTimestamp: 0,
 	hasMore: true,
+	isDistributionRewardOpen: false,
 });
 
 export default createModule({
