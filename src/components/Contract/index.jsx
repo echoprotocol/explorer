@@ -9,6 +9,7 @@ import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
 import { withRouter } from 'react-router';
+import copy from 'copy-to-clipboard';
 
 import { CONTRACT_TABS } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -276,7 +277,7 @@ class Contract extends React.Component {
 			<div className="table-container inner-information-container account-page contract-page with-d-table">
 				<div className="react-tabs">
 					<div className="tab-head">
-						<div className="backwards">
+						<div className="backwards action">
 							<div className="account-page-t-block">
 								<Media query="(max-width: 380px)">
 									{(matches) =>
@@ -287,6 +288,7 @@ class Contract extends React.Component {
 									}
 								</Media>
 								<div className="title">Contract {id} {name && `:  ${name}`}</div>
+								<button className="copy-bytecode" onClick={() => copy(bytecode)}>Copy code</button>
 							</div>
 						</div>
 						<div className="buttons-wrap">

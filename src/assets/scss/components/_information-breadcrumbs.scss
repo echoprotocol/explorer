@@ -85,6 +85,19 @@
     align-items: center;
     position: relative;
     padding-top: 50px;
+    &.action {
+        .account-page-t-block {
+            width: 100%;
+            .copy-bytecode {
+                margin: auto 0 auto auto;
+            }
+            .copy-bytecode:active {
+                background-color: grey;
+            }
+        }
+
+    }
+
 
     @include res-768 {
         padding-left: 18px;
