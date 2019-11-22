@@ -46,6 +46,9 @@ class Contract extends React.Component {
 		this.subscriber = this.updateInfo.bind(this);
 		this.slider = React.createRef();
 		this.manageContract = this.manageContract.bind(this);
+		this.state = {
+			text: 'Copy code',
+		};
 	}
 
 
@@ -139,6 +142,12 @@ class Contract extends React.Component {
 		}
 	}
 
+	changeButtonText(text, bytecode) {
+		copy(bytecode);
+		this.setState({ text });
+		setTimeout(() => this.setState({ text: 'Copy text' }), 2000);
+	}
+
 	renderArrow({ text, className }) {
 		return (
 			<div className={className}>
@@ -179,6 +188,7 @@ class Contract extends React.Component {
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner,
 			activeAccount, error,
 		} = this.props;
+		const copied = 'Copied';
 
 		const tabList = [
 			{
@@ -288,7 +298,9 @@ class Contract extends React.Component {
 									}
 								</Media>
 								<div className="title">Contract {id} {name && `:  ${name}`}</div>
-								<button className="copy-bytecode" onClick={() => copy(bytecode)}>Copy code</button>
+								<button className="copy-bytecode"	onClick={() => this.changeButtonText(copied, bytecode)}>
+									{this.state.text}
+								</button>
 							</div>
 						</div>
 						<div className="buttons-wrap">
