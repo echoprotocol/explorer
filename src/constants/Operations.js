@@ -346,7 +346,7 @@ const Operations = {
 		name: 'Contract internal create',
 		options: {
 			from: ['caller'],
-			subject: ['contractId'],
+			subject: null,
 			value: 'value.amount',
 			asset: 'value.asset_id',
 		},
