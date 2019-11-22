@@ -15,7 +15,6 @@ import {
 	DONE,
 	PRODUCING_TIP,
 	rounderSteps,
-	MIN_PERCENT_PROGRESS_BAR,
 	PROGRESS_STATUS,
 	DONE_STATUS,
 	GC_START_DELAY,
@@ -29,7 +28,6 @@ class PreparingSection extends React.Component {
 		super(props);
 
 		this.state = {
-			status: MIN_PERCENT_PROGRESS_BAR,
 			producing: PROGRESS_STATUS,
 			verifyingGC: PROGRESS_STATUS,
 			verifyingBBA: PROGRESS_STATUS,
@@ -49,7 +47,6 @@ class PreparingSection extends React.Component {
 				this.setVerifyingBBA(DONE_STATUS);
 			} else if (nextProps.stepProgress === BBA_STARTED) {
 				this.setVerifyingGC(DONE_STATUS);
-				this.setState({ status: rounderSteps[BBA_STARTED].progress });
 			}
 		}
 
@@ -192,12 +189,10 @@ PreparingSection.propTypes = {
 
 export default connect(
 	(state) => ({
-		averageBlockTime: state.round.getIn(['averageTransactions', 'averageTime']),
 		producers: state.round.get('producers'),
 		stepProgress: state.round.get('stepProgress'),
 		readyProducers: state.round.get('readyProducers'),
 		preparingBlock: state.round.get('preparingBlock'),
-		disconnected: state.internetPopup.get('show'),
 	}),
 	() => ({}),
 )(PreparingSection);

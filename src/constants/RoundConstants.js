@@ -49,7 +49,6 @@ export const rounderSteps = {
 	totalStep: 3,
 };
 
-export const MIN_PERCENT_PROGRESS_BAR = 0;
 export const GC_START_DELAY = 800;
 
 export const PROGRESS_STATUS = 'progress';
