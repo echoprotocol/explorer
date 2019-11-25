@@ -310,9 +310,12 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
-	manageContract(contractId, name, icon, description) {
+	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
 			try {
+				if (clickSaveCounter >= 5) return;
+				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
+
 				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
 				if (!isAccessBridge) return;
 
@@ -320,13 +323,9 @@ class ContractActions extends BaseActionsClass {
 				if (!isExistActiveAccount) return;
 
 				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
-				console.log('activeAccountId', activeAccountId);
 				const message = ContractHelper.getMessageToManageContract(contractId);
 				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
 
-
-				await dispatch(ContractActions.setValue());
-				console.log('signature', signature);
 				const formData = new FormData();
 				formData.append('signature', signature);
 				formData.append('message', message);
@@ -344,10 +343,13 @@ class ContractActions extends BaseActionsClass {
 					name: result.name,
 					description: result.description || '',
 					icon: result.icon || '',
+					clickSaveCounter: clickSaveCounter - 1,
 				}));
 
 				dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
 			} catch (err) {
+				if (clickSaveCounter > 0) dispatch(this.setValue('clickSaveCounter', clickSaveCounter - 1));
+
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: err.message }));
 			}
 		};

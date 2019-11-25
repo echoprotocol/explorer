@@ -34,7 +34,7 @@ const DEFAULT_FIELDS = new Map({
 	creationFee: new Map(),
 	createdAt: '',
 	owner: new Map(),
-	clickCounter: 0, // test this
+	clickSaveCounter: 0,
 });
 
 export default createModule({

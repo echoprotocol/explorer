@@ -7,7 +7,7 @@ import Dropzone from 'react-dropzone';
 import { MAX_KB_CONTRACT_ICON, MAX_LENGTH_CONTRACT_DESCRIPTION } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
-import { BridgeService } from '../../services/BridgeService';
+// import { BridgeService } from '../../services/BridgeService';
 
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
@@ -22,9 +22,6 @@ class ManageContract extends React.Component {
 
 		this.onSave = this.onSave.bind(this);
 		this.removeIcon = this.removeIcon.bind(this);
-		this.state = {
-			windows: 0,
-		};
 	}
 
 	componentDidMount() {
@@ -37,14 +34,10 @@ class ManageContract extends React.Component {
 
 	async onSave() {
 		const { match: { params: { id } } } = this.props;
-		const { name, icon, description, clickCounter } = this.props;		// test this
-
-		if (this.state.windows < 5) {
-			this.props.manageContract(id, name.value, icon.value, description.value);
-			this.setState({ windows: this.state.windows += 1 });
-		}
-
-		// BridgeService.getAccess();
+		const {
+			name, icon, description, clickSaveCounter,
+		} = this.props;
+		this.props.manageContract(id, name.value, icon.value, description.value, clickSaveCounter);
 	}
 
 	onChange(field, value) {
@@ -229,8 +222,7 @@ ManageContract.propTypes = {
 	isErrorForm: PropTypes.bool,
 	isChangedForm: PropTypes.bool,
 	historyLength: PropTypes.number.isRequired,
-
-	clickCounter: PropTypes.number.isRequired, // test this
+	clickSaveCounter: PropTypes.number.isRequired,
 };
 
 ManageContract.defaultProps = {

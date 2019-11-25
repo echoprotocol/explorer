@@ -54,8 +54,6 @@ export default withRouter(connect(
 		compilerVersion: state.contract.get('compilerVersion'),
 		verified: state.contract.get('verified'),
 		stars: state.contract.get('stars'),
-		clickCounter: state.contract.get('clickCounter'),	// test this
-
 		error: state.contract.get('error'),
 
 		activeAccount: state.global.get('activeAccount'),
