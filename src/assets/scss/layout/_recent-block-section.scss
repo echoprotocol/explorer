@@ -340,10 +340,15 @@
                     &:nth-child(2),
                     &:nth-child(3),
                     &:nth-child(6) {
-                        width: 175px;
-                        max-width: 175px;
-                        min-width: 175px;
-
+                        width: 165px;
+                        max-width: 165px;
+						min-width: 165px;
+						
+						@include res-1280 {
+							width: 135px;
+							max-width: 135px;
+							min-width: 135px;
+						}
                         @include res-768 {
                             width: 140px;
                             max-width: 140px;
