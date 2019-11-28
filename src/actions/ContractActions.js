@@ -313,7 +313,7 @@ class ContractActions extends BaseActionsClass {
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
 			try {
-				if (clickSaveCounter >= 5) return;
+				if (clickSaveCounter > 5) return;
 				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
 
 				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
@@ -348,7 +348,9 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
 			} catch (err) {
-				if (clickSaveCounter > 0) dispatch(this.setValue('clickSaveCounter', clickSaveCounter - 1));
+
+				const getCurrentCount = getState().contract.get('clickSaveCounter');
+				if (clickSaveCounter > 0) dispatch(this.setValue('clickSaveCounter', getCurrentCount - 1));
 
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: err.message }));
 			}
