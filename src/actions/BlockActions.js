@@ -463,7 +463,7 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	} catch (_) {
 		return false;
 	} finally {
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
+		setTimeout(() => dispatch(BlockReducer.actions.set({ field: 'loading', value: false })), 500);
 	}
 
 };
