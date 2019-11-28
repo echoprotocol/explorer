@@ -9,8 +9,9 @@ import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
 import { withRouter } from 'react-router';
+import copy from 'copy-to-clipboard';
 
-import { CONTRACT_TABS } from '../../constants/ContractConstants';
+import { CONTRACT_TABS, CHANGE_TEXT_TIME } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
 	CONTRACT_BALANCES,
@@ -45,6 +46,9 @@ class Contract extends React.Component {
 		this.subscriber = this.updateInfo.bind(this);
 		this.slider = React.createRef();
 		this.manageContract = this.manageContract.bind(this);
+		this.state = {
+			text: 'Copy code',
+		};
 	}
 
 
@@ -136,6 +140,12 @@ class Contract extends React.Component {
 			this.updateHistorySubscriber.unsubscribe();
 			this.updateHistorySubscriber = null;
 		}
+	}
+
+	changeButtonText(bytecode) {
+		copy(bytecode);
+		this.setState({ text: 'Copied' });
+		setTimeout(() => this.setState({ text: 'Copy text' }), CHANGE_TEXT_TIME);
 	}
 
 	renderArrow({ text, className }) {
@@ -276,7 +286,7 @@ class Contract extends React.Component {
 			<div className="table-container inner-information-container account-page contract-page with-d-table">
 				<div className="react-tabs">
 					<div className="tab-head">
-						<div className="backwards">
+						<div className="backwards action">
 							<div className="account-page-t-block">
 								<Media query="(max-width: 380px)">
 									{(matches) =>
@@ -287,6 +297,9 @@ class Contract extends React.Component {
 									}
 								</Media>
 								<div className="title">Contract {id} {name && `:  ${name}`}</div>
+								<button className="copy-bytecode"	onClick={() => this.changeButtonText(bytecode)}>
+									{this.state.text}
+								</button>
 							</div>
 						</div>
 						<div className="buttons-wrap">

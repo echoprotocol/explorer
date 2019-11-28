@@ -1,64 +1,71 @@
 import React from 'react';
 import Media from 'react-media';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import URLHelper from '../../helpers/URLHelper';
+
 // import classnames from 'classnames';
 
 import InfoTooltip from '../InfoTooltip';
-import Avatar from '../Avatar';
 
 class DistributionTable extends React.Component {
 
-	renderRow() {
+	renderRow({
+		type, delegate, producer, producedByCommittee,
+	}, index) {
+
 		return (
-			<React.Fragment>
+			<React.Fragment key={index}>
 				<tr className="view">
 					<td />
-					<td className="role">
+					<td className="reward">
 						<Media query="(max-width: 499px)">
-							{ (matches) => matches && <div className="col-title">role</div>}
+							{(matches) => matches && <div className="col-title">role</div>}
 						</Media>
-						<div className="td-in">Producer</div>
+						<div className="td-in">
+							<span className="type">{type}</span>
+						</div>
 					</td>
 
 					<td className="origin">
 						<Media query="(max-width: 499px)">
-							{ (matches) => matches && <div className="col-title">origin</div>}
+							{(matches) => matches && <div className="col-title">origin</div>}
 						</Media>
 						<Link
-							className="td-in avatar-wrap"
-							to="#"
+							className="td-in"
+							to={URLHelper.createAccountUrlByName(producer)}
 							onClick={(e) => e.stopPropagation()}
 						>
-							<Avatar accountName="init 5" />
-							<span>init 5</span>
+							<span>{producer}</span>
 						</Link>
 					</td>
 					<td className="delegate">
-						<Media query="(max-width: 499px)">
-							{ (matches) => matches && <div className="col-title">delegate</div>}
-						</Media>
-						<Link
-							className="td-in avatar-wrap"
-							to="#"
-							onClick={(e) => e.stopPropagation()}
-						>
-							<Avatar accountName="init 7" />
-							<span>init 7</span>
-						</Link>
+						<React.Fragment>
+							<Media query="(max-width: 499px)">
+								{(matches) => matches && <div className="col-title">delegate</div>}
+							</Media>
+							{
+								delegate ? (
+									<Link
+										className="td-in"
+										to={URLHelper.createAccountUrlByName(delegate)}
+										onClick={(e) => e.stopPropagation()}
+									>
+										<span>{delegate}</span>
+									</Link>
+								) : (
+									<div className="td-in">—</div>
+								)
+							}
+						</React.Fragment>
 					</td>
 					<td className="reward">
 						<Media query="(max-width: 499px)">
-							{ (matches) => matches && <div className="col-title">ORIGIN/DELEGATE REWARD</div>}
+							{(matches) => matches && <div className="col-title">Produced by the committee</div>}
 						</Media>
 						<div className="td-in">
-							<span className="value"> 0.003245</span>
-							<span className="currency">ECHO</span>
-							<Media query="(min-width: 499px)">
-								{(matches) => (!matches && <br />)}
-							</Media>
-							&nbsp;/&nbsp;
-							<span className="value">0.003245</span>
-							<span className="currency">ECHO</span>
+							<span className="currency">{producedByCommittee ? 'Yes' : 'No'}</span>
 						</div>
 					</td>
 					<td />
@@ -69,14 +76,15 @@ class DistributionTable extends React.Component {
 
 	render() {
 
+		const { rewards } = this.props;
 
 		return (
 			<React.Fragment>
-				<h2>Reward distribution</h2>
+				<h2>Block Certificate</h2>
 				<div className="distribution-table accordion-table-wrap table-contract" >
 					<table>
 						<Media query="(max-width: 499px)">
-							{ (matches) => !matches &&
+							{(matches) => !matches &&
 								<thead>
 									<tr>
 										<td />
@@ -99,27 +107,32 @@ class DistributionTable extends React.Component {
 												/>
 											</div>
 										</td>
-										<td className="reward">
-											<div className="td-in">ORIGIN/DELEGATE REWARD</div>
+										<td className="delegate">
+											<div className="td-in">
+												Produced by the committee
+												<InfoTooltip
+													tooltipText="If Origin and Delegate did not send messages, the message will be sent by the committee"
+												/>
+											</div>
 										</td>
 										<td />
 									</tr>
 								</thead>
 							}
 						</Media>
-
-
 						<tbody>
 							<Media query="(max-width: 499px)">
 								{
 									(matches) =>
 										(!matches &&
-										<tr className="air">
-											<td colSpan="9" />
-										</tr>)
+											<tr className="air">
+												<td colSpan="9" />
+											</tr>)
 								}
 							</Media>
-							{this.renderRow()}
+							{
+								rewards.map((r, i) => this.renderRow(r, i))
+							}
 						</tbody>
 					</table>
 				</div>
@@ -129,5 +142,12 @@ class DistributionTable extends React.Component {
 
 }
 
+DistributionTable.propTypes = {
+	rewards: PropTypes.array,
+};
+
+DistributionTable.defaultProps = {
+	rewards: [],
+};
 
 export default DistributionTable;

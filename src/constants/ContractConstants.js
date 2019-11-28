@@ -28,3 +28,5 @@ export const CONTRACT_TABS = {
 	},
 };
 
+export const CHANGE_TEXT_TIME = 2000;
+
