@@ -204,7 +204,12 @@ class OperationInfo extends React.Component {
 								value.map((op, internalOpIndex) => (
 									<div className="od-row" key={`${opKey}_${key}_${internalOpIndex.toString()}`} >
 										<div className="od-col">
-											<div className="tt-row" key={index.toString()}>{op.label}:</div>
+											<div
+												className="tt-row"
+												key={index.toString()}
+											>
+												{op.label && `${op.label}:`}
+											</div>
 										</div>
 										<div className="od-col">
 											{this.renderSingleInternal(op, index)}

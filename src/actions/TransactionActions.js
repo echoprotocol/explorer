@@ -195,19 +195,18 @@ class TransactionActionsClass extends BaseActionsClass {
 	async parseTransferEvent({ log, data }, symbol = '', precision = 0, label) {
 		const [, hexFrom, hexTo] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
-		const fromInt = parseInt(hexFrom.slice(3), 16);
-		const toInt = parseInt(hexTo.slice(3), 16);
-
+		const fromInt = parseInt(hexFrom.slice(26), 16);
+		const toInt = parseInt(hexTo.slice(26), 16);
 		let from = { id: `${CONTRACT_OBJECT_PREFIX}.${fromInt}` };
 		let to = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
-		if (hexFrom[2] === '0') {
+		if (hexFrom[25] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${fromInt}`;
 			const { name } = (await echo.api.getObject(id));
 			from = { id, name };
 		}
 
-		if (hexTo[2] === '0') {
+		if (hexTo[25] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 			const { name } = (await echo.api.getObject(id));
 			to = { id, name };
@@ -229,12 +228,12 @@ class TransactionActionsClass extends BaseActionsClass {
 		const [, hex] = log;
 		const value = { amount: new BN(data, 16).toString(10), symbol, precision };
 
-		const toInt = parseInt(hex.slice(3), 16);
+		const toInt = parseInt(hex.slice(26), 16);
 		let account = { id: `${CONTRACT_OBJECT_PREFIX}.${toInt}` };
 
 		const contract = {};
 		contract.id = contractId;
-		if (hex[2] === '0') {
+		if (hex[25] === '0') {
 			const id = `${ACCOUNT_OBJECT_PREFIX}.${toInt}`;
 			const { name } = (await echo.api.getObject(id));
 			account = { id, name };
@@ -335,6 +334,9 @@ class TransactionActionsClass extends BaseActionsClass {
 					case 'symbol':
 						[response] = await echo.api.lookupAssetSymbols([request]);
 						break;
+					case 'label':
+						response = request;
+						break;
 					default:
 						response = await echo.api.getObject(request);
 						break;
@@ -389,8 +391,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				({ log } = contractResultObject.tr_receipt);
 				result.status = excepted === 'None';
 
-				if (new_address) {
-					newContractAddress = `${CONTRACT_OBJECT_PREFIX}.${parseInt(new_address.slice(3), 16)}`;
+				if (new_address && !result.subject.id) {
+					newContractAddress = `${CONTRACT_OBJECT_PREFIX}.${parseInt(new_address.slice(2), 16)}`;
 				}
 
 			} else {
@@ -412,11 +414,20 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				let internalOperations = contractHistory
-					.filter((i) => (i.block_num === round && i.trx_in_block === trIndex && i.op_in_trx === opIndex))
+					.filter((i) => (i.block_num === round
+						&& i.trx_in_block === trIndex
+						&& i.op_in_trx === opIndex
+						&& [
+							OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE,
+							OPERATIONS_IDS.CONTRACT_INTERNAL_CALL,
+						].includes(i.op[0])
+					))
 					.map(({ op }) => this.formatOperation(op, accountId));
 				internalOperations = await Promise.all(internalOperations);
-				internalOperations = internalOperations.filter((op) => op);
-
+				internalOperations = internalOperations
+					.filter((op) => op)
+					.filter((op) => op.value && op.value.amount && !(new BN(op.value.amount).eq(0)))
+					.map((op, i) => ({ ...op, name: i === 0 ? 'Asset transfer' : '' }));
 
 				let internalTransactions = [...internalOperations];
 				let code = '';
@@ -436,17 +447,17 @@ class TransactionActionsClass extends BaseActionsClass {
 					let internalTransfers = log
 						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === contractId);
 					const internalTransfersTransfer = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Transfer(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision, 'Token transfer'));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Transfer(address,address,uint256)']))
+						.map((event, i) => this.parseTransferEvent(event, symbol, precision, i === 0 ? 'Token transfer' : ''));
 					const internalTransfersApproval = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Approval(address,address,uint256)']) === 0)
-						.map((event) => this.parseTransferEvent(event, symbol, precision, 'Token approval'));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Approval(address,address,uint256)']))
+						.map((event, i) => this.parseTransferEvent(event, symbol, precision, i === 0 ? 'Token approval' : ''));
 					const internalTransfersWithdrawal = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Withdrawal(address, uint256)']) === 0)
-						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'Token withdrawal', contractId, false));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Withdrawal(address, uint256)']))
+						.map((event, i) => this.parseWithdrawalEvent(event, symbol, precision, i === 0 ? 'Token withdrawal' : '', contractId, false));
 					const internalTransfersDeposit = internalTransfers
-						.filter(({ log: logs }) => logs[0].indexOf(ERC20_HASHES['Deposit(address, uint256)']) === 0)
-						.map((event) => this.parseWithdrawalEvent(event, symbol, precision, 'Token deposit', contractId, true));
+						.filter(({ log: logs }) => logs[0].startsWith(ERC20_HASHES['Deposit(address, uint256)']))
+						.map((event, i) => this.parseWithdrawalEvent(event, symbol, precision, i === 0 ? 'Token deposit' : '', contractId, true));
 					internalTransfers = [...internalTransfersTransfer, ...internalTransfersApproval, ...internalTransfersWithdrawal, ...internalTransfersDeposit];
 					internalTransfers = await Promise.all(internalTransfers);
 					internalTransactions = [...internalTransfers, ...internalTransactions];
@@ -461,7 +472,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			}
 		}
 
-		if (result.internal && result.internal[0]) {
+		if (result.internal && result.internal[0] && result.internal[0].value) {
 			result.value = result.internal[0].value;
 		}
 		return result;
@@ -573,7 +584,6 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 			// eslint-disable-next-line no-empty
 			} catch (error) {
-
 			}
 		}
 
