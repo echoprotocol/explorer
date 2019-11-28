@@ -99,7 +99,7 @@ export const connect = () => async (dispatch) => {
 		await echo.connect(config.API_URL, {
 			connectionTimeout: 5000,
 			maxRetries: 1e10,
-			pingTimeout: 3000,
+			pingTimeout: 6000,
 			pingDelay: 5000,
 			debug: false,
 			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
