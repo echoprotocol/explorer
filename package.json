@@ -77,7 +77,6 @@
 		"react-router-dom": "^4.2.2",
 		"react-router-redux": "^5.0.0-alpha.9",
 		"react-scroll-to-component": "^1.0.2",
-		"react-simple-infinite-scroll": "0.0.1",
 		"react-slick": "^0.24.0",
 		"react-tabs": "^3.0.0",
 		"react-toastify": "^4.4.0",
