@@ -310,12 +310,9 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
-	manageContract(contractId, name, icon, description, clickSaveCounter) {
+	manageContract(contractId, name, icon, description) {
 		return async (dispatch, getState) => {
 			try {
-				if (clickSaveCounter > 4) return;
-				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
-
 				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
 				if (!isAccessBridge) return;
 
@@ -325,7 +322,6 @@ class ContractActions extends BaseActionsClass {
 				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 				const message = ContractHelper.getMessageToManageContract(contractId);
 				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
-
 				const formData = new FormData();
 				formData.append('signature', signature);
 				formData.append('message', message);
@@ -347,12 +343,7 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
 			} catch (err) {
-				const getCurrentCount = getState().contract.get('clickSaveCounter');
-				if (getCurrentCount > 0) {
-					dispatch(this.setValue('clickSaveCounter', getCurrentCount - 1));
-				}
-				const { value } = getState().form.getIn([FORM_MANAGE_CONTRACT, 'contractId']);
-				if (value === contractId) { dispatch(ModalActions.openModal(MODAL_ERROR, { title: err.message })); }
+				dispatch(ModalActions.openModal(MODAL_ERROR, { title: err.message }));
 			}
 		};
 	}
@@ -384,13 +375,14 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
-	setDefaultDateContract(contractId) {
+	setDefaultDateContract() {
 		return (dispatch, getState) => {
 			const name = getState().contract.get('name');
 			const description = getState().contract.get('description');
 			const icon = getState().contract.get('icon');
+
 			dispatch(FormActions.setMultipleFormValue(FORM_MANAGE_CONTRACT, {
-				name, description, icon, iconBase64: '', contractId,
+				name, description, icon, iconBase64: '',
 			}));
 			dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
 		};
