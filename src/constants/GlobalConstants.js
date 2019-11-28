@@ -71,6 +71,10 @@ export const NATHAN = {
 	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ACCOUNT}.15`,
 };
 
+export const NULL_ACCOUNT = {
+	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ACCOUNT}.0`,
+};
+
 export const DEFAULT_ROWS_COUNT = 50;
 export const DEFAULT_OPERATION_HISTORY_ID = constants.API_CONFIG.STOP_OPERATION_HISTORY_ID;
 
