@@ -136,9 +136,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.producer = { id: producer.id, name: producer.name };
 
 		// remove after go to 0.10 testnet
-		const verifiersIds = planeBlock.cert.map(({ _producer, _signer }) => `${ACCOUNT_OBJECT_PREFIX}.${_producer || _signer}`);
 
-		const verifiers = await echo.api.getAccounts(verifiersIds);
 		const { transactions } = planeBlock;
 
 		let resultTransactions = [];
@@ -163,7 +161,6 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 		value.transactionCount = resultTransactions.length;
 		value.operations = resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []);
-		value.verifiers = verifiers.map(({ name, id }) => ({ id, name }));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
@@ -466,7 +463,7 @@ export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
 	} catch (_) {
 		return false;
 	} finally {
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
+		setTimeout(() => dispatch(BlockReducer.actions.set({ field: 'loading', value: false })), 500);
 	}
 
 };

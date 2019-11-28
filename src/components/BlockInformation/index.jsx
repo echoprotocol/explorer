@@ -83,9 +83,6 @@ class BlockInformation extends React.Component {
 		const rewardDistribution = blockInformation.get('rewardDistribution');
 		const slicedOperations = operations.slice(0, currentTransactionLength);
 
-		let verifiers = blockInformation.get('verifiers') || [];
-		verifiers = verifiers.map(({ name, id }) => ({ id, name, to: URLHelper.createAccountUrl(name) }));
-
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',
@@ -136,22 +133,33 @@ class BlockInformation extends React.Component {
 							<div className="value blue">{producer.name}</div>
 						</Link>
 					</div>
+					<div className="container verifiers">
+						<div className="title">Verifiers</div>
+						<div className="value">
+							{(rewardDistribution && rewardDistribution.length) ? rewardDistribution.length - 1 : '—'}
+						</div>
+					</div>
 					<div className="container reward">
 						<div className="title">Reward</div>
 						<div className="value">{`${FormatHelper.formatAmount(reward, ECHO_ASSET.PRECISION)} ${ECHO_ASSET.SYMBOL}`}</div>
 					</div>
 					<div className="container verifiers">
-						<div className="title">Verifiers</div>
-						<div className="value">{verifiers && verifiers.length}<ViewListPopover list={verifiers} /></div>
+						<div className="title" />
+						<div className="value">
+							{
+								rewardDistribution && rewardDistribution.length ? (
+									<ViewListPopover
+										toggleReward={toggleRewardDistribution}
+										isOpen={isDistributionRewardOpen}
+									/>
+								) : undefined
+							}
+						</div>
 					</div>
 				</div>
 				{
 					(rewardDistribution && rewardDistribution.length) ? (
-						<DistributionTable
-							rewards={rewardDistribution}
-							toggleReward={toggleRewardDistribution}
-							isOpen={isDistributionRewardOpen}
-						/>
+						isDistributionRewardOpen && <DistributionTable rewards={rewardDistribution} />
 					) : (
 						<h2>Certificate list will be available after next block will be produced</h2>
 					)
