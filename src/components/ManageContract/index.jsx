@@ -34,9 +34,10 @@ class ManageContract extends React.Component {
 
 	async onSave() {
 		const { match: { params: { id } } } = this.props;
-		const { name, icon, description } = this.props;
-
-		this.props.manageContract(id, name.value, icon.value, description.value);
+		const {
+			name, icon, description, clickSaveCounter,
+		} = this.props;
+		this.props.manageContract(id, name.value, icon.value, description.value, clickSaveCounter);
 	}
 
 	onChange(field, value) {
@@ -67,10 +68,11 @@ class ManageContract extends React.Component {
 	}
 
 	async initData() {
+		const {	match: { params: { id } } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		await this.props.getContractInfo();
-		this.props.setDefaultDateContract();
+		this.props.setDefaultDateContract(id);
 	}
 
 	render() {
@@ -221,6 +223,7 @@ ManageContract.propTypes = {
 	isErrorForm: PropTypes.bool,
 	isChangedForm: PropTypes.bool,
 	historyLength: PropTypes.number.isRequired,
+	clickSaveCounter: PropTypes.number.isRequired,
 };
 
 ManageContract.defaultProps = {
