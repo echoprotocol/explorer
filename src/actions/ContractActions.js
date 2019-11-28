@@ -351,7 +351,8 @@ class ContractActions extends BaseActionsClass {
 				if (getCurrentCount > 0) {
 					dispatch(this.setValue('clickSaveCounter', getCurrentCount - 1));
 				}
-				dispatch(ModalActions.openModal(MODAL_ERROR, { title: err.message }));
+				const { value } = getState().form.getIn([FORM_MANAGE_CONTRACT, 'contractId']);
+				if (value === contractId) { dispatch(ModalActions.openModal(MODAL_ERROR, { title: err.message })); }
 			}
 		};
 	}
@@ -383,14 +384,13 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
-	setDefaultDateContract() {
+	setDefaultDateContract(contractId) {
 		return (dispatch, getState) => {
 			const name = getState().contract.get('name');
 			const description = getState().contract.get('description');
 			const icon = getState().contract.get('icon');
-
 			dispatch(FormActions.setMultipleFormValue(FORM_MANAGE_CONTRACT, {
-				name, description, icon, iconBase64: '',
+				name, description, icon, iconBase64: '', contractId,
 			}));
 			dispatch(FormActions.setValue(FORM_MANAGE_CONTRACT, 'isChangedForm', false));
 		};

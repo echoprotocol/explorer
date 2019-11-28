@@ -68,10 +68,11 @@ class ManageContract extends React.Component {
 	}
 
 	async initData() {
+		const {	match: { params: { id } } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		await this.props.getContractInfo();
-		this.props.setDefaultDateContract();
+		this.props.setDefaultDateContract(id);
 	}
 
 	render() {
