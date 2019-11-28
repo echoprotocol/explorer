@@ -36,7 +36,6 @@ class RecentBlockTable extends React.Component {
 	}
 
 	onLink(e, path) {
-		console.log('--onLink--', path);
 		e.preventDefault();
 		this.props.history.push(path);
 	}
@@ -75,14 +74,10 @@ class RecentBlockTable extends React.Component {
 		this.props.history.push(hint.to);
 	}
 
-	goToBlock(e, block, matches, data) {
-		console.log('---check---', block);
+	goToBlock(e, block) {
 		e.preventDefault();
 		window.scrollTo(0, 0);
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
-
-		console.log('---matches---', matches);
-		console.log('---data---', data);
 	}
 
 	render() {
@@ -190,7 +185,7 @@ class RecentBlockTable extends React.Component {
 											{
 												blocks.map((data) => (
 													<React.Fragment key={data.round}>
-														<Link onClick={(e) => this.goToBlock(e, data.round, matches, data)} to="" key={data.round} className="divTableRow fade-anim">
+														<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="divTableRow fade-anim">
 															<div className="divTableCell">
 																<span className="blue">
 																	{data.blockNumber}

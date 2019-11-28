@@ -334,6 +334,9 @@ class TransactionActionsClass extends BaseActionsClass {
 					case 'symbol':
 						[response] = await echo.api.lookupAssetSymbols([request]);
 						break;
+					case 'label':
+						response = request;
+						break;
 					default:
 						response = await echo.api.getObject(request);
 						break;

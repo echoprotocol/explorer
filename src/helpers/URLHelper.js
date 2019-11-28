@@ -69,7 +69,6 @@ class URLHelper {
 	 * @return {String}
 	 */
 	static createAccountUrlByName(accountName) {
-		console.log('createAccountUrlByName', accountName);
 		return ACCOUNTS_PATH.replace(/:id/, accountName);
 	}
 
