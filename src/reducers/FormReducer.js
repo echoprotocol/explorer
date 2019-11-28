@@ -34,6 +34,7 @@ const DEFAULT_FORM_FIELDS = {
 	[FORM_MANAGE_CONTRACT]: new Map({
 		isChangedForm: false,
 		isErrorForm: false,
+		contractId: '',
 		name: {
 			value: '',
 			error: '',
