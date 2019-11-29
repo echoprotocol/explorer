@@ -73,9 +73,9 @@ class OperationRow extends React.Component {
 			width: 175,
 		};
 
-		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
-			FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
-			FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
+		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);/*.length > 10 ?
+            FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
+            FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);*/
 
 		return (
 			<React.Fragment>
@@ -167,9 +167,9 @@ class OperationRow extends React.Component {
 													trigger={['hover']}
 													overlay={assetAmount}
 												>
-													<span>{assetAmount}</span>
+													<span>{assetAmount.slice(0, 10).concat('...')}</span>
 												</Tooltip>
-											) : assetAmount
+											) : <span>{assetAmount}</span>
 										}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>

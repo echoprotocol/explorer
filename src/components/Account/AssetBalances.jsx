@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
+import { MAX_ACCOUNT_LETTERS_SIZE } from "../../constants/GlobalConstants";
+import Tooltip from "rc-tooltip";
 
 class AssetBalances extends React.Component {
 
@@ -24,16 +26,23 @@ class AssetBalances extends React.Component {
 	}
 
 	renderElement(id, asset, amount, isOwner) {
+		const assetAmount = FormatHelper.formatAmount(amount, asset.get('precision'));
 		return (
 			<div key={id} className={classnames('inner-elem', { 'is-owner': isOwner })}>
-				<span className="txt">
-					{FormatHelper.formatAmount(amount, asset.get('precision'))}
-				</span>
-				<span className="accent">
-					<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
-						{asset.get('symbol')}
-					</Link>
-				</span>
+				{assetAmount.length > MAX_ACCOUNT_LETTERS_SIZE ?
+                    <Tooltip
+                        placement="top"
+                        overlayClassName="verify-contract-tooltip"
+                        trigger={['hover']}
+                        overlay={assetAmount}
+                    >
+						<span className="txt">{assetAmount.slice(0, 22).concat('...')}</span>
+                    </Tooltip>: assetAmount}
+					<span className="accent">
+						<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
+							{asset.get('symbol')}
+						</Link>
+					</span>
 			</div>
 		);
 	}

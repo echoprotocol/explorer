@@ -41,10 +41,10 @@ class FormatHelper {
 
 		return symbol ? `${resultNumber} ${symbol}` : resultNumber;
 	}
-	static zipAmount(amount) {
-		const firstSumbolsAmount = amount.indexOf('.') === -1 ? 4 : 5;
-		return amount.slice(0, firstSumbolsAmount).concat('...').concat(amount.slice(-4));
-	}
+	// static zipAmount(amount) {
+	// 	const firstSumbolsAmount = amount.indexOf('.') === -1 ? 4 : 5;
+	// 	return amount.slice(0, firstSumbolsAmount).concat('...').concat(amount.slice(-4));
+	// }
 	static formatError(err) {
 		return err instanceof Error || (_.isObject(err) && err.message) ? err.message : err;
 	}
