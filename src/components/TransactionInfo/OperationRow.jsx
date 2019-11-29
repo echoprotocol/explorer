@@ -15,6 +15,7 @@ import ObjectInfo from './ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { MAX_ROW_LETTERS_SIZE } from '../../constants/GlobalConstants';
 
 class OperationRow extends React.Component {
 
@@ -71,6 +72,10 @@ class OperationRow extends React.Component {
 		const tooltipStyle = {
 			width: 175,
 		};
+
+		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
+			FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
+			FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
 
 		return (
 			<React.Fragment>
@@ -153,13 +158,18 @@ class OperationRow extends React.Component {
 						{
 							mainInfo.value.amount ?
 								<div className="td-in">
-									<span
-										className="value"
-									>
+									<span	className="value">
 										{
-											FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
-												FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
-												FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)
+											assetAmount.length > MAX_ROW_LETTERS_SIZE ? (
+												<Tooltip
+													placement="top"
+													overlayClassName="verify-contract-tooltip"
+													trigger={['hover']}
+													overlay={assetAmount}
+												>
+													<span>{assetAmount}</span>
+												</Tooltip>
+											) : assetAmount
 										}
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>

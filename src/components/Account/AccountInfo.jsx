@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Tooltip from 'rc-tooltip';
 
-import { ECHO_ASSET } from '../../constants/GlobalConstants';
+import { ECHO_ASSET, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 
@@ -10,6 +11,9 @@ class AccountInfo extends React.Component {
 
 	render() {
 		const { id, name, echo } = this.props;
+
+		const assetAmount = FormatHelper.formatAmount(echo.amount, echo.asset.get('precision'));
+		// assetAmount = '3000000000000000030000000000000000';
 
 		return (
 			<div className="left-card">
@@ -22,14 +26,29 @@ class AccountInfo extends React.Component {
 					{
 						echo ?
 							<div className="val">
-								<span className="txt">
-									{
-										FormatHelper.formatAmount(
-											echo.amount,
-											echo.asset.get('precision'),
-										)
-									}
-								</span>
+								{assetAmount.length > MAX_ACCOUNT_LETTERS_SIZE ? (
+									<Tooltip
+										placement="top"
+										overlayClassName="verify-contract-tooltip"
+										trigger={['hover']}
+										overlay={assetAmount}
+									>
+										<span className="txt">
+											{
+												assetAmount.length > MAX_ACCOUNT_LETTERS_SIZE ?
+													assetAmount.slice(0, 22).concat('...') : assetAmount
+											}
+										</span>
+									</Tooltip>
+								) : (
+									<span className="txt">
+										{
+											assetAmount.length > MAX_ACCOUNT_LETTERS_SIZE ?
+												assetAmount.slice(0, 22).concat('...') : assetAmount
+										}
+									</span>
+								)
+								}
 								<span className="accent">
 									<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
 										{ECHO_ASSET.SYMBOL}

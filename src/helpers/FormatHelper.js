@@ -18,23 +18,12 @@ class FormatHelper {
      * @returns {string}
      */
 	static formatAmount(amount, precision = 0, symbol) {
-		precision = 20;
 		const number = new BN(amount).div(10 ** precision);
-
-		console.log('symbol', symbol);
-		console.log('amount', amount);
-		console.log('precision', precision);
-		console.log('number', number.toNumber());
 
 		const base = `${parseInt(this.toFixed(Math.abs(number || 0), precision), 10)}`;
 		const mod = base.length > 3 ? base.length % 3 : 0;
 
-		console.log('base', base);
-		console.log('mod', mod);
-
 		let postfix = `.${this.toFixed(number, precision).split('.')[1]}`;
-
-		console.log('postfix', postfix);
 
 		for (let i = postfix.length - 1; i >= 0; i -= 1) {
 			if (postfix[i] === '0') {
