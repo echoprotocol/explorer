@@ -54,6 +54,9 @@ class RecentBlockSidebar extends React.Component {
 		const averageOp = FormatHelper.roundNumber(averageTransactions.getIn(['operations', 'value']), 1);
 		const averageTime = FormatHelper.roundNumber(averageTransactions.get('averageTime'), 1);
 		const appVersion = getAppVersion();
+
+		const averageBlockTime = FormatHelper.getAverageTime(averageTime).split(':');
+
 		return (
 			<div className="recent-block-sidebar">
 				<div className={classnames('sticky-wrap', { sticky: offsetTop > MAIN_HEADER_HEIGHT })}>
@@ -73,7 +76,11 @@ class RecentBlockSidebar extends React.Component {
 						<div className="sidebar-elem">
 							<div className="title">Average block time (24h)</div>
 							<div className="value">
-								{averageTime ? (<React.Fragment>{averageTime}&nbsp;<span className="sm">sec</span></React.Fragment>) : '-'}
+								{averageTime ? (<React.Fragment>
+									{!!FormatHelper.convertToNumber(averageBlockTime[0]) ? <span>{FormatHelper.convertToNumber(averageBlockTime[0])}&nbsp;<span className="sm">hours</span></span> : ''}
+									{!!FormatHelper.convertToNumber(averageBlockTime[1]) ? <span> {FormatHelper.convertToNumber(averageBlockTime[1])}&nbsp;<span className="sm">min </span></span> : ''}
+									{FormatHelper.convertToNumber(averageBlockTime[2])}&nbsp;<span className="sm">sec</span>
+								</React.Fragment>) : '-'}
 							</div>
 						</div>
 					</div>

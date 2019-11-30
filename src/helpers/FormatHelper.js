@@ -215,6 +215,21 @@ class FormatHelper {
 		return moment.utc(timestamp).local().format('DD.MM.YYYY HH:mm');
 	}
 
+    /**
+     *
+     * @param time
+     * @returns {string}
+     */
+    static getAverageTime(time) {
+        const measuredTime = new Date(null);
+        measuredTime.setSeconds(time);
+        return measuredTime.toISOString().substr(11, 8);
+	}
+
+	static convertToNumber(string) {
+		return new BN(string).toNumber();
+	}
+
 }
 
 export default FormatHelper;
