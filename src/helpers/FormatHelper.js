@@ -220,14 +220,17 @@ class FormatHelper {
      * @param time
      * @returns {string}
      */
-    static getAverageTime(time) {
-        const measuredTime = new Date(null);
-        measuredTime.setSeconds(time);
-        return measuredTime.toISOString().substr(11, 8);
+    static secondsToFullTime(time) {
+		return moment.utc(moment.duration(time, "seconds").asMilliseconds()).format("HH:mm:ss");
 	}
 
-	static convertToNumber(string) {
-		return new BN(string).toNumber();
+	/**
+	 *
+	 * @param stringValue
+	 * @returns {number}
+	 */
+	static convertToNumber(stringValue) {
+		return new BN(stringValue).toNumber();
 	}
 
 }
