@@ -76,6 +76,7 @@ class OperationRow extends React.Component {
 		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);/*.length > 10 ?
             FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
             FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);*/
+		const feeAmount = FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision);
 
 		return (
 			<React.Fragment>
@@ -183,7 +184,20 @@ class OperationRow extends React.Component {
 									(matches) => (!matches && (
 										<td className="fee">
 											<div className="td-in">
-												<span className="value">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
+												<span className="value">
+													{
+														feeAmount.length > MAX_ROW_LETTERS_SIZE ? (
+															<Tooltip
+																placement="top"
+																overlayClassName="verify-contract-tooltip"
+																trigger={['hover']}
+																overlay={feeAmount}
+															>
+																<span>{feeAmount.slice(0, 10).concat('...')}</span>
+															</Tooltip>
+														) : <span>{feeAmount}</span>
+													}
+												</span>
 												<span className="currency">{detailInfo.fee.symbol}</span>
 											</div>
 										</td>
