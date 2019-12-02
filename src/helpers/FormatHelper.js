@@ -215,13 +215,13 @@ class FormatHelper {
 		return moment.utc(timestamp).local().format('DD.MM.YYYY HH:mm');
 	}
 
-    /**
-     *
-     * @param time
-     * @returns {string}
-     */
-    static secondsToFullTime(time) {
-		return moment.utc(moment.duration(time, "seconds").asMilliseconds()).format("HH:mm:ss");
+	/**
+	 *
+	 * @param time
+	 * @returns {string}
+	 */
+	static secondsToFullTime(time) {
+		return moment.utc(moment.duration(time, 'seconds').asMilliseconds()).format('HH:mm:ss');
 	}
 
 	/**

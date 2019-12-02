@@ -76,20 +76,15 @@ class RecentBlockSidebar extends React.Component {
 					<div className="help-container">
 						<div className="sidebar-elem">
 							<div className="title">Latest block number</div>
-							<div className="value">{FormatHelper.formatAmount(latestBlock, 0)}</div>
-						</div>
-						<div className="sidebar-elem">
-							<div className="title">Latest block time</div>
-							<div className="value">{FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)}</div>
-						</div>
-						<div className="sidebar-elem">
-							<div className="title">Average transactions amount</div>
-							<div className="value">{`${averageTr}/${averageOp}`}</div>
+							<div className="value">
+								{`${FormatHelper.formatAmount(latestBlock, 0)} `}
+								({FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)})
+							</div>
 						</div>
 						<div className="sidebar-elem">
 							<div className="title">Average block time (24h)</div>
 							<div className="value">
-								{this.averageBlockTime(averageTime)}
+								{this.averageBlockTime(averageTime)} ({`${averageTr}/${averageOp}`})
 							</div>
 						</div>
 					</div>
