@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Tooltip from 'rc-tooltip';
 
 import { NONE_SYMBOL, MAX_CONTRACT_LETTERS_SIZE } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
+import AssetAmountTooltip from '../AssetAmountTooltip';
 
 class ContractInfoBlock extends React.Component {
 
@@ -45,21 +45,12 @@ class ContractInfoBlock extends React.Component {
 					<div className="key">Creation FEE:</div>
 					<div className="underline" />
 					<div className="value">
-						{
-							creationFee.length > MAX_CONTRACT_LETTERS_SIZE ? (
-								<Tooltip
-									placement="top"
-									overlayClassName="verify-contract-tooltip"
-									trigger={['hover']}
-									overlay={feeData[0]}
-								>
-									<span>
-										{creationFee.length > MAX_CONTRACT_LETTERS_SIZE ?
-											creationFee.slice(0, 17).concat(`... ${feeData[1]}`) : creationFee}
-									</span>
-								</Tooltip>
-							) : creationFee
-						}
+						<AssetAmountTooltip
+							assetAmount={feeData[0]}
+							maxSize={MAX_CONTRACT_LETTERS_SIZE}
+							croppedSize={MAX_CONTRACT_LETTERS_SIZE}
+							symbol={feeData[1]}
+						/>
 					</div>
 				</div>
 				<div className="line">

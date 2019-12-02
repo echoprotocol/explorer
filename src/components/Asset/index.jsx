@@ -6,10 +6,15 @@ import BN from 'bignumber.js';
 
 import Loader from '../Loader';
 
-import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import {
+	MAX_CONTRACT_LETTERS_SIZE,
+	ECHO_ASSET,
+	TITLE_TEMPLATES,
+} from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import AssetAmountTooltip from '../AssetAmountTooltip';
 
 class Asset extends React.Component {
 
@@ -82,11 +87,23 @@ class Asset extends React.Component {
 							</div>
 							<div className="block">
 								<div className="title">Current supply</div>
-								<div className="val">{FormatHelper.formatAmount(currentSupply, assetPrecision)}</div>
+								<div className="val">
+									<AssetAmountTooltip
+										assetAmount={FormatHelper.formatAmount(currentSupply, assetPrecision)}
+										maxSize={MAX_CONTRACT_LETTERS_SIZE}
+										croppedSize={MAX_CONTRACT_LETTERS_SIZE}
+									/>
+								</div>
 							</div>
 							<div className="block">
 								<div className="title">Max supply</div>
-								<div className="val">{FormatHelper.formatAmount(maxSupply, assetPrecision)}</div>
+								<div className="val">
+									<AssetAmountTooltip
+										assetAmount={FormatHelper.formatAmount(maxSupply, assetPrecision)}
+										maxSize={MAX_CONTRACT_LETTERS_SIZE}
+										croppedSize={MAX_CONTRACT_LETTERS_SIZE}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>

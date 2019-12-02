@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-import { MAX_ACCOUNT_LETTERS_SIZE } from "../../constants/GlobalConstants";
-import Tooltip from "rc-tooltip";
+import { CROPPED_ACCOUNT_SIZE, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
+import AssetAmountTooltip from '../AssetAmountTooltip';
 
 class AssetBalances extends React.Component {
 
@@ -25,37 +25,20 @@ class AssetBalances extends React.Component {
 		this.setState({ isLoadedMore: !this.state.isLoadedMore });
 	}
 
-	onTooltip(assetAmount) {
-		{assetAmount.length > MAX_ACCOUNT_LETTERS_SIZE ?
-			<Tooltip
-				placement="top"
-				overlayClassName="verify-contract-tooltip"
-				trigger={['hover']}
-				overlay={assetAmount}
-			>
-				<span className="txt">{assetAmount.slice(0, 22).concat('...')}</span>
-			</Tooltip>: assetAmount}
-	}
-
 	renderElement(id, asset, amount, isOwner) {
 		const assetAmount = FormatHelper.formatAmount(amount, asset.get('precision'));
 		return (
 			<div key={id} className={classnames('inner-elem', { 'is-owner': isOwner })}>
-				{this.onTooltip(assetAmount)}
-				{/*{assetAmount.length > MAX_ACCOUNT_LETTERS_SIZE ?*/}
-                {/*    <Tooltip*/}
-                {/*        placement="top"*/}
-                {/*        overlayClassName="verify-contract-tooltip"*/}
-                {/*        trigger={['hover']}*/}
-                {/*        overlay={assetAmount}*/}
-                {/*    >*/}
-				{/*		<span className="txt">{assetAmount.slice(0, 22).concat('...')}</span>*/}
-                {/*    </Tooltip>: assetAmount}*/}
-					<span className="accent">
-						<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
-							{asset.get('symbol')}
-						</Link>
-					</span>
+				<AssetAmountTooltip
+					assetAmount={assetAmount}
+					maxSize={MAX_ACCOUNT_LETTERS_SIZE}
+					croppedSize={CROPPED_ACCOUNT_SIZE}
+				/>
+				<span className="accent">
+					<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
+						{asset.get('symbol')}
+					</Link>
+				</span>
 			</div>
 		);
 	}

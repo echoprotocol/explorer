@@ -15,7 +15,8 @@ import ObjectInfo from './ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import { MAX_ROW_LETTERS_SIZE } from '../../constants/GlobalConstants';
+import { CROPPED_ROW_SIZE, MAX_ROW_LETTERS_SIZE } from '../../constants/GlobalConstants';
+import AssetAmountTooltip from '../AssetAmountTooltip';
 
 class OperationRow extends React.Component {
 
@@ -73,10 +74,7 @@ class OperationRow extends React.Component {
 			width: 175,
 		};
 
-		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);/*.length > 10 ?
-            FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
-            FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);*/
-		const feeAmount = FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision);
+		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
 
 		return (
 			<React.Fragment>
@@ -160,18 +158,11 @@ class OperationRow extends React.Component {
 							mainInfo.value.amount ?
 								<div className="td-in">
 									<span	className="value">
-										{
-											assetAmount.length > MAX_ROW_LETTERS_SIZE ? (
-												<Tooltip
-													placement="top"
-													overlayClassName="verify-contract-tooltip"
-													trigger={['hover']}
-													overlay={assetAmount}
-												>
-													<span>{assetAmount.slice(0, 10).concat('...')}</span>
-												</Tooltip>
-											) : <span>{assetAmount}</span>
-										}
+										<AssetAmountTooltip
+											assetAmount={assetAmount}
+											maxSize={MAX_ROW_LETTERS_SIZE}
+											croppedSize={CROPPED_ROW_SIZE}
+										/>
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : <div className="td-in">—</div>
@@ -185,18 +176,11 @@ class OperationRow extends React.Component {
 										<td className="fee">
 											<div className="td-in">
 												<span className="value">
-													{
-														feeAmount.length > MAX_ROW_LETTERS_SIZE ? (
-															<Tooltip
-																placement="top"
-																overlayClassName="verify-contract-tooltip"
-																trigger={['hover']}
-																overlay={feeAmount}
-															>
-																<span>{feeAmount.slice(0, 10).concat('...')}</span>
-															</Tooltip>
-														) : <span>{feeAmount}</span>
-													}
+													<AssetAmountTooltip
+														assetAmount={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+														maxSize={MAX_ROW_LETTERS_SIZE}
+														croppedSize={CROPPED_ROW_SIZE}
+													/>
 												</span>
 												<span className="currency">{detailInfo.fee.symbol}</span>
 											</div>

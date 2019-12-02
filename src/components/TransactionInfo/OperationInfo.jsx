@@ -6,15 +6,15 @@ import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
 import classnames from 'classnames';
 import BN from 'bignumber.js';
-import Tooltip from "rc-tooltip";
 
 import directionIcon from '../../assets/images/icons/direction-icon.svg';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
+import AssetAmountTooltip from '../AssetAmountTooltip';
 
 import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
-import {BYTECODE_SYMBOLS_LENGTH, MAX_ACCOUNT_LETTERS_SIZE} from '../../constants/GlobalConstants';
+import { BYTECODE_SYMBOLS_LENGTH, CROPPED_ACCOUNT_SIZE, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
 
 import Avatar from '../Avatar';
 
@@ -100,22 +100,19 @@ class OperationInfo extends React.Component {
 
 	renderOperationRowValue(key, value, index) {
 		const { objId } = this.props;
+		const valueAmount = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
+		const valueData = valueAmount.split(' ');
 
 		if (typeof value === 'object' && key !== 'logs') {
-			if (!value.link) {
-				// const valueAmount = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
-				// const valueData = valueAmount.split(' ');
-				// valueData[0].length > MAX_ACCOUNT_LETTERS_SIZE ? value = (
-				// 	<Tooltip
-				// 		placement="top"
-				// 		overlayClassName="verify-contract-tooltip"
-				// 		trigger={['hover']}
-				// 		overlay={valueData[0]}
-				// 	>
-				// 		<span className="txt">{valueData[0].slice(0, 25).concat(`... ${valueData[1]}`)}</span>
-				// 	</Tooltip>
-				// 	) : value = valueAmount
-				value = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
+			if (!value.link && valueData[0].length > MAX_ACCOUNT_LETTERS_SIZE) {
+				value = (<AssetAmountTooltip
+					assetAmount={valueData[0]}
+					maxSize={MAX_ACCOUNT_LETTERS_SIZE}
+					croppedSize={CROPPED_ACCOUNT_SIZE}
+					symbol={valueData[1]}
+				/>);
+			} else if (!value.link) {
+				value = valueAmount;
 			} else {
 				const isAccount = validators.isAccountId(value.link);
 				value = (
