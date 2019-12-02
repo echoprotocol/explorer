@@ -385,10 +385,10 @@ const Operations = {
 		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
 		name: 'Contract fund pool',
 		options: {
-			from: 'registrar',
-			subject: 'contract_to_modify',
-			amount: null,
-			asset: 'fee',
+			from: 'sender',
+			subject: null,
+			amount: 'value.amount',
+			asset: 'value.asset_id',
 		},
 	},
 	contract_whitelist: {
@@ -477,8 +477,8 @@ const Operations = {
 		options: {
 			from: 'account',
 			subject: ['eth_addr'],
-			amount: 'value.amount',
-			asset: 'value.asset_id',
+			amount: null,
+			asset: null,
 		},
 	},
 	deposit_erc20_token: {
@@ -497,8 +497,8 @@ const Operations = {
 		options: {
 			from: 'account',
 			subject: ['to'],
-			amount: null,
-			asset: null,
+			amount: 'value',
+			asset: null, //'fee.asset_id'
 		},
 	},
 	approve_erc20_token_withdraw: {

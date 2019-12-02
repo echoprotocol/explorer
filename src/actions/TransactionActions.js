@@ -288,8 +288,10 @@ class TransactionActionsClass extends BaseActionsClass {
 			id,
 			timestamp,
 		};
+		console.log('type', type);
 
 		if (operation.fee) {
+			console.log('operation.fee', operation.fee);
 			const feeAsset = await echo.api.getObject(operation.fee.asset_id);
 			result.fee = {
 				amount: operation.fee.amount,
@@ -299,6 +301,8 @@ class TransactionActionsClass extends BaseActionsClass {
 		}
 
 		if (options.from) {
+			console.log('options.from', options.from);
+			console.log('options.from operation', operation);
 
 			if (Array.isArray(options.from)) {
 				if (options.from[1]) {
@@ -310,6 +314,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 			} else {
 				const request = _.get(operation, options.from);
+				console.log('options.from request', request);
 				const response = await echo.api.getObject(request);
 
 				result.from = { id: request };
@@ -320,13 +325,16 @@ class TransactionActionsClass extends BaseActionsClass {
 		}
 
 		if (options.subject) {
+			console.log('options.subject', options.subject);
 			if (options.subject[1]) {
 				const request = _.get(operation, options.subject[0]);
 				const response = await echo.api.getObject(request);
 				result.subject = { id: request, name: response[options.subject[1]] };
 			} else if (!validators.isObjectId(operation[options.subject[0]])) {
+				console.log('options', options);
 				const request = _.get(operation, options.subject[0]);
 				let response = null;
+				console.log('options.subject', options.subject);
 				switch (options.subject[0]) {
 					case 'name':
 						response = await echo.api.getAccountByName(request);
@@ -335,9 +343,12 @@ class TransactionActionsClass extends BaseActionsClass {
 						[response] = await echo.api.lookupAssetSymbols([request]);
 						break;
 					case 'label':
+					case 'eth_addr':
+					case 'to':
 						response = request;
 						break;
 					default:
+						console.log('default');
 						response = await echo.api.getObject(request);
 						break;
 				}
@@ -355,8 +366,12 @@ class TransactionActionsClass extends BaseActionsClass {
 		}
 
 		if (options.asset) {
+			console.log('options.asset', options.asset);
+			console.log('operation', operation);
 			const request = _.get(operation, options.asset);
+			console.log('request', request);
 			const response = await echo.api.getObject(request);
+			console.log('response', response);
 			result.value = {
 				...result.value,
 				precision: response.precision,
