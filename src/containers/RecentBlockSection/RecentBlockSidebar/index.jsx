@@ -47,16 +47,16 @@ class RecentBlockSidebar extends React.Component {
 	}
 
 	averageBlockTime(averageTime) {
-		const [hours, minutes, seconds] = FormatHelper.secondsToFullTime(averageTime).split(':').map((i) => {
-			return FormatHelper.convertToNumber(i);
-		});
+		const [hours, minutes, seconds] = FormatHelper.secondsToFullTime(averageTime).split(':')
+			.map((i) => FormatHelper.convertToNumber(i));
 
 		if (averageTime) {
-			return (<React.Fragment>
-				{!!hours ? <span>{hours}&nbsp;<span className="sm">hours</span></span> : ''}
-				{!!minutes ? <span> {minutes}&nbsp;<span className="sm">min </span></span> : ''}
-				{seconds}&nbsp;<span className="sm">sec</span>
-			</React.Fragment>)
+			return (
+				<React.Fragment>
+					{hours ? <span>{hours}&nbsp;<span className="sm">hours</span></span> : ''}
+					{minutes ? <span> {minutes}&nbsp;<span className="sm">min </span></span> : ''}
+					{seconds}&nbsp;<span className="sm">sec</span>
+				</React.Fragment>);
 		}
 		return '-';
 	}
