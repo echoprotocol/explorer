@@ -79,7 +79,6 @@ class ContractActions extends BaseActionsClass {
 	 */
 	getContractInfo(id) {
 		return async (dispatch) => {
-
 			if (!validators.isContractId(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));
 				return;
@@ -385,7 +384,17 @@ class ContractActions extends BaseActionsClass {
 	}
 
 	setDefaultDateContract(contractId) {
-		return (dispatch, getState) => {
+		return async (dispatch, getState) => {
+			const ownerName = getState().contract.getIn(['owner', 'name']);
+			const ownerId = getState().contract.getIn(['owner', 'id']);
+			const activeId = getState().global.getIn(['activeAccount', 'id']);
+			if (activeId !== ownerId) {
+				dispatch(ModalActions.openModal(
+					MODAL_ERROR,
+					{ title: `Only account ${ownerName} can manage this contract` },
+				));
+			}
+
 			const name = getState().contract.get('name');
 			const description = getState().contract.get('description');
 			const icon = getState().contract.get('icon');
