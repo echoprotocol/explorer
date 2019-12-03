@@ -224,6 +224,12 @@ class ContractActions extends BaseActionsClass {
 		return async (dispatch) => {
 			const list = await ApiService.getSolcList();
 			list.builds = list.builds.filter(({ version }) => checkAccessVersion(version, MIN_ACCESS_VERSION_BUILD));
+
+
+			console.log('list.builds', list);
+			const downloaded = [];
+			dispatch(this.setValue('downloadedCompilers', downloaded));
+
 			dispatch(this.setValue('compilersList', list));
 			const solcLatestRelease = list.latestRelease ? list.releases[list.latestRelease] : list.builds[list.builds.length - 1].path;
 			const lastVersion = list.builds.find((b) => b.path === solcLatestRelease);
@@ -238,14 +244,26 @@ class ContractActions extends BaseActionsClass {
 
 	changeContractCompiler(version) {
 		return async (dispatch, getState) => {
+			const downloadedVersions = getState().contract.get('downloadedCompilers').toArray();
+			console.log('downloadedVersions', downloadedVersions);
+
+
 			const buildsList = getState().contract.getIn(['compilersList', 'builds']);
+
 			dispatch(FormActions.setFormValue(
 				FORM_CONTRACT_VERIFY,
 				'currentCompiler',
 				version,
 			));
 			const compilerBuild = buildsList.find((build) => build.get('longVersion') === version);
-			await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
+
+			if (!downloadedVersions.includes(version)) {
+				console.log('version', version);
+				downloadedVersions.push(version);
+				dispatch(this.setValue('downloadedCompilers', downloadedVersions));
+				await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
+			}
+
 			const code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
 			if (!code) {
 				return;
@@ -531,6 +549,7 @@ class ContractActions extends BaseActionsClass {
 	}
 
 	contractVerifyApprove(id) {
+		console.log('contractVerifyApprove');
 		return async (dispatch, getState) => {
 			const contractInputs = getState().form.getIn([FORM_CONTRACT_VERIFY, 'contractInputs']);
 			let isError = false;
