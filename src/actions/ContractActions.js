@@ -79,6 +79,7 @@ class ContractActions extends BaseActionsClass {
 	 */
 	getContractInfo(id) {
 		return async (dispatch) => {
+
 			if (!validators.isContractId(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));
 				return;
