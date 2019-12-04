@@ -68,13 +68,16 @@ class RecentBlockTable extends React.Component {
 		});
 	}
 
-	transitionToBlock() {
+	async transitionToBlock() {
 		console.log('transitionToBlock', this.props);
 		const { errorSearch, hints: [hint] } = this.props;
 		console.log('this.props.hints', this.props.hints);
 		console.log('hint', hint);
 		if (errorSearch) return;
-		this.props.history.push(hint.to);
+		await new Promise((resolve) => {
+			setTimeout(() => resolve(this.props.history.push(hint.to), 100));
+		});
+		// this.props.history.push(hint.to);
 	}
 
 	goToBlock(e, block) {
