@@ -144,8 +144,8 @@ class Contract extends React.Component {
 
 	changeButtonText(bytecode) {
 		copy(bytecode);
-		this.setState({ text: 'Copied' });
-		setTimeout(() => this.setState({ text: 'Copy text' }), CHANGE_TEXT_TIME);
+		this.setState({ text: 'Copied!' });
+		setTimeout(() => this.setState({ text: 'Copy code' }), CHANGE_TEXT_TIME);
 	}
 
 	renderArrow({ text, className }) {
