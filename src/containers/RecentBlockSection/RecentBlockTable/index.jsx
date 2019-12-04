@@ -69,15 +69,9 @@ class RecentBlockTable extends React.Component {
 	}
 
 	async transitionToBlock() {
-		console.log('transitionToBlock', this.props);
 		const { errorSearch, hints: [hint] } = this.props;
-		console.log('this.props.hints', this.props.hints);
-		console.log('hint', hint);
 		if (errorSearch) return;
-		await new Promise((resolve) => {
-			setTimeout(() => resolve(this.props.history.push(hint.to), 100));
-		});
-		// this.props.history.push(hint.to);
+		this.props.history.push(hint.to);
 	}
 
 	goToBlock(e, block) {
@@ -108,7 +102,7 @@ class RecentBlockTable extends React.Component {
 							errorSearch={errorSearch}
 							loadingSearch={loadingSearch}
 							getHints={(str) => this.props.getHints(str)}
-							transitionToBlock={() => this.transitionToBlock()}
+							transitionToBlock={() => setTimeout(() => this.transitionToBlock(), 160)}
 							withHelp
 							goToBlock
 							white

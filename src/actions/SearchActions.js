@@ -35,7 +35,6 @@ class SearchActions extends BaseActionsClass {
 	 * @returns {Function}
 	 */
 	initSearch(type) {
-		console.log('initSearch', type);
 		return (dispatch) => {
 			dispatch(this.setMultipleValue({
 				[type]: {
@@ -339,24 +338,20 @@ class SearchActions extends BaseActionsClass {
 	 * @returns {Function}
 	 */
 	blockSearchHint(str) {
-		console.log('blockSearchHint');
 		return async (dispatch) => {
 			dispatch(this.initSearch('blockSearch'));
 			const hints = [];
 
 			try {
-				console.log('str', str);
 				if (!str) {
 					return;
 				}
 
-				console.log('isStringNumber');
 				if (TypesHelper.isStringNumber(str) || TypesHelper.isCommaNumberRepresentation(str)) {
 					str = FormatHelper.removeCommas(str);
 					str = FormatHelper.removeDots(str);
 					const block = await echo.api.getBlock(str);
 
-					console.log('block', block);
 					if (block) {
 						const blockHint = {
 							section: 'Block',
@@ -370,7 +365,6 @@ class SearchActions extends BaseActionsClass {
 			} catch (error) {
 				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
 			} finally {
-				console.log('finally hints', hints);
 				dispatch(this.setValue(['blockSearch', 'hints'], hints, false));
 				dispatch(this.setValue(['blockSearch', 'loading'], false, false));
 			}

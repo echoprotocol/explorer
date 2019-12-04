@@ -47,7 +47,7 @@ class SearchField extends React.Component {
 		clearTimeout(this.searchTimeout);
 		this.searchTimeout = setTimeout(() => {
 			this.props.getHints(value);
-		}, 300);
+		}, 200);
 	}
 
 	onClick(e) {
@@ -62,8 +62,11 @@ class SearchField extends React.Component {
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
+		const { value } = e.target;
 
 		if (this.state.inputValue && KEY_CODE_ENTER === code) {
+			clearTimeout(this.searchTimeout);
+			this.props.getHints(value);
 			this.props.transitionToBlock();
 		}
 
