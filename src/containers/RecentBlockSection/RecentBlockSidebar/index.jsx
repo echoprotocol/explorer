@@ -15,6 +15,7 @@ class RecentBlockSidebar extends React.Component {
 		this.state = {
 			timer: 0,
 			offsetTop: 0,
+			startTimestamp: this.props.startTimestamp,
 		};
 
 		this.intervalId = 0;
@@ -31,7 +32,10 @@ class RecentBlockSidebar extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		if (this.props.latestBlock !== nextProps.latestBlock) {
-			this.setState({ timer: 0 });
+			this.setState({
+				timer: 0,
+				startTimestamp: this.props.startTimestamp,
+			});
 		}
 
 		return true;
@@ -47,7 +51,7 @@ class RecentBlockSidebar extends React.Component {
 	}
 
 	render() {
-		const { latestBlock, averageTransactions, startTimestamp } = this.props;
+		const { latestBlock, averageTransactions } = this.props;
 		const { offsetTop } = this.state;
 
 		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
@@ -64,7 +68,7 @@ class RecentBlockSidebar extends React.Component {
 						</div>
 						<div className="sidebar-elem">
 							<div className="title">Latest block time</div>
-							<div className="value">{FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)}</div>
+							<div className="value">{FormatHelper.formatLatestBlockTime(this.state.startTimestamp + this.state.timer)}</div>
 						</div>
 						<div className="sidebar-elem">
 							<div className="title">Average transactions amount</div>
