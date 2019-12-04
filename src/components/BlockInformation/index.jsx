@@ -6,6 +6,8 @@ import classnames from 'classnames';
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import ViewListPopover from '../ViewListPopover';
+import TableLable from '../TableLable';
+
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
@@ -143,23 +145,22 @@ class BlockInformation extends React.Component {
 						<div className="title">Reward</div>
 						<div className="value">{`${FormatHelper.formatAmount(reward, ECHO_ASSET.PRECISION)} ${ECHO_ASSET.SYMBOL}`}</div>
 					</div>
-					<div className="container verifiers">
-						<div className="title" />
-						<div className="value">
-							{
-								rewardDistribution && rewardDistribution.length ? (
-									<ViewListPopover
-										toggleReward={toggleRewardDistribution}
-										isOpen={isDistributionRewardOpen}
-									/>
-								) : undefined
-							}
-						</div>
-					</div>
 				</div>
+
+				<TableLable label="Block Certificate">
+					{
+						rewardDistribution && rewardDistribution.length && (
+							<ViewListPopover
+								toggleReward={toggleRewardDistribution}
+								isOpen={isDistributionRewardOpen}
+							/>
+						)
+					}
+				</TableLable>
 				{
 					(rewardDistribution && rewardDistribution.length) ? (
-						isDistributionRewardOpen && <DistributionTable rewards={rewardDistribution} />
+						isDistributionRewardOpen &&
+						<DistributionTable rewards={rewardDistribution} />
 					) : (
 						<h2>Certificate list will be available after next block will be produced</h2>
 					)
