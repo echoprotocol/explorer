@@ -1,3 +1,4 @@
+
 .accordion-table-wrap {
     position: relative;
     transition: background-color 0.3s,
@@ -88,11 +89,6 @@
 
         td {
             height: 8px;
-        }
-        & + .view {
-            .td-in {
-                padding: 12px 7px;
-            }
         }
     }
 
