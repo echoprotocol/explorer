@@ -69,14 +69,12 @@ class RecentBlockTable extends React.Component {
 	}
 
 	transitionToBlock() {
-		console.log('transitionToBlock');
 		const { errorSearch, hints: [hint] } = this.props;
 		if (errorSearch) return;
 		this.props.history.push(hint.to);
 	}
 
 	goToBlock(e, block) {
-		console.log('goToBlock');
 		e.preventDefault();
 		window.scrollTo(0, 0);
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));

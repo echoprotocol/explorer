@@ -337,6 +337,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					case 'eth_addr':
 					case 'to':
 					case 'transaction_id':
+					case 'withdraw_id':
 						response = request;
 						break;
 					default:
