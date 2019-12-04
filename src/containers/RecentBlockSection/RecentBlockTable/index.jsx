@@ -69,7 +69,10 @@ class RecentBlockTable extends React.Component {
 	}
 
 	transitionToBlock() {
+		console.log('transitionToBlock', this.props);
 		const { errorSearch, hints: [hint] } = this.props;
+		console.log('this.props.hints', this.props.hints);
+		console.log('hint', hint);
 		if (errorSearch) return;
 		this.props.history.push(hint.to);
 	}
