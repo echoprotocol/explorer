@@ -1,0 +1,165 @@
+// DISTRIBUTION TABLE AT BLOCK PAGE
+@keyframes fadein {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+.distribution-table {
+	margin-bottom: 55px;
+	animation: fadein $speed;
+
+	.view {
+		cursor: default;
+	}
+
+	.role {
+		width: 22%;
+	}
+
+	.origin,
+	.delegate {
+		width: 22%;
+		max-width: 22%;
+
+		span {
+			@include text-overflow;
+			max-width: 175px;
+
+			@include res-768 {
+				max-width: 75px;
+			}
+
+			@include res-500 {
+				max-width: 55px;
+			}
+
+			@include res-320 {
+				max-width: 75px;
+			}
+		}
+
+		.tooltip {
+			position: absolute;
+			margin-left: 5px;
+			margin-top: 1px;
+			height: 16px;
+			width: 9px;
+		}
+	}
+
+	.reward {
+		width: 34%;
+	}
+
+	@include res-500 {
+		margin-bottom: 28px;
+
+		table {
+			td {
+
+				&:first-child,
+				&:last-child {
+					display: table-cell;
+				}
+
+				.td-in {
+					padding: 9px 7px;
+				}
+			}
+
+			tbody {
+				.view {
+					background-color: transparent;
+				}
+
+				tr {
+					display: table-row;
+				}
+
+				td {
+					margin-bottom: 0px;
+					display: table-cell;
+
+					&.role {
+						width: 20%;
+					}
+
+					&.origin,
+					&.delegate {
+						width: 20%;
+					}
+
+					&.reward {
+						width: 40%;
+					}
+				}
+			}
+		}
+	}
+
+	@include res-320 {
+		margin-bottom: 33px;
+
+		table {
+			td {
+
+				&:first-child,
+				&:last-child {
+					display: none;
+				}
+
+				.td-in {
+					padding: 0;
+				}
+			}
+
+			tbody {
+				.view {
+					background-color: #e7e6e9;
+
+					&:hover {
+						background-color: #ebebee;
+					}
+				}
+
+				tr {
+					display: flex;
+
+					td {
+						display: block;
+						margin-bottom: 18px;
+					}
+				}
+			}
+		}
+
+		.role {
+			order: 1;
+		}
+
+		.reward {
+			order: 2;
+
+			.td-in {
+				display: inline-block;
+				line-height: 20px;
+			}
+		}
+
+		.origin {
+			order: 3;
+		}
+
+		.delegate {
+			order: 4;
+		}
+	}
+	
+	.air {
+
+        & + .view {
+            .td-in {
+                padding: 12px 7px;
+            }
+        }
+    }
+}

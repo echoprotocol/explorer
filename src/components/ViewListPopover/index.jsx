@@ -14,7 +14,7 @@ class ViewListPopover extends Component {
 					className={`view-list ${isOpen ? 'is-open' : ''}`}
 					onClick={(e) => { e.preventDefault(); toggleReward(); }}
 				>
-					Block Certificate
+					{isOpen ? 'show' : 'hide'}
 				</a>
 			</div>
 		);
