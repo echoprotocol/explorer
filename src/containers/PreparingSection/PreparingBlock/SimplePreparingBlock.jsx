@@ -28,6 +28,9 @@ class SimplePreparingBlock extends React.Component {
 
 		const { hovered } = this.state;
 
+		console.log('title', title);
+		console.log('description', description);
+
 		return (
 			<React.Fragment>
 				<div

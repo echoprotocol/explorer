@@ -123,9 +123,9 @@ class PreparingSection extends React.Component {
 						<Media query="(max-width: 499px)">
 							{(matches) =>
 								(matches ? (
-									<p className="mobile-title">Preparing block</p>
+									<p className="mobile-title">Next block</p>
 								) : (
-									<SimplePreparingBlock title="Preparing block" description={FormatHelper.formatAmount(preparingBlock, 0)} />
+									<SimplePreparingBlock title="Next block" description={FormatHelper.formatAmount(preparingBlock, 0)} />
 								))
 							}
 						</Media>
@@ -145,7 +145,7 @@ class PreparingSection extends React.Component {
 								) : (
 									<React.Fragment>
 										<SimplePreparingBlock
-											title="Producing block"
+											title="Block proposals"
 											description={`Producers: ${readyProducers}/${producers}`}
 											status={isProducingBlock ? producing : PROGRESS_STATUS}
 											tooltip
