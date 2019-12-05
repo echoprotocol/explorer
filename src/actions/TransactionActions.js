@@ -262,7 +262,6 @@ class TransactionActionsClass extends BaseActionsClass {
 		accountId = undefined,
 		round = undefined,
 		trIndex = undefined,
-		// eslint-disable-next-line no-unused-vars
 		opIndex = undefined,
 		operationResult = [],
 		id = undefined,
@@ -333,6 +332,13 @@ class TransactionActionsClass extends BaseActionsClass {
 						break;
 					case 'symbol':
 						[response] = await echo.api.lookupAssetSymbols([request]);
+						break;
+					case 'label':
+					case 'eth_addr':
+					case 'to':
+					case 'transaction_id':
+					case 'withdraw_id':
+						response = request;
 						break;
 					default:
 						response = request;
