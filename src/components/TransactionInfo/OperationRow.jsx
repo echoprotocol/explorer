@@ -37,6 +37,21 @@ class OperationRow extends React.Component {
 		);
 	}
 
+	renderSubject(subject, mainInfo) {
+		if (!subject) return <div className="td-in">—</div>;
+		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in">{subject}</span>;
+		return (
+			<Link
+				className="td-in avatar-wrap"
+				to={URLHelper.createUrlById(subject)}
+				onClick={(e) => e.stopPropagation()}
+			>
+				{mainInfo.subject.name && <Avatar accountName={subject} />}
+				<span>{subject}</span>
+			</Link>
+		);
+	}
+
 	render() {
 		const {
 			operation: {
@@ -134,17 +149,7 @@ class OperationRow extends React.Component {
 						<Media query="(max-width: 767px)">
 							{ (matches) => matches && <div className="col-title">Reciever</div>}
 						</Media>
-						{
-							(subjectValue) ?
-								<Link
-									className="td-in avatar-wrap"
-									to={URLHelper.createUrlById(subjectValue)}
-									onClick={(e) => e.stopPropagation()}
-								>
-									{mainInfo.subject.name && <Avatar accountName={subjectValue} />}
-									<span>{subjectValue}</span>
-								</Link> : <div className="td-in">—</div>
-						}
+						{this.renderSubject(subjectValue, mainInfo)}
 					</td>
 					<td className="amount">
 						<Media query="(max-width: 767px)">

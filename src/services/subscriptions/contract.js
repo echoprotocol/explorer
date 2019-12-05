@@ -10,9 +10,7 @@ export const subscribeContractHistoryUpdate = async (...contracts) => {
 	const query = gql`
 		subscription($contracts: [ContractId!]!) {
 			contractHistoryUpdated(contracts: $contracts) {
-				calling_accounts {
-          			id
-        		}
+				callers { accounts { id } }
 			}
 		}
 	`;
