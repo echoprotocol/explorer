@@ -27,10 +27,6 @@ class SimplePreparingBlock extends React.Component {
 		} = this.props;
 
 		const { hovered } = this.state;
-
-		console.log('title', title);
-		console.log('description', description);
-
 		return (
 			<React.Fragment>
 				<div
@@ -72,9 +68,10 @@ class SimplePreparingBlock extends React.Component {
 							</div>
 						)
 					}
-					<div className="status-container">
+					<div className="status-container" >
 						<div className="description">
-							<span className="text">{description}</span> {(status) && (<div className="status-icn" />)}
+							<span	className="text">{description}</span>
+							{title === 'Next block' ? '' : <div className="status-icn" />}
 						</div>
 					</div>
 				</div>
