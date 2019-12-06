@@ -206,8 +206,8 @@ const Operations = {
 		options: {
 			from: 'committee_member_account',
 			subject: null,
-			value: null,
-			asset: null,
+			value: 'deposit.amount',
+			asset: 'deposit.asset_id',
 		},
 	},
 	committee_member_update: {
@@ -295,10 +295,10 @@ const Operations = {
 		value: OPERATIONS_IDS.BALANCE_CLAIM,
 		name: 'Claim balance',
 		options: {
-			from: null,
+			from: 'balance_owner_key',
 			subject: ['deposit_to_account', 'name'],
-			value: null,
-			asset: null,
+			value: 'total_claimed.amount',
+			asset: 'total_claimed.asset_id',
 		},
 	},
 	balance_freeze: {
@@ -385,10 +385,10 @@ const Operations = {
 		value: OPERATIONS_IDS.CONTRACT_FUND_POOL,
 		name: 'Contract fund pool',
 		options: {
-			from: 'registrar',
-			subject: 'contract_to_modify',
-			amount: null,
-			asset: 'fee',
+			from: 'sender',
+			subject: ['contract'],
+			amount: 'value.amount',
+			asset: 'value.asset_id',
 		},
 	},
 	contract_whitelist: {
@@ -396,9 +396,9 @@ const Operations = {
 		name: 'Contract whitelist',
 		options: {
 			from: 'sender',
-			subject: 'callee',
-			amount: 'value',
-			asset: 'fee',
+			subject: ['contract'],
+			amount: null,
+			asset: null,
 		},
 	},
 	sidechain_eth_create_address: {
@@ -446,7 +446,7 @@ const Operations = {
 		name: 'Approve withdraw eth',
 		options: {
 			from: ['committee_member_id', 'name'],
-			subject: null,
+			subject: ['withdraw_id'],
 			value: null,
 			asset: null,
 		},
@@ -458,7 +458,7 @@ const Operations = {
 			from: 'account',
 			subject: ['deposit_id'],
 			amount: 'value.amount',
-			asset: 'fee.asset_id',
+			asset: 'value.asset_id',
 		},
 	},
 	sidechain_burn: {
@@ -477,8 +477,8 @@ const Operations = {
 		options: {
 			from: 'account',
 			subject: ['eth_addr'],
-			amount: 'value.amount',
-			asset: 'value.asset_id',
+			amount: null,
+			asset: null,
 		},
 	},
 	deposit_erc20_token: {
@@ -487,8 +487,8 @@ const Operations = {
 		options: {
 			from: 'account',
 			subject: ['erc20_token_addr'],
-			amount: 'value.amount',
-			asset: 'value.asset_id',
+			amount: 'value',
+			asset: null,
 		},
 	},
 	withdraw_erc20_token: {
@@ -497,7 +497,7 @@ const Operations = {
 		options: {
 			from: 'account',
 			subject: ['to'],
-			amount: null,
+			amount: 'value',
 			asset: null,
 		},
 	},
@@ -506,7 +506,7 @@ const Operations = {
 		name: 'Approve erc20 token withdraw',
 		options: {
 			from: 'committee_member_id',
-			subject: ['to'],
+			subject: ['withdraw_id'],
 			amount: null,
 			asset: null,
 		},
@@ -585,9 +585,9 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE,
 		name: 'BTC aggregate',
 		options: {
-			from: null,
+			from: 'committee_member_id',
 			subject: ['transaction_id'],
-			amount: null,
+			amount: 'aggregation_out_value',
 			asset: null,
 		},
 	},
