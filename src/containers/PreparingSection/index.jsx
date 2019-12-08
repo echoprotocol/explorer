@@ -7,14 +7,14 @@ import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
 import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
 
 import {
-	BBA_TIP,
-	GC_TIP,
-	PRODUCING_TIP,
-	rounderSteps,
-	PROGRESS_STATUS,
-	DONE_STATUS,
-	GC_START_DELAY,
-	PRODUCED_DELAY,
+    BBA_TIP,
+    GC_TIP,
+    PRODUCING_TIP,
+    rounderSteps,
+    PROGRESS_STATUS,
+    DONE_STATUS,
+    GC_START_DELAY,
+    PRODUCED_DELAY, BLOCK_APPLIED_CALLBACK, GC_STARTED, BBA_STARTED, ROUND_STARTED, BLOCK_PRODUCED,
 } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -29,6 +29,7 @@ class PreparingSection extends React.Component {
 			description: 'Waiting',
 			status: '',
 			nextBlockDescription: '',
+            title: 'Preparation',
 		};
 
 		this.setTimeId = null;
@@ -43,7 +44,7 @@ class PreparingSection extends React.Component {
 			}, GC_START_DELAY);
 		}
 
-		if (stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null) {
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
 			this.setTimeId = setTimeout(() => {
 				this.updateBlockProduced(stepProgress, readyProducers);
 				this.setTimeId = null;
@@ -53,11 +54,11 @@ class PreparingSection extends React.Component {
 
 	getMobileData(stepProgress) {
 		let stepStatus = PROGRESS_STATUS;
-		if (stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK) {
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status) {
 			stepStatus = DONE_STATUS;
 		}
 		return {
-			title: stepProgress,
+			title: rounderSteps[stepProgress].title,
 			status: stepStatus,
 		};
 	}
@@ -71,17 +72,17 @@ class PreparingSection extends React.Component {
 
 	getGCData(stepProgress) {
 		switch (stepProgress) {
-			case rounderSteps.GC_STARTED:
+			case rounderSteps[GC_STARTED].status:
 				return {
 					description: 'Verifying',
 					status: PROGRESS_STATUS,
 				};
-			case rounderSteps.BBA_STARTED:
+			case rounderSteps[BBA_STARTED].status:
 				return {
 					description: 'Verified',
 					status: DONE_STATUS,
 				};
-			case rounderSteps.BLOCK_APPLIED_CALLBACK:
+			case rounderSteps[BLOCK_APPLIED_CALLBACK].status:
 				return {
 					description: 'Verified',
 					status: DONE_STATUS,
@@ -96,12 +97,12 @@ class PreparingSection extends React.Component {
 
 	getBBAData(stepProgress) {
 		switch (stepProgress) {
-			case rounderSteps.BBA_STARTED:
+			case rounderSteps[BBA_STARTED].status:
 				return {
 					description: 'Verified',
 					status: PROGRESS_STATUS,
 				};
-			case rounderSteps.BLOCK_APPLIED_CALLBACK:
+			case rounderSteps[BLOCK_APPLIED_CALLBACK].status:
 				return {
 					description: 'Verified',
 					status: DONE_STATUS,
@@ -116,17 +117,17 @@ class PreparingSection extends React.Component {
 
 	blockProposalData(stepProgress, readyProducers) {
 		switch (stepProgress) {
-			case rounderSteps.BLOCK_APPLIED_CALLBACK:
+			case rounderSteps[BLOCK_APPLIED_CALLBACK].status:
 				return {
 					description: `Received ${readyProducers} proposals`,
 					status: DONE_STATUS,
 				};
-			case rounderSteps.ROUND_STARTED:
+			case rounderSteps[ROUND_STARTED].status:
 				return {
 					description: 'Waiting for proposals',
 					status: PROGRESS_STATUS,
 				};
-			case rounderSteps.BLOCK_PRODUCED && readyProducers > 0:
+			case rounderSteps[BLOCK_PRODUCED].status && readyProducers > 0:
 				return {
 					description: `Received ${readyProducers} proposals`,
 					status: PROGRESS_STATUS,
@@ -144,11 +145,12 @@ class PreparingSection extends React.Component {
 	}
 
 	updateBlockProduced(stepProgress, preparingBlock) {
-		if (stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK) {
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status) {
 			this.setState({
 				description: 'Waiting',
 				status: '',
 				nextBlockDescription: `${preparingBlock} Waiting for new txs`,
+                title: 'Preparation',
 			});
 		}
 	}
@@ -180,9 +182,9 @@ class PreparingSection extends React.Component {
 								) : (
 									<SimplePreparingBlock
 										title="Next block"
-										description={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+										description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 											this.state.nextBlockDescription : nextBlockData.description}
-										status={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+										status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 											this.state.status : nextBlockData.status}
 									/>
 								))
@@ -195,9 +197,10 @@ class PreparingSection extends React.Component {
 									(matches ? (
 										<CompositePreparingBlock
 											composite
-											title={mobileData.title}
+											title={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
+                                                this.state.title : mobileData.title}
 											description={`Received ${readyProducers} proposals`}
-											status={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+											status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 												this.state.status : mobileData.status}
 											tooltip
 										/>
@@ -205,9 +208,9 @@ class PreparingSection extends React.Component {
 										<React.Fragment>
 											<SimplePreparingBlock
 												title="Block proposals"
-												description={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+												description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 													this.state.description : blockProposalData.description}
-												status={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+												status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 													this.state.status : blockProposalData.status}
 												tooltip
 												tip={PRODUCING_TIP}
@@ -216,9 +219,9 @@ class PreparingSection extends React.Component {
 												className="sm-border"
 												title="Verifying block: GC"
 												smallTitle="Verifying: GC"
-												description={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+												description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 													this.state.description : GCData.description}
-												status={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+												status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 													this.state.status : GCData.status}
 												tooltip
 												tip={GC_TIP}
@@ -227,9 +230,9 @@ class PreparingSection extends React.Component {
 												tip={BBA_TIP}
 												title="Verifying block: BBA"
 												smallTitle="Verifying: BBA"
-												description={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+												description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 													this.state.description : BBAData.description}
-												status={stepProgress === rounderSteps.BLOCK_APPLIED_CALLBACK && this.setTimeId === null ?
+												status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 													this.state.status : BBAData.status}
 												tooltip
 											/>

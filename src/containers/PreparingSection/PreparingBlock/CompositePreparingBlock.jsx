@@ -6,14 +6,14 @@ class CompositePreparingBlock extends React.Component {
 	render() {
 
 		const {
-			title, description, status, tooltip, className, currentStep, totalStep,
+			title, description, status, tooltip, className
 		} = this.props;
 
 		return (
 			<React.Fragment>
 				<div className={`preparing-element ${status} ${className}`}>
 					<div className="title">
-						<span className="current-step">{currentStep}</span>&nbsp;{`of ${totalStep}:${title}`}
+						<span className={status === '' ? '' : "current-step"}>{title}</span>
 						{(tooltip) && <div className="tooltip" />}
 					</div>
 					<div className="status-container">
@@ -34,8 +34,6 @@ CompositePreparingBlock.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string,
 	tooltip: PropTypes.bool,
-	currentStep: PropTypes.number.isRequired,
-	totalStep: PropTypes.number.isRequired,
 };
 
 CompositePreparingBlock.defaultProps = {
