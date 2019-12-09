@@ -13,12 +13,26 @@ class AssetAmountTooltip extends React.Component {
 					trigger={['hover']}
 					overlay={assetAmount}
 				>
-					<span>{assetAmount.slice(0, croppedSize).concat('...')} {symbol}</span>
+					<span>{assetAmount} {symbol}</span>
 				</Tooltip>
 			);
 		}
 
+		// if (!croppedSize) {
+		// 	return (
+		// 		<Tooltip
+		// 			placement="top"
+		// 			overlayClassName="verify-contract-tooltip"
+		// 			trigger={['hover']}
+		// 			overlay={assetAmount}
+		// 		>
+		// 			<span>{assetAmount} {symbol}</span>
+		// 		</Tooltip>
+		// 	);
+		// }
+
 		return (<span>{assetAmount} {symbol}</span>);
+		// {/*<span>{assetAmount.slice(0, croppedSize).concat('...')} {symbol}</span>*/}
 	}
 
 	render() {
@@ -34,8 +48,8 @@ class AssetAmountTooltip extends React.Component {
 
 AssetAmountTooltip.propTypes = {
 	assetAmount: PropTypes.string,
-	maxSize: PropTypes.number,
-	croppedSize: PropTypes.number,
+	maxSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	croppedSize: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	symbol: PropTypes.string,
 };
 

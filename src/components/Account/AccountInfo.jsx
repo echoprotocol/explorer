@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { CROPPED_ACCOUNT_SIZE, ECHO_ASSET, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-import AssetAmountTooltip from '../AssetAmountTooltip';
+import MediaAssetTooltip from '../MediaAssetTooltip';
 
 
 class AccountInfo extends React.Component {
@@ -26,18 +26,20 @@ class AccountInfo extends React.Component {
 					{
 						echo ?
 							<div className="val">
-								<AssetAmountTooltip
-									assetAmount={assetAmount}
-									maxSize={MAX_ACCOUNT_LETTERS_SIZE}
-									croppedSize={CROPPED_ACCOUNT_SIZE}
-								/>
+								<span className="txt">
+									<MediaAssetTooltip
+										maxWidth={800}
+										assetAmount={assetAmount}
+										maxSize={MAX_ACCOUNT_LETTERS_SIZE}
+										croppedSize={CROPPED_ACCOUNT_SIZE}
+									/>
+								</span>
 								<span className="accent">
 									<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
 										&nbsp;{ECHO_ASSET.SYMBOL}
 									</Link>
 								</span>
-							</div> :
-							<div className="val"><span className="txt">None</span></div>
+							</div> : <div className="val"><span className="txt">None</span></div>
 					}
 				</div>
 				<div className="line">

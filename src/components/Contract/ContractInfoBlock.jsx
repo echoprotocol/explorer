@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { NONE_SYMBOL, MAX_CONTRACT_LETTERS_SIZE } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-import AssetAmountTooltip from '../AssetAmountTooltip';
+import MediaAssetTooltip from '../MediaAssetTooltip';
 
 class ContractInfoBlock extends React.Component {
 
@@ -23,7 +23,10 @@ class ContractInfoBlock extends React.Component {
 			accuracy = data.get('ethAccuracy') ? 'Active' : 'Inactive';
 			compilerVersion = data.get('compilerVersion');
 		}
+		creationFee = '12312312312312312 ECHO';
 		const feeData = creationFee.split(' ');
+		console.log('ContractInfoBlock creationFee', creationFee);
+		console.log('blockNumber', blockNumber);
 
 		return (
 			<div className="contract-info-block">
@@ -45,12 +48,14 @@ class ContractInfoBlock extends React.Component {
 					<div className="key">Creation FEE:</div>
 					<div className="underline" />
 					<div className="value">
-						<AssetAmountTooltip
-							assetAmount={feeData[0]}
-							maxSize={MAX_CONTRACT_LETTERS_SIZE}
-							croppedSize={MAX_CONTRACT_LETTERS_SIZE}
-							symbol={feeData[1]}
-						/>
+						<span className="txt">
+							<MediaAssetTooltip
+								assetAmount={feeData[0]}
+								maxSize={MAX_CONTRACT_LETTERS_SIZE}
+								croppedSize={MAX_CONTRACT_LETTERS_SIZE}
+								symbol={feeData[1]}
+							/>
+						</span>
 					</div>
 				</div>
 				<div className="line">

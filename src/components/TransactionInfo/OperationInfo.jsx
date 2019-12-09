@@ -11,12 +11,12 @@ import directionIcon from '../../assets/images/icons/direction-icon.svg';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-import AssetAmountTooltip from '../AssetAmountTooltip';
 
 import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { BYTECODE_SYMBOLS_LENGTH, CROPPED_ACCOUNT_SIZE, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
 
 import Avatar from '../Avatar';
+import MediaAssetTooltip from '../MediaAssetTooltip';
 
 class OperationInfo extends React.Component {
 
@@ -41,6 +41,7 @@ class OperationInfo extends React.Component {
 	renderSingleInternal(op, index) {
 		const { precision, amount: amountData } = op.value;
 		const amount = new BN(amountData).div(10 ** precision).toString(10);
+		console.log('amount', amount);
 		return (
 			<div className="tt-row token-transfer-table" key={index.toString()}>
 				<div className="tt-col amount">
@@ -104,15 +105,15 @@ class OperationInfo extends React.Component {
 		const valueData = valueAmount.split(' ');
 
 		if (typeof value === 'object' && key !== 'logs') {
-			if (!value.link && valueData[0].length > MAX_ACCOUNT_LETTERS_SIZE) {
-				value = (<AssetAmountTooltip
-					assetAmount={valueData[0]}
-					maxSize={MAX_ACCOUNT_LETTERS_SIZE}
-					croppedSize={CROPPED_ACCOUNT_SIZE}
-					symbol={valueData[1]}
-				/>);
-			} else if (!value.link) {
-				value = valueAmount;
+			if (!value.link) {
+				value = (
+					<MediaAssetTooltip
+						maxWidth={300}
+						assetAmount={valueData[0]}
+						maxSize={MAX_ACCOUNT_LETTERS_SIZE}
+						croppedSize={CROPPED_ACCOUNT_SIZE}
+						symbol={valueData[1]}
+					/>);
 			} else {
 				const isAccount = validators.isAccountId(value.link);
 				value = (

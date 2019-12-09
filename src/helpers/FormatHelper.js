@@ -19,14 +19,14 @@ class FormatHelper {
      */
 	static formatAmount(amount, precision = 0, symbol) {
 		const number = new BN(amount).div(10 ** precision);
-		console.log('number', number);
+		// console.log('number', number);
 
 		const base = `${parseInt(this.toFixed(Math.abs(number || 0), precision), 10)}`;
 		const mod = base.length > 3 ? base.length % 3 : 0;
-		console.log('base', base);
+		// console.log('base', base);
 
 		let postfix = `.${this.toFixed(number, precision).split('.')[1]}`;
-		console.log('postfix', postfix);
+		// console.log('postfix', postfix);
 
 		// for (let i = postfix.length - 1; i >= 0; i -= 1) {
 		// 	if (postfix[i] === '0') {
@@ -41,7 +41,7 @@ class FormatHelper {
 		const resultNumber = (mod ? `${base.substr(0, mod)},` : '')
             + base.substr(mod).replace(/(\d{3})(?=\d)/g, `$1${','}`)
             + (precision ? postfix : '');
-		console.log('resultNumber', resultNumber);
+		// console.log('resultNumber', resultNumber);
 
 		return symbol ? `${resultNumber} ${symbol}` : resultNumber;
 	}

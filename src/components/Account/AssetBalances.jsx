@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 import { CROPPED_ACCOUNT_SIZE, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
-import AssetAmountTooltip from '../AssetAmountTooltip';
+import MediaAssetTooltip from '../MediaAssetTooltip';
 
 class AssetBalances extends React.Component {
 
@@ -29,7 +29,8 @@ class AssetBalances extends React.Component {
 		const assetAmount = FormatHelper.formatAmount(amount, asset.get('precision'));
 		return (
 			<div key={id} className={classnames('inner-elem', { 'is-owner': isOwner })}>
-				<AssetAmountTooltip
+				<MediaAssetTooltip
+					maxWidth={800}
 					assetAmount={assetAmount}
 					maxSize={MAX_ACCOUNT_LETTERS_SIZE}
 					croppedSize={CROPPED_ACCOUNT_SIZE}

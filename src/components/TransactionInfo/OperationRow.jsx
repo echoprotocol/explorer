@@ -16,7 +16,7 @@ import ObjectInfo from './ObjectInfo';
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import { CROPPED_ROW_SIZE, MAX_ROW_LETTERS_SIZE } from '../../constants/GlobalConstants';
-import AssetAmountTooltip from '../AssetAmountTooltip';
+import MediaAssetTooltip from '../MediaAssetTooltip';
 
 class OperationRow extends React.Component {
 
@@ -157,8 +157,9 @@ class OperationRow extends React.Component {
 						{
 							mainInfo.value.amount ?
 								<div className="td-in">
-									<span	className="value">
-										<AssetAmountTooltip
+									<span className="value">
+										<MediaAssetTooltip
+											maxWidth={300}
 											assetAmount={assetAmount}
 											maxSize={MAX_ROW_LETTERS_SIZE}
 											croppedSize={CROPPED_ROW_SIZE}
@@ -176,7 +177,8 @@ class OperationRow extends React.Component {
 										<td className="fee">
 											<div className="td-in">
 												<span className="value">
-													<AssetAmountTooltip
+													<MediaAssetTooltip
+														maxWidth={300}
 														assetAmount={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
 														maxSize={MAX_ROW_LETTERS_SIZE}
 														croppedSize={CROPPED_ROW_SIZE}

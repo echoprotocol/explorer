@@ -14,7 +14,8 @@ import {
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import AssetAmountTooltip from '../AssetAmountTooltip';
+import MediaAssetTooltip from '../MediaAssetTooltip';
+import AssetAmountTooltip from "../MediaAssetTooltip/AssetAmountTooltip";
 
 class Asset extends React.Component {
 
@@ -69,6 +70,7 @@ class Asset extends React.Component {
 			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : FormatHelper
 				.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), assetPrecision);
 		}
+		console.log('Asset');
 
 		return (
 			<div className="asset-container">
@@ -88,21 +90,27 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Current supply</div>
 								<div className="val">
-									<AssetAmountTooltip
-										assetAmount={FormatHelper.formatAmount(currentSupply, assetPrecision)}
-										maxSize={MAX_CONTRACT_LETTERS_SIZE}
-										croppedSize={MAX_CONTRACT_LETTERS_SIZE}
-									/>
+									<span className="txt">
+										<AssetAmountTooltip
+											maxWidth={300}
+											assetAmount={currentSupply}
+											maxSize={MAX_CONTRACT_LETTERS_SIZE}
+											croppedSize={MAX_CONTRACT_LETTERS_SIZE}
+										/>
+									</span>
 								</div>
 							</div>
 							<div className="block">
 								<div className="title">Max supply</div>
 								<div className="val">
-									<AssetAmountTooltip
-										assetAmount={FormatHelper.formatAmount(maxSupply, assetPrecision)}
-										maxSize={MAX_CONTRACT_LETTERS_SIZE}
-										croppedSize={MAX_CONTRACT_LETTERS_SIZE}
-									/>
+									<span className="txt">
+										<AssetAmountTooltip
+											maxWidth={300}
+											assetAmount={maxSupply}
+											maxSize={MAX_CONTRACT_LETTERS_SIZE}
+											croppedSize={MAX_CONTRACT_LETTERS_SIZE}
+										/>
+									</span>
 								</div>
 							</div>
 						</div>

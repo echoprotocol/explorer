@@ -429,9 +429,35 @@
         color: #000;
         white-space: nowrap;
 
+
         &.blue {
             color: #498FDF;
         }
+
+        @media (max-width: 300px) {
+            .txt {
+                overflow: hidden;
+                text-overflow: ellipsis !important;
+                white-space: nowrap;
+                //@include text-overflow;
+
+                width: 250px;
+                color: #0000cc;
+            }
+        }
+
+        @media (max-width: 200px) {
+            .txt {
+                overflow: hidden;
+                text-overflow: ellipsis !important;
+                white-space: nowrap;
+                //@include text-overflow;
+
+                max-width: 150px;
+                color: #00bb00;
+            }
+        }
+
     }
 }
 
