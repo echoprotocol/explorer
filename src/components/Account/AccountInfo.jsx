@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Tooltip from 'rc-tooltip';
 
 import { CROPPED_ACCOUNT_SIZE, ECHO_ASSET, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 import MediaAssetTooltip from '../MediaAssetTooltip';
+import AssetAmountTooltip from "../MediaAssetTooltip/AssetAmountTooltip";
+import Media from "react-media";
 
 
 class AccountInfo extends React.Component {
@@ -26,14 +29,22 @@ class AccountInfo extends React.Component {
 					{
 						echo ?
 							<div className="val">
-								<span className="txt">
-									<MediaAssetTooltip
-										maxWidth={800}
-										assetAmount={assetAmount}
-										maxSize={MAX_ACCOUNT_LETTERS_SIZE}
-										croppedSize={CROPPED_ACCOUNT_SIZE}
-									/>
-								</span>
+								<Media query={`(max-width: 760px)`}>
+									{(matches) =>
+										(matches ? (
+											<Tooltip
+												placement="top"
+												overlayClassName="verify-contract-tooltip"
+												trigger={['hover']}
+												overlay={assetAmount}
+											>
+												<span className="txt">{assetAmount}</span>
+											</Tooltip>
+										) : (
+											<span>{assetAmount}</span>
+										))
+									}
+								</Media>
 								<span className="accent">
 									<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
 										&nbsp;{ECHO_ASSET.SYMBOL}

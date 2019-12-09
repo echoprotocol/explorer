@@ -17,6 +17,7 @@ import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import { CROPPED_ROW_SIZE, MAX_ROW_LETTERS_SIZE } from '../../constants/GlobalConstants';
 import MediaAssetTooltip from '../MediaAssetTooltip';
+import AssetAmountTooltip from "../MediaAssetTooltip/AssetAmountTooltip";
 
 class OperationRow extends React.Component {
 
@@ -158,12 +159,14 @@ class OperationRow extends React.Component {
 							mainInfo.value.amount ?
 								<div className="td-in">
 									<span className="value">
-										<MediaAssetTooltip
-											maxWidth={300}
-											assetAmount={assetAmount}
-											maxSize={MAX_ROW_LETTERS_SIZE}
-											croppedSize={CROPPED_ROW_SIZE}
-										/>
+										<Tooltip
+											placement="top"
+											overlayClassName="verify-contract-tooltip"
+											trigger={['hover']}
+											overlay={assetAmount}
+										>
+											<span className="txt">{assetAmount}</span>
+										</Tooltip>
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : <div className="td-in">—</div>
@@ -177,12 +180,14 @@ class OperationRow extends React.Component {
 										<td className="fee">
 											<div className="td-in">
 												<span className="value">
-													<MediaAssetTooltip
-														maxWidth={300}
-														assetAmount={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
-														maxSize={MAX_ROW_LETTERS_SIZE}
-														croppedSize={CROPPED_ROW_SIZE}
-													/>
+													<Tooltip
+														placement="top"
+														overlayClassName="verify-contract-tooltip"
+														trigger={['hover']}
+														overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+													>
+														<span className="txt">{assetAmount}</span>
+													</Tooltip>
 												</span>
 												<span className="currency">{detailInfo.fee.symbol}</span>
 											</div>

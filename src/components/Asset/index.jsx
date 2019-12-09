@@ -7,15 +7,14 @@ import BN from 'bignumber.js';
 import Loader from '../Loader';
 
 import {
-	MAX_CONTRACT_LETTERS_SIZE,
 	ECHO_ASSET,
 	TITLE_TEMPLATES,
 } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import MediaAssetTooltip from '../MediaAssetTooltip';
-import AssetAmountTooltip from "../MediaAssetTooltip/AssetAmountTooltip";
+import Tooltip from "rc-tooltip";
+import Media from "react-media";
 
 class Asset extends React.Component {
 
@@ -90,27 +89,43 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Current supply</div>
 								<div className="val">
-									<span className="txt">
-										<AssetAmountTooltip
-											maxWidth={300}
-											assetAmount={currentSupply}
-											maxSize={MAX_CONTRACT_LETTERS_SIZE}
-											croppedSize={MAX_CONTRACT_LETTERS_SIZE}
-										/>
-									</span>
+									<Media query={`(max-width: 400px)`}>
+										{(matches) =>
+											(matches ? (
+												<Tooltip
+													placement="top"
+													overlayClassName="verify-contract-tooltip"
+													trigger={['hover']}
+													overlay={currentSupply}
+												>
+													<span className="txt">{currentSupply}</span>
+												</Tooltip>
+											) : (
+												<span>{currentSupply}</span>
+											))
+										}
+									</Media>
 								</div>
 							</div>
 							<div className="block">
 								<div className="title">Max supply</div>
 								<div className="val">
-									<span className="txt">
-										<AssetAmountTooltip
-											maxWidth={300}
-											assetAmount={maxSupply}
-											maxSize={MAX_CONTRACT_LETTERS_SIZE}
-											croppedSize={MAX_CONTRACT_LETTERS_SIZE}
-										/>
-									</span>
+									<Media query={`(max-width: 400px)`}>
+										{(matches) =>
+											(matches ? (
+												<Tooltip
+													placement="top"
+													overlayClassName="verify-contract-tooltip"
+													trigger={['hover']}
+													overlay={maxSupply}
+												>
+													<span className="txt">{maxSupply}</span>
+												</Tooltip>
+											) : (
+												<span>{maxSupply}</span>
+											))
+										}
+									</Media>
 								</div>
 							</div>
 						</div>
