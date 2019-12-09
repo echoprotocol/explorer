@@ -6,14 +6,14 @@ class CompositePreparingBlock extends React.Component {
 	render() {
 
 		const {
-			title, description, status, tooltip, className
+			title, description, status, tooltip, className,
 		} = this.props;
 
 		return (
 			<React.Fragment>
 				<div className={`preparing-element ${status} ${className}`}>
 					<div className="title">
-						<span className={status === '' ? '' : "current-step"}>{title}</span>
+						<span className={status === '' ? '' : 'current-step'}>{title}</span>
 						{(tooltip) && <div className="tooltip" />}
 					</div>
 					<div className="status-container">

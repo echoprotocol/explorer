@@ -9,25 +9,25 @@ export const GC_TIP = 'This is the first round of consensus - Graded Consensus. 
 export const BBA_TIP = 'Chosen verifiers should reach an agreement to apply the new block';
 
 export const rounderSteps = {
-	[ROUND_STARTED] : {
+	[ROUND_STARTED]: {
 		status: ROUND_STARTED,
 		title: 'Started',
 	},
-	[BLOCK_PRODUCED] : {
+	[BLOCK_PRODUCED]: {
 		status: BLOCK_PRODUCED,
 		title: 'Block proposals',
 	},
-	[GC_STARTED] : {
+	[GC_STARTED]: {
 		status: GC_STARTED,
 		title: 'Verifying block: GC',
 	},
-	[BBA_STARTED] : {
+	[BBA_STARTED]: {
 		status: BBA_STARTED,
 		title: 'Verifying block: BBA',
 	},
-	[BLOCK_APPLIED_CALLBACK] : {
+	[BLOCK_APPLIED_CALLBACK]: {
 		status: BLOCK_APPLIED_CALLBACK,
-		title: 'Done',
+		title: 'Produced',
 	},
 };
 

@@ -7,14 +7,19 @@ import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
 import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
 
 import {
-    BBA_TIP,
-    GC_TIP,
-    PRODUCING_TIP,
-    rounderSteps,
-    PROGRESS_STATUS,
-    DONE_STATUS,
-    GC_START_DELAY,
-    PRODUCED_DELAY, BLOCK_APPLIED_CALLBACK, GC_STARTED, BBA_STARTED, ROUND_STARTED, BLOCK_PRODUCED,
+	BBA_TIP,
+	GC_TIP,
+	PRODUCING_TIP,
+	rounderSteps,
+	PROGRESS_STATUS,
+	DONE_STATUS,
+	GC_START_DELAY,
+	PRODUCED_DELAY,
+	BLOCK_APPLIED_CALLBACK,
+	GC_STARTED,
+	BBA_STARTED,
+	ROUND_STARTED,
+	BLOCK_PRODUCED,
 } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -29,7 +34,7 @@ class PreparingSection extends React.Component {
 			description: 'Waiting',
 			status: '',
 			nextBlockDescription: '',
-            title: 'Preparation',
+			title: 'Waiting',
 		};
 
 		this.setTimeId = null;
@@ -150,7 +155,7 @@ class PreparingSection extends React.Component {
 				description: 'Waiting',
 				status: '',
 				nextBlockDescription: `${preparingBlock} Waiting for new txs`,
-                title: 'Preparation',
+				title: 'description',
 			});
 		}
 	}
@@ -198,7 +203,7 @@ class PreparingSection extends React.Component {
 										<CompositePreparingBlock
 											composite
 											title={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
-                                                this.state.title : mobileData.title}
+												this.state.title : mobileData.title}
 											description={`Received ${readyProducers} proposals`}
 											status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 												this.state.status : mobileData.status}
