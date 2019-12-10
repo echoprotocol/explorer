@@ -242,7 +242,8 @@ class ContractActions extends BaseActionsClass {
 
 	changeContractCompiler(version) {
 		return async (dispatch, getState) => {
-			const downloadedVersions = getState().contract.get('downloadedCompilers').toArray();
+			const downloadedVersions = getState().contract.get('downloadedCompilers')/*.toArray()*/;
+			console.log('downloadedVersions', downloadedVersions);
 			const buildsList = getState().contract.getIn(['compilersList', 'builds']);
 
 			dispatch(FormActions.setFormValue(
@@ -251,9 +252,15 @@ class ContractActions extends BaseActionsClass {
 				version,
 			));
 			const compilerBuild = buildsList.find((build) => build.get('longVersion') === version);
+			console.log(downloadedVersions.includes(version));
+			console.log('downloadedVersions', downloadedVersions);
+
+			console.log('downloadedVersions.isSet()', downloadedVersions.isSet());
 
 			if (!downloadedVersions.includes(version)) {
-				downloadedVersions.push(version);
+				console.log('IF NO')
+				// downloadedVersions.push(version);
+				downloadedVersions.add(version);
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions));
 				await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
 			}
