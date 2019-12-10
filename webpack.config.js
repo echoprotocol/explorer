@@ -21,7 +21,7 @@ const {
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 	template: `${__dirname}/src/assets/index.html`,
-	filename: 'AssetAmountTooltip.jsx.html',
+	filename: 'Index.jsx.html',
 	inject: 'body',
 });
 

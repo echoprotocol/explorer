@@ -6,7 +6,6 @@ class AssetAmountTooltip extends React.Component {
 
 	assetRender(assetAmount, maxSize, croppedSize, symbol) {
 		if (assetAmount.length > maxSize) {
-			const croppedAmount = assetAmount.slice(0);
 			return (
 				<Tooltip
 					placement="top"
@@ -14,12 +13,12 @@ class AssetAmountTooltip extends React.Component {
 					trigger={['hover']}
 					overlay={assetAmount}
 				>
-					 <span>{croppedAmount.slice(0, croppedSize)} {symbol}</span>
+					<span className="txt">{assetAmount.slice(0, croppedSize).concat('...')} {symbol}</span>
 				</Tooltip>
 			);
 		}
 
-		return (<span>{assetAmount} {symbol}</span>);
+		return (<span className="txt">{assetAmount} {symbol}</span>);
 	}
 
 	render() {

@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-import { CROPPED_ACCOUNT_SIZE, MAX_ACCOUNT_LETTERS_SIZE } from '../../constants/GlobalConstants';
-import MediaAssetTooltip from '../MediaAssetTooltip';
 
 class AssetBalances extends React.Component {
 
@@ -26,15 +24,11 @@ class AssetBalances extends React.Component {
 	}
 
 	renderElement(id, asset, amount, isOwner) {
-		const assetAmount = FormatHelper.formatAmount(amount, asset.get('precision'));
 		return (
 			<div key={id} className={classnames('inner-elem', { 'is-owner': isOwner })}>
-				<MediaAssetTooltip
-					maxWidth={800}
-					assetAmount={assetAmount}
-					maxSize={MAX_ACCOUNT_LETTERS_SIZE}
-					croppedSize={CROPPED_ACCOUNT_SIZE}
-				/>
+				<span className="txt">
+					{FormatHelper.formatAmount(amount, asset.get('precision'))}
+				</span>
 				<span className="accent">
 					<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
 						{asset.get('symbol')}

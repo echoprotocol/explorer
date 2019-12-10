@@ -93,9 +93,6 @@ export const MAIN_HEADER_HEIGHT = 250;
 
 export const MAX_RETRIES = 999999999;
 
-export const MAX_ACCOUNT_LETTERS_SIZE = 25;
-export const CROPPED_ACCOUNT_SIZE = 22;
-export const MAX_CONTRACT_LETTERS_SIZE = 17;
 export const MAX_ROW_LETTERS_SIZE = 10;
 export const CROPPED_ROW_SIZE = 10;
 

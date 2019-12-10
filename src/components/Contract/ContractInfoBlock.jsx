@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Tooltip from 'rc-tooltip';
+import Media from 'react-media';
 
-import { NONE_SYMBOL, MAX_CONTRACT_LETTERS_SIZE } from '../../constants/GlobalConstants';
+import { NONE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-import MediaAssetTooltip from '../MediaAssetTooltip';
 
 class ContractInfoBlock extends React.Component {
 
@@ -23,10 +24,6 @@ class ContractInfoBlock extends React.Component {
 			accuracy = data.get('ethAccuracy') ? 'Active' : 'Inactive';
 			compilerVersion = data.get('compilerVersion');
 		}
-		creationFee = '12312312312312312 ECHO';
-		const feeData = creationFee.split(' ');
-		console.log('ContractInfoBlock creationFee', creationFee);
-		console.log('blockNumber', blockNumber);
 
 		return (
 			<div className="contract-info-block">
@@ -48,14 +45,22 @@ class ContractInfoBlock extends React.Component {
 					<div className="key">Creation FEE:</div>
 					<div className="underline" />
 					<div className="value">
-						<span className="txt">
-							<MediaAssetTooltip
-								assetAmount={feeData[0]}
-								maxSize={MAX_CONTRACT_LETTERS_SIZE}
-								croppedSize={MAX_CONTRACT_LETTERS_SIZE}
-								symbol={feeData[1]}
-							/>
-						</span>
+						<Media query="(max-width: 350px)">
+							{(matches) =>
+								(matches ? (
+									<Tooltip
+										placement="top"
+										overlayClassName="verify-contract-tooltip"
+										trigger={['hover']}
+										overlay={creationFee}
+									>
+										<span className="amount">{creationFee}</span>
+									</Tooltip>
+								) : (
+									<span>{creationFee}</span>
+								))
+							}
+						</Media>
 					</div>
 				</div>
 				<div className="line">

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { validators } from 'echojs-lib';
 import BN from 'bignumber.js';
+import Tooltip from 'rc-tooltip';
+import Media from 'react-media';
 
 import Loader from '../Loader';
 
@@ -13,8 +15,6 @@ import {
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import Tooltip from "rc-tooltip";
-import Media from "react-media";
 
 class Asset extends React.Component {
 
@@ -69,7 +69,6 @@ class Asset extends React.Component {
 			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : FormatHelper
 				.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), assetPrecision);
 		}
-		console.log('Asset');
 
 		return (
 			<div className="asset-container">
@@ -89,7 +88,7 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Current supply</div>
 								<div className="val">
-									<Media query={`(max-width: 400px)`}>
+									<Media query="(max-width: 300px)">
 										{(matches) =>
 											(matches ? (
 												<Tooltip
@@ -110,7 +109,7 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Max supply</div>
 								<div className="val">
-									<Media query={`(max-width: 400px)`}>
+									<Media query="(max-width: 300px)">
 										{(matches) =>
 											(matches ? (
 												<Tooltip
