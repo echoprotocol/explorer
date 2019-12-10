@@ -48,7 +48,7 @@ class SearchField extends React.Component {
 	}
 
 	onChange(e) {
-		const { value } = e.target;
+		const value = e.target.value.toLowerCase();
 
 		this.setState({
 			isChange: !!value.length,
