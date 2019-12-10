@@ -224,10 +224,6 @@ class ContractActions extends BaseActionsClass {
 		return async (dispatch) => {
 			const list = await ApiService.getSolcList();
 			list.builds = list.builds.filter(({ version }) => checkAccessVersion(version, MIN_ACCESS_VERSION_BUILD));
-
-			const downloaded = [];
-			dispatch(this.setValue('downloadedCompilers', downloaded));
-
 			dispatch(this.setValue('compilersList', list));
 			const solcLatestRelease = list.latestRelease ? list.releases[list.latestRelease] : list.builds[list.builds.length - 1].path;
 			const lastVersion = list.builds.find((b) => b.path === solcLatestRelease);
@@ -242,26 +238,17 @@ class ContractActions extends BaseActionsClass {
 
 	changeContractCompiler(version) {
 		return async (dispatch, getState) => {
-			const downloadedVersions = getState().contract.get('downloadedCompilers')/*.toArray()*/;
-			console.log('downloadedVersions', downloadedVersions);
+			const downloadedVersions = getState().contract.get('downloadedCompilers');
 			const buildsList = getState().contract.getIn(['compilersList', 'builds']);
-
 			dispatch(FormActions.setFormValue(
 				FORM_CONTRACT_VERIFY,
 				'currentCompiler',
 				version,
 			));
 			const compilerBuild = buildsList.find((build) => build.get('longVersion') === version);
-			console.log(downloadedVersions.includes(version));
-			console.log('downloadedVersions', downloadedVersions);
-
-			console.log('downloadedVersions.isSet()', downloadedVersions.isSet());
 
 			if (!downloadedVersions.includes(version)) {
-				console.log('IF NO')
-				// downloadedVersions.push(version);
-				downloadedVersions.add(version);
-				dispatch(this.setValue('downloadedCompilers', downloadedVersions));
+				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
 				await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
 			}
 

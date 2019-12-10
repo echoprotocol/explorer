@@ -35,7 +35,7 @@ const DEFAULT_FIELDS = new Map({
 	createdAt: '',
 	owner: new Map(),
 	clickSaveCounter: 0,
-	downloadedCompilers: new /*Map*/Set(),
+	downloadedCompilers: new Set(),
 });
 
 export default createModule({
