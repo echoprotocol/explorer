@@ -23,12 +23,24 @@ class BlockInformation extends React.Component {
 
 		this.state = {
 			currentTransactionLength: DEFAULT_TABLE_LENGTH,
+			currentBlockNumber: '',
 			loader: false,
 		};
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		this.props.getBlockInfo();
+	}
+
+	shouldComponentUpdate(nextProps) {
+		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
+			this.setState({
+				loader: false,
+				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
+			});
+		}
+
+		return true;
 	}
 
 	componentDidUpdate(prevProps) {
@@ -47,6 +59,7 @@ class BlockInformation extends React.Component {
 
 	onBlockLink(blockNumber, e) {
 		e.preventDefault();
+		this.setState({ loader: true });
 
 		this.props.history.push(URLHelper.createBlockUrl(blockNumber));
 	}
@@ -70,13 +83,8 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInformation(blockInformation, latestBlock) {
-		// console.log('loader before', this.state.loader);
-		// this.setState({ loader: true });
-		// console.log('loader middle', this.state.loader);
 		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
 		const { currentTransactionLength } = this.state;
-		// this.setState({ loader: false });
-		// console.log('loader after', this.state.loader);
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
@@ -191,14 +199,10 @@ class BlockInformation extends React.Component {
 	render() {
 		const { blockInformation, latestBlock } = this.props;
 
-		console.log('blockInformation', blockInformation.toArray());
-		console.log('loader', this.state.loader);
-
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
 				{
-					/*this.state.loader*/blockInformation.get('blockNumber') ?
-						this.renderBlockInformation(blockInformation, latestBlock) : this.renderLoader()
+					this.state.loader ? this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
 				}
 			</div>
 		);
