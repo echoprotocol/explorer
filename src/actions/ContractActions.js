@@ -312,6 +312,17 @@ class ContractActions extends BaseActionsClass {
 
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
+			const ownerName = getState().contract.getIn(['owner', 'name']);
+			const ownerId = getState().contract.getIn(['owner', 'id']);
+			const activeId = getState().global.getIn(['activeAccount', 'id']);
+
+			if (activeId !== ownerId) {
+				dispatch(ModalActions.openModal(
+					MODAL_ERROR,
+					{ title: `Only account ${ownerName} can manage this contract` },
+				));
+			}
+
 			try {
 				if (clickSaveCounter > 4) return;
 				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
@@ -386,16 +397,6 @@ class ContractActions extends BaseActionsClass {
 
 	setDefaultDateContract(contractId) {
 		return async (dispatch, getState) => {
-			const ownerName = getState().contract.getIn(['owner', 'name']);
-			const ownerId = getState().contract.getIn(['owner', 'id']);
-			const activeId = getState().global.getIn(['activeAccount', 'id']);
-			if (activeId !== ownerId) {
-				dispatch(ModalActions.openModal(
-					MODAL_ERROR,
-					{ title: `Only account ${ownerName} can manage this contract` },
-				));
-			}
-
 			const name = getState().contract.get('name');
 			const description = getState().contract.get('description');
 			const icon = getState().contract.get('icon');
