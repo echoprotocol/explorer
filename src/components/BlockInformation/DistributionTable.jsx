@@ -80,7 +80,6 @@ class DistributionTable extends React.Component {
 
 		return (
 			<React.Fragment>
-				<h2>Block Certificate</h2>
 				<div className="distribution-table accordion-table-wrap table-contract" >
 					<table>
 						<Media query="(max-width: 499px)">
