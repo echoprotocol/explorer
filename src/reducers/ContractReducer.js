@@ -1,5 +1,5 @@
 import { createModule } from 'redux-modules';
-import { Map, List } from 'immutable';
+import { Map, List, Set } from 'immutable';
 import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 
@@ -35,6 +35,7 @@ const DEFAULT_FIELDS = new Map({
 	createdAt: '',
 	owner: new Map(),
 	clickSaveCounter: 0,
+	downloadedCompilers: new Set(),
 });
 
 export default createModule({
