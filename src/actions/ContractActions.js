@@ -321,6 +321,7 @@ class ContractActions extends BaseActionsClass {
 					MODAL_ERROR,
 					{ title: `Only account ${ownerName} can manage this contract` },
 				));
+				return;
 			}
 
 			try {
@@ -396,7 +397,7 @@ class ContractActions extends BaseActionsClass {
 	}
 
 	setDefaultDateContract(contractId) {
-		return async (dispatch, getState) => {
+		return (dispatch, getState) => {
 			const name = getState().contract.get('name');
 			const description = getState().contract.get('description');
 			const icon = getState().contract.get('icon');
