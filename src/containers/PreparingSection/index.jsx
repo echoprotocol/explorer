@@ -104,7 +104,7 @@ class PreparingSection extends React.Component {
 		switch (stepProgress) {
 			case rounderSteps[BBA_STARTED].status:
 				return {
-					description: 'Verified',
+					description: 'Verifying',
 					status: PROGRESS_STATUS,
 				};
 			case rounderSteps[BLOCK_APPLIED_CALLBACK].status:
