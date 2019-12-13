@@ -54,7 +54,7 @@ class ContractInfoBlock extends React.Component {
 										trigger={['hover']}
 										overlay={creationFee}
 									>
-										<span className="amount">{creationFee}</span>
+										<span className="amount">{'999999999999999999999999999999999999999'}</span>
 									</Tooltip>
 								) : (
 									<span>{creationFee}</span>
