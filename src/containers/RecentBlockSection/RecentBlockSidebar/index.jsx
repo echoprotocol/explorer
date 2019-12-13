@@ -53,9 +53,9 @@ class RecentBlockSidebar extends React.Component {
 		if (averageTime) {
 			return (
 				<React.Fragment>
-					{hours ? <span>{hours}&nbsp;<span className="sm">hours</span></span> : ''}
-					{minutes ? <span> {minutes}&nbsp;<span className="sm">min </span></span> : ''}
-					{seconds}&nbsp;<span className="sm">sec</span>
+					{hours ? <span>{hours}<span className="sm">h&nbsp;</span></span> : ''}
+					{minutes ? <span>{minutes}<span className="sm">m&nbsp;</span></span> : ''}
+					{seconds}<span className="sm">s</span>
 				</React.Fragment>);
 		}
 		return '-';
@@ -66,10 +66,8 @@ class RecentBlockSidebar extends React.Component {
 		const { offsetTop } = this.state;
 
 		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
-		const averageOp = FormatHelper.roundNumber(averageTransactions.getIn(['operations', 'value']), 1);
 		const averageTime = FormatHelper.roundNumber(averageTransactions.get('averageTime'), 1);
 		const appVersion = getAppVersion();
-
 		return (
 			<div className="recent-block-sidebar">
 				<div className={classnames('sticky-wrap', { sticky: offsetTop > MAIN_HEADER_HEIGHT })}>
@@ -84,7 +82,7 @@ class RecentBlockSidebar extends React.Component {
 						<div className="sidebar-elem">
 							<div className="title">Average block time (24h)</div>
 							<div className="value">
-								{this.averageBlockTime(averageTime)} ({`${averageTr}/${averageOp}`})
+								{this.averageBlockTime(averageTime)} ({`${averageTr} tx per block`})
 							</div>
 						</div>
 					</div>
