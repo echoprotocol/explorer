@@ -318,6 +318,18 @@ class ContractActions extends BaseActionsClass {
 
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
+			const ownerName = getState().contract.getIn(['owner', 'name']);
+			const ownerId = getState().contract.getIn(['owner', 'id']);
+			const activeId = getState().global.getIn(['activeAccount', 'id']);
+
+			if (activeId !== ownerId) {
+				dispatch(ModalActions.openModal(
+					MODAL_ERROR,
+					{ title: `Only account ${ownerName} can manage this contract` },
+				));
+				return;
+			}
+
 			try {
 				if (clickSaveCounter > 4) return;
 				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
