@@ -213,7 +213,8 @@ class Contract extends React.Component {
 						dataAssets={new Map({
 							balances,
 						})}
-					/> : <Loader />,
+					/>
+					: <Loader />,
 				key: 'tab-0',
 			},
 			{
