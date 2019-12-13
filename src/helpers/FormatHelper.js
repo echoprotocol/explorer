@@ -23,17 +23,7 @@ class FormatHelper {
 		const base = `${parseInt(this.toFixed(Math.abs(number || 0), precision), 10)}`;
 		const mod = base.length > 3 ? base.length % 3 : 0;
 
-		let postfix = `.${this.toFixed(number, precision).split('.')[1]}`;
-
-		for (let i = postfix.length - 1; i >= 0; i -= 1) {
-			if (postfix[i] === '0') {
-				postfix = postfix.substr(0, postfix.length - 1);
-			} else if (postfix[i] === '.') {
-				postfix = '';
-			} else {
-				break;
-			}
-		}
+		const postfix = `.${this.toFixed(number, precision).split('.')[1]}`;
 
 		const resultNumber = (mod ? `${base.substr(0, mod)},` : '')
             + base.substr(mod).replace(/(\d{3})(?=\d)/g, `$1${','}`)
@@ -41,10 +31,7 @@ class FormatHelper {
 
 		return symbol ? `${resultNumber} ${symbol}` : resultNumber;
 	}
-	static zipAmount(amount) {
-		const firstSumbolsAmount = amount.indexOf('.') === -1 ? 4 : 5;
-		return amount.slice(0, firstSumbolsAmount).concat('...').concat(amount.slice(-4));
-	}
+
 	static formatError(err) {
 		return err instanceof Error || (_.isObject(err) && err.message) ? err.message : err;
 	}

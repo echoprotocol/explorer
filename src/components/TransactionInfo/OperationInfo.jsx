@@ -6,6 +6,7 @@ import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
 import classnames from 'classnames';
 import BN from 'bignumber.js';
+import Tooltip from 'rc-tooltip';
 
 import directionIcon from '../../assets/images/icons/direction-icon.svg';
 
@@ -13,9 +14,14 @@ import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
-import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
+import {
+	BYTECODE_SYMBOLS_LENGTH,
+	CROPPED_ROW_SIZE,
+	MAX_ROW_LETTERS_SIZE,
+} from '../../constants/GlobalConstants';
 
 import Avatar from '../Avatar';
+import AssetAmountTooltip from '../AssetAmountTooltip';
 
 class OperationInfo extends React.Component {
 
@@ -43,7 +49,28 @@ class OperationInfo extends React.Component {
 		return (
 			<div className="tt-row token-transfer-table" key={index.toString()}>
 				<div className="tt-col amount">
-					<span className="value">{amount}</span>
+					<span className="value">
+						<Media query="(max-width: 400px)">
+							{(matches) =>
+								(matches ? (
+									<Tooltip
+										placement="top"
+										overlayClassName="verify-contract-tooltip"
+										trigger={['hover']}
+										overlay={amount}
+									>
+										<span className="txt">{amount}</span>
+									</Tooltip>
+								) : (
+									<AssetAmountTooltip
+										assetAmount={amount}
+										maxSize={MAX_ROW_LETTERS_SIZE}
+										croppedSize={CROPPED_ROW_SIZE}
+									/>
+								))
+							}
+						</Media>
+					</span>
 					<span className="currency">{op.value.symbol}</span>
 				</div>
 				<div className="tt-col">
@@ -99,10 +126,28 @@ class OperationInfo extends React.Component {
 
 	renderOperationRowValue(key, value, index) {
 		const { objId } = this.props;
+		const valueAmount = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
 
 		if (typeof value === 'object' && key !== 'logs') {
 			if (!value.link) {
-				value = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
+				value = (
+					<Media query="(max-width: 300px)">
+						{(matches) =>
+							(matches ? (
+								<Tooltip
+									placement="top"
+									overlayClassName="verify-contract-tooltip"
+									trigger={['hover']}
+									overlay={valueAmount}
+								>
+									<span className="amount">{valueAmount}</span>
+								</Tooltip>
+							) : (
+								<span>{valueAmount}</span>
+							))
+						}
+					</Media>
+				);
 			} else {
 				const isAccount = validators.isAccountId(value.link);
 				value = (

@@ -17,7 +17,7 @@ export default withRouter(connect(
 	(dispatch, props) => ({
 		getTransaction: () => dispatch(TransactionActions.getTransaction(
 			props.match.params.round,
-			props.match.params.index,
+			props.match.params.AssetAmountTooltip,
 		)),
 		clearTransaction: () => dispatch(TransactionActions.clear()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),

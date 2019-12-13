@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { validators } from 'echojs-lib';
 import BN from 'bignumber.js';
+import Tooltip from 'rc-tooltip';
+import Media from 'react-media';
 
 import Loader from '../Loader';
 
-import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import {
+	ECHO_ASSET,
+	TITLE_TEMPLATES,
+} from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -82,11 +87,45 @@ class Asset extends React.Component {
 							</div>
 							<div className="block">
 								<div className="title">Current supply</div>
-								<div className="val">{FormatHelper.formatAmount(currentSupply, assetPrecision)}</div>
+								<div className="val">
+									<Media query="(max-width: 300px)">
+										{(matches) =>
+											(matches ? (
+												<Tooltip
+													placement="top"
+													overlayClassName="verify-contract-tooltip"
+													trigger={['hover']}
+													overlay={currentSupply}
+												>
+													<span className="txt">{currentSupply}</span>
+												</Tooltip>
+											) : (
+												<span>{currentSupply}</span>
+											))
+										}
+									</Media>
+								</div>
 							</div>
 							<div className="block">
 								<div className="title">Max supply</div>
-								<div className="val">{FormatHelper.formatAmount(maxSupply, assetPrecision)}</div>
+								<div className="val">
+									<Media query="(max-width: 300px)">
+										{(matches) =>
+											(matches ? (
+												<Tooltip
+													placement="top"
+													overlayClassName="verify-contract-tooltip"
+													trigger={['hover']}
+													overlay={maxSupply}
+												>
+													<span className="txt">{maxSupply}</span>
+												</Tooltip>
+											) : (
+												<span>{maxSupply}</span>
+											))
+										}
+									</Media>
+								</div>
 							</div>
 						</div>
 					</div>

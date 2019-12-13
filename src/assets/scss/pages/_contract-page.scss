@@ -432,6 +432,23 @@
         &.blue {
             color: #498FDF;
         }
+
+        @media (max-width: 350px) {
+            .amount {
+                @include text-overflow;
+                display: block;
+                width: 100px;
+            }
+        }
+
+        @media (max-width: 300px) {
+            .amount {
+                @include text-overflow;
+                display: block;
+                width: 60px;
+            }
+        }
+
     }
 }
 
