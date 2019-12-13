@@ -49,7 +49,10 @@ class PreparingSection extends React.Component {
 			}, GC_START_DELAY);
 		}
 
+		console.log('this.setTimeId', this.setTimeId);
+		console.log('componentDidUpdate  stepProgress', stepProgress);
 		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
+			console.log('INSIDE');
 			this.setTimeId = setTimeout(() => {
 				this.updateBlockProduced(stepProgress, readyProducers);
 				this.setTimeId = null;
@@ -146,10 +149,13 @@ class PreparingSection extends React.Component {
 	}
 
 	updateReadyProducers(readyProducers) {
+		console.log('updateReadyProducers');
 		this.setState({ readyProducers });
 	}
 
 	updateBlockProduced(stepProgress, preparingBlock) {
+		console.log('updateBlockProduced', this.state.description);
+		console.log('updateBlockProduced', this.state.status);
 		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status) {
 			this.setState({
 				description: 'Waiting',
@@ -168,6 +174,8 @@ class PreparingSection extends React.Component {
 		if (!stepProgress) {
 			return null;
 		}
+
+		console.log('stepProgress', stepProgress);
 
 		const mobileData = this.getMobileData(stepProgress);
 		const blockProposalData = this.blockProposalData(stepProgress, readyProducers);

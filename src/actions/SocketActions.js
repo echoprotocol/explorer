@@ -59,6 +59,7 @@ const onDisconnectSubscriber = () => (dispatch) => {
  * 	@param {Object} notification
  */
 const roundSubscribe = (notification) => (dispatch) => {
+	console.log('notification[0].type', notification[0].type);
 	switch (notification[0].type) {
 		case ROUND_STARTED:
 			dispatch(batchActions([
