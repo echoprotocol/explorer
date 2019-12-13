@@ -54,8 +54,9 @@ class SearchField extends React.Component {
 		e.preventDefault();
 		this.setState({ focus: true });
 		this.inputEl.focus();
+		const {	latestBlock	} = this.props;
 
-		if (!this.state.inputValue) return;
+		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
 		this.props.getHints(this.state.inputValue);
 		setTimeout(() => this.props.transitionToBlock(), 200);
 	}
@@ -63,8 +64,9 @@ class SearchField extends React.Component {
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
 		const { value } = e.target;
+		const {	latestBlock	} = this.props;
 
-		if (this.state.inputValue && KEY_CODE_ENTER === code) {
+		if (KEY_CODE_ENTER === code && this.state.inputValue > 0 && this.state.inputValue <= latestBlock) {
 			this.props.getHints(value);
 			setTimeout(() => this.props.transitionToBlock(), 200);
 		}
@@ -185,6 +187,7 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	getHints: PropTypes.func,
 	transitionToBlock: PropTypes.func,
+	latestBlock: PropTypes.number,
 };
 
 SearchField.defaultProps = {
@@ -196,6 +199,7 @@ SearchField.defaultProps = {
 	placeholder: '',
 	getHints: () => {},
 	transitionToBlock: () => {},
+	latestBlock: '',
 };
 
 export default SearchField;
