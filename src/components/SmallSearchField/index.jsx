@@ -54,11 +54,9 @@ class SearchField extends React.Component {
 		e.preventDefault();
 		this.setState({ focus: true });
 		this.inputEl.focus();
-		const {	latestBlock	} = this.props;
+		const {	latestBlock } = this.props;
 
-		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
-		this.props.getHints(this.state.inputValue);
-		setTimeout(() => this.props.transitionToBlock(), 200);
+		this.goToBlock(this.state.inputValue, latestBlock);
 	}
 
 	onKeyPress(e) {
@@ -66,10 +64,7 @@ class SearchField extends React.Component {
 		const { value } = e.target;
 		const {	latestBlock	} = this.props;
 
-		if (KEY_CODE_ENTER === code && this.state.inputValue > 0 && this.state.inputValue <= latestBlock) {
-			this.props.getHints(value);
-			setTimeout(() => this.props.transitionToBlock(), 200);
-		}
+		if (KEY_CODE_ENTER === code) this.goToBlock(value, latestBlock);
 
 		if (KEY_CODE_ESC === code) {
 			this.inputEl.blur();
@@ -104,6 +99,12 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 		});
+	}
+
+	goToBlock(value, latestBlock) {
+		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
+		this.props.getHints(value);
+		setTimeout(() => this.props.transitionToBlock(), 200);
 	}
 
 
