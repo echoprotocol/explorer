@@ -124,7 +124,7 @@ class FormatHelper {
 		}
 		seconds = `${seconds}s`;
 
-		return `${hours || ''}${minutes || ''}${seconds}`;
+		return `${hours || ''}${minutes || ''}${seconds} ago`;
 	}
 	/**
 	 *
