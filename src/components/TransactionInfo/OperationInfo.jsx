@@ -110,6 +110,7 @@ class OperationInfo extends React.Component {
 	renderOperationRowValue(key, value, index) {
 		const { objId } = this.props;
 		const valueAmount = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
+		const [amount, amountName] = valueAmount.split(' ');
 
 		if (typeof value === 'object' && key !== 'logs') {
 			if (!value.link) {
@@ -123,7 +124,10 @@ class OperationInfo extends React.Component {
 									trigger={['hover']}
 									overlay={valueAmount}
 								>
-									<span className="amount">{'1111111111111111111111111111111111'}</span>
+									<div className="val">
+										<div className="txt">{amount}&nbsp;</div>
+										<div className="txt2">{amountName}</div>
+									</div>
 								</Tooltip>
 							) : (
 								<span>{valueAmount}</span>

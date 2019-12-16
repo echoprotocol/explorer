@@ -25,6 +25,8 @@ class ContractInfoBlock extends React.Component {
 			compilerVersion = data.get('compilerVersion');
 		}
 
+		const creationFeeData = creationFee.split(' ');
+
 		return (
 			<div className="contract-info-block">
 				<div className="line">
@@ -49,12 +51,15 @@ class ContractInfoBlock extends React.Component {
 							{(matches) =>
 								(matches ? (
 									<Tooltip
-										placement="top"
+										placement="topLeft"
 										overlayClassName="verify-contract-tooltip"
 										trigger={['hover']}
 										overlay={creationFee}
 									>
-										<span className="amount">{'999999999999999999999999999999999999999'}</span>
+										<div className="val">
+											<div className="txt">{creationFeeData[0]}</div>
+											<div className="txt2">{creationFeeData[1]}</div>
+										</div>
 									</Tooltip>
 								) : (
 									<span>{creationFee}</span>
