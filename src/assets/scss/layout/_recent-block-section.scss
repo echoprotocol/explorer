@@ -343,7 +343,7 @@
                         width: 165px;
                         max-width: 165px;
 						min-width: 165px;
-						
+
 						@include res-1280 {
 							width: 135px;
 							max-width: 135px;
@@ -477,10 +477,6 @@
         .help-container {
             width: 360px;
 
-            @include max-vw(1535) {
-                width: 260px;
-            }
-
             @include max-vw(1279) {
                 width: 100%;
                 display: flex;
@@ -522,7 +518,6 @@
 
             @include max-vw(1279) {
                 border-bottom: none;
-                max-width: 250px;
                 min-width: 167px;
                 margin-bottom: 30px;
             }
@@ -548,7 +543,6 @@
 
             @include max-vw(580) {
                 min-width: 180px;
-                max-width: 250px;
             }
 
             @include max-vw(500) {
