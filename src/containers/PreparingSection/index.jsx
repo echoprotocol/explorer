@@ -28,17 +28,32 @@ class PreparingSection extends React.Component {
 
 	constructor(props) {
 		super(props);
+		const { preparingBlock } = this.props;
 
 		this.state = {
 			readyProducers: 0,
 			description: 'Waiting',
 			status: '',
-			nextBlockDescription: '',
+			nextBlockDescription: preparingBlock/*''*/,
 			title: 'Waiting',
 		};
 
 		this.setTimeId = null;
 		this.readyProducers = null;
+	}
+
+	getDerivedStateFromProps() {
+		const { readyProducers, stepProgress } = this.props;
+		console.log('this.setTimeId', this.setTimeId);
+		console.log('componentDidUpdate  stepProgress', stepProgress);
+		console.log(stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null);
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
+			console.log('INSIDE');
+			this.setTimeId = setTimeout(() => {
+				this.updateBlockProduced(stepProgress, readyProducers);
+				this.setTimeId = null;
+			}, PRODUCED_DELAY);
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -49,15 +64,15 @@ class PreparingSection extends React.Component {
 			}, GC_START_DELAY);
 		}
 
-		console.log('this.setTimeId', this.setTimeId);
-		console.log('componentDidUpdate  stepProgress', stepProgress);
-		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
-			console.log('INSIDE');
-			this.setTimeId = setTimeout(() => {
-				this.updateBlockProduced(stepProgress, readyProducers);
-				this.setTimeId = null;
-			}, PRODUCED_DELAY);
-		}
+		// console.log('this.setTimeId', this.setTimeId);
+		// console.log('componentDidUpdate  stepProgress', stepProgress);
+		// if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
+		// 	console.log('INSIDE');
+		// 	this.setTimeId = setTimeout(() => {
+		// 		this.updateBlockProduced(stepProgress, readyProducers);
+		// 		this.setTimeId = null;
+		// 	}, PRODUCED_DELAY);
+		// }
 	}
 
 	getMobileData(stepProgress) {
@@ -183,6 +198,7 @@ class PreparingSection extends React.Component {
 		const BBAData = this.getBBAData(stepProgress);
 
 		const nextBlockData = this.getNextBlockState(stepProgress, FormatHelper.formatAmount(preparingBlock, 0));
+		console.log('nextBlockData', nextBlockData);
 
 		return (
 			<React.Fragment>
@@ -195,8 +211,8 @@ class PreparingSection extends React.Component {
 								) : (
 									<SimplePreparingBlock
 										title="Next block"
-										description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
-											this.state.nextBlockDescription : nextBlockData.description}
+										description={/*stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
+											this.state.nextBlockDescription : */nextBlockData.description}
 										status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null ?
 											this.state.status : nextBlockData.status}
 									/>
