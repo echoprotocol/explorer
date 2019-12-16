@@ -56,11 +56,11 @@ class Asset extends React.Component {
 		let unclamedIssuerBalances;
 		if (
 			validators.isVoid(baseAmount) ||
-                validators.isVoid(quoteAmount) ||
-                validators.isVoid(feePool) ||
-                validators.isVoid(accumulatedFees) ||
-                validators.isVoid(assetPrecision) ||
-                assetSymbol
+			validators.isVoid(quoteAmount) ||
+			validators.isVoid(feePool) ||
+			validators.isVoid(accumulatedFees) ||
+			validators.isVoid(assetPrecision) ||
+			assetSymbol
 		) {
 			exchangeRate = (new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
 				.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString();
