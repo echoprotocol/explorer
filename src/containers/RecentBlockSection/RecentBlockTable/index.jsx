@@ -102,7 +102,7 @@ class RecentBlockTable extends React.Component {
 							errorSearch={errorSearch}
 							loadingSearch={loadingSearch}
 							getHints={(str) => this.props.getHints(str)}
-							transitionToBlock={() => this.transitionToBlock()}
+							transitionToBlock={(arg) => this.transitionToBlock(arg)}
 							withHelp
 							goToBlock
 							white

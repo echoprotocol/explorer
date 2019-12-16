@@ -42,20 +42,6 @@ class PreparingSection extends React.Component {
 		this.readyProducers = null;
 	}
 
-	getDerivedStateFromProps() {
-		const { readyProducers, stepProgress } = this.props;
-		console.log('this.setTimeId', this.setTimeId);
-		console.log('componentDidUpdate  stepProgress', stepProgress);
-		console.log(stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null);
-		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
-			console.log('INSIDE');
-			this.setTimeId = setTimeout(() => {
-				this.updateBlockProduced(stepProgress, readyProducers);
-				this.setTimeId = null;
-			}, PRODUCED_DELAY);
-		}
-	}
-
 	componentDidUpdate(prevProps) {
 		const { readyProducers, stepProgress } = this.props;
 		if (prevProps.readyProducers !== readyProducers && readyProducers) {
@@ -64,15 +50,16 @@ class PreparingSection extends React.Component {
 			}, GC_START_DELAY);
 		}
 
-		// console.log('this.setTimeId', this.setTimeId);
-		// console.log('componentDidUpdate  stepProgress', stepProgress);
-		// if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
-		// 	console.log('INSIDE');
-		// 	this.setTimeId = setTimeout(() => {
-		// 		this.updateBlockProduced(stepProgress, readyProducers);
-		// 		this.setTimeId = null;
-		// 	}, PRODUCED_DELAY);
-		// }
+		console.log('this.setTimeId', this.setTimeId);
+		console.log('componentDidUpdate  stepProgress', stepProgress);
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.state.nextBlockDescription === prevProps.preparingBlock/*&& this.setTimeId === null*/) {
+			console.log('INSIDE');
+			this.setTimeId = setTimeout(() => {
+				this.updateBlockProduced(stepProgress, readyProducers);
+				this.setTimeId = null;
+
+			}, PRODUCED_DELAY);
+		}
 	}
 
 	getMobileData(stepProgress) {
