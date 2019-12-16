@@ -25,11 +25,24 @@ class BlockInformation extends React.Component {
 
 		this.state = {
 			currentTransactionLength: DEFAULT_TABLE_LENGTH,
+			currentBlockNumber: '',
+			loader: false,
 		};
 	}
 
 	componentDidMount() {
 		this.props.getBlockInfo();
+	}
+
+	shouldComponentUpdate(nextProps) {
+		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
+			this.setState({
+				loader: false,
+				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
+			});
+		}
+
+		return true;
 	}
 
 	componentDidUpdate(prevProps) {
@@ -48,6 +61,7 @@ class BlockInformation extends React.Component {
 
 	onBlockLink(blockNumber, e) {
 		e.preventDefault();
+		this.setState({ loader: true });
 
 		this.props.history.push(URLHelper.createBlockUrl(blockNumber));
 	}
@@ -71,7 +85,6 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInformation(blockInformation, latestBlock) {
-
 		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
 		const { currentTransactionLength } = this.state;
 
@@ -190,8 +203,7 @@ class BlockInformation extends React.Component {
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
 				{
-					blockInformation.get('blockNumber') ?
-						this.renderBlockInformation(blockInformation, latestBlock) : this.renderLoader()
+					this.state.loader ? this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
 				}
 			</div>
 		);
