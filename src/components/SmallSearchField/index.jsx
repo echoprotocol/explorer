@@ -104,7 +104,7 @@ class SearchField extends React.Component {
 	goToBlock(value, latestBlock) {
 		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
 		this.props.getHints(value);
-		setTimeout(() => this.props.transitionToBlock(), 200);
+		setTimeout(() => this.props.transitionToBlock(), 250);
 	}
 
 

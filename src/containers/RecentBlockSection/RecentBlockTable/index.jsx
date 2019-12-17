@@ -31,6 +31,7 @@ class RecentBlockTable extends React.Component {
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.MAIN);
 	}
+
 	componentWillUnmount() {
 		this.props.resetDisplayedBlocks();
 	}
