@@ -31,6 +31,7 @@ class RecentBlockTable extends React.Component {
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.MAIN);
 	}
+
 	componentWillUnmount() {
 		this.props.resetDisplayedBlocks();
 	}
@@ -82,7 +83,7 @@ class RecentBlockTable extends React.Component {
 
 	render() {
 		const {
-			hasMore, loading, loadingSearch, errorSearch,
+			hasMore, loading, loadingSearch, errorSearch, latestBlock,
 		} = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
@@ -107,6 +108,7 @@ class RecentBlockTable extends React.Component {
 							goToBlock
 							white
 							placeholder="Go to block"
+							latestBlock={latestBlock}
 						/>
 					</h2>
 					<div className="table">
@@ -245,6 +247,7 @@ RecentBlockTable.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
 	getHints: PropTypes.func.isRequired,
+	latestBlock: PropTypes.number.isRequired,
 };
 
 export default withRouter(connect(
@@ -255,6 +258,7 @@ export default withRouter(connect(
 		errorSearch: state.search.getIn(['blockSearch', 'error']),
 		loadingSearch: state.search.getIn(['blockSearch', 'loading']),
 		blocks: state.block.get('blocks'),
+		latestBlock: state.round.get('latestBlock'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(SearchActions.blockSearchHint(str)),
