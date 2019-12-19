@@ -47,25 +47,24 @@ class SearchField extends React.Component {
 		clearTimeout(this.searchTimeout);
 		this.searchTimeout = setTimeout(() => {
 			this.props.getHints(value);
-		}, 300);
+		}, 200);
 	}
 
 	onClick(e) {
 		e.preventDefault();
-
 		this.setState({ focus: true });
 		this.inputEl.focus();
+		const {	latestBlock } = this.props;
 
-		if (!this.state.inputValue) return;
-		this.props.transitionToBlock();
+		this.goToBlock(this.state.inputValue, latestBlock);
 	}
 
 	onKeyPress(e) {
 		const code = e.keyCode || e.which;
+		const { value } = e.target;
+		const {	latestBlock	} = this.props;
 
-		if (this.state.inputValue && KEY_CODE_ENTER === code) {
-			this.props.transitionToBlock();
-		}
+		if (KEY_CODE_ENTER === code) this.goToBlock(value, latestBlock);
 
 		if (KEY_CODE_ESC === code) {
 			this.inputEl.blur();
@@ -100,6 +99,12 @@ class SearchField extends React.Component {
 			isChange: false,
 			isActiveSmall: false,
 		});
+	}
+
+	goToBlock(value, latestBlock) {
+		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
+		this.props.getHints(value);
+		setTimeout(() => this.props.transitionToBlock(), 250);
 	}
 
 
@@ -183,6 +188,7 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	getHints: PropTypes.func,
 	transitionToBlock: PropTypes.func,
+	latestBlock: PropTypes.number,
 };
 
 SearchField.defaultProps = {
@@ -194,6 +200,7 @@ SearchField.defaultProps = {
 	placeholder: '',
 	getHints: () => {},
 	transitionToBlock: () => {},
+	latestBlock: '',
 };
 
 export default SearchField;
