@@ -57,7 +57,7 @@ class SearchField extends React.Component {
 		this.inputEl.focus();
 
 		if (!this.state.inputValue) return;
-		this.props.transitionToBlock(arg);
+		this.props.transitionToBlock();
 	}
 
 	onKeyPress(e) {
