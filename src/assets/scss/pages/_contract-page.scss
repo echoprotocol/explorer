@@ -433,22 +433,16 @@
             color: #498FDF;
         }
 
-        @media (max-width: 350px) {
-            .amount {
-                @include text-overflow;
-                display: block;
-                width: 100px;
+        .val {
+            display: flex;
+            max-width: 100%;
+            .txt {
+                @include text-overflow();
+            }
+            .txt2 {
+                width: calc(100% - 25vw);
             }
         }
-
-        @media (max-width: 300px) {
-            .amount {
-                @include text-overflow;
-                display: block;
-                width: 60px;
-            }
-        }
-
     }
 }
 

@@ -37,27 +37,14 @@
             width: 100%;
             vertical-align: bottom;
 
-            @media (max-width: 300px) {
-                .amount {
-                    @include text-overflow;
-                    display: inline-block;
-                    width: 230px;
+            .val {
+                display: flex;
+                max-width: 100%;
+                .txt {
+                    @include text-overflow();
                 }
-            }
-
-            @media (max-width: 270px) {
-                .amount {
-                    @include text-overflow;
-                    display: inline-block;
-                    width: 190px;
-                }
-            }
-
-            @media (max-width: 240px) {
-                .amount {
-                    @include text-overflow;
-                    display: inline-block;
-                    width: 160px;
+                .txt2 {
+                    width: calc(100% - 38vw);
                 }
             }
         }

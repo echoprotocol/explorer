@@ -14,14 +14,9 @@ import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 
 import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
-import {
-	BYTECODE_SYMBOLS_LENGTH,
-	CROPPED_ROW_SIZE,
-	MAX_ROW_LETTERS_SIZE,
-} from '../../constants/GlobalConstants';
+import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
 
 import Avatar from '../Avatar';
-import AssetAmountTooltip from '../AssetAmountTooltip';
 
 class OperationInfo extends React.Component {
 
@@ -50,26 +45,14 @@ class OperationInfo extends React.Component {
 			<div className="tt-row token-transfer-table" key={index.toString()}>
 				<div className="tt-col amount">
 					<span className="value">
-						<Media query="(max-width: 400px)">
-							{(matches) =>
-								(matches ? (
-									<Tooltip
-										placement="top"
-										overlayClassName="verify-contract-tooltip"
-										trigger={['hover']}
-										overlay={amount}
-									>
-										<span className="txt">{amount}</span>
-									</Tooltip>
-								) : (
-									<AssetAmountTooltip
-										assetAmount={amount}
-										maxSize={MAX_ROW_LETTERS_SIZE}
-										croppedSize={CROPPED_ROW_SIZE}
-									/>
-								))
-							}
-						</Media>
+						<Tooltip
+							placement="top"
+							overlayClassName="verify-contract-tooltip"
+							trigger={['hover']}
+							overlay={amount}
+						>
+							<span className="txt">{amount}</span>
+						</Tooltip>
 					</span>
 					<span className="currency">{op.value.symbol}</span>
 				</div>
@@ -127,6 +110,7 @@ class OperationInfo extends React.Component {
 	renderOperationRowValue(key, value, index) {
 		const { objId } = this.props;
 		const valueAmount = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
+		const [amount, amountName] = valueAmount.split(' ');
 
 		if (typeof value === 'object' && key !== 'logs') {
 			if (!value.link) {
@@ -140,7 +124,10 @@ class OperationInfo extends React.Component {
 									trigger={['hover']}
 									overlay={valueAmount}
 								>
-									<span className="amount">{valueAmount}</span>
+									<div className="val">
+										<div className="txt">{amount}&nbsp;</div>
+										<div className="txt2">{amountName}</div>
+									</div>
 								</Tooltip>
 							) : (
 								<span>{valueAmount}</span>

@@ -93,9 +93,6 @@ export const MAIN_HEADER_HEIGHT = 250;
 
 export const MAX_RETRIES = 999999999;
 
-export const MAX_ROW_LETTERS_SIZE = 10;
-export const CROPPED_ROW_SIZE = 10;
-
 export const MAX_WIDTH_SCREEN = 768;
 export const MIN_ACCESS_VERSION_BUILD = '0.4.0';
 
