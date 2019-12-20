@@ -42,27 +42,18 @@ class PreparingSection extends React.Component {
 		this.readyProducers = null;
 	}
 
-	componentDidUpdate(prevProps) {
-		const { readyProducers, stepProgress, preparingBlock } = this.props;
-		if (prevProps.readyProducers !== readyProducers && readyProducers) {
-			setTimeout(() => {
-				this.updateReadyProducers(readyProducers);
-			}, GC_START_DELAY);
+	shouldComponentUpdate(newProps) {
+		const { readyProducers, stepProgress, preparingBlock } = newProps;
+		if (this.props.readyProducers !== readyProducers && readyProducers) {
+			setTimeout(() => this.updateReadyProducers(readyProducers), GC_START_DELAY);
 		}
-
-		if (prevProps.preparingBlock !== preparingBlock) {
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({
-				nextBlockDescription: preparingBlock,
-			});
+		if (this.props.preparingBlock !== preparingBlock) {
+			this.setState({ nextBlockDescription: preparingBlock });
 		}
 
 		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
 			clearTimeout(this.setTimeId);
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({
-				applied: true,
-			});
+			this.setState({ applied: true });
 			this.setTimeId = setTimeout(() => {
 				this.setState({
 					applied: false,
@@ -72,6 +63,7 @@ class PreparingSection extends React.Component {
 			}, PRODUCED_DELAY);
 
 		}
+		return true;
 	}
 
 	getMobileData(stepProgress) {
