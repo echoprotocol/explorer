@@ -21,7 +21,7 @@ const {
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
 	template: `${__dirname}/src/assets/index.html`,
-	filename: 'Index.jsx.html',
+	filename: 'index.html',
 	inject: 'body',
 });
 
