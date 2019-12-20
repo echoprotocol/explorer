@@ -86,7 +86,7 @@ SimplePreparingBlock.propTypes = {
 	className: PropTypes.string,
 	title: PropTypes.string,
 	smallTitle: PropTypes.string,
-	description: PropTypes.string,
+	description: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	tip: PropTypes.string,
 	tooltip: PropTypes.bool,
 };

@@ -79,9 +79,6 @@ const roundSubscribe = (notification) => (dispatch) => {
 		case BBA_STARTED:
 			dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }));
 			break;
-		case BLOCK_APPLIED_CALLBACK:
-			dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }));
-			break;
 		default:
 			return null;
 	}
