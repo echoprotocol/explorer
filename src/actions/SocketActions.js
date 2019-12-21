@@ -10,7 +10,13 @@ import RoundReducer from '../reducers/RoundReducer';
 
 import FormatHelper from '../helpers/FormatHelper';
 
-import { BBA_STARTED, BLOCK_PRODUCED, GC_STARTED, ROUND_STARTED, DONE } from '../constants/RoundConstants';
+import {
+	BBA_STARTED,
+	BLOCK_PRODUCED,
+	GC_STARTED,
+	ROUND_STARTED,
+	BLOCK_APPLIED_CALLBACK,
+} from '../constants/RoundConstants';
 import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
@@ -62,9 +68,14 @@ const roundSubscribe = (notification) => (dispatch) => {
 			]));
 			break;
 		case BLOCK_PRODUCED:
-			dispatch(RoundReducer.actions.increment({ field: 'readyProducers' }));
+			dispatch(batchActions([
+				RoundReducer.actions.increment({ field: 'readyProducers' }),
+				RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }),
+			]));
 			break;
 		case GC_STARTED:
+			dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }));
+			break;
 		case BBA_STARTED:
 			dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: notification[0].type }));
 			break;
@@ -85,7 +96,7 @@ const blockRelease = () => async (dispatch) => {
 	dispatch(setLatestBlock(global.head_block_number));
 	await dispatch(updateBlockList(global.head_block_number));
 	dispatch(updateAverageTransactions());
-	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: DONE }));
+	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
 };
 

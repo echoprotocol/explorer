@@ -7,17 +7,19 @@ import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
 import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
 
 import {
-	BBA_STARTED,
 	BBA_TIP,
 	GC_TIP,
-	ROUND_STARTED,
-	GC_STARTED,
-	DONE,
 	PRODUCING_TIP,
 	rounderSteps,
 	PROGRESS_STATUS,
 	DONE_STATUS,
 	GC_START_DELAY,
+	PRODUCED_DELAY,
+	BLOCK_APPLIED_CALLBACK,
+	GC_STARTED,
+	BBA_STARTED,
+	ROUND_STARTED,
+	BLOCK_PRODUCED,
 } from '../../constants/RoundConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
@@ -28,93 +30,159 @@ class PreparingSection extends React.Component {
 		super(props);
 
 		this.state = {
-			producing: PROGRESS_STATUS,
-			verifyingGC: PROGRESS_STATUS,
-			verifyingBBA: PROGRESS_STATUS,
 			readyProducers: 0,
+			description: 'Waiting',
+			status: '',
+			applied: false,
+			nextBlockDescription: '',
+			title: 'Waiting',
 		};
 
+		this.setTimeId = null;
 		this.readyProducers = null;
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { stepProgress } = this.props;
-
-		if (stepProgress && nextProps.stepProgress !== stepProgress) {
-			if (
-				(nextProps.stepProgress === ROUND_STARTED)
-			) {
-				this.setVerifyingBBA(DONE_STATUS);
-			} else if (nextProps.stepProgress === BBA_STARTED) {
-				this.setVerifyingGC(DONE_STATUS);
-			}
+	shouldComponentUpdate(newProps) {
+		const { readyProducers, stepProgress, preparingBlock } = newProps;
+		if (this.props.readyProducers !== readyProducers && readyProducers) {
+			setTimeout(() => this.updateReadyProducers(readyProducers), GC_START_DELAY);
+		}
+		if (this.props.preparingBlock !== preparingBlock) {
+			this.setState({ nextBlockDescription: preparingBlock });
 		}
 
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && this.setTimeId === null) {
+			clearTimeout(this.setTimeId);
+			this.setState({ applied: true });
+			this.setTimeId = setTimeout(() => {
+				this.setState({
+					applied: false,
+				});
+				this.updateBlockProduced(stepProgress, readyProducers);
+				this.setTimeId = null;
+			}, PRODUCED_DELAY);
+
+		}
 		return true;
 	}
 
-	componentDidUpdate(prevProps) {
-		const { readyProducers } = this.props;
-		if (prevProps.readyProducers !== readyProducers && readyProducers) {
-			setTimeout(() => {
-				this.updateReadyProducers(readyProducers);
-			}, GC_START_DELAY);
+	getMobileData(stepProgress) {
+		let stepStatus = PROGRESS_STATUS;
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status) {
+			stepStatus = DONE_STATUS;
 		}
-	}
-
-	setVerifyingGC(status) {
-		this.setState({ verifyingGC: status });
-	}
-
-	setVerifyingBBA(status) {
-		this.setState({ verifyingBBA: status });
-	}
-
-	getMobileData(status, producing, verifyingGC) {
-		let stepProgress = ROUND_STARTED;
-		let currentStep = rounderSteps[ROUND_STARTED].step;
-		const stepStatus = status >= rounderSteps[GC_STARTED].progress ? producing : PROGRESS_STATUS;
-
-		if (status >= rounderSteps[DONE].progress && producing === DONE_STATUS && verifyingGC === DONE_STATUS) {
-			stepProgress = DONE;
-			currentStep = rounderSteps[DONE].step;
-		} else if (status >= rounderSteps[GC_STARTED].progress && producing === DONE_STATUS) {
-			stepProgress = GC_STARTED;
-			currentStep = rounderSteps[GC_STARTED].step;
-		} else if (status >= rounderSteps[ROUND_STARTED].progress) {
-			stepProgress = ROUND_STARTED;
-			currentStep = rounderSteps[ROUND_STARTED].step;
-		}
-
 		return {
 			title: rounderSteps[stepProgress].title,
-			currentStep,
 			status: stepStatus,
 		};
+	}
+
+	getNextBlockState(stepProgress, preparingBlock) {
+		return {
+			description: preparingBlock,
+			status: DONE_STATUS,
+		};
+	}
+
+	getGCData(stepProgress) {
+		switch (stepProgress) {
+			case rounderSteps[GC_STARTED].status:
+				return {
+					description: 'Verifying',
+					status: PROGRESS_STATUS,
+				};
+			case rounderSteps[BBA_STARTED].status:
+				return {
+					description: 'Verified',
+					status: DONE_STATUS,
+				};
+			case rounderSteps[BLOCK_APPLIED_CALLBACK].status:
+				return {
+					description: 'Verified',
+					status: DONE_STATUS,
+				};
+			default:
+				return {
+					description: 'Waiting',
+					status: '',
+				};
+		}
+	}
+
+	getBBAData(stepProgress) {
+		switch (stepProgress) {
+			case rounderSteps[BBA_STARTED].status:
+				return {
+					description: 'Verifying',
+					status: PROGRESS_STATUS,
+				};
+			case rounderSteps[BLOCK_APPLIED_CALLBACK].status:
+				return {
+					description: 'Verified',
+					status: DONE_STATUS,
+				};
+			default:
+				return {
+					description: 'Waiting',
+					status: '',
+				};
+		}
+	}
+
+	blockProposalData(stepProgress, readyProducers) {
+		switch (stepProgress) {
+			case rounderSteps[BLOCK_APPLIED_CALLBACK].status:
+				return {
+					description: `Received ${readyProducers} proposals`,
+					status: DONE_STATUS,
+				};
+			case rounderSteps[ROUND_STARTED].status:
+				return {
+					description: 'Waiting for proposals',
+					status: PROGRESS_STATUS,
+				};
+			case rounderSteps[BLOCK_PRODUCED].status && readyProducers > 0:
+				return {
+					description: `Received ${readyProducers} proposals`,
+					status: PROGRESS_STATUS,
+				};
+			default:
+				return {
+					description: `Received ${readyProducers} proposals`,
+					status: DONE_STATUS,
+				};
+		}
 	}
 
 	updateReadyProducers(readyProducers) {
 		this.setState({ readyProducers });
 	}
 
-	render() {
-		const {
-			producers, stepProgress, preparingBlock,
-		} = this.props;
+	updateBlockProduced(stepProgress) {
+		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status) {
+			this.setState({
+				description: 'Waiting',
+				status: '',
+				nextBlockDescription: `${this.state.nextBlockDescription} Waiting for new txs`,
+				title: 'description',
+			});
+		}
+	}
 
-		const {
-			producing, verifyingGC, verifyingBBA, status, readyProducers,
-		} = this.state;
+	render() {
+		const { stepProgress, preparingBlock } = this.props;
+		const {	readyProducers } = this.state;
 
 		if (!stepProgress) {
 			return null;
 		}
 
-		const mobileData = this.getMobileData(status, producing, verifyingGC);
+		const mobileData = this.getMobileData(stepProgress);
+		const blockProposalData = this.blockProposalData(stepProgress, readyProducers);
+		const GCData = this.getGCData(stepProgress);
+		const BBAData = this.getBBAData(stepProgress);
 
-		const isVerifyingGC = verifyingGC === DONE_STATUS && status >= rounderSteps[DONE].progress;
-		const isVerifyingBBA = verifyingBBA === DONE_STATUS && status >= rounderSteps[BBA_STARTED].maxProgress;
-		const isProducingBlock = producing === DONE_STATUS && status >= rounderSteps[GC_STARTED].progress;
+		const nextBlockData = this.getNextBlockState(stepProgress, FormatHelper.formatAmount(preparingBlock, 0));
 
 		return (
 			<React.Fragment>
@@ -123,53 +191,66 @@ class PreparingSection extends React.Component {
 						<Media query="(max-width: 499px)">
 							{(matches) =>
 								(matches ? (
-									<p className="mobile-title">Preparing block</p>
+									<p className="mobile-title">Next block</p>
 								) : (
-									<SimplePreparingBlock title="Preparing block" description={FormatHelper.formatAmount(preparingBlock, 0)} />
+									<SimplePreparingBlock
+										title="Next block"
+										description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+											this.state.nextBlockDescription : nextBlockData.description}
+										status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+											this.state.status : nextBlockData.status}
+									/>
 								))
 							}
 						</Media>
 
 						<Media query="(max-width: 767px)">
-							{(matches) =>
-								(matches ? (
-									<CompositePreparingBlock
-										composite
-										title={mobileData.title}
-										currentStep={mobileData.currentStep}
-										totalStep={rounderSteps.totalStep}
-										description={`Producers: ${readyProducers}/${producers}`}
-										status={mobileData.status}
-										tooltip
-									/>
-								) : (
-									<React.Fragment>
-										<SimplePreparingBlock
-											title="Producing block"
-											description={`Producers: ${readyProducers}/${producers}`}
-											status={isProducingBlock ? producing : PROGRESS_STATUS}
-											tooltip
-											tip={PRODUCING_TIP}
-										/>
-										<SimplePreparingBlock
-											className="sm-border"
-											title="Verifying block: GC"
-											smallTitle="Verifying: GC"
-											description={isVerifyingGC ? 'Verifying' : 'Pending'}
-											status={isVerifyingGC ? verifyingGC : PROGRESS_STATUS}
-											tooltip
-											tip={GC_TIP}
-										/>
-										<SimplePreparingBlock
-											tip={BBA_TIP}
-											title="Verifying block: BBA"
-											smallTitle="Verifying: BBA"
-											description={isVerifyingBBA ? 'Verifying' : 'Pending'}
-											status={isVerifyingBBA ? verifyingBBA : PROGRESS_STATUS}
+							{
+								(matches) =>
+									(matches ? (
+										<CompositePreparingBlock
+											composite
+											title={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+												this.state.title : mobileData.title}
+											description={`Received ${readyProducers} proposals`}
+											status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+												this.state.status : mobileData.status}
 											tooltip
 										/>
-									</React.Fragment>
-								))
+									) : (
+										<React.Fragment>
+											<SimplePreparingBlock
+												title="Block proposals"
+												description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+													this.state.description : blockProposalData.description}
+												status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+													this.state.status : blockProposalData.status}
+												tooltip
+												tip={PRODUCING_TIP}
+											/>
+											<SimplePreparingBlock
+												className="sm-border"
+												title="Verifying block: GC"
+												smallTitle="Verifying: GC"
+												description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+													this.state.description : GCData.description}
+												status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+													this.state.status : GCData.status}
+												tooltip
+												tip={GC_TIP}
+											/>
+											<SimplePreparingBlock
+												tip={BBA_TIP}
+												title="Verifying block: BBA"
+												smallTitle="Verifying: BBA"
+												description={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+													this.state.description : BBAData.description}
+												status={stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status && !this.state.applied ?
+													this.state.status : BBAData.status}
+												tooltip
+											/>
+										</React.Fragment>
+									))
 							}
 						</Media>
 					</div>
@@ -181,7 +262,6 @@ class PreparingSection extends React.Component {
 }
 
 PreparingSection.propTypes = {
-	producers: PropTypes.number.isRequired,
 	stepProgress: PropTypes.string.isRequired,
 	readyProducers: PropTypes.number.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
@@ -189,7 +269,6 @@ PreparingSection.propTypes = {
 
 export default connect(
 	(state) => ({
-		producers: state.round.get('producers'),
 		stepProgress: state.round.get('stepProgress'),
 		readyProducers: state.round.get('readyProducers'),
 		preparingBlock: state.round.get('preparingBlock'),

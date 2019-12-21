@@ -27,7 +27,6 @@ class SimplePreparingBlock extends React.Component {
 		} = this.props;
 
 		const { hovered } = this.state;
-
 		return (
 			<React.Fragment>
 				<div
@@ -69,9 +68,10 @@ class SimplePreparingBlock extends React.Component {
 							</div>
 						)
 					}
-					<div className="status-container">
+					<div className="status-container" >
 						<div className="description">
-							<span className="text">{description}</span> {(status) && (<div className="status-icn" />)}
+							<span	className="text">{description}</span>
+							{title === 'Next block' ? '' : <div className="status-icn" />}
 						</div>
 					</div>
 				</div>
@@ -86,7 +86,7 @@ SimplePreparingBlock.propTypes = {
 	className: PropTypes.string,
 	title: PropTypes.string,
 	smallTitle: PropTypes.string,
-	description: PropTypes.string,
+	description: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	tip: PropTypes.string,
 	tooltip: PropTypes.bool,
 };
