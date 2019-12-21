@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Tooltip from 'rc-tooltip';
+import Media from 'react-media';
 
 import { NONE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -23,6 +25,8 @@ class ContractInfoBlock extends React.Component {
 			compilerVersion = data.get('compilerVersion');
 		}
 
+		const creationFeeData = creationFee.split(' ');
+
 		return (
 			<div className="contract-info-block">
 				<div className="line">
@@ -43,7 +47,25 @@ class ContractInfoBlock extends React.Component {
 					<div className="key">Creation FEE:</div>
 					<div className="underline" />
 					<div className="value">
-						{creationFee}
+						<Media query="(max-width: 350px)">
+							{(matches) =>
+								(matches ? (
+									<Tooltip
+										placement="topLeft"
+										overlayClassName="verify-contract-tooltip"
+										trigger={['hover']}
+										overlay={creationFee}
+									>
+										<div className="val">
+											<div className="txt">{creationFeeData[0]}</div>
+											<div className="txt2">{creationFeeData[1]}</div>
+										</div>
+									</Tooltip>
+								) : (
+									<span>{creationFee}</span>
+								))
+							}
+						</Media>
 					</div>
 				</div>
 				<div className="line">

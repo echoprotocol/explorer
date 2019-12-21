@@ -109,6 +109,7 @@
 
                             .txt {
                                 margin-right: 5px;
+                                @include text-overflow;
                             }
 
                             .accent {

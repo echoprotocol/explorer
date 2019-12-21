@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import Tooltip from 'rc-tooltip';
+import Media from 'react-media';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 
+
 class AccountInfo extends React.Component {
 
 	render() {
 		const { id, name, echo } = this.props;
+
+		const assetAmount = FormatHelper.formatAmount(echo.amount, echo.asset.get('precision'));
 
 		return (
 			<div className="left-card">
@@ -22,21 +27,28 @@ class AccountInfo extends React.Component {
 					{
 						echo ?
 							<div className="val">
-								<span className="txt">
-									{
-										FormatHelper.formatAmount(
-											echo.amount,
-											echo.asset.get('precision'),
-										)
+								<Media query="(max-width: 760px)">
+									{(matches) =>
+										(matches ? (
+											<Tooltip
+												placement="top"
+												overlayClassName="verify-contract-tooltip"
+												trigger={['hover']}
+												overlay={assetAmount}
+											>
+												<span className="txt">{assetAmount}</span>
+											</Tooltip>
+										) : (
+											<span>{assetAmount}</span>
+										))
 									}
-								</span>
+								</Media>
 								<span className="accent">
 									<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
-										{ECHO_ASSET.SYMBOL}
+										&nbsp;{ECHO_ASSET.SYMBOL}
 									</Link>
 								</span>
-							</div> :
-							<div className="val"><span className="txt">None</span></div>
+							</div> : <div className="val"><span className="txt">None</span></div>
 					}
 				</div>
 				<div className="line">

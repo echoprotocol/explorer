@@ -295,6 +295,10 @@
             margin-right: 4px;
             @include text-overflow;
             max-width: 74px;
+
+            display: flex;
+            word-break: break-all;
+            width: 100%;
         }
         .type {
             color: rgb(80, 84, 88);
@@ -302,6 +306,7 @@
         .currency {
             color: #848B94;
             text-transform: uppercase;
+            overflow: initial;
         }
     }
 

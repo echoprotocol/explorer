@@ -36,6 +36,17 @@
             padding-left: 28px;
             width: 100%;
             vertical-align: bottom;
+
+            .val {
+                display: flex;
+                max-width: 100%;
+                .txt {
+                    @include text-overflow();
+                }
+                .txt2 {
+                    width: calc(100% - 38vw);
+                }
+            }
         }
     }
 

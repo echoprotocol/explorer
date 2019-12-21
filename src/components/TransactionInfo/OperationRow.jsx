@@ -72,6 +72,8 @@ class OperationRow extends React.Component {
 			width: 175,
 		};
 
+		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
+
 		return (
 			<React.Fragment>
 				<tr
@@ -153,14 +155,15 @@ class OperationRow extends React.Component {
 						{
 							mainInfo.value.amount ?
 								<div className="td-in">
-									<span
-										className="value"
-									>
-										{
-											FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision).length > 10 ?
-												FormatHelper.zipAmount(FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)) :
-												FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision)
-										}
+									<span className="value">
+										<Tooltip
+											placement="top"
+											overlayClassName="verify-contract-tooltip"
+											trigger={['hover']}
+											overlay={assetAmount}
+										>
+											<span className="txt">{assetAmount}</span>
+										</Tooltip>
 									</span>
 									<span className="currency">{mainInfo.value.symbol}</span>
 								</div> : <div className="td-in">—</div>
@@ -173,7 +176,16 @@ class OperationRow extends React.Component {
 									(matches) => (!matches && (
 										<td className="fee">
 											<div className="td-in">
-												<span className="value">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
+												<span className="value">
+													<Tooltip
+														placement="top"
+														overlayClassName="verify-contract-tooltip"
+														trigger={['hover']}
+														overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+													>
+														<span className="txt">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
+													</Tooltip>
+												</span>
 												<span className="currency">{detailInfo.fee.symbol}</span>
 											</div>
 										</td>

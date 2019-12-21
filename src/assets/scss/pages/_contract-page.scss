@@ -432,22 +432,33 @@
         &.blue {
             color: #498FDF;
         }
+
+        .val {
+            display: flex;
+            max-width: 100%;
+            .txt {
+                @include text-overflow();
+            }
+            .txt2 {
+                width: calc(100% - 25vw);
+            }
+        }
     }
 }
 
 .verify-contract-tooltip {
+    .rc-tooltip {
+        opacity: 1;
+    }
     .rc-tooltip-inner {
         max-width: none;
+        @include InterUI_Regular;
+        font-size: 11px;
+        color: #93A9BB;
+        letter-spacing: 0;
 
-        p {
-            @include InterUI_Regular;
-            font-size: 11px;
-            color: #93A9BB;
-            letter-spacing: 0;
-
-            &+p {
-                margin-top: 10px;
-            }
+        p  + p {
+            margin-top: 10px;
         }
     }
 }
