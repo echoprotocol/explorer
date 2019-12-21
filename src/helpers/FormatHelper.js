@@ -116,15 +116,15 @@ class FormatHelper {
 		let seconds = time - (hours * 3600) - (minutes * 60);
 
 		if (hours > 0) {
-			hours = `${hours} ${hours > 1 ? 'hours ' : 'hour '}`;
+			hours = `${hours}${hours > 1 ? 'h ' : 'h '}`;
 		}
 
 		if (minutes > 0) {
-			minutes = `${minutes} min `;
+			minutes = `${minutes}m `;
 		}
-		seconds = `${seconds} sec`;
+		seconds = `${seconds}s`;
 
-		return `${hours || ''}${minutes || ''}${seconds}`;
+		return `${hours || ''}${minutes || ''}${seconds} ago`;
 	}
 	/**
 	 *
@@ -200,6 +200,24 @@ class FormatHelper {
 	 */
 	static timestampToOperationRowTime(timestamp) {
 		return moment.utc(timestamp).local().format('DD.MM.YYYY HH:mm');
+	}
+
+	/**
+	 *
+	 * @param time
+	 * @returns {string}
+	 */
+	static secondsToFullTime(time) {
+		return moment.utc(moment.duration(time, 'seconds').asMilliseconds()).format('HH:mm:ss');
+	}
+
+	/**
+	 *
+	 * @param stringValue
+	 * @returns {number}
+	 */
+	static convertToNumber(stringValue) {
+		return new BN(stringValue).toNumber();
 	}
 
 }

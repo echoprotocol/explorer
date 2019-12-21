@@ -46,12 +46,26 @@ class RecentBlockSidebar extends React.Component {
 		this.setState({ offsetTop: window.pageYOffset });
 	}
 
+	averageBlockTime(averageTime) {
+		const [hours, minutes, seconds] = FormatHelper.secondsToFullTime(averageTime).split(':')
+			.map((i) => FormatHelper.convertToNumber(i));
+
+		if (averageTime) {
+			return (
+				<React.Fragment>
+					{hours ? <span>{hours}<span className="sm">h&nbsp;</span></span> : ''}
+					{minutes ? <span>{minutes}<span className="sm">m&nbsp;</span></span> : ''}
+					{seconds}<span className="sm">s</span>
+				</React.Fragment>);
+		}
+		return '-';
+	}
+
 	render() {
 		const { latestBlock, averageTransactions, startTimestamp } = this.props;
 		const { offsetTop } = this.state;
 
 		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
-		const averageOp = FormatHelper.roundNumber(averageTransactions.getIn(['operations', 'value']), 1);
 		const averageTime = FormatHelper.roundNumber(averageTransactions.get('averageTime'), 1);
 		const appVersion = getAppVersion();
 		return (
@@ -60,20 +74,15 @@ class RecentBlockSidebar extends React.Component {
 					<div className="help-container">
 						<div className="sidebar-elem">
 							<div className="title">Latest block number</div>
-							<div className="value">{FormatHelper.formatAmount(latestBlock, 0)}</div>
-						</div>
-						<div className="sidebar-elem">
-							<div className="title">Latest block time</div>
-							<div className="value">{FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)}</div>
-						</div>
-						<div className="sidebar-elem">
-							<div className="title">Average transactions amount</div>
-							<div className="value">{`${averageTr}/${averageOp}`}</div>
+							<div className="value">
+								{`${FormatHelper.formatAmount(latestBlock, 0)} `}
+								({FormatHelper.formatLatestBlockTime(startTimestamp + this.state.timer)})
+							</div>
 						</div>
 						<div className="sidebar-elem">
 							<div className="title">Average block time (24h)</div>
 							<div className="value">
-								{averageTime ? (<React.Fragment>{averageTime}&nbsp;<span className="sm">sec</span></React.Fragment>) : '-'}
+								{this.averageBlockTime(averageTime)} ({`${averageTr} tx per block`})
 							</div>
 						</div>
 					</div>
