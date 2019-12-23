@@ -664,7 +664,7 @@ class ContractActions extends BaseActionsClass {
 				const feeAsset = await echo.api.getObject(creationFee.asset_id);
 
 				const {
-					registrar, block, calling_accounts, type, eth_accuracy: ethAccuracy,
+					registrar, block, callers, type, eth_accuracy: ethAccuracy,
 				} = contractInfo;
 
 				let { supported_asset_id: supportedAsset } = contractInfo;
@@ -677,7 +677,7 @@ class ContractActions extends BaseActionsClass {
 					error: '',
 					registrar: registrar.name,
 					blockNumber: block.round,
-					countUsedByAccount: calling_accounts.length,
+					countUsedByAccount: callers.accounts.length,
 					type: fromJS([contract.type, type]),
 					supportedAsset,
 					ethAccuracy,
@@ -704,11 +704,11 @@ class ContractActions extends BaseActionsClass {
 	 */
 	updateContractHistory(data) {
 		return async (dispatch, getState) => {
-			const { calling_accounts } = data;
+			const { callers } = data;
 			const contractTxs = getState().contract.get('contractTxs');
 			dispatch(this.setMultipleValue({
 				contractTxs: contractTxs + 1,
-				countUsedByAccount: calling_accounts.length,
+				countUsedByAccount: callers.accounts.length,
 			}));
 		}
 	}
