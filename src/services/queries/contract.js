@@ -13,9 +13,7 @@ export const getContractInfo = async (contractId) => {
           			round
           			timestamp
 		        }
-		        calling_accounts {
-          			id
-        		}
+		        callers { accounts { id } }
         		type,
         		supported_asset_id
         		eth_accuracy
