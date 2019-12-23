@@ -8,17 +8,13 @@ class ContractBytecode extends React.Component {
 
 		return (
 			<div className="contract-bytecode-panel">
-				<div className="row">
-					<div className="right-column">
-						{
-							bytecode ?
-								<React.Fragment>
-									<div className="text-block">{bytecode}</div>
-								</React.Fragment> :
-								<div className="text-block">None</div>
-						}
-					</div>
-				</div>
+				{
+					bytecode ?
+						<React.Fragment>
+							<div className="text-block">{bytecode}</div>
+						</React.Fragment> :
+						<div className="text-block">None</div>
+				}
 			</div>
 		);
 	}

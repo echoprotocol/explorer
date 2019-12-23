@@ -1,0 +1,473 @@
+.help-table-wrapper .table-block {
+	position: relative;
+	transition: background-color 0.3s, padding 0.8s linear;
+
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		z-index: 1;
+
+		td {
+			&.json {
+				padding: 0px;
+
+				.td-in {
+					padding: 0px;
+				}
+			}
+
+			.td-in {
+				padding: 9px 7px;
+				transition: all 0.2s;
+			}
+
+			&:first-child,
+			&:last-child {
+				max-width: 13px;
+				width: 13px;
+				min-width: 13px;
+			}
+
+			&:nth-child(2) .td-in {
+				padding: 9px 7px 9px 20px;
+
+				@include res-1280 {
+					padding: 9px 7px;
+				}
+
+				@include res-768 {
+					padding: 9px 7px 9px 17px;
+				}
+			}
+
+			@include res-768 {
+
+				&:first-child,
+				&:last-child {
+					max-width: 8px;
+					width: 8px;
+					min-width: 8px;
+				}
+			}
+		}
+	}
+
+	tbody {
+		td {
+			letter-spacing: 0.3px;
+			line-height: 10px;
+			font-size: 12px;
+			color: #0E0936;
+		}
+
+		.td-in {
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.3px;
+			line-height: 16px;
+		}
+
+		a {
+			color: #498FDF;
+		}
+	}
+
+	thead {
+		user-select: none;
+		background-color: rgba(162, 166, 173, 0.1);
+		font-family: "Hack";
+		font-weight: 700;
+		font-style: normal;
+		font-size: 9px;
+		text-transform: uppercase;
+		letter-spacing: 2.25px;
+		color: #828b95;
+		position: relative;
+		line-height: 15px;
+	}
+
+	.air {
+		background-color: transparent;
+		height: 8px;
+
+		&:hover {
+			background-color: transparent;
+		}
+
+		td {
+			height: 8px;
+		}
+	}
+
+	.view {
+		cursor: pointer;
+		font-family: InterUI;
+		z-index: 1;
+
+		&:hover:not(.active) {
+
+			td:nth-child(2) {
+				background-color: #f3f2f5;
+			}
+
+			td:not(:first-child):not(:last-child) {
+				background-color: #ebebee;
+			}
+
+			td:not(:first-child):not(:nth-child(2)):not(:last-child) {
+				background-color: #ebebee;
+			}
+
+
+			.json {
+				a {
+					background-image: url(../images/icons/json-white.svg);
+					background-color: #2E6EB1;
+					border-color: #235381;
+					fill: #fff;
+				}
+			}
+		}
+
+		&.active {
+			td {
+				background-color: #fff;
+
+				.td-in {
+					padding: 13px 7px;
+
+					@include res-500 {
+						padding: 0;
+					}
+				}
+
+				&:nth-child(2) {
+					.td-in {
+						padding: 13px 7px 13px 20px;
+
+						@include res-1280 {
+							padding: 13px 7px;
+						}
+
+						@include res-768 {
+							padding: 9px 7px 9px 17px;
+						}
+
+						@include res-500 {
+							padding: 0;
+						}
+					}
+				}
+
+				&:nth-child(1),
+				&:nth-child(2),
+				&:last-child {
+					background-color: #f3f2f5;
+				}
+
+				&:not(:nth-child(1)):not(:nth-child(2)):not(:last-child) {
+					background-color: #fff;
+				}
+			}
+
+			.dd {
+
+				img {
+					transform: rotate(0);
+				}
+			}
+
+			&+.fold {
+				display: table-row;
+
+				td:first-child {
+					background-color: #f3f3f5;
+				}
+			}
+
+			.json {
+				.td-in {
+					padding: 0;
+				}
+
+				a {
+					background-image: url(../images/icons/json-white.svg);
+					background-color: #2E6EB1;
+					border-color: #235381;
+					fill: #fff;
+				}
+			}
+		}
+
+		@include res-500 {
+			background-color: #e7e6e9;
+
+			&:hover:not(.active) {
+				background-color: #ebebee;
+
+				td:nth-child(2) {
+					background-color: #ebebee;
+				}
+
+				td:not(:first-child):not(:nth-child(2)):not(:last-child) {
+					background-color: #ebebee;
+				}
+			}
+
+			&.active {
+				background-color: #fff;
+
+				td:nth-child(2) {
+					background-color: #fff;
+				}
+
+				td:not(:nth-child(1)):not(:nth-child(2)):not(:last-child) {
+					background-color: #fff;
+				}
+			}
+		}
+
+		@include res-500 {
+			padding: 22px 17px;
+		}
+
+		@include res-320 {
+			padding: 22px 17px 13px;
+		}
+	}
+
+	.fold {
+		td:nth-child(2) {
+			padding: 12px 33px 12px 45px;
+
+			@include res-1280 {
+				padding: 9px 33px 9px 33px;
+			}
+
+			@include res-768 {
+				padding: 9px 30px;
+			}
+
+			@include res-320 {
+				padding: 9px 15px;
+			}
+		}
+
+		.fold-operation-info {
+			.fold-title {
+				font-size: 13px;
+				letter-spacing: 0.33px;
+			}
+		}
+	}
+
+	td {
+
+		&.dd {
+			max-width: 30px;
+			width: 30px;
+			min-width: 30px;
+		}
+
+		&.type {
+			max-width: 16%;
+			width: 16%;
+			min-width: 16%;
+		}
+
+		&.sender,
+		&.reciever {
+			max-width: 17%;
+			width: 17%;
+			min-width: 17%;
+
+			@include res-768 {
+				max-width: 22%;
+				width: 22%;
+				min-width: 22%;
+			}
+		}
+
+		&.amount,
+		&.fee {
+			max-width: 14%;
+			width: 14%;
+			min-width: 14%;
+		}
+
+		&.rezult {
+			max-width: 10%;
+			width: 10%;
+			min-width: 10%;
+			padding-left: 15px;
+
+			@include res-1280 {
+				display: table-cell;
+			}
+
+			.td-in {
+				padding-left: 7px;
+			}
+		}
+
+		&.json {
+			max-width: 5%;
+			width: 5%;
+			min-width: 5%;
+
+			.td-in {
+				padding: 0;
+				margin-left: 37px;
+			}
+		}
+
+		&.fee {
+			@include res-768 {
+				display: none;
+			}
+		}
+
+
+		@include res-500 {
+
+			&.type,
+			&.amount {
+				max-width: 37%;
+				width: 37%;
+				min-width: 37%;
+
+				.td-in {
+					margin: 0;
+					padding: 0;
+				}
+			}
+
+			&.sender,
+			&.rezult {
+				max-width: 33%;
+				width: 33%;
+				min-width: 33%;
+				margin: 0;
+				padding: 0;
+
+				.td-in {
+					margin: 0;
+					padding: 0;
+				}
+			}
+
+			&.reciever,
+			&.json {
+				max-width: 30%;
+				width: 30%;
+				min-width: 30%;
+
+
+				.td-in {
+					margin: 0;
+					padding: 0;
+				}
+			}
+
+			&.type {
+				order: 1;
+
+			}
+
+			&.sender {
+				order: 2;
+			}
+
+			&.reciever {
+				order: 3;
+			}
+
+			&.amount {
+				order: 4;
+				padding-left: 20px;
+			}
+
+			&.rezult {
+				order: 5;
+			}
+
+			&.json {
+				order: 6;
+			}
+
+			&.dd {
+				max-width: 8px;
+				width: 8px;
+				min-width: 8px;
+			}
+		}
+
+		@include res-320 {
+
+			&.amount,
+			&.reciever,
+			&.json,
+			&.type,
+			&.sender,
+			&.rezult {
+				max-width: 50%;
+				width: 50%;
+				min-width: 50%;
+			}
+
+			&.type {
+				order: 1;
+			}
+
+			&.sender {
+				order: 3;
+			}
+
+			&.reciever {
+				order: 4;
+			}
+
+			&.amount {
+				order: 2;
+				padding-left: 0px;
+			}
+
+			&.rezult {
+				order: 5;
+			}
+
+			&.json {
+				order: 6;
+			}
+		}
+	}
+
+	.amount,
+	.fee,
+	.reward {
+		.td-in {
+			display: flex;
+		}
+
+		.value {
+			@include text-overflow;
+			margin-right: 4px;
+			max-width: 74px;
+
+			display: flex;
+			word-break: break-all;
+			width: 100%;
+		}
+
+		.type {
+			color: rgb(80, 84, 88);
+		}
+
+		.currency {
+			color: #848B94;
+			text-transform: uppercase;
+			overflow: initial;
+		}
+	}
+}

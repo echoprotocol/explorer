@@ -220,6 +220,7 @@ class Contract extends React.Component {
 			{
 				tab: !loading ?
 					<OperationsTable
+						isContract
 						operations={contractHistory}
 						history={this.props.history}
 						location={this.props.location}
