@@ -41,6 +41,20 @@
 				}
 			}
 
+			&.sender,
+			&.reciever,
+			&.amount {
+				span {
+					@include text-overflow();
+					max-width: 90px;
+
+					@include res-1280 {
+						max-width: 80px;
+					}
+				}
+			}
+
+
 			@include res-768 {
 
 				&:first-child,
@@ -86,6 +100,8 @@
 		position: relative;
 		line-height: 15px;
 	}
+
+
 
 	.air {
 		background-color: transparent;
@@ -237,30 +253,108 @@
 		}
 	}
 
-	.fold {
-		td:nth-child(2) {
-			padding: 12px 33px 12px 45px;
+	.avatar-wrap {
+		display: inline-flex;
+		align-items: center;
 
-			@include res-1280 {
-				padding: 9px 33px 9px 33px;
-			}
+		.avatar-image {
+			margin-right: 5px;
 
-			@include res-768 {
-				padding: 9px 30px;
-			}
-
-			@include res-320 {
-				padding: 9px 15px;
-			}
-		}
-
-		.fold-operation-info {
-			.fold-title {
-				font-size: 13px;
-				letter-spacing: 0.33px;
+			img {
+				display: block;
+				max-height: 100%;
 			}
 		}
 	}
+
+	.dd {
+		img {
+			margin: auto 1px;
+			display: block;
+			transform: rotate(60deg);
+			transition: transform .2s;
+		}
+	}
+
+	.json {
+		a {
+			width: 16px;
+			height: 16px;
+			padding: 0;
+			background-color: #E2E0E5;
+			border-bottom: 1px solid transparent;
+			transition: background-color .3s, border .3s, background-image .3s;
+			background-image: url(../images/icons/json.svg);
+			background-position: center;
+			background-repeat: no-repeat;
+			display: block;
+		}
+	}
+
+
+	.fold {
+		display: none;
+		background-color: #fff;
+		animation: fade-in .4s;
+		position: relative;
+		z-index: 1;
+
+		td {
+
+			&:nth-child(1),
+			&:nth-child(2),
+			&:nth-child(3) {
+				width: auto;
+				max-width: 1px;
+				min-width: auto;
+			}
+
+			&:nth-child(2) {
+				padding: 12px 33px 12px 45px;
+
+				@include res-1280 {
+					padding: 9px 33px 9px 33px;
+				}
+
+				@include res-768 {
+					padding: 9px 30px;
+				}
+
+				@include res-320 {
+					padding: 9px 15px;
+				}
+			}
+		}
+	}
+
+	.fold-operation-info {
+		margin-bottom: 20px;
+	}
+
+	.fold-title {
+		font-size: 13px;
+		color: #120E30;
+		display: block;
+		width: 100%;
+		border-bottom: 1px solid rgba(#3F465A, .15);
+		padding-bottom: 10px;
+		padding-left: 17px;
+		font-family: InterUI;
+		font-weight: 700;
+
+		&+.operation-detail-table {
+			margin-top: 8px;
+
+			@include res-768 {
+				margin-top: 19px;
+			}
+
+			@include res-500 {
+				margin-top: 13px;
+			}
+		}
+	}
+
 
 	td {
 
@@ -468,6 +562,279 @@
 			color: #848B94;
 			text-transform: uppercase;
 			overflow: initial;
+		}
+	}
+}
+
+@include res-500 {
+	.table-block {
+		width: 100%;
+
+		table {
+			td {
+				margin-bottom: 18px;
+
+				&:first-child,
+				&:last-child {
+					display: none;
+				}
+
+				&.type,
+				&.sender,
+				&.reciever {
+					margin-bottom: 22px;
+				}
+
+				&.sender,
+				&.reciever,
+				&.rezult,
+				&.json {
+					max-width: 29%;
+					width: 29%;
+					min-width: 29%;
+				}
+
+				&.sender,
+				&.rezult {
+					max-width: 33%;
+					width: 33%;
+					min-width: 33%;
+				}
+
+				&.type,
+				&.amount {
+					max-width: 37%;
+					width: 37%;
+					min-width: 37%;
+				}
+
+				&.amount {
+					padding-left: 20px;
+				}
+
+				&.dd {
+					position: absolute;
+					top: 22px;
+					right: 23px;
+					text-align: center;
+					line-height: 10px;
+					max-width: 8px;
+					width: 8px;
+					min-width: 8px;
+
+					.td-in {
+						padding: 0;
+					}
+				}
+
+				.fold {
+					td {
+
+						&:nth-child(1),
+						&:nth-child(2),
+						&:nth-child(3) {
+							width: 100%;
+							display: flex;
+							flex-direction: column;
+						}
+					}
+				}
+			}
+		}
+
+		tr {
+			&:not(.active):not(:last-child) {
+				margin-bottom: 7px;
+			}
+		}
+
+		.view {
+			display: flex;
+			flex-wrap: wrap;
+			position: relative;
+			padding: 18px 15px 15px 18px;
+			background-color: #e7e6e9;
+
+			&.active {
+				&+.fold {
+					display: block;
+				}
+
+				background-color: #fff;
+			}
+
+			&:hover {
+				&:not(.active) {
+					background-color: #ebebee;
+
+					td:not(:first-child):not(:last-child) {
+						background-color: #ebebee;
+					}
+				}
+			}
+
+			td {
+				display: block;
+
+				.td-in {
+					padding: 0;
+				}
+
+				&.type {
+					.td-in {
+						display: inline-block;
+						padding: 0;
+					}
+
+					.index {
+						display: inline-block;
+						padding-right: 10px;
+					}
+				}
+			}
+		}
+
+		.fold-operation-info {
+			padding: 20px 36px;
+			margin-bottom: 0;
+		}
+
+		.col-title {
+			text-transform: uppercase;
+			color: #848B94;
+			font-family: "Hack";
+			font-weight: 700;
+			font-size: 9px;
+			letter-spacing: 0.22em;
+			margin-bottom: 10px;
+
+			.index {
+				display: inline-block;
+				width: 20px
+			}
+		}
+
+		.fold {
+			border-top: 1px solid #E9E8EB;
+
+			.fold-title {
+				border-bottom: 0;
+				padding-bottom: 0;
+			}
+
+			td {
+
+				&:nth-child(1),
+				&:nth-child(2),
+				&:nth-child(3) {
+					width: auto;
+					max-width: 100%;
+					min-width: auto;
+				}
+			}
+		}
+
+		.fold-operation-info {
+			padding: 0px 7px;
+			width: 100%;
+		}
+	}
+}
+
+
+@include max-vw(500) {
+	.table-block {
+
+		table {
+
+			.view {
+				padding: 17px 17px 0 17px;
+
+				td {
+					margin-bottom: 28px;
+				}
+			}
+		}
+
+		.fold-operation-info {
+			padding: 0px;
+
+			&:not(:first-child) {
+				padding-top: 20px;
+			}
+		}
+
+		.fold>td:nth-child(2) {
+			padding: 15px 16px;
+		}
+	}
+}
+
+@include res-320 {
+	.table-block {
+		width: 100%;
+		margin: 0;
+
+		table {
+			.view {
+				padding: 22px 17px 8px;
+
+				td {
+					&:not(.dd):nth-child(odd) {
+						max-width: 50%;
+						width: 50%;
+						min-width: 50%;
+					}
+
+					&:not(.dd):nth-child(even) {
+						max-width: 50%;
+						width: 50%;
+						min-width: 50%;
+					}
+
+					&.json,
+					&.amount {
+						margin-bottom: 10px;
+					}
+
+					&.amount {
+						padding-left: 0;
+					}
+
+					&.dd .td-in {
+						right: 15px;
+						top: 16px;
+					}
+
+					&.type {
+						order: 1;
+					}
+
+					&.amount {
+						order: 2;
+					}
+
+					&.reciever {
+						order: 3;
+					}
+
+					&.sender {
+						order: 4;
+					}
+
+					&.rezult {
+						order: 5;
+					}
+
+					&.json {
+						order: 6;
+					}
+				}
+
+				.td-in {
+					padding-left: 0;
+				}
+			}
 		}
 	}
 }
