@@ -97,6 +97,7 @@ class Account extends React.Component {
 							{
 								accountHistory.size ?
 									<OperationsTable
+										type="account"
 										operations={accountHistory}
 										history={this.props.history}
 										location={this.props.location}

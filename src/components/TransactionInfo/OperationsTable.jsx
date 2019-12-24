@@ -95,12 +95,13 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading, isBlock, isTransaction, timestamp, fee,
+			operations, hasMore, loading,
+			isTransaction, timestamp, fee, type,
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
 		return (
-			<div className={classnames('accordion-table-wrap', { 'table-contract': !isTransaction }, { 'table-block': isBlock })} >
+			<div className={classnames(`table-${type}`)}>
 				<table>
 					<Media query="(max-width: 767px)">
 						{ (matches) => !matches &&
@@ -151,7 +152,7 @@ class OperationsTable extends React.Component {
 							operations ? operations.map((op, i) => (
 								<OperationRow
 									key={i.toString()}
-									isBlock={isBlock}
+									isBlock={type === 'block'}
 									isTransaction={isTransaction}
 									timestamp={timestamp}
 									fee={fee}
@@ -195,12 +196,12 @@ class OperationsTable extends React.Component {
 
 OperationsTable.propTypes = {
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+	type: PropTypes.string.isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,
-	isBlock: PropTypes.bool,
 	isTransaction: PropTypes.bool,
 	timestamp: PropTypes.bool,
 	fee: PropTypes.bool,
@@ -212,7 +213,6 @@ OperationsTable.defaultProps = {
 	hasMore: false,
 	changeUrl: false,
 	loading: false,
-	isBlock: false,
 	isTransaction: false,
 	timestamp: false,
 	fee: false,
