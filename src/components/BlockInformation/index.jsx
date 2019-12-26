@@ -17,6 +17,7 @@ import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import PageHeader from '../PageHeader';
 
 class BlockInformation extends React.Component {
 
@@ -111,13 +112,15 @@ class BlockInformation extends React.Component {
 			<React.Fragment>
 				<BreadCrumbs
 					breadcrumbs={breadcrumbs}
-					title={`Block ${formattedBlockNumber}`}
-					returnFunction={() => this.returnFunction()}
 					blockNavigation
 					blockNumber={blockNumber}
 					latestBlock={latestBlock}
 					onPrevBlock={(e) => this.onBlockLink(blockNumber - 1, e)}
 					onNextBlock={(e) => this.onBlockLink(blockNumber + 1, e)}
+				/>
+				<PageHeader
+					title={`Block ${formattedBlockNumber}`}
+					returnFunction={() => this.returnFunction()}
 				/>
 				<div className="block-description">
 					<div className="container time">
@@ -187,9 +190,11 @@ class BlockInformation extends React.Component {
 		const { blockInformation, latestBlock } = this.props;
 
 		return (
-			<div className="table-container inner-information-container">
+			<div className="table-container">
 				{
-					this.state.loader ? this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
+					this.state.loader ?
+						this.renderLoader() :
+						this.renderBlockInformation(blockInformation, latestBlock)
 				}
 			</div>
 		);

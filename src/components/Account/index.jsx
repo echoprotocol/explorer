@@ -6,7 +6,9 @@ import AccountBalances from './AccountBalances';
 import OperationsTable from '../TransactionInfo/OperationsTable';
 
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import PageHeader from '../../components/PageHeader';
 import Loader from '../../components/Loader';
+
 import TableLable from '../TableLable';
 
 class Account extends React.Component {
@@ -72,7 +74,8 @@ class Account extends React.Component {
 		return (
 			<div className="table-container inner-information-container account-page">
 
-				{account && <div className="page-title">Account {account.get('id')}</div>}
+				{account && <PageHeader title={`Account ${account.get('id')}`} />}
+
 				<div className="account-page-t-block">
 					<div className="help-container">
 						{

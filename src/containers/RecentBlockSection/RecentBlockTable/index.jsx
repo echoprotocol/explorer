@@ -10,6 +10,7 @@ import classnames from 'classnames';
 
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
+import PageHeader from '../../../components/PageHeader';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 import URLHelper from '../../../helpers/URLHelper';
@@ -90,9 +91,8 @@ class RecentBlockTable extends React.Component {
 
 		return (
 			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
-				<div className="table-container recent-block-table">
-					<div className="page-header">
-						<h2 className="page-title">Recent blocks</h2>
+				<div className="table-container">
+					<PageHeader title="Recent blocks">
 						<SmallSearchField
 							errorSearch={errorSearch}
 							loadingSearch={loadingSearch}
@@ -104,7 +104,7 @@ class RecentBlockTable extends React.Component {
 							placeholder="Go to block"
 							latestBlock={latestBlock}
 						/>
-					</div>
+					</PageHeader>
 					<div className="table">
 						<Media query="(max-width: 767px)">
 							{(matches) =>

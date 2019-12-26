@@ -59,11 +59,12 @@
 }
 
 .recent-block-list {
-	width: 360px;
+	width: 100%;
+	max-width: 360px;
 	margin: 0 0 auto 0;
 
 	@include max-vw(1279) {
-		width: 100%;
+		max-width: 100%;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -73,9 +74,12 @@
 	}
 
 	.block {
-		margin-bottom: 25px;
+		margin-bottom: 16px;
 		padding-bottom: 10px;
-		border-bottom: 1px solid #e2e3e7;
+
+		&:not(:last-child) {
+			border-bottom: 1px solid #e2e3e7;
+		}
 
 		@include max-vw(1279) {
 			border-bottom: none;
@@ -128,9 +132,9 @@
 	.block-title {
 		@include Hack_Bold;
 		font-size: 12px;
-		letter-spacing: 0.02em;
+		letter-spacing: 0.25em;
 		line-height: 15px;
-		margin-bottom: 10px;
+		margin-bottom: 8px;
 		color: #130d32;
 		text-transform: uppercase;
 
@@ -157,7 +161,7 @@
 	.block-value {
 		@include InterUI_Bold;
 		font-size: 23px;
-		line-height: 45px;
+		line-height: 46px;
 		color: #130d32;
 
 		@include max-vw(1279) {

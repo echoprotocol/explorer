@@ -1,6 +1,7 @@
 .block-navigation-wrap {
 	position: relative;
-
+	display: flex;
+	justify-content: space-between;
 	padding: 0 50px 0 33px;
 
 	@include res-1280 {

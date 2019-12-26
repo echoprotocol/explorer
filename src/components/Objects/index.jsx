@@ -104,7 +104,7 @@ class Objects extends React.Component {
 
 		return (
 			<div className="table-container object-view">
-				<h2>Object { this.state.id }</h2>
+				<h2 className="page-title">Object { this.state.id }</h2>
 				{error ?
 					<div className="json-tree-container">
 						{error}

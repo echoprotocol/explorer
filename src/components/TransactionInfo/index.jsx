@@ -8,6 +8,7 @@ import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import OperationsTable from './OperationsTable';
 import Loader from '../Loader';
+import PageHeader from '../PageHeader';
 
 class TransactionsInfo extends React.Component {
 
@@ -58,8 +59,8 @@ class TransactionsInfo extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="table-container transaction inner-information-container transaction-information with-d-table">
-					<BreadCrumbs
-						breadcrumbs={breadcrumbs}
+					<BreadCrumbs breadcrumbs={breadcrumbs} />
+					<PageHeader
 						title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}
 						returnFunction={() => this.returnFunction()}
 					/>

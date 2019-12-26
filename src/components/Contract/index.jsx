@@ -26,6 +26,7 @@ import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import Loader from '../Loader';
+import PageHeader from '../PageHeader';
 import Verify from '../VerifyButton';
 import manageIcon from '../../assets/images/icons/pencil.svg';
 import ContractStar from './ContractStar';
@@ -146,6 +147,11 @@ class Contract extends React.Component {
 		copy(bytecode);
 		this.setState({ text: 'Copied!' });
 		setTimeout(() => this.setState({ text: 'Copy code' }), CHANGE_TEXT_TIME);
+	}
+	generatePageTitle(id, name) {
+		const idPart = `Contract ${id} `;
+		const namePart = name && `:  ${name}`;
+		return idPart + namePart;
 	}
 
 	renderArrow({ text, className }) {
@@ -285,86 +291,88 @@ class Contract extends React.Component {
 		};
 
 		return (
-			<div className="table-container inner-information-container account-page contract-page with-d-table">
-				<div className="react-tabs">
-					<div className="tab-head">
-						<div className="backwards action">
-							<div className="account-page-t-block">
-								<Media query="(max-width: 380px)">
-									{(matches) =>
-										!matches && <ContractIcon icon={icon} />
-									}
-								</Media>
-								<h2 className="page-title">Contract {id} {name && `:  ${name}`}</h2>
-								<button className="copy-bytecode"	onClick={() => this.changeButtonText(bytecode)}>
-									{this.state.text}
+			<div className="table-container contract-page">
+				<div className="tab-head">
+					<Media query="(max-width: 380px)">
+						{
+							(matches) =>
+								(
+									<PageHeader
+										title={this.generatePageTitle(id, name)}
+										icon={!matches && <ContractIcon icon={icon} />}
+									>
+										<button className="copy-bytecode" onClick={() => this.changeButtonText(bytecode)}>
+											{this.state.text}
+										</button>
+									</PageHeader>
+								)
+						}
+					</Media>
+
+					<div className="buttons-wrap">
+						<div className="item">
+							<ContractStar
+								stars={stars}
+								activeAccount={activeAccount}
+								setStarToContract={this.props.setStarToContract}
+							/>
+						</div>
+						<div className="item">
+							<div className="action-button-wrap">
+								<button className="action-button" onClick={this.manageContract}>
+									<img src={manageIcon} alt="" />
+									<span className="content">Manage</span>
 								</button>
 							</div>
 						</div>
-						<div className="buttons-wrap">
-							<div className="item">
-								<ContractStar
-									stars={stars}
-									activeAccount={activeAccount}
-									setStarToContract={this.props.setStarToContract}
-								/>
-							</div>
-							<div className="item">
-								<div className="action-button-wrap">
-									<button className="action-button" onClick={this.manageContract}>
-										<img src={manageIcon} alt="" />
-										<span className="content">Manage</span>
-									</button>
-								</div>
-							</div>
-							<div className="item">
-								<Verify id={id} verified={verified} />
-							</div>
+						<div className="item">
+							<Verify id={id} verified={verified} />
 						</div>
-						<Media query="(max-width: 400px)">
-							{(matches) =>
-								(!matches ?
-									<div className="horizontal-tab-panel">
-										<Slider ref={this.slider} {...settings} >
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
-												<Link
-													className="menu-item-content"
-													onClick={() => this.goToSlide(0)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null}
-													to={URLHelper.createContractUrl(id)}
-												>
-													<span className="menu-item-content">Contract info</span>
-												</Link>
-											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
-												<Link
-													onClick={() => this.goToSlide(1)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}
-												>
-													<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
-												</Link>
-											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
-												<Link
-													onClick={() => this.goToSlide(2)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}
-												>
-													<span className="menu-item-content">Byte Сode</span>
-												</Link>
-											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
-												<Link
-													onClick={() => this.goToSlide(4)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_ABI)}
-												>
-													<span className="menu-item-content">ABI</span>
-												</Link>
-											</div>
-											{
-												verified &&
+					</div>
+					<Media query="(max-width: 400px)">
+						{(matches) =>
+							(!matches ?
+								<div className="horizontal-tab-panel">
+									<Slider ref={this.slider} {...settings} >
+										<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
+											<Link
+												className="menu-item-content"
+												onClick={() => this.goToSlide(0)}
+												tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null}
+												to={URLHelper.createContractUrl(id)}
+											>
+												<span className="menu-item-content">Contract info</span>
+											</Link>
+										</div>
+										<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
+											<Link
+												onClick={() => this.goToSlide(1)}
+												tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}
+												to={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}
+											>
+												<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
+											</Link>
+										</div>
+										<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
+											<Link
+												onClick={() => this.goToSlide(2)}
+												tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}
+												to={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}
+											>
+												<span className="menu-item-content">Byte Сode</span>
+											</Link>
+										</div>
+										<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
+											<Link
+												onClick={() => this.goToSlide(4)}
+												tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}
+												to={URLHelper.createContractUrl(id, CONTRACT_ABI)}
+											>
+												<span className="menu-item-content">ABI</span>
+											</Link>
+										</div>
+										{
+											verified &&
 												<div
 													className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}
 												>
@@ -376,58 +384,57 @@ class Contract extends React.Component {
 														<span className="menu-item-content">Source code</span>
 													</Link>
 												</div>
+										}
+										<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
+											<Link
+												onClick={() => this.goToSlide(3)}
+												tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
+												to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
+											>
+												<span className="menu-item-content">Balances</span>
+											</Link>
+										</div>
+									</Slider>
+								</div> :
+								<Dropdown className="dropdown-tab">
+									<Dropdown.Toggle variant="Info">
+										<span className="doropdown-tab-current">
+											{
+												CONTRACT_TABS[CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0].title
 											}
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
-												<Link
-													onClick={() => this.goToSlide(3)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
-												>
-													<span className="menu-item-content">Balances</span>
-												</Link>
-											</div>
-										</Slider>
-									</div> :
-									<Dropdown className="dropdown-tab">
-										<Dropdown.Toggle variant="Info">
-											<span className="doropdown-tab-current">
-												{
-													CONTRACT_TABS[CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0].title
-												}
-											</span>
-											<span className="carret" />
-										</Dropdown.Toggle>
+										</span>
+										<span className="carret" />
+									</Dropdown.Toggle>
 
-										<Dropdown.Menu>
-											<PerfectScrollbar className="contract-tab-scroll">
-												<Dropdown.Item onClick={() => this.changeTab(id, 0)} eventKey={0}>
-													<span className="doropdown-tab-item">Contract info</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 1)} eventKey={1}>
-													<span className="doropdown-tab-item">{`Transactions (${contractTxs})`}</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 2)} eventKey={2}>
-													<span className="doropdown-tab-item">Bytecode</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 3)} eventKey={3}>
-													<span className="doropdown-tab-item">Balances</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 4)} eventKey={4}>
-													<span className="doropdown-tab-item">ABI</span>
-												</Dropdown.Item>
-											</PerfectScrollbar>
-										</Dropdown.Menu>
-									</Dropdown>
-								)
-							}
-						</Media>
-
-					</div>
-					<div className="tab-body">
-						{
-							this.renderTabs(tabList, CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0)
+									<Dropdown.Menu>
+										<PerfectScrollbar className="contract-tab-scroll">
+											<Dropdown.Item onClick={() => this.changeTab(id, 0)} eventKey={0}>
+												<span className="doropdown-tab-item">Contract info</span>
+											</Dropdown.Item>
+											<Dropdown.Item onClick={() => this.changeTab(id, 1)} eventKey={1}>
+												<span className="doropdown-tab-item">{`Transactions (${contractTxs})`}</span>
+											</Dropdown.Item>
+											<Dropdown.Item onClick={() => this.changeTab(id, 2)} eventKey={2}>
+												<span className="doropdown-tab-item">Bytecode</span>
+											</Dropdown.Item>
+											<Dropdown.Item onClick={() => this.changeTab(id, 3)} eventKey={3}>
+												<span className="doropdown-tab-item">Balances</span>
+											</Dropdown.Item>
+											<Dropdown.Item onClick={() => this.changeTab(id, 4)} eventKey={4}>
+												<span className="doropdown-tab-item">ABI</span>
+											</Dropdown.Item>
+										</PerfectScrollbar>
+									</Dropdown.Menu>
+								</Dropdown>
+							)
 						}
-					</div>
+					</Media>
+
+				</div>
+				<div className="tab-body">
+					{
+						this.renderTabs(tabList, CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0)
+					}
 				</div>
 			</div>
 		);

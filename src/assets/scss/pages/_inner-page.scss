@@ -1,8 +1,6 @@
-.recent-block-section {
-	.inner-page {
-		&.table-container {
-			min-height: calc(100vh - 305px);
-		}
+.inner-page {
+	&.table-container {
+		min-height: calc(100vh - 305px);
 	}
 }
 

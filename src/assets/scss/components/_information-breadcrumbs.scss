@@ -1,18 +1,18 @@
-.information-breadcrumbs {
-	margin-bottom: 20px;
+// .information-breadcrumbs {
+// 	margin-bottom: 20px;
 
-	@include res-768 {
-		margin-bottom: 25px;
-	}
+// 	@include res-768 {
+// 		margin-bottom: 25px;
+// 	}
 
-	@include res-500 {
-		margin-bottom: 20px;
-	}
+// 	@include res-500 {
+// 		margin-bottom: 20px;
+// 	}
 
-	@include res-320 {
-		margin-bottom: 25px;
-	}
-}
+// 	@include res-320 {
+// 		margin-bottom: 25px;
+// 	}
+// }
 
 .breadcrumbs-container {
 	display: flex;
@@ -69,9 +69,7 @@
 		.account-page-t-block {
 			width: 100%;
 
-			.copy-bytecode {
-				margin: auto 0 auto auto;
-			}
+
 		}
 
 	}

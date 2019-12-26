@@ -3,24 +3,22 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
-import BackwardIcon from '../BackwardIcon';
 
 class BreadCrumbs extends React.Component {
 
 	render() {
 
 		const {
-			title, breadcrumbs,
+			breadcrumbs,
 			blockNavigation,
 			blockNumber, latestBlock,
 			onPrevBlock, onNextBlock,
 		} = this.props;
 
 		return (
-			<div className="information-breadcrumbs">
-				<div className="block-navigation-wrap">
-					{
-						breadcrumbs &&
+			<div className="block-navigation-wrap">
+				{
+					breadcrumbs &&
 						<div className="breadcrumbs-container">
 							{breadcrumbs.map((breadcrumb) => (
 								<Link
@@ -32,10 +30,10 @@ class BreadCrumbs extends React.Component {
 								</Link>
 							))}
 						</div>
-					}
+				}
 
-					{
-						blockNavigation &&
+				{
+					blockNavigation &&
 						<div className="block-navigation">
 							<button
 								className={classnames('prev', { active: blockNumber > 1 })}
@@ -52,27 +50,15 @@ class BreadCrumbs extends React.Component {
 								Next <span>block</span>
 							</button>
 						</div>
-					}
-				</div>
-				<div className="backwards">
-					<a
-						href=""
-						className="backwards-link"
-						onClick={(e) => { e.preventDefault(); this.props.returnFunction(false); }}
-					>
-						<BackwardIcon />
-					</a>
-					<h2 className="page-title">{title}</h2>
-				</div>
+				}
 			</div>
+
 		);
 	}
 
 }
 
 BreadCrumbs.propTypes = {
-	title: PropTypes.string,
-	returnFunction: PropTypes.func,
 	breadcrumbs: PropTypes.array,
 	blockNavigation: PropTypes.bool,
 	blockNumber: PropTypes.number,
@@ -83,8 +69,6 @@ BreadCrumbs.propTypes = {
 };
 
 BreadCrumbs.defaultProps = {
-	title: null,
-	returnFunction: null,
 	latestBlock: null,
 	blockNumber: null,
 	onPrevBlock: null,
