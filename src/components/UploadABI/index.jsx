@@ -67,10 +67,7 @@ class UploadABI extends React.Component {
 						<BackwardIcon />
 					</a>
 					<div className="account-page-t-block">
-
-						<div className="icon">
-							<ContractIcon icon={icon} />
-						</div>
+						<ContractIcon icon={icon} />
 
 						<h2 className="page-title">{`Contract ${id} — Upload ABI`}</h2>
 					</div>

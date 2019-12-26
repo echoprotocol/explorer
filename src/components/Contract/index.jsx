@@ -292,13 +292,10 @@ class Contract extends React.Component {
 							<div className="account-page-t-block">
 								<Media query="(max-width: 380px)">
 									{(matches) =>
-										!matches &&
-										<div className="ava">
-											<ContractIcon icon={icon} />
-										</div>
+										!matches && <ContractIcon icon={icon} />
 									}
 								</Media>
-								<div className="title">Contract {id} {name && `:  ${name}`}</div>
+								<h2 className="page-title">Contract {id} {name && `:  ${name}`}</h2>
 								<button className="copy-bytecode"	onClick={() => this.changeButtonText(bytecode)}>
 									{this.state.text}
 								</button>

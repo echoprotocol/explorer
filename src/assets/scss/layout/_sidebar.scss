@@ -1,4 +1,4 @@
-.recent-block-sidebar {
+.sidebar {
 	width: 100%;
 	padding-left: 70px;
 	padding-top: 25px;
@@ -31,19 +31,7 @@
 		margin: 0 -20px;
 	}
 
-	.help-container {
-		width: 360px;
 
-		@include max-vw(1279) {
-			width: 100%;
-			display: flex;
-			justify-content: space-between;
-		}
-
-		@include max-vw(768) {
-			flex-wrap: wrap;
-		}
-	}
 
 	.info-container {
 		padding-top: 60px;
@@ -68,7 +56,23 @@
 		}
 	}
 
-	.sidebar-elem {
+}
+
+.recent-block-list {
+	width: 360px;
+	margin: 0 0 auto 0;
+
+	@include max-vw(1279) {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	@include max-vw(768) {
+		flex-wrap: wrap;
+	}
+
+	.block {
 		margin-bottom: 25px;
 		padding-bottom: 10px;
 		border-bottom: 1px solid #e2e3e7;
@@ -119,66 +123,67 @@
 
 		}
 
-		.title {
-			@include Hack_Bold;
-			font-size: 12px;
-			letter-spacing: 0.02em;
-			line-height: 15px;
-			margin-bottom: 10px;
-			color: #130d32;
-			text-transform: uppercase;
+	}
 
-			@include max-vw(1279) {
-				margin-bottom: 20px;
-				font-size: 9px;
-				letter-spacing: 2.25px;
-				line-height: 16px;
-				margin-bottom: 0;
-				height: 35px;
-			}
+	.block-title {
+		@include Hack_Bold;
+		font-size: 12px;
+		letter-spacing: 0.02em;
+		line-height: 15px;
+		margin-bottom: 10px;
+		color: #130d32;
+		text-transform: uppercase;
 
-			@include max-vw(500) {
-				margin: 0 0 auto;
-				padding-left: 0;
-				padding-right: 30px;
-				padding-top: 20px;
-				padding-bottom: 20px;
-				width: 100%;
-				height: auto;
-			}
+		@include max-vw(1279) {
+			margin-bottom: 20px;
+			font-size: 9px;
+			letter-spacing: 2.25px;
+			line-height: 16px;
+			margin-bottom: 0;
+			height: 35px;
 		}
 
-		.value {
-			@include InterUI_Bold;
-			font-size: 23px;
-			line-height: 45px;
-			color: #130d32;
+		@include max-vw(500) {
+			margin: 0 0 auto;
+			padding-left: 0;
+			padding-right: 30px;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			width: 100%;
+			height: auto;
+		}
+	}
 
-			@include max-vw(1279) {
-				line-height: 25px;
-				word-break: break-all;
-			}
+	.block-value {
+		@include InterUI_Bold;
+		font-size: 23px;
+		line-height: 45px;
+		color: #130d32;
 
-			@include max-vw(1000) {
-				line-height: 21px;
-				margin-bottom: 22px;
-			}
+		@include max-vw(1279) {
+			line-height: 25px;
+			word-break: break-all;
+		}
 
-			@include max-vw(768) {
-				margin-bottom: 27px;
-			}
+		@include max-vw(1000) {
+			line-height: 21px;
+			margin-bottom: 22px;
+		}
 
-			@include max-vw(500) {
-				margin: 0 auto;
-				padding-right: 30px;
-				padding-bottom: 8px;
-				width: 100%;
+		@include max-vw(768) {
+			margin-bottom: 27px;
+		}
 
-			}
+		@include max-vw(500) {
+			margin: 0 auto;
+			padding-right: 30px;
+			padding-bottom: 8px;
+			width: 100%;
 
-			.sm {
-				font-size: 16px;
-			}
+		}
+
+		.sm {
+			font-size: 16px;
 		}
 	}
 }

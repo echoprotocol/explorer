@@ -2,7 +2,6 @@
 	@include min-vw(1279) {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
 		height: calc(100vh - 308px);
 
 		.help-container {

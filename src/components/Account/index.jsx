@@ -71,8 +71,9 @@ class Account extends React.Component {
 
 		return (
 			<div className="table-container inner-information-container account-page">
+
+				{account && <div className="page-title">Account {account.get('id')}</div>}
 				<div className="account-page-t-block">
-					{account && <div className="page-title">Account {account.get('id')}</div>}
 					<div className="help-container">
 						{
 							account ?

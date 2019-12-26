@@ -8,8 +8,8 @@ export class ContractIcon extends React.Component {
 	render() {
 		return (
 			this.props.icon ?
-				<img src={URLHelper.getUrlContractIcon(this.props.icon)} alt="icon" />
-				: <img src={defaultIcon} alt="icon" />
+				<img className="contract-icon" src={URLHelper.getUrlContractIcon(this.props.icon)} alt="icon" />
+				: <img className="contract-icon" src={defaultIcon} alt="icon" />
 		);
 	}
 
