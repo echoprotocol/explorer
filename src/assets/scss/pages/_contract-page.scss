@@ -16,7 +16,7 @@
 				background-color: #E8E7EB;
 				content: '';
 				position: absolute;
-				top: -15px;
+				top: -37px;
 				bottom: 0;
 				left: -1000px;
 				right: -30px;
@@ -27,12 +27,13 @@
 				}
 
 				@include res-1000 {
+					top: -50px;
 					right: -1000px;
 				}
-			}
 
-			@include max-vw(380) {
-				padding: 62px 15px 0;
+				@include res-500 {
+					top: -45px;
+				}
 			}
 
 			.backwards {
