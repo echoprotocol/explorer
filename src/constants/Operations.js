@@ -436,7 +436,7 @@ const Operations = {
 		name: 'Eth send deposit',
 		options: {
 			from: ['committee_member_id', 'name'],
-			subject: null,
+			subject: ['deposit_id'],
 			value: null,
 			asset: null,
 		},
@@ -456,7 +456,7 @@ const Operations = {
 		name: 'Eth send withdraw',
 		options: {
 			from: ['committee_member_id', 'name'],
-			subject: null,
+			subject: ['withdraw_id'],
 			value: null,
 			asset: null,
 		},
@@ -525,8 +525,8 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT,
 		name: 'Erc20 send deposit',
 		options: {
-			from: 'committee_member_id',
-			subject: null,
+			from: ['committee_member_id', 'name'],
+			subject: ['deposit_id'],
 			amount: null,
 			asset: null,
 		},
@@ -546,8 +546,8 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW,
 		name: 'Erc20 send withdraw',
 		options: {
-			from: 'committee_member_id',
-			subject: null,
+			from: ['committee_member_id', 'name'],
+			subject: ['withdraw_id'],
 			amount: null,
 			asset: null,
 		},
