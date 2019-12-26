@@ -322,7 +322,7 @@ class SearchActions extends BaseActionsClass {
 					return;
 				}
 
-				hints = await this.searchObjectByName(str);
+				hints = await this.searchObjectByName(str.toLocaleLowerCase());
 			} catch (error) {
 				dispatch(this.setValue(['headerSearch', 'error'], FormatHelper.formatError(error), false));
 			} finally {
