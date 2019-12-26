@@ -78,10 +78,10 @@ class NodeMap extends React.Component {
 		} = this.state;
 
 		return (
-			<div className="distribution table-container">
+			<div className="distribution">
 				<div className="distribution-header">
-					<h1>Nodes Distribution</h1>
-					<button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
+					<h1 className="distribution-header-title">Nodes Distribution</h1>
+					<button className="distribution-header-button" onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
 						How to run full node
 					</button>
 				</div>

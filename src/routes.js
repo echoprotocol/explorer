@@ -25,7 +25,7 @@ import {
 	UPLOAD_ABI_PATH,
 	MANAGE_CONTRACT_PATH,
 	VERIFY_CONTRACT_PATH,
-	NODE_MAP,
+	NODE_MAP_PATH,
 } from './constants/RouterConstants';
 
 
@@ -46,7 +46,7 @@ export default class extends React.Component {
 					<Route exact path={MANAGE_CONTRACT_PATH} component={ManageContract} />
 					<Route exact path={VERIFY_CONTRACT_PATH} component={VerifyContract} />
 					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
-					<Route path={NODE_MAP} component={NodeMap} />
+					<Route path={NODE_MAP_PATH} component={NodeMap} />
 
 					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
 					<Route component={NotFound} />

@@ -57,6 +57,7 @@ class App extends React.Component {
 
 	renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName, isShowModal) {
 		const parsedLocation = pathName.split('/')[1];
+
 		const full = Object.keys(CONTRACT_DETAILS_NUMBERS_TAB).includes(parsedLocation);
 
 		return (

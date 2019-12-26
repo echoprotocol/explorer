@@ -46,34 +46,21 @@
 }
 
 .wrap.full {
-	justify-content: center;
+	padding-right: calc((100vw - 1440px) / 2);
+
+	@include max-vw(1534) {
+		padding-right: calc(((100vw - 1440px) / 2) + 30px);
+	}
+
+	@include max-vw(1440) {
+		padding-right: 30px;
+	}
+
+	@include max-vw(1279) {
+		padding-right: 0;
+	}
 
 	.table-container {
 		min-height: calc(100vh - 300px);
-	}
-
-	.sidebar {
-		width: 430px;
-
-		@include res-1280 {
-			width: 310px;
-		}
-
-		@include res-1000 {
-			width: 900px;
-			margin: auto;
-		}
-
-		@include res-768 {
-			width: 668px;
-		}
-
-		@include res-500 {
-			width: 450px;
-		}
-
-		@include res-320 {
-			width: 300px;
-		}
 	}
 }

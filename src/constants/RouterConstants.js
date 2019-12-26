@@ -15,7 +15,8 @@ export const ASSET_PATH = '/assets/:id/info';
 export const NOT_FOUND_PATH = '/not-found';
 export const VERIFY_CONTRACT_PATH = '/contracts/:id/verify';
 export const MANAGE_CONTRACT_PATH = '/contracts/:id/manage';
-export const NODE_MAP = '/node-map';
+export const NODE_MAP = 'node-map';
+export const NODE_MAP_PATH = `/${NODE_MAP}`;
 
 export const CONTRACT_DETAILS_NUMBERS_TAB = {
 	[CONTRACT_TRANSACTIONS]: 1,
@@ -23,4 +24,5 @@ export const CONTRACT_DETAILS_NUMBERS_TAB = {
 	[CONTRACT_BALANCES]: 3,
 	[CONTRACT_ABI]: 4,
 	[CONTRACT_SOURCE_CODE]: 5,
+	[NODE_MAP]: 6,
 };
