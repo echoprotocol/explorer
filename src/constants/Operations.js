@@ -431,6 +431,16 @@ const Operations = {
 			asset: null,
 		},
 	},
+	eth_send_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT,
+		name: 'Eth send deposit',
+		options: {
+			from: ['committee_member_id', 'name'],
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
 	withdraw_eth: {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW,
 		name: 'Withdraw eth',
@@ -441,12 +451,32 @@ const Operations = {
 			asset: null,
 		},
 	},
+	eth_send_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_SEND_WITHDRAW,
+		name: 'Eth send withdraw',
+		options: {
+			from: ['committee_member_id', 'name'],
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
 	approve_withdraw_eth: {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW,
 		name: 'Approve withdraw eth',
 		options: {
 			from: ['committee_member_id', 'name'],
 			subject: ['withdraw_id'],
+			value: null,
+			asset: null,
+		},
+	},
+	eth_update_contract_address: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_UPDATE_CONTRACT_ADDRESS,
+		name: 'Eth update contract address',
+		options: {
+			from: null,
+			subject: ['new_addr'],
 			value: null,
 			asset: null,
 		},
@@ -491,6 +521,17 @@ const Operations = {
 			asset: null,
 		},
 	},
+	erc20_send_deposit: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT,
+		name: 'Erc20 send deposit',
+		options: {
+			from: 'committee_member_id',
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+
 	withdraw_erc20_token: {
 		value: OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN,
 		name: 'Withdraw erc20 token',
@@ -498,6 +539,16 @@ const Operations = {
 			from: 'account',
 			subject: ['to'],
 			amount: 'value',
+			asset: null,
+		},
+	},
+	erc20_send_withdraw: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW,
+		name: 'Erc20 send withdraw',
+		options: {
+			from: 'committee_member_id',
+			subject: null,
+			amount: null,
 			asset: null,
 		},
 	},
