@@ -14,6 +14,8 @@
 @import 'layout/header';
 @import 'layout/preparing-section';
 @import 'layout/recent-block-section';
+@import 'layout/recent-block-sidebar';
+
 
 @import 'layout/inner-block-information';
 @import 'layout/transactions-info-table';
@@ -25,6 +27,7 @@
 
 @import "pages/all";
 
+@import "components/page-header";
 @import 'components/sticky-wrap';
 @import "components/table";
 @import "components/tables/table-contract";

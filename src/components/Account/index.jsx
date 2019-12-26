@@ -7,6 +7,7 @@ import OperationsTable from '../TransactionInfo/OperationsTable';
 
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
+import TableLable from '../TableLable';
 
 class Account extends React.Component {
 
@@ -71,7 +72,7 @@ class Account extends React.Component {
 		return (
 			<div className="table-container inner-information-container account-page">
 				<div className="account-page-t-block">
-					{account && <div className="title">Account {account.get('id')}</div>}
+					{account && <div className="page-title">Account {account.get('id')}</div>}
 					<div className="help-container">
 						{
 							account ?
@@ -93,7 +94,7 @@ class Account extends React.Component {
 				{
 					account && !loading ?
 						<React.Fragment>
-							<h2>Transactions</h2>
+							<TableLable label="Transactions" />
 							{
 								accountHistory.size ?
 									<OperationsTable

@@ -7,39 +7,39 @@ $res-1280: 1280px;
 $res-1440: 1535px;
 
 @mixin res-320 {
-  @media (max-width: #{$res-500 - 1px}) {
-    @content;
-  }
+	@media (max-width: #{$res-500 - 1px}) {
+		@content;
+	}
 }
 
 @mixin res-500 {
-  @media (max-width: #{$res-768 - 1px}){
-    @content;
-  }
+	@media (max-width: #{$res-768 - 1px}) {
+		@content;
+	}
 }
 
 @mixin res-768 {
-  @media (max-width: #{$res-1000 - 1px}) {
-    @content;
-  }
+	@media (max-width: #{$res-1000 - 1px}) {
+		@content;
+	}
 }
 
 @mixin min-res-768 {
-  @media (min-width: #{$res-1000}) {
-    @content;
-  }
+	@media (min-width: #{$res-1000}) {
+		@content;
+	}
 }
 
 @mixin res-1000 {
-  @media (max-width: #{$res-1280 - 1px}) {
-    @content;
-  }
+	@media (max-width: #{$res-1280 - 1px}) {
+		@content;
+	}
 }
 
 @mixin res-1280 {
-  @media (max-width: #{$res-1440 - 1px}) {
-    @content;
-  }
+	@media (max-width: #{$res-1440 - 1px}) {
+		@content;
+	}
 }
 
 
@@ -70,61 +70,68 @@ $res-1440: 1535px;
 
 
 @keyframes fade-in {
-    from { opacity: 0; }
-      to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    } to {
-        transform: rotate(360deg);
-    }
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 @mixin transition {
-  transition: all .2s ease-out;
+	transition: all .2s ease-out;
 }
 
 @mixin allWidth($width) {
-    width: $width;
-    max-width: $width;
-    min-width: $width;
+	width: $width;
+	max-width: $width;
+	min-width: $width;
 }
 
 
 @mixin scrollBar {
-  &::-webkit-scrollbar-button {
-    background-image:url('');
-    background-repeat:no-repeat;
-    width:5px;
-    height:0px
-  }
+	&::-webkit-scrollbar-button {
+		background-image: url('');
+		background-repeat: no-repeat;
+		width: 5px;
+		height: 0px
+	}
 
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
 
-  &::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 100px;
-    border-radius: 100px;
-    background-color: rgba(255,255,255,.1);
-  }
+	&::-webkit-scrollbar-thumb {
+		-webkit-border-radius: 100px;
+		border-radius: 100px;
+		background-color: rgba(255, 255, 255, .1);
+	}
 
-  &::-webkit-scrollbar-thumb:hover{
-    background-color: #f1f4f8;
-  }
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: #f1f4f8;
+	}
 
-  &::-webkit-resizer{
-    background-image:url('');
-    background-repeat:no-repeat;
-    width:4px;
-    height:0px
-  }
+	&::-webkit-resizer {
+		background-image: url('');
+		background-repeat: no-repeat;
+		width: 4px;
+		height: 0px
+	}
 
-  &::-webkit-scrollbar{
-    width: 6px;
-  }
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
 }
 
 @mixin hardware-accel() {
@@ -137,13 +144,13 @@ $res-1440: 1535px;
 	position: relative;
 	white-space: nowrap;
 	transition:
-        color $speed,
-        border $speed,
-        background-color $speed;
+		color $speed,
+		border $speed,
+		background-color $speed;
 
-    &:not(:disabled) {
-        cursor: pointer;
-    }
+	&:not(:disabled) {
+		cursor: pointer;
+	}
 }
 
 @mixin onFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
@@ -183,7 +190,6 @@ $res-1440: 1535px;
 		border-radius: $angular + 2px;
 
 	}
-
 }
 
 @mixin text-overflow() {

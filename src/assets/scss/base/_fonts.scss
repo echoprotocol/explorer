@@ -1,141 +1,127 @@
 @font-face {
-    font-family: 'Hack';
-    src: url('../fonts/Hack/Hack-Regular.ttf');
-    src:
-        // url('../fonts/Stolzl-Light.woff2') format('woff2'),
-        // url('../fonts/Stolzl-Light.woff') format('woff'),
-        // url("../fonts/Stolzl-Light.otf") format("opentype"),
-        url('../fonts/Hack/Hack-Regular.ttf') format('truetype');
-        // url('../fonts/Stolzl-Light.svg#Stolzl-Light') format('svg');
-    font-weight: 400;
-    font-style: normal;
+	font-family: 'Hack';
+	src: url('../fonts/Hack/Hack-Regular.ttf');
+	src: url('../fonts/Hack/Hack-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: 'Hack';
-    src: url('../fonts/Hack/Hack-Italic.ttf');
-    src:
-        url('../fonts/Hack/Hack-Italic.ttf') format('truetype');
-    font-weight: 400;
-    font-style: italic;
+	font-family: 'Hack';
+	src: url('../fonts/Hack/Hack-Italic.ttf');
+	src: url('../fonts/Hack/Hack-Italic.ttf') format('truetype');
+	font-weight: 400;
+	font-style: italic;
 }
 
 @font-face {
-    font-family: 'Hack';
-    src: url('../fonts/Hack/Hack-Bold.ttf');
-    src:
-        url('../fonts/Hack/Hack-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
+	font-family: 'Hack';
+	src: url('../fonts/Hack/Hack-Bold.ttf');
+	src: url('../fonts/Hack/Hack-Bold.ttf') format('truetype');
+	font-weight: 700;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: 'InterUI';
-    src: url('../fonts/InterUI/Inter-UI-Regular.ttf');
-    src:
-        url('../fonts/InterUI/Inter-UI-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
+	font-family: 'InterUI';
+	src: url('../fonts/InterUI/Inter-UI-Regular.ttf');
+	src: url('../fonts/InterUI/Inter-UI-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: 'InterUI';
-    src: url('../fonts/InterUI/Inter-UI-Italic.ttf');
-    src:
-        url('../fonts/InterUI/Inter-UI-Italic.ttf') format('truetype');
-    font-weight: 400;
-    font-style: italic;
+	font-family: 'InterUI';
+	src: url('../fonts/InterUI/Inter-UI-Italic.ttf');
+	src: url('../fonts/InterUI/Inter-UI-Italic.ttf') format('truetype');
+	font-weight: 400;
+	font-style: italic;
 }
 
 @font-face {
-    font-family: 'InterUI';
-    src: url('../fonts/InterUI/Inter-UI-Medium.ttf');
-    src:
-        url('../fonts/InterUI/Inter-UI-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
+	font-family: 'InterUI';
+	src: url('../fonts/InterUI/Inter-UI-Medium.ttf');
+	src: url('../fonts/InterUI/Inter-UI-Medium.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: 'InterUI';
-    src: url('../fonts/InterUI/Inter-UI-MediumItalic.ttf');
-    src:
-        url('../fonts/InterUI/Inter-UI-MediumItalic.ttf') format('truetype');
-    font-weight: 500;
-    font-style: italic;
+	font-family: 'InterUI';
+	src: url('../fonts/InterUI/Inter-UI-MediumItalic.ttf');
+	src: url('../fonts/InterUI/Inter-UI-MediumItalic.ttf') format('truetype');
+	font-weight: 500;
+	font-style: italic;
 }
 
 @font-face {
-    font-family: 'InterUI';
-    src: url('../fonts/InterUI/Inter-UI-Bold.ttf');
-    src:
-        url('../fonts/InterUI/Inter-UI-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
+	font-family: 'InterUI';
+	src: url('../fonts/InterUI/Inter-UI-Bold.ttf');
+	src: url('../fonts/InterUI/Inter-UI-Bold.ttf') format('truetype');
+	font-weight: 700;
+	font-style: normal;
 }
 
 @font-face {
-    font-family: 'InterUI';
-    src: url('../fonts/InterUI/Inter-UI-Black.ttf');
-    src:
-        url('../fonts/InterUI/Inter-UI-Black.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
+	font-family: 'InterUI';
+	src: url('../fonts/InterUI/Inter-UI-Black.ttf');
+	src: url('../fonts/InterUI/Inter-UI-Black.ttf') format('truetype');
+	font-weight: 900;
+	font-style: normal;
 }
-
 
 @mixin Hack_Regular {
-    font: {
-        family: "Hack";
-        weight: 400;
-        style: normal;
-    }
-};
+	font: {
+		family: "Hack";
+		weight: 400;
+		style: normal;
+	}
+}
 
 @mixin Hack_Regular-Italic {
-    font: {
-        family: "Hack";
-        weight: 400;
-        style: italic;
-    }
-};
+	font: {
+		family: "Hack";
+		weight: 400;
+		style: italic;
+	}
+}
 
 @mixin Hack_Bold {
-    font: {
-        family: "Hack";
-        weight: 700;
-        style: normal;
-    }
-};
+	font: {
+		family: "Hack";
+		weight: 700;
+		style: normal;
+	}
+}
 
 @mixin InterUI_Regular {
-    font: {
-        family: "InterUI";
-        weight: 400;
-        style: normal;
-    }
-};
+	font: {
+		family: "InterUI";
+		weight: 400;
+		style: normal;
+	}
+}
 
 @mixin InterUI_Medium {
-    font: {
-        family: "InterUI";
-        weight: 500;
-        style: normal;
-    }
-};
+	font: {
+		family: "InterUI";
+		weight: 500;
+		style: normal;
+	}
+}
 
 @mixin InterUI_Bold {
-    font: {
-        family: "InterUI";
-        weight: 700;
-        style: normal;
-    }
-};
+	font: {
+		family: "InterUI";
+		weight: 700;
+		style: normal;
+	}
+}
 
 @mixin InterUI_Black {
-    font: {
-        family: "InterUI";
-        weight: 900;
-        style: normal;
-    }
-};
+	font: {
+		family: "InterUI";
+		weight: 900;
+		style: normal;
+	}
+}

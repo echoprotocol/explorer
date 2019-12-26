@@ -72,7 +72,7 @@ class UploadABI extends React.Component {
 							<ContractIcon icon={icon} />
 						</div>
 
-						<div className="title">{`Contract ${id} — Upload ABI`}</div>
+						<h2 className="page-title">{`Contract ${id} — Upload ABI`}</h2>
 					</div>
 				</div>
 

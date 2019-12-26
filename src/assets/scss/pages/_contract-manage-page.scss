@@ -1,114 +1,97 @@
 .table-container.inner-information-container.inner-page.manage-contract {
-    .backwards {
-        margin-top: 0;
-    }
+	.backwards {
+		margin-top: 0;
+	}
 
-    .backwards-link {
-        @include res-768 {
-            top: 51px;
-            left: 0px;
-        }
+	.account-page-t-block {
+		margin-left: 31px;
 
-        @include res-500 {
-            left: -8px;
-        }
+		@include res-768 {
+			margin-left: 12px;
+		}
 
-        @include res-320 {
+		@include res-500 {
+			margin-left: 0;
+		}
 
-            left: 12px;
-            top: -2px;
-        }
-    }
+		@include res-320 {
+			.icon {
+				display: none;
+			}
+		}
+	}
 
-    .account-page-t-block {
-        margin-left: 31px;
+	.page-helper-section {
+		padding: 23px 22px 40px;
 
-        @include res-768 {
-            margin-left: 12px;
-        }
+		@include res-1280 {
+			padding: 28px 30px 40px;
+		}
 
-        @include res-500 {
-            margin-left: 0;
-        }
+		@include res-500 {
+			padding: 25px 23px;
+		}
 
-        @include res-320 {
-            .icon {
-                display: none;
-            }
-        }
-    }
+		@include res-320 {
+			padding: 12px;
+		}
 
-    .page-helper-section {
-        padding: 23px 22px 40px;
+		.form {
+			padding: 0 100px 0 115px;
 
-        @include res-1280 {
-            padding: 28px 30px 40px;
-        }
+			@include max-vw(1550) {
+				padding: 0px 60px;
+			}
 
-        @include res-500 {
-            padding: 25px 23px;
-        }
+			@include res-1280 {
+				padding: 0 17px;
+			}
 
-        @include res-320 {
-            padding: 12px;
-        }
+			@include res-1000 {
+				padding: 0 100px;
+			}
 
-        .form {
-            padding: 0 100px 0 115px;
+			@include res-768 {
+				padding: 0 40px;
+			}
 
-            @include max-vw(1550) {
-                padding: 0px 60px;
-            }
+			@include res-500 {
+				padding: 0 23px;
+			}
 
-            @include res-1280 {
-                padding: 0 17px;
-            }
+			@include res-320 {
+				padding: 0 16px;
+			}
 
-            @include res-1000 {
-                padding: 0 100px;
-            }
+			input {
+				line-height: 14px;
 
-            @include res-768 {
-                padding: 0 40px;
-            }
+				@include res-320 {
+					line-height: 24px;
+					padding: 4px 12px;
+				}
+			}
 
-            @include res-500 {
-                padding: 0 23px;
-            }
+			.row {
+				margin-bottom: 12px;
 
-            @include res-320 {
-                padding: 0 16px;
-            }
+				@include res-500 {
+					margin-bottom: 20px;
+				}
+			}
+		}
+	}
 
-            input {
-                line-height: 14px;
+	.buttons-wrap {
+		padding: 27px 40px 43px;
 
-                @include res-320 {
-                    line-height: 24px;
-                    padding: 4px 12px;
-                }
-            }
+		@include res-500 {
+			padding: 27px 0px 43px;
 
-            .row {
-                margin-bottom: 12px;
+		}
 
-                @include res-500 {
-                    margin-bottom: 20px;
-                }
-            }
-        }
-    }
-
-    .buttons-wrap {
-        padding: 27px 40px 43px;
-
-        @include res-500 {
-            padding: 27px 0px 43px;
-
-        }
-
-        @include res-320 {
-            padding: 30px;
-        }
-    }
+		@include res-320 {
+			padding: 30px;
+		}
+	}
 }

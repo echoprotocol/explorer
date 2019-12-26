@@ -175,10 +175,10 @@ class BlockInformation extends React.Component {
 						isDistributionRewardOpen &&
 						<DistributionTable rewards={rewardDistribution} />
 					) : (
-						<h2>Certificate list will be available after next block will be produced</h2>
+						<TableLable label="Certificate list will be available after next block will be produced" />
 					)
 				}
-				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
+				<TableLable label={FormatHelper.getFormatTransactionsTitle(transactionCount)} />
 				<div className="help-table-wrapper">
 					{
 						(slicedOperations && slicedOperations.length) ?
@@ -201,7 +201,7 @@ class BlockInformation extends React.Component {
 		const { blockInformation, latestBlock } = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information account-page-rm with-d-table-rm">
+			<div className="table-container inner-information-container block-information">
 				{
 					this.state.loader ? this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
 				}

@@ -30,7 +30,7 @@ class BreadCrumbs extends React.Component {
 					>
 						<BackwardIcon />
 					</a>
-					<div className="title">{title}</div>
+					<h2 className="page-title">{title}</h2>
 				</div>
 			</div>
 		);

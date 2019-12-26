@@ -96,7 +96,7 @@ class ManageContract extends React.Component {
 							<ContractIcon icon={contractIcon} />
 						</div>
 
-						<div className="title">Manage contract { id }</div>
+						<h2 className="page-title">Manage contract { id }</h2>
 					</div>
 				</div>
 

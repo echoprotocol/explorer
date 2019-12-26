@@ -1,207 +1,192 @@
 .recent-block-section {
-    .inner-page {
-        &.table-container {
-            min-height: calc(100vh - 305px);
-        }
-    }
+	.inner-page {
+		&.table-container {
+			min-height: calc(100vh - 305px);
+		}
+	}
 }
 
 .inner-page {
-    .backwards {
-        margin: 0 0 15px 0;
+	.backwards {
+		margin: 0 0 15px 0;
 
-        @include res-768 {
-            margin: 30px 0 0 0;
-        }
-    }
+		@include res-768 {
+			margin: 30px 0 0 0;
+		}
+	}
 
-    .account-page-t-block {
-        display: flex;
-        align-items: center;
-        margin: 0;
-        margin-left: 26px;
+	.account-page-t-block {
+		display: flex;
+		align-items: center;
+		margin: 0;
+		margin-left: 26px;
 
-        .title,
-        .icon {
-            margin: 0;
-            z-index: 1;
-        }
+		.title,
+		.icon {
+			margin: 0;
+			z-index: 1;
+		}
 
-        .title {
-            @include InterUI_Bold;
-            font-size: 23px;
-            color: #18142a;
+		.title {
+			@include InterUI_Bold;
+			font-size: 23px;
+			color: #18142a;
 
-            @include res-768 {
-                padding-left: 19px;
-            }
-        }
+			@include res-768 {
+				padding-left: 19px;
+			}
+		}
 
-        .icon {
-            margin-right: 14px;
-            display: flex;
+		.icon {
+			margin-right: 14px;
+			display: flex;
 
-            img {
-                width: 32px;
-                height: 32px;
-            }
-        }
+			img {
+				width: 32px;
+				height: 32px;
+			}
+		}
 
-        @include res-1000 {
-            padding: 0;
-        }
+		@include res-1000 {
+			padding: 0;
+		}
 
-        @include res-500 {
-            padding: 0;
+		@include res-500 {
+			padding: 0;
 
-            .title {
-                padding: 0;
-            }
-        }
-    }
+			.title {
+				padding: 0;
+			}
+		}
+	}
 
-    .page-helper-section {
-        background-color: #fff;
-        margin-top: 40px;
-        padding: 20px 47px 43px;
+	.page-helper-section {
+		background-color: #fff;
+		margin-top: 40px;
+		padding: 20px 47px 43px;
 
-        .page-helper-info {
-            @include InterUI_Regular;
-            background-color: #F3F2F5;
-            color: #171529;
-            font-size: 13px;
-            line-height: 21px;
-            padding: 15px 112px;
-            border: 1px solid #E2E3E7;
-            margin-bottom: 35px;
+		.page-helper-info {
+			@include InterUI_Regular;
+			background-color: #F3F2F5;
+			color: #171529;
+			font-size: 13px;
+			line-height: 21px;
+			padding: 15px 112px;
+			border: 1px solid #E2E3E7;
+			margin-bottom: 35px;
 
-            @include res-1280 {
-                padding: 15px 20px;
-            }
+			@include res-1280 {
+				padding: 15px 20px;
+			}
 
-            @include res-768 {
-                padding: 15px 38px;
-                margin-bottom: 47px;
-            }
+			@include res-768 {
+				padding: 15px 38px;
+				margin-bottom: 47px;
+			}
 
-            @include res-500 {
-                padding: 15px 30px;
-                margin-bottom: 35px;
-            }
+			@include res-500 {
+				padding: 15px 30px;
+				margin-bottom: 35px;
+			}
 
-            @include res-320 {
-                padding: 10px 15px 14px;
-                margin-bottom: 22px;
-            }
+			@include res-320 {
+				padding: 10px 15px 14px;
+				margin-bottom: 22px;
+			}
 
-            .no-wrap {
-                white-space: nowrap;
-            }
+			.no-wrap {
+				white-space: nowrap;
+			}
 
-            div {
-                display: inline;
-            }
+			div {
+				display: inline;
+			}
 
-            .link {
-                text-decoration: underline;
-                color: #171529;
-            }
+			.link {
+				text-decoration: underline;
+				color: #171529;
+			}
 
-            .avatar-image {
-                width: 16px;
-                height: 16px;
-                margin-right: 5px;
-                line-height: 0;
+			.avatar-image {
+				width: 16px;
+				height: 16px;
+				margin-right: 5px;
+				line-height: 0;
 
-                img {
-                    width: 16px;
-                }
+				img {
+					width: 16px;
+				}
 
-                svg {
-                    margin-bottom: -3px;
-                }
-            }
+				svg {
+					margin-bottom: -3px;
+				}
+			}
 
-            .bridge-logo {
-                img {
-                    margin-bottom: -4px;
-                }
-            }
-        }
+			.bridge-logo {
+				img {
+					margin-bottom: -4px;
+				}
+			}
+		}
 
 
-    }
+	}
 
-    .section-description {
-        @include InterUI_Regular;
-        font-size: 15px;
-        color: #171529;
-        padding: 24px 0;
-        border-bottom: 1px solid rgba(#3F465A, .15);
-        margin-bottom: 35px;
-    }
+	.section-description {
+		@include InterUI_Regular;
+		font-size: 15px;
+		color: #171529;
+		padding: 24px 0;
+		border-bottom: 1px solid rgba(#3F465A, .15);
+		margin-bottom: 35px;
+	}
 
-    .code-action {
-        display: flex;
-        align-items: center;
-        margin: 0 0 20px;
+	.code-action {
+		display: flex;
+		align-items: center;
+		margin: 0 0 20px;
 
-        .action-description {
-            @include InterUI_Regular;
-            font-size: 13px;
-            color: #6E6D6F;
-            margin-left: 10px;
-        }
+		.action-description {
+			@include InterUI_Regular;
+			font-size: 13px;
+			color: #6E6D6F;
+			margin-left: 10px;
+		}
 
-        .blue-loader {
-            margin-left: auto;
-        }
-    }
+		.blue-loader {
+			margin-left: auto;
+		}
+	}
 
-    .buttons-wrap {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 33px 47px 43px;
-    }
+	.buttons-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		padding: 33px 47px 43px;
+	}
 }
 
 .inner-information-container.inner-page {
-    .backwards {
-        @include res-320 {
-            padding-top: 50px;
-            padding-left: 17px;
-        }
+	.backwards {
+		@include res-320 {
+			padding-top: 50px;
+			padding-left: 17px;
+		}
 
-        .account-page-t-block {
+		.account-page-t-block {
 
-            @include res-1000 {
-                padding-left: 0px;
-            }
+			@include res-1000 {
+				padding-left: 0px;
+			}
 
-            @include res-768 {
-                padding-left: 0px;
-                margin-left: 0px;
-            }
+			@include res-768 {
+				padding-left: 0px;
+				margin-left: 0px;
+			}
 
-            @include res-320 {
-                padding: 0;
-            }
-        }
-    }
-
-    .backwards-link {
-        @include res-768 {
-            left: 14px;
-        }
-
-        @include res-500 {
-            left: 17px;
-        }
-
-        @include res-320 {
-            top: 0px;
-            left: 12px;
-        }
-    }
+			@include res-320 {
+				padding: 0;
+			}
+		}
+	}
 }

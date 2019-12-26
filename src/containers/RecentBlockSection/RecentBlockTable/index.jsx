@@ -91,7 +91,8 @@ class RecentBlockTable extends React.Component {
 		return (
 			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
 				<div className="table-container recent-block-table">
-					<h2>Recent blocks
+					<div className="page-header">
+						<h2 className="page-title">Recent blocks</h2>
 						<SmallSearchField
 							errorSearch={errorSearch}
 							loadingSearch={loadingSearch}
@@ -103,7 +104,7 @@ class RecentBlockTable extends React.Component {
 							placeholder="Go to block"
 							latestBlock={latestBlock}
 						/>
-					</h2>
+					</div>
 					<div className="table">
 						<Media query="(max-width: 767px)">
 							{(matches) =>
