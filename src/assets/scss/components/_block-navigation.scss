@@ -20,15 +20,8 @@
 	}
 
 	.block-navigation {
-		position: absolute;
-		right: 0;
-		top: 0;
 		display: flex;
 		align-items: center;
-
-		@include max-vw(500) {
-			right: 15px;
-		}
 
 		button {
 			display: inline-flex;

@@ -47,28 +47,6 @@
 					margin-top: -7px;
 					margin-bottom: 17px;
 				}
-
-				.backwards-link {
-					display: block;
-					left: 0px;
-					top: 12px;
-
-					@include max-vw(999) {
-						top: -13px;
-					}
-
-					@include max-vw(768) {
-						top: 20px;
-					}
-
-					@include max-vw(500) {
-						top: 18px;
-					}
-
-					@include max-vw(380) {
-						top: -20px;
-					}
-				}
 			}
 
 			.account-page-t-block {
