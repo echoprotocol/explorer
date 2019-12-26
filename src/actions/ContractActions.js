@@ -318,11 +318,18 @@ class ContractActions extends BaseActionsClass {
 
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
+
+			const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
+			if (!isAccessBridge) return;
+
+			const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
+			if (!isExistActiveAccount) return;
+
 			const ownerName = getState().contract.getIn(['owner', 'name']);
 			const ownerId = getState().contract.getIn(['owner', 'id']);
-			const activeId = getState().global.getIn(['activeAccount', 'id']);
+			const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 
-			if (activeId !== ownerId) {
+			if (activeAccountId !== ownerId) {
 				dispatch(ModalActions.openModal(
 					MODAL_ERROR,
 					{ title: `Only account ${ownerName} can manage this contract` },
@@ -334,13 +341,6 @@ class ContractActions extends BaseActionsClass {
 				if (clickSaveCounter > 4) return;
 				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
 
-				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
-				if (!isAccessBridge) return;
-
-				const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
-				if (!isExistActiveAccount) return;
-
-				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 				const message = ContractHelper.getMessageToManageContract(contractId);
 				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
 
