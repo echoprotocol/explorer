@@ -12,79 +12,58 @@
 	@include res-320 {
 		margin-bottom: 25px;
 	}
+}
 
-	.breadcrumbs-container {
-		display: flex;
-		align-items: center;
-		padding-right: 25px;
-		position: absolute;
-		margin: 0;
-		top: 9px;
-		left: 33px;
-		z-index: 10;
+.breadcrumbs-container {
+	display: flex;
+	align-items: center;
+	padding-right: 25px;
+	margin: 0;
 
-		@include res-1280 {
-			left: 20px;
+	>.element {
+		position: relative;
+		display: inline-block;
+		@include Hack_Bold;
+		font-size: 9px;
+		letter-spacing: 2.25px;
+		color: #2a90e6;
+		text-transform: uppercase;
+		padding-top: 5px;
+		padding-bottom: 5px;
+
+		transition: .2s ease-out;
+
+		&:hover {
+			color: #095494;
 		}
 
-		@include res-768 {
-			top: 3px;
-			left: 55px;
+		&:active {
+			color: #fb0707;
 		}
 
-		@include res-500 {
-			top: 8px;
-			left: 44px;
-		}
+		&:not(:last-child) {
+			margin-right: 25px;
 
-		@include res-320 {
-			top: 49px;
-		}
-
-		>.element {
-			position: relative;
-			display: inline-block;
-			@include Hack_Bold;
-			font-size: 9px;
-			letter-spacing: 2.25px;
-			color: #2a90e6;
-			text-transform: uppercase;
-			padding-top: 5px;
-			padding-bottom: 5px;
-
-			transition: .2s ease-out;
-
-			&:hover {
-				color: #095494;
-			}
-
-			&:active {
-				color: #fb0707;
-			}
-
-			&:not(:last-child) {
-				margin-right: 25px;
-
-				&:after {
-					content: '';
-					position: absolute;
-					right: -12px;
-					top: 50%;
-					transform: translateY(-50%);
-					width: 1px;
-					height: 9px;
-					background-color: #b6b6b8;
-				}
+			&:after {
+				content: '';
+				position: absolute;
+				right: -12px;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 1px;
+				height: 9px;
+				background-color: #b6b6b8;
 			}
 		}
 	}
 }
 
+
+
 .backwards {
 	display: flex;
 	align-items: center;
 	position: relative;
-	padding-top: 50px;
 
 	&.action {
 		.account-page-t-block {
@@ -134,22 +113,6 @@
 .transaction-information {
 	.information-breadcrumbs {
 		margin-bottom: 20px;
-
-		.breadcrumbs-container {
-			top: 18px;
-
-			@include res-768 {
-				top: 15px;
-			}
-
-			@include res-500 {
-				top: 19px;
-			}
-
-			@include res-320 {
-				top: 60px;
-			}
-		}
 	}
 
 	.transaction-time,

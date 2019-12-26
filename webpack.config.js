@@ -1,12 +1,13 @@
 /* eslint-disable import/no-dynamic-require */
 require('@babel/polyfill');
-
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const packageJson = require('./package.json');
+const TerserJSPlugin = require('terser-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const {
 	API_URL,
@@ -118,6 +119,7 @@ module.exports = {
 				},
 			},
 		},
+		minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
 	},
 	resolve: {
 		modules: [

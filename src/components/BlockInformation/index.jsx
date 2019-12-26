@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import classnames from 'classnames';
+
 
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
@@ -109,30 +109,16 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="block-navigation-wrap">
-					<BreadCrumbs
-						breadcrumbs={breadcrumbs}
-						title={`Block ${formattedBlockNumber}`}
-						returnFunction={() => this.returnFunction()}
-					/>
-					<div className="block-navigation">
-						<button
-							className={classnames('prev', { active: blockNumber > 1 })}
-							disabled={blockNumber <= 1}
-							onClick={(e) => this.onBlockLink(blockNumber - 1, e)}
-						>
-							Older <span>block</span>
-						</button>
-						<button
-							className={classnames('next', { active: latestBlock !== blockNumber })}
-							disabled={latestBlock === blockNumber}
-							onClick={(e) => this.onBlockLink(blockNumber + 1, e)}
-						>
-							Next <span>block</span>
-						</button>
-					</div>
-				</div>
-
+				<BreadCrumbs
+					breadcrumbs={breadcrumbs}
+					title={`Block ${formattedBlockNumber}`}
+					returnFunction={() => this.returnFunction()}
+					blockNavigation
+					blockNumber={blockNumber}
+					latestBlock={latestBlock}
+					onPrevBlock={(e) => this.onBlockLink(blockNumber - 1, e)}
+					onNextBlock={(e) => this.onBlockLink(blockNumber + 1, e)}
+				/>
 				<div className="block-description">
 					<div className="container time">
 						<div className="title">Date, Time</div>

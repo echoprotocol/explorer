@@ -1,124 +1,142 @@
 .block-navigation-wrap {
-    position: relative;
+	position: relative;
 
-    .block-navigation {
-        position: absolute;
-        right: 0;
-        top: 0;
-        display: flex;
-        align-items: center;
+	padding: 0 50px 0 33px;
 
-        @include max-vw(500) {
-            right: 15px;
-        }
+	@include res-1280 {
+		padding: 0 50px 0 20px;
+	}
 
-        button {
-            display: inline-flex;
-            font-family: "Hack";
-            font-weight: 700;
-            font-style: normal;
-            font-size: 9px;
-            letter-spacing: 2.25px;
-            text-transform: uppercase;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            transition: .2s ease-out;
-            background-color: transparent;
-            border: 0;
-            position: relative;
-            align-items: center;
-            color: #2a90e6;
+	@include res-768 {
+		padding: 0 50px 0 23px;
+	}
 
-            span {
-                margin-left: 8px;
-            }
+	@include res-500 {
+		padding: 0 15px 0 25px;
+	}
 
-            @include max-vw(450) {
-                span {
-                    display: none;
-                }
-            }
+	@include res-320 {
+		padding: 0 26px 0 23px;
+	}
 
-            &:not(:disabled) {
-                cursor: pointer;
-            }
+	.block-navigation {
+		position: absolute;
+		right: 0;
+		top: 0;
+		display: flex;
+		align-items: center;
 
-            &:hover {
-                color: #095494;
+		@include max-vw(500) {
+			right: 15px;
+		}
 
-                &:before,
-                &:after {
-                    background-image: url(../images/icons/nav-arrow-active-hover.svg);
-                }
-            }
+		button {
+			display: inline-flex;
+			font-family: "Hack";
+			font-weight: 700;
+			font-style: normal;
+			font-size: 9px;
+			letter-spacing: 2.25px;
+			text-transform: uppercase;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			transition: .2s ease-out;
+			background-color: transparent;
+			border: 0;
+			position: relative;
+			align-items: center;
+			color: #2a90e6;
 
-            &:before,
-            &:after {
-                background-image: url(../images/icons/nav-arrow-active.svg);
-            }
+			span {
+				margin-left: 8px;
+			}
 
-            &:active {
-                color: #fb0707;
+			@include max-vw(450) {
+				span {
+					display: none;
+				}
+			}
 
-                &:before,
-                &:after {
-                    background-image: url(../images/icons/nav-arrow-active-active.svg);
-                }
-            }
+			&:not(:disabled) {
+				cursor: pointer;
+			}
 
-            &[disabled] {
-                color: #828b95;
+			&:hover {
+				color: #095494;
 
-                &:before,
-                &:after {
-                    background-image: url(../images/icons/nav-arrow-disabled.svg);
-                    background-repeat: no-repeat;
-                    transition: background-image .2s;
-                }
-            }
+				&:before,
+				&:after {
+					background-image: url(../images/icons/nav-arrow-active-hover.svg);
+				}
+			}
 
-            &.prev {
-                margin-right: 14px;
+			&:before,
+			&:after {
+				background-image: url(../images/icons/nav-arrow-active.svg);
+			}
 
-                &[disabled] {
-                    &:before {
-                        transform: rotate(180deg);
-                    }
-                }
+			&:active {
+				color: #fb0707;
 
-                &:before {
-                    margin-top: -1px;
-                    display: block;
-                    content: "";
-                    width: 5px;
-                    height: 6px;
-                    margin-right: 9px;
-                }
-            }
+				&:before,
+				&:after {
+					background-image: url(../images/icons/nav-arrow-active-active.svg);
+				}
+			}
 
-            &.next {
-                margin-left: 14px;
+			&[disabled] {
+				color: #828b95;
 
-                &:not(:disabled) {
-                    &:after {
-                        transform: rotate(180deg);
-                    }
-                }
+				&:before,
+				&:after {
+					background-image: url(../images/icons/nav-arrow-disabled.svg);
+					background-repeat: no-repeat;
+					transition: background-image .2s;
+				}
+			}
 
-                &:after {
-                    margin-top: -1px;
-                    display: block;
-                    content: "";
-                    width: 5px;
-                    height: 6px;
-                    margin-left: 9px;
-                }
-            }
+			&.prev {
+				margin-right: 14px;
 
-        }
-    }
+				&[disabled] {
+					&:before {
+						transform: rotate(180deg);
+					}
+				}
 
-    @include res-320 {
-        margin-bottom: 35px;
-    }
+				&:before {
+					margin-top: -1px;
+					display: block;
+					content: "";
+					width: 5px;
+					height: 6px;
+					margin-right: 9px;
+				}
+			}
+
+			&.next {
+				margin-left: 14px;
+
+				&:not(:disabled) {
+					&:after {
+						transform: rotate(180deg);
+					}
+				}
+
+				&:after {
+					margin-top: -1px;
+					display: block;
+					content: "";
+					width: 5px;
+					height: 6px;
+					margin-left: 9px;
+				}
+			}
+
+		}
+	}
+
+	@include res-320 {
+		margin-bottom: 35px;
+	}
 }
