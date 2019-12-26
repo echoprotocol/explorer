@@ -187,7 +187,7 @@ class BlockInformation extends React.Component {
 		const { blockInformation, latestBlock } = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information">
+			<div className="table-container inner-information-container">
 				{
 					this.state.loader ? this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
 				}

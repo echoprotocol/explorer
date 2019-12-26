@@ -337,82 +337,83 @@
 		}
 	}
 
-	.recent-block-mobile-view {
+
+
+}
+
+.recent-block-mobile-view {
+	@include res-320 {
+		margin: 0 auto;
+		width: 100%;
+		padding: 0 10px 0 10px;
+	}
+
+	.recent-block-element {
+		@include InterUI_Medium;
+		background-color: #e7e7e9;
+		margin-bottom: 7px;
+
+		display: flex;
+		flex-wrap: wrap;
+		padding: 20px 0px 5px 25px;
+
 		@include res-320 {
-			margin: 0 auto;
-			width: 100%;
-			padding: 0 10px 0 10px;
+			padding: 25px 0px 10px 20px;
+			justify-content: space-between;
 		}
 
-		.recent-block-element {
-			@include InterUI_Medium;
-			background-color: #e7e7e9;
-			margin-bottom: 7px;
+		&.fade-anim {
+			animation: addd .4s ease-out;
 
-			display: flex;
-			flex-wrap: wrap;
-			padding: 20px 0px 5px 25px;
-
-			@include res-320 {
-				padding: 25px 0px 10px 20px;
-				justify-content: space-between;
-			}
-
-			&.fade-anim {
-				animation: addd .4s ease-out;
-
-				@keyframes addd {
-					from {
-						opacity: 0;
-					}
-
-					to {
-						opacity: 1;
-					}
-				}
-			}
-
-			.container {
-				width: 140px;
-				margin-bottom: 22px;
-				padding-right: 20px;
-
-				&:first-child {
-					.title {
-						margin-bottom: 13px;
-					}
+			@keyframes addd {
+				from {
+					opacity: 0;
 				}
 
+				to {
+					opacity: 1;
+				}
+			}
+		}
+
+		.container {
+			width: 140px;
+			margin-bottom: 22px;
+			padding-right: 20px;
+
+			&:first-child {
 				.title {
-					user-select: none;
-					background-color: transparent;
-					@include Hack_Bold;
-					font-size: 9px;
-					text-transform: uppercase;
-					letter-spacing: 0.25em;
-					color: #828b95;
-					margin-bottom: 12px;
+					margin-bottom: 13px;
+				}
+			}
+
+			.title {
+				user-select: none;
+				background-color: transparent;
+				@include Hack_Bold;
+				font-size: 9px;
+				text-transform: uppercase;
+				letter-spacing: 0.25em;
+				color: #828b95;
+				margin-bottom: 12px;
+			}
+
+			.value {
+				color: #0f0739;
+				font-size: 12px;
+				width: 100%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				line-height: 18px;
+
+				.blue {
+					font-size: 15px;
 				}
 
-				.value {
-					color: #0f0739;
-					font-size: 12px;
-					width: 100%;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					line-height: 18px;
-
-					.blue {
-						font-size: 15px;
-					}
-
-					.gray {
-						font-size: 11px;
-					}
+				.gray {
+					font-size: 11px;
 				}
 			}
 		}
 	}
-
-
 }
