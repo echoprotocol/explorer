@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
 
-import { INDEX_PATH, NODE_MAP } from '../../constants/RouterConstants';
+import { INDEX_PATH, NODE_MAP_PATH } from '../../constants/RouterConstants';
 
 class NavTabs extends React.Component {
 
@@ -20,8 +20,8 @@ class NavTabs extends React.Component {
 					Blocks
 				</button>
 				<button
-					className={classnames({ active: pathName === NODE_MAP })}
-					onClick={() => history.push(NODE_MAP)}
+					className={classnames({ active: pathName === NODE_MAP_PATH })}
+					onClick={() => history.push(NODE_MAP_PATH)}
 				>
 					Nodes map
 				</button>
