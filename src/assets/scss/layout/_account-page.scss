@@ -2,7 +2,6 @@
 	margin-bottom: 30px;
 	display: flex;
 	align-items: center;
-	margin: 0;
 
 	@include max-vw(999) {
 		margin-left: 0px;
@@ -36,16 +35,227 @@
 		@include res-320 {
 			flex-direction: column;
 		}
+
+		.left-card {
+			background-color: #ebeaee;
+			display: inline-flex;
+			flex-direction: column;
+			width: 366px;
+			padding: 25px 32px;
+			flex-shrink: 0;
+
+			@include res-1280 {
+				padding: 20px;
+			}
+
+			@include res-768 {
+				padding: 23px;
+			}
+
+			@include res-500 {
+				width: 220px;
+				padding: 18px;
+			}
+
+			@include res-320 {
+				width: 100%;
+			}
+
+			.line {
+				&:not(:last-child) {
+					margin-bottom: 35px;
+
+					@include res-500 {
+						margin-bottom: 27px;
+					}
+				}
+
+				>.title {
+					@include Hack_Bold;
+					color: #1f3c4d;
+					font-size: 10px;
+					text-transform: uppercase;
+					display: block;
+					letter-spacing: 0.25em;
+					margin-bottom: 15px;
+					word-break: break-all;
+				}
+
+				.val {
+					@include InterUI_Medium;
+					font-size: 16px;
+					color: #130d32;
+					display: flex;
+					word-break: break-all;
+
+					.txt {
+						margin-right: 5px;
+						@include text-overflow;
+					}
+
+					.accent {
+						flex-shrink: 0;
+					}
+				}
+			}
+
+			.raw-link {
+				@include InterUI_Regular;
+				letter-spacing: 0.3px;
+				font-size: 12px;
+			}
+		}
+
+		.right-container {
+			margin-top: 25px;
+			width: 100%;
+			margin-left: 35px;
+
+			@include res-1280 {
+				width: 370px;
+			}
+
+			@include res-768 {
+				margin-left: 30px;
+				width: 270px;
+			}
+
+			@include res-500 {
+				width: 187px;
+				margin-left: 40px;
+			}
+
+			@include res-320 {
+				width: 100%;
+				margin-left: 0;
+			}
+
+			.elem {
+				&:not(:last-child) {
+					margin-bottom: 35px;
+
+					@include res-500 {
+						margin-bottom: 30px;
+					}
+				}
+
+				>.title {
+					@include Hack_Bold;
+					font-size: 10px;
+					text-transform: uppercase;
+					color: #1f3c4d;
+					letter-spacing: 0.25em;
+					border-bottom: 1px solid #d8d9de;
+					padding-bottom: 8px;
+
+					@include res-320 {
+						padding-left: 20px;
+					}
+
+					.gray {
+						color: #828b95;
+					}
+				}
+
+				.elements-container {
+					margin-top: 14px;
+					display: flex;
+					flex-wrap: wrap;
+
+					@include res-1280 {
+						justify-content: space-between;
+					}
+
+					.inner-elem {
+						width: 170px;
+						@include InterUI_Regular;
+						font-size: 12px;
+						color: #0f0739;
+						border-bottom: 1px solid #d8d9de;
+						padding-bottom: 11px;
+						margin-bottom: 10px;
+						position: relative;
+
+						margin-right: 15px;
+
+						&:only-child {
+							border-bottom: 0;
+						}
+
+						&:nth-child(3n) {
+							margin-right: 0;
+						}
+
+						@include res-1280 {
+							margin-right: 0;
+						}
+
+						@include res-768 {
+							width: 100%;
+						}
+
+						@include res-320 {
+							padding-left: 20px;
+						}
+
+						&.is-owner {
+							&:after {
+								content: 'OWNER';
+								position: absolute;
+								right: 0;
+								background-color: #cadef0;
+								top: -2px;
+								@include Hack_Bold;
+								padding: 3px;
+								font-size: 9px;
+								color: #2a90e6;
+								letter-spacing: 0.25em;
+							}
+						}
+
+						.txt {
+							margin-right: 5px;
+						}
+
+						.accent {
+							a {
+								text-overflow: ellipsis;
+								overflow: hidden;
+								max-width: 70px;
+								line-height: 13px;
+								vertical-align: bottom;
+
+								@include res-768 {
+									max-width: 180px;
+								}
+
+								@include res-500 {
+									max-width: 90px;
+								}
+
+								@include res-320 {
+									overflow: unset;
+								}
+							}
+						}
+					}
+				}
+
+				.load-more {
+					display: inline-flex;
+
+					@include res-320 {
+						margin-left: 20px;
+					}
+				}
+			}
+		}
 	}
 
 	.title,
 	.ava {
 		margin: 0;
 		z-index: 1;
-
-		@include max-vw(768) {
-			margin: 0 15px 0 0;
-		}
 	}
 
 	.ava {
@@ -64,224 +274,8 @@
 	}
 
 	@include res-500 {
-
 		.title {
 			padding: 0;
-		}
-	}
-}
-
-.left-card {
-	background-color: #ebeaee;
-	display: inline-flex;
-	flex-direction: column;
-	width: 366px;
-	padding: 25px 32px;
-	flex-shrink: 0;
-
-	@include res-1280 {
-		padding: 20px;
-	}
-
-	@include res-768 {
-		padding: 23px;
-	}
-
-	@include res-500 {
-		width: 220px;
-		padding: 18px;
-	}
-
-	@include res-320 {
-		width: 100%;
-	}
-
-	.line {
-		&:not(:last-child) {
-			margin-bottom: 35px;
-
-			@include res-500 {
-				margin-bottom: 27px;
-			}
-		}
-
-		>.title {
-			@include Hack_Bold;
-			color: #1f3c4d;
-			font-size: 10px;
-			text-transform: uppercase;
-			display: block;
-			letter-spacing: 0.25em;
-			margin-bottom: 15px;
-			word-break: break-all;
-		}
-
-		.val {
-			@include InterUI_Medium;
-			font-size: 16px;
-			color: #130d32;
-			display: flex;
-			word-break: break-all;
-
-			.txt {
-				margin-right: 5px;
-				@include text-overflow;
-			}
-
-			.accent {
-				flex-shrink: 0;
-			}
-		}
-	}
-
-	.raw-link {
-		@include InterUI_Regular;
-		letter-spacing: 0.3px;
-		font-size: 12px;
-	}
-}
-
-.right-container {
-	margin-top: 25px;
-	width: 100%;
-	margin-left: 35px;
-
-	@include res-1280 {
-		width: 370px;
-	}
-
-	@include res-768 {
-		margin-left: 30px;
-		width: 270px;
-	}
-
-	@include res-500 {
-		width: 187px;
-		margin-left: 40px;
-	}
-
-	@include res-320 {
-		width: 100%;
-		margin-left: 0;
-	}
-
-	.elem {
-		&:not(:last-child) {
-			margin-bottom: 35px;
-
-			@include res-500 {
-				margin-bottom: 30px;
-			}
-		}
-
-		>.title {
-			@include Hack_Bold;
-			font-size: 10px;
-			text-transform: uppercase;
-			color: #1f3c4d;
-			letter-spacing: 0.25em;
-			border-bottom: 1px solid #d8d9de;
-			padding-bottom: 8px;
-
-			@include res-320 {
-				padding-left: 20px;
-			}
-
-			.gray {
-				color: #828b95;
-			}
-		}
-
-		.elements-container {
-			margin-top: 14px;
-			display: flex;
-			flex-wrap: wrap;
-
-			@include res-1280 {
-				justify-content: space-between;
-			}
-
-			.inner-elem {
-				width: 170px;
-				@include InterUI_Regular;
-				font-size: 12px;
-				color: #0f0739;
-				border-bottom: 1px solid #d8d9de;
-				padding-bottom: 11px;
-				margin-bottom: 10px;
-				position: relative;
-
-				margin-right: 15px;
-
-				&:only-child {
-					border-bottom: 0;
-				}
-
-				&:nth-child(3n) {
-					margin-right: 0;
-				}
-
-				@include res-1280 {
-					margin-right: 0;
-				}
-
-				@include res-768 {
-					width: 100%;
-				}
-
-				@include res-320 {
-					padding-left: 20px;
-				}
-
-				&.is-owner {
-					&:after {
-						content: 'OWNER';
-						position: absolute;
-						right: 0;
-						background-color: #cadef0;
-						top: -2px;
-						@include Hack_Bold;
-						padding: 3px;
-						font-size: 9px;
-						color: #2a90e6;
-						letter-spacing: 0.25em;
-					}
-				}
-
-				.txt {
-					margin-right: 5px;
-				}
-
-				.accent {
-					a {
-						text-overflow: ellipsis;
-						overflow: hidden;
-						max-width: 70px;
-						line-height: 13px;
-						vertical-align: bottom;
-
-						@include res-768 {
-							max-width: 180px;
-						}
-
-						@include res-500 {
-							max-width: 90px;
-						}
-
-						@include res-320 {
-							overflow: unset;
-						}
-					}
-				}
-			}
-		}
-
-		.load-more {
-			display: inline-flex;
-
-			@include res-320 {
-				margin-left: 20px;
-			}
 		}
 	}
 }
