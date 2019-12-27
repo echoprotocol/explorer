@@ -47,7 +47,7 @@ class SearchField extends React.Component {
 		clearTimeout(this.searchTimeout);
 		this.searchTimeout = setTimeout(() => {
 			this.props.getHints(value);
-		}, 200);
+		}, 300);
 	}
 
 	onClick(e) {
@@ -103,8 +103,10 @@ class SearchField extends React.Component {
 
 	goToBlock(value, latestBlock) {
 		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
+		console.log('value', value);
 		this.props.getHints(value);
-		setTimeout(() => this.props.transitionToBlock(), 250);
+		this.props.transitionToBlock();
+		// setTimeout(() => this.props.transitionToBlock(), 250);
 	}
 
 
