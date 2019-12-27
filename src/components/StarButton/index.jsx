@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import starIcon from '../../assets/images/icons/star.svg';
+import ActionButton from '../ActionButton';
 
 class Star extends Component {
 
@@ -8,15 +9,7 @@ class Star extends Component {
 		const { star } = this.props;
 		return (
 			<div className="action-button-wrap">
-				<button className="action-button start" onClick={this.props.onClick}>
-					<img src={starIcon} alt="" />
-					{
-						star ?
-							<span className="content">Unstar</span>
-							:
-							<span className="content">Star</span>
-					}
-				</button>
+				<ActionButton icon={starIcon} action={this.props.onClick} value={star ? 'Unstar' : 'Star'} />
 				<div className="action-label">{this.props.countStar}</div>
 			</div>
 		);

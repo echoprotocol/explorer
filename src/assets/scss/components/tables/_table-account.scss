@@ -22,6 +22,10 @@
 			&.time {
 				.td-in {
 					white-space: nowrap;
+
+					@include res-768 {
+						white-space: normal;
+					}
 				}
 			}
 

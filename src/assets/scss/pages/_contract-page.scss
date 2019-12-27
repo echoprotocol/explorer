@@ -1,5 +1,195 @@
-.table-container.contract-page {
+.contract-page {
+	padding-top: 15px;
 
+	@include max-vw(999) {
+		padding-left: 18px;
+		padding-right: 18px;
+	}
+
+	@include max-vw(768) {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+	@include max-vw(500) {
+		.backwards {
+			display: block;
+			padding-left: 0;
+		}
+	}
+
+	@include max-vw(380) {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+
+	.account-page-t-block {
+
+		.help-container {
+			.right-container {
+				margin-left: 0;
+			}
+		}
+	}
+
+	.tab-body {
+		margin-top: 29px;
+
+		@include max-vw(1000) {
+			margin-top: 21px;
+		}
+	}
+}
+
+.contract-bytecode-panel {
+	padding-top: 15px;
+
+	.text-block {
+		@include Hack_Regular;
+		font-size: 12px;
+		color: #080808;
+		line-height: 18px;
+		word-break: break-all;
+	}
+}
+
+.contract-asset-panel {
+	margin-left: 30px;
+	padding-top: 15px;
+	width: 785px;
+
+	@include res-1280 {
+		width: 755px;
+	}
+
+	@include res-768 {
+		width: 570px;
+	}
+
+	@include res-500 {
+		margin-left: 0px;
+		padding-top: 10px;
+		width: 370px;
+	}
+
+	@include res-320 {
+		width: 100%;
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+
+	.elem {
+		&:not(:last-child) {
+			margin-bottom: 35px;
+
+			@include res-500 {
+				margin-bottom: 30px;
+			}
+		}
+
+		>.title {
+			@include Hack_Bold;
+			font-size: 10px;
+			text-transform: uppercase;
+			color: #1f3c4d;
+			letter-spacing: 0.25em;
+			border-bottom: 1px solid #d8d9de;
+			padding-bottom: 8px;
+
+			@include res-320 {
+				padding-left: 0px;
+			}
+
+			.gray {
+				color: #828b95;
+			}
+		}
+
+		.elements-container {
+			margin-top: 14px;
+			display: flex;
+			flex-wrap: wrap;
+
+			@include res-500 {
+				justify-content: space-between;
+			}
+
+			.inner-elem {
+				width: 170px;
+				@include InterUI_Regular;
+				font-size: 12px;
+				color: #0f0739;
+				border-bottom: 1px solid #d8d9de;
+				padding-bottom: 12px;
+				margin-bottom: 14px;
+				position: relative;
+				margin-right: 35px;
+
+				@include res-1280 {
+					margin-right: 25px;
+				}
+
+				&:nth-child(4n) {
+					margin-right: 0;
+				}
+
+				@include res-768 {
+					margin-right: 30px;
+
+					&:nth-child(3n) {
+						margin-right: 0;
+					}
+
+					&:nth-child(4n) {
+						margin-right: 30px;
+					}
+				}
+
+				@include res-500 {
+					margin-right: 0 !important;
+				}
+
+				&:only-child {
+					border-bottom: 0;
+				}
+
+				@include res-320 {
+					padding-left: 0px;
+					width: 100%;
+				}
+
+				&.is-owner {
+					&:after {
+						content: 'OWNER';
+						position: absolute;
+						right: 0;
+						background-color: #cadef0;
+						top: -2px;
+						@include Hack_Bold;
+						padding: 3px;
+						font-size: 9px;
+						color: #2a90e6;
+						letter-spacing: 0.25em;
+					}
+				}
+
+				.txt {
+					margin-right: 5px;
+				}
+			}
+		}
+
+		.load-more {
+			display: inline-flex;
+
+			@include res-320 {
+				margin-left: 20px;
+			}
+		}
+	}
+}
+
+.table-container.contract-page {
 	.tab-head {
 		position: relative;
 		z-index: 2;
@@ -13,70 +203,10 @@
 			background-color: #E8E7EB;
 			content: '';
 			position: absolute;
-			top: -37px;
+			top: -15px;
 			bottom: 0;
 			left: -1000px;
 			right: -30px;
-		}
-
-		@include res-1000 {
-			right: -1000px;
-		}
-	}
-
-	@include res-1000 {
-		top: -50px;
-		right: -1000px;
-	}
-
-	@include res-500 {
-		top: -45px;
-	}
-}
-
-
-.account-page-t-block {
-	display: flex;
-	align-items: center;
-	margin: 0;
-
-	@include max-vw(999) {
-		margin-left: 0px;
-	}
-
-	@include max-vw(380) {
-		margin: 10px 0 0;
-	}
-
-	.title,
-	.ava {
-		margin: 0;
-		z-index: 1;
-
-		@include max-vw(768) {
-			margin: 0 15px 0 0;
-		}
-	}
-
-	.ava {
-		img {
-			width: 32px;
-			height: 32px;
-		}
-
-		@include max-vw(500) {
-			display: none;
-		}
-	}
-
-	@include res-1000 {
-		padding: 0;
-	}
-
-	@include res-500 {
-
-		.title {
-			padding: 0;
 		}
 	}
 }
@@ -121,23 +251,6 @@
 					}
 				}
 			}
-		}
-	}
-}
-
-.tab-body {
-	margin-top: 29px;
-
-	@include max-vw(1000) {
-		margin-top: 21px;
-	}
-}
-
-.contract-page {
-	@include max-vw(500) {
-		.backwards {
-			display: block;
-			padding-left: 0;
 		}
 	}
 }
@@ -402,15 +515,6 @@
 		p+p {
 			margin-top: 10px;
 		}
-	}
-}
-
-.dropdown-tab {
-	display: flex;
-	z-index: 1;
-
-	.dropdown-toggle {
-		z-index: 1;
 	}
 }
 

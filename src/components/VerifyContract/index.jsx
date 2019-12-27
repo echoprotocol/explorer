@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import BackwardIcon from '../BackwardIcon';
 import verifyIcon from '../../assets/images/icons/verify-icn.svg';
+import ActionButton from '../ActionButton';
 import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 
@@ -194,7 +195,7 @@ class VerifyContract extends React.Component {
 		};
 
 		return (
-			<div className="table-container inner-information-container inner-page with-d-table verify-contract">
+			<div className="table-container inner-page verify-contract">
 				<div className="backwards">
 					<a
 						href=""
@@ -218,7 +219,7 @@ class VerifyContract extends React.Component {
 					</div>
 					<div className="code-action">
 						<div className="action-button-wrap">
-							<label className="action-button" htmlFor="upload-abi">Select file</label>
+							<ActionButton value="Select file" labelFor="upload-abi" />
 							<input
 								type="file"
 								name="upload-abi"

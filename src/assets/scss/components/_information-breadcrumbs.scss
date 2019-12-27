@@ -64,18 +64,10 @@
 	display: flex;
 	align-items: center;
 	position: relative;
-
-	&.action {
-		.account-page-t-block {
-			width: 100%;
-
-
-		}
-
-	}
-
+	margin: 0 0 15px 0;
 
 	@include res-768 {
+		margin: 30px 0 0 0;
 		padding-left: 18px;
 	}
 
@@ -84,8 +76,13 @@
 	}
 
 	@include res-320 {
-		padding-top: 86px;
 		padding-left: 25px;
+	}
+
+	&.action {
+		.account-page-t-block {
+			width: 100%;
+		}
 	}
 
 
