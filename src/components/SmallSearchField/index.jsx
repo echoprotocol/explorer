@@ -109,10 +109,12 @@ class SearchField extends React.Component {
 
 	goToBlock(value, latestBlock) {
 		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
+		this.props.setLoading();
 		this.props.getHints(value);
-		this.props.transitionToBlock(value);
+		// this.props.transitionToBlock(value);
 		// setTimeout(() => this.props.transitionToBlock(), 250);
 	}
+
 
 
 	render() {
@@ -175,7 +177,7 @@ class SearchField extends React.Component {
 								{errorSearch && (
 									<div className="element no-results">
 										<div className="warn" />
-										<div className="text">{ERROR_BLOCK_SEARCH}</div>
+										<div className="text">{errorSearch}</div> {/*ERROR_BLOCK_SEARCH*/}
 									</div>
 								)}
 							</div>)

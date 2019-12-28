@@ -340,7 +340,6 @@ class SearchActions extends BaseActionsClass {
 	 * @returns {Function}
 	 */
 	blockSearchHint(str) {
-		console.log('blockSearchHint str', str);
 		return async (dispatch) => {
 			dispatch(this.initSearch('blockSearch'));
 			const hints = [];
@@ -365,14 +364,10 @@ class SearchActions extends BaseActionsClass {
 					}
 				}
 				if (!hints.length) {
-					console.log('DEFAULT_ERROR_SEARCH    ', DEFAULT_ERROR_SEARCH);
 					throw new Error(DEFAULT_ERROR_SEARCH);
 				}
-				// dispatch(this.setValue(['blockSearch', 'hints'], str/*hints*/, false));
-				// dispatch(this.setValue(['blockSearch', 'loading'], false, false));
 			} catch (error) {
 				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
-        dispatch(this.setValue(['blockSearch', 'connectionError'], NETWORK_CONNECTED_ERROR, false));
 			} finally {
 				dispatch(this.setValue(['blockSearch', 'hints'], hints, false));
 				dispatch(this.setValue(['blockSearch', 'loading'], false, false));

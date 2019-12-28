@@ -27,8 +27,22 @@ import SearchActions from '../../../actions/SearchActions';
 
 class RecentBlockTable extends React.Component {
 
+	constructor() {
+		super();
+		this.state = {
+			loading: false,
+		};
+	}
+
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.MAIN);
+	}
+
+	componentDidUpdate(prevProps) {
+		console.log('this.props.hints', this.props.hints)
+		if (this.state.loading && prevProps.hints !== this.props.hints && this.props.hints.length) {
+			this.transitionToBlock();
+		}
 	}
 
 	componentWillUnmount() {
@@ -70,15 +84,21 @@ class RecentBlockTable extends React.Component {
 
 	transitionToBlock() {
 		const { errorSearch, hints: [hint] } = this.props;
-		console.log('hints', hint)
-		if (errorSearch) return;
-		this.props.history.push(/*BLOCK_INFORMATION_PATH.replace(/:round/, hints)*/hint.to);
+		// console.log('hints', hint)
+		// if (errorSearch) return;
+		this.props.history.push(hint.to);
 	}
 
 	goToBlock(e, block) {
 		e.preventDefault();
 		window.scrollTo(0, 0);
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
+	}
+
+	setLoading() {
+		this.setState({
+			loading: true
+		})
 	}
 
 	render() {
@@ -88,7 +108,7 @@ class RecentBlockTable extends React.Component {
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
 
-		console.log('connectionError', connectionError);
+		// console.log('connectionError', connectionError);
 
 		return (
 			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
@@ -98,13 +118,14 @@ class RecentBlockTable extends React.Component {
 							errorSearch={errorSearch}
 							loadingSearch={loadingSearch}
 							getHints={(str) => this.props.getHints(str)}
-							transitionToBlock={(arg) => this.transitionToBlock(arg)}
+							// transitionToBlock={(arg) => this.transitionToBlock(arg)}
 							withHelp
 							goToBlock
 							white
 							placeholder="Go to block"
 							latestBlock={latestBlock}
 
+							setLoading={() => this.setLoading()}
 							connectionError={connectionError}
 						/>
 					</h2>
