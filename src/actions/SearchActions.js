@@ -19,6 +19,7 @@ import { getLimitHints } from '../helpers/SearchHelper';
 import { getToken, getContractBySymbol } from '../services/queries/contract';
 import { getAssetsBySymbols } from '../services/queries/asset';
 import ApiService from '../services/ApiService';
+import {NETWORK_CONNECTED_ERROR} from "../constants/GlobalConstants";
 
 class SearchActions extends BaseActionsClass {
 
@@ -371,6 +372,7 @@ class SearchActions extends BaseActionsClass {
 				// dispatch(this.setValue(['blockSearch', 'loading'], false, false));
 			} catch (error) {
 				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
+        dispatch(this.setValue(['blockSearch', 'connectionError'], NETWORK_CONNECTED_ERROR, false));
 			} finally {
 				dispatch(this.setValue(['blockSearch', 'hints'], hints, false));
 				dispatch(this.setValue(['blockSearch', 'loading'], false, false));

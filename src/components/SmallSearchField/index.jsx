@@ -122,8 +122,9 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, errorSearch,
+			small, placeholder, white, withHelp, goToBlock, errorSearch, connectionError,
 		} = this.props;
+		console.log('errorSearch connectionError', connectionError);
 
 		return (
 			<div

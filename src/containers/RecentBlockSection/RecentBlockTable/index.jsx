@@ -83,10 +83,12 @@ class RecentBlockTable extends React.Component {
 
 	render() {
 		const {
-			hasMore, loading, loadingSearch, errorSearch, latestBlock,
+			hasMore, loading, loadingSearch, errorSearch, latestBlock, connectionError,
 		} = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
+
+		console.log('connectionError', connectionError);
 
 		return (
 			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
@@ -102,6 +104,8 @@ class RecentBlockTable extends React.Component {
 							white
 							placeholder="Go to block"
 							latestBlock={latestBlock}
+
+							connectionError={connectionError}
 						/>
 					</h2>
 					<div className="table">
@@ -252,6 +256,8 @@ export default withRouter(connect(
 		loadingSearch: state.search.getIn(['blockSearch', 'loading']),
 		blocks: state.block.get('blocks'),
 		latestBlock: state.round.get('latestBlock'),
+
+		connectionError: state.search.get('connectionError'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(SearchActions.blockSearchHint(str)),

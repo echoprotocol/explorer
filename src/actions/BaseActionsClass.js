@@ -16,7 +16,7 @@ export default class BaseActionsClass {
 	/**
 	 * Set value to reducer
 	 * @param {string|array} field
-	 * @param {Array} value
+	 * @param {string} value
 	 * @param {boolean} [isFromJS]
 	 * @returns {function}
 	 */

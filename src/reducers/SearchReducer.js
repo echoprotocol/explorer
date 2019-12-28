@@ -13,6 +13,8 @@ const DEFAULT_FIELDS = Map({
 		hints: [],
 		error: '',
 		loading: false,
+
+		connectionError: '',
 	}),
 });
 
