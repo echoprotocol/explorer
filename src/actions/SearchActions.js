@@ -299,6 +299,7 @@ class SearchActions extends BaseActionsClass {
      * @returns {function}
      */
 	headerSearchHint(str) {
+		console.log('headerSearchHint str', str);
 
 		return async (dispatch) => {
 			dispatch(this.initSearch('headerSearch'));
@@ -338,6 +339,7 @@ class SearchActions extends BaseActionsClass {
 	 * @returns {Function}
 	 */
 	blockSearchHint(str) {
+		console.log('blockSearchHint str', str);
 		return async (dispatch) => {
 			dispatch(this.initSearch('blockSearch'));
 			const hints = [];
@@ -361,7 +363,12 @@ class SearchActions extends BaseActionsClass {
 						hints.push(blockHint);
 					}
 				}
-				if (!hints.length) throw new Error(DEFAULT_ERROR_SEARCH);
+				if (!hints.length) {
+					console.log('DEFAULT_ERROR_SEARCH    ', DEFAULT_ERROR_SEARCH);
+					throw new Error(DEFAULT_ERROR_SEARCH);
+				}
+				// dispatch(this.setValue(['blockSearch', 'hints'], str/*hints*/, false));
+				// dispatch(this.setValue(['blockSearch', 'loading'], false, false));
 			} catch (error) {
 				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
 			} finally {

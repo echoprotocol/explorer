@@ -198,12 +198,14 @@ class BlockInformation extends React.Component {
 	}
 
 	render() {
-		const { blockInformation, latestBlock } = this.props;
+		const { blockInformation, latestBlock, hints } = this.props;
+		console.log('BlockInformation', hints);
 
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
 				{
-					this.state.loader ? this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
+					!blockInformation.get('blockNumber') || this.state.loader ?
+						this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
 				}
 			</div>
 		);
@@ -223,10 +225,13 @@ BlockInformation.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
+
+	hints: PropTypes.array,
 };
 
 BlockInformation.defaultProps = {
 	historyLength: 0,
+	hints: ['Nothing !!!!!!'],
 };
 
 export default BlockInformation;

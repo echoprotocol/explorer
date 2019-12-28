@@ -44,6 +44,8 @@ class SearchField extends React.Component {
 			inputValue: value,
 		});
 
+		// this.props.getHints(value);
+
 		clearTimeout(this.searchTimeout);
 		this.searchTimeout = setTimeout(() => {
 			this.props.getHints(value);
@@ -56,6 +58,7 @@ class SearchField extends React.Component {
 		this.inputEl.focus();
 		const {	latestBlock } = this.props;
 
+		clearTimeout(this.searchTimeout);
 		this.goToBlock(this.state.inputValue, latestBlock);
 	}
 
@@ -64,7 +67,10 @@ class SearchField extends React.Component {
 		const { value } = e.target;
 		const {	latestBlock	} = this.props;
 
-		if (KEY_CODE_ENTER === code) this.goToBlock(value, latestBlock);
+		if (KEY_CODE_ENTER === code) {
+			clearTimeout(this.searchTimeout);
+			this.goToBlock(value, latestBlock);
+		}
 
 		if (KEY_CODE_ESC === code) {
 			this.inputEl.blur();
@@ -103,9 +109,8 @@ class SearchField extends React.Component {
 
 	goToBlock(value, latestBlock) {
 		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
-		console.log('value', value);
 		this.props.getHints(value);
-		this.props.transitionToBlock();
+		this.props.transitionToBlock(value);
 		// setTimeout(() => this.props.transitionToBlock(), 250);
 	}
 
