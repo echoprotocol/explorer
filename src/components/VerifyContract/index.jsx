@@ -18,10 +18,12 @@ class VerifyContract extends React.Component {
 		this.state = {
 			loader: false,
 			timeout: null,
+			timer: 0,
 		};
 
 		this.backwards = React.createRef();
 		this.checkboxEVM = React.createRef();
+		this.intervalId = 0;
 	}
 	componentDidMount() {
 		this.props.contractCompilerInit();
@@ -36,13 +38,16 @@ class VerifyContract extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { form } = this.props;
 		const { form: nextForm } = nextProps;
-		const { timeout, loader } = this.state;
+		const { timeout, loader, timer } = this.state;
 		const { timeout: nextTimeout, loader: nextLoader } = nextState;
+
+		console.log(timer > 5)
+		if (timer > 5) return true;
 
 		return !(form.get('code') !== nextForm.get('code') || timeout !== nextTimeout || (loader === nextLoader && nextLoader));
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		const { form } = this.props;
 		const { form: prevForm } = prevProps;
 
@@ -60,8 +65,12 @@ class VerifyContract extends React.Component {
 			return;
 		}
 		this.setState({ loader: true });
+		this.intervalId = setInterval(() => {
+			this.setState({ timer: this.state.timer += 1 });
+		}, 1000);
 		await this.props.changeContractCompiler(e.target.textContent);
 		this.setState({ loader: false });
+		clearInterval(this.intervalId);
 	}
 
 	onChangeContract(e) {
@@ -182,6 +191,19 @@ class VerifyContract extends React.Component {
 		event.target.value = null;
 	}
 
+	showLoader(loader) {
+		console.log('timer', this.state.timer);
+		const time = 12;
+
+		if (loader && this.state.timer > 5) {
+			return <div>{`HELLO ${time} %`}</div>;
+		}
+
+		if (loader) {
+			return <div className="blue-loader" />;
+		}
+	}
+
 	render() {
 		const {
 			match: { params: { id } }, form, contracts,
@@ -192,6 +214,7 @@ class VerifyContract extends React.Component {
 			lineNumbers: true,
 			readOnly: form.get('loading'),
 		};
+		console.log('render timer', this.state.timer);
 
 		return (
 			<div className="table-container inner-information-container inner-page with-d-table verify-contract">
@@ -230,7 +253,8 @@ class VerifyContract extends React.Component {
 							/>
 						</div>
 						<span className="action-description">or copy/past contract code in textarea</span>
-						{loader && <div className="blue-loader" />}
+						{/*{loader && <div className="blue-loader" />}*/}
+						{this.showLoader(loader)}
 					</div>
 
 					<div className="code-block">
