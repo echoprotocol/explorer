@@ -61,7 +61,6 @@ class SearchField extends React.Component {
 
 		this.timeoutSearch = setTimeout(() => {
 			this.props.getHints(value);
-			console.log('onChange', value)
 		}, 300);
 	}
 

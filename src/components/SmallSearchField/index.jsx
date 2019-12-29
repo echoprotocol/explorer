@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
-import { ERROR_BLOCK_SEARCH } from '../../constants/SearchConstants';
 
 
 class SearchField extends React.Component {
@@ -44,8 +43,6 @@ class SearchField extends React.Component {
 			inputValue: value,
 		});
 
-		// this.props.getHints(value);
-
 		clearTimeout(this.searchTimeout);
 		this.searchTimeout = setTimeout(() => {
 			this.props.getHints(value);
@@ -59,7 +56,7 @@ class SearchField extends React.Component {
 		const {	latestBlock } = this.props;
 
 		clearTimeout(this.searchTimeout);
-		this.goToBlock(this.state.inputValue, latestBlock);
+		this.changeLoadingStatus(this.state.inputValue, latestBlock);
 	}
 
 	onKeyPress(e) {
@@ -69,7 +66,7 @@ class SearchField extends React.Component {
 
 		if (KEY_CODE_ENTER === code) {
 			clearTimeout(this.searchTimeout);
-			this.goToBlock(value, latestBlock);
+			this.changeLoadingStatus(value, latestBlock);
 		}
 
 		if (KEY_CODE_ESC === code) {
@@ -107,15 +104,11 @@ class SearchField extends React.Component {
 		});
 	}
 
-	goToBlock(value, latestBlock) {
+	changeLoadingStatus(value, latestBlock) {
 		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
 		this.props.setLoading();
 		this.props.getHints(value);
-		// this.props.transitionToBlock(value);
-		// setTimeout(() => this.props.transitionToBlock(), 250);
 	}
-
-
 
 	render() {
 
@@ -124,9 +117,8 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, errorSearch, connectionError,
+			small, placeholder, white, withHelp, goToBlock, errorSearch,
 		} = this.props;
-		console.log('errorSearch connectionError', connectionError);
 
 		return (
 			<div
@@ -177,7 +169,7 @@ class SearchField extends React.Component {
 								{errorSearch && (
 									<div className="element no-results">
 										<div className="warn" />
-										<div className="text">{errorSearch}</div> {/*ERROR_BLOCK_SEARCH*/}
+										<div className="text">{errorSearch}</div>
 									</div>
 								)}
 							</div>)
@@ -197,7 +189,6 @@ SearchField.propTypes = {
 	errorSearch: PropTypes.string,
 	placeholder: PropTypes.string,
 	getHints: PropTypes.func,
-	transitionToBlock: PropTypes.func,
 	latestBlock: PropTypes.number,
 };
 
@@ -209,7 +200,6 @@ SearchField.defaultProps = {
 	errorSearch: '',
 	placeholder: '',
 	getHints: () => {},
-	transitionToBlock: () => {},
 	latestBlock: '',
 };
 

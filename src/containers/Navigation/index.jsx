@@ -10,8 +10,6 @@ class Navigation extends React.Component {
 		const {
 			history, hints, getHints, loadingSearch, errorSearch,
 		} = this.props;
-		console.log('Navigation hints', hints)
-
 		return (
 			<div className="wrap">
 				<Header

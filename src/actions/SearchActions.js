@@ -300,7 +300,6 @@ class SearchActions extends BaseActionsClass {
      * @returns {function}
      */
 	headerSearchHint(str) {
-		console.log('headerSearchHint str', str);
 
 		return async (dispatch) => {
 			dispatch(this.initSearch('headerSearch'));
@@ -363,9 +362,7 @@ class SearchActions extends BaseActionsClass {
 						hints.push(blockHint);
 					}
 				}
-				if (!hints.length) {
-					throw new Error(DEFAULT_ERROR_SEARCH);
-				}
+				if (!hints.length) throw new Error(DEFAULT_ERROR_SEARCH);
 			} catch (error) {
 				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
 			} finally {
