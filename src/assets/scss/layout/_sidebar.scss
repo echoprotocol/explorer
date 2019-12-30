@@ -1,37 +1,86 @@
 .sidebar {
-	width: 100%;
-	padding-left: 70px;
-	padding-top: 25px;
 	height: 100%;
 
-	@include max-vw(1535) {
-		padding-left: 50px;
+	@include min-vw($hd - 1) {
+		max-width: 480px;
+		width: calc(100vw - 967px);
+		margin: 20px 40px 0 auto;
 	}
 
-	@include max-vw(1279) {
-		padding: 30px 22px 5px;
-	}
-
-	@include res-768 {
-		padding: 30px 22px 5px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-
-	}
-
-	@include res-500 {
-		padding: 36px 18px 0px;
-
-	}
-
-	@include max-vw(500) {
-		width: calc(100% + 40px);
-		padding: 0px;
-		margin: 0 -20px;
+	@include min-vw(1535) {
+		width: 330px;
+		margin: 20px 40px 0 auto;
 	}
 
 
+	@include min-vw($xl - 1) {
+		width: 357px;
+		margin: 20px 0 0 auto;
+	}
+
+
+	.sticky-wrap {
+
+		@include min-vw($hd - 1) {
+			max-width: 480px;
+			width: calc(100vw - 967px);
+
+			.help-container {
+				position: relative;
+				z-index: 2;
+				background-color: #fff;
+			}
+
+			.info-container {
+				z-index: 0;
+
+				@include max-vh(800) {
+					opacity: 0;
+					transition: opacity .2s;
+
+					&.fixed {
+						display: block;
+						opacity: 1;
+					}
+				}
+
+				@include max-vh(640) {
+					&.fixed {
+						opacity: 0;
+						display: none
+					}
+				}
+
+				position: fixed;
+				bottom: 0;
+			}
+
+		}
+
+
+		@include min-vw(1535) {
+			display: flex;
+			flex-direction: column;
+			width: 330px;
+
+			&.sticky {
+				height: calc(100vh - 50px);
+				position: fixed;
+				top: 50px;
+
+				.info-container {
+					position: relative;
+				}
+			}
+		}
+
+		@include min-vw($xl - 1) {
+			width: 357px;
+		}
+
+
+
+	}
 
 	.info-container {
 		padding-top: 60px;
@@ -60,7 +109,6 @@
 
 .recent-block-list {
 	width: 100%;
-	max-width: 360px;
 	margin: 0 0 auto 0;
 
 	@include max-vw(1279) {
@@ -74,11 +122,12 @@
 	}
 
 	.block {
-		margin-bottom: 16px;
+
 		padding-bottom: 10px;
 
 		&:not(:last-child) {
 			border-bottom: 1px solid #e2e3e7;
+			margin-bottom: 26px;
 		}
 
 		@include max-vw(1279) {
@@ -129,21 +178,12 @@
 
 	.block-title {
 		@include Hack_Bold;
-		font-size: 12px;
-		letter-spacing: 0.25em;
-		line-height: 15px;
-		margin-bottom: 8px;
+		font-size: 9px;
+		letter-spacing: 2.25px;
+		line-height: 16px;
+		margin-bottom: 4px;
 		color: #130d32;
 		text-transform: uppercase;
-
-		@include max-vw(1279) {
-			margin-bottom: 20px;
-			font-size: 9px;
-			letter-spacing: 2.25px;
-			line-height: 16px;
-			margin-bottom: 0;
-			height: 35px;
-		}
 
 		@include max-vw(500) {
 			margin: 0 0 auto;

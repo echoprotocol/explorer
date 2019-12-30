@@ -1,18 +1,10 @@
 import React from 'react';
 
-class LoadMoreBtn extends React.Component {
+export default function loadMoreBtn() {
 
-	render() {
-		return (
-			<React.Fragment>
-				<div className="load-more-container">
-					<div className="loader" />
-				</div>
-			</React.Fragment>
-		);
-
-	}
-
+	return (
+		<div className="load-more-container">
+			<div className="loader" />
+		</div>
+	);
 }
-
-export default LoadMoreBtn;

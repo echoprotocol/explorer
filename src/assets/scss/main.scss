@@ -13,7 +13,7 @@
 
 @import 'layout/header';
 @import 'layout/preparing-section';
-@import 'layout/recent-block-section';
+@import 'layout/recent-blocks-section';
 @import 'layout/sidebar';
 
 
@@ -29,11 +29,13 @@
 
 @import "components/page-header";
 @import 'components/sticky-wrap';
-@import "components/table";
+
+@import 'components/table-label';
+@import "components/tables/recent-blocks-table";
 @import "components/tables/table-contract";
 @import "components/tables/table-block";
 @import "components/tables/table-account";
-@import "components/tables/table-transaction";
+@import 'components/tables/distribution-table';
 
 @import "components/input-search-block";
 @import "components/tooltip";
@@ -57,6 +59,4 @@
 @import 'components/operation-detail-table';
 @import 'components/token-transfer-table';
 @import 'components/node-map';
-@import 'components/_view-list-container';
-@import 'components/table-label';
-@import 'components/distribution-table';
+@import 'components/view-list-container';

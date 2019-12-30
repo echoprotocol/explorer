@@ -1,27 +1,25 @@
 .preparing-section {
 	padding-bottom: 10px;
 	display: flex;
-	padding-right: 0;
 
-	@include res-1280 {
-		padding: 0px 20px 10px;
+	@include max-vw($xl - 1) {
+		padding: 0px 0 10px;
 	}
 
 	@include res-768 {
 		display: flex;
 		justify-content: space-between;
-		padding: 0px 23px 10px;
+		padding: 0px 0 10px;
 	}
 
 	@include res-500 {
-		padding: 0px 29px 0px 18px;
+		padding: 0;
 	}
 
 	@include res-320 {
 		padding-left: 15px;
 		padding-right: 15px;
 		flex-direction: column;
-		padding-bottom: 0px;
 	}
 
 	.mobile-title {

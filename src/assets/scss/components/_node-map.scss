@@ -38,13 +38,13 @@
 	border-bottom: 1px solid rgba(#707070, .2);
 	padding: 10px 0px;
 	padding-right: 40px;
-	padding-left: calc((100vw - 1440px) / 2);
+	padding-left: calc((100vw - $wrap-width+'px') / 2);
 
 	@include max-vw(1534) {
-		padding-left: calc(((100vw - 1440px) / 2) + 30px);
+		padding-left: calc(((100vw - $wrap-width+'px') / 2) + 30px);
 	}
 
-	@include max-vw(1440) {
+	@include max-vw($wrap-width) {
 		padding-left: 47px;
 	}
 
