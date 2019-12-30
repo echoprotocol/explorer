@@ -190,6 +190,7 @@ SearchField.propTypes = {
 	placeholder: PropTypes.string,
 	getHints: PropTypes.func,
 	latestBlock: PropTypes.number,
+	setLoading: PropTypes.func,
 };
 
 SearchField.defaultProps = {
@@ -201,6 +202,7 @@ SearchField.defaultProps = {
 	placeholder: '',
 	getHints: () => {},
 	latestBlock: '',
+	setLoading: () => {},
 };
 
 export default SearchField;
