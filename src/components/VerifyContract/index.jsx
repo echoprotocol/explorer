@@ -41,13 +41,14 @@ class VerifyContract extends React.Component {
 		const { timeout, loader, timer } = this.state;
 		const { timeout: nextTimeout, loader: nextLoader } = nextState;
 
-		console.log('shouldComponentUpdate', timer > 0 && percentage !== nextPercentage);
-		if (timer > 0 && percentage !== nextPercentage) return true;
+		// console.log('shouldComponentUpdate', timer > 5 && percentage !== nextPercentage);
+		// console.log('loader !== nextLoader', loader !== nextLoader);
+		if (timer > 5 /*&& percentage !== nextPercentage*/) return true;
 
 		return !(form.get('code') !== nextForm.get('code') || timeout !== nextTimeout || (loader === nextLoader && nextLoader));
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps) {
 		const { form } = this.props;
 		const { form: prevForm } = prevProps;
 
@@ -195,13 +196,15 @@ class VerifyContract extends React.Component {
 		const { percentage	} = this.props;
 		console.log('percentage', percentage);
 
-		if (loader /*&& this.state.timer > 0*/) {
-			return <div id="show-percentage">{`HELLO ${percentage} %`}</div>;
-		}
-
-		// if (loader) {
-		// 	return <div className="blue-loader" />;
+		// console.log('loader && this.state.timer > 5', loader && this.state.timer > 5);
+		// if (loader && this.state.timer > 5) {
+		// 	return <div>{`HELLO ${percentage} %`}</div>;
 		// }
+
+		// console.log('loader', loader);
+		if (loader) {
+			return <div className="blue-loader" />;
+		}
 	}
 
 	render() {

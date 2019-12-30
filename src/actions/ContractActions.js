@@ -251,27 +251,36 @@ class ContractActions extends BaseActionsClass {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
 				// await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
 
-				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
-				const total = Number(response.headers.get('content-length'));
-				console.log('total', total);
 
-				const reader = response.body.getReader();
-				let bytesReceived = 0;
+				const script = document.createElement('script');
+				script.async = true;
+				script.src = `${__SOLC_BIN_URL__}${compilerBuild.get('path')}`;
 
-				const div = document.createElement('div');
-				console.log('div', div);
+				script.onreadystatechange = async () => {
+					const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
+					document.getElementsByTagName('head')[0].appendChild(script);
+					const total = Number(response.headers.get('content-length'));
 
-				while (true) {
-					const result = await reader.read();
-					if (result.done) {
-						console.log('Fetch complete');
-						break;
+					const reader = response.body.getReader();
+					let bytesReceived = 0;
+
+					while (true) {
+						const result = await reader.read();
+						if (result.done) {
+							dispatch(this.setValue('percentage', 0));
+							document.getElementsByTagName('head')[0].appendChild(script);
+							break;
+						}
+						bytesReceived += result.value.length;
+						const progress = Math.round((bytesReceived * 100) / (total * 4.8))
+						dispatch(this.setValue('percentage', progress));
+						console.log('Received', bytesReceived, 'bytes of data so far');
 					}
-					bytesReceived += result.value.length;
-					dispatch(this.setValue('percentage', bytesReceived));
-					console.log('Received', bytesReceived, 'bytes of data so far');
-				}
+				};
 
+				script.onload = () => {
+					document.getElementsByTagName('head')[0].appendChild(script);
+				};
 
 			}
 
