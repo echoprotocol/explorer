@@ -81,10 +81,10 @@ class RecentBlockTable extends React.Component {
 		});
 	}
 
-	transitionToBlock() {
-		const { errorSearch, hints: [hint] } = this.props;
-		if (errorSearch) return;
-		this.props.history.push(hint.to);
+	setLoading() {
+		this.setState({
+			loading: true,
+		});
 	}
 
 	goToBlock(e, block) {
@@ -93,10 +93,10 @@ class RecentBlockTable extends React.Component {
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
 	}
 
-	setLoading() {
-		this.setState({
-			loading: true
-		})
+	transitionToBlock() {
+		const { errorSearch, hints: [hint] } = this.props;
+		if (errorSearch) return;
+		this.props.history.push(hint.to);
 	}
 
 	render() {

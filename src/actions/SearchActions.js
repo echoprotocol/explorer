@@ -2,7 +2,7 @@ import echo, { validators } from 'echojs-lib';
 
 import SearchReducer from '../reducers/SearchReducer';
 
-import {SEARCH_LIMIT, DEFAULT_ERROR_SEARCH, ERROR_BLOCK_SEARCH } from '../constants/SearchConstants';
+import { SEARCH_LIMIT, DEFAULT_ERROR_SEARCH, ERROR_BLOCK_SEARCH } from '../constants/SearchConstants';
 import {
 	ACCOUNT_OBJECT_PREFIX,
 	ASSET_OBJECT_PREFIX,
