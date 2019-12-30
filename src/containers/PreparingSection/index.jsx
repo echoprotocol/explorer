@@ -191,7 +191,7 @@ class PreparingSection extends React.Component {
 						<Media query="(max-width: 499px)">
 							{(matches) =>
 								(matches ? (
-									<p className="mobile-title">Next block</p>
+									<p className="mobile-title">{`Next block ${preparingBlock}`}</p>
 								) : (
 									<SimplePreparingBlock
 										title="Next block"
