@@ -8,6 +8,7 @@ import infoIcon from '../../assets/images/icons/info.svg';
 import infoHoverIcon from '../../assets/images/icons/info-hover.svg';
 import infoWhiteIcon from '../../assets/images/icons/info-white.svg';
 import URLHelper from '../../helpers/URLHelper';
+import ActionButton from '../ActionButton';
 
 class Verify extends Component {
 
@@ -95,10 +96,7 @@ class Verify extends Component {
 						</button>
 					</Tooltip>
 				</div>
-				<button className="action-button" onClick={() => this.props.history.push(URLHelper.createVerifyContractUrl(id))}>
-					<span className="content">Verify</span>
-				</button>
-
+				<ActionButton value="Verify" action={() => this.props.history.push(URLHelper.createVerifyContractUrl(id))} />
 			</div>
 		);
 	}

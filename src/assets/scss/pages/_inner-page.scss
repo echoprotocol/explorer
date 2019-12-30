@@ -2,22 +2,28 @@
 	&.table-container {
 		min-height: calc(100vh - 305px);
 	}
-}
-
-.inner-page {
-	.backwards {
-		margin: 0 0 15px 0;
-
-		@include res-768 {
-			margin: 30px 0 0 0;
-		}
-	}
 
 	.account-page-t-block {
 		display: flex;
 		align-items: center;
 		margin: 0;
 		margin-left: 26px;
+
+		@include res-1000 {
+			padding: 0;
+		}
+
+		@include res-500 {
+			padding: 0;
+
+			.title {
+				padding: 0;
+			}
+		}
+
+		@include res-320 {
+			margin-left: 0;
+		}
 
 		.title,
 		.icon {
@@ -39,21 +45,13 @@
 			margin-right: 14px;
 			display: flex;
 
+			@include res-320 {
+				display: none;
+			}
+
 			img {
 				width: 32px;
 				height: 32px;
-			}
-		}
-
-		@include res-1000 {
-			padding: 0;
-		}
-
-		@include res-500 {
-			padding: 0;
-
-			.title {
-				padding: 0;
 			}
 		}
 	}
@@ -161,30 +159,5 @@
 		align-items: center;
 		justify-content: flex-end;
 		padding: 33px 47px 43px;
-	}
-}
-
-.inner-information-container.inner-page {
-	.backwards {
-		@include res-320 {
-			padding-top: 50px;
-			padding-left: 17px;
-		}
-
-		.account-page-t-block {
-
-			@include res-1000 {
-				padding-left: 0px;
-			}
-
-			@include res-768 {
-				padding-left: 0px;
-				margin-left: 0px;
-			}
-
-			@include res-320 {
-				padding: 0;
-			}
-		}
 	}
 }

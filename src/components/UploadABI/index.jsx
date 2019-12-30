@@ -6,6 +6,7 @@ import URLHelper from '../../helpers/URLHelper';
 import { CONTRACT_ABI } from '../../constants/RouterConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import { ContractIcon } from '../Contract/ContractIcon';
+import ActionButton from '../ActionButton';
 
 require('codemirror/mode/xml/xml.js');
 require('codemirror/mode/javascript/javascript.js');
@@ -57,7 +58,7 @@ class UploadABI extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="table-container inner-information-container inner-page with-d-table">
+			<div className="table-container inner-page">
 				<div className="backwards">
 					<a
 						href=""
@@ -79,12 +80,7 @@ class UploadABI extends React.Component {
 					</div>
 					<div className="code-action">
 						<div className="action-button-wrap">
-							<label
-								className="action-button"
-								htmlFor="upload-abi"
-							>
-								Upload new ABI
-							</label>
+							<ActionButton labelFor="upload-abi" value="Upload new ABI" />
 							<input
 								type="file"
 								name="upload-abi"

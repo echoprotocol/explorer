@@ -58,7 +58,7 @@ class TransactionsInfo extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="table-container transaction inner-information-container transaction-information with-d-table">
+				<div className="table-container transaction transaction-information">
 					<BreadCrumbs breadcrumbs={breadcrumbs} />
 					<PageHeader
 						title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}

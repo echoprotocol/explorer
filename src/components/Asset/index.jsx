@@ -15,6 +15,7 @@ import {
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import PageHeader from '../PageHeader';
 
 class Asset extends React.Component {
 
@@ -72,7 +73,7 @@ class Asset extends React.Component {
 
 		return (
 			<div className="asset-container">
-				<div className="title">Asset: {assetSymbol}</div>
+				<PageHeader title={`Asset: ${assetSymbol}`} />
 				<div className="help-container">
 					<div className="asset-elem">
 						<div className="title">Asset info</div>
