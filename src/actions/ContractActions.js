@@ -249,39 +249,49 @@ class ContractActions extends BaseActionsClass {
 
 			if (!downloadedVersions.includes(version)) {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
-				// await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
 
+				// eslint-disable-next-line no-undef
+				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
+				const total = Number.parseInt(response.headers.get('content-length'), 10);
+				console.log('total', total);
+				const reader = response.body.getReader();
+				let bytesReceived = 0;
+				const chunks = [];
+
+				while (true) {
+					// eslint-disable-next-line no-await-in-loop
+					const { done, value } = await reader.read();
+					if (done) {
+						dispatch(this.setValue('progress', 0));
+						break;
+					}
+
+					chunks.push(value);
+					bytesReceived += value.byteLength;
+
+					const progress = Math.round((bytesReceived * 100) / (total));
+					console.log('bytesReceived 123123', progress);
+					dispatch(this.setValue('progress', progress));
+				}
+
+				const chunksAll = new Uint8Array(bytesReceived);
+				let position = 0;
+
+				// eslint-disable-next-line no-restricted-syntax
+				for (const chunk of chunks) {
+					chunksAll.set(chunk, position);
+					position += chunk.length;
+				}
 
 				const script = document.createElement('script');
-				script.async = true;
-				script.src = `${__SOLC_BIN_URL__}${compilerBuild.get('path')}`;
+				const result = new TextDecoder('utf-8').decode(chunksAll);
+				script.innerHTML = result;
 
-				script.onreadystatechange = async () => {
-					const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
-					document.getElementsByTagName('head')[0].appendChild(script);
-					const total = Number(response.headers.get('content-length'));
+				if (window.Module) {
+					window.Module = undefined;
+				}
 
-					const reader = response.body.getReader();
-					let bytesReceived = 0;
-
-					while (true) {
-						const result = await reader.read();
-						if (result.done) {
-							dispatch(this.setValue('percentage', 0));
-							document.getElementsByTagName('head')[0].appendChild(script);
-							break;
-						}
-						bytesReceived += result.value.length;
-						const progress = Math.round((bytesReceived * 100) / (total * 4.8))
-						dispatch(this.setValue('percentage', progress));
-						console.log('Received', bytesReceived, 'bytes of data so far');
-					}
-				};
-
-				script.onload = () => {
-					document.getElementsByTagName('head')[0].appendChild(script);
-				};
-
+				document.getElementsByTagName('head')[0].appendChild(script);
 			}
 
 			const code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);

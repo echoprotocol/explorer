@@ -36,14 +36,12 @@ class VerifyContract extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { form, percentage } = this.props;
-		const { form: nextForm, percentage: nextPercentage } = nextProps;
+		const { form, progress } = this.props;
+		const { form: nextForm, progress: nextProgress } = nextProps;
 		const { timeout, loader, timer } = this.state;
 		const { timeout: nextTimeout, loader: nextLoader } = nextState;
 
-		// console.log('shouldComponentUpdate', timer > 5 && percentage !== nextPercentage);
-		// console.log('loader !== nextLoader', loader !== nextLoader);
-		if (timer > 5 /*&& percentage !== nextPercentage*/) return true;
+		if (timer > 5 && progress !== nextProgress) return true;
 
 		return !(form.get('code') !== nextForm.get('code') || timeout !== nextTimeout || (loader === nextLoader && nextLoader));
 	}
@@ -70,7 +68,10 @@ class VerifyContract extends React.Component {
 			this.setState({ timer: this.state.timer += 1 });
 		}, 1000);
 		await this.props.changeContractCompiler(e.target.textContent);
-		this.setState({ loader: false });
+		this.setState({
+			loader: false,
+			timer: 0,
+		});
 		clearInterval(this.intervalId);
 	}
 
@@ -123,7 +124,6 @@ class VerifyContract extends React.Component {
 			this.backwards.current.focus();
 			return;
 		}
-
 		if (e.which === KEY_CODES.TAB_CODE) {
 			e.preventDefault();
 			this.checkboxEVM.current.focus();
@@ -193,18 +193,17 @@ class VerifyContract extends React.Component {
 	}
 
 	showLoader(loader) {
-		const { percentage	} = this.props;
-		console.log('percentage', percentage);
+		const { progress	} = this.props;
 
-		// console.log('loader && this.state.timer > 5', loader && this.state.timer > 5);
-		// if (loader && this.state.timer > 5) {
-		// 	return <div>{`HELLO ${percentage} %`}</div>;
-		// }
+		if (loader && this.state.timer > 5) {
+			return <div className="progress-render">{`${progress}%`}</div>;
+		}
 
-		// console.log('loader', loader);
 		if (loader) {
 			return <div className="blue-loader" />;
 		}
+
+		return null;
 	}
 
 	render() {
@@ -217,7 +216,6 @@ class VerifyContract extends React.Component {
 			lineNumbers: true,
 			readOnly: form.get('loading'),
 		};
-		console.log('render timer', this.state.timer);
 
 		return (
 			<div className="table-container inner-information-container inner-page with-d-table verify-contract">
@@ -256,7 +254,6 @@ class VerifyContract extends React.Component {
 							/>
 						</div>
 						<span className="action-description">or copy/past contract code in textarea</span>
-						{/*{loader && <div className="blue-loader" />}*/}
 						{this.showLoader(loader)}
 					</div>
 
@@ -400,12 +397,12 @@ VerifyContract.propTypes = {
 	changeContractCompiler: PropTypes.func.isRequired,
 	contractVerifyApprove: PropTypes.func.isRequired,
 	updateConstructorParamsForm: PropTypes.func.isRequired,
-	percentage: PropTypes.number,
+	progress: PropTypes.number,
 };
 
 VerifyContract.defaultProps = {
 	historyLength: 0,
-	percentage: 0,
+	progress: 0,
 };
 
 export default VerifyContract;
