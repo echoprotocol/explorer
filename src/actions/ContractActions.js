@@ -249,7 +249,30 @@ class ContractActions extends BaseActionsClass {
 
 			if (!downloadedVersions.includes(version)) {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
-				await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
+				// await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
+
+				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
+				const total = Number(response.headers.get('content-length'));
+				console.log('total', total);
+
+				const reader = response.body.getReader();
+				let bytesReceived = 0;
+
+				const div = document.createElement('div');
+				console.log('div', div);
+
+				while (true) {
+					const result = await reader.read();
+					if (result.done) {
+						console.log('Fetch complete');
+						break;
+					}
+					bytesReceived += result.value.length;
+					dispatch(this.setValue('percentage', bytesReceived));
+					console.log('Received', bytesReceived, 'bytes of data so far');
+				}
+
+
 			}
 
 			const code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
