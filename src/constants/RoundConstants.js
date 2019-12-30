@@ -11,11 +11,10 @@ export const BBA_TIP = 'Chosen verifiers should reach an agreement to apply the 
 export const rounderSteps = {
 	[ROUND_STARTED]: {
 		status: ROUND_STARTED,
-		title: 'Started',
+		title: 'Waiting for proposals',
 	},
 	[BLOCK_PRODUCED]: {
 		status: BLOCK_PRODUCED,
-		title: 'Block proposals',
 	},
 	[GC_STARTED]: {
 		status: GC_STARTED,
