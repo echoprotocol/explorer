@@ -339,7 +339,7 @@ class SearchActions extends BaseActionsClass {
 	 */
 	blockSearchHint(str) {
 		return async (dispatch) => {
-			dispatch(this.initSearch('blockSearch'));v
+			dispatch(this.initSearch('blockSearch'));
 			const hints = [];
 
 			try {
