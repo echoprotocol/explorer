@@ -253,7 +253,6 @@ class ContractActions extends BaseActionsClass {
 				// eslint-disable-next-line no-undef
 				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
 				const total = Number.parseInt(response.headers.get('content-length'), 10);
-				console.log('total', total);
 				const reader = response.body.getReader();
 				let bytesReceived = 0;
 				const chunks = [];
@@ -267,10 +266,9 @@ class ContractActions extends BaseActionsClass {
 					}
 
 					chunks.push(value);
-					bytesReceived += value.byteLength;
+					bytesReceived += value.length;
 
-					const progress = Math.round((bytesReceived * 100) / (total));
-					console.log('bytesReceived 123123', progress);
+					const progress = Math.round((bytesReceived * 100) / (total * 4.8));
 					dispatch(this.setValue('progress', progress));
 				}
 
@@ -284,8 +282,7 @@ class ContractActions extends BaseActionsClass {
 				}
 
 				const script = document.createElement('script');
-				const result = new TextDecoder('utf-8').decode(chunksAll);
-				script.innerHTML = result;
+				script.innerHTML = new TextDecoder('utf-8').decode(chunksAll);
 
 				if (window.Module) {
 					window.Module = undefined;
@@ -293,7 +290,6 @@ class ContractActions extends BaseActionsClass {
 
 				document.getElementsByTagName('head')[0].appendChild(script);
 			}
-
 			const code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
 			if (!code) {
 				return;

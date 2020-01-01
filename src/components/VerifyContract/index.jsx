@@ -193,7 +193,7 @@ class VerifyContract extends React.Component {
 	}
 
 	showLoader(loader) {
-		const { progress	} = this.props;
+		const { progress } = this.props;
 
 		if (loader && this.state.timer > 5) {
 			return <div className="progress-render">{`${progress}%`}</div>;
