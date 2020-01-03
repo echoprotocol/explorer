@@ -268,7 +268,7 @@ class ContractActions extends BaseActionsClass {
 					chunks.push(value);
 					bytesReceived += value.length;
 
-					const progress = Math.round((bytesReceived * 100) / (total * 4.8));
+					const progress = Math.min(99, Math.floor((bytesReceived * 100) / (total * 4.8)));
 					dispatch(this.setValue('progress', progress));
 				}
 
