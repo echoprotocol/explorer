@@ -2,7 +2,7 @@ import echo, { validators } from 'echojs-lib';
 
 import SearchReducer from '../reducers/SearchReducer';
 
-import { SEARCH_LIMIT, DEFAULT_ERROR_SEARCH } from '../constants/SearchConstants';
+import { SEARCH_LIMIT, DEFAULT_ERROR_SEARCH, ERROR_BLOCK_SEARCH } from '../constants/SearchConstants';
 import {
 	ACCOUNT_OBJECT_PREFIX,
 	ASSET_OBJECT_PREFIX,
@@ -322,7 +322,7 @@ class SearchActions extends BaseActionsClass {
 					return;
 				}
 
-				hints = await this.searchObjectByName(str);
+				hints = await this.searchObjectByName(str.toLocaleLowerCase());
 			} catch (error) {
 				dispatch(this.setValue(['headerSearch', 'error'], FormatHelper.formatError(error), false));
 			} finally {
@@ -361,7 +361,7 @@ class SearchActions extends BaseActionsClass {
 						hints.push(blockHint);
 					}
 				}
-				if (!hints.length) throw new Error(DEFAULT_ERROR_SEARCH);
+				if (!hints.length) throw new Error(ERROR_BLOCK_SEARCH);
 			} catch (error) {
 				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
 			} finally {
