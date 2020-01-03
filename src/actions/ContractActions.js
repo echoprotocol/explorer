@@ -320,8 +320,11 @@ class ContractActions extends BaseActionsClass {
 		return async (dispatch, getState) => {
 			const ownerName = getState().contract.getIn(['owner', 'name']);
 			const ownerId = getState().contract.getIn(['owner', 'id']);
-			const activeId = getState().global.getIn(['activeAccount', 'id']);
-
+			const activeId = BridgeService.getAccount().id;
+			// const activeId = getState().global.getIn(['activeAccount', 'id']);
+			console.log('bbbb', JSON.stringify(BridgeService.getAccount()))
+			console.log('active', activeId)
+			console.log('owner', ownerId)
 			if (activeId !== ownerId) {
 				dispatch(ModalActions.openModal(
 					MODAL_ERROR,
@@ -331,31 +334,50 @@ class ContractActions extends BaseActionsClass {
 			}
 
 			try {
+				console.log(1)
 				if (clickSaveCounter > 4) return;
+				console.log(2)
 				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
+				console.log(3)
 
 				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
-				if (!isAccessBridge) return;
+				console.log(3.1)
+				if (!isAccessBridge) {
+					return;
+					// const a = await BridgeService.getAccess();
+					// console.log(a)
+				}
+				console.log(4)
 
 				const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
 				if (!isExistActiveAccount) return;
+				console.log(5)
 
 				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 				const message = ContractHelper.getMessageToManageContract(contractId);
 				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
+				console.log(6)
 
 				const formData = new FormData();
 				formData.append('signature', signature);
 				formData.append('message', message);
 				formData.append('name', name);
+				console.log(7)
+
 				if (icon) {
 					formData.append('icon', icon);
 				}
+				console.log(9)
+
 				if (description) {
 					formData.append('description', description);
 				}
+				console.log(10)
+
 				formData.append('accountId', activeAccountId);
+				console.log(11)
 				const result = await ApiService.changeContract(contractId, formData);
+				console.log(12)
 
 				dispatch(this.setMultipleValue({
 					name: result.name,

@@ -23,6 +23,7 @@ export class BridgeService {
 
 	static getAccount() {
 		const { activeAccount } = window.echojslib.extension;
+		console.log('bridge', activeAccount)
 		if (activeAccount) {
 			this.getAccess();
 		}
