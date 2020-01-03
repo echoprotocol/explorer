@@ -249,9 +249,47 @@ class ContractActions extends BaseActionsClass {
 
 			if (!downloadedVersions.includes(version)) {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
-				await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
-			}
 
+				// eslint-disable-next-line no-undef
+				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
+				const total = Number.parseInt(response.headers.get('content-length'), 10);
+				const reader = response.body.getReader();
+				let bytesReceived = 0;
+				const chunks = [];
+
+				while (true) {
+					// eslint-disable-next-line no-await-in-loop
+					const { done, value } = await reader.read();
+					if (done) {
+						dispatch(this.setValue('progress', 0));
+						break;
+					}
+
+					chunks.push(value);
+					bytesReceived += value.length;
+
+					const progress = Math.min(99, Math.floor((bytesReceived * 100) / (total * 4.8)));
+					dispatch(this.setValue('progress', progress));
+				}
+
+				const chunksAll = new Uint8Array(bytesReceived);
+				let position = 0;
+
+				// eslint-disable-next-line no-restricted-syntax
+				for (const chunk of chunks) {
+					chunksAll.set(chunk, position);
+					position += chunk.length;
+				}
+
+				const script = document.createElement('script');
+				script.innerHTML = new TextDecoder('utf-8').decode(chunksAll);
+
+				if (window.Module) {
+					window.Module = undefined;
+				}
+
+				document.getElementsByTagName('head')[0].appendChild(script);
+			}
 			const code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
 			if (!code) {
 				return;
