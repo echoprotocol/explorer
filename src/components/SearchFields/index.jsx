@@ -48,7 +48,7 @@ class SearchField extends React.Component {
 	}
 
 	onChange(e) {
-		const value = e.target.value.toLowerCase();
+		const { value } = e.target;
 
 		this.setState({
 			isChange: !!value.length,
@@ -155,6 +155,8 @@ class SearchField extends React.Component {
 		const {
 			small, placeholder, white, withHelp, goToBlock, hints, errorSearch,
 		} = this.props;
+
+		console.log('hints', hints);
 
 		const options = hints
 			.map(({
