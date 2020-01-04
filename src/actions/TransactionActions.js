@@ -246,7 +246,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		};
 	}
 
-	async getPrecision(echo, contractId) {
+	async getPrecision(contractId) {
 		const rawResult = await echo.api.callContractNoChangingState(
 			contractId,
 			NATHAN.ID,
@@ -450,7 +450,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					const symbol = FormatHelper
 						.toUtf8((await echo.api.callContractNoChangingState(contractId, NATHAN.ID, { asset_id: ECHO_ASSET.ID, amount: 0 }, ERC20_HASHES['symbol()'])).slice(128));
 
-					const precision = await this.getPrecision(echo, contractId);
+					const precision = await this.getPrecision(contractId);
 
 					let internalTransfers = log
 						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === contractId);
