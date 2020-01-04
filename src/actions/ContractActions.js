@@ -10,7 +10,7 @@ import {
 	MIN_ACCESS_VERSION_BUILD,
 } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
-import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
+import { MODAL_ERROR, MODAL_SUCCESS, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
 import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
 import { CONTRACT_ABI } from '../constants/RouterConstants';
 
@@ -357,16 +357,26 @@ class ContractActions extends BaseActionsClass {
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
 
-			const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
-			if (!isAccessBridge) return;
+			if (!BridgeService.isExist()) {
+				dispatch(ModalActions.openModal(MODAL_EXTENSION_INFO, {}));
+				return;
+			}
 
 			const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
 			if (!isExistActiveAccount) return;
 
 			const ownerName = getState().contract.getIn(['owner', 'name']);
 			const ownerId = getState().contract.getIn(['owner', 'id']);
-			const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
-
+			let activeAccountId = getState().global.getIn(['activeAccount', 'id']) || BridgeService.getAccount().id;
+			if (!activeAccountId) {
+				const access = await BridgeService.getAccess();
+				if (!access) return;
+				await new Promise((resolve) =>
+					setTimeout(() => {
+						resolve();
+					}, 300));
+				activeAccountId = BridgeService.getAccount().id;
+			}
 			if (activeAccountId !== ownerId) {
 				dispatch(ModalActions.openModal(
 					MODAL_ERROR,
