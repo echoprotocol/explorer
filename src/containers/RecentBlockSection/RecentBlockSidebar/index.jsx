@@ -31,7 +31,7 @@ class RecentBlockSidebar extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if (this.props.latestBlock !== nextProps.latestBlock) {
+		if (this.state.startTimestamp !== nextProps.startTimestamp) {
 			this.setState({
 				timer: 0,
 				startTimestamp: this.props.startTimestamp,

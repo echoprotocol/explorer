@@ -18,10 +18,12 @@ class VerifyContract extends React.Component {
 		this.state = {
 			loader: false,
 			timeout: null,
+			timer: 0,
 		};
 
 		this.backwards = React.createRef();
 		this.checkboxEVM = React.createRef();
+		this.intervalId = 0;
 	}
 	componentDidMount() {
 		this.props.contractCompilerInit();
@@ -34,10 +36,12 @@ class VerifyContract extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { form } = this.props;
-		const { form: nextForm } = nextProps;
-		const { timeout, loader } = this.state;
+		const { form, progress } = this.props;
+		const { form: nextForm, progress: nextProgress } = nextProps;
+		const { timeout, loader, timer } = this.state;
 		const { timeout: nextTimeout, loader: nextLoader } = nextState;
+
+		if (timer > 5 && progress !== nextProgress) return true;
 
 		return !(form.get('code') !== nextForm.get('code') || timeout !== nextTimeout || (loader === nextLoader && nextLoader));
 	}
@@ -60,8 +64,15 @@ class VerifyContract extends React.Component {
 			return;
 		}
 		this.setState({ loader: true });
+		this.intervalId = setInterval(() => {
+			this.setState({ timer: this.state.timer += 1 });
+		}, 1000);
 		await this.props.changeContractCompiler(e.target.textContent);
-		this.setState({ loader: false });
+		this.setState({
+			loader: false,
+			timer: 0,
+		});
+		clearInterval(this.intervalId);
 	}
 
 	onChangeContract(e) {
@@ -113,7 +124,6 @@ class VerifyContract extends React.Component {
 			this.backwards.current.focus();
 			return;
 		}
-
 		if (e.which === KEY_CODES.TAB_CODE) {
 			e.preventDefault();
 			this.checkboxEVM.current.focus();
@@ -182,6 +192,20 @@ class VerifyContract extends React.Component {
 		event.target.value = null;
 	}
 
+	showLoader(loader) {
+		const { progress } = this.props;
+
+		if (loader && this.state.timer > 5 && !Number.isNaN(progress)) {
+			return <div className="progress-render">{`${progress}%`}</div>;
+		}
+
+		if (loader) {
+			return <div className="blue-loader" />;
+		}
+
+		return null;
+	}
+
 	render() {
 		const {
 			match: { params: { id } }, form, contracts,
@@ -230,7 +254,7 @@ class VerifyContract extends React.Component {
 							/>
 						</div>
 						<span className="action-description">or copy/past contract code in textarea</span>
-						{loader && <div className="blue-loader" />}
+						{this.showLoader(loader)}
 					</div>
 
 					<div className="code-block">
@@ -373,10 +397,12 @@ VerifyContract.propTypes = {
 	changeContractCompiler: PropTypes.func.isRequired,
 	contractVerifyApprove: PropTypes.func.isRequired,
 	updateConstructorParamsForm: PropTypes.func.isRequired,
+	progress: PropTypes.number,
 };
 
 VerifyContract.defaultProps = {
 	historyLength: 0,
+	progress: 0,
 };
 
 export default VerifyContract;

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
-import { ERROR_BLOCK_SEARCH } from '../../constants/SearchConstants';
 
 
 class SearchField extends React.Component {
@@ -47,7 +46,7 @@ class SearchField extends React.Component {
 		clearTimeout(this.searchTimeout);
 		this.searchTimeout = setTimeout(() => {
 			this.props.getHints(value);
-		}, 200);
+		}, 300);
 	}
 
 	onClick(e) {
@@ -56,7 +55,8 @@ class SearchField extends React.Component {
 		this.inputEl.focus();
 		const {	latestBlock } = this.props;
 
-		this.goToBlock(this.state.inputValue, latestBlock);
+		clearTimeout(this.searchTimeout);
+		this.changeLoadingStatus(this.state.inputValue, latestBlock);
 	}
 
 	onKeyPress(e) {
@@ -64,7 +64,10 @@ class SearchField extends React.Component {
 		const { value } = e.target;
 		const {	latestBlock	} = this.props;
 
-		if (KEY_CODE_ENTER === code) this.goToBlock(value, latestBlock);
+		if (KEY_CODE_ENTER === code) {
+			clearTimeout(this.searchTimeout);
+			this.changeLoadingStatus(value, latestBlock);
+		}
 
 		if (KEY_CODE_ESC === code) {
 			this.inputEl.blur();
@@ -101,12 +104,11 @@ class SearchField extends React.Component {
 		});
 	}
 
-	goToBlock(value, latestBlock) {
+	changeLoadingStatus(value, latestBlock) {
 		if (!this.state.inputValue || this.state.inputValue < 1 || this.state.inputValue > latestBlock) return;
+		this.props.setLoading();
 		this.props.getHints(value);
-		setTimeout(() => this.props.transitionToBlock(), 250);
 	}
-
 
 	render() {
 
@@ -167,7 +169,7 @@ class SearchField extends React.Component {
 								{errorSearch && (
 									<div className="element no-results">
 										<div className="warn" />
-										<div className="text">{ERROR_BLOCK_SEARCH}</div>
+										<div className="text">{errorSearch}</div>
 									</div>
 								)}
 							</div>)
@@ -187,8 +189,8 @@ SearchField.propTypes = {
 	errorSearch: PropTypes.string,
 	placeholder: PropTypes.string,
 	getHints: PropTypes.func,
-	transitionToBlock: PropTypes.func,
 	latestBlock: PropTypes.number,
+	setLoading: PropTypes.func,
 };
 
 SearchField.defaultProps = {
@@ -199,8 +201,8 @@ SearchField.defaultProps = {
 	errorSearch: '',
 	placeholder: '',
 	getHints: () => {},
-	transitionToBlock: () => {},
 	latestBlock: '',
+	setLoading: () => {},
 };
 
 export default SearchField;

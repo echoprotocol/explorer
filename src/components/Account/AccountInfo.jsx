@@ -11,11 +11,37 @@ import URLHelper from '../../helpers/URLHelper';
 
 class AccountInfo extends React.Component {
 
-	render() {
-		const { id, name, echo } = this.props;
-
+	renderEcho() {
+		const { echo } = this.props;
+		if (!echo) return <div className="val"><span className="txt">None</span></div>;
 		const assetAmount = FormatHelper.formatAmount(echo.amount, echo.asset.get('precision'));
+		return (
+			<div className="val">
+				<Media query="(max-width: 760px)">
+					{
+						(matches) => (matches ? (
+							<Tooltip
+								placement="top"
+								overlayClassName="verify-contract-tooltip"
+								trigger={['hover']}
+								overlay={assetAmount}
+							>
+								<span className="txt">{assetAmount}</span>
+							</Tooltip>
+						) : <span>{assetAmount}</span>)
+					}
+				</Media>
+				<span className="accent">
+					<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
+						&nbsp;{ECHO_ASSET.SYMBOL}
+					</Link>
+				</span>
+			</div>
+		);
+	}
 
+	render() {
+		const { id, name } = this.props;
 		return (
 			<div className="left-card">
 				<div className="line">
@@ -24,32 +50,7 @@ class AccountInfo extends React.Component {
 				</div>
 				<div className="line">
 					<div className="title">Echo balance</div>
-					{
-						echo ?
-							<div className="val">
-								<Media query="(max-width: 760px)">
-									{(matches) =>
-										(matches ? (
-											<Tooltip
-												placement="top"
-												overlayClassName="verify-contract-tooltip"
-												trigger={['hover']}
-												overlay={assetAmount}
-											>
-												<span className="txt">{assetAmount}</span>
-											</Tooltip>
-										) : (
-											<span>{assetAmount}</span>
-										))
-									}
-								</Media>
-								<span className="accent">
-									<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
-										&nbsp;{ECHO_ASSET.SYMBOL}
-									</Link>
-								</span>
-							</div> : <div className="val"><span className="txt">None</span></div>
-					}
+					{this.renderEcho()}
 				</div>
 				<div className="line">
 					<Link to={URLHelper.createObjectsUrl(id)} className="raw-link blue">

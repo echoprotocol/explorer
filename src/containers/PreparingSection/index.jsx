@@ -66,13 +66,19 @@ class PreparingSection extends React.Component {
 		return true;
 	}
 
-	getMobileData(stepProgress) {
+	getMobileData(stepProgress, readyProducers) {
 		let stepStatus = PROGRESS_STATUS;
 		if (stepProgress === rounderSteps[BLOCK_APPLIED_CALLBACK].status) {
 			stepStatus = DONE_STATUS;
 		}
+
+		let { title } = rounderSteps[stepProgress];
+		if (stepProgress === rounderSteps[BLOCK_PRODUCED].status) {
+			title = `Received ${readyProducers} proposals`;
+		}
+
 		return {
-			title: rounderSteps[stepProgress].title,
+			title,
 			status: stepStatus,
 		};
 	}
@@ -164,7 +170,7 @@ class PreparingSection extends React.Component {
 				description: 'Waiting',
 				status: '',
 				nextBlockDescription: `${this.state.nextBlockDescription} Waiting for new txs`,
-				title: 'description',
+				title: 'Waiting for new txs',
 			});
 		}
 	}
@@ -177,7 +183,7 @@ class PreparingSection extends React.Component {
 			return null;
 		}
 
-		const mobileData = this.getMobileData(stepProgress);
+		const mobileData = this.getMobileData(stepProgress, readyProducers);
 		const blockProposalData = this.blockProposalData(stepProgress, readyProducers);
 		const GCData = this.getGCData(stepProgress);
 		const BBAData = this.getBBAData(stepProgress);
@@ -191,7 +197,7 @@ class PreparingSection extends React.Component {
 						<Media query="(max-width: 499px)">
 							{(matches) =>
 								(matches ? (
-									<p className="mobile-title">Next block</p>
+									<p className="mobile-title">{`Next block ${preparingBlock}`}</p>
 								) : (
 									<SimplePreparingBlock
 										title="Next block"
