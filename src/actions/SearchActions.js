@@ -234,7 +234,7 @@ class SearchActions extends BaseActionsClass {
 			to: URLHelper.createContractUrl(contract.id),
 		}));
 
-		const regExp = new RegExp(str);
+		const regExp = new RegExp(str, 'i');
 
 		contractHints = contractFromServer
 			.filter(({ id }) => !contractHints.find(({ id: contractId }) => contractId === id))
@@ -245,7 +245,7 @@ class SearchActions extends BaseActionsClass {
 					prefix: name.slice(0, index),
 					postfix: `${name.slice(index + str.length)} (${id})`,
 					section: 'Contract',
-					value: str,
+					value: name.slice(index, str.length),
 					to: URLHelper.createContractUrl(id),
 				};
 				return [...arr, item];
@@ -258,7 +258,7 @@ class SearchActions extends BaseActionsClass {
 			return hints;
 		}
 
-		const accounts = await echo.api.lookupAccounts(str, SEARCH_LIMIT.MAX);
+		const accounts = await echo.api.lookupAccounts(str.toLowerCase(), SEARCH_LIMIT.MAX);
 		const accountHints = accounts.filter(([name]) => regExp.exec(name))
 			.map(([name, id]) => {
 				const { index } = regExp.exec(name);
