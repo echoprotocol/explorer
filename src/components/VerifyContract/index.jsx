@@ -195,7 +195,7 @@ class VerifyContract extends React.Component {
 	showLoader(loader) {
 		const { progress } = this.props;
 
-		if (loader && this.state.timer > 5) {
+		if (loader && this.state.timer > 5 && !Number.isNaN(progress)) {
 			return <div className="progress-render">{`${progress}%`}</div>;
 		}
 
