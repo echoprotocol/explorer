@@ -324,7 +324,16 @@ class ContractActions extends BaseActionsClass {
 			}
 			const ownerName = getState().contract.getIn(['owner', 'name']);
 			const ownerId = getState().contract.getIn(['owner', 'id']);
-			const activeId = BridgeService.getAccount().id;
+			let activeId = getState().global.getIn(['activeAccount', 'id']) || BridgeService.getAccount().id;
+			if (!activeId) {
+				const access = await BridgeService.getAccess();
+				if (!access) return;
+				await new Promise((resolve) =>
+					setTimeout(() => {
+						resolve();
+					}, 300));
+				activeId = BridgeService.getAccount().id;
+			}
 			if (activeId !== ownerId) {
 				dispatch(ModalActions.openModal(
 					MODAL_ERROR,
