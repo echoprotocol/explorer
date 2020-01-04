@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import config from '../../config/chain';
 import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
+import PageHeader from '../PageHeader';
 
 const Map = ReactMapboxGl({
 	accessToken: config.MAP_API_TOKEN,
@@ -79,12 +80,13 @@ class NodeMap extends React.Component {
 
 		return (
 			<div className="distribution">
-				<div className="distribution-header">
-					<h1 className="distribution-header-title">Nodes Distribution</h1>
+				<PageHeader
+					title="Nodes Distribution"
+				>
 					<button className="distribution-header-button" onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
 						How to run full node
 					</button>
-				</div>
+				</PageHeader>
 				<Map
 					className="distribution-map"
 					// eslint-disable-next-line react/style-prop-object

@@ -1,30 +1,28 @@
 .sidebar {
 	height: 100%;
+	width: 290px;
+	margin: 20px 0 0 auto;
 
-	@include min-vw($hd - 1) {
-		max-width: 480px;
-		width: calc(100vw - 967px);
-		margin: 20px 40px 0 auto;
+	@include max-vw($xl - 1) {
+		width: 250px;
 	}
 
-	@include min-vw(1535) {
-		width: 330px;
-		margin: 20px 40px 0 auto;
+	@include max-vw(1534) {
+		width: 380px;
 	}
-
-
-	@include min-vw($xl - 1) {
-		width: 357px;
-		margin: 20px 0 0 auto;
-	}
-
 
 	.sticky-wrap {
+		width: 290px;
+
+		@include max-vw($xl - 1) {
+			width: 250px;
+		}
+
+		@include max-vw(1534) {
+			width: 380px;
+		}
 
 		@include min-vw($hd - 1) {
-			max-width: 480px;
-			width: calc(100vw - 967px);
-
 			.help-container {
 				position: relative;
 				z-index: 2;
@@ -58,10 +56,10 @@
 		}
 
 
-		@include min-vw(1535) {
+		@include min-vw(1280) {
 			display: flex;
 			flex-direction: column;
-			width: 330px;
+			// width: 330px;
 
 			&.sticky {
 				height: calc(100vh - 50px);
@@ -75,7 +73,7 @@
 		}
 
 		@include min-vw($xl - 1) {
-			width: 357px;
+			// width: 357px;
 		}
 
 
@@ -229,3 +227,235 @@
 		}
 	}
 }
+
+// .sidebar {
+// 	height: 100%;
+
+// 	@include min-vw($hd - 1) {
+// 		max-width: 480px;
+// 		width: calc(100vw - 967px);
+// 		margin: 20px 40px 0 auto;
+// 	}
+
+// 	@include min-vw(1535) {
+// 		width: 330px;
+// 		margin: 20px 40px 0 auto;
+// 	}
+
+
+// 	@include min-vw($xl - 1) {
+// 		width: 357px;
+// 		margin: 20px 0 0 auto;
+// 	}
+
+
+// 	.sticky-wrap {
+
+// 		@include min-vw($hd - 1) {
+// 			max-width: 480px;
+// 			width: calc(100vw - 967px);
+
+// 			.help-container {
+// 				position: relative;
+// 				z-index: 2;
+// 				background-color: #fff;
+// 			}
+
+// 			.info-container {
+// 				z-index: 0;
+
+// 				@include max-vh(800) {
+// 					opacity: 0;
+// 					transition: opacity .2s;
+
+// 					&.fixed {
+// 						display: block;
+// 						opacity: 1;
+// 					}
+// 				}
+
+// 				@include max-vh(640) {
+// 					&.fixed {
+// 						opacity: 0;
+// 						display: none
+// 					}
+// 				}
+
+// 				position: fixed;
+// 				bottom: 0;
+// 			}
+
+// 		}
+
+
+// 		@include min-vw(1535) {
+// 			display: flex;
+// 			flex-direction: column;
+// 			width: 330px;
+
+// 			&.sticky {
+// 				height: calc(100vh - 50px);
+// 				position: fixed;
+// 				top: 50px;
+
+// 				.info-container {
+// 					position: relative;
+// 				}
+// 			}
+// 		}
+
+// 		@include min-vw($xl - 1) {
+// 			width: 357px;
+// 		}
+
+
+
+// 	}
+
+// 	.info-container {
+// 		padding-top: 60px;
+// 		padding-bottom: 18px;
+
+// 		.version {
+// 			@include InterUI_Medium;
+// 			color: #828b95;
+// 			font-size: 12px;
+// 			line-height: 18px;
+// 			font-weight: 400;
+// 			letter-spacing: 0.3px;
+// 			margin-bottom: 18px;
+// 		}
+
+// 		.copyright {
+// 			@include Hack_Bold;
+// 			text-transform: uppercase;
+// 			font-size: 10px;
+// 			color: #828b95;
+// 			letter-spacing: 2.5px;
+// 		}
+// 	}
+
+// }
+
+// .recent-block-list {
+// 	width: 100%;
+// 	margin: 0 0 auto 0;
+
+// 	@include max-vw(1279) {
+// 		max-width: 100%;
+// 		display: flex;
+// 		justify-content: space-between;
+// 	}
+
+// 	@include max-vw(768) {
+// 		flex-wrap: wrap;
+// 	}
+
+// 	.block {
+
+// 		padding-bottom: 10px;
+
+// 		&:not(:last-child) {
+// 			border-bottom: 1px solid #e2e3e7;
+// 			margin-bottom: 26px;
+// 		}
+
+// 		@include max-vw(1279) {
+// 			border-bottom: none;
+// 			min-width: 167px;
+// 			margin-bottom: 30px;
+// 		}
+
+// 		@include max-vw(1279) {
+// 			padding-bottom: 0px;
+// 			display: flex;
+// 			flex-direction: column-reverse;
+// 			justify-content: space-between;
+// 			margin-bottom: 20px;
+// 		}
+
+// 		@include res-1000 {
+// 			border-bottom: 1px solid #e2e3e7;
+// 		}
+
+// 		@include max-vw(768) {
+// 			min-width: 250px;
+// 			padding-bottom: 5px;
+// 			margin-bottom: 29px;
+// 		}
+
+// 		@include max-vw(580) {
+// 			min-width: 180px;
+// 		}
+
+// 		@include max-vw(500) {
+
+// 			&:first-child,
+// 			&:nth-child(2),
+// 			&:nth-child(3) {
+// 				padding-bottom: 26px;
+// 				margin-bottom: 0;
+// 			}
+
+// 			padding-left: 35px;
+// 			flex-direction: column;
+// 			width: 100%;
+// 			max-width: 100%;
+
+// 		}
+
+// 	}
+
+// 	.block-title {
+// 		@include Hack_Bold;
+// 		font-size: 9px;
+// 		letter-spacing: 2.25px;
+// 		line-height: 16px;
+// 		margin-bottom: 4px;
+// 		color: #130d32;
+// 		text-transform: uppercase;
+
+// 		@include max-vw(500) {
+// 			margin: 0 0 auto;
+// 			padding-left: 0;
+// 			padding-right: 30px;
+// 			padding-top: 20px;
+// 			padding-bottom: 20px;
+// 			width: 100%;
+// 			height: auto;
+// 		}
+// 	}
+
+// 	.block-value {
+// 		@include InterUI_Bold;
+// 		font-size: 23px;
+// 		line-height: 46px;
+// 		color: #130d32;
+
+// 		@include max-vw(1279) {
+// 			line-height: 25px;
+// 			word-break: break-all;
+// 		}
+
+// 		@include max-vw(1000) {
+// 			line-height: 21px;
+// 			margin-bottom: 22px;
+// 		}
+
+// 		@include max-vw(768) {
+// 			margin-bottom: 27px;
+// 		}
+
+// 		@include max-vw(500) {
+// 			margin: 0 auto;
+// 			padding-right: 30px;
+// 			padding-bottom: 8px;
+// 			width: 100%;
+
+// 		}
+
+// 		.sm {
+// 			font-size: 16px;
+// 		}
+// 	}
+// }
