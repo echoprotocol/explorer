@@ -348,15 +348,12 @@ class ContractActions extends BaseActionsClass {
 				formData.append('signature', signature);
 				formData.append('message', message);
 				formData.append('name', name);
-
 				if (icon) {
 					formData.append('icon', icon);
 				}
-
 				if (description) {
 					formData.append('description', description);
 				}
-
 				formData.append('accountId', activeAccountId);
 				const result = await ApiService.changeContract(contractId, formData);
 

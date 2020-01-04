@@ -208,9 +208,7 @@ class AccountActions extends BaseActionsClass {
 			const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 
 			if (!activeAccountId) {
-				console.log(1)
 				const account = await BridgeService.getAccount();
-				console.log('chck', account)
 
 				if (!account) {
 					dispatch(ModalActions.openModal(MODAL_ERROR, { title: 'No accounts' }));
