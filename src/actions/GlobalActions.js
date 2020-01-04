@@ -92,9 +92,7 @@ class GlobalActionsClass extends BaseActionsClass {
 				return false;
 			}
 
-			console.log(111)
 			const access = await BridgeService.getAccess();
-			console.log(112, access)
 
 			if (!access) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: 'No access' }));
