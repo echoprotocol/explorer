@@ -657,7 +657,7 @@ const Operations = {
 		name: 'Block reward',
 		options: {
 			from: null,
-			subject: ['reciever', 'name'],
+			subject: ['receiver', 'name'],
 			value: 'amount',
 			asset: null,
 		},
