@@ -30,54 +30,39 @@
 	}
 }
 
-.distribution-header {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid rgba(#707070, .2);
-	padding: 10px 0px;
-	padding-right: 40px;
-	padding-left: calc((100vw - 1440px) / 2);
+.distribution {
+	.page-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid rgba(#707070, .2);
+		padding: 10px 0px;
+		padding-right: 40px;
+		padding-left: calc((100vw - 1360px) / 2);
 
-	@include max-vw(1534) {
-		padding-left: calc(((100vw - 1440px) / 2) + 30px);
+		@include max-vw($xl) {
+			padding-left: calc((100vw - 1298px) / 2);
+		}
+
+		@include max-vw($wrap-width) {
+			padding-left: 47px;
+		}
+
 	}
 
-	@include max-vw(1440) {
-		padding-left: 47px;
+	.page-title {
+		@include InterUI_Medium;
+		font-weight: 700;
+		font-size: 23px;
+		line-height: 27px;
+		color: #130D32;
+		letter-spacing: 0.55px;
 	}
 
-	@include max-vw(1279) {
-		padding: 30px 50px 5px;
-	}
 
-	@include max-vw(999) {
-		padding: 30px 34px 5px 30px;
-	}
-
-	@include max-vw(767) {
-		padding: 30px 23px 20px;
-	}
-
-	@include res-500 {
-		flex-direction: column;
-		align-items: start;
-	}
 }
 
-.distribution-header-title {
-	@include InterUI_Medium;
-	font-weight: 700;
-	font-size: 23px;
-	line-height: 27px;
-	color: #130D32;
-	letter-spacing: 0.55px;
-
-	@include res-320 {
-		margin-bottom: 35px;
-	}
-}
 
 .distribution-header-button {
 	@include InterUI_Medium;

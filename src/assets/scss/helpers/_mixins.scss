@@ -1,11 +1,40 @@
+// responses before mobile versions
 $res-320: 320px;
 $res-500: 500px;
 $res-768: 768px;
 $res-1000: 1000px;
 $res-1280: 1280px;
-
 $res-1440: 1535px;
 
+
+
+
+@mixin max-vw($width) {
+	@media (max-width: $width + 'px') {
+		@content;
+	}
+}
+
+@mixin min-vw($width) {
+	@media (min-width: $width + 'px') {
+		@content;
+	}
+}
+
+@mixin max-vh($height) {
+	@media (max-height: $height + 'px') {
+		@content;
+	}
+}
+
+@mixin min-vh($height) {
+	@media (min-height: $height + 'px') {
+		@content;
+	}
+}
+
+
+// Old versions of media
 @mixin res-320 {
 	@media (max-width: #{$res-500 - 1px}) {
 		@content;
@@ -44,29 +73,7 @@ $res-1440: 1535px;
 
 
 
-@mixin max-vw($width) {
-	@media (max-width: $width + 'px') {
-		@content;
-	}
-}
 
-@mixin min-vw($width) {
-	@media (min-width: $width + 'px') {
-		@content;
-	}
-}
-
-@mixin max-vh($height) {
-	@media (max-height: $height + 'px') {
-		@content;
-	}
-}
-
-@mixin min-vh($height) {
-	@media (min-height: $height + 'px') {
-		@content;
-	}
-}
 
 
 @keyframes fade-in {

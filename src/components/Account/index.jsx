@@ -72,7 +72,7 @@ class Account extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="table-container inner-information-container account-page">
+			<div className="table-container account-page">
 
 				{account && <PageHeader title={`Account ${account.get('id')}`} />}
 

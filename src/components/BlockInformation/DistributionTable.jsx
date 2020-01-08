@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import URLHelper from '../../helpers/URLHelper';
-
-// import classnames from 'classnames';
-
 import InfoTooltip from '../InfoTooltip';
 
 class DistributionTable extends React.Component {
@@ -80,7 +77,7 @@ class DistributionTable extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="distribution-table accordion-table-wrap table-contract" >
+				<div className="distribution-table" >
 					<table>
 						<Media query="(max-width: 499px)">
 							{(matches) => !matches &&

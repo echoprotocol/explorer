@@ -4,6 +4,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2';
 import copy from 'copy-to-clipboard';
 import { withRouter } from 'react-router';
 import URLHelper from '../../helpers/URLHelper';
+import ActionButton from '../ActionButton';
 
 require('codemirror/mode/xml/xml.js');
 require('codemirror/mode/javascript/javascript.js');
@@ -18,13 +19,10 @@ class ContractAbi extends React.Component {
 					This contract has not been verified but you can upload ABI.
 				</div>
 				<div className="action-button-wrap">
-					<label
-						className="action-button"
-						htmlFor="upload-abi"
-						onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
-					>
-						Upload ABI
-					</label>
+					<ActionButton
+						value="Upload ABI"
+						action={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+					/>
 				</div>
 			</React.Fragment>
 		);
@@ -51,13 +49,10 @@ class ContractAbi extends React.Component {
 					<div className="action-button-wrap">
 						{
 							!verified &&
-							<label
-								className="action-button"
-								htmlFor="upload-abi"
-								onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
-							>
-								Upload new ABI
-							</label>
+							<ActionButton
+								value="Upload new ABI"
+								action={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+							/>
 						}
 					</div>
 					<button className="copy-button" onClick={() => copy(abi)}>Copy code</button>

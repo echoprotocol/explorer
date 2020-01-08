@@ -16,17 +16,6 @@
 		}
 	}
 
-	.backwards {
-		margin-bottom: 0;
-		margin-top: 0;
-
-		@include res-500 {
-			padding-top: 50px;
-			padding-left: 17px;
-		}
-
-	}
-
 	.section-description {
 		line-height: 23px;
 		padding: 20px 135px 20px 0;

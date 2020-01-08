@@ -105,7 +105,7 @@ class RecentBlockTable extends React.Component {
 							latestBlock={latestBlock}
 						/>
 					</PageHeader>
-					<div className="table">
+					<React.Fragment>
 						<Media query="(max-width: 767px)">
 							{(matches) =>
 								(matches ? (
@@ -160,10 +160,10 @@ class RecentBlockTable extends React.Component {
 										)}
 									</div>
 								) : (
-									<div className={classnames('divTable', { 'no-border-bottom': AreEmptyTransactions })}>
-										<div className="divTableBody">
-											<div className="TableHeading">
-												<div className="divTableCell">
+									<div className={classnames('recent-blocks-table', { 'no-border-bottom': AreEmptyTransactions })}>
+										<div className="table-body">
+											<div className="table-heading">
+												<div className="table-cell">
 													<Media query="(max-width: 999px)">
 														{(matches) =>
 															(matches ? (
@@ -174,40 +174,39 @@ class RecentBlockTable extends React.Component {
 														}
 													</Media>
 												</div>
-												<div className="divTableCell">
+												<div className="table-cell">
 													<Media query="(max-width: 999px)">
 														{() => 'Time'}
 													</Media>
 												</div>
-												<div className="divTableCell">Producer</div>
-												<div className="divTableCell">Reward</div>
-												<div className="divTableCell">Size</div>
-												<div className="divTableCell">Transactions</div>
+												<div className="table-cell">Producer</div>
+												<div className="table-cell">Reward</div>
+												<div className="table-cell">Size</div>
+												<div className="table-cell">Transactions</div>
 											</div>
 											<div className="divider" />
 											{
 												blocks.map((data) => (
 													<React.Fragment key={data.round}>
-														<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="divTableRow fade-anim">
-															<div className="divTableCell">
-																<span className="blue">
-																	{data.blockNumber}
-																</span>
+														<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="table-row fade-anim">
+															<div className="table-cell">
+																<button> {data.blockNumber}</button>
 															</div>
-															<div className="divTableCell">{data.time}</div>
-															<div className="divTableCell">
-																<div className="inner-container">
-																	<button
-																		className="blue"
-																		onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
-																	>
-																		{data.producer}
-																	</button>
-																</div>
+															<div className="table-cell">{data.time}</div>
+															<div className="table-cell">
+																<button onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}>
+																	{data.producer}
+																</button>
 															</div>
-															<div className="divTableCell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
-															<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
-															<div className="divTableCell">{data.transactions}</div>
+															<div className="table-cell">
+																{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)}&nbsp;
+																<span className="gray">{data.rewardCurrency}</span>
+															</div>
+															<div className="table-cell">
+																{data.weight}&nbsp;
+																<span className="gray">{data.weightSize}</span>
+															</div>
+															<div className="table-cell">{data.transactions}</div>
 														</Link>
 													</React.Fragment>
 												))
@@ -221,7 +220,7 @@ class RecentBlockTable extends React.Component {
 							}
 						</Media>
 						{loading && <LoadMoreBtn />}
-					</div>
+					</React.Fragment>
 				</div>
 			</InfiniteScroll>
 		);

@@ -1,5 +1,5 @@
-.recent-block-section {
-	padding: 18px 0;
+.recent-blocks-section {
+	padding: 25px 0;
 	background-color: #fff;
 
 	@include res-768 {
@@ -10,8 +10,6 @@
 	@include res-1000 {
 		overflow: hidden;
 	}
-
-
 
 	.wrap {
 		display: flex;
@@ -31,8 +29,6 @@
 		background-color: #5eb3e8;
 		@include transition;
 	}
-
-
 
 }
 
@@ -64,7 +60,6 @@
 
 	@include res-1000 {
 		width: 100%;
-		// padding-left: 0;
 		padding-right: 0;
 
 		min-height: calc(100vh - 363px);
@@ -157,7 +152,7 @@
 		}
 	}
 
-	.divTable {
+	.div-table {
 		width: 945px;
 
 		@include res-1280 {
@@ -168,8 +163,8 @@
 			width: 100%;
 		}
 
-		.TableHeading {
-			.divTableCell {
+		.table-heading {
+			.div-table-cell {
 
 				&:first-child {
 					width: 160px;
@@ -279,8 +274,8 @@
 			}
 		}
 
-		.divTableRow {
-			.divTableCell {
+		.div-table-row {
+			.div-table-cell {
 				width: auto;
 				white-space: nowrap;
 
@@ -296,9 +291,9 @@
 				&:nth-child(2),
 				&:nth-child(3),
 				&:nth-child(6) {
-					width: 165px;
-					max-width: 165px;
-					min-width: 165px;
+					width: 140px;
+					max-width: 140px;
+					min-width: 140px;
 
 					@include res-1280 {
 						width: 135px;

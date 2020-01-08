@@ -1,25 +1,5 @@
-.table-container.inner-information-container.inner-page.manage-contract {
-	.backwards {
-		margin-top: 0;
-	}
-
-	.account-page-t-block {
-		margin-left: 31px;
-
-		@include res-768 {
-			margin-left: 12px;
-		}
-
-		@include res-500 {
-			margin-left: 0;
-		}
-
-		@include res-320 {
-			.icon {
-				display: none;
-			}
-		}
-	}
+.inner-page.manage-contract {
+	padding-top: 15px;
 
 	.page-helper-section {
 		padding: 23px 22px 40px;

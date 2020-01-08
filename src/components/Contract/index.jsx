@@ -34,6 +34,7 @@ import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';
 import ContractInfo from './ContractInfo';
 import { ContractIcon } from './ContractIcon';
+import ActionButton from '../ActionButton';
 // import { BridgeService } from '../../services/BridgeService';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
@@ -302,7 +303,7 @@ class Contract extends React.Component {
 										icon={!matches && <ContractIcon icon={icon} />}
 									>
 										<button className="copy-bytecode" onClick={() => this.changeButtonText(bytecode)}>
-											{this.state.text}
+											<span className="content">{this.state.text}</span>
 										</button>
 									</PageHeader>
 								)
@@ -319,10 +320,11 @@ class Contract extends React.Component {
 						</div>
 						<div className="item">
 							<div className="action-button-wrap">
-								<button className="action-button" onClick={this.manageContract}>
-									<img src={manageIcon} alt="" />
-									<span className="content">Manage</span>
-								</button>
+								<ActionButton
+									value="Manage"
+									icon={manageIcon}
+									action={this.manageContract}
+								/>
 							</div>
 						</div>
 						<div className="item">

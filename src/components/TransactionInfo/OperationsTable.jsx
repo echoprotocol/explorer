@@ -95,7 +95,7 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading,
+			operations, hasMore,
 			isTransaction, timestamp, fee, type,
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
@@ -167,13 +167,7 @@ class OperationsTable extends React.Component {
 						}
 					</tbody>
 				</table>
-				{
-					hasMore ?
-						<LoadMoreBtn
-							loading={loading}
-							loadMore={() => this.props.loadMore()}
-						/> : null
-				}
+				{ hasMore && <LoadMoreBtn /> }
 			</div>
 		);
 	}

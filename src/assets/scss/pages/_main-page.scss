@@ -1,20 +1,19 @@
 .wrap:not(.full) {
-	max-width: 1440px;
+	max-width: $wrap-width+px;
 	width: 100%;
 	margin: 0 auto;
-	padding: 0;
+	padding: 0 40px;
 
-	@include res-1280 {
-		width: 100%;
-		padding: 0 30px;
+	@include max-vw($xl - 1) {
+		padding: 0 70px;
 	}
 
-	@include res-768 {
-		padding: 0 12px;
+	@include max-vw($lg - 1) {
+		padding: 0 28px;
 	}
 
-	@include res-500 {
-		padding: 0 10px;
+	@include max-vw($md - 1) {
+		padding: 0 18px;
 	}
 }
 
@@ -35,29 +34,13 @@
 		z-index: 2;
 	}
 
-
-	.wrap {
-		@include res-320 {
-			width: 100%;
-			padding-left: 10px;
-			padding-right: 10px;
-		}
-	}
 }
 
 .wrap.full {
-	padding-right: calc((100vw - 1440px) / 2);
+	padding-right: calc((100vw - $wrap-width + px) / 2);
 
 	@include max-vw(1534) {
-		padding-right: calc(((100vw - 1440px) / 2) + 30px);
-	}
-
-	@include max-vw(1440) {
-		padding-right: 30px;
-	}
-
-	@include max-vw(1279) {
-		padding-right: 0;
+		padding-right: calc((100vw - $wrap-width + px) / 2);
 	}
 
 	.table-container {
