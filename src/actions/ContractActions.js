@@ -378,7 +378,7 @@ class ContractActions extends BaseActionsClass {
 				activeAccountId = BridgeService.getAccount().id;
 				if (!activeAccountId) {
 					const accounts = await BridgeService.getAllAcounts();
-					activeAccountId = accounts.find((ac) => ac.id === ownerId).id;
+					activeAccountId = accounts.find((ac) => ac.active).id;
 				}
 			}
 			if (activeAccountId !== ownerId) {
