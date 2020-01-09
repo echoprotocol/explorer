@@ -30,6 +30,9 @@ export class BridgeService {
 			id: activeAccount,
 		};
 	}
+	static getAllAcounts() {
+		return window.echojslib.extension.getAccounts();
+	}
 
 
 	static getAccess() {
