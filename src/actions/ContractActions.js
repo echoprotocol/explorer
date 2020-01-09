@@ -376,6 +376,11 @@ class ContractActions extends BaseActionsClass {
 						resolve();
 					}, 300));
 				activeAccountId = BridgeService.getAccount().id;
+				if (!activeAccountId) {
+					const accounts = await BridgeService.getAllAcounts();
+					const activeAccount = accounts.find((ac) => ac.active);
+					activeAccountId = activeAccount && activeAccount.id;
+				}
 			}
 			if (activeAccountId !== ownerId) {
 				dispatch(ModalActions.openModal(
