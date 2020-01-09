@@ -1,7 +1,8 @@
 .table-block {
 	position: relative;
 	transition: background-color 0.3s, padding 0.8s linear;
-
+	width: calc(100% + 40px);
+	transform: translateX(-20px);
 
 	table {
 		width: 100%;

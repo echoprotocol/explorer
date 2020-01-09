@@ -34,8 +34,8 @@
 
 .table-container {
 	width: 1010px;
-	padding-right: 30px;
-	padding-top: 37px;
+	padding-right: 50px;
+	padding-top: 21px;
 	min-height: calc(100vh - 282px);
 	padding-left: 0;
 	background-color: #f3f2f5;
@@ -53,8 +53,7 @@
 	}
 
 	@include res-1280 {
-		padding-right: 30px;
-		width: 867px;
+		width: 850px;
 		flex-shrink: 0;
 	}
 

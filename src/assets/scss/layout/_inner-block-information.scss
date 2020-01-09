@@ -7,17 +7,15 @@
 }
 
 .block-description {
+	width: calc(100% + 40px);
+	transform: translateX(-20px);
 	position: relative;
 	z-index: 2;
 	display: flex;
 	box-shadow: 0 0 62px rgba(64, 64, 64, 0.18);
-	padding: 21px 50px 22px 33px;
-	margin: 32px 0 30px;
+	padding: 20px 20px;
+	margin: 20px 0 20px;
 	justify-content: space-between;
-
-	@include res-1280 {
-		padding: 21px 50px 22px 20px;
-	}
 
 	@include res-768 {
 		padding: 21px 50px 22px 23px;
