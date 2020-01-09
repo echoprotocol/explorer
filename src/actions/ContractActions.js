@@ -299,7 +299,7 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
-	contractCodeCompile(code, filename = 'test.sol') {
+	contractCodeCompile(code, filename = 'test.sol', attempt = 1) {
 		return async (dispatch, getState) => {
 			if (!code) {
 				code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
@@ -352,8 +352,9 @@ class ContractActions extends BaseActionsClass {
 				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', contracts.keySeq().first()));
 				dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', null));
 			} catch (err) {
-				if (err.message.indexOf(COMPILER_CONSTS.SOLC_NOT_ENOUGH_STACK_ERROR) !== -1) {
-					dispatch(this.contractCodeCompile(code, filename));
+				if (err.message.indexOf(COMPILER_CONSTS.SOLC_NOT_ENOUGH_STACK_ERROR) !== -1
+					&& attempt < COMPILER_CONSTS.MAX_TRIES_TO_COMPILE) {
+					dispatch(this.contractCodeCompile(code, filename, attempt + 1));
 				} else {
 					dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', 'Invalid contract code'));
 					dispatch(this.setValue('contracts', new Map({})));

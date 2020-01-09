@@ -31,4 +31,5 @@ export const CONTRACT_TABS = {
 export const CHANGE_TEXT_TIME = 2000;
 export const COMPILER_CONSTS = {
 	SOLC_NOT_ENOUGH_STACK_ERROR: 'Maximum call stack size exceeded',
+	MAX_TRIES_TO_COMPILE: 2,
 };
