@@ -42,6 +42,7 @@ import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
 import browserHistory from '../history';
+import { COMPILER_CONSTS } from '../constants/ContractConstants';
 
 class ContractActions extends BaseActionsClass {
 
@@ -333,6 +334,10 @@ class ContractActions extends BaseActionsClass {
 
 				const solc = wrapper(window.Module);
 				const output = JSON.parse(solc.compile(JSON.stringify(input)));
+				const errors = this.getErrors(output);
+				if (errors.length) {
+					throw new Error(errors);
+				}
 				let contracts = new Map({});
 				contracts = contracts.withMutations((contractsMap) => {
 					Object.entries(output.contracts[filename]).forEach(([name, contract]) => {
@@ -347,13 +352,23 @@ class ContractActions extends BaseActionsClass {
 				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', contracts.keySeq().first()));
 				dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', null));
 			} catch (err) {
-				dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', 'Invalid contract code'));
-				dispatch(this.setValue('contracts', new Map({})));
-				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', ''));
+				if (err.message.indexOf(COMPILER_CONSTS.SOLC_NOT_ENOUGH_STACK_ERROR) !== -1) {
+					dispatch(this.contractCodeCompile(code, filename));
+				} else {
+					dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', 'Invalid contract code'));
+					dispatch(this.setValue('contracts', new Map({})));
+					dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', ''));
+				}
 			}
 		};
 	}
-
+	getErrors(output) {
+		const { errors } = output;
+		if (!errors) {
+			return [];
+		}
+		return errors.map((err) => err.formattedMessage);
+	}
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
 
