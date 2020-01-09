@@ -205,7 +205,12 @@ class RecentBlockTable extends React.Component {
 											{
 												blocks.map((data) => (
 													<React.Fragment key={data.round}>
-														<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="divTableRow fade-anim">
+														<Link
+															onClick={(e) => this.goToBlock(e, data.round)}
+															to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+															key={data.round}
+															className="divTableRow fade-anim"
+														>
 															<div className="divTableCell">
 																<span className="blue">
 																	{data.blockNumber}
