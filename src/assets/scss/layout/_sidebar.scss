@@ -1,7 +1,7 @@
 .sidebar {
 	height: 100%;
 	width: 290px;
-	margin: 20px 0 0 auto;
+	margin: 25px 0 0 auto;
 
 	@include max-vw($xl - 1) {
 		width: 250px;
@@ -12,7 +12,7 @@
 	}
 
 	@include max-vw(1400) {
-		width: 20vw;
+		width: 22vw;
 	}
 
 	@include max-vw($hd - 1) {
@@ -31,7 +31,7 @@
 		}
 
 		@include max-vw(1400) {
-			width: 20vw;
+			width: 22vw;
 		}
 
 		@include max-vw($hd - 1) {
@@ -95,7 +95,7 @@
 
 		&:not(:last-child) {
 			border-bottom: 1px solid #e2e3e7;
-			margin-bottom: 26px;
+			margin-bottom: 15px;
 
 			@include max-vw($hd - 1) {
 				margin-bottom: 20px;
@@ -157,10 +157,10 @@
 
 	.block-title {
 		@include Hack_Bold;
-		font-size: 9px;
+		font-size: 13px;
 		letter-spacing: 2.25px;
 		line-height: 16px;
-		margin-bottom: 4px;
+		margin-bottom: 8px;
 		color: #130d32;
 		text-transform: uppercase;
 

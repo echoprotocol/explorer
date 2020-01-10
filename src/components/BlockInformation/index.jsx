@@ -149,7 +149,7 @@ class BlockInformation extends React.Component {
 					</div>
 				</div>
 
-				<TableLable label="Block Certificate">
+				<TableLable label="Block Certificate" additionalClass="hastoggler">
 					{
 						rewardDistribution && rewardDistribution.length && (
 							<ViewListPopover
