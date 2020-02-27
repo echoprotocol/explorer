@@ -19,6 +19,7 @@ class ContractAbi extends React.Component {
 				</div>
 				<div className="action-button-wrap">
 					<label
+						role="presentation"
 						className="action-button"
 						htmlFor="upload-abi"
 						onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
@@ -52,6 +53,7 @@ class ContractAbi extends React.Component {
 						{
 							!verified &&
 							<label
+								role="presentation"
 								className="action-button"
 								htmlFor="upload-abi"
 								onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}

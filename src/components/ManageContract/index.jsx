@@ -68,7 +68,7 @@ class ManageContract extends React.Component {
 	}
 
 	async initData() {
-		const {	match: { params: { id } } } = this.props;
+		const { match: { params: { id } } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		await this.props.getContractInfo();
@@ -96,7 +96,7 @@ class ManageContract extends React.Component {
 							<ContractIcon icon={contractIcon} />
 						</div>
 
-						<div className="title">Manage contract { id }</div>
+						<div className="title">Manage contract {id}</div>
 					</div>
 				</div>
 
@@ -119,7 +119,7 @@ class ManageContract extends React.Component {
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									Bridge
+                  Bridge
 								</a>{' '}
 								<span className="bridge-logo">
 									<img src={bridge} alt="" />
