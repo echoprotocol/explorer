@@ -110,7 +110,7 @@ class ManageContract extends React.Component {
 							</span>
 							<span className="plain-text">
 								{' '} can manage this contract.
-							Before updating contract info you need to verify your authority via {' '}
+								Before updating contract info you need to verify your authority via {' '}
 							</span>
 							<span className="no-wrap">
 								<a
@@ -119,7 +119,7 @@ class ManageContract extends React.Component {
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-                  Bridge
+									Bridge
 								</a>{' '}
 								<span className="bridge-logo">
 									<img src={bridge} alt="" />
