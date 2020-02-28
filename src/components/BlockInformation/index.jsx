@@ -67,11 +67,7 @@ class BlockInformation extends React.Component {
 	}
 
 	returnFunction() {
-		if (!this.props.historyLength) {
-			this.props.history.push(INDEX_PATH);
-		} else {
-			this.props.history.goBack();
-		}
+		this.props.history.push(INDEX_PATH);
 	}
 
 	loadMoreTransactions() {
