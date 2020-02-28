@@ -68,7 +68,7 @@ class ManageContract extends React.Component {
 	}
 
 	async initData() {
-		const {	match: { params: { id } } } = this.props;
+		const { match: { params: { id } } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		await this.props.getContractInfo();
@@ -96,7 +96,7 @@ class ManageContract extends React.Component {
 							<ContractIcon icon={contractIcon} />
 						</div>
 
-						<div className="title">Manage contract { id }</div>
+						<div className="title">Manage contract {id}</div>
 					</div>
 				</div>
 
@@ -110,7 +110,7 @@ class ManageContract extends React.Component {
 							</span>
 							<span className="plain-text">
 								{' '} can manage this contract.
-							Before updating contract info you need to verify your authority via {' '}
+								Before updating contract info you need to verify your authority via {' '}
 							</span>
 							<span className="no-wrap">
 								<a
