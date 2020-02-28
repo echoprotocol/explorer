@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import arrow from '../../assets/images/icons/show-list-arrow.svg';
 
 class ViewListPopover extends Component {
 
@@ -14,7 +15,10 @@ class ViewListPopover extends Component {
 					className={`view-list ${isOpen ? 'is-open' : ''}`}
 					onClick={(e) => { e.preventDefault(); toggleReward(); }}
 				>
-					{isOpen ? 'show' : 'hide'}
+					<span className="view-list-text">{isOpen ? 'hide' : 'show'}</span>
+					<span className="view-list-icon">
+						<img src={arrow} alt="" />
+					</span>
 				</a>
 			</div>
 		);
