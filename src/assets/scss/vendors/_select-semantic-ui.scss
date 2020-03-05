@@ -27,7 +27,7 @@
   text-shadow: none;
   text-align: left;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
   border: 1px solid rgba(34, 36, 38, 0.15);
   border-radius: 0.28571429rem;
   -webkit-transition: opacity 0.1s ease;
@@ -35,7 +35,8 @@
   z-index: 11;
   will-change: transform, opacity;
 }
-.compiler.dropdown .menu > * {
+
+.compiler.dropdown .menu>* {
   white-space: nowrap;
 }
 
@@ -43,8 +44,8 @@
   Hidden Input
 ---------------*/
 
-.compiler.dropdown > input:not(.search):first-child,
-.compiler.dropdown > select {
+.compiler.dropdown>input:not(.search):first-child,
+.compiler.dropdown>select {
   display: none !important;
 }
 
@@ -52,18 +53,20 @@
  Dropdown Icon
 ---------------*/
 
-.compiler.dropdown > .dropdown.icon {
+.compiler.dropdown>.dropdown.icon {
   position: relative;
   width: auto;
   font-size: 0.85714286em;
   margin: 0em 0em 0em 1em;
 }
-.compiler.dropdown .menu > .item .dropdown.icon {
+
+.compiler.dropdown .menu>.item .dropdown.icon {
   width: auto;
   float: right;
   margin: 0em 0em 0em 1em;
 }
-.compiler.dropdown .menu > .item .dropdown.icon + .text {
+
+.compiler.dropdown .menu>.item .dropdown.icon+.text {
   margin-right: 1em;
 }
 
@@ -71,7 +74,7 @@
       Text
 ---------------*/
 
-.compiler.dropdown > .text {
+.compiler.dropdown>.text {
   display: inline-block;
   -webkit-transition: none;
   transition: none;
@@ -81,7 +84,7 @@
     Menu Item
 ---------------*/
 
-.compiler.dropdown .menu > .item {
+.compiler.dropdown .menu>.item {
   position: relative;
   cursor: pointer;
   display: block;
@@ -96,10 +99,11 @@
   text-transform: none;
   font-weight: normal;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   -webkit-touch-callout: none;
 }
-.compiler.dropdown .menu > .item:first-child {
+
+.compiler.dropdown .menu>.item:first-child {
   border-top-width: 0px;
 }
 
@@ -107,22 +111,24 @@
   Floated Content
 ---------------*/
 
-.compiler.dropdown > .text > [class*="right floated"],
-.compiler.dropdown .menu .item > [class*="right floated"] {
+.compiler.dropdown>.text>[class*="right floated"],
+.compiler.dropdown .menu .item>[class*="right floated"] {
   float: right !important;
   margin-right: 0em !important;
   margin-left: 1em !important;
 }
-.compiler.dropdown > .text > [class*="left floated"],
-.compiler.dropdown .menu .item > [class*="left floated"] {
+
+.compiler.dropdown>.text>[class*="left floated"],
+.compiler.dropdown .menu .item>[class*="left floated"] {
   float: left !important;
   margin-left: 0em !important;
   margin-right: 1em !important;
 }
-.compiler.dropdown .menu .item > .icon.floated,
-.compiler.dropdown .menu .item > .flag.floated,
-.compiler.dropdown .menu .item > .image.floated,
-.compiler.dropdown .menu .item > img.floated {
+
+.compiler.dropdown .menu .item>.icon.floated,
+.compiler.dropdown .menu .item>.flag.floated,
+.compiler.dropdown .menu .item>.image.floated,
+.compiler.dropdown .menu .item>img.floated {
   margin-top: 0em;
 }
 
@@ -130,7 +136,7 @@
   Menu Divider
 ---------------*/
 
-.compiler.dropdown .menu > .header {
+.compiler.dropdown .menu>.header {
   margin: 1rem 0rem 0.75rem;
   padding: 0em 1.14285714rem;
   color: rgba(0, 0, 0, 0.85);
@@ -138,12 +144,14 @@
   font-weight: bold;
   text-transform: uppercase;
 }
-.compiler.dropdown .menu > .divider {
+
+.compiler.dropdown .menu>.divider {
   border-top: 1px solid rgba(34, 36, 38, 0.1);
   height: 0em;
   margin: 0.5em 0em;
 }
-.compiler.dropdown.dropdown .menu > .input {
+
+.compiler.dropdown.dropdown .menu>.input {
   width: auto;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -151,15 +159,18 @@
   margin: 1.14285714rem 0.78571429rem;
   min-width: 10rem;
 }
-.compiler.dropdown .menu > .header + .input {
+
+.compiler.dropdown .menu>.header+.input {
   margin-top: 0em;
 }
-.compiler.dropdown .menu > .input:not(.transparent) input {
+
+.compiler.dropdown .menu>.input:not(.transparent) input {
   padding: 0.5em 1em;
 }
-.compiler.dropdown .menu > .input:not(.transparent) .button,
-.compiler.dropdown .menu > .input:not(.transparent) .icon,
-.compiler.dropdown .menu > .input:not(.transparent) .label {
+
+.compiler.dropdown .menu>.input:not(.transparent) .button,
+.compiler.dropdown .menu>.input:not(.transparent) .icon,
+.compiler.dropdown .menu>.input:not(.transparent) .label {
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
@@ -168,8 +179,8 @@
   Item Description
 -------------------*/
 
-.compiler.dropdown > .text > .description,
-.compiler.dropdown .menu > .item > .description {
+.compiler.dropdown>.text>.description,
+.compiler.dropdown .menu>.item>.description {
   float: right;
   margin: 0em 0em 0em 1em;
   color: rgba(0, 0, 0, 0.4);
@@ -179,11 +190,12 @@
        Message
 -------------------*/
 
-.compiler.dropdown .menu > .message {
+.compiler.dropdown .menu>.message {
   padding: 0.78571429rem 1.14285714rem;
   font-weight: normal;
 }
-.compiler.dropdown .menu > .message:not(.compiler) {
+
+.compiler.dropdown .menu>.message:not(.compiler) {
   color: rgba(0, 0, 0, 0.4);
 }
 
@@ -211,30 +223,32 @@
 
 
 /* Icons / Flags / Labels / Image */
-.compiler.dropdown > .text > .icon,
-.compiler.dropdown > .text > .label,
-.compiler.dropdown > .text > .flag,
-.compiler.dropdown > .text > img,
-.compiler.dropdown > .text > .image {
+.compiler.dropdown>.text>.icon,
+.compiler.dropdown>.text>.label,
+.compiler.dropdown>.text>.flag,
+.compiler.dropdown>.text>img,
+.compiler.dropdown>.text>.image {
   margin-top: 0em;
 }
-.compiler.dropdown .menu > .item > .icon,
-.compiler.dropdown .menu > .item > .label,
-.compiler.dropdown .menu > .item > .flag,
-.compiler.dropdown .menu > .item > .image,
-.compiler.dropdown .menu > .item > img {
+
+.compiler.dropdown .menu>.item>.icon,
+.compiler.dropdown .menu>.item>.label,
+.compiler.dropdown .menu>.item>.flag,
+.compiler.dropdown .menu>.item>.image,
+.compiler.dropdown .menu>.item>img {
   margin-top: 0em;
 }
-.compiler.dropdown > .text > .icon,
-.compiler.dropdown > .text > .label,
-.compiler.dropdown > .text > .flag,
-.compiler.dropdown > .text > img,
-.compiler.dropdown > .text > .image,
-.compiler.dropdown .menu > .item > .icon,
-.compiler.dropdown .menu > .item > .label,
-.compiler.dropdown .menu > .item > .flag,
-.compiler.dropdown .menu > .item > .image,
-.compiler.dropdown .menu > .item > img {
+
+.compiler.dropdown>.text>.icon,
+.compiler.dropdown>.text>.label,
+.compiler.dropdown>.text>.flag,
+.compiler.dropdown>.text>img,
+.compiler.dropdown>.text>.image,
+.compiler.dropdown .menu>.item>.icon,
+.compiler.dropdown .menu>.item>.label,
+.compiler.dropdown .menu>.item>.flag,
+.compiler.dropdown .menu>.item>.image,
+.compiler.dropdown .menu>.item>img {
   margin-left: 0em;
   float: none;
   margin-right: 0.78571429rem;
@@ -244,10 +258,10 @@
      Image
 ---------------*/
 
-.compiler.dropdown > .text > img,
-.compiler.dropdown > .text > .image,
-.compiler.dropdown .menu > .item > .image,
-.compiler.dropdown .menu > .item > img {
+.compiler.dropdown>.text>img,
+.compiler.dropdown>.text>.image,
+.compiler.dropdown .menu>.item>.image,
+.compiler.dropdown .menu>.item>img {
   display: inline-block;
   vertical-align: top;
   width: auto;
@@ -261,8 +275,8 @@
 
 
 /* Remove Menu Item Divider */
-.compiler.dropdown .compiler.menu > .item:before,
-.compiler.menu .compiler.dropdown .menu > .item:before {
+.compiler.dropdown .compiler.menu>.item:before,
+.compiler.menu .compiler.dropdown .menu>.item:before {
   display: none;
 }
 
@@ -274,7 +288,7 @@
 /* Automatically float dropdown menu right on last menu item */
 .compiler.menu .right.menu .dropdown:last-child .menu,
 .compiler.menu .right.dropdown.item .menu,
-.compiler.buttons > .compiler.dropdown:last-child .menu {
+.compiler.buttons>.compiler.dropdown:last-child .menu {
   left: auto;
   right: 0em;
 }
@@ -295,9 +309,10 @@
 
 
 /* No Margin On Icon Button */
-.compiler.dropdown.icon.button > .dropdown.icon {
+.compiler.dropdown.icon.button>.dropdown.icon {
   margin: 0em;
 }
+
 .compiler.button.dropdown .menu {
   min-width: 100%;
 }
@@ -321,15 +336,15 @@
   white-space: normal;
   outline: 0;
   -webkit-transform: rotateZ(0deg);
-          transform: rotateZ(0deg);
+  transform: rotateZ(0deg);
   min-width: 14em;
   min-height: 2.71428571em;
   background: #FFFFFF;
   display: inline-block;
-  padding: 0.78571429em 2.1em 0.78571429em 1em;
+  padding: 0.78571429rem 1.14285714rem;
   color: rgba(0, 0, 0, 0.87);
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   border: 1px solid rgba(34, 36, 38, 0.15);
   border-radius: 0.28571429rem;
   -webkit-transition: width 0.1s ease, -webkit-box-shadow 0.1s ease;
@@ -337,10 +352,12 @@
   transition: box-shadow 0.1s ease, width 0.1s ease;
   transition: box-shadow 0.1s ease, width 0.1s ease, -webkit-box-shadow 0.1s ease;
 }
+
 .compiler.selection.dropdown.visible,
 .compiler.selection.dropdown.active {
   z-index: 10;
 }
+
 select.compiler.dropdown {
   height: 38px;
   padding: 0.5em;
@@ -358,20 +375,21 @@ select.compiler.dropdown {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-overflow-scrolling: touch;
   border-top-width: 0px !important;
   width: auto;
   outline: none;
   margin: 0px -1px;
-  min-width: calc(100% +  2px );
-  width: calc(100% +  2px );
+  min-width: calc(100% + 2px);
+  width: calc(100% + 2px);
   border-radius: 0em 0em 0.28571429rem 0.28571429rem;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
   -webkit-transition: opacity 0.1s ease;
   transition: opacity 0.1s ease;
 }
+
 .compiler.selection.dropdown .menu:after,
 .compiler.selection.dropdown .menu:before {
   display: none;
@@ -381,24 +399,28 @@ select.compiler.dropdown {
     Message
 ---------------*/
 
-.compiler.selection.dropdown .menu > .message {
+.compiler.selection.dropdown .menu>.message {
   padding: 0.78571429rem 1.14285714rem;
 }
+
 @media only screen and (max-width: 767px) {
   .compiler.selection.dropdown .menu {
     max-height: 8.01428571rem;
   }
 }
+
 @media only screen and (min-width: 768px) {
   .compiler.selection.dropdown .menu {
     max-height: 10.68571429rem;
   }
 }
+
 @media only screen and (min-width: 992px) {
   .compiler.selection.dropdown .menu {
     max-height: 16.02857143rem;
   }
 }
+
 @media only screen and (min-width: 1920px) {
   .compiler.selection.dropdown .menu {
     max-height: 21.37142857rem;
@@ -406,7 +428,7 @@ select.compiler.dropdown {
 }
 
 /* Menu Item */
-.compiler.selection.dropdown .menu > .item {
+.compiler.selection.dropdown .menu>.item {
   border-top: 1px solid #FAFAFA;
   padding: 0.78571429rem 1.14285714rem !important;
   white-space: normal;
@@ -414,7 +436,7 @@ select.compiler.dropdown {
 }
 
 /* User Item */
-.compiler.selection.dropdown .menu > .hidden.addition.item {
+.compiler.selection.dropdown .menu>.hidden.addition.item {
   display: none;
 }
 
@@ -422,36 +444,38 @@ select.compiler.dropdown {
 .compiler.selection.dropdown:hover {
   border-color: rgba(34, 36, 38, 0.35);
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 /* Active */
 .compiler.selection.active.dropdown {
   border-color: #96C8DA;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
 }
+
 .compiler.selection.active.dropdown .menu {
   display: block;
   border-color: #96C8DA;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
 }
 
 /* Focus */
 .compiler.selection.dropdown:focus {
   border-color: #96C8DA;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
+
 .compiler.selection.dropdown:focus .menu {
   border-color: #96C8DA;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
 }
 
 /* Visible */
-.compiler.selection.visible.dropdown > .text:not(.default) {
+.compiler.selection.visible.dropdown>.text:not(.default) {
   font-weight: normal;
   color: rgba(0, 0, 0, 0.8);
 }
@@ -460,17 +484,18 @@ select.compiler.dropdown {
 .compiler.selection.active.dropdown:hover {
   border-color: #96C8DA;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
 }
+
 .compiler.selection.active.dropdown:hover .menu {
   border-color: #96C8DA;
   -webkit-box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 2px 3px 0px rgba(34, 36, 38, 0.15);
 }
 
 /* Dropdown Icon */
-.ui.active.selection.dropdown > .dropdown.icon,
-.ui.visible.selection.dropdown > .dropdown.icon {
+.ui.active.selection.dropdown>.dropdown.icon,
+.ui.visible.selection.dropdown>.dropdown.icon {
   opacity: '';
   z-index: 3;
 }
@@ -485,12 +510,13 @@ select.compiler.dropdown {
 .compiler.active.empty.selection.dropdown {
   border-radius: 0.28571429rem !important;
   -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
 }
+
 .compiler.active.empty.selection.dropdown .menu {
   border: none !important;
   -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 /*--------------
@@ -504,14 +530,13 @@ select.compiler.dropdown {
 }
 
 /* Search Dropdown */
-.compiler.search.dropdown > input.search {
+.compiler.search.dropdown>input.search {
   background: none transparent !important;
-  border: none !important;
   -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
   cursor: text;
   top: 0em;
-  left: 1px;
+  left: 0;
   width: 100%;
   outline: none;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
@@ -519,11 +544,12 @@ select.compiler.dropdown {
 }
 
 /* Text Layering */
-.compiler.search.dropdown > input.search {
+.compiler.search.dropdown>input.search {
   position: absolute;
   z-index: 2;
 }
-.compiler.search.dropdown > .text {
+
+.compiler.search.dropdown>.text {
   cursor: text;
   position: relative;
   left: 1px;
@@ -531,13 +557,13 @@ select.compiler.dropdown {
 }
 
 /* Search Selection */
-.compiler.search.selection.dropdown > input.search {
+.compiler.search.selection.dropdown>input.search {
   line-height: 1.21428571em;
-  padding: 0.67857143em 2.1em 0.67857143em 1em;
+  padding: 0.78571429rem 1.14285714rem;
 }
 
 /* Used to size multi select input to character width */
-.compiler.search.selection.dropdown > span.sizer {
+.compiler.search.selection.dropdown>span.sizer {
   line-height: 1.21428571em;
   padding: 0.67857143em 2.1em 0.67857143em 1em;
   display: none;
@@ -545,21 +571,23 @@ select.compiler.dropdown {
 }
 
 /* Active/Visible Search */
-.compiler.search.dropdown.active > input.search,
-.compiler.search.dropdown.visible > input.search {
+.compiler.search.dropdown.active>input.search,
+.compiler.search.dropdown.visible>input.search {
   cursor: auto;
 }
-.compiler.search.dropdown.active > .text,
-.compiler.search.dropdown.visible > .text {
+
+.compiler.search.dropdown.active>.text,
+.compiler.search.dropdown.visible>.text {
   pointer-events: none;
 }
 
 /* Filtered Text */
-.compiler.active.search.dropdown input.search:focus + .text .icon,
-.compiler.active.search.dropdown input.search:focus + .text .flag {
+.compiler.active.search.dropdown input.search:focus+.text .icon,
+.compiler.active.search.dropdown input.search:focus+.text .flag {
   opacity: 0.45;
 }
-.compiler.active.search.dropdown input.search:focus + .text {
+
+.compiler.active.search.dropdown input.search:focus+.text {
   color: rgba(115, 115, 115, 0.87) !important;
 }
 
@@ -568,24 +596,28 @@ select.compiler.dropdown {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-overflow-scrolling: touch;
 }
+
 @media only screen and (max-width: 767px) {
   .compiler.search.dropdown .menu {
     max-height: 8.01428571rem;
   }
 }
+
 @media only screen and (min-width: 768px) {
   .compiler.search.dropdown .menu {
     max-height: 10.68571429rem;
   }
 }
+
 @media only screen and (min-width: 992px) {
   .compiler.search.dropdown .menu {
     max-height: 16.02857143rem;
   }
 }
+
 @media only screen and (min-width: 1920px) {
   .compiler.search.dropdown .menu {
     max-height: 21.37142857rem;
@@ -601,22 +633,23 @@ select.compiler.dropdown {
 .compiler.multiple.dropdown {
   padding: 0.22619048em 2.1em 0.22619048em 0.35714286em;
 }
+
 .compiler.multiple.dropdown .menu {
   cursor: auto;
 }
 
 /* Multiple Search Selection */
 .compiler.multiple.search.dropdown,
-.compiler.multiple.search.dropdown > input.search {
+.compiler.multiple.search.dropdown>input.search {
   cursor: text;
 }
 
 /* Selection Label */
-.compiler.multiple.dropdown > .label {
+.compiler.multiple.dropdown>.label {
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   display: inline-block;
   vertical-align: top;
   white-space: normal;
@@ -624,7 +657,7 @@ select.compiler.dropdown {
   padding: 0.35714286em 0.78571429em;
   margin: 0.14285714rem 0.28571429rem 0.14285714rem 0em;
   -webkit-box-shadow: 0px 0px 0px 1px rgba(34, 36, 38, 0.15) inset;
-          box-shadow: 0px 0px 0px 1px rgba(34, 36, 38, 0.15) inset;
+  box-shadow: 0px 0px 0px 1px rgba(34, 36, 38, 0.15) inset;
 }
 
 /* Dropdown Icon */
@@ -634,17 +667,19 @@ select.compiler.dropdown {
 }
 
 /* Text */
-.compiler.multiple.dropdown > .text {
+.compiler.multiple.dropdown>.text {
   position: static;
   padding: 0;
   max-width: 100%;
   margin: 0.45238095em 0em 0.45238095em 0.64285714em;
   line-height: 1.21428571em;
 }
-.compiler.multiple.dropdown > .label ~ input.search {
+
+.compiler.multiple.dropdown>.label~input.search {
   margin-left: 0.14285714em !important;
 }
-.compiler.multiple.dropdown > .label ~ .text {
+
+.compiler.multiple.dropdown>.label~.text {
   display: none;
 }
 
@@ -654,7 +689,7 @@ select.compiler.dropdown {
 
 
 /* Prompt Text */
-.compiler.multiple.search.dropdown > .text {
+.compiler.multiple.search.dropdown>.text {
   display: inline-block;
   position: absolute;
   top: 0;
@@ -663,12 +698,13 @@ select.compiler.dropdown {
   margin: 0.45238095em 0em 0.45238095em 0.64285714em;
   line-height: 1.21428571em;
 }
-.compiler.multiple.search.dropdown > .label ~ .text {
+
+.compiler.multiple.search.dropdown>.label~.text {
   display: none;
 }
 
 /* Search */
-.compiler.multiple.search.dropdown > input.search {
+.compiler.multiple.search.dropdown>input.search {
   position: static;
   padding: 0;
   max-width: 100%;
@@ -686,13 +722,16 @@ select.compiler.dropdown {
   display: inline-block;
   color: inherit;
 }
+
 .compiler.inline.dropdown .dropdown.icon {
   margin: 0em 0.21428571em 0em 0.21428571em;
   vertical-align: baseline;
 }
-.compiler.inline.dropdown > .text {
+
+.compiler.inline.dropdown>.text {
   font-weight: bold;
 }
+
 .compiler.inline.dropdown .menu {
   cursor: auto;
   margin-top: 0.21428571em;
@@ -716,7 +755,7 @@ select.compiler.dropdown {
   font-weight: bold;
   color: rgba(0, 0, 0, 0.95);
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   z-index: 12;
 }
 
@@ -726,7 +765,7 @@ select.compiler.dropdown {
 
 
 /* Menu Item Hover */
-.compiler.dropdown .menu > .item:hover {
+.compiler.dropdown .menu>.item:hover {
   background: rgba(0, 0, 0, 0.05);
   color: rgba(0, 0, 0, 0.95);
   z-index: 13;
@@ -736,13 +775,15 @@ select.compiler.dropdown {
        Loading
 ---------------------*/
 
-.compiler.loading.dropdown > i.icon {
+.compiler.loading.dropdown>i.icon {
   height: 1em !important;
 }
-.compiler.loading.selection.dropdown > i.icon {
+
+.compiler.loading.selection.dropdown>i.icon {
   padding: 1.5em 1.28571429em !important;
 }
-.compiler.loading.dropdown > i.icon:before {
+
+.compiler.loading.dropdown>i.icon:before {
   position: absolute;
   content: '';
   top: 50%;
@@ -753,20 +794,21 @@ select.compiler.dropdown {
   border-radius: 500rem;
   border: 0.2em solid rgba(0, 0, 0, 0.1);
 }
-.compiler.loading.dropdown > i.icon:after {
+
+.compiler.loading.dropdown>i.icon:after {
   position: absolute;
   content: '';
   top: 50%;
   left: 50%;
   -webkit-box-shadow: 0px 0px 0px 1px transparent;
-          box-shadow: 0px 0px 0px 1px transparent;
+  box-shadow: 0px 0px 0px 1px transparent;
   margin: -0.64285714em 0em 0em -0.64285714em;
   width: 1.28571429em;
   height: 1.28571429em;
   -webkit-animation: dropdown-spin 0.6s linear;
-          animation: dropdown-spin 0.6s linear;
+  animation: dropdown-spin 0.6s linear;
   -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
   border-radius: 500rem;
   border-color: #767676 transparent transparent;
   border-style: solid;
@@ -774,28 +816,32 @@ select.compiler.dropdown {
 }
 
 /* Coupling */
-.compiler.loading.dropdown.button > i.icon:before,
-.compiler.loading.dropdown.button > i.icon:after {
+.compiler.loading.dropdown.button>i.icon:before,
+.compiler.loading.dropdown.button>i.icon:after {
   display: none;
 }
+
 @-webkit-keyframes dropdown-spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
+
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
+
 @keyframes dropdown-spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
+
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -803,12 +849,13 @@ select.compiler.dropdown {
      Default Text
 ----------------------*/
 
-.compiler.dropdown:not(.button) > .default.text,
-.compiler.default.dropdown:not(.button) > .text {
+.compiler.dropdown:not(.button)>.default.text,
+.compiler.default.dropdown:not(.button)>.text {
   opacity: 0.4;
 }
-.compiler.dropdown:not(.button) > input:focus ~ .default.text,
-.compiler.default.dropdown:not(.button) > input:focus ~ .text {
+
+.compiler.dropdown:not(.button)>input:focus~.default.text,
+.compiler.default.dropdown:not(.button)>input:focus~.text {
   color: rgba(115, 115, 115, 0.87);
 }
 
@@ -816,7 +863,7 @@ select.compiler.dropdown {
         Loading
 ----------------------*/
 
-.compiler.loading.dropdown > .text {
+.compiler.loading.dropdown>.text {
   -webkit-transition: none;
   transition: none;
 }
@@ -827,11 +874,13 @@ select.compiler.dropdown {
   visibility: hidden;
   z-index: -1;
 }
-.compiler.dropdown > .loading.menu {
+
+.compiler.dropdown>.loading.menu {
   left: 0px !important;
   right: auto !important;
 }
-.compiler.dropdown > .menu .loading.menu {
+
+.compiler.dropdown>.menu .loading.menu {
   left: 100% !important;
   right: auto !important;
 }
@@ -854,9 +903,10 @@ select.compiler.dropdown {
 
 
 /* Filtered Item */
-.compiler.dropdown > .filtered.text {
+.compiler.dropdown>.filtered.text {
   visibility: hidden;
 }
+
 .compiler.dropdown .filtered.item {
   display: none !important;
 }
@@ -866,35 +916,40 @@ select.compiler.dropdown {
 ----------------------*/
 
 .compiler.dropdown.error,
-.compiler.dropdown.error > .text,
-.compiler.dropdown.error > .default.text {
+.compiler.dropdown.error>.text,
+.compiler.dropdown.error>.default.text {
   color: #9F3A38;
 }
+
 .compiler.selection.dropdown.error {
   background: #FFF6F6;
   border-color: #E0B4B4;
 }
+
 .compiler.selection.dropdown.error:hover {
   border-color: #E0B4B4;
 }
-.compiler.dropdown.error > .menu,
-.compiler.dropdown.error > .menu .menu {
+
+.compiler.dropdown.error>.menu,
+.compiler.dropdown.error>.menu .menu {
   border-color: #E0B4B4;
 }
-.compiler.dropdown.error > .menu > .item {
+
+.compiler.dropdown.error>.menu>.item {
   color: #9F3A38;
 }
-.compiler.multiple.selection.error.dropdown > .label {
+
+.compiler.multiple.selection.error.dropdown>.label {
   border-color: #E0B4B4;
 }
 
 /* Item Hover */
-.compiler.dropdown.error > .menu > .item:hover {
+.compiler.dropdown.error>.menu>.item:hover {
   background-color: #FFF2F2;
 }
 
 /* Item Active */
-.compiler.dropdown.error > .menu .active.item {
+.compiler.dropdown.error>.menu .active.item {
   background-color: #FDCFCF;
 }
 
@@ -902,12 +957,13 @@ select.compiler.dropdown {
         Clear
 ----------------------*/
 
-.compiler.dropdown > .clear.dropdown.icon {
+.compiler.dropdown>.clear.dropdown.icon {
   opacity: 0.8;
   -webkit-transition: opacity 0.1s ease;
   transition: opacity 0.1s ease;
 }
-.compiler.dropdown > .clear.dropdown.icon:hover {
+
+.compiler.dropdown>.clear.dropdown.icon:hover {
   opacity: 1;
 }
 
@@ -918,7 +974,7 @@ select.compiler.dropdown {
 
 /* Disabled */
 .compiler.disabled.dropdown,
-.compiler.dropdown .menu > .disabled.item {
+.compiler.dropdown .menu>.disabled.item {
   cursor: default;
   pointer-events: none;
   opacity: 0.45;
@@ -931,7 +987,7 @@ select.compiler.dropdown {
 }
 
 /* Default Side (Right) */
-.compiler.dropdown .right.menu > .menu,
+.compiler.dropdown .right.menu>.menu,
 .compiler.dropdown .menu .right.menu {
   left: 100% !important;
   right: auto !important;
@@ -939,31 +995,35 @@ select.compiler.dropdown {
 }
 
 /* Leftward Opening Menu */
-.compiler.dropdown > .left.menu {
+.compiler.dropdown>.left.menu {
   left: auto !important;
   right: 0px !important;
 }
-.compiler.dropdown > .left.menu .menu,
+
+.compiler.dropdown>.left.menu .menu,
 .compiler.dropdown .menu .left.menu {
   left: auto;
   right: 100%;
   margin: 0em -0.5em 0em 0em !important;
   border-radius: 0.28571429rem !important;
 }
+
 .compiler.dropdown .item .left.dropdown.icon,
 .compiler.dropdown .left.menu .item .dropdown.icon {
   width: auto;
   float: left;
   margin: 0em 0em 0em 0em;
 }
+
 .compiler.dropdown .item .left.dropdown.icon,
 .compiler.dropdown .left.menu .item .dropdown.icon {
   width: auto;
   float: left;
   margin: 0em 0em 0em 0em;
 }
-.compiler.dropdown .item .left.dropdown.icon + .text,
-.compiler.dropdown .left.menu .item .dropdown.icon + .text {
+
+.compiler.dropdown .item .left.dropdown.icon+.text,
+.compiler.dropdown .left.menu .item .dropdown.icon+.text {
   margin-left: 1em;
   margin-right: 0em;
 }
@@ -974,11 +1034,11 @@ select.compiler.dropdown {
 
 
 /* Upward Main Menu */
-.compiler.upward.dropdown > .menu {
+.compiler.upward.dropdown>.menu {
   top: auto;
   bottom: 100%;
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
-          box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
   border-radius: 0.28571429rem 0.28571429rem 0em 0em;
 }
 
@@ -993,6 +1053,7 @@ select.compiler.dropdown {
 .compiler.simple.upward.dropdown:hover {
   border-radius: 0.28571429rem 0.28571429rem 0em 0em !important;
 }
+
 .compiler.upward.dropdown.button:not(.pointing):not(.floating).active {
   border-radius: 0.28571429rem 0.28571429rem 0em 0em;
 }
@@ -1002,11 +1063,12 @@ select.compiler.dropdown {
   border-top-width: 1px !important;
   border-bottom-width: 0px !important;
   -webkit-box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.08);
-          box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.08);
 }
+
 .compiler.upward.selection.dropdown:hover {
   -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
-          box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
 }
 
 /* Active Upward */
@@ -1017,18 +1079,19 @@ select.compiler.dropdown {
 /* Visible Upward */
 .compiler.upward.selection.dropdown.visible {
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
-          box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.08);
   border-radius: 0em 0em 0.28571429rem 0.28571429rem !important;
 }
 
 /* Visible Hover Upward */
 .compiler.upward.active.selection.dropdown:hover {
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.05);
-          box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.05);
 }
+
 .compiler.upward.active.selection.dropdown:hover .menu {
   -webkit-box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.08);
-          box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px -2px 3px 0px rgba(0, 0, 0, 0.08);
 }
 
 /*--------------
@@ -1042,66 +1105,80 @@ select.compiler.dropdown {
   overflow-x: hidden;
   overflow-y: auto;
 }
+
 .compiler.scrolling.dropdown .menu {
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-overflow-scrolling: touch;
   min-width: 100% !important;
   width: auto !important;
 }
+
 .compiler.dropdown .scrolling.menu {
   position: static;
   overflow-y: auto;
   border: none;
   -webkit-box-shadow: none !important;
-          box-shadow: none !important;
+  box-shadow: none !important;
   border-radius: 0 !important;
   margin: 0 !important;
   min-width: 100% !important;
   width: auto !important;
   border-top: 1px solid rgba(34, 36, 38, 0.15);
 }
+
 .compiler.scrolling.dropdown .menu .item.item.item,
-.compiler.dropdown .scrolling.menu > .item.item.item {
+.compiler.dropdown .scrolling.menu>.item.item.item {
   border-top: none;
 }
+
 .compiler.scrolling.dropdown .menu .item:first-child,
 .compiler.dropdown .scrolling.menu .item:first-child {
   border-top: none;
 }
-.compiler.dropdown > .animating.menu .scrolling.menu,
-.compiler.dropdown > .visible.menu .scrolling.menu {
+
+.compiler.dropdown>.animating.menu .scrolling.menu,
+.compiler.dropdown>.visible.menu .scrolling.menu {
   display: block;
 }
 
 /* Scrollbar in IE */
 @media all and (-ms-high-contrast: none) {
+
   .compiler.scrolling.dropdown .menu,
   .compiler.dropdown .scrolling.menu {
-    min-width: calc(100% -  17px );
+    min-width: calc(100% - 17px);
   }
 }
+
 @media only screen and (max-width: 767px) {
+
   .compiler.scrolling.dropdown .menu,
   .compiler.dropdown .scrolling.menu {
     max-height: 10.28571429rem;
   }
 }
+
 @media only screen and (min-width: 768px) {
+
   .compiler.scrolling.dropdown .menu,
   .compiler.dropdown .scrolling.menu {
     max-height: 15.42857143rem;
   }
 }
+
 @media only screen and (min-width: 992px) {
+
   .compiler.scrolling.dropdown .menu,
   .compiler.dropdown .scrolling.menu {
     max-height: 20.57142857rem;
   }
 }
+
 @media only screen and (min-width: 1920px) {
+
   .compiler.scrolling.dropdown .menu,
   .compiler.dropdown .scrolling.menu {
     max-height: 20.57142857rem;
@@ -1118,6 +1195,7 @@ select.compiler.dropdown {
 .compiler.simple.dropdown .menu:after {
   display: none;
 }
+
 .compiler.simple.dropdown .menu {
   position: absolute;
   display: block;
@@ -1129,21 +1207,24 @@ select.compiler.dropdown {
   -webkit-transition: opacity 0.1s ease;
   transition: opacity 0.1s ease;
 }
+
 .compiler.simple.active.dropdown,
 .compiler.simple.dropdown:hover {
   border-bottom-left-radius: 0em !important;
   border-bottom-right-radius: 0em !important;
 }
-.compiler.simple.active.dropdown > .menu,
-.compiler.simple.dropdown:hover > .menu {
+
+.compiler.simple.active.dropdown>.menu,
+.compiler.simple.dropdown:hover>.menu {
   overflow: visible;
   width: auto;
   height: auto;
   top: 100% !important;
   opacity: 1;
 }
-.compiler.simple.dropdown > .menu > .item:active > .menu,
-.compiler.simple.dropdown:hover > .menu > .item:hover > .menu {
+
+.compiler.simple.dropdown>.menu>.item:active>.menu,
+.compiler.simple.dropdown:hover>.menu>.item:hover>.menu {
   overflow: visible;
   width: auto;
   height: auto;
@@ -1151,6 +1232,7 @@ select.compiler.dropdown {
   left: 100% !important;
   opacity: 1;
 }
+
 .compiler.simple.disabled.dropdown:hover .menu {
   display: none;
   height: 0px;
@@ -1159,7 +1241,7 @@ select.compiler.dropdown {
 }
 
 /* Visible */
-.compiler.simple.visible.dropdown > .menu {
+.compiler.simple.visible.dropdown>.menu {
   display: block;
 }
 
@@ -1172,7 +1254,8 @@ select.compiler.dropdown {
   width: 100%;
   min-width: 0em;
 }
-.compiler.flcompilerd.dropdown > .dropdown.icon {
+
+.compiler.flcompilerd.dropdown>.dropdown.icon {
   float: right;
 }
 
@@ -1184,10 +1267,11 @@ select.compiler.dropdown {
   left: 0;
   right: auto;
   -webkit-box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.15) !important;
-          box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.15) !important;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.15) !important;
   border-radius: 0.28571429rem !important;
 }
-.compiler.floating.dropdown > .menu {
+
+.compiler.floating.dropdown>.menu {
   margin-top: 0.5em !important;
   border-radius: 0.28571429rem !important;
 }
@@ -1196,157 +1280,169 @@ select.compiler.dropdown {
      Pointing
 ---------------*/
 
-.compiler.pointing.dropdown > .menu {
+.compiler.pointing.dropdown>.menu {
   top: 100%;
   margin-top: 0.78571429rem;
   border-radius: 0.28571429rem;
 }
-.compiler.pointing.dropdown > .menu:after {
+
+.compiler.pointing.dropdown>.menu:after {
   display: block;
   position: absolute;
   pointer-events: none;
   content: '';
   visibility: visible;
   -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+  transform: rotate(45deg);
   width: 0.5em;
   height: 0.5em;
   -webkit-box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
   background: #FFFFFF;
   z-index: 2;
 }
-.compiler.pointing.dropdown > .menu:after {
+
+.compiler.pointing.dropdown>.menu:after {
   top: -0.25em;
   left: 50%;
   margin: 0em 0em 0em -0.25em;
 }
 
 /* Top Left Pointing */
-.compiler.top.left.pointing.dropdown > .menu {
+.compiler.top.left.pointing.dropdown>.menu {
   top: 100%;
   bottom: auto;
   left: 0%;
   right: auto;
   margin: 1em 0em 0em;
 }
-.compiler.top.left.pointing.dropdown > .menu {
+
+.compiler.top.left.pointing.dropdown>.menu {
   top: 100%;
   bottom: auto;
   left: 0%;
   right: auto;
   margin: 1em 0em 0em;
 }
-.compiler.top.left.pointing.dropdown > .menu:after {
+
+.compiler.top.left.pointing.dropdown>.menu:after {
   top: -0.25em;
   left: 1em;
   right: auto;
   margin: 0em;
   -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 /* Top Right Pointing */
-.compiler.top.right.pointing.dropdown > .menu {
+.compiler.top.right.pointing.dropdown>.menu {
   top: 100%;
   bottom: auto;
   right: 0%;
   left: auto;
   margin: 1em 0em 0em;
 }
-.compiler.top.pointing.dropdown > .left.menu:after,
-.compiler.top.right.pointing.dropdown > .menu:after {
+
+.compiler.top.pointing.dropdown>.left.menu:after,
+.compiler.top.right.pointing.dropdown>.menu:after {
   top: -0.25em;
   left: auto !important;
   right: 1em !important;
   margin: 0em;
   -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 /* Left Pointing */
-.compiler.left.pointing.dropdown > .menu {
+.compiler.left.pointing.dropdown>.menu {
   top: 0%;
   left: 100%;
   right: auto;
   margin: 0em 0em 0em 1em;
 }
-.compiler.left.pointing.dropdown > .menu:after {
+
+.compiler.left.pointing.dropdown>.menu:after {
   top: 1em;
   left: -0.25em;
   margin: 0em 0em 0em 0em;
   -webkit-transform: rotate(-45deg);
-          transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
-.compiler.left:not(.top):not(.bottom).pointing.dropdown > .left.menu {
+
+.compiler.left:not(.top):not(.bottom).pointing.dropdown>.left.menu {
   left: auto !important;
   right: 100% !important;
   margin: 0em 1em 0em 0em;
 }
-.compiler.left:not(.top):not(.bottom).pointing.dropdown > .left.menu:after {
+
+.compiler.left:not(.top):not(.bottom).pointing.dropdown>.left.menu:after {
   top: 1em;
   left: auto;
   right: -0.25em;
   margin: 0em 0em 0em 0em;
   -webkit-transform: rotate(135deg);
-          transform: rotate(135deg);
+  transform: rotate(135deg);
 }
 
 /* Right Pointing */
-.compiler.right.pointing.dropdown > .menu {
+.compiler.right.pointing.dropdown>.menu {
   top: 0%;
   left: auto;
   right: 100%;
   margin: 0em 1em 0em 0em;
 }
-.compiler.right.pointing.dropdown > .menu:after {
+
+.compiler.right.pointing.dropdown>.menu:after {
   top: 1em;
   left: auto;
   right: -0.25em;
   margin: 0em 0em 0em 0em;
   -webkit-transform: rotate(135deg);
-          transform: rotate(135deg);
+  transform: rotate(135deg);
 }
 
 /* Bottom Pointing */
-.compiler.bottom.pointing.dropdown > .menu {
+.compiler.bottom.pointing.dropdown>.menu {
   top: auto;
   bottom: 100%;
   left: 0%;
   right: auto;
   margin: 0em 0em 1em;
 }
-.compiler.bottom.pointing.dropdown > .menu:after {
+
+.compiler.bottom.pointing.dropdown>.menu:after {
   top: auto;
   bottom: -0.25em;
   right: auto;
   margin: 0em;
   -webkit-transform: rotate(-135deg);
-          transform: rotate(-135deg);
+  transform: rotate(-135deg);
 }
 
 /* Reverse Sub-Menu Direction */
-.compiler.bottom.pointing.dropdown > .menu .menu {
+.compiler.bottom.pointing.dropdown>.menu .menu {
   top: auto !important;
   bottom: 0px !important;
 }
 
 /* Bottom Left */
-.compiler.bottom.left.pointing.dropdown > .menu {
+.compiler.bottom.left.pointing.dropdown>.menu {
   left: 0%;
   right: auto;
 }
-.compiler.bottom.left.pointing.dropdown > .menu:after {
+
+.compiler.bottom.left.pointing.dropdown>.menu:after {
   left: 1em;
   right: auto;
 }
 
 /* Bottom Right */
-.compiler.bottom.right.pointing.dropdown > .menu {
+.compiler.bottom.right.pointing.dropdown>.menu {
   right: 0%;
   left: auto;
 }
-.compiler.bottom.right.pointing.dropdown > .menu:after {
+
+.compiler.bottom.right.pointing.dropdown>.menu:after {
   left: auto;
   right: 1em;
 }
@@ -1359,12 +1455,13 @@ select.compiler.dropdown {
   margin: 0em 0em 0.78571429rem;
   border-radius: 0.28571429rem;
 }
+
 .compiler.pointing.upward.dropdown .menu:after,
 .compiler.top.pointing.upward.dropdown .menu:after {
   top: 100% !important;
   bottom: auto !important;
   -webkit-box-shadow: 1px 1px 0px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: 1px 1px 0px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: 1px 1px 0px 0px rgba(34, 36, 38, 0.15);
   margin: -0.25em 0em 0em;
 }
 
@@ -1374,12 +1471,13 @@ select.compiler.dropdown {
   bottom: 0 !important;
   margin: 0em 1em 0em 0em;
 }
+
 .compiler.right.pointing.upward.dropdown:not(.top):not(.bottom) .menu:after {
   top: auto !important;
   bottom: 0 !important;
   margin: 0em 0em 1em 0em;
   -webkit-box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
 }
 
 /* Left Pointing Upward */
@@ -1388,12 +1486,13 @@ select.compiler.dropdown {
   bottom: 0 !important;
   margin: 0em 0em 0em 1em;
 }
+
 .compiler.left.pointing.upward.dropdown:not(.top):not(.bottom) .menu:after {
   top: auto !important;
   bottom: 0 !important;
   margin: 0em 0em 1em 0em;
   -webkit-box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
-          box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
+  box-shadow: -1px -1px 0px 0px rgba(34, 36, 38, 0.15);
 }
 
 
@@ -1402,53 +1501,62 @@ select.compiler.dropdown {
 *******************************/
 
 .compiler.selection.dropdown {
-    &.active > .dropdown.icon {
-        &:before {
-            transform: rotate(180deg);
-        }
+  &.active>.dropdown.icon {
+    &:before {
+      transform: rotate(180deg);
     }
-    & > .dropdown.icon {
-        cursor: pointer;
-        position: absolute;
-        line-height: 1.21428571em;
-        width: 7px;
-        height: 5px;
-        top: 0.78571429em;
-        right: 1em;
-        z-index: 3;
-        margin: -0.78571429em;
-        padding: 0.91666667em;
-        opacity: 0.6;
-        -webkit-transition: opacity 0.1s ease;
-        transition: opacity 0.1s ease;
+  }
 
-        &:before {
-            content: "";
-            display: block;
-            background-image: url(../images/icons/dd-icon.svg);
-            background-size: 7px;
-            height: 5px;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+  &>.dropdown.icon {
+    cursor: pointer;
+    position: absolute;
+    line-height: 1.21428571em;
+    width: 7px;
+    height: 5px;
+    top: 0.78571429em;
+    right: 1em;
+    z-index: 3;
+    margin: -0.78571429em;
+    padding: 0.91666667em;
+    opacity: 0.6;
+    -webkit-transition: opacity 0.1s ease;
+    transition: opacity 0.1s ease;
+
+    &:before {
+      content: "";
+      display: block;
+      background-image: url(../images/icons/dd-icon.svg);
+      background-size: 7px;
+      height: 5px;
+      background-position: center;
+      background-repeat: no-repeat;
     }
+  }
 }
 
 
 /* Sub Menu */
 .compiler.dropdown .menu .item .dropdown.icon:before {
-  content: '\f0da' /*rtl:'\f0d9'*/;
+  content: '\f0da'
+    /*rtl:'\f0d9'*/
+  ;
 }
+
 .compiler.dropdown .item .left.dropdown.icon:before,
 .compiler.dropdown .left.menu .item .dropdown.icon:before {
-  content: "\f0d9" /*rtl:"\f0da"*/;
+  content: "\f0d9"
+    /*rtl:"\f0da"*/
+  ;
 }
 
 /* Vertical Menu Dropdown */
-.compiler.vertical.menu .dropdown.item > .dropdown.icon:before {
-  content: "\f0da" /*rtl:"\f0d9"*/;
+.compiler.vertical.menu .dropdown.item>.dropdown.icon:before {
+  content: "\f0da"
+    /*rtl:"\f0d9"*/
+  ;
 }
-.compiler.dropdown > .clear.icon:before {
+
+.compiler.dropdown>.clear.icon:before {
   content: "\f00d";
 }
 
