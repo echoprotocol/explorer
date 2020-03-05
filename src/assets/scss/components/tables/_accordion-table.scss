@@ -293,7 +293,7 @@
           box-shadow: 0 0 40px 0 rgba(0, 0, 0, .16);
 
           @include max-vw(1000) {
-            width: calc(100% + 31px)
+            width: calc(100% + 30px)
           }
 
           @include res-500 {

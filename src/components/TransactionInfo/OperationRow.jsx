@@ -19,11 +19,6 @@ import FormatHelper from '../../helpers/FormatHelper';
 class OperationRow extends React.Component {
 
 	getColSpan(matches) {
-		const { isBlock } = this.props;
-
-		if (isBlock) {
-			return !matches ? 7 : 6;
-		}
 		return !matches ? 8 : 7;
 	}
 
