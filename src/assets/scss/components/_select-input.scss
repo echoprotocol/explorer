@@ -3,7 +3,6 @@
   min-height: auto;
   border: 1px solid #aeb7be;
   border-radius: 2px;
-  padding: 7px 33px 7px 15px;
   display: flex;
   align-items: center;
 
@@ -22,12 +21,25 @@
   }
 
   input.search {
-    padding-left: 15px;
-    padding-right: 33px;
     height: 100%;
     @include InterUI_Regular;
     font-size: 13px;
     color: #18142a;
+    border: 1px solid transparent;
+  }
+
+  &.visible {
+    input {
+      border-bottom: 1px solid rgba(63, 70, 90, 0.15);
+      border-top: 1px solid transparent;
+    }
+
+    &.upward {
+      input {
+        border-top: 1px solid rgba(63, 70, 90, 0.15);
+        border-bottom: 1px solid transparent;
+      }
+    }
   }
 }
 
