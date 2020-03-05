@@ -7,17 +7,32 @@
     border-collapse: collapse;
     z-index: 1;
 
-    .type {
-      .td-in {
-        padding: 9px 7px 9px 17px;
-      }
-    }
-
     a {
       color: #498FDF;
     }
 
     td {
+      &.type {
+        .td-in {
+          max-width: 150px;
+          padding: 9px 7px 9px 17px;
+          vertical-align: middle;
+          @include text-overflow();
+        }
+      }
+
+      &.time {
+        .td-in {
+          max-width: 150px;
+
+          span {
+            display: inline-block;
+            max-width: 100%;
+            @include text-overflow();
+          }
+        }
+      }
+
       &.json {
         padding: 0px;
 
@@ -391,7 +406,7 @@
         width: 20px;
       }
 
-      &.type,
+
       &.time {
         .td-in {
           white-space: nowrap;
@@ -404,6 +419,7 @@
         min-width: 20px;
       }
 
+      &.fee,
       &.sender,
       &.reciever,
       &.amount {
@@ -464,6 +480,8 @@
     width: 100%;
 
     .view {
+      max-width: calc(100vw - 20px);
+
       td {
         margin-bottom: 18px;
 
@@ -471,6 +489,10 @@
         &:nth-child(8),
         &:nth-child(11) {
           padding-left: 20px;
+        }
+
+        &:not(.dd) {
+          padding-right: 10px;
         }
 
         &.sender,
@@ -509,6 +531,18 @@
 
           .td-in {
             padding: 0;
+          }
+        }
+
+        &.type {
+          .td-in {
+            max-width: calc(100% - 20px);
+          }
+        }
+
+        &.time {
+          .td-in {
+            max-width: 100%;
           }
         }
       }

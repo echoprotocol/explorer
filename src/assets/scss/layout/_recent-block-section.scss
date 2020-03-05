@@ -451,7 +451,7 @@
     }
 
     @include max-vw(1279) {
-      padding: 30px 22px 5px;
+      padding: 30px 22px 23px;
     }
 
     @include res-768 {
@@ -627,7 +627,7 @@
 }
 
 .sticky-wrap {
-  @include min-vw(1279) {
+  @include min-vw(1280) {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
