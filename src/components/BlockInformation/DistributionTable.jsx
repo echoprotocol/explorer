@@ -80,7 +80,7 @@ class DistributionTable extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="distribution-table accordion-table-wrap table-contract" >
+				<div className="distribution-table accordion-table-wrap" >
 					<table>
 						<Media query="(max-width: 499px)">
 							{(matches) => !matches &&

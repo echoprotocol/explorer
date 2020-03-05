@@ -1,0 +1,15 @@
+.table-block {
+  .fold {
+    td:last-child {
+      background-color: #fff;
+    }
+
+    td:nth-child(2):after {
+      width: calc(100% + 34px);
+
+      @include max-vw(1534) {
+        width: calc(100% + 30px);
+      }
+    }
+  }
+}
