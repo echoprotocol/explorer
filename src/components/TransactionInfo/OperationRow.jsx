@@ -288,7 +288,6 @@ class OperationRow extends React.Component {
 
 
 OperationRow.propTypes = {
-	isBlock: PropTypes.bool,
 	timestamp: PropTypes.bool.isRequired,
 	fee: PropTypes.bool.isRequired,
 	operation: PropTypes.object.isRequired,
@@ -297,10 +296,6 @@ OperationRow.propTypes = {
 	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
-};
-
-OperationRow.defaultProps = {
-	isBlock: false,
 };
 
 
