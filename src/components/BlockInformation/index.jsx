@@ -67,11 +67,7 @@ class BlockInformation extends React.Component {
 	}
 
 	returnFunction() {
-		if (!this.props.historyLength) {
-			this.props.history.push(INDEX_PATH);
-		} else {
-			this.props.history.goBack();
-		}
+		this.props.history.push(INDEX_PATH);
 	}
 
 	loadMoreTransactions() {
@@ -212,7 +208,6 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
-	historyLength: PropTypes.number,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
@@ -223,10 +218,6 @@ BlockInformation.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
-};
-
-BlockInformation.defaultProps = {
-	historyLength: 0,
 };
 
 export default BlockInformation;

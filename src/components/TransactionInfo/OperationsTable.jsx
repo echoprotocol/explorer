@@ -115,7 +115,7 @@ class OperationsTable extends React.Component {
 									</td>
 									{timestamp ? <td className=""><div className="td-in">Date, time</div></td> : null}
 									<td className="sender"><div className="td-in">Sender</div></td>
-									<td className="reciever"><div className="td-in">Reciever</div></td>
+									<td className="reciever"><div className="td-in">Receiver</div></td>
 									<td className="amount"><div className="td-in">Amount</div></td>
 									{
 										fee ? (
