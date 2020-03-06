@@ -19,11 +19,6 @@ import FormatHelper from '../../helpers/FormatHelper';
 class OperationRow extends React.Component {
 
 	getColSpan(matches) {
-		const { isBlock } = this.props;
-
-		if (isBlock) {
-			return !matches ? 7 : 6;
-		}
 		return !matches ? 8 : 7;
 	}
 
@@ -293,7 +288,6 @@ class OperationRow extends React.Component {
 
 
 OperationRow.propTypes = {
-	isBlock: PropTypes.bool,
 	timestamp: PropTypes.bool.isRequired,
 	fee: PropTypes.bool.isRequired,
 	operation: PropTypes.object.isRequired,
@@ -302,10 +296,6 @@ OperationRow.propTypes = {
 	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
-};
-
-OperationRow.defaultProps = {
-	isBlock: false,
 };
 
 

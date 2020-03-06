@@ -100,7 +100,7 @@ class OperationsTable extends React.Component {
 		const { showedOperations, airRows } = this.state;
 
 		return (
-			<div className={classnames('accordion-table-wrap', { 'table-contract': !isTransaction }, { 'table-block': isBlock })} >
+			<div className={classnames('accordion-table-wrap', { 'table-block': isBlock })} >
 				<table>
 					<Media query="(max-width: 767px)">
 						{ (matches) => !matches &&
@@ -122,7 +122,7 @@ class OperationsTable extends React.Component {
 											<Media query="(max-width: 1000px)">
 												{
 													(matchesIn) =>
-														(!matchesIn && <td className="fee"><div className="td-in">Operation fee</div></td>)
+														(!matchesIn && <td className="fee"><div className="td-in">fee</div></td>)
 												}
 											</Media>
 										) : null

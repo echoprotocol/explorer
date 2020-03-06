@@ -1,217 +1,217 @@
 .information-breadcrumbs {
+  margin-bottom: 20px;
+
+  @include res-768 {
+    margin-bottom: 25px;
+  }
+
+  @include res-500 {
     margin-bottom: 20px;
+  }
+
+  @include res-320 {
+    margin-bottom: 25px;
+  }
+
+  .breadcrumbs-container {
+    display: flex;
+    align-items: center;
+    padding-right: 25px;
+    position: absolute;
+    margin: 0;
+    top: 9px;
+    left: 33px;
+    z-index: 10;
+
+    @include res-1280 {
+      left: 20px;
+    }
 
     @include res-768 {
-        margin-bottom: 25px;
+      top: 3px;
+      left: 55px;
     }
 
     @include res-500 {
-        margin-bottom: 20px;
+      top: 8px;
+      left: 44px;
     }
 
     @include res-320 {
-        margin-bottom: 25px;
+      top: 49px;
     }
 
-    .breadcrumbs-container {
-        display: flex;
-        align-items: center;
-        padding-right: 25px;
-        position: absolute;
-        margin: 0;
-        top: 9px;
-        left: 33px;
-        z-index: 10;
+    >.element {
+      position: relative;
+      display: inline-block;
+      @include Hack_Bold;
+      font-size: 9px;
+      letter-spacing: 2.25px;
+      color: #2a90e6;
+      text-transform: uppercase;
+      padding-top: 5px;
+      padding-bottom: 5px;
 
-        @include res-1280 {
-            left: 20px;
+      transition: .2s ease-out;
+
+      &:hover {
+        color: #095494;
+      }
+
+      &:active {
+        color: #fb0707;
+      }
+
+      &:not(:last-child) {
+        margin-right: 25px;
+
+        &:after {
+          content: '';
+          position: absolute;
+          right: -12px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 1px;
+          height: 9px;
+          background-color: #b6b6b8;
         }
-
-        @include res-768 {
-            top: 3px;
-            left: 55px;
-        }
-
-        @include res-500 {
-            top: 8px;
-            left: 44px;
-        }
-
-        @include res-320 {
-            top: 49px;
-        }
-
-        >.element {
-            position: relative;
-            display: inline-block;
-            @include Hack_Bold;
-            font-size: 9px;
-            letter-spacing: 2.25px;
-            color: #2a90e6;
-            text-transform: uppercase;
-            padding-top: 5px;
-            padding-bottom: 5px;
-
-            transition: .2s ease-out;
-
-            &:hover {
-                color: #095494;
-            }
-
-            &:active {
-                color: #fb0707;
-            }
-
-            &:not(:last-child) {
-                margin-right: 25px;
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    right: -12px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    width: 1px;
-                    height: 9px;
-                    background-color: #b6b6b8;
-                }
-            }
-        }
+      }
     }
+  }
 }
 
 .backwards {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding-top: 50px;
-    &.action {
-        .account-page-t-block {
-            width: 100%;
-            .copy-bytecode {
-                margin: auto 0 auto auto;
-            }
-        }
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 45px;
 
+  &.action {
+    .account-page-t-block {
+      width: 100%;
+
+      .copy-bytecode {
+        margin: auto 0 auto auto;
+      }
     }
 
+  }
+
+
+  @include res-768 {
+    padding-left: 18px;
+  }
+
+  @include res-500 {
+    padding-left: 23px;
+  }
+
+  @include res-320 {
+    padding-top: 86px;
+    padding-left: 25px;
+  }
+
+  &-link {
+    @include btn();
+    @include onFocus(4px, 2px, 2px, rgba(#3570B6, .3));
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    left: -6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    transition: background-color .2s;
+    border-radius: 4px;
+
+    @include res-1280 {
+      left: -20px
+    }
 
     @include res-768 {
-        padding-left: 18px;
+      top: -2px;
+      left: 12px;
     }
 
     @include res-500 {
-        padding-left: 23px;
+      top: 3px;
+      left: 11px;
     }
 
     @include res-320 {
-        padding-top: 86px;
-        padding-left: 25px;
+      top: 44px;
+      left: 10px;
     }
 
-    &-link {
-        @include btn();
-        @include onFocus(4px, 2px, 2px, rgba(#3570B6, .3));
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        top: 51px;
-        left: -6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 15;
-        transition: background-color .2s;
-        border-radius: 4px;
+    &:focus {
+      background-color: rgba(#fff, 1);
+    }
+  }
 
-        @include res-1280 {
-            left: -20px
-        }
+  >.title {
+    @include InterUI_Bold;
+    font-size: 23px;
+    color: #130d32;
+    line-height: 33px;
+    letter-spacing: 0.025em;
+    margin-left: 32px;
 
-        @include res-768 {
-            top: -2px;
-            left: 16px;
-        }
-
-        @include res-500 {
-            top: 3px;
-            left: 11px;
-        }
-
-        @include res-320 {
-            top: 44px;
-            left: 10px;
-        }
-
-        &:focus {
-            background-color: rgba(#fff, 1);
-        }
+    @include res-1280 {
+      margin-left: 18px;
     }
 
-    >.title {
-        @include InterUI_Bold;
-        font-size: 23px;
-        // line-height: 45px;
-        color: #130d32;
-        line-height: 33px;
-        letter-spacing: 0.025em;
-        margin-left: 32px;
-
-        @include res-1280 {
-            margin-left: 18px;
-        }
-
-        @include res-768 {
-            margin-left: 4px;
-        }
-
-        @include res-500 {
-            margin-left: -7px;
-        }
-
-        @include res-320 {
-            width: 100%;
-            margin-left: -9px;
-            padding-right: 30px;
-        }
+    @include res-768 {
+      margin-left: 0;
     }
+
+    @include res-500 {
+      margin-left: -7px;
+    }
+
+    @include res-320 {
+      width: 100%;
+      margin-left: -9px;
+      padding-right: 30px;
+    }
+  }
 }
 
 .transaction-information {
-    .information-breadcrumbs {
-        margin-bottom: 20px;
+  .information-breadcrumbs {
+    margin-bottom: 20px;
 
-        .breadcrumbs-container {
-            top: 18px;
+    .breadcrumbs-container {
+      top: 18px;
 
-            @include res-768 {
-                top: 15px;
-            }
+      @include res-768 {
+        top: 15px;
+      }
 
-            @include res-500 {
-                top: 19px;
-            }
+      @include res-500 {
+        top: 19px;
+      }
 
-            @include res-320 {
-                top: 60px;
-            }
-        }
+      @include res-320 {
+        top: 60px;
+      }
+    }
+  }
+
+  .transaction-time,
+  .transaction-title-operations {
+    padding-left: 32px;
+
+    @include res-1280 {
+      padding-left: 20px;
     }
 
-    .transaction-time,
-    .transaction-title-operations {
-        padding-left: 32px;
-
-        @include res-1280 {
-            padding-left: 20px;
-        }
-
-        @include res-768 {
-            padding-left: 24px;
-        }
-
-        @include res-500 {
-            padding-left: 16px;
-        }
+    @include res-768 {
+      padding-left: 24px;
     }
+
+    @include res-500 {
+      padding-left: 16px;
+    }
+  }
 }
