@@ -1,14 +1,38 @@
 .accordion-table-wrap {
   position: relative;
-  transition: background-color 0.3s,
-    padding 0.8s linear;
+  transition: background-color 0.3s, padding 0.8s linear;
 
   table {
     width: 100%;
     border-collapse: collapse;
     z-index: 1;
 
+    a {
+      color: #498FDF;
+    }
+
     td {
+      &.type {
+        .td-in {
+          max-width: 150px;
+          padding: 9px 7px 9px 17px;
+          vertical-align: middle;
+          @include text-overflow();
+        }
+      }
+
+      &.time {
+        .td-in {
+          max-width: 150px;
+
+          span {
+            display: inline-block;
+            max-width: 100%;
+            @include text-overflow();
+          }
+        }
+      }
+
       &.json {
         padding: 0px;
 
@@ -68,13 +92,9 @@
   }
 
   tbody {
-    td {
+    tr {
       font-size: 12px;
       color: #0E0936;
-    }
-
-    a {
-      color: #498FDF;
     }
   }
 
@@ -85,14 +105,12 @@
     &:hover {
       background-color: transparent;
     }
-
-    td {
-      height: 8px;
-    }
   }
 
   .fold-operation-info {
-    margin-bottom: 20px;
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
   }
 
   .avatar-wrap {
@@ -118,17 +136,29 @@
     }
   }
 
-  :not(.table-block).view {
+  .view {
     cursor: pointer;
     font-family: InterUI;
     z-index: 1;
 
+    @include min-vw(768) {
+      td:not(:nth-child(1)):not(:nth-child(2)):not(:last-child) {
+        position: relative;
+        z-index: 2;
+      }
+    }
+
     @include onlyHover() {
       &:hover:not(.active) {
 
-        td:not(:first-child):not(:last-child) {
+        td:nth-child(2) {
+          background-color: #f3f2f5;
+        }
+
+        td:not(:first-child):not(:nth-child(2)):not(:last-child) {
           background-color: #ebebee;
         }
+
 
         .json {
           a {
@@ -141,7 +171,17 @@
       }
     }
 
+
     &.active {
+      .type {
+        .td-in {
+          padding: 13px 7px 13px 17px;
+
+          @include res-500 {
+            padding: 0px;
+          }
+        }
+      }
 
       td {
         background-color: #fff;
@@ -154,7 +194,17 @@
           }
         }
 
+        &:nth-child(1),
+        &:nth-child(2),
+        &:last-child {
+          background-color: #f3f2f5;
+        }
+
         &:nth-child(2) {
+          @include res-500 {
+            background-color: #fff;
+          }
+
           .td-in {
             padding: 13px 7px 13px 20px;
 
@@ -167,7 +217,7 @@
             }
 
             @include res-500 {
-              padding: 0px;
+              padding: 0;
             }
           }
         }
@@ -181,16 +231,18 @@
         }
       }
 
+      &+.fold {
+        display: table-row;
 
-      .dd {
-
-        img {
-          transform: rotate(0);
+        td:first-child {
+          background-color: #f3f3f5;
         }
       }
 
-      &+.fold {
-        display: table-row;
+      .dd {
+        img {
+          transform: rotate(0);
+        }
       }
 
       .json {
@@ -225,7 +277,6 @@
 
   .fold {
     display: none;
-    background-color: #fff;
     animation: fade-in .4s;
     position: relative;
     z-index: 1;
@@ -241,18 +292,56 @@
       }
 
       &:nth-child(2) {
-        padding: 12px 33px 12px 63px;
+        background-color: #fff;
+        position: relative;
+        z-index: 1;
+
+        &:after {
+          content: '';
+          position: absolute;
+          top: -42px;
+          left: 0;
+          z-index: -1;
+          width: calc(100%);
+          height: calc(100% + 42px);
+          background-color: #fff;
+          box-shadow: 0 0 40px 0 rgba(0, 0, 0, .16);
+
+          @include max-vw(1000) {
+            width: calc(100% + 30px)
+          }
+
+          @include res-500 {
+            display: none;
+          }
+        }
+      }
+
+      &:last-child {
+        background-color: #f3f3f5;
+
+        @include max-vw(1000) {
+          background-color: #fff;
+        }
+      }
+
+      &:nth-child(2) {
+        padding: 12px 30px;
 
         @include res-1280 {
-          padding: 9px 33px 9px 44px;
-        }
-
-        @include res-500 {
           padding: 9px 30px;
         }
 
+
         @include res-320 {
-          padding: 9px 18px;
+          padding: 9px 15px;
+        }
+      }
+
+      .fold-operation-info {
+        .fold-title {
+          font-size: 13px;
+          letter-spacing: 0.33px;
         }
       }
     }
@@ -317,7 +406,7 @@
         width: 20px;
       }
 
-      &.type,
+
       &.time {
         .td-in {
           white-space: nowrap;
@@ -330,6 +419,7 @@
         min-width: 20px;
       }
 
+      &.fee,
       &.sender,
       &.reciever,
       &.amount {
@@ -359,31 +449,26 @@
         &.type {
           max-width: 120px;
           width: 120px;
-          min-width: 120px;
         }
 
         &.amount {
           max-width: 140px;
           width: 140px;
-          min-width: 140px;
         }
 
         &.fee {
           max-width: 140px;
           width: 140px;
-          min-width: 140px;
         }
 
         &.rezult {
           max-width: 80px;
           width: 80px;
-          min-width: 80px;
         }
 
         &.dd {
           max-width: 30px;
           width: 30px;
-          min-width: 30px;
         }
       }
     }
@@ -392,22 +477,32 @@
 
 @include res-500 {
   .accordion-table-wrap {
-    table {
-      td {
+    width: 100%;
 
-        &.type,
-        &.sender,
-        &.reciever {
-          margin-bottom: 22px;
+    .view {
+      max-width: calc(100vw - 20px);
+
+      td {
+        margin-bottom: 18px;
+
+        &:nth-child(5),
+        &:nth-child(8),
+        &:nth-child(11) {
+          padding-left: 20px;
+        }
+
+        &:not(.dd) {
+          padding-right: 10px;
         }
 
         &.sender,
         &.reciever,
         &.rezult,
-        &.json {
-          max-width: 29%;
-          width: 29%;
-          min-width: 29%;
+        &.json,
+        &.time {
+          max-width: 33%;
+          width: 33%;
+          min-width: 33%;
         }
 
         &.sender,
@@ -419,13 +514,9 @@
 
         &.type,
         &.amount {
-          max-width: 37%;
-          width: 37%;
-          min-width: 37%;
-        }
-
-        &.amount {
-          padding-left: 20px;
+          max-width: 33%;
+          width: 33%;
+          min-width: 33%;
         }
 
         &.dd {
@@ -442,6 +533,31 @@
             padding: 0;
           }
         }
+
+        &.type {
+          .td-in {
+            max-width: calc(100% - 20px);
+          }
+        }
+
+        &.time {
+          .td-in {
+            max-width: 100%;
+          }
+        }
+      }
+
+      .fold {
+        td {
+
+          &:nth-child(1),
+          &:nth-child(2),
+          &:nth-child(3) {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+        }
       }
     }
 
@@ -455,8 +571,8 @@
       display: flex;
       flex-wrap: wrap;
       position: relative;
-      padding: 22px 36px;
       background-color: #e7e6e9;
+      padding: 18px 15px 15px 18px;
 
       &.active {
         &+.fold {
@@ -479,6 +595,11 @@
       td {
         display: block;
 
+        &:first-child,
+        &:last-child {
+          display: none;
+        }
+
         .td-in {
           padding: 0;
         }
@@ -498,8 +619,8 @@
     }
 
     .fold-operation-info {
-      padding: 20px 36px;
-      margin-bottom: 0;
+      padding: 0px 7px;
+      width: 100%;
     }
 
     .col-title {
@@ -530,6 +651,7 @@
         &:nth-child(1),
         &:nth-child(2),
         &:nth-child(3) {
+          display: block;
           width: auto;
           max-width: 100%;
           min-width: auto;
@@ -539,57 +661,17 @@
   }
 }
 
-@include res-500 {
-  .accordion-table-wrap {
-    width: 100%;
-
-    table {
-
-      .view {
-        background-color: #e7e6e9;
-        padding: 18px 15px 15px 18px;
-      }
-
-      td {
-        margin-bottom: 18px;
-
-        &:first-child,
-        &:last-child {
-          display: none;
-        }
-      }
-
-      .fold {
-        td {
-
-          &:nth-child(1),
-          &:nth-child(2),
-          &:nth-child(3) {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-          }
-        }
-      }
-    }
-
-    .fold-operation-info {
-      padding: 0px 7px;
-      width: 100%;
-    }
-  }
-}
 
 @include max-vw(500) {
   .accordion-table-wrap {
 
     table {
-
       .view {
         padding: 17px 17px 0 17px;
 
         td {
           margin-bottom: 28px;
+
         }
       }
     }
@@ -613,293 +695,66 @@
     width: 100%;
     margin: 0;
 
-    table {
 
-      .view {
-        padding: 22px 17px 8px;
 
-        td {
-          &:not(.dd):nth-child(odd) {
-            max-width: 50%;
-            width: 50%;
-            min-width: 50%;
-          }
+    .view {
+      padding: 22px 17px 8px;
 
-          &:not(.dd):nth-child(even) {
-            max-width: 50%;
-            width: 50%;
-            min-width: 50%;
-          }
-
-          &.json,
-          &.amount {
-            margin-bottom: 10px;
-          }
-
-          &.amount {
-            padding-left: 0;
-          }
-
-          &.dd .td-in {
-            right: 15px;
-            top: 16px;
-          }
-
-          &.type {
-            order: 1;
-          }
-
-          &.amount {
-            order: 2;
-          }
-
-          &.reciever {
-            order: 3;
-          }
-
-          &.sender {
-            order: 4;
-          }
-
-          &.rezult {
-            order: 5;
-          }
-
-          &.json {
-            order: 6;
-          }
+      td {
+        &:not(.dd):nth-child(odd) {
+          max-width: 50%;
+          width: 50%;
+          min-width: 50%;
         }
 
-        .td-in {
+        &:nth-child(5),
+        &:nth-child(8),
+        &:nth-child(11) {
           padding-left: 0;
         }
-      }
-    }
-  }
-}
 
-.table-container {
-  .accordion-table-wrap.table-contract {
-    table {
-      thead {
+        &:not(.dd):nth-child(even) {
+          max-width: 50%;
+          width: 50%;
+          min-width: 50%;
+        }
 
-        &:after,
-        &:before {
-          height: 34px;
+        &.amount {
+          padding-left: 0;
+        }
+
+        &.dd .td-in {
+          right: 15px;
+          top: 16px;
+        }
+
+        &.type {
+          order: 1;
+        }
+
+        &.amount {
+          order: 2;
+        }
+
+        &.reciever {
+          order: 3;
+        }
+
+        &.sender {
+          order: 4;
+        }
+
+        &.rezult {
+          order: 5;
+        }
+
+        &.json {
+          order: 6;
         }
       }
 
-      tr {
-
-        td {
-
-          &.type {
-            max-width: 12.5%;
-            width: 12.5%;
-            min-width: 12.5%;
-
-            @include res-1000 {
-              max-width: 14%;
-              width: 14%;
-              min-width: 14%;
-            }
-
-            @include res-500 {
-              order: 1;
-              max-width: 36.7%;
-              width: 36.7%;
-              min-width: 36.7%;
-            }
-
-            @include res-320 {
-              max-width: 50%;
-              width: 50%;
-              min-width: 50%;
-            }
-          }
-
-          &.time {
-            max-width: 15%;
-            width: 15%;
-            min-width: 15%;
-
-            .td-in {
-              padding-left: 2px;
-              opacity: 0.6;
-              color: #0f0739;
-            }
-
-            @include res-1000 {
-              max-width: 17.5%;
-              width: 17.5%;
-              min-width: 17.5%;
-
-              .td-in {
-                padding-left: 8px;
-              }
-            }
-
-            @include res-500 {
-              order: 2;
-              max-width: 32%;
-              width: 32%;
-              min-width: 32%;
-
-              .td-in {
-                padding-left: 0px;
-              }
-            }
-
-            @include res-320 {
-              max-width: 50%;
-              width: 50%;
-              min-width: 50%;
-            }
-          }
-
-          &.sender {
-            max-width: 18.5%;
-            width: 18.5%;
-            min-width: 18.5%;
-
-            @include res-1000 {
-              max-width: 19.5%;
-              width: 19.5%;
-              min-width: 19.5%;
-            }
-
-            @include res-500 {
-              order: 4;
-              max-width: 37%;
-              width: 37%;
-              min-width: 37%;
-              padding-left: 21px;
-
-              .td-in {
-                padding-left: 0px;
-              }
-
-              @include res-320 {
-                order: 3;
-                max-width: 50%;
-                width: 50%;
-                min-width: 50%;
-                padding-left: 0px;
-              }
-            }
-          }
-
-          &.reciever {
-            max-width: 17.4%;
-            width: 17.4%;
-            min-width: 17.4%;
-
-            @include res-1000 {
-              max-width: 22.4%;
-              width: 22.4%;
-              min-width: 22.4%;
-            }
-
-            @include res-500 {
-              order: 5;
-              max-width: 32%;
-              width: 32%;
-              min-width: 32%;
-            }
-
-            @include res-320 {
-              order: 4;
-              max-width: 50%;
-              width: 50%;
-              min-width: 50%;
-            }
-          }
-
-          &.amount {
-            max-width: 17%;
-            width: 17%;
-            min-width: 17%;
-
-            @include res-1000 {
-              max-width: 20%;
-              width: 20%;
-              min-width: 20%;
-            }
-
-            @include res-500 {
-              order: 3;
-              max-width: 30%;
-              width: 30%;
-              min-width: 30%;
-              padding-left: 0px;
-            }
-
-            @include res-320 {
-              order: 5;
-              max-width: 50%;
-              width: 50%;
-              min-width: 50%;
-              padding-left: 0px;
-            }
-          }
-
-          &.rezult {
-            max-width: 8.6%;
-            width: 8.6%;
-            min-width: 8.6%;
-
-            @include res-768 {
-              display: none;
-            }
-          }
-
-          &.json {
-            max-width: 20px;
-            width: 20px;
-            min-width: 20px;
-
-            @include res-500 {
-              order: 6;
-              max-width: 30%;
-              width: 30%;
-              min-width: 30%;
-            }
-
-            @include res-320 {
-              max-width: 50%;
-              width: 50%;
-              min-width: 50%;
-            }
-          }
-
-          &.dd {
-            max-width: 30px;
-            width: 30px;
-            min-width: 30px;
-
-            @include max-vw(768) {
-              right: 16px;
-              max-width: 8px;
-              width: 8px;
-              min-width: 8px;
-            }
-          }
-        }
-      }
-
-
-      tbody {
-        td {
-          letter-spacing: 0.3px;
-          line-height: 10px;
-
-          .td-in {
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-            line-height: 16px;
-          }
-        }
+      .td-in {
+        padding-left: 0;
       }
     }
   }

@@ -43,11 +43,14 @@
 @import 'components/select-input';
 @import 'components/input-wrapper';
 @import 'components/checkbox';
-@import 'components/accordion-table';
 @import 'components/avatar';
 @import 'components/operation-detail-table';
 @import 'components/token-transfer-table';
 @import 'components/node-map';
 @import 'components/_view-list-container';
 @import 'components/table-label';
-@import 'components/distribution-table';
+
+
+@import 'components/tables/accordion-table';
+@import 'components/tables/table-block';
+@import 'components/tables/distribution-table';
