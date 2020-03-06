@@ -28,7 +28,7 @@ class TokenBalances extends React.Component {
 
 		return (
 			<div key={id} className={classnames('inner-elem')}>
-				<span className="txt">
+				<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
 					{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
 				</span>
 				<span className="accent">

@@ -26,7 +26,7 @@ class AssetBalances extends React.Component {
 	renderElement(id, asset, amount, isOwner) {
 		return (
 			<div key={id} className={classnames('inner-elem', { 'is-owner': isOwner })}>
-				<span className="txt">
+				<span className="txt" title={FormatHelper.formatAmount(amount, asset.get('precision'))}>
 					{FormatHelper.formatAmount(amount, asset.get('precision'))}
 				</span>
 				<span className="accent">
