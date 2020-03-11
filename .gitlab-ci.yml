@@ -11,12 +11,12 @@ lint:
     paths:
       - node_modules/
   script:
+    - npm i --silent
     - npm run lint
   only:
     - merge_requests
   tags:
     - docker
-
 
 .build:
   stage: build
