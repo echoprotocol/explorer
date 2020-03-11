@@ -199,7 +199,8 @@ class BlockInformation extends React.Component {
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
 				{
-					this.state.loader ? this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
+					!blockInformation.get('blockNumber') || this.state.loader ?
+						this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
 				}
 			</div>
 		);

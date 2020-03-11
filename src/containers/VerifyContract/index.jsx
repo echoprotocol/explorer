@@ -14,6 +14,7 @@ export default withRouter(connect(
 		contracts: state.contract.get('contracts'),
 		verified: state.contract.get('verified'),
 		historyLength: state.global.get('historyLength'),
+		progress: state.contract.get('progress'),
 	}),
 	(dispatch) => ({
 		setValue: (field, value) => dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, field, value)),

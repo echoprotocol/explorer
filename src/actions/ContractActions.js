@@ -10,7 +10,7 @@ import {
 	MIN_ACCESS_VERSION_BUILD,
 } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
-import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
+import { MODAL_ERROR, MODAL_SUCCESS, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
 import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
 import { CONTRACT_ABI } from '../constants/RouterConstants';
 
@@ -42,6 +42,7 @@ import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
 import browserHistory from '../history';
+import { COMPILER_CONSTS } from '../constants/ContractConstants';
 
 class ContractActions extends BaseActionsClass {
 
@@ -249,9 +250,47 @@ class ContractActions extends BaseActionsClass {
 
 			if (!downloadedVersions.includes(version)) {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
-				await loadScript(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`); // eslint-disable-line no-undef
-			}
 
+				// eslint-disable-next-line no-undef
+				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
+				const total = Number.parseInt(response.headers.get('content-length'), 10);
+				const reader = response.body.getReader();
+				let bytesReceived = 0;
+				const chunks = [];
+
+				while (true) {
+					// eslint-disable-next-line no-await-in-loop
+					const { done, value } = await reader.read();
+					if (done) {
+						dispatch(this.setValue('progress', 0));
+						break;
+					}
+
+					chunks.push(value);
+					bytesReceived += value.length;
+
+					const progress = Math.min(99, Math.floor((bytesReceived * 100) / (total * 4.8)));
+					dispatch(this.setValue('progress', progress));
+				}
+
+				const chunksAll = new Uint8Array(bytesReceived);
+				let position = 0;
+
+				// eslint-disable-next-line no-restricted-syntax
+				for (const chunk of chunks) {
+					chunksAll.set(chunk, position);
+					position += chunk.length;
+				}
+
+				const script = document.createElement('script');
+				script.innerHTML = new TextDecoder('utf-8').decode(chunksAll);
+
+				if (window.Module) {
+					window.Module = undefined;
+				}
+
+				document.getElementsByTagName('head')[0].appendChild(script);
+			}
 			const code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
 			if (!code) {
 				return;
@@ -260,7 +299,7 @@ class ContractActions extends BaseActionsClass {
 		};
 	}
 
-	contractCodeCompile(code, filename = 'test.sol') {
+	contractCodeCompile(code, filename = 'test.sol', attempt = 1) {
 		return async (dispatch, getState) => {
 			if (!code) {
 				code = getState().form.getIn([FORM_CONTRACT_VERIFY, 'code']);
@@ -295,6 +334,10 @@ class ContractActions extends BaseActionsClass {
 
 				const solc = wrapper(window.Module);
 				const output = JSON.parse(solc.compile(JSON.stringify(input)));
+				const errors = this.getErrors(output);
+				if (errors.length) {
+					throw new Error(errors);
+				}
 				let contracts = new Map({});
 				contracts = contracts.withMutations((contractsMap) => {
 					Object.entries(output.contracts[filename]).forEach(([name, contract]) => {
@@ -309,20 +352,53 @@ class ContractActions extends BaseActionsClass {
 				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', contracts.keySeq().first()));
 				dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', null));
 			} catch (err) {
-				dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', 'Invalid contract code'));
-				dispatch(this.setValue('contracts', new Map({})));
-				dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', ''));
+				if (err.message.indexOf(COMPILER_CONSTS.SOLC_NOT_ENOUGH_STACK_ERROR) !== -1
+					&& attempt < COMPILER_CONSTS.MAX_TRIES_TO_COMPILE) {
+					dispatch(this.contractCodeCompile(code, filename, attempt + 1));
+				} else {
+					dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', 'Invalid contract code'));
+					dispatch(this.setValue('contracts', new Map({})));
+					dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', ''));
+				}
 			}
 		};
 	}
-
+	getErrors(output) {
+		const { errors } = output;
+		if (!errors) {
+			return [];
+		}
+		return errors.map((err) => err.formattedMessage);
+	}
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
+
+			if (!BridgeService.isExist()) {
+				dispatch(ModalActions.openModal(MODAL_EXTENSION_INFO, {}));
+				return;
+			}
+
+			const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
+			if (!isExistActiveAccount) return;
+
 			const ownerName = getState().contract.getIn(['owner', 'name']);
 			const ownerId = getState().contract.getIn(['owner', 'id']);
-			const activeId = getState().global.getIn(['activeAccount', 'id']);
-
-			if (activeId !== ownerId) {
+			let activeAccountId = getState().global.getIn(['activeAccount', 'id']) || BridgeService.getAccount().id;
+			if (!activeAccountId) {
+				const access = await BridgeService.getAccess();
+				if (!access) return;
+				await new Promise((resolve) =>
+					setTimeout(() => {
+						resolve();
+					}, 300));
+				activeAccountId = BridgeService.getAccount().id;
+				if (!activeAccountId) {
+					const accounts = await BridgeService.getAllAcounts();
+					const activeAccount = accounts.find((ac) => ac.active);
+					activeAccountId = activeAccount && activeAccount.id;
+				}
+			}
+			if (activeAccountId !== ownerId) {
 				dispatch(ModalActions.openModal(
 					MODAL_ERROR,
 					{ title: `Only account ${ownerName} can manage this contract` },
@@ -334,13 +410,6 @@ class ContractActions extends BaseActionsClass {
 				if (clickSaveCounter > 4) return;
 				dispatch(this.setValue('clickSaveCounter', clickSaveCounter + 1));
 
-				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
-				if (!isAccessBridge) return;
-
-				const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
-				if (!isExistActiveAccount) return;
-
-				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 				const message = ContractHelper.getMessageToManageContract(contractId);
 				const signature = await BridgeService.proofOfAuthority(message, activeAccountId);
 

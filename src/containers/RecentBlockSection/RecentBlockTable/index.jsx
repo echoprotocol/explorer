@@ -25,11 +25,23 @@ import {
 } from '../../../actions/BlockActions';
 import SearchActions from '../../../actions/SearchActions';
 
-
 class RecentBlockTable extends React.Component {
+
+	constructor() {
+		super();
+		this.state = {
+			loading: false,
+		};
+	}
 
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.MAIN);
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.state.loading && prevProps.hints !== this.props.hints && this.props.hints.length) {
+			this.transitionToBlock();
+		}
 	}
 
 	componentWillUnmount() {
@@ -69,16 +81,22 @@ class RecentBlockTable extends React.Component {
 		});
 	}
 
-	transitionToBlock() {
-		const { errorSearch, hints: [hint] } = this.props;
-		if (errorSearch) return;
-		this.props.history.push(hint.to);
+	setLoading() {
+		this.setState({
+			loading: true,
+		});
 	}
 
 	goToBlock(e, block) {
 		e.preventDefault();
 		window.scrollTo(0, 0);
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
+	}
+
+	transitionToBlock() {
+		const { errorSearch, hints: [hint] } = this.props;
+		if (errorSearch) return;
+		this.props.history.push(hint.to);
 	}
 
 	render() {
@@ -96,12 +114,12 @@ class RecentBlockTable extends React.Component {
 							errorSearch={errorSearch}
 							loadingSearch={loadingSearch}
 							getHints={(str) => this.props.getHints(str)}
-							transitionToBlock={(arg) => this.transitionToBlock(arg)}
 							withHelp
 							goToBlock
 							white
 							placeholder="Go to block"
 							latestBlock={latestBlock}
+							setLoading={() => this.setLoading()}
 						/>
 					</h2>
 					<div className="table">
@@ -187,7 +205,12 @@ class RecentBlockTable extends React.Component {
 											{
 												blocks.map((data) => (
 													<React.Fragment key={data.round}>
-														<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="divTableRow fade-anim">
+														<Link
+															onClick={(e) => this.goToBlock(e, data.round)}
+															to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+															key={data.round}
+															className="divTableRow fade-anim"
+														>
 															<div className="divTableCell">
 																<span className="blue">
 																	{data.blockNumber}

@@ -246,6 +246,17 @@ class TransactionActionsClass extends BaseActionsClass {
 		};
 	}
 
+	async getPrecision(contractId) {
+		const rawResult = await echo.api.callContractNoChangingState(
+			contractId,
+			NATHAN.ID,
+			{ asset_id: ECHO_ASSET.ID, amount: 0 },
+			ERC20_HASHES['decimals()'],
+		);
+		if (rawResult === '') return 0;
+		return parseInt(rawResult, 16);
+	}
+
 	/**
 	 *
 	 * @param {Array} data
@@ -438,7 +449,8 @@ class TransactionActionsClass extends BaseActionsClass {
 
 					const symbol = FormatHelper
 						.toUtf8((await echo.api.callContractNoChangingState(contractId, NATHAN.ID, { asset_id: ECHO_ASSET.ID, amount: 0 }, ERC20_HASHES['symbol()'])).slice(128));
-					const precision = parseInt(await echo.api.callContractNoChangingState(contractId, NATHAN.ID, { asset_id: ECHO_ASSET.ID, amount: 0 }, ERC20_HASHES['decimals()']), 16);
+
+					const precision = await this.getPrecision(contractId);
 
 					let internalTransfers = log
 						.filter(({ address }) => `${CONTRACT_OBJECT_PREFIX}.${parseInt(address.slice(2), 16)}` === contractId);

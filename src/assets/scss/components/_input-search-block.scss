@@ -71,6 +71,23 @@
       input {
         &::placeholder {
           color: rgba(104, 108, 134, 0.6);
+
+        .search-block-result {
+
+            &.no-results-wrap {
+                width: auto;
+                right: 0;
+                left: initial;
+            }
+
+            .element {
+                &.no-results {
+                    height: 18px;
+                    padding: 0;
+                    white-space: nowrap;
+                }
+            }
+          }
         }
       }
     }

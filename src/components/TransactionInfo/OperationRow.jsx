@@ -47,6 +47,28 @@ class OperationRow extends React.Component {
 		);
 	}
 
+	renderAmount() {
+		const { operation } = this.props;
+		const { mainInfo } = operation;
+		if (!mainInfo.value.amount) return <div className="td-in">—</div>;
+		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
+		return (
+			<div className="td-in">
+				<span className="value">
+					<Tooltip
+						placement="top"
+						overlayClassName="verify-contract-tooltip"
+						trigger={['hover']}
+						overlay={assetAmount}
+					>
+						<span className="txt">{assetAmount}</span>
+					</Tooltip>
+				</span>
+				<span className="currency">{mainInfo.value.symbol}</span>
+			</div>
+		);
+	}
+
 	render() {
 		const {
 			operation: {
@@ -82,8 +104,6 @@ class OperationRow extends React.Component {
 			width: 175,
 		};
 
-		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
-
 		return (
 			<React.Fragment>
 				<tr
@@ -101,7 +121,7 @@ class OperationRow extends React.Component {
 					</Media>
 					<td className="type">
 						<Media query="(max-width: 767px)">
-							{ (matches) => matches &&
+							{(matches) => matches &&
 								<React.Fragment>
 
 									<div className="col-title">
@@ -121,7 +141,7 @@ class OperationRow extends React.Component {
 						timestamp ? (
 							<td className="time">
 								<Media query="(max-width: 767px)">
-									{ (matches) => matches && <div className="col-title">DATA, TIME</div>}
+									{(matches) => matches && <div className="col-title">DATA, TIME</div>}
 								</Media>
 								<div className="td-in">
 									<span>
@@ -133,7 +153,7 @@ class OperationRow extends React.Component {
 					}
 					<td className="sender">
 						<Media query="(max-width: 767px)">
-							{ (matches) => matches && <div className="col-title">Sender</div>}
+							{(matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
 						{mainInfo.from.id ?
 							<Link className="td-in avatar-wrap" to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
@@ -144,30 +164,15 @@ class OperationRow extends React.Component {
 					</td>
 					<td className="reciever">
 						<Media query="(max-width: 767px)">
-							{ (matches) => matches && <div className="col-title">Reciever</div>}
+							{(matches) => matches && <div className="col-title">Reciever</div>}
 						</Media>
 						{this.renderSubject(subjectValue, mainInfo)}
 					</td>
 					<td className="amount">
 						<Media query="(max-width: 767px)">
-							{ (matches) => matches && <div className="col-title">Amount</div>}
+							{(matches) => matches && <div className="col-title">Amount</div>}
 						</Media>
-						{
-							mainInfo.value.amount ?
-								<div className="td-in">
-									<span className="value">
-										<Tooltip
-											placement="top"
-											overlayClassName="verify-contract-tooltip"
-											trigger={['hover']}
-											overlay={assetAmount}
-										>
-											<span className="txt">{assetAmount}</span>
-										</Tooltip>
-									</span>
-									<span className="currency">{mainInfo.value.symbol}</span>
-								</div> : <div className="td-in">—</div>
-						}
+						{this.renderAmount()}
 					</td>
 					{
 						fee ? (
@@ -196,7 +201,7 @@ class OperationRow extends React.Component {
 					}
 					<td className="rezult">
 						<Media query="(max-width: 767px)">
-							{ (matches) => matches && <div className="col-title">Result</div>}
+							{(matches) => matches && <div className="col-title">Result</div>}
 						</Media>
 						{
 							(mainInfo.result && !_.isEmpty(mainInfo.result)) ?
