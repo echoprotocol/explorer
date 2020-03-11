@@ -9,8 +9,6 @@ stages:
   script:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME  --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-  after_script:
-    - docker logout $CI_REGISTRY
   tags:
     - pp-builder
 
@@ -46,8 +44,6 @@ build-prod:
   script:
     - docker-compose pull
     - docker-compose -p 656-echo-explorer up -d
-  after_script:
-    - docker logout $CI_REGISTRY
 
 develop:
   extends: .deploy
