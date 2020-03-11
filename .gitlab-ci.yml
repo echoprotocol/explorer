@@ -93,8 +93,6 @@ production-deploy:
     name: production
     url: https://explorer.echo-dev.io
   only:
-    - /^\d+\.\d+\.\d+$/
-  except:
-    - branches
+    - tags
   tags:
     - echo-explorer-1
