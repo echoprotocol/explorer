@@ -62,8 +62,6 @@ build-prod:
 
 develop:
   extends: .deploy
-  variables:
-    EXTERNAL_PORT: 26562
   environment:
     name: develop
     url: https://656-echo-explorer.pixelplex-test.by
@@ -74,8 +72,6 @@ develop:
 
 stage-deploy:
   extends: .deploy
-  variables:
-    EXTERNAL_PORT: 36562
   environment:
     name: master
     url: http://656-echo-explorer.pixelplexlabs.com
@@ -86,8 +82,6 @@ stage-deploy:
 
 production-deploy:
   extends: .deploy
-  variables:
-    EXTERNAL_PORT: 26562
   environment:
     name: production
     url: https://explorer.echo-dev.io

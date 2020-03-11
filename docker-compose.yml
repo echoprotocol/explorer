@@ -5,5 +5,5 @@ services:
   frontend:
     image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
     ports:
-      - $EXTERNAL_PORT:3000
+      - 26562:3000
     restart: always
