@@ -27,9 +27,7 @@ build-stage:
     NODE_APP_INSTANCE: master
   extends: .build
   only:
-    - /.*rc\.[0-9]+$/
-  except:
-    - branches
+    - master
 
 build-prod:
   variables:
@@ -63,7 +61,7 @@ develop:
     - develop
     - EEX-772
   tags:
-   - pp-new-develop
+    - pp-new-develop
 
 stage-deploy:
   extends: .deploy
@@ -72,12 +70,11 @@ stage-deploy:
   environment:
     name: master
     url: http://656-echo-explorer.pixelplexlabs.com
-  tags:
-   - pp-stage
   only:
-    - /.*rc\.[0-9]+$/
-  except:
-    - branches
+    - master
+  tags:
+    - pp-stage
+
 
 production-deploy:
   extends: .deploy
