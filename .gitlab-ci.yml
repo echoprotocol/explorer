@@ -2,86 +2,93 @@ stages:
   - build
   - deploy
 
-
-build.develop:
+.build:
   stage: build
-  variables:
-    NODE_ENV: production
-    NODE_APP_INSTANCE: develop
-    CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    EXTERNAL_PORT: 26562
-  script:
-    - docker build --cache-from $CI_FULL_REGISTRY --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t $CI_FULL_REGISTRY .
-    - docker-compose -p 656-echo-explorer-develop up -d
-  only:
-    - develop
-  tags:
-    - echo-linux
-  environment:
-    name: develop
-    url: https://656-echo-explorer.pixelplex-test.by
-
-
-build.master:
-  stage: build
-  variables:
-    NODE_ENV: production
-    NODE_APP_INSTANCE: master
-    CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    EXTERNAL_PORT: 36562
-  script:
-    - docker build --cache-from $CI_FULL_REGISTRY --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} -t $CI_FULL_REGISTRY .
-    - docker-compose -p 656-echo-explorer-stage up -d
-  only:
-    - master
-  tags:
-    - echo-linux
-  environment:
-    name: master
-    url: http://656-echo-explorer.pixelplexlabs.com
-
-
-build.production:
-  stage: build
-  variables:
-    NODE_ENV: production
-    NODE_APP_INSTANCE: production
   before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME  --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   after_script:
     - docker logout $CI_REGISTRY
-  only:
-    - tags
   tags:
-    - echo-linux
-  environment:
-    name: production
-    url: https://explorer.echo-dev.io
+    - pp-builder
 
+build-branch:
+  variables:
+    NODE_APP_INSTANCE: develop
+  extends: .build
+  only:
+    - develop
+    - EEX-772
 
-deploy.production:
+build-stage:
+  variables:
+    NODE_APP_INSTANCE: master
+  extends: .build
+  only:
+    - /.*rc\.[0-9]+$/
+  except:
+    - branches
+
+build-prod:
+  variables:
+    NODE_APP_INSTANCE: prod
+  extends: .build
+  only:
+    - /^\d+\.\d+\.\d+$/
+  except:
+    - branches
+
+.deploy:
   stage: deploy
   variables:
     NODE_ENV: production
-    NODE_APP_INSTANCE: production
-    CI_FULL_REGISTRY: $CI_REGISTRY_IMAGE:latest
-    EXTERNAL_PORT: 26562
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker pull $CI_REGISTRY_IMAGE:latest
-    - docker-compose up -d
+    - docker-compose pull
+    - docker-compose -p 656-echo-explorer up -d
   after_script:
     - docker logout $CI_REGISTRY
+
+develop:
+  extends: .deploy
+  variables:
+    EXTERNAL_PORT: 26562
+  environment:
+    name: develop
+    url: https://656-echo-explorer.pixelplex-test.by
   only:
-    - tags
+    - develop
+    - EEX-772
   tags:
-    - echo-explorer-1
-  when: manual
+   - pp-new-develop
+
+stage-deploy:
+  extends: .deploy
+  variables:
+    EXTERNAL_PORT: 36562
+  environment:
+    name: master
+    url: http://656-echo-explorer.pixelplexlabs.com
+  tags:
+   - pp-stage
+  only:
+    - /.*rc\.[0-9]+$/
+  except:
+    - branches
+
+production-deploy:
+  extends: .deploy
+  variables:
+    EXTERNAL_PORT: 26562
   environment:
     name: production
     url: https://explorer.echo-dev.io
+  only:
+    - /^\d+\.\d+\.\d+$/
+  except:
+    - branches
+  tags:
+    - echo-explorer-1
