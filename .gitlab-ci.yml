@@ -1,6 +1,22 @@
 stages:
+  - test
   - build
   - deploy
+
+lint:
+  image: node:10.15
+  stage: test
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - node_modules/
+  script:
+    - npm run lint
+  only:
+    - merge_requests
+  tags:
+    - docker
+
 
 .build:
   stage: build
