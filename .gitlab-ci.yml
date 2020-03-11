@@ -20,7 +20,6 @@ build-branch:
   extends: .build
   only:
     - develop
-    - EEX-772
 
 build-stage:
   variables:
@@ -59,7 +58,6 @@ develop:
     url: https://656-echo-explorer.pixelplex-test.by
   only:
     - develop
-    - EEX-772
   tags:
     - pp-new-develop
 
@@ -74,7 +72,6 @@ stage-deploy:
     - master
   tags:
     - pp-stage
-
 
 production-deploy:
   extends: .deploy
