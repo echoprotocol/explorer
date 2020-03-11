@@ -48,8 +48,7 @@ build-prod:
   extends: .build
   only:
     - tags
-  except:
-    - branches
+
 
 .deploy:
   stage: deploy
