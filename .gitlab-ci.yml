@@ -25,15 +25,13 @@ lint:
 
 .deploy:
   stage: deploy
-  variables:
-    NODE_ENV: production
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker-compose pull
     - docker-compose -p 656-echo-explorer up -d
 
-develop:
+develop-deploy:
   extends: .deploy
   environment:
     name: develop
@@ -56,7 +54,7 @@ stage-deploy:
 production-deploy:
   extends: .deploy
   environment:
-    name: production
+    name: prod
     url: https://explorer.echo-dev.io
   only:
     - tags
