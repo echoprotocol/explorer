@@ -3,6 +3,11 @@ stages:
   - build
   - deploy
 
+include:
+  - project: 'service/devops'
+    ref: master
+    file: '.gitlab-ci.yml'  
+
 lint:
   image: node:10.15
   stage: test
@@ -17,38 +22,6 @@ lint:
     - merge_requests
   tags:
     - docker
-
-.build:
-  stage: build
-  before_script:
-     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME  --build-arg NODE_APP_INSTANCE=${NODE_APP_INSTANCE} .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-  tags:
-    - pp-builder
-
-build-branch:
-  variables:
-    NODE_APP_INSTANCE: develop
-  extends: .build
-  only:
-    - develop
-
-build-stage:
-  variables:
-    NODE_APP_INSTANCE: master
-  extends: .build
-  only:
-    - master
-
-build-prod:
-  variables:
-    NODE_APP_INSTANCE: prod
-  extends: .build
-  only:
-    - tags
-
 
 .deploy:
   stage: deploy
