@@ -480,7 +480,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			}
 		}
 
-		if (result.internal && result.internal[0] && result.internal[0].value) {
+		if (!result.value && result.internal && result.internal[0] && result.internal[0].value) {
 			result.value = result.internal[0].value;
 		}
 		return result;
