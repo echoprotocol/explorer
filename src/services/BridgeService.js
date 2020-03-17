@@ -1,6 +1,12 @@
 
 export class BridgeService {
 
+	static loadActiveAccount() {
+		return {
+			id: window.echojslib.extension.activeAccount,
+		};
+	}
+
 	static isExist() {
 		return !!window.echojslib && !!window.echojslib.extension;
 	}
@@ -21,15 +27,19 @@ export class BridgeService {
 		// window.echojslib.extension.unscribeSwitchAccount(cb);
 	}
 
-	static getAccount() {
+	static async getAccount() {
 		const { activeAccount } = window.echojslib.extension;
-		if (activeAccount) {
-			this.getAccess();
+
+		if (!activeAccount) {
+			const allAccount = await this.getAllAcounts();
+			return !allAccount || allAccount.length === 0 ? null : allAccount[0];
 		}
+
 		return {
 			id: activeAccount,
 		};
 	}
+
 	static getAllAcounts() {
 		return window.echojslib.extension.getAccounts();
 	}
