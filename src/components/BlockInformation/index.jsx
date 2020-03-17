@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import { List } from 'immutable';
 
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
@@ -89,7 +90,7 @@ class BlockInformation extends React.Component {
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
-		const operations = blockInformation.get('operations') || [];
+		const operations = blockInformation.get('operations') || new List([]);
 		const transactionCount = blockInformation.get('transactionCount') || 0;
 		const rewardDistribution = blockInformation.get('rewardDistribution');
 		const slicedOperations = operations.slice(0, currentTransactionLength);
@@ -177,15 +178,15 @@ class BlockInformation extends React.Component {
 				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
 				<div className="help-table-wrapper">
 					{
-						(slicedOperations && slicedOperations.length) ?
+						(slicedOperations && slicedOperations.size) ?
 							<OperationsTable
 								isBlock
 								fee
 								operations={slicedOperations}
 								history={this.props.history}
 								location={this.props.location}
-								loadMore={currentTransactionLength < operations.length ? () => this.loadMoreTransactions() : null}
-								hasMore={currentTransactionLength < operations.length}
+								loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
+								hasMore={currentTransactionLength < operations.size}
 							/> : null
 					}
 				</div>

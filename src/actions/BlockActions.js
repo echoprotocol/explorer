@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle,camelcase,no-shadow */
 import BN from 'bignumber.js';
 import moment from 'moment';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import echo, { serializers } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
@@ -160,7 +160,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		}
 
 		value.transactionCount = resultTransactions.length;
-		value.operations = resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []);
+		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);

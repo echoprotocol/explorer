@@ -56,10 +56,19 @@ class OperationsTable extends React.Component {
 	}
 
 	toggleOperationDetails(index) {
+		const { operations } = this.props;
 		const { pathname, search } = this.props.location;
 		const { showedOperations, airRows } = this.state;
 		const queryProps = queryString.parse(search);
 		const v = showedOperations.indexOf(index);
+
+		if (!this.props.changeUrl && operations && operations.size) {
+			const { blockNumber, trIndex, opIndex } = operations.get(index);
+			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
+			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
+			this.props.history.push(operationUrl);
+			return;
+		}
 
 		if (v !== -1) {
 			showedOperations.splice(v, 1);
@@ -77,9 +86,7 @@ class OperationsTable extends React.Component {
 			});
 		} else {
 			showedOperations.push(index);
-			if (this.props.changeUrl) {
-				this.props.history.push(URLHelper.createTransactionOperationUrl(pathname, index + 1));
-			}
+			this.props.history.push(URLHelper.createTransactionOperationUrl(pathname, index + 1));
 		}
 
 		if (showedOperations.includes(index) && airRows.indexOf(index - 1) === -1) {
