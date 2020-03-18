@@ -10,7 +10,7 @@ import {
 	MIN_ACCESS_VERSION_BUILD,
 } from '../constants/GlobalConstants';
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
-import { MODAL_ERROR, MODAL_SUCCESS, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
+import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
 import { CONTRACT_ABI } from '../constants/RouterConstants';
 
