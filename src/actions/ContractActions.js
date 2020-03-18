@@ -373,10 +373,8 @@ class ContractActions extends BaseActionsClass {
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
 
-			if (!BridgeService.isExist()) {
-				dispatch(ModalActions.openModal(MODAL_EXTENSION_INFO, {}));
-				return;
-			}
+			const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
+			if (!isAccessBridge) return;
 
 			const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
 			if (!isExistActiveAccount) return;
