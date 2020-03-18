@@ -685,8 +685,8 @@ class ContractActions extends BaseActionsClass {
 				const isAccessBridge = await dispatch(GlobalActions.checkAccessToBridge());
 				if (!isAccessBridge) return;
 
-				const isExistActiveAcount = await dispatch(AccountActions.checkActiveAccount());
-				if (!isExistActiveAcount) return;
+				const isExistActiveAccount = await dispatch(AccountActions.checkActiveAccount());
+				if (!isExistActiveAccount) return;
 
 				const activeAccountId = getState().global.getIn(['activeAccount', 'id']);
 				const stars = getState().contract.get('stars');

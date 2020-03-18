@@ -197,7 +197,7 @@ class AccountActions extends BaseActionsClass {
 		return async (dispatch) => {
 			if (!BridgeService.isExist()) return;
 
-			const account = await BridgeService.getAccount();
+			const account = BridgeService.loadActiveAccount();
 
 			dispatch(this.setActiveAccount(account));
 		};
