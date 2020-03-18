@@ -6,7 +6,7 @@ stages:
 include:
   - project: 'service/devops'
     ref: master
-    file: '.gitlab-ci.yml'  
+    file: 'build/frontend/.gitlab-ci.yml'  
 
 lint:
   image: node:10.15
@@ -37,6 +37,7 @@ develop-deploy:
     name: develop
     url: https://656-echo-explorer.pixelplex-test.by
   only:
+    - EEX-772
     - develop
   tags:
     - pp-new-develop
