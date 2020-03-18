@@ -38,7 +38,6 @@ develop-deploy:
     name: develop
     url: https://656-echo-explorer.pixelplex-test.by
   only:
-    - EEX-772
     - develop
   tags:
     - pp-new-develop
