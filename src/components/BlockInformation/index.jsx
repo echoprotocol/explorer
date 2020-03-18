@@ -51,7 +51,7 @@ class BlockInformation extends React.Component {
 			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.match.params.round));
 		}
 
-		if (this.props.match.params.round !== prevProps.match.params.round) {
+		if (this.props.match.params.round !== prevProps.match.params.round || this.props.latestBlock !== prevProps.latestBlock) {
 			this.props.getBlockInfo(this.props.match.params.round);
 		}
 	}
