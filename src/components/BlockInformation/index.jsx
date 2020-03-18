@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { List } from 'immutable';
+import BN from 'bignumber.js';
 
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
@@ -50,8 +51,10 @@ class BlockInformation extends React.Component {
 		if (this.props.blockInformation) {
 			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.match.params.round));
 		}
-
-		if (this.props.match.params.round !== prevProps.match.params.round) {
+		if (
+			this.props.match.params.round !== prevProps.match.params.round ||
+			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber)).plus(1)))
+		) {
 			this.props.getBlockInfo(this.props.match.params.round);
 		}
 	}
