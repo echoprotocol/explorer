@@ -336,7 +336,12 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 			const fee = transactions.reduce((trxAcc, trx) => {
 				if (trx.fees_collected) {
-					return trxAcc.plus(trx.fees_collected);
+					if (typeof trx.fees_collected === 'number') {
+						return trxAcc.plus(trx.fees_collected);
+					}
+					trx.fees_collected.forEach(({ amount }) => {
+						trxAcc.plus(amount);
+					});
 				}
 				return trxAcc;
 			}, new BN(0));
