@@ -23,7 +23,6 @@ lint:
   tags:
     - docker
 
-
 .deploy:
   stage: deploy
   before_script:
