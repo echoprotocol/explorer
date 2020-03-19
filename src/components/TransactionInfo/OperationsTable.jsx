@@ -69,7 +69,7 @@ class OperationsTable extends React.Component {
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
 				trIndex -= 1;
-				opIndex -= 2;
+				opIndex = -2;
 			}
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
