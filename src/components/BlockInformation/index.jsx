@@ -53,7 +53,7 @@ class BlockInformation extends React.Component {
 		}
 		if (
 			this.props.match.params.round !== prevProps.match.params.round ||
-			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber)).plus(1)))
+			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
 			this.props.getBlockInfo(this.props.match.params.round);
 		}
