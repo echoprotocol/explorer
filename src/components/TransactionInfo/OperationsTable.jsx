@@ -8,6 +8,7 @@ import OperationRow from './OperationRow';
 import LoadMoreBtn from '../LoadMoreBtn';
 
 import URLHelper from '../../helpers/URLHelper';
+import Operations from '../../constants/Operations';
 
 class OperationsTable extends React.Component {
 
@@ -63,7 +64,14 @@ class OperationsTable extends React.Component {
 		const v = showedOperations.indexOf(index);
 
 		if (!this.props.changeUrl && operations && operations.size) {
-			const { blockNumber, trIndex, opIndex } = operations.get(index);
+			const { blockNumber, type } = operations.get(index);
+			let { trIndex, opIndex } = operations.get(index);
+			// TODO delete in future
+			if (Operations.block_reward.name === type) {
+				trIndex -= 1;
+				opIndex = -2;
+			}
+
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
 			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
 			this.props.history.push(operationUrl);
