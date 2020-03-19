@@ -122,7 +122,13 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		} else {
 			const fee = planeBlock.transactions.reduce((trxAcc, trx) => {
 				if (trx.fees_collected) {
-					return trxAcc.plus(trx.fees_collected);
+					if (typeof trx.fees_collected === 'number') {
+						return trxAcc.plus(trx.fees_collected);
+					}
+					trx.fees_collected.forEach(({ amount }) => {
+						trxAcc.plus(amount);
+					});
+					return trxAcc;
 				}
 				return trxAcc;
 			}, new BN(0));
