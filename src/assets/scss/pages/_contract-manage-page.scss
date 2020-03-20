@@ -3,23 +3,6 @@
         margin-top: 0;
     }
 
-    .backwards-link {
-        @include res-768 {
-            top: 51px;
-            left: 0px;
-        }
-
-        @include res-500 {
-            left: -8px;
-        }
-
-        @include res-320 {
-
-            left: 12px;
-            top: -2px;
-        }
-    }
-
     .account-page-t-block {
         margin-left: 31px;
 

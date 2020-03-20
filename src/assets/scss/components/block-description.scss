@@ -1,0 +1,131 @@
+.block-description {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	box-shadow: 0 0 62px rgba(64, 64, 64, 0.18);
+	padding: 21px 20px 22px 33px;
+	margin-bottom: 30px;
+	justify-content: space-between;
+
+	@include res-1280 {
+		padding: 21px 21px 22px 20px;
+	}
+
+	@include res-768 {
+		flex-wrap: wrap;
+		margin-bottom: 42px;
+	}
+
+	@include res-500 {
+		padding-bottom: 0;
+		padding-left: 19px;
+		justify-content: flex-start;
+		padding-right: 19px;
+		margin-bottom: 28px;
+	}
+
+	@include res-320 {
+		width: 100%;
+		margin: 0;
+		padding-left: 18px;
+		padding-right: 18px;
+		padding-top: 26px;
+		margin-bottom: 33px;
+	}
+
+	> .container {
+		flex-shrink: 0;
+		word-break: break-all;
+
+		@include res-500 {
+			margin-bottom: 30px;
+			margin-right: auto;
+		}
+
+		&.time {
+			width: 210px;
+
+			@include res-500 {
+				width: 195px;
+			}
+
+			@include res-320 {
+				width: 50%;
+			}
+		}
+
+		&.size {
+			width: 100px;
+
+			@include res-500 {
+				width: 130px;
+			}
+
+			@include res-320 {
+				padding-left: 30px;
+				width: 50%;
+			}
+		}
+
+		&.producer {
+			width: 140px;
+
+			@include res-500 {
+				width: 115px;
+			}
+
+			@include res-320 {
+				width: 50%;
+			}
+		}
+
+		&.reward {
+			width: 145px;
+			white-space: nowrap;
+
+			@include res-500 {
+				width: 197px;
+			}
+
+			@include res-320 {
+				width: 50%;
+			}
+		}
+
+		&.verifiers {
+			width: 120px;
+			white-space: nowrap;
+
+			@include res-320 {
+				padding-left: 30px;
+				width: 50%;
+			}
+		}
+
+		.title {
+			@include Hack_Bold;
+			font-size: 9px;
+			letter-spacing: 2.25px;
+			color: #1f3c4d;
+			text-transform: uppercase;
+			margin-bottom: 14px;
+			min-height: 10px;
+		}
+
+		.value {
+			@include InterUI_Medium;
+			font-size: 16px;
+			letter-spacing: 0.41px;
+			color: #130d32;
+			min-height: 21px;
+			line-height: normal;
+			display: flex;
+			align-items: center;
+
+			@include res-768 {
+				font-size: 14px;
+				line-height: 20px;
+			}
+		}
+	}
+}

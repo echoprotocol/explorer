@@ -1,497 +1,446 @@
 .table-container.contract-page {
-    .react-tabs {
-        margin-top: 40px;
-        margin: auto;
+	.react-tabs {
+		margin-top: 40px;
+		margin: auto;
 
-        .tab-head {
-            position: relative;
-            z-index: 2;
+		.tab-head {
+			position: relative;
+			z-index: 2;
 
-            &:before {
-                background-color: #E8E7EB;
-                content: '';
-                position: absolute;
-                top: -58px;
-                bottom: 0;
-                left: -1000px;
-                right: -30px;
-                z-index: 0;
+			&:before {
+				background-color: #e8e7eb;
+				content: "";
+				position: absolute;
+				top: -58px;
+				bottom: 0;
+				left: -1000px;
+				right: -30px;
+				z-index: 0;
 
-                @include res-1280 {
-                    right: -30px;
-                }
+				@include res-1280 {
+					right: -30px;
+				}
 
-                @include res-1000 {
-                    right: -1000px;
-                    top: -58px;
-                }
+				@include res-1000 {
+					right: -1000px;
+					top: -58px;
+				}
 
-                @include res-500 {
-                    top: -8px;
-                }
+				@include res-500 {
+					top: -8px;
+				}
 
-                @include res-320 {
-                    top: -8px;
-                }
-            }
+				@include res-320 {
+					top: -8px;
+				}
+			}
 
-            @include max-vw(380) {
-                padding: 0 15px;
-            }
+			@include max-vw(380) {
+				padding: 0 15px;
+			}
 
-            .backwards {
-                margin: 43px 0 3px 0;
-                padding: 7px 0 2px 0;
+			.backwards {
+				margin: 43px 0 3px 0;
+				padding: 7px 0 2px 0;
 
-                @include max-vw(999) {
-                    padding-top: 34px;
-                }
+				@include max-vw(999) {
+					padding-top: 34px;
+				}
 
-                @include max-vw(768) {
-                    margin-top: -7px;
-                    margin-bottom: 17px;
-                    padding-top: 62px;
-                }
+				@include max-vw(768) {
+					margin-top: -7px;
+					margin-bottom: 17px;
+					padding-top: 62px;
+				}
+			}
 
-                .backwards-link {
-                    display: block;
-                    left: 0px;
-                    top: 12px;
+			.account-page-t-block {
+				display: flex;
+				align-items: center;
+				margin: 0;
 
-                    @include max-vw(999) {
-                        top: -13px;
-                    }
+				@include max-vw(999) {
+					margin-left: 0px;
+				}
 
-                    @include max-vw(768) {
-                        top: 20px;
-                    }
+				@include max-vw(380) {
+					margin: 10px 0 0;
+				}
 
-                    @include max-vw(500) {
-                        top: 18px;
-                    }
+				.title,
+				.ava {
+					margin: 0;
+					z-index: 1;
 
-                    @include max-vw(380) {
-                        top: -20px;
-                    }
-                }
-            }
+					@include max-vw(768) {
+						margin: 0 15px 0 0;
+					}
+				}
 
-            .account-page-t-block {
-                display: flex;
-                align-items: center;
-                margin: 0;
+				.ava {
+					img {
+						width: 32px;
+						height: 32px;
+					}
 
-                @include max-vw(999) {
-                    margin-left: 0px;
-                }
+					@include max-vw(500) {
+						display: none;
+					}
+				}
 
-                @include max-vw(380) {
-                    margin: 10px 0 0;
-                }
+				@include res-1000 {
+					padding: 0;
+				}
 
-                .title,
-                .ava {
-                    margin: 0;
-                    z-index: 1;
+				@include res-500 {
+					.title {
+						padding: 0;
+					}
+				}
+			}
 
-                    @include max-vw(768) {
-                        margin: 0 15px 0 0;
-                    }
-                }
+			.buttons-wrap {
+				display: flex;
+				margin-bottom: 21px;
+				flex-wrap: wrap;
 
-                .ava {
-                    img {
-                        width: 32px;
-                        height: 32px;
-                    }
+				@include min-vw(400) {
+					margin: 0 0 21px;
+				}
 
-                    @include max-vw(500) {
-                        display: none;
-                    }
-                }
+				.item {
+					z-index: 1;
+					margin-top: 12px;
 
-                @include res-1000 {
-                    padding: 0;
-                }
+					&:first-child {
+						margin-right: 22px;
+					}
 
-                @include res-500 {
+					&:nth-child(2) {
+						margin-right: 9px;
 
-                    .title {
-                        padding: 0;
-                    }
-                }
-            }
+						.action-button {
+							img + .content {
+								margin-left: 5px;
+							}
+						}
+					}
 
-            .buttons-wrap {
+					@include max-vw(415) {
+						&:last-child {
+							.action-button-wrap {
+								.action-label {
+									margin-left: 0;
 
-                display: flex;
-                margin-bottom: 21px;
-                flex-wrap: wrap;
+									& + .action-button {
+										margin: 0 0 0 -4px;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
-                @include min-vw(400) {
-                    margin: 0 0 21px
-                }
+		.tab-body {
+			margin-top: 29px;
 
-                .item {
-                    z-index: 1;
-                    margin-top: 12px;
-
-                    &:first-child {
-                        margin-right: 22px;
-                    }
-
-                    &:nth-child(2) {
-                        margin-right: 9px;
-
-                        .action-button {
-                            img+.content {
-                                margin-left: 5px;
-                            }
-                        }
-                    }
-
-                    @include max-vw(415) {
-                        &:last-child {
-                            .action-button-wrap {
-                                .action-label {
-                                    margin-left: 0;
-
-                                    &+.action-button {
-                                        margin: 0 0 0 -4px;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        .tab-body {
-            margin-top: 29px;
-
-            @include max-vw(1000) {
-                margin-top: 21px;
-            }
-        }
-    }
-}
-
-.contract-page {
-    @include max-vw(500) {
-        .backwards {
-            display: block;
-            padding-left: 0;
-
-            .backwards-link {
-                display: flex;
-            }
-
-        }
-    }
-
-    @include max-vw(380) {
-        .backwards {
-            .backwards-link {
-                left: 0;
-                display: flex;
-                position: relative;
-                justify-content: flex-start;
-            }
-        }
-    }
-
+			@include max-vw(1000) {
+				margin-top: 21px;
+			}
+		}
+	}
 }
 
 .created-info {
-    @include InterUI_Regular;
-    font-size: 13px;
-    margin: 6px 0 24px;
-    line-height: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+	@include InterUI_Regular;
+	font-size: 13px;
+	margin: 6px 0 24px;
+	line-height: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
 
-    @include min-vw(412) {
-        margin: 6px 0 24px;
-    }
+	@include min-vw(412) {
+		margin: 6px 0 24px;
+	}
 
-    .no-wrap {
-        display: flex;
-        align-items: center;
-    }
+	.no-wrap {
+		display: flex;
+		align-items: center;
+	}
 
-    .date,
-    .time {
-        color: #848B94;
-        margin-left: 5px;
-    }
+	.date,
+	.time {
+		color: #848b94;
+		margin-left: 5px;
+	}
 
-    .time {
-        margin-right: 5px;
+	.time {
+		margin-right: 5px;
 
-        &+.plain-text {
-            margin-right: 5px;
-        }
-    }
+		& + .plain-text {
+			margin-right: 5px;
+		}
+	}
 
-    .avatar-image {
-        width: 16px;
-        height: 16px;
-        margin-right: 5px;
-        line-height: 0;
+	.avatar-image {
+		width: 16px;
+		height: 16px;
+		margin-right: 5px;
+		line-height: 0;
 
-        img {
-            width: 100%;
-        }
-    }
+		img {
+			width: 100%;
+		}
+	}
 
-    .link {
-        @include InterUI_Medium;
-        color: #498FDF;
-    }
+	.link {
+		@include InterUI_Medium;
+		color: #498fdf;
+	}
 
-    @include res-768 {
-        max-width: 278px;
-    }
+	@include res-768 {
+		max-width: 278px;
+	}
 
-    @include res-500 {
-        max-width: none;
-    }
+	@include res-500 {
+		max-width: none;
+	}
 
-    @include max-vw(380) {
-        margin-left: 16px;
-    }
+	@include max-vw(380) {
+		margin-left: 16px;
+	}
 }
 
 .contract-info-panel {
-    .row {
-        display: flex;
-        justify-content: space-between;
-        max-width: 798px;
-        flex-wrap: wrap;
+	.row {
+		display: flex;
+		justify-content: space-between;
+		max-width: 798px;
+		flex-wrap: wrap;
 
-        @include max-vw(1280) {
-            max-width: 100%;
-        }
+		@include max-vw(1280) {
+			max-width: 100%;
+		}
 
-        @include res-500 {
-            width: auto;
+		@include res-500 {
+			width: auto;
 
-            .column-right {
-                margin-top: 24px;
-                width: 100%;
-            }
-        }
-    }
+			.column-right {
+				margin-top: 24px;
+				width: 100%;
+			}
+		}
+	}
 
-    .description {
-        @include InterUI_Regular;
-        max-width: 360px;
-        font-size: 12.63px;
-        line-height: 1.5;
+	.description {
+		@include InterUI_Regular;
+		max-width: 360px;
+		font-size: 12.63px;
+		line-height: 1.5;
 
-        @include res-768 {
-            max-width: 278px;
-        }
+		@include res-768 {
+			max-width: 278px;
+		}
 
-        @include res-500 {
-            max-width: none;
-        }
+		@include res-500 {
+			max-width: none;
+		}
 
-        &.short {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            max-height: 2*1.6;
-        }
+		&.short {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			max-height: 2 * 1.6;
+		}
 
-        &+.text-button {
-            margin-top: 15px;
-        }
-    }
+		& + .text-button {
+			margin-top: 15px;
+		}
+	}
 
-    .assets-title {
-        @include Hack_Bold;
-        margin: 24px 0 20px;
-        text-transform: uppercase;
-        color: rgba(#263C4B, .8);
-        font-size: 9px;
-        display: block;
-        padding: 18px 0 16px;
-        border-bottom: 1px solid rgba(#3F465A, .15);
-        letter-spacing: 2.2px;
+	.assets-title {
+		@include Hack_Bold;
+		margin: 24px 0 20px;
+		text-transform: uppercase;
+		color: rgba(#263c4b, 0.8);
+		font-size: 9px;
+		display: block;
+		padding: 18px 0 16px;
+		border-bottom: 1px solid rgba(#3f465a, 0.15);
+		letter-spacing: 2.2px;
 
-        @include res-768 {
-            max-width: 278px;
-            margin: 12px 0;
-        }
+		@include res-768 {
+			max-width: 278px;
+			margin: 12px 0;
+		}
 
-        @include res-320 {
-            max-width: 100%;
-        }
-    }
+		@include res-320 {
+			max-width: 100%;
+		}
+	}
 
-    .assets-list {
-        max-width: 360px;
-        list-style-type: none;
-        padding: 0;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+	.assets-list {
+		max-width: 360px;
+		list-style-type: none;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
 
-        @include res-768 {
-            max-width: 278px;
-        }
+		@include res-768 {
+			max-width: 278px;
+		}
 
-        @include res-500 {
-            max-width: none;
-        }
+		@include res-500 {
+			max-width: none;
+		}
 
-        li {
-            @include InterUI_Regular;
-            font-size: 11.66px;
-            padding: 10px 0 12px;
-            border-bottom: 1px solid rgba(#3F465A, .15);
-            width: 170px;
-            text-transform: uppercase;
+		li {
+			@include InterUI_Regular;
+			font-size: 11.66px;
+			padding: 10px 0 12px;
+			border-bottom: 1px solid rgba(#3f465a, 0.15);
+			width: 170px;
+			text-transform: uppercase;
 
-            @include res-768 {
-                width: 100%;
-            }
+			@include res-768 {
+				width: 100%;
+			}
 
-            @include res-500 {
-                width: 48%;
-            }
+			@include res-500 {
+				width: 48%;
+			}
 
-            @include res-320 {
-                width: 100%;
-            }
+			@include res-320 {
+				width: 100%;
+			}
 
-            .value {
-                color: #0E0936;
-                margin-right: 5px;
-            }
+			.value {
+				color: #0e0936;
+				margin-right: 5px;
+			}
 
-            .currency {
-                color: #498FDF;
-            }
-        }
+			.currency {
+				color: #498fdf;
+			}
+		}
 
-        &+.text-button {
-            margin-top: 15px;
-        }
-    }
+		& + .text-button {
+			margin-top: 15px;
+		}
+	}
 }
 
 .contract-info-block {
-    background-color: #fff;
-    padding: 29px 30px;
-    width: 356px;
+	background-color: #fff;
+	padding: 29px 30px;
+	width: 356px;
 
-    @include res-500 {
-        width: 100%;
-    }
+	@include res-500 {
+		width: 100%;
+	}
 
-    .line {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
+	.line {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
 
-        &:not(:last-child) {
-            margin-bottom: 16px;
-        }
+		&:not(:last-child) {
+			margin-bottom: 16px;
+		}
+	}
 
-    }
+	.key {
+		@include Hack_Bold;
+		font-size: 9px;
+		text-transform: uppercase;
+		color: rgba(#263c4b, 0.8);
+		white-space: nowrap;
+		letter-spacing: 2px;
+	}
 
-    .key {
-        @include Hack_Bold;
-        font-size: 9px;
-        text-transform: uppercase;
-        color: rgba(#263C4B, .8);
-        white-space: nowrap;
-        letter-spacing: 2px;
-    }
+	.underline {
+		height: 1px;
+		background-color: rgba(#3f465a, 0.15);
+		width: 100%;
+		align-self: baseline;
+		margin: 0 7px;
+	}
 
-    .underline {
-        height: 1px;
-        background-color: rgba(#3F465A, .15);
-        width: 100%;
-        align-self: baseline;
-        margin: 0 7px;
-    }
+	.value {
+		@include InterUI_Medium;
+		font-size: 13px;
+		color: #000;
+		white-space: nowrap;
 
-    .value {
-        @include InterUI_Medium;
-        font-size: 13px;
-        color: #000;
-        white-space: nowrap;
+		&.blue {
+			color: #498fdf;
+		}
 
-        &.blue {
-            color: #498FDF;
-        }
-
-        .val {
-            display: flex;
-            max-width: 100%;
-            .txt {
-                @include text-overflow();
-            }
-            .txt2 {
-                width: calc(100% - 25vw);
-            }
-        }
-    }
+		.val {
+			display: flex;
+			max-width: 100%;
+			.txt {
+				@include text-overflow();
+			}
+			.txt2 {
+				width: calc(100% - 25vw);
+			}
+		}
+	}
 }
 
 .verify-contract-tooltip {
-    .rc-tooltip {
-        opacity: 1;
-    }
-    .rc-tooltip-inner {
-        max-width: none;
-        @include InterUI_Regular;
-        font-size: 11px;
-        color: #93A9BB;
-        letter-spacing: 0;
+	.rc-tooltip {
+		opacity: 1;
+	}
+	.rc-tooltip-inner {
+		max-width: none;
+		@include InterUI_Regular;
+		font-size: 11px;
+		color: #93a9bb;
+		letter-spacing: 0;
 
-        p  + p {
-            margin-top: 10px;
-        }
-    }
+		p + p {
+			margin-top: 10px;
+		}
+	}
 }
 
 .dropdown-tab {
-    display: flex;
-    z-index: 1;
+	display: flex;
+	z-index: 1;
 
-    .dropdown-toggle {
-        z-index: 1;
-    }
+	.dropdown-toggle {
+		z-index: 1;
+	}
 }
 
 .abi-info {
-    @include InterUI_Regular;
-    color: #6E6D6F;
-    font-size: 13px;
-    margin-bottom: 25px;
-    line-height: 18px;
+	@include InterUI_Regular;
+	color: #6e6d6f;
+	font-size: 13px;
+	margin-bottom: 25px;
+	line-height: 18px;
 }
 
 .contract-abi-panel {
-    .line {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 17px;
-    }
+	.line {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 17px;
+	}
 }
 
 .contract-source-code-panel {
-    .line {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 17px;
-    }
+	.line {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 17px;
+	}
 }

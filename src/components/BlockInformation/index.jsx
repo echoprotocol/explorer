@@ -7,9 +7,10 @@ import BN from 'bignumber.js';
 
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
+import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
 import TableLable from '../TableLable';
-
+import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
@@ -109,10 +110,10 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="block-navigation-wrap">
+				<InnerHeader title={`Block ${formattedBlockNumber}`}>
+					<BackwardsLink returnFunction={() => this.returnFunction()} />
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
-						title={`Block ${formattedBlockNumber}`}
 						returnFunction={() => this.returnFunction()}
 					/>
 					<div className="block-navigation">
@@ -131,8 +132,7 @@ class BlockInformation extends React.Component {
 							Next <span>block</span>
 						</button>
 					</div>
-				</div>
-
+				</InnerHeader>
 				<div className="block-description">
 					<div className="container time">
 						<div className="title">Date, Time</div>
@@ -201,7 +201,7 @@ class BlockInformation extends React.Component {
 		const { blockInformation, latestBlock } = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information account-page with-d-table">
+			<div className="inner-information-container block-information account-page with-d-table">
 				{
 					!blockInformation.get('blockNumber') || this.state.loader ?
 						this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)

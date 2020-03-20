@@ -25,6 +25,8 @@ import {
 } from '../../../actions/BlockActions';
 import SearchActions from '../../../actions/SearchActions';
 
+import InnerHeader from '../../../components/InnerHeader';
+
 class RecentBlockTable extends React.Component {
 
 	constructor() {
@@ -108,8 +110,8 @@ class RecentBlockTable extends React.Component {
 
 		return (
 			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
-				<div className="table-container recent-block-table">
-					<h2>Recent blocks
+				<div className="recent-block-table">
+					<InnerHeader title="Recent blocks">
 						<SmallSearchField
 							errorSearch={errorSearch}
 							loadingSearch={loadingSearch}
@@ -121,7 +123,7 @@ class RecentBlockTable extends React.Component {
 							latestBlock={latestBlock}
 							setLoading={() => this.setLoading()}
 						/>
-					</h2>
+					</InnerHeader>
 					<div className="table">
 						<Media query="(max-width: 767px)">
 							{(matches) =>

@@ -1,5 +1,6 @@
 body {
 	letter-spacing: 0.025em;
+	color: $explorer-black;
 	font-family: "InterUI";
 }
 
@@ -19,7 +20,6 @@ main.inner {
 	box-sizing: border-box;
 }
 
-
 h1,
 h2,
 h3,
@@ -35,9 +35,9 @@ button {
 	outline: none;
 }
 
-input[type='text'],
-input[type='phone'],
-input[type='email'],
+input[type="text"],
+input[type="phone"],
+input[type="email"],
 textarea {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -49,6 +49,10 @@ textarea {
 	outline: none;
 }
 
+.h2 {
+	font-size: 22px;
+	@include InterUI_Bold;
+}
 
 .hidden {
 	display: none;
@@ -69,23 +73,19 @@ a {
 
 .hover {
 	opacity: 1;
-	transition: opacity .3s;
+	transition: opacity 0.3s;
 }
 
 .warn {
-	color: #D37E4A;
+	color: #d37e4a;
 }
 
-
-@media (max-width: 499px) and (-webkit-min-device-pixel-ratio:0) {
-
+@media (max-width: 499px) and (-webkit-min-device-pixel-ratio: 0) {
 	.no-wrap {
 		white-space: nowrap;
 	}
 
-
 	@include res-320 {
-
 		select,
 		textarea,
 		input {

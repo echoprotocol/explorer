@@ -1,5 +1,5 @@
 .recent-block-section {
-  padding: 23px 0;
+  padding: 12px 0;
   background-color: #fff;
 
   @include res-768 {
@@ -38,592 +38,150 @@
     background-color: #5eb3e8;
     @include transition;
   }
-
-  .table-container {
-    width: 1010px;
-    padding-right: 30px;
-    padding-top: 37px;
-    min-height: calc(100vh - 282px);
-    padding-left: 0;
-    background-color: #f3f2f5;
-    position: relative;
-    padding-bottom: 37px;
-    flex-shrink: 0;
-
-    @include max-vw(1279) {
-      min-height: calc(100vh - 403px);
-    }
-
-    .checkbox {
-      margin-bottom: 20px;
-      padding-left: 30px;
-    }
-
-    &.recent-block-table {
-      @include res-320 {
-        h2 {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .checkbox {
-          padding-left: 30px;
-        }
-      }
-    }
-
-    @include res-1280 {
-      padding-right: 30px;
-      width: 867px;
-      flex-shrink: 0;
-    }
-
-    @include res-1000 {
-      width: 100%;
-      // padding-left: 0;
-      padding-right: 0;
-
-      min-height: calc(100vh - 363px);
-
-      .checkbox {
-        padding-left: 0;
-      }
-    }
-
-    @include res-768 {
-      padding-top: 50px;
-    }
-
-    @include res-500 {
-      padding-top: 40px;
-      min-height: calc(100vh - 487px);
-    }
-
-    @include res-320 {
-      padding-top: 45px;
-
-      &>.checkbox {
-        margin-bottom: 20px;
-      }
-    }
-
-    @include max-vw(360) {
-      padding-left: 0;
-    }
-
-    &:before {
-      content: '';
-      width: 100%;
-      height: 100%;
-      background-color: #f3f2f5;
-      position: absolute;
-      top: 0;
-      display: block;
-      left: -1000vw;
-      width: 1000vw;
-    }
-
-    @include res-1000 {
-      &:after {
-        content: '';
-        width: 100%;
-        height: 100%;
-        background-color: #f3f2f5;
-        position: absolute;
-        top: 0;
-        display: block;
-        right: -1000vw;
-        width: 1000vw;
-      }
-    }
-
-    h2 {
-      @include InterUI_Bold;
-      font-size: 23px;
-      color: #130d32;
-      padding-left: 30px;
-      margin-bottom: 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      @include res-1000 {
-        padding-left: 20px;
-        margin-bottom: 20px;
-      }
-
-      @include res-500 {
-        margin-bottom: 40px;
-      }
-
-      @include res-320 {
-        position: relative;
-        margin: 0 auto;
-        margin-bottom: 20px;
-        padding-left: 12px;
-        padding-right: 12px;
-        width: 100%;
-      }
-
-      .input-search-block {
-        margin-right: 25px;
-        margin-right: 0;
-
-        @include res-1280 {
-          margin-right: 20px;
-          margin-right: 0;
-        }
-
-        @include res-500 {
-          margin-right: 30px;
-          margin-right: 0;
-        }
-
-        @include res-320 {
-          position: absolute;
-          right: 30px;
-          margin-right: 0;
-          background-color: #f3f2f5;
-        }
-
-        &.small {
-          &.is-active-small {
-            @include res-500 {
-              width: 200px;
-            }
-
-            @include res-320 {
-              width: calc(100% - 60px);
-            }
-          }
-        }
-      }
-    }
-
-    .divTable {
-      width: 945px;
-
-      @include res-1280 {
-        width: 100%;
-      }
-
-      @include res-1000 {
-        width: 100%;
-      }
-
-      .TableHeading {
-        .divTableCell {
-
-          &:first-child {
-            width: 160px;
-            min-width: 160px;
-            max-width: 160px;
-
-            @include res-1280 {
-              width: 120px;
-              min-width: 120px;
-              max-width: 120px;
-            }
-
-            @include res-1000 {
-              width: auto;
-            }
-
-            @include res-768 {
-              width: 80px;
-              min-width: 80px;
-              max-width: 80px;
-            }
-          }
-
-          &:nth-child(2) {
-            width: 160px;
-            min-width: 160px;
-            max-width: 160px;
-
-            @include res-1280 {
-              width: 130px;
-              min-width: 130px;
-              max-width: 130px;
-            }
-
-            @include res-1000 {
-              width: auto;
-            }
-
-            @include res-768 {
-              width: 80px;
-              min-width: 80px;
-              max-width: 80px;
-            }
-          }
-
-          &:nth-child(3) {
-            width: 230px;
-            max-width: 230px;
-            min-width: 230px;
-
-            @include res-1280 {
-              width: 180px;
-              max-width: 180px;
-              min-width: 180px;
-            }
-
-            @include res-1000 {
-              width: auto;
-            }
-
-            @include res-768 {
-              width: 160px;
-              max-width: 160px;
-              min-width: 160px;
-            }
-          }
-
-          &:nth-child(4) {
-            width: 115px;
-            max-width: 115px;
-            min-width: 115px;
-
-            @include res-1280 {
-              width: 110px;
-              max-width: 110px;
-              min-width: 110px;
-            }
-
-            @include res-768 {
-              width: 100px;
-              max-width: 100px;
-              min-width: 100px;
-            }
-          }
-
-          &:nth-child(5) {
-            width: 115px;
-            max-width: 115px;
-            min-width: 115px;
-
-            @include res-1280 {
-              width: 105px;
-              max-width: 105px;
-              min-width: 105px;
-            }
-
-            @include res-1000 {
-              width: auto;
-            }
-
-            @include res-768 {
-              width: 95px;
-              max-width: 95px;
-              min-width: 95px;
-            }
-          }
-        }
-      }
-
-      .divTableRow {
-        .divTableCell {
-          width: auto;
-          white-space: nowrap;
-
-
-          .inner-container {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            position: relative;
-            display: block;
-          }
-
-          &:nth-child(2),
-          &:nth-child(3),
-          &:nth-child(6) {
-            width: 165px;
-            max-width: 165px;
-            min-width: 165px;
-
-            @include res-1280 {
-              width: 135px;
-              max-width: 135px;
-              min-width: 135px;
-            }
-
-            @include res-768 {
-              width: 140px;
-              max-width: 140px;
-              min-width: 140px;
-            }
-          }
-        }
-      }
-
-      &.no-border-bottom {
-        border-bottom: 0;
-      }
-    }
-  }
-
-  .recent-block-mobile-view {
-    @include res-320 {
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 10px 0 10px;
-    }
-
-    .recent-block-element {
-      @include InterUI_Medium;
-      background-color: #e7e7e9;
-      margin-bottom: 7px;
-
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px 0px 5px 25px;
-
-      @include res-320 {
-        padding: 25px 0px 10px 20px;
-        justify-content: space-between;
-      }
-
-      &.fade-anim {
-        animation: addd .4s ease-out;
-
-        @keyframes addd {
-          from {
-            opacity: 0;
-          }
-
-          to {
-            opacity: 1;
-          }
-        }
-      }
-
-      .container {
-        width: 140px;
-        margin-bottom: 22px;
-        padding-right: 20px;
-
-        @include res-320() {
-          width: 50%
-        }
-
-        .title {
-          user-select: none;
-          background-color: transparent;
-          @include Hack_Bold;
-          font-size: 9px;
-          text-transform: uppercase;
-          letter-spacing: 0.25em;
-          color: #828b95;
-          margin-bottom: 12px;
-        }
-
-        .value {
-          color: #0f0739;
-          font-size: 12px;
-          width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          line-height: 18px;
-
-          .blue {
-            font-size: 15px;
-          }
-
-          .gray {
-            font-size: 11px;
-          }
-        }
-      }
-    }
-  }
-
-  .recent-block-sidebar {
-    width: 100%;
-    padding-left: 70px;
-    padding-top: 40px;
-    height: 100%;
-
-    @include max-vw(1535) {
-      padding-left: 55px;
-    }
-
-    @include max-vw(1279) {
-      padding: 30px 22px 23px;
-    }
-
-    @include res-768 {
-      padding: 30px 22px 5px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-
-    }
-
-    @include res-500 {
-      padding: 36px 18px 0px;
-
-    }
-
-    @include max-vw(500) {
-      width: calc(100% + 40px);
-      padding: 0px;
-      margin: 0 -20px;
-    }
-
-    .help-container {
-      width: 360px;
-
-      @include max-vw(1279) {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      @include max-vw(768) {
-        flex-wrap: wrap;
-      }
-    }
-
-    .info-container {
-      padding-top: 60px;
-      padding-bottom: 20px;
-
-      .version {
-        @include InterUI_Medium;
-        color: #828b95;
-        font-size: 12px;
-        line-height: 18px;
-        font-weight: 400;
-        letter-spacing: 0.3px;
-        margin-bottom: 18px;
-      }
-
-      .copyright {
-        @include Hack_Bold;
-        text-transform: uppercase;
-        font-size: 10px;
-        color: #828b95;
-        letter-spacing: 2.5px;
-      }
-    }
-
-    .sidebar-elem {
-      margin-bottom: 25px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e2e3e7;
-
-      @include max-vw(1279) {
-        border-bottom: none;
-        min-width: 167px;
-        margin-bottom: 30px;
-      }
-
-      @include max-vw(1279) {
-        padding-bottom: 0px;
-        display: flex;
-        flex-direction: column-reverse;
-        justify-content: space-between;
-        margin-bottom: 20px;
-      }
-
-      @include max-vw(768) {
-        min-width: 250px;
-
-        &:first-child,
-        &:nth-child(2) {
-          padding-bottom: 5px;
-          margin-bottom: 29px;
-          border-bottom: 1px solid #e2e3e7;
-        }
-      }
-
-      @include max-vw(580) {
-        min-width: 180px;
-      }
-
-      @include max-vw(500) {
-
-        &:first-child,
-        &:nth-child(2),
-        &:nth-child(3) {
-          padding-bottom: 26px;
-          margin-bottom: 0;
-          border-bottom: 1px solid #e2e3e7;
-        }
-
-        padding-left: 35px;
-        flex-direction: column;
-        width: 100%;
-        max-width: 100%;
-
-      }
-
-      .title {
-        @include Hack_Bold;
-        font-size: 12px;
-        letter-spacing: 0.02em;
-        line-height: 15px;
-        margin-bottom: 10px;
-        color: #130d32;
-        text-transform: uppercase;
-
-        @include max-vw(1280) {
-          margin-bottom: 20px;
-          font-size: 9px;
-          letter-spacing: 2.25px;
-          line-height: 16px;
-          margin-bottom: 0;
-          height: 21px;
-        }
-
-        @include max-vw(500) {
-          margin: 0 0 auto;
-          padding-left: 0;
-          padding-right: 30px;
-          padding-top: 20px;
-          padding-bottom: 20px;
-          width: 100%;
-          height: auto;
-        }
-      }
-
-      .value {
-        @include InterUI_Bold;
-        font-size: 23px;
-        line-height: 45px;
-        color: #130d32;
-
-        @include max-vw(1279) {
-          line-height: 25px;
-          word-break: break-all;
-        }
-
-        @include max-vw(1000) {
-          line-height: 21px;
-          margin-bottom: 22px;
-        }
-
-        @include max-vw(768) {
-          margin-bottom: 27px;
-        }
-
-        @include max-vw(500) {
-          margin: 0 auto;
-          padding-right: 30px;
-          padding-bottom: 8px;
-          width: 100%;
-
-        }
-
-        .sm {
-          font-size: 16px;
-        }
-      }
-    }
-  }
+}
+
+.recent-block-mobile-view {
+	@include res-320 {
+		margin: 0 auto;
+		width: 100%;
+		padding: 0 10px 0 10px;
+	}
+
+	.recent-block-element {
+		@include InterUI_Medium;
+		background-color: #e7e7e9;
+		margin-bottom: 7px;
+
+		display: flex;
+		flex-wrap: wrap;
+		padding: 20px 0px 5px 25px;
+
+		@include res-320 {
+			padding: 25px 0px 10px 20px;
+			justify-content: space-between;
+		}
+
+		&.fade-anim {
+			animation: addd .4s ease-out;
+
+			@keyframes addd {
+				from {
+					opacity: 0;
+				}
+
+				to {
+					opacity: 1;
+				}
+			}
+		}
+
+		.container {
+			width: 140px;
+			margin-bottom: 22px;
+			padding-right: 20px;
+
+			@include res-320() {
+				width: 50%
+			}
+
+			.title {
+				user-select: none;
+				background-color: transparent;
+				@include Hack_Bold;
+				font-size: 9px;
+				text-transform: uppercase;
+				letter-spacing: 0.25em;
+				color: #828b95;
+				margin-bottom: 12px;
+			}
+
+			.value {
+				color: #0f0739;
+				font-size: 12px;
+				width: 100%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				line-height: 18px;
+
+				.blue {
+					font-size: 15px;
+				}
+
+				.gray {
+					font-size: 11px;
+				}
+			}
+		}
+	}
+}
+
+.recent-block-table {
+	width: 1025px;
+	padding-right: 30px;
+	padding-top: 43px;
+	min-height: calc(100vh - 282px);
+	padding-left: 0;
+	background-color: #f3f2f5;
+	position: relative;
+	padding-bottom: 37px;
+	flex-shrink: 0;
+	@include max-vw(1279) {
+		min-height: calc(100vh - 403px);
+	}
+	@include res-1280 {
+		padding-right: 30px;
+		width: 867px;
+		flex-shrink: 0;
+	}
+
+	@include res-1000 {
+		width: 100%;
+		padding-right: 0;
+		min-height: calc(100vh - 363px);
+	}
+
+	@include res-768 {
+		padding-top: 50px;
+	}
+
+	@include res-500 {
+		padding-top: 40px;
+		min-height: calc(100vh - 487px);
+	}
+
+	@include res-320 {
+		padding-top: 45px;
+	}
+
+	@include max-vw(360) {
+		padding-left: 0;
+	}
+
+	&:before {
+		content: '';
+		width: 100%;
+		height: 100%;
+		background-color: $lightest-grey-bg;
+		position: absolute;
+		top: 0;
+		display: block;
+		left: -1000vw;
+		width: 1000vw;
+	}
+
+	@include res-1000 {
+		&:after {
+			content: '';
+			width: 100%;
+			height: 100%;
+			background-color: $lightest-grey-bg;
+			position: absolute;
+			top: 0;
+			display: block;
+			right: -1000vw;
+			width: 1000vw;
+		}
+	}
 }
 
 .sticky-wrap {

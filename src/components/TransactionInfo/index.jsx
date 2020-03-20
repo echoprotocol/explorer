@@ -6,6 +6,8 @@ import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
+import BackwardsLink from '../BackwardLink';
+import InnerHeader from '../InnerHeader';
 import OperationsTable from './OperationsTable';
 import Loader from '../Loader';
 
@@ -58,11 +60,12 @@ class TransactionsInfo extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="table-container transaction inner-information-container transaction-information with-d-table">
-					<BreadCrumbs
-						breadcrumbs={breadcrumbs}
-						title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}
-						returnFunction={() => this.returnFunction()}
-					/>
+					<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}>
+						<BackwardsLink returnFunction={() => this.returnFunction()} />
+						<BreadCrumbs
+							breadcrumbs={breadcrumbs}
+						/>
+					</InnerHeader>
 					{
 						!loading ?
 							<React.Fragment>

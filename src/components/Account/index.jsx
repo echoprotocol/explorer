@@ -69,7 +69,7 @@ class Account extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information account-page with-d-table">
+			<div className="inner-information-container block-information account-page with-d-table">
 				<div className="account-page-t-block">
 					{account && <div className="title">Account {account.get('id')}</div>}
 					<div className="help-container">

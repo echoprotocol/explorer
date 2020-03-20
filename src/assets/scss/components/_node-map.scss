@@ -1,109 +1,108 @@
 .distribution {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 0PX;
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 0px;
 
-    .distribution-header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(#707070, .2);
-        padding: 20px 10px 10px 0px;
+	.distribution-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid rgba(#707070, 0.2);
+		padding: 20px 10px 10px 0px;
 
-        @include res-500 {
-            flex-direction: column;
-            align-items: start;
-        }
+		@include res-500 {
+			flex-direction: column;
+			align-items: start;
+		}
 
-        @include res-320 {
-            padding: 3px 10px 29px 11px;
-        }
+		@include res-320 {
+			padding: 3px 10px 29px 11px;
+		}
 
-        h1 {
-            @include InterUI_Medium;
-            font-weight: 700;
-            font-size: 23px;
-            line-height: 27px;
-            color: #130D32;
-            letter-spacing: 0.55px;
+		h1 {
+			@include InterUI_Medium;
+			font-weight: 700;
+			font-size: 23px;
+			line-height: 27px;
+			color: #130d32;
+			letter-spacing: 0.55px;
 
-            @include res-320 {
-                margin-bottom: 35px;
-            }
-        }
+			@include res-320 {
+				margin-bottom: 35px;
+			}
+		}
 
-        button {
-            @include InterUI_Medium;
-            font-weight: 700;
-            font-size: 13px;
-            line-height: 18px;
-            color: #FFFFFF;
-            padding: 6px 15px;
-            background-color: #2A90E6;
-            border: transparent;
-            border-radius: 1px;
-            outline: transparent;
-            letter-spacing: .35px;
-            height: 33px;
+		button {
+			@include InterUI_Medium;
+			font-weight: 700;
+			font-size: 13px;
+			line-height: 18px;
+			color: #ffffff;
+			padding: 6px 15px;
+			background-color: #2a90e6;
+			border: transparent;
+			border-radius: 1px;
+			outline: transparent;
+			letter-spacing: 0.35px;
+			height: 33px;
 
-            &:hover {
-                cursor: pointer;
-                background-color: #47A3F1;
-            }
+			&:hover {
+				cursor: pointer;
+				background-color: #47a3f1;
+			}
 
-            &:active {
-                color: rgba(#FFFFFF, 0.6)
-            }
-        }
-    }
+			&:active {
+				color: rgba(#ffffff, 0.6);
+			}
+		}
+	}
 
-    .distribution-map {
-        width: 100%;
-        height: calc(100vh - 420px);
-        margin-bottom: -10px;
-        padding: 30px 0 0 0;
+	.distribution-map {
+		width: 100%;
+		height: calc(100vh - 420px);
+		margin-bottom: -10px;
+		padding: 30px 0 0 0;
 
-        &:hover {
-            cursor: default;
-        }
+		&:hover {
+			cursor: default;
+		}
 
-        canvas {
-            cursor: default;
-        }
+		canvas {
+			cursor: default;
+		}
 
-        .mapboxgl-ctrl-bottom-left,
-        .mapboxgl-ctrl-bottom-right {
-            display: none;
-        }
+		.mapboxgl-ctrl-bottom-left,
+		.mapboxgl-ctrl-bottom-right {
+			display: none;
+		}
 
-        .mapboxgl-popup {
+		.mapboxgl-popup {
+			margin-left: 5px;
+			margin-top: -35px;
 
-            margin-left: 5px;
-            margin-top: -35px;
+			&-content {
+				font-size: 11px;
+				line-height: 17px;
+				margin: 0;
+				padding: 10px 15px;
+				color: #ffffff;
+				background-color: #1b1b21;
+				cursor: pointer;
+			}
 
-            &-content {
-                font-size: 11px;
-                line-height: 17px;
-                margin: 0;
-                padding: 10px 15px;
-                color: #FFFFFF;
-                background-color: #1B1B21;
-                cursor: pointer;
-            }
-
-            &:before {
-                content: '';
-                position: absolute;
-                display: block;
-                bottom: 0px;
-                left: 5px;
-                width: 0;
-                height: 0;
-                border-style: solid;
-                border-width: 0 0 35px 35px;
-                border-color: transparent transparent #1B1B21 transparent;
-            }
-        }
-    }
+			&:before {
+				content: "";
+				position: absolute;
+				display: block;
+				bottom: 0px;
+				left: 5px;
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 0 0 35px 35px;
+				border-color: transparent transparent #1b1b21 transparent;
+			}
+		}
+	}
 }
