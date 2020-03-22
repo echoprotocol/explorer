@@ -1,18 +1,3 @@
-import React from 'react';
-import { Route, Switch } from 'react-router';
-
-import App from './containers/App';
-import RecentBlockSection from './containers/RecentBlockSection';
-import Objects from './containers/Objects';
-import Account from './containers/Account';
-import Asset from './containers/Asset';
-import Contract from './containers/Contract';
-import NotFound from './containers/Error/NotFoundScreen';
-import UploadABI from './containers/UploadABI';
-import ManageContract from './containers/ManageContract';
-import VerifyContract from './containers/VerifyContract';
-import NodeMap from './containers/NodeMap';
-
 import {
 	INDEX_PATH,
 	BLOCK_INFORMATION_PATH,
@@ -28,31 +13,86 @@ import {
 	NODE_MAP,
 } from './constants/RouterConstants';
 
+import RecentBlockSection from './containers/RecentBlockSection';
+import Objects from './containers/Objects';
+import Account from './containers/Account';
+import Asset from './containers/Asset';
+import UploadABI from './containers/UploadABI';
+import ManageContract from './containers/ManageContract';
+import VerifyContract from './containers/VerifyContract';
+import Contract from './containers/Contract';
+import NodeMap from './containers/NodeMap';
+import NotFound from './containers/Error/NotFoundScreen';
+import App from './containers/App';
 
-export default class extends React.Component {
-
-	render() {
-		return (
-			<App>
-				<Switch>
-					<Route exact path={INDEX_PATH} component={RecentBlockSection} />
-					<Route exact path={BLOCK_INFORMATION_PATH} component={RecentBlockSection} />
-					<Route exact path={TRANSACTION_INFORMATION_PATH} component={RecentBlockSection} />
-					<Route exact path={OBJECTS_PATH} component={Objects} />
-					<Route exact path={ACCOUNTS_PATH} component={Account} />
-					<Route exact path={ASSET_PATH} component={Asset} />
-
-					<Route exact path={UPLOAD_ABI_PATH} component={UploadABI} />
-					<Route exact path={MANAGE_CONTRACT_PATH} component={ManageContract} />
-					<Route exact path={VERIFY_CONTRACT_PATH} component={VerifyContract} />
-					<Route path={CONTRACT_PATH_DETAIL} component={Contract} />
-					<Route path={NODE_MAP} component={NodeMap} />
-
-					<Route exact path={NOT_FOUND_PATH} component={NotFound} />
-					<Route component={NotFound} />
-				</Switch>
-			</App>
-		);
-	}
-
-}
+export default [
+	{
+		...App,
+		routes: [
+			{
+				...RecentBlockSection,
+				key: 'INDEX_PATH',
+				path: INDEX_PATH,
+				exact: true,
+			},
+			{
+				...RecentBlockSection,
+				path: BLOCK_INFORMATION_PATH,
+				exact: true,
+			},
+			{
+				...RecentBlockSection,
+				path: TRANSACTION_INFORMATION_PATH,
+				exact: true,
+			},
+			{
+				...Objects,
+				path: OBJECTS_PATH,
+				exact: true,
+			},
+			{
+				...Account,
+				path: ACCOUNTS_PATH,
+				exact: true,
+			},
+			{
+				...ASSET_PATH,
+				path: Asset,
+				exact: true,
+			},
+			{
+				...UPLOAD_ABI_PATH,
+				path: UploadABI,
+				exact: true,
+			},
+			{
+				...MANAGE_CONTRACT_PATH,
+				path: ManageContract,
+				exact: true,
+			},
+			{
+				...VERIFY_CONTRACT_PATH,
+				path: VerifyContract,
+				exact: true,
+			},
+			{
+				...CONTRACT_PATH_DETAIL,
+				path: Contract,
+				exact: true,
+			},
+			{
+				...NODE_MAP,
+				path: NodeMap,
+				exact: true,
+			},
+			{
+				...NOT_FOUND_PATH,
+				path: NotFound,
+				exact: true,
+			},
+			{
+				...NotFound,
+			},
+		],
+	},
+];

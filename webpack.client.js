@@ -1,12 +1,10 @@
-/* eslint-disable import/no-dynamic-require */
 require('@babel/polyfill');
-
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const packageJson = require('./package.json');
+const packageJson = require('../package.json');
 
 const {
 	API_URL,
@@ -19,14 +17,14 @@ const {
 	INSTALL_NODE_LINK,
 } = require('config');
 
-const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-	template: `${__dirname}/src/assets/index.html`,
-	filename: 'index.html',
-	inject: 'body',
-});
+// const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
+// 	template: `${__dirname}/src/assets/index.html`,
+// 	filename: 'index.html',
+// 	inject: 'body',
+// });
 
 const extractSass = new ExtractTextPlugin({
-	filename: '[name].[hash].css',
+	filename: '[name].css',
 	disable: process.env.NODE_ENV === 'local',
 });
 
@@ -41,33 +39,19 @@ module.exports = {
 	},
 	entry: {
 		babel: '@babel/polyfill',
-		app: path.resolve('src/index.js'),
+		app: `${process.env.PWD}/src/index`,
 	},
 	output: {
 		publicPath: '/',
-		path: path.resolve('dist'),
-		filename: `[name].${timeCache}.js`,
+		path: `${process.env.PWD}/public`,
+		filename: '[name].js',
 		pathinfo: process.env.NODE_ENV === 'local',
 		sourceMapFilename: '[name].js.map',
-		chunkFilename: `[name].bundle.js?v=${timeCache}`,
+		chunkFilename: '[name].bundle.js',
 	},
 	devtool: process.env.NODE_ENV !== 'local' ? 'cheap-module-source-map' : 'eval',
 	module: {
 		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-				},
-			},
-			{
-				test: /\.jsx$/,
-				include: /src/,
-				use: {
-					loader: 'babel-loader',
-				},
-			},
 			{
 				test: /\.(ico|png|svg)$/,
 				use: {
@@ -75,6 +59,13 @@ module.exports = {
 					options: {
 						name: 'images/[name].[ext]',
 					},
+				},
+			},
+			{
+				test: /\.js|\.jsx$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader',
 				},
 			},
 			{
@@ -103,7 +94,6 @@ module.exports = {
 						context: '',
 					},
 				},
-
 			},
 		],
 	},
@@ -124,11 +114,13 @@ module.exports = {
 			'node_modules',
 			path.resolve('src'),
 		],
-		extensions: ['.js', '.jsx', '.json'],
+		extensions: ['.wasm', '.mjs', '.js', '.jsx', '.json'],
 	},
 	plugins: [
-		new CleanWebpackPlugin(['dist']),
+		new CleanWebpackPlugin([`${process.env.PWD}/public`]),
 		new webpack.DefinePlugin({
+			IS_SERVER: false,
+			IS_CLIENT: true,
 			__API_URL__: JSON.stringify(API_URL),
 			__SERVER_URL__: JSON.stringify(SERVER_URL),
 			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),
@@ -140,7 +132,7 @@ module.exports = {
 			__GRAPHQL_URL_WS_LINK__: JSON.stringify(GRAPHQL_URL.WS),
 			__APP_VERSION__: JSON.stringify(packageJson.version),
 		}),
-		HTMLWebpackPluginConfig,
+		// HTMLWebpackPluginConfig,
 		extractSass,
 	],
 };
