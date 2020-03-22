@@ -30,64 +30,64 @@ export default [
 		component: AppWrapper,
 		routes: [
 			{
-				component: RecentBlockSection,
 				path: INDEX_PATH,
 				exact: true,
+				component: RecentBlockSection,
 			},
 			{
-				component: RecentBlockSection,
 				path: BLOCK_INFORMATION_PATH,
 				exact: true,
+				component: RecentBlockSection,
 			},
 			{
-				component: RecentBlockSection,
 				path: TRANSACTION_INFORMATION_PATH,
 				exact: true,
+				component: RecentBlockSection,
 			},
 			{
-				component: Objects,
 				path: OBJECTS_PATH,
 				exact: true,
+				component: Objects,
 			},
 			{
-				component: Account,
 				path: ACCOUNTS_PATH,
 				exact: true,
+				component: Account,
 			},
 			{
-				component: Asset,
 				path: ASSET_PATH,
 				exact: true,
+				component: Asset,
 			},
 			{
-				component: UploadABI,
 				path: UPLOAD_ABI_PATH,
 				exact: true,
+				component: UploadABI,
 			},
 			{
-				component: ManageContract,
 				path: MANAGE_CONTRACT_PATH,
 				exact: true,
+				component: ManageContract,
 			},
 			{
-				component: VerifyContract,
 				path: VERIFY_CONTRACT_PATH,
 				exact: true,
+				component: VerifyContract,
 			},
 			{
-				component: Contract,
 				path: CONTRACT_PATH_DETAIL,
 				exact: true,
+				component: Contract,
 			},
 			{
-				component: NodeMap,
 				path: NODE_MAP,
 				exact: true,
+				component: NodeMap,
 			},
 			{
-				component: NotFound,
 				path: NOT_FOUND_PATH,
 				exact: true,
+				component: NotFound,
 			},
 			{
 				component: NotFound,

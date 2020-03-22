@@ -30,6 +30,7 @@ export default async function render(url) {
 
 	const context = {};
 
+	// TODO logger to catch any render exceptions
 	const content = renderToString(
 		<Provider store={store}>
 			<StaticRouter location={url} context={context}>

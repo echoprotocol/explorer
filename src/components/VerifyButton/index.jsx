@@ -22,11 +22,11 @@ class Verify extends Component {
 
 	componentDidMount() {
 		this.updateTooltipSize();
-		IS_CLIENT && window.addEventListener('resize', this.listener);
+		window.addEventListener('resize', this.listener);
 	}
 
 	componentWillUnmount() {
-		IS_CLIENT && window.removeEventListener('resize', this.listener);
+		window.removeEventListener('resize', this.listener);
 	}
 
 	updateTooltipSize() {

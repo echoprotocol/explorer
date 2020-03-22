@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { Controlled as CodeMirror } from 'react-codemirror2';
 import copy from 'copy-to-clipboard';
 import { withRouter } from 'react-router';
 import URLHelper from '../../helpers/URLHelper';

@@ -40,7 +40,7 @@ NavTabs.defaultProps = {};
 
 export default withRouter(connect(
 	(state, props) => ({
-		pathName: props.location.pathname,
+		pathname: props.location.pathname,
 	}),
 	() => ({}),
 )(NavTabs));

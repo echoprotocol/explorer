@@ -43,7 +43,7 @@ class RecentBlockSidebar extends React.Component {
 
 	componentWillUnmount() {
 		clearInterval(this.intervalId);
-		IS_CLIENT && window.removeEventListener('scroll', this.updateOffsetTop);
+		window.removeEventListener('scroll', this.updateOffsetTop);
 	}
 
 	updateOffsetTop() {

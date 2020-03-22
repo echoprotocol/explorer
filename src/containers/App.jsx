@@ -26,9 +26,7 @@ class App extends React.Component {
 
 	componentDidMount() {
 		this.props.init();
-		if (IS_CLIENT) {
-			document.title = this.props.title;
-		}
+		document.title = this.props.title;
 	}
 
 	componentDidUpdate(prevProps) {
@@ -36,7 +34,7 @@ class App extends React.Component {
 			this.props.resetErrorPath();
 		}
 
-		if (IS_CLIENT && prevProps.title !== this.props.title) {
+		if (prevProps.title !== this.props.title) {
 			document.title = this.props.title;
 		}
 	}
@@ -148,6 +146,7 @@ export default withRouter(connect(
 		subscribeConnect: state.internetPopup.get('connect'),
 		showInternetConnectionBar: state.internetPopup.get('show'),
 		pathname: props.location.pathname,
+		history: props.history,
 	}),
 	(dispatch) => ({
 		init: () => dispatch(GlobalActions.init()),

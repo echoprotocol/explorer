@@ -4,9 +4,8 @@ import template from './template';
 import render from './render';
 
 const server = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
-// TODO read about  { index: false }
 server.use(express.static(`${process.env.PWD}/public`));
 
 server.disable('x-powered-by');

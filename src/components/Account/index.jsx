@@ -14,9 +14,6 @@ class Account extends React.Component {
 
 	componentDidMount() {
 		this.props.getAccountInfo();
-		if (!IS_CLIENT) {
-			return;
-		}
 		if (this.props.location.search) {
 			this.props.history.push(this.props.location.pathname);
 		}

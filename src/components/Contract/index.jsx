@@ -54,9 +54,6 @@ class Contract extends React.Component {
 
 
 	async componentDidMount() {
-		if (!IS_CLIENT) {
-			return;
-		}
 		const { match: { params: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
 		await this.initContract();
