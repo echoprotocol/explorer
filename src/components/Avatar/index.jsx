@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { svgAvatar } from 'echojs-ping';
 import classnames from 'classnames';
 
 import avatar from '../../assets/images/default-avatar.svg';
+
+let svgAvatar = null;
+if (IS_CLIENT) {
+	svgAvatar = require('echojs-ping').svgAvatar;
+}
 
 class Avatar extends React.Component {
 
@@ -60,11 +64,11 @@ class Avatar extends React.Component {
 		const { avatarSize, accountName } = this.state;
 		return (
 			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
-				{/*{*/}
-				{/*	// !accountName ? <img src={avatar} alt="avatar" /> : (*/}
-				{/*	// 	<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />*/}
-				{/*	// )*/}
-				{/*}*/}
+				{
+					IS_CLIENT && !accountName ? <img src={avatar} alt="avatar" /> : (
+						<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />
+					)
+				}
 			</div>
 		);
 	}
