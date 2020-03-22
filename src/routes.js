@@ -23,75 +23,74 @@ import VerifyContract from './containers/VerifyContract';
 import Contract from './containers/Contract';
 import NodeMap from './containers/NodeMap';
 import NotFound from './containers/Error/NotFoundScreen';
-import App from './containers/App';
+import AppWrapper from './containers/AppWrapper';
 
 export default [
 	{
-		...App,
+		component: AppWrapper,
 		routes: [
 			{
-				...RecentBlockSection,
-				key: 'INDEX_PATH',
+				component: RecentBlockSection,
 				path: INDEX_PATH,
 				exact: true,
 			},
 			{
-				...RecentBlockSection,
+				component: RecentBlockSection,
 				path: BLOCK_INFORMATION_PATH,
 				exact: true,
 			},
 			{
-				...RecentBlockSection,
+				component: RecentBlockSection,
 				path: TRANSACTION_INFORMATION_PATH,
 				exact: true,
 			},
 			{
-				...Objects,
+				component: Objects,
 				path: OBJECTS_PATH,
 				exact: true,
 			},
 			{
-				...Account,
+				component: Account,
 				path: ACCOUNTS_PATH,
 				exact: true,
 			},
 			{
-				...ASSET_PATH,
-				path: Asset,
+				component: Asset,
+				path: ASSET_PATH,
 				exact: true,
 			},
 			{
-				...UPLOAD_ABI_PATH,
-				path: UploadABI,
+				component: UploadABI,
+				path: UPLOAD_ABI_PATH,
 				exact: true,
 			},
 			{
-				...MANAGE_CONTRACT_PATH,
-				path: ManageContract,
+				component: ManageContract,
+				path: MANAGE_CONTRACT_PATH,
 				exact: true,
 			},
 			{
-				...VERIFY_CONTRACT_PATH,
-				path: VerifyContract,
+				component: VerifyContract,
+				path: VERIFY_CONTRACT_PATH,
 				exact: true,
 			},
 			{
-				...CONTRACT_PATH_DETAIL,
-				path: Contract,
+				component: Contract,
+				path: CONTRACT_PATH_DETAIL,
 				exact: true,
 			},
 			{
-				...NODE_MAP,
-				path: NodeMap,
+				component: NodeMap,
+				path: NODE_MAP,
 				exact: true,
 			},
 			{
-				...NOT_FOUND_PATH,
-				path: NotFound,
+				component: NotFound,
+				path: NOT_FOUND_PATH,
 				exact: true,
 			},
 			{
-				...NotFound,
+				component: NotFound,
 			},
 		],
 	},

@@ -14,7 +14,7 @@ class ModalExtensionInfo extends React.PureComponent {
 	}
 
 	openBrowserExtensions() {
-		window.open(config.LANDING_BRIDGE, '_blank');
+		IS_CLIENT && window.open(config.LANDING_BRIDGE, '_blank');
 	}
 
 	renderModal() {

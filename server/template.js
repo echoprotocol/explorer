@@ -1,32 +1,37 @@
-// html skeleton provider
-export default function template(title, initialState = {}, content = "") {
-  let scripts = ''; // Dynamically ship scripts based on render type
-  if (content) {
-    scripts = ` <script>
-                   window.__STATE__ = ${JSON.stringify(initialState)}
+import { Helmet } from 'react-helmet';
+
+export default function template(title, initialState = {}, content = '') {
+	let scripts = '';
+	const helmet = Helmet.renderStatic();
+
+	if (content) {
+		scripts = ` 
+				<script>
+                   window.__PRELOADED_STATE__ = ${JSON.stringify(initialState)}
                 </script>
-                <script src="assets/client.js"></script>
-                `
-  } else {
-    scripts = ` <script src="assets/bundle.js"> </script> `
-  }
-  let page = `<!DOCTYPE html>
+ 				<script type="text/javascript" src="/babel.js"></script>
+ 				<script type="text/javascript" src="/vendor.bundle.js"></script>
+    			<script type="text/javascript" src="/app.js"></script>
+         `;
+	}
+	const page = `<!doctype html>
               <html lang="en">
               <head>
                 <meta charset="utf-8">
-                <title> ${title} </title>
-                <link href="assets/style.css" rel="stylesheet">
+                 ${helmet.title.toString()}
+                 ${helmet.meta.toString()}
+                 ${helmet.link.toString()}
+              	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+              	<meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
+                <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+                 <link href="/app.css" rel="stylesheet">
               </head>
               <body>
-                <div class="content">
-                   <div id="app" class="wrap-inner">
-                      ${content}
-                   </div>
-                </div>
-
-                  ${scripts}
+				<div id="root">${content}</div>	
+				 ${scripts}
               </body>
-              `;
+		  </html>
+        `;
 
-  return page;
+	return page;
 }

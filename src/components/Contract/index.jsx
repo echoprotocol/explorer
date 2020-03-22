@@ -10,6 +10,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
 import { withRouter } from 'react-router';
 import copy from 'copy-to-clipboard';
+import { Helmet } from 'react-helmet';
 
 import { CONTRACT_TABS, CHANGE_TEXT_TIME } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -53,6 +54,9 @@ class Contract extends React.Component {
 
 
 	async componentDidMount() {
+		if (!IS_CLIENT) {
+			return;
+		}
 		const { match: { params: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
 		await this.initContract();
@@ -180,6 +184,20 @@ class Contract extends React.Component {
 		return elment[selected];
 	}
 
+	renderMeta() {
+		const {
+			icon, description, name, match: { params: { id } },
+		} = this.props;
+
+		return (
+			<Helmet>
+				<title>Contract ${name || id} | Echo Explorer</title>
+				<meta property="og:description" name={description || 'ECHO contract page'} />
+				<meta property="og:image" content={URLHelper.getUrlContractIcon(icon)} />
+			</Helmet>
+		);
+	}
+
 	render() {
 		const {
 			loading, isFullHistory, loadingMoreHistory,
@@ -285,6 +303,7 @@ class Contract extends React.Component {
 
 		return (
 			<div className="table-container inner-information-container account-page contract-page with-d-table">
+				{this.renderMeta()}
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards action">

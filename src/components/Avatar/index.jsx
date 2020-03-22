@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { svgAvatar } from 'echojs-ping';
+// import { svgAvatar } from 'echojs-ping';
 import classnames from 'classnames';
 
 import avatar from '../../assets/images/default-avatar.svg';
@@ -24,8 +24,8 @@ class Avatar extends React.Component {
 
 	componentDidMount() {
 		this.updateAvatarSize();
-		window.addEventListener('resize', this.listener);
-		window.addEventListener('load', this.listener);
+		IS_CLIENT && window.addEventListener('resize', this.listener);
+		IS_CLIENT && window.addEventListener('load', this.listener);
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -45,7 +45,7 @@ class Avatar extends React.Component {
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.listener);
+		IS_CLIENT && window.removeEventListener('resize', this.listener);
 	}
 
 	updateAvatarSize() {
@@ -60,11 +60,11 @@ class Avatar extends React.Component {
 		const { avatarSize, accountName } = this.state;
 		return (
 			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
-				{
-					!accountName ? <img src={avatar} alt="avatar" /> : (
-						<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />
-					)
-				}
+				{/*{*/}
+				{/*	// !accountName ? <img src={avatar} alt="avatar" /> : (*/}
+				{/*	// 	<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />*/}
+				{/*	// )*/}
+				{/*}*/}
 			</div>
 		);
 	}

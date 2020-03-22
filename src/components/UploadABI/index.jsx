@@ -1,5 +1,4 @@
 import React from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
 import PropTypes from 'prop-types';
 import BackwardIcon from '../BackwardIcon';
 import URLHelper from '../../helpers/URLHelper';
@@ -7,8 +6,12 @@ import { CONTRACT_ABI } from '../../constants/RouterConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import { ContractIcon } from '../Contract/ContractIcon';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+let CodeMirror = null;
+if (IS_CLIENT) {
+	CodeMirror = require('react-codemirror2').Controlled;
+	require('codemirror/mode/xml/xml.js');
+	require('codemirror/mode/javascript/javascript.js');
+}
 
 class UploadABI extends React.Component {
 
@@ -101,13 +104,15 @@ class UploadABI extends React.Component {
 					</div>
 
 					<div className="code-block">
-						<CodeMirror
-							value={abiInput.value}
-							options={CODEMIRROR_OPTIONS}
-							onBeforeChange={(editor, data, value) => {
-								this.props.setFormAbi(value);
-							}}
-						/>
+						{CodeMirror && (
+							<CodeMirror
+								value={abiInput.value}
+								options={CODEMIRROR_OPTIONS}
+								onBeforeChange={(editor, data, value) => {
+									this.props.setFormAbi(value);
+								}}
+							/>
+						)}
 					</div>
 				</div>
 

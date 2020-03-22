@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
@@ -7,12 +8,15 @@ import OperationsTable from '../TransactionInfo/OperationsTable';
 
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
+import URLHelper from '../../helpers/URLHelper';
 
 class Account extends React.Component {
 
 	componentDidMount() {
 		this.props.getAccountInfo();
-
+		if (!IS_CLIENT) {
+			return;
+		}
 		if (this.props.location.search) {
 			this.props.history.push(this.props.location.pathname);
 		}
@@ -62,6 +66,17 @@ class Account extends React.Component {
 		return loading ? <Loader /> : null;
 	}
 
+	renderMeta() {
+		const { account } = this.props;
+		return !account ? null : (
+			<Helmet>
+				<title>{`Account ${account.get('name')} | Echo Explorer`}</title>
+				<meta property="og:description" name="ECHO account page" />
+				<meta property="og:image" content={URLHelper.getUrlAccountIcon(account.get('name'))} />
+			</Helmet>
+		);
+	}
+
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
@@ -70,6 +85,7 @@ class Account extends React.Component {
 
 		return (
 			<div className="table-container inner-information-container block-information account-page with-d-table">
+				{this.renderMeta()}
 				<div className="account-page-t-block">
 					{account && <div className="title">Account {account.get('id')}</div>}
 					<div className="help-container">

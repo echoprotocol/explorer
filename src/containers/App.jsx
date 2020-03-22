@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { withRouter } from 'react-router';
 
 import { disconnect } from '../actions/SocketActions';
 
@@ -25,8 +26,9 @@ class App extends React.Component {
 
 	componentDidMount() {
 		this.props.init();
-
-		document.title = this.props.title;
+		if (IS_CLIENT) {
+			document.title = this.props.title;
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -34,7 +36,7 @@ class App extends React.Component {
 			this.props.resetErrorPath();
 		}
 
-		if (prevProps.title !== this.props.title) {
+		if (IS_CLIENT && prevProps.title !== this.props.title) {
 			document.title = this.props.title;
 		}
 	}
@@ -95,7 +97,7 @@ class App extends React.Component {
 			errorPath,
 			errorScreen,
 			connected,
-			pathName,
+			pathname,
 			subscribeConnect,
 			showInternetConnectionBar,
 			isShowModal,
@@ -113,7 +115,7 @@ class App extends React.Component {
 			return this.renderNotFound();
 		}
 
-		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName, isShowModal);
+		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathname, isShowModal);
 
 	}
 
@@ -127,7 +129,7 @@ App.propTypes = {
 	error: PropTypes.string.isRequired,
 	errorPath: PropTypes.bool.isRequired,
 	errorScreen: PropTypes.bool.isRequired,
-	pathName: PropTypes.string.isRequired,
+	pathname: PropTypes.string.isRequired,
 	connected: PropTypes.bool.isRequired,
 	subscribeConnect: PropTypes.bool.isRequired,
 	showInternetConnectionBar: PropTypes.bool.isRequired,
@@ -135,21 +137,21 @@ App.propTypes = {
 	resetErrorPath: PropTypes.func.isRequired,
 };
 
-export default connect(
-	(state) => ({
+export default withRouter(connect(
+	(state, props) => ({
 		isShowModal: state.modal.get(MODAL_ERROR).get('show') || state.modal.get(MODAL_SUCCESS).get('show') || state.modal.get(MODAL_EXTENSION_INFO).get('show'),
 		error: state.global.get('error'),
 		errorPath: state.global.get('errorPath'),
 		errorScreen: state.global.get('errorScreen'),
 		connected: state.global.get('connected'),
 		title: state.global.get('title'),
-		pathName: state.router.location.pathname,
 		subscribeConnect: state.internetPopup.get('connect'),
 		showInternetConnectionBar: state.internetPopup.get('show'),
+		pathname: props.location.pathname,
 	}),
 	(dispatch) => ({
 		init: () => dispatch(GlobalActions.init()),
 		resetErrorPath: () => dispatch(GlobalActions.toggleErrorPath(false)),
 		disconnect: () => dispatch(disconnect()),
 	}),
-)(App);
+)(App));

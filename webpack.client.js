@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const packageJson = require('../package.json');
+const packageJson = require('./package.json');
 
 const {
 	API_URL,
@@ -39,11 +39,11 @@ module.exports = {
 	},
 	entry: {
 		babel: '@babel/polyfill',
-		app: `${process.env.PWD}/src/index`,
+		app: path.resolve('src/index.js'),
 	},
 	output: {
 		publicPath: '/',
-		path: `${process.env.PWD}/public`,
+		path: path.resolve('public'),
 		filename: '[name].js',
 		pathinfo: process.env.NODE_ENV === 'local',
 		sourceMapFilename: '[name].js.map',
@@ -117,7 +117,7 @@ module.exports = {
 		extensions: ['.wasm', '.mjs', '.js', '.jsx', '.json'],
 	},
 	plugins: [
-		new CleanWebpackPlugin([`${process.env.PWD}/public`]),
+		new CleanWebpackPlugin(['public']),
 		new webpack.DefinePlugin({
 			IS_SERVER: false,
 			IS_CLIENT: true,

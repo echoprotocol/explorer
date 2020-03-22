@@ -1,13 +1,19 @@
 import React from 'react';
-import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import PropTypes from 'prop-types';
 
 import config from '../../config/chain';
 import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
 
-const Map = ReactMapboxGl({
-	accessToken: config.MAP_API_TOKEN,
-});
+let ReactMapboxGl = null;
+let Map = null;
+
+if (IS_CLIENT) {
+	ReactMapboxGl = require('react-mapbox-gl');
+	Map = ReactMapboxGl.default({
+		accessToken: config.MAP_API_TOKEN,
+	});
+}
+
 class NodeMap extends React.Component {
 
 	constructor(props) {
@@ -81,7 +87,7 @@ class NodeMap extends React.Component {
 			<div className="distribution table-container recent-block-table">
 				<div className="distribution-header">
 					<h1>Nodes Distribution</h1>
-					<button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
+					<button onClick={(() => IS_CLIENT && window.open(config.INSTALL_NODE_LINK, '_blank'))} >
 						How to run full node
 					</button>
 				</div>
@@ -91,31 +97,31 @@ class NodeMap extends React.Component {
 					style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
 					zoom={DEFAULT_MAP_ZOOM}
 				>
-					{data.map((p, key) => (
-						<Layer
+					{ReactMapboxGl && data.map((p, key) => (
+						<ReactMapboxGl.Layer
 							type="circle"
 							id={p.id}
 							key={key.toString()}
 							paint={p.POSITION_CIRCLE_PAINT}
 						>
-							<Feature
+							<ReactMapboxGl.Feature
 								coordinates={[p.longitude, p.latitude]}
 								onMouseEnter={(mapWithEvt) => this.onHover(mapWithEvt, p)}
 								onMouseLeave={(mapWithEvt) => this.hidePopup(mapWithEvt, p)}
 							/>
-						</Layer>
+						</ReactMapboxGl.Layer>
 					))
 					}
 					{
-						popupData &&
-						<Popup
+						popupData && ReactMapboxGl &&
+						<ReactMapboxGl.Popup
 							coordinates={[popupData.longitude, popupData.latitude]}
 							anchor="null"
 						>
 							<span>{popupData.city}{popupData.city ? ', ' : ' '}{popupData.country}</span>
 							<br />
 							<span>count = {popupData.node}</span>
-						</Popup>
+						</ReactMapboxGl.Popup>
 					}
 				</Map>
 			</div>

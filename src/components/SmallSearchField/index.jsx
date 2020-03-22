@@ -23,12 +23,12 @@ class SearchField extends React.Component {
 	}
 
 	componentDidMount() {
-		document.addEventListener('mousedown', this.handleClickOutside);
+		IS_CLIENT && document.addEventListener('mousedown', this.handleClickOutside);
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.searchTimeout);
-		document.removeEventListener('mousedown', this.handleClickOutside);
+		IS_CLIENT && document.removeEventListener('mousedown', this.handleClickOutside);
 	}
 
 	onFocus() {

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
+// import { Controlled as CodeMirror } from 'react-codemirror2';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+let CodeMirror = null;
+if (IS_CLIENT) {
+	CodeMirror = require('react-codemirror2').Controlled;
+	require('codemirror/mode/xml/xml.js');
+	require('codemirror/mode/javascript/javascript.js');
+}
 
 class ContractSourceCode extends React.Component {
 
@@ -24,10 +28,12 @@ class ContractSourceCode extends React.Component {
 				</div>
 
 				<div className="code-block max-height-none">
-					<CodeMirror
-						value={sourceCode}
-						options={CODEMIRROR_OPTIONS}
-					/>
+					{CodeMirror && (
+						<CodeMirror
+							value={sourceCode}
+							options={CODEMIRROR_OPTIONS}
+						/>
+					)}
 				</div>
 
 			</div>

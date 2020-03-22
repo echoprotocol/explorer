@@ -11,7 +11,7 @@ import configureStore from '../src/store';
 export default async function render(url) {
 	const store = configureStore();
 
-	console.log('heheehe', url);
+	console.log('url hohoho', url);
 	// const routes = matchRoutes(Routes, url);
 	//
 	// console.log('Routes', routes);
@@ -30,18 +30,16 @@ export default async function render(url) {
 
 	const context = {};
 
-	const content = renderToString(<Provider store={store}>
-		<StaticRouter location={url} context={context}>
-			<div>{renderRoutes(Routes)}</div>
-		</StaticRouter>
-	</Provider>);
+	const content = renderToString(
+		<Provider store={store}>
+			<StaticRouter location={url} context={context}>
+				<div>{renderRoutes(Routes)}</div>
+			</StaticRouter>
+		</Provider>,
+	);
 
 	// Get a copy of store data to create the same store on client side
 	const preloadedState = store.getState();
-	// console.log('after', content, preloadedState);
 
-	return {
-		content,
-		preloadedState,
-	};
+	return { content, preloadedState };
 }

@@ -1,29 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
+import { BrowserRouter } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
+
 import echo from 'echojs-lib';
 
 import Routes from './routes'; // Or wherever you keep your reducers
+import configureStore from './store';
 
 import './assets/loader';
 import './assets/favicon.ico';
-import GlobalActions from './actions/GlobalActions';
+// import GlobalActions from './actions/GlobalActions';
 
-import history from './history';
-import store from './store';
+// const preloadedState = IS_CLIENT ?  window.__PRELOADED_STATE__ : {};
+// delete window.__PRELOADED_STATE__;
+const preloadedState = {};
 
-history.listen(() => {
-	store.dispatch(GlobalActions.incrementHistoryLength());
-});
+// reproduce the store used to render the page on server
+const store = configureStore(preloadedState);
+
+// history.listen(() => {
+// 	store.dispatch(GlobalActions.incrementHistoryLength());
+// });
 
 echo.syncCacheWithStore(store);
 
-ReactDOM.render(
+ReactDOM.hydrate(
 	<Provider store={store}>
-		<ConnectedRouter history={history}>
-			<Routes />
-		</ConnectedRouter>
+		<BrowserRouter>
+			<div>{renderRoutes(Routes)}</div>
+		</BrowserRouter>
 	</Provider>,
 	document.getElementById('root'),
 );

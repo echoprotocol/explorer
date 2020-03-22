@@ -132,8 +132,18 @@ class URLHelper {
 	}
 
 	/**
-	 *
-	 * @param icon
+	 * method getUrlAccountIcon
+	 * @param {string} accountName
+	 * @returns {string}
+	 */
+	static getUrlAccountIcon(accountName) {
+		console.log('config.SERVER_URL', config.SERVER_URL);
+		return `${config.SERVER_URL}/api/accounts/${accountName}/avatar.png`;
+	}
+
+	/**
+	 * method getUrlContractIcon
+	 * @param {string} icon
 	 * @returns {string}
 	 */
 	static getUrlContractIcon(icon) {

@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Controlled as CodeMirror } from 'react-codemirror2';
+// import { Controlled as CodeMirror } from 'react-codemirror2';
 import copy from 'copy-to-clipboard';
 import { withRouter } from 'react-router';
 import URLHelper from '../../helpers/URLHelper';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+let CodeMirror = null;
+if (IS_CLIENT) {
+	CodeMirror = require('react-codemirror2').Controlled;
+	require('codemirror/mode/xml/xml.js');
+	require('codemirror/mode/javascript/javascript.js');
+}
 
 class ContractAbi extends React.Component {
 
@@ -67,11 +71,13 @@ class ContractAbi extends React.Component {
 
 				{/* If code-block readonly add class uncontrolled  */}
 				<div className="code-block uncontrolled">
-					<CodeMirror
-						value={abi}
-						onFocus={(editor) => { editor.refresh(); }}
-						options={CODEMIRROR_OPTIONS}
-					/>
+					{CodeMirror && (
+						<CodeMirror
+							value={abi}
+							onFocus={(editor) => { editor.refresh(); }}
+							options={CODEMIRROR_OPTIONS}
+						/>
+					)}
 				</div>
 			</React.Fragment>
 		);

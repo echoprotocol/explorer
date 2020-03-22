@@ -29,14 +29,14 @@ class SearchField extends React.Component {
 	}
 
 	componentDidMount() {
-		document.addEventListener('mousedown', this.handleClickOutside);
+		IS_CLIENT && document.addEventListener('mousedown', this.handleClickOutside);
 	}
 
 	componentWillUnmount() {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		document.removeEventListener('mousedown', this.handleClickOutside);
+		IS_CLIENT && document.removeEventListener('mousedown', this.handleClickOutside);
 	}
 
 	onFocus() {

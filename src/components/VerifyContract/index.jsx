@@ -1,5 +1,4 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Select, Input, Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
@@ -8,8 +7,12 @@ import verifyIcon from '../../assets/images/icons/verify-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+let CodeMirror = null;
+if (IS_CLIENT) {
+	CodeMirror = require('react-codemirror2').UnControlled;
+	require('codemirror/mode/xml/xml.js');
+	require('codemirror/mode/javascript/javascript.js');
+}
 
 class VerifyContract extends React.Component {
 
@@ -258,12 +261,14 @@ class VerifyContract extends React.Component {
 					</div>
 
 					<div className="code-block">
-						<CodeMirror
-							value={form.get('code')}
-							options={CODEMIRROR_OPTIONS}
-							onKeyDown={(editor, e) => this.onKeyDown(e)}
-							onChange={(editor, metadata, value) => this.onContractCodeCompile(value)}
-						/>
+						{CodeMirror && (
+							<CodeMirror
+								value={form.get('code')}
+								options={CODEMIRROR_OPTIONS}
+								onKeyDown={(editor, e) => this.onKeyDown(e)}
+								onChange={(editor, metadata, value) => this.onContractCodeCompile(value)}
+							/>)
+						}
 					</div>
 
 					<div className="section-description">

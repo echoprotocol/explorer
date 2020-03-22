@@ -5,7 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
 const isomorphicToolsConfig = require('./webpack-isomorphic-tools-configuration');
 
-const packageJson = require('../package.json');
+const packageJson = require('./package.json');
 
 const {
 	API_URL,
@@ -25,7 +25,7 @@ module.exports = {
 	mode: 'development',
 	target: 'node',
 	entry: {
-		server: path.resolve(__dirname, 'server/app.js'),
+		server: path.resolve(__dirname, 'server/server.js'),
 	},
 	output: {
 		filename: '[name].js',

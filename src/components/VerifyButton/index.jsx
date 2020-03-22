@@ -22,15 +22,15 @@ class Verify extends Component {
 
 	componentDidMount() {
 		this.updateTooltipSize();
-		window.addEventListener('resize', this.listener);
+		IS_CLIENT && window.addEventListener('resize', this.listener);
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.listener);
+		IS_CLIENT && window.removeEventListener('resize', this.listener);
 	}
 
 	updateTooltipSize() {
-		if (window.innerWidth > 499) {
+		if (IS_CLIENT && window.innerWidth > 499) {
 			this.setState({
 				tooltipSize: 290,
 			});

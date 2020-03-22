@@ -9,18 +9,18 @@ import { INDEX_PATH, NODE_MAP } from '../../constants/RouterConstants';
 class NavTabs extends React.Component {
 
 	render() {
-		const { pathName, history } = this.props;
+		const { pathname, history } = this.props;
 
 		return (
 			<div className="navigation-tabs">
 				<button
-					className={classnames({ active: pathName === INDEX_PATH })}
+					className={classnames({ active: pathname === INDEX_PATH })}
 					onClick={() => history.push(INDEX_PATH)}
 				>
 					Blocks
 				</button>
 				<button
-					className={classnames({ active: pathName === NODE_MAP })}
+					className={classnames({ active: pathname === NODE_MAP })}
 					onClick={() => history.push(NODE_MAP)}
 				>
 					Nodes map
@@ -32,15 +32,15 @@ class NavTabs extends React.Component {
 }
 
 NavTabs.propTypes = {
-	pathName: PropTypes.string.isRequired,
-	history: PropTypes.object,
+	pathname: PropTypes.string.isRequired,
+	history: PropTypes.object.isRequired,
 };
-NavTabs.defaultProps = {
-	history: {},
-};
+
+NavTabs.defaultProps = {};
+
 export default withRouter(connect(
-	(state) => ({
-		pathName: state.router.location.pathname,
+	(state, props) => ({
+		pathName: props.location.pathname,
 	}),
 	() => ({}),
 )(NavTabs));

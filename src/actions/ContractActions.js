@@ -41,7 +41,7 @@ import { BridgeService } from '../services/BridgeService';
 import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
-import browserHistory from '../history';
+// import browserHistory from '../history';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
 
 class ContractActions extends BaseActionsClass {
@@ -239,6 +239,10 @@ class ContractActions extends BaseActionsClass {
 
 	changeContractCompiler(version) {
 		return async (dispatch, getState) => {
+			if (!IS_CLIENT) {
+				return;
+			}
+
 			const downloadedVersions = getState().contract.get('downloadedCompilers');
 			const buildsList = getState().contract.getIn(['compilersList', 'builds']);
 			dispatch(FormActions.setFormValue(
@@ -325,7 +329,7 @@ class ContractActions extends BaseActionsClass {
 					dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'code', code));
 				}
 
-				if (!code) {
+				if (!code || !IS_CLIENT) {
 					dispatch(this.setValue('contracts', new Map({})));
 					dispatch(FormActions.setValue(FORM_CONTRACT_VERIFY, 'contractName', ''));
 					dispatch(FormActions.setFormError(FORM_CONTRACT_VERIFY, 'currentCompiler', null));
@@ -541,7 +545,7 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(this.setValue('abi', FormatHelper.formatAbi(response.abi)));
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'ABI successfully uploaded' }));
-				browserHistory.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+				// browserHistory.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
 			} catch (err) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));
 			}
@@ -662,7 +666,7 @@ class ContractActions extends BaseActionsClass {
 					sourceCode: response.source_code,
 				}));
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'Contract verified' }));
-				browserHistory.push(URLHelper.createContractUrl(id));
+				// browserHistory.push(URLHelper.createContractUrl(id));
 
 			} catch (err) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));
