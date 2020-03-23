@@ -8,11 +8,18 @@ import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import OperationsTable from './OperationsTable';
 import Loader from '../Loader';
+import { getBlockInformation } from '../../actions/BlockActions';
+import GlobalActions from '../../actions/GlobalActions';
+import TransactionActions from '../../actions/TransactionActions';
 
 class TransactionsInfo extends React.Component {
 
 	componentDidMount() {
 		const { round, index } = this.props.match.params;
+
+		if (!this.props.blockInformation.get('blockNumber')) {
+			return;
+		}
 
 		this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
 		this.props.getBlockInfo(round);
@@ -39,7 +46,7 @@ class TransactionsInfo extends React.Component {
 		const { round, index } = this.props.match.params;
 
 		const {
-			operations, blockInformation, loading, history, location,
+			operations, blockInformation, loading, history, location, isMobileDevice,
 		} = this.props;
 
 		const breadcrumbs = [
@@ -69,6 +76,7 @@ class TransactionsInfo extends React.Component {
 								<p className="transaction-time">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
 								<p className="transaction-title-operations">{FormatHelper.getFormaOperationsTitle(operations.size)}</p>
 								<OperationsTable
+									isMobileDevice={isMobileDevice}
 									isTransaction
 									operations={operations}
 									history={history}
@@ -86,8 +94,21 @@ class TransactionsInfo extends React.Component {
 
 }
 
+export function loadData(store, match) {
+	if (!match.params || !match.params.round || !match.params.index) {
+		return null;
+	}
+	const { round, index: indexWithQuery } = match.params;
+	const [index] = indexWithQuery.split('?');
+	store.dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, indexWithQuery).replace(/round/, round)));
+	store.dispatch(getBlockInformation(round));
+	return store.dispatch(TransactionActions.getTransaction(round, index));
+}
+
+
 TransactionsInfo.propTypes = {
 	loading: PropTypes.bool,
+	isMobileDevice: PropTypes.bool.isRequired,
 	match: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,

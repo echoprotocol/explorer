@@ -11,6 +11,7 @@ export default withRouter(connect(
 	(state) => ({
 		operations: state.transaction.get('operations'),
 		historyLength: state.global.get('historyLength'),
+		isMobileDevice: state.global.get('isMobileDevice'),
 		blockInformation: state.block.get('blockInformation'),
 		loading: state.transaction.get('loading'),
 	}),

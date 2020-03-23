@@ -26,6 +26,7 @@ import NotFound from './containers/Error/NotFoundScreen';
 
 import App, { loadData as loadDataApp } from './containers/App';
 import { loadData as loadDataBlockInfo } from './components/BlockInformation';
+import { loadData as loadDataTransactionInfo } from './components/TransactionInfo';
 
 export default [
 	{
@@ -47,6 +48,7 @@ export default [
 				path: TRANSACTION_INFORMATION_PATH,
 				exact: true,
 				component: RecentBlockSection,
+				loadData: loadDataTransactionInfo,
 			},
 			{
 				path: OBJECTS_PATH,
