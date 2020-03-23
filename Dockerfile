@@ -13,4 +13,4 @@ RUN NODE_ENV=development npm install
 
 COPY . .
 RUN npm run ssr:build:prod
-CMD ["npm", "run", "ssr:build:prod"]
+CMD ["npm", "run", "ssr:start:prod"]
