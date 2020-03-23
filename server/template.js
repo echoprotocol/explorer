@@ -8,7 +8,7 @@ export default function template(initialState = {}, content = '') {
 	if (content) {
 		scripts = ` 
 				<script>
-                   window.PRELOADED_STATE = ${JSON.stringify(transit.toJSON(initialState))}
+                   window.__PRELOADED_STATE__ = ${JSON.stringify(transit.toJSON(initialState))}
                 </script>
  				<script type="text/javascript" src="/babel.js"></script>
  				<script type="text/javascript" src="/vendor.bundle.js"></script>

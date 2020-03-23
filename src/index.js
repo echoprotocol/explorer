@@ -14,7 +14,6 @@ import './assets/favicon.ico';
 import GlobalActions from './actions/GlobalActions';
 import history from './history';
 
-
 const preloadedState = __IS_CLIENT__ ? window.__PRELOADED_STATE__ : ''; // eslint-disable-line no-underscore-dangle
 delete window.__PRELOADED_STATE__; // eslint-disable-line no-underscore-dangle
 

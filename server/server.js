@@ -4,7 +4,7 @@ import template from './template';
 import render from './render';
 
 const server = express();
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3000;
 
 server.use(express.static(`${process.env.PWD}/public`));
 
