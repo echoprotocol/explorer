@@ -9,14 +9,21 @@ import Routes from '../src/routes';
 
 import configureStore from '../src/store';
 import GlobalActions from '../src/actions/GlobalActions';
+import { INDEX_PATH } from '../src/constants/RouterConstants';
 
 export default async function render(req) {
 	const store = configureStore();
 
 	try {
 		const routes = matchRoutes(Routes, req.url);
+
+		if (req.url !== INDEX_PATH) {
+			await Routes[0].routes[0].loadData(store);
+		}
+
 		const promises = routes
-			.map(({ route }) => (route.loadData ? route.loadData(store) : null))
+			.filter(({ route }) => route.loadData)
+			.map(({ route, match }) => route.loadData(store, match))
 			.map((promise) => {
 				if (promise) {
 					return new Promise((resolve) => {

@@ -8,11 +8,12 @@ class Navigation extends React.Component {
 
 	render() {
 		const {
-			history, hints, getHints, loadingSearch, errorSearch,
+			history, hints, getHints, loadingSearch, errorSearch, isMobileDevice,
 		} = this.props;
 		return (
 			<div className="wrap">
 				<Header
+					isMobileDevice={isMobileDevice}
 					errorSearch={errorSearch}
 					loadingSearch={loadingSearch}
 					hints={hints}
@@ -30,6 +31,7 @@ Navigation.propTypes = {
 	errorSearch: PropTypes.string,
 	hints: PropTypes.array,
 	loadingSearch: PropTypes.bool,
+	isMobileDevice: PropTypes.bool.isRequired,
 	getHints: PropTypes.func,
 };
 

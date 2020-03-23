@@ -67,7 +67,7 @@ class Avatar extends React.Component {
 		return (
 			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
 				{
-					__IS_CLIENT__ && !accountName ? <img src={avatar} alt="avatar" /> : (
+					!__IS_CLIENT__ || !accountName ? <img src={avatar} alt="avatar" /> : (
 						<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />
 					)
 				}

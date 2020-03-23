@@ -19,6 +19,7 @@ import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { getBlockInformation } from '../../actions/BlockActions';
 
 class BlockInformation extends React.Component {
 
@@ -33,7 +34,9 @@ class BlockInformation extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getBlockInfo();
+		if (!this.props.blockInformation.get('blockNumber')) {
+			this.props.getBlockInfo();
+		}
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -85,7 +88,7 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInformation(blockInformation, latestBlock) {
-		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
+		const { toggleRewardDistribution, isDistributionRewardOpen, isMobileDevice } = this.props;
 		const { currentTransactionLength } = this.state;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
@@ -185,6 +188,7 @@ class BlockInformation extends React.Component {
 							<OperationsTable
 								isBlock
 								fee
+								isMobileDevice={isMobileDevice}
 								operations={slicedOperations}
 								history={this.props.history}
 								location={this.props.location}
@@ -212,7 +216,15 @@ class BlockInformation extends React.Component {
 
 }
 
+export function loadData(store, match) {
+	if (!match.params || !match.params.round) {
+		return null;
+	}
+	return store.dispatch(getBlockInformation(match.params.round));
+}
+
 BlockInformation.propTypes = {
+	isMobileDevice: PropTypes.bool.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,

@@ -23,12 +23,13 @@ import VerifyContract from './containers/VerifyContract';
 import Contract from './containers/Contract';
 import NodeMap from './containers/NodeMap';
 import NotFound from './containers/Error/NotFoundScreen';
-import AppWrapper from './containers/AppWrapper';
-import { loadData as loadDataApp } from './containers/App';
+
+import App, { loadData as loadDataApp } from './containers/App';
+import { loadData as loadDataBlockInfo } from './components/BlockInformation';
 
 export default [
 	{
-		component: AppWrapper,
+		component: App,
 		routes: [
 			{
 				path: INDEX_PATH,
@@ -40,6 +41,7 @@ export default [
 				path: BLOCK_INFORMATION_PATH,
 				exact: true,
 				component: RecentBlockSection,
+				loadData: loadDataBlockInfo,
 			},
 			{
 				path: TRANSACTION_INFORMATION_PATH,

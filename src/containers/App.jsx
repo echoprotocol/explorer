@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router';
+import { renderRoutes } from 'react-router-config';
 
 import { disconnect } from '../actions/SocketActions';
 
@@ -16,7 +17,6 @@ import InternetPopup from '../components/InternetPopup';
 import NotFoundScreen from '../containers/Error/NotFoundScreen';
 import ErrorScreen from '../components/Error/ErrorScreen';
 import Modal from '../containers/Modals';
-import Loader from '../components/Loader';
 
 import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
 import { MODAL_EXTENSION_INFO, MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
@@ -30,7 +30,7 @@ class App extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.children !== this.props.children && this.props.errorPath) {
+		if (prevProps.title !== this.props.title && this.props.errorPath) {
 			this.props.resetErrorPath();
 		}
 
@@ -55,7 +55,7 @@ class App extends React.Component {
 		);
 	}
 
-	renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathName, isShowModal) {
+	renderApp({ subscribeConnect, showInternetConnectionBar }, pathName, isShowModal) {
 		const parsedLocation = pathName.split('/')[1];
 		const full = Object.keys(CONTRACT_DETAILS_NUMBERS_TAB).includes(parsedLocation);
 
@@ -68,7 +68,7 @@ class App extends React.Component {
 						<div
 							className={classnames('wrap', { full })}
 						>
-							{children}
+							{renderRoutes(this.props.route.routes)}
 							<RecentBlockSidebar />
 						</div>
 					</div>
@@ -90,7 +90,6 @@ class App extends React.Component {
 
 	render() {
 		const {
-			children,
 			error,
 			errorPath,
 			errorScreen,
@@ -101,28 +100,27 @@ class App extends React.Component {
 			isShowModal,
 		} = this.props;
 
-		console.log('render __IS_SERVER__', __IS_SERVER__);
-
 		if ((!connected && error) || errorScreen) {
 			return this.renderErrorScreen(error);
 		}
 
-		if (!connected) {
-			return <Loader />;
-		}
+		console.log('APP render connected', connected);
+
+		// if (!connected) {
+		// 	return <Loader />;
+		// }
 
 		if (errorPath) {
 			return this.renderNotFound();
 		}
 
-		return this.renderApp(children, { subscribeConnect, showInternetConnectionBar }, pathname, isShowModal);
+		return this.renderApp({ subscribeConnect, showInternetConnectionBar }, pathname, isShowModal);
 
 	}
 
 }
 
 App.propTypes = {
-	children: PropTypes.element.isRequired,
 	disconnect: PropTypes.func.isRequired,
 	title: PropTypes.string.isRequired,
 	init: PropTypes.func.isRequired,
@@ -134,7 +132,12 @@ App.propTypes = {
 	subscribeConnect: PropTypes.bool.isRequired,
 	showInternetConnectionBar: PropTypes.bool.isRequired,
 	isShowModal: PropTypes.bool.isRequired,
+	route: PropTypes.objectOf(PropTypes.any),
 	resetErrorPath: PropTypes.func.isRequired,
+};
+
+App.defaultProps = {
+	route: null,
 };
 
 export const loadData = (store) => store.dispatch(GlobalActions.init());

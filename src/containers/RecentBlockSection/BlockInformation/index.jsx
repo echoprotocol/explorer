@@ -7,6 +7,7 @@ import GlobalActions from '../../../actions/GlobalActions';
 
 export default withRouter(connect(
 	(state) => ({
+		isMobileDevice: state.global.get('isMobileDevice'),
 		blockInformation: state.block.get('blockInformation'),
 		historyLength: state.global.get('historyLength'),
 		isDistributionRewardOpen: state.block.get('isDistributionRewardOpen'),

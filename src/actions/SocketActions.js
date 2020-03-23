@@ -19,7 +19,13 @@ import {
 } from '../constants/RoundConstants';
 import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
-import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
+import {
+	initBlocks,
+	setLatestBlock,
+	setMaxDisplayedBlocks,
+	updateAverageTransactions,
+	updateBlockList,
+} from './BlockActions';
 
 /**
  * set connected parameter to true
@@ -105,7 +111,7 @@ const blockRelease = () => async (dispatch) => {
  *
  * 	WS connect to blockchain and set subscribe callbacks
  */
-export const connect = () => async (dispatch) => {
+export const connect = () => async (dispatch, getState) => {
 	try {
 		console.log('connect __IS_SERVER__', __IS_SERVER__);
 		console.log('echo.isConnected', echo.isConnected);
@@ -123,6 +129,16 @@ export const connect = () => async (dispatch) => {
 			});
 		}
 
+		if (getState().global.get('connected')) {
+			console.log('await dispatch(setMaxDisplayedBlocks());');
+			await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
+			await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
+			echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
+			echo.subscriber.setStatusSubscribe('disconnect', () => dispatch(onDisconnectSubscriber()));
+			await dispatch(setMaxDisplayedBlocks());
+			return;
+		}
+
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
@@ -131,9 +147,7 @@ export const connect = () => async (dispatch) => {
 		]));
 
 		await dispatch(initBlocks());
-
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
-
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 
 		echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
