@@ -5,10 +5,12 @@ import { withRouter } from 'react-router';
 import URLHelper from '../../helpers/URLHelper';
 
 let CodeMirror = null;
-if (IS_CLIENT) {
-	CodeMirror = require('react-codemirror2').Controlled;
+if (__IS_CLIENT__) {
+	/* eslint-disable global-require */
+	({ Controlled: CodeMirror } = require('react-codemirror2'));
 	require('codemirror/mode/xml/xml.js');
 	require('codemirror/mode/javascript/javascript.js');
+	/* eslint-enable global-require */
 }
 
 class ContractAbi extends React.Component {

@@ -8,10 +8,12 @@ import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 
 let CodeMirror = null;
-if (IS_CLIENT) {
-	CodeMirror = require('react-codemirror2').UnControlled;
+if (__IS_CLIENT__) {
+	/* eslint-disable global-require */
+	({ UnControlled: CodeMirror } = require('react-codemirror2'));
 	require('codemirror/mode/xml/xml.js');
 	require('codemirror/mode/javascript/javascript.js');
+	/* eslint-enable global-require */
 }
 
 class VerifyContract extends React.Component {

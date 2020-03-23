@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 export default {
 	API_URL: __API_URL__,
 	LANDING_BRIDGE: __LANDING_BRIDGE__,

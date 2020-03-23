@@ -1,4 +1,18 @@
 {
+	"globals": {
+		"__IS_SERVER__": true,
+		"__IS_CLIENT__": true,
+		"__API_URL__": true,
+		"__LANDING_BRIDGE__": true,
+		"__INSTALL_NODE_LINK__": true,
+		"__GRAPHQL_URL_HTTP_LINK__": true,
+		"__GRAPHQL_URL_WS_LINK__": true,
+		"__SERVER_URL__": true,
+		"__SOLC_LIST_URL__": true,
+		"__SOLC_BIN_URL__": true,
+		"__APP_VERSION__": true,
+		"__MAP_API_TOKEN__": true
+	},
 	"extends": "airbnb",
 	"env": {
 		"browser": true,

@@ -1,6 +1,7 @@
 import thunk from 'redux-thunk';
-import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { batchDispatchMiddleware } from 'redux-batched-actions';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { echoReducer } from 'echojs-lib';
 
@@ -14,10 +15,9 @@ export default function configureStore(preloadedState = {}) {
 			...reducers,
 			echoCache: echoReducer(),
 		}), preloadedState,
-		compose(
+		composeWithDevTools(
 			applyMiddleware(thunk),
 			applyMiddleware(batchDispatchMiddleware),
-			IS_CLIENT && window.devToolsExtension ? window.devToolsExtension() : (f) => f,
 		),
 	);
 }

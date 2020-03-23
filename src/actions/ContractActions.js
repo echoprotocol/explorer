@@ -233,7 +233,7 @@ class ContractActions extends BaseActionsClass {
 				'currentCompiler',
 				lastVersion && lastVersion.longVersion,
 			));
-			await loadScript(`${__SOLC_BIN_URL__}${solcLatestRelease}`); // eslint-disable-line no-undef
+			await loadScript(`${__SOLC_BIN_URL__}${solcLatestRelease}`);
 		};
 	}
 
@@ -251,7 +251,6 @@ class ContractActions extends BaseActionsClass {
 			if (!downloadedVersions.includes(version)) {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
 
-				// eslint-disable-next-line no-undef
 				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
 				const total = Number.parseInt(response.headers.get('content-length'), 10);
 				const reader = response.body.getReader();

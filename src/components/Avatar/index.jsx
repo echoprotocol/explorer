@@ -5,8 +5,10 @@ import classnames from 'classnames';
 import avatar from '../../assets/images/default-avatar.svg';
 
 let svgAvatar = null;
-if (IS_CLIENT) {
-	svgAvatar = require('echojs-ping').svgAvatar;
+if (__IS_CLIENT__) {
+	/* eslint-disable global-require */
+	({ svgAvatar } = require('echojs-ping'));
+	/* eslint-enable global-require */
 }
 
 class Avatar extends React.Component {
@@ -28,8 +30,8 @@ class Avatar extends React.Component {
 
 	componentDidMount() {
 		this.updateAvatarSize();
-		IS_CLIENT && window.addEventListener('resize', this.listener);
-		IS_CLIENT && window.addEventListener('load', this.listener);
+		window.addEventListener('resize', this.listener);
+		window.addEventListener('load', this.listener);
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -49,7 +51,7 @@ class Avatar extends React.Component {
 	}
 
 	componentWillUnmount() {
-		IS_CLIENT && window.removeEventListener('resize', this.listener);
+		window.removeEventListener('resize', this.listener);
 	}
 
 	updateAvatarSize() {
@@ -65,7 +67,7 @@ class Avatar extends React.Component {
 		return (
 			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
 				{
-					IS_CLIENT && !accountName ? <img src={avatar} alt="avatar" /> : (
+					__IS_CLIENT__ && !accountName ? <img src={avatar} alt="avatar" /> : (
 						<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />
 					)
 				}

@@ -49,13 +49,13 @@ class ContractAssets extends React.Component {
 							))
 						}
 					</Media>
-					{IS_CLIENT && showMore && balances.slice(window.innerWidth > MAX_WIDTH_SCREEN ? 4 : 2).map(({ amount, asset, id }) => this.renderAsset(
+					{__IS_CLIENT__ && showMore && balances.slice(window.innerWidth > MAX_WIDTH_SCREEN ? 4 : 2).map(({ amount, asset, id }) => this.renderAsset(
 						id,
 						asset,
 						amount,
 					))}
 				</ul>
-				{IS_CLIENT && countAssets > 2 && (
+				{__IS_CLIENT__ && countAssets > 2 && (
 					<button className="text-button" onClick={() => this.setState({ showMore: !showMore })}>
 						{!showMore ? 'Show less' : `View ${window.innerWidth > MAX_WIDTH_SCREEN ? (countAssets - 4) : (countAssets - 2)} more`}
 					</button>

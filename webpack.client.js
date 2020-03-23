@@ -119,8 +119,8 @@ module.exports = {
 	plugins: [
 		new CleanWebpackPlugin(['public']),
 		new webpack.DefinePlugin({
-			IS_SERVER: false,
-			IS_CLIENT: true,
+			__IS_SERVER__: false,
+			__IS_CLIENT__: true,
 			__API_URL__: JSON.stringify(API_URL),
 			__SERVER_URL__: JSON.stringify(SERVER_URL),
 			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),

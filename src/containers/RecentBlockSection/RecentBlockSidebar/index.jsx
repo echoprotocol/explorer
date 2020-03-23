@@ -27,7 +27,7 @@ class RecentBlockSidebar extends React.Component {
 			this.setState({ timer: this.state.timer += 1 });
 		}, 1000);
 		this.updateOffsetTop();
-		IS_CLIENT && window.addEventListener('scroll', this.updateOffsetTop);
+		window.addEventListener('scroll', this.updateOffsetTop);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -47,7 +47,7 @@ class RecentBlockSidebar extends React.Component {
 	}
 
 	updateOffsetTop() {
-		this.setState({ offsetTop: IS_CLIENT && window.pageYOffset });
+		this.setState({ offsetTop: __IS_CLIENT__ && window.pageYOffset });
 	}
 
 	averageBlockTime(averageTime) {

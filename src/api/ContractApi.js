@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 export const loadScript = (src) => new Promise((resolve, reject) => {
-	if (!IS_CLIENT) {
+	if (!__IS_CLIENT__) {
 		return resolve();
 	}
 

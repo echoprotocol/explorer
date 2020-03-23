@@ -15,9 +15,11 @@ import config from '../config/chain';
 let URL = null;
 let ws = null;
 
-if (IS_SERVER) {
-	URL = require('url').URL;
+if (__IS_SERVER__) {
+	/* eslint-disable global-require */
+	({ URL } = require('url'));
 	ws = require('ws');
+	/* eslint-enable global-require */
 }
 
 const cache = new InMemoryCache({
@@ -45,7 +47,7 @@ class Graphql {
 
 		let wsLink = null;
 
-		if (!IS_SERVER) {
+		if (!__IS_SERVER__) {
 			wsLink = new WebSocketLink({
 				uri: config.GRAPHQL_URL.WS,
 				options: {

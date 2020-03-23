@@ -6,7 +6,7 @@ import BaseError from './index';
 class ErrorScreen extends React.Component {
 
 	reload() {
-		IS_CLIENT && window.location.reload();
+		window.location.reload();
 	}
 
 	render() {

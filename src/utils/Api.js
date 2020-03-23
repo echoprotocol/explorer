@@ -1,4 +1,4 @@
-/* eslint-disable no-undef,no-throw-literal */
+/* eslint-disable no-throw-literal */
 import qs from 'qs';
 import 'core-js/es6/string';
 import 'core-js/es6/number';

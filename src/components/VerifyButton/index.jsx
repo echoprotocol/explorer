@@ -30,7 +30,7 @@ class Verify extends Component {
 	}
 
 	updateTooltipSize() {
-		if (IS_CLIENT && window.innerWidth > 499) {
+		if (window.innerWidth > 499) {
 			this.setState({
 				tooltipSize: 290,
 			});

@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 
 let CodeMirror = null;
-if (IS_CLIENT) {
+if (__IS_CLIENT__) {
+	/* eslint-disable global-require */
 	CodeMirror = require('react-codemirror2').Controlled;
 	require('codemirror/mode/xml/xml.js');
 	require('codemirror/mode/javascript/javascript.js');
+	/* eslint-enable global-require */
 }
 
 class ContractSourceCode extends React.Component {

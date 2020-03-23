@@ -1,13 +1,14 @@
 import { Helmet } from 'react-helmet';
+import transit from 'transit-immutable-js';
 
-export default function template(title, initialState = {}, content = '') {
+export default function template(initialState = {}, content = '') {
 	let scripts = '';
 	const helmet = Helmet.renderStatic();
 
 	if (content) {
 		scripts = ` 
 				<script>
-                   window.__PRELOADED_STATE__ = ${JSON.stringify(initialState)}
+                   window.PRELOADED_STATE = ${JSON.stringify(transit.toJSON(initialState))}
                 </script>
  				<script type="text/javascript" src="/babel.js"></script>
  				<script type="text/javascript" src="/vendor.bundle.js"></script>

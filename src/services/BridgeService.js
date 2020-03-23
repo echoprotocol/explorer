@@ -3,12 +3,12 @@ export class BridgeService {
 
 	static loadActiveAccount() {
 		return {
-			id: IS_CLIENT && window.echojslib.extension.activeAccount,
+			id: __IS_CLIENT__ && window.echojslib.extension.activeAccount,
 		};
 	}
 
 	static isExist() {
-		return IS_CLIENT && !!window.echojslib && !!window.echojslib.extension;
+		return __IS_CLIENT__ && !!window.echojslib && !!window.echojslib.extension;
 	}
 
 	static subscribeSwitchAccount(cb) {
@@ -28,7 +28,7 @@ export class BridgeService {
 	}
 
 	static async getAccount() {
-		const { activeAccount } = IS_CLIENT && window.echojslib.extension;
+		const { activeAccount } = __IS_CLIENT__ && window.echojslib.extension;
 
 		if (!activeAccount) {
 			const allAccount = await this.getAllAcounts();
@@ -41,17 +41,17 @@ export class BridgeService {
 	}
 
 	static getAllAcounts() {
-		return IS_CLIENT && window.echojslib.extension.getAccounts();
+		return __IS_CLIENT__ && window.echojslib.extension.getAccounts();
 	}
 
 
 	static getAccess() {
-		return IS_CLIENT && window.echojslib.extension.getAccess();
+		return __IS_CLIENT__ && window.echojslib.extension.getAccess();
 	}
 
 
 	static proofOfAuthority(message, activeAccountId) {
-		return IS_CLIENT && window.echojslib.extension.proofOfAuthority(message, activeAccountId);
+		return __IS_CLIENT__ && window.echojslib.extension.proofOfAuthority(message, activeAccountId);
 	}
 
 }

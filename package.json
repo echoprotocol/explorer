@@ -12,14 +12,13 @@
 	"main": "build/server.js",
 	"scripts": {
 		"start:web": "NODE_ENV=local webpack-dev-server --config webpack.client.js --mode development --progress --colors --history-api-fallback --hot --inline",
-		"lint": "$(npm bin)/eslint 'src/**/*.jsx' 'src/**/*.js'",
-		"lint-win": "cross-env eslint 'src/**/*.jsx' 'src/**/*.js' --fix",
 		"ssr:start:prod": "node build/bundle.js",
 		"ssr:build:prod": "rm -rf build && rm -rf public && webpack  --config webpack.server.js && webpack -p --config webpack.client.js --mode production",
-		"ssr:start": "node dist/server.js",
-		"ssr:dev:build:client": "webpack --config ./webpack.client.js --watch",
-		"ssr:dev:build:server": "webpack --config ./webpack.server.js --watch",
-		"ssr:dev:server": "nodemon --watch build --exec \"node build/server.js\""
+		"ssr:build:client:dev": "webpack --config ./webpack.client.js --watch",
+		"ssr:build:server:dev": "webpack --config ./webpack.server.js --watch",
+		"ssr:start:dev": "nodemon --watch build --exec \"node build/server.js\"",
+		"lint": "$(npm bin)/eslint 'src/**/*.jsx' 'src/**/*.js'",
+		"lint-win": "cross-env eslint 'src/**/*.jsx' 'src/**/*.js' --fix"
 	},
 	"dependencies": {
 		"@babel/core": "^7.9.0",
@@ -99,6 +98,7 @@
 		"react-toastify": "^4.4.0",
 		"redux": "^3.7.2",
 		"redux-batched-actions": "^0.4.1",
+		"redux-devtools-extension": "^2.13.8",
 		"redux-modules": "^1.1.0",
 		"redux-modules-middleware": "^1.2.0",
 		"redux-thunk": "^2.3.0",
@@ -106,6 +106,8 @@
 		"semantic-ui-react": "^0.84.0",
 		"solc": "^0.5.12",
 		"subscriptions-transport-ws": "^0.9.16",
+		"transit-immutable-js": "^0.8.0",
+		"transit-js": "^0.8.861",
 		"uglifyjs-webpack-plugin": "^1.2.2",
 		"utf8": "^3.0.0",
 		"webpack-isomorphic-tools": "^3.0.6",

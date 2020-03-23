@@ -89,7 +89,7 @@ class RecentBlockTable extends React.Component {
 
 	goToBlock(e, block) {
 		e.preventDefault();
-		IS_CLIENT && window.scrollTo(0, 0);
+		window.scrollTo(0, 0);
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
 	}
 

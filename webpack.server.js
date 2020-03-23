@@ -62,9 +62,9 @@ module.exports = {
 		new CleanWebpackPlugin(['build']),
 		webpackIsomorphicToolsPlugin,
 		new webpack.DefinePlugin({
-			IS_SERVER: true,
-			IS_CLIENT: false,
-			__API_URL__: JSON.stringify(API_URL),
+			__IS_SERVER__: true,
+			__IS_CLIENT__: false,
+			__API_URL: JSON.stringify(API_URL),
 			__SERVER_URL__: JSON.stringify(SERVER_URL),
 			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),
 			__SOLC_BIN_URL__: JSON.stringify(SOLC_BIN_URL),

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
-
+import transit from 'transit-immutable-js';
 import echo from 'echojs-lib';
 
 import Routes from './routes';
@@ -14,14 +14,14 @@ import './assets/favicon.ico';
 import GlobalActions from './actions/GlobalActions';
 import history from './history';
 
-// const preloadedState = IS_CLIENT ?  window.__PRELOADED_STATE__ : {};
-// delete window.__PRELOADED_STATE__;
-const preloadedState = {};
+
+const preloadedState = __IS_CLIENT__ ? window.__PRELOADED_STATE__ : ''; // eslint-disable-line no-underscore-dangle
+delete window.__PRELOADED_STATE__; // eslint-disable-line no-underscore-dangle
 
 // reproduce the store used to render the page on server
-const store = configureStore(preloadedState);
+const store = configureStore(transit.fromJSON(preloadedState));
 
-if (IS_CLIENT) {
+if (__IS_CLIENT__) {
 	history.listen(() => {
 		store.dispatch(GlobalActions.incrementHistoryLength());
 	});

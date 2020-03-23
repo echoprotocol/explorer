@@ -7,8 +7,10 @@ import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
 let ReactMapboxGl = null;
 let Map = null;
 
-if (IS_CLIENT) {
+if (__IS_CLIENT__) {
+	/* eslint-disable global-require */
 	ReactMapboxGl = require('react-mapbox-gl');
+	/* eslint-enable global-require */
 	Map = ReactMapboxGl.default({
 		accessToken: config.MAP_API_TOKEN,
 	});
@@ -87,7 +89,7 @@ class NodeMap extends React.Component {
 			<div className="distribution table-container recent-block-table">
 				<div className="distribution-header">
 					<h1>Nodes Distribution</h1>
-					<button onClick={(() => IS_CLIENT && window.open(config.INSTALL_NODE_LINK, '_blank'))} >
+					<button onClick={(() => __IS_CLIENT__ && window.open(config.INSTALL_NODE_LINK, '_blank'))} >
 						How to run full node
 					</button>
 				</div>
