@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
-import transit from 'transit-immutable-js';
 import echo from 'echojs-lib';
+import { deserialize } from 'json-immutable';
 
 import Routes from './routes';
 import configureStore from './store';
@@ -18,7 +18,7 @@ const preloadedState = __IS_CLIENT__ ? window.__PRELOADED_STATE__ : null; // esl
 delete window.__PRELOADED_STATE__; // eslint-disable-line no-underscore-dangle
 
 // reproduce the store used to render the page on server
-const store = configureStore(preloadedState && transit.fromJSON(preloadedState));
+const store = configureStore(preloadedState && deserialize(preloadedState));
 
 if (__IS_CLIENT__) {
 	history.listen(() => {

@@ -101,9 +101,7 @@ class App extends React.Component {
 			isShowModal,
 		} = this.props;
 
-		console.log('connected', connected);
-		console.log('error', error);
-		console.log('errorScreen', errorScreen);
+		console.log('render __IS_SERVER__', __IS_SERVER__);
 
 		if ((!connected && error) || errorScreen) {
 			return this.renderErrorScreen(error);

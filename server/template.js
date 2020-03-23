@@ -1,12 +1,12 @@
 import { Helmet } from 'react-helmet';
-import transit from 'transit-immutable-js';
+import { serialize } from 'json-immutable';
 
 export default function template(initialState = {}, content = '') {
 	const helmet = Helmet.renderStatic();
 
 	let serializedInitialState = '';
 	try {
-		serializedInitialState = transit.toJSON(initialState);
+		serializedInitialState = serialize(initialState);
 	} catch (err) {
 		console.log(`Error transform from immutable object to simple JSON: ${err}`);
 	}

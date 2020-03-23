@@ -3,16 +3,18 @@ import { StaticRouter } from 'react-router-dom';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
+import MobileDetect from 'mobile-detect';
 
 import Routes from '../src/routes';
 
 import configureStore from '../src/store';
+import GlobalActions from '../src/actions/GlobalActions';
 
-export default async function render(url) {
+export default async function render(req) {
 	const store = configureStore();
 
 	try {
-		const routes = matchRoutes(Routes, url);
+		const routes = matchRoutes(Routes, req.url);
 		const promises = routes
 			.map(({ route }) => (route.loadData ? route.loadData(store) : null))
 			.map((promise) => {
@@ -32,9 +34,12 @@ export default async function render(url) {
 	const context = {};
 	let content = '';
 
+	const mobile = new MobileDetect(req.headers['user-agent']);
+	store.dispatch(GlobalActions.setValue('isMobileDevice', !!mobile.mobile()));
+
 	try {
 		content = renderToString(<Provider store={store}>
-			<StaticRouter location={url} context={context}>
+			<StaticRouter location={req.url} context={context}>
 				<div>{renderRoutes(Routes)}</div>
 			</StaticRouter>
 		</Provider>);

@@ -425,6 +425,7 @@ export const initBlocks = () => async (dispatch) => {
 	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
 	const time = moment().unix() - moment.utc(obj.time).unix();
+
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
 		value: time,

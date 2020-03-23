@@ -15,7 +15,7 @@ server.listen(PORT, () => {
 });
 
 server.get('/*', async (req, res) => {
-	const { content, preloadedState } = await render(req.url);
+	const { content, preloadedState } = await render(req);
 	const response = template(preloadedState, content);
 	res.send(response);
 });

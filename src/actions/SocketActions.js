@@ -107,14 +107,21 @@ const blockRelease = () => async (dispatch) => {
  */
 export const connect = () => async (dispatch) => {
 	try {
-		await echo.connect(config.API_URL, {
-			connectionTimeout: 5000,
-			maxRetries: 1e10,
-			pingTimeout: 6000,
-			pingDelay: 5000,
-			debug: false,
-			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
-		});
+		console.log('connect __IS_SERVER__', __IS_SERVER__);
+		console.log('echo.isConnected', echo.isConnected);
+
+		const isNeedConnectToEcho = !(__IS_SERVER__ && echo.isConnected);
+
+		if (isNeedConnectToEcho) {
+			await echo.connect(config.API_URL, {
+				connectionTimeout: 5000,
+				maxRetries: 1e10,
+				pingTimeout: 6000,
+				pingDelay: 5000,
+				debug: false,
+				apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
+			});
+		}
 
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
