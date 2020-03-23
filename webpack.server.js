@@ -31,6 +31,9 @@ module.exports = {
 		filename: '[name].js',
 		path: path.resolve(__dirname, 'build'),
 	},
+	stats: {
+		warnings: false,
+	},
 	module: {
 		rules: [
 			{
