@@ -12,7 +12,7 @@
 	"main": "build/server.js",
 	"scripts": {
 		"start:web": "NODE_ENV=local webpack-dev-server --config webpack.client.js --mode development --progress --colors --history-api-fallback --hot --inline",
-		"ssr:start:prod": "node build/bundle.js",
+		"ssr:start:prod": "node ./build/bundle.js",
 		"ssr:build:prod": "rm -rf build && rm -rf public && webpack  --config webpack.server.js && webpack -p --config webpack.client.js --mode production",
 		"ssr:build:client:dev": "webpack --config ./webpack.client.js --watch",
 		"ssr:build:server:dev": "webpack --config ./webpack.server.js --watch",

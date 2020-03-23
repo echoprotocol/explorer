@@ -19,10 +19,3 @@ server.get('/*', async (req, res) => {
 	const response = template(preloadedState, content);
 	res.send(response);
 });
-
-// // Pure client side rendered page
-// server.get('/client', (req, res) => {
-// 	const response = template('Client Side Rendered page');
-// 	res.setHeader('Cache-Control', 'assets, max-age=604800');
-// 	res.send(response);
-// });

@@ -3,7 +3,6 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const packageJson = require('./package.json');
 
 const {
@@ -17,18 +16,10 @@ const {
 	INSTALL_NODE_LINK,
 } = require('config');
 
-// const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-// 	template: `${__dirname}/src/assets/index.html`,
-// 	filename: 'index.html',
-// 	inject: 'body',
-// });
-
 const extractSass = new ExtractTextPlugin({
 	filename: '[name].css',
 	disable: process.env.NODE_ENV === 'local',
 });
-
-const timeCache = Date.now();
 
 module.exports = {
 	node: {
@@ -132,7 +123,6 @@ module.exports = {
 			__GRAPHQL_URL_WS_LINK__: JSON.stringify(GRAPHQL_URL.WS),
 			__APP_VERSION__: JSON.stringify(packageJson.version),
 		}),
-		// HTMLWebpackPluginConfig,
 		extractSass,
 	],
 };
