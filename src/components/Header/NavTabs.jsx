@@ -9,7 +9,7 @@ import { INDEX_PATH, NODE_MAP } from '../../constants/RouterConstants';
 class NavTabs extends React.Component {
 
 	render() {
-		const { pathname, history } = this.props;
+		const { location: { pathname }, history } = this.props;
 
 		return (
 			<div className="navigation-tabs">
@@ -32,15 +32,13 @@ class NavTabs extends React.Component {
 }
 
 NavTabs.propTypes = {
-	pathname: PropTypes.string.isRequired,
+	location: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 };
 
 NavTabs.defaultProps = {};
 
 export default withRouter(connect(
-	(state, props) => ({
-		pathname: props.location.pathname,
-	}),
+	null,
 	() => ({}),
 )(NavTabs));

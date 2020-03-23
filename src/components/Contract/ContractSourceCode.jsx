@@ -5,7 +5,7 @@ import copy from 'copy-to-clipboard';
 let CodeMirror = null;
 if (__IS_CLIENT__) {
 	/* eslint-disable global-require */
-	CodeMirror = require('react-codemirror2').Controlled;
+	({ Controlled: CodeMirror } = require('react-codemirror2'));
 	require('codemirror/mode/xml/xml.js');
 	require('codemirror/mode/javascript/javascript.js');
 	/* eslint-enable global-require */

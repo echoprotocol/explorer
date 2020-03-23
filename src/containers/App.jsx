@@ -146,7 +146,6 @@ export default withRouter(connect(
 		subscribeConnect: state.internetPopup.get('connect'),
 		showInternetConnectionBar: state.internetPopup.get('show'),
 		pathname: props.location.pathname,
-		history: props.history,
 	}),
 	(dispatch) => ({
 		init: () => dispatch(GlobalActions.init()),

@@ -105,7 +105,7 @@ module.exports = {
 			'node_modules',
 			path.resolve('src'),
 		],
-		extensions: ['.wasm', '.mjs', '.js', '.jsx', '.json'],
+		extensions: ['.js', '.jsx', '.json'],
 	},
 	plugins: [
 		new CleanWebpackPlugin(['public']),

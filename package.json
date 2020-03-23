@@ -9,7 +9,7 @@
 	"homepage": "https://github.com/echoprotocol/explorer",
 	"version": "1.6.0",
 	"license": "MIT",
-	"main": "build/bundle.js",
+	"main": "build/server.js",
 	"scripts": {
 		"start:web": "NODE_ENV=local webpack-dev-server --config webpack.client.js --mode development --progress --colors --history-api-fallback --hot --inline",
 		"ssr:start:prod": "node ./build/server.js",
@@ -47,7 +47,6 @@
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.6.3",
 		"country-list": "^2.2.0",
-		"cross-fetch": "^3.0.4",
 		"echojs-lib": "^1.11.0-rc.1",
 		"echojs-ping": "^0.1.5",
 		"es6-promise": "^4.2.4",
@@ -110,8 +109,7 @@
 		"transit-js": "^0.8.861",
 		"uglifyjs-webpack-plugin": "^2.2.0",
 		"utf8": "^3.0.0",
-		"webpack-isomorphic-tools": "^3.0.6",
-		"ws": "^7.2.3"
+		"webpack-isomorphic-tools": "^3.0.6"
 	},
 	"devDependencies": {
 		"babel-plugin-dynamic-import-node": "^2.3.0",
