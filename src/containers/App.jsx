@@ -101,12 +101,16 @@ class App extends React.Component {
 			isShowModal,
 		} = this.props;
 
+		console.log('connected', connected);
+		console.log('error', error);
+		console.log('errorScreen', errorScreen);
+
 		if ((!connected && error) || errorScreen) {
 			return this.renderErrorScreen(error);
 		}
 
 		if (!connected) {
-			return <Loader global />;
+			return <Loader />;
 		}
 
 		if (errorPath) {
@@ -134,6 +138,8 @@ App.propTypes = {
 	isShowModal: PropTypes.bool.isRequired,
 	resetErrorPath: PropTypes.func.isRequired,
 };
+
+export const loadData = (store) => store.dispatch(GlobalActions.init());
 
 export default withRouter(connect(
 	(state, props) => ({

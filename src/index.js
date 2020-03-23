@@ -14,11 +14,11 @@ import './assets/favicon.ico';
 import GlobalActions from './actions/GlobalActions';
 import history from './history';
 
-const preloadedState = __IS_CLIENT__ ? window.__PRELOADED_STATE__ : ''; // eslint-disable-line no-underscore-dangle
+const preloadedState = __IS_CLIENT__ ? window.__PRELOADED_STATE__ : null; // eslint-disable-line no-underscore-dangle
 delete window.__PRELOADED_STATE__; // eslint-disable-line no-underscore-dangle
 
 // reproduce the store used to render the page on server
-const store = configureStore(transit.fromJSON(preloadedState));
+const store = configureStore(preloadedState && transit.fromJSON(preloadedState));
 
 if (__IS_CLIENT__) {
 	history.listen(() => {

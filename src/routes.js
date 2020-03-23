@@ -24,6 +24,7 @@ import Contract from './containers/Contract';
 import NodeMap from './containers/NodeMap';
 import NotFound from './containers/Error/NotFoundScreen';
 import AppWrapper from './containers/AppWrapper';
+import { loadData as loadDataApp } from './containers/App';
 
 export default [
 	{
@@ -33,6 +34,7 @@ export default [
 				path: INDEX_PATH,
 				exact: true,
 				component: RecentBlockSection,
+				loadData: loadDataApp,
 			},
 			{
 				path: BLOCK_INFORMATION_PATH,

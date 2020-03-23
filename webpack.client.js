@@ -1,5 +1,6 @@
 require('@babel/polyfill');
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -108,6 +109,9 @@ module.exports = {
 		extensions: ['.js', '.jsx', '.json'],
 	},
 	plugins: [
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+		}),
 		new CleanWebpackPlugin(['public']),
 		new webpack.DefinePlugin({
 			__IS_SERVER__: false,

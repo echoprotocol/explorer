@@ -1,6 +1,6 @@
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
-import { renderRoutes } from 'react-router-config';
+import { matchRoutes, renderRoutes } from 'react-router-config';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 
@@ -8,30 +8,36 @@ import Routes from '../src/routes';
 
 import configureStore from '../src/store';
 
-export default function render(url) {
+export default async function render(url) {
 	const store = configureStore();
 
-	// TODO in future  fix component to load start data not only when component did mount
-	// const routes = matchRoutes(Routes, url);
-	// const promises = routes
-	// 	.map(({ route }) => {
-	// 		return route.loadData ? route.loadData(store) : null;
-	// 	});
-	//
-	// console.log('promises', promises);
-	//
-	// const result = await Promise.all(promises);
-	// console.log('result', result);
+	try {
+		const routes = matchRoutes(Routes, url);
+		const promises = routes
+			.map(({ route }) => (route.loadData ? route.loadData(store) : null))
+			.map((promise) => {
+				if (promise) {
+					return new Promise((resolve) => {
+						promise.then(resolve).catch(resolve);
+					});
+				}
+				return null;
+			});
+
+		await Promise.all(promises);
+	} catch (err) {
+		console.log('Error to load data in server', err);
+	}
 
 	const context = {};
-	let content = {};
+	let content = '';
+
 	try {
-		content = renderToString(
-			<Provider store={store}>
-				<StaticRouter location={url} context={context}>
-					<div>{renderRoutes(Routes)}</div>
-				</StaticRouter>
-			</Provider>);
+		content = renderToString(<Provider store={store}>
+			<StaticRouter location={url} context={context}>
+				<div>{renderRoutes(Routes)}</div>
+			</StaticRouter>
+		</Provider>);
 	} catch (err) {
 		console.log(`Error render server: ${err}`);
 	}
@@ -39,5 +45,8 @@ export default function render(url) {
 	// Get a copy of store data to create the same store on client side
 	const preloadedState = store.getState();
 
-	return { content, preloadedState };
+	return {
+		content,
+		preloadedState,
+	};
 }
