@@ -22,7 +22,6 @@ import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstan
 import {
 	initBlocks,
 	setLatestBlock,
-	setMaxDisplayedBlocks,
 	updateAverageTransactions,
 	updateBlockList,
 } from './BlockActions';
@@ -111,14 +110,12 @@ const blockRelease = () => async (dispatch) => {
  *
  * 	WS connect to blockchain and set subscribe callbacks
  */
-export const connect = () => async (dispatch, getState) => {
+export const connect = () => async (dispatch) => {
 	try {
 		console.log('connect __IS_SERVER__', __IS_SERVER__);
 		console.log('echo.isConnected', echo.isConnected);
 
-		const isNeedConnectToEcho = !(__IS_SERVER__ && echo.isConnected);
-
-		if (isNeedConnectToEcho) {
+		if (!echo.isConnected) {
 			await echo.connect(config.API_URL, {
 				connectionTimeout: 5000,
 				maxRetries: 1e10,
@@ -127,16 +124,6 @@ export const connect = () => async (dispatch, getState) => {
 				debug: false,
 				apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
 			});
-		}
-
-		if (getState().global.get('connected')) {
-			console.log('await dispatch(setMaxDisplayedBlocks());');
-			await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
-			await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
-			echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
-			echo.subscriber.setStatusSubscribe('disconnect', () => dispatch(onDisconnectSubscriber()));
-			await dispatch(setMaxDisplayedBlocks());
-			return;
 		}
 
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;

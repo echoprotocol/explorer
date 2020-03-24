@@ -10,10 +10,9 @@ import Routes from '../src/routes';
 
 import configureStore from '../src/store';
 import GlobalActions from '../src/actions/GlobalActions';
-import { INDEX_PATH } from '../src/constants/RouterConstants';
-import { loadData as loadDataApp } from '../src/containers/App';
 
 export default async function render(req) {
+	console.log('render in server');
 	const store = configureStore();
 
 	try {
@@ -24,9 +23,6 @@ export default async function render(req) {
 
 		const routes = matchRoutes(Routes, pathname);
 
-		if (req.url !== INDEX_PATH) {
-			await loadDataApp(store);
-		}
 		// console.log('routes.filter', routes
 		// 	.filter(({ route }) => route.loadData));
 

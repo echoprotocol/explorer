@@ -24,10 +24,11 @@ import Contract from './containers/Contract';
 import NodeMap from './containers/NodeMap';
 import NotFound from './containers/Error/NotFoundScreen';
 
-import App, { loadData as loadDataApp } from './containers/App';
-import { loadData as loadDataBlockInfo } from './components/BlockInformation';
-import { loadData as loadDataTransactionInfo } from './components/TransactionInfo';
-import { loadData as loadDataObjectInfo } from './components/Objects';
+import App, { loadData as loadAppInfo } from './containers/App';
+import { loadData as loadBlockInfo } from './components/BlockInformation';
+import { loadData as loadTransactionInfo } from './components/TransactionInfo';
+import { loadData as loadObjectInfo } from './components/Objects';
+import { loadData as loadAssetInfo } from './components/Asset';
 
 export default [
 	{
@@ -37,24 +38,24 @@ export default [
 				path: INDEX_PATH,
 				exact: true,
 				component: RecentBlockSection,
-				loadData: loadDataApp,
+				loadData: loadAppInfo,
 			},
 			{
 				path: BLOCK_INFORMATION_PATH,
 				exact: true,
 				component: RecentBlockSection,
-				loadData: loadDataBlockInfo,
+				loadData: loadBlockInfo,
 			},
 			{
 				path: TRANSACTION_INFORMATION_PATH,
 				exact: true,
 				component: RecentBlockSection,
-				loadData: loadDataTransactionInfo,
+				loadData: loadTransactionInfo,
 			},
 			{
 				path: OBJECTS_PATH,
 				component: Objects,
-				loadData: loadDataObjectInfo,
+				loadData: loadObjectInfo,
 			},
 			{
 				path: ACCOUNTS_PATH,
@@ -65,6 +66,7 @@ export default [
 				path: ASSET_PATH,
 				exact: true,
 				component: Asset,
+				loadData: loadAssetInfo,
 			},
 			{
 				path: UPLOAD_ABI_PATH,

@@ -15,10 +15,14 @@ import {
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { getFullAssetInformation } from '../../actions/AssetActions';
 
 class Asset extends React.Component {
 
 	componentDidMount() {
+		if (this.props.asset) {
+			return;
+		}
 		this.props.getAssetInfo();
 	}
 
@@ -176,6 +180,13 @@ class Asset extends React.Component {
 		);
 	}
 
+}
+
+export function loadData(store, data) {
+	if (!data.params || !data.params.id) {
+		return null;
+	}
+	return store.dispatch(getFullAssetInformation(data.params.id));
 }
 
 Asset.propTypes = {
