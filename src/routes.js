@@ -29,6 +29,7 @@ import { loadData as loadBlockInfo } from './components/BlockInformation';
 import { loadData as loadTransactionInfo } from './components/TransactionInfo';
 import { loadData as loadObjectInfo } from './components/Objects';
 import { loadData as loadAssetInfo } from './components/Asset';
+import { loadData as loadDataNodeMap } from './components/NodeMap';
 
 export default [
 	{
@@ -92,6 +93,7 @@ export default [
 				path: NODE_MAP,
 				exact: true,
 				component: NodeMap,
+				loadData: loadDataNodeMap,
 			},
 			{
 				path: NOT_FOUND_PATH,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import config from '../../config/chain';
 import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
+import NetworkActions from '../../actions/NetworkActions';
 
 let ReactMapboxGl = null;
 let Map = null;
@@ -23,43 +24,14 @@ class NodeMap extends React.Component {
 
 		this.state = {
 			popupData: null,
-			data: [],
 		};
 	}
 
 	componentDidMount() {
+		if (this.props.peers.length > 0) {
+			return;
+		}
 		this.props.getPeers(true);
-	}
-
-	static getDerivedStateFromProps(props) {
-
-		const getCircleRadius = (nodeCount) => {
-			if (nodeCount > 1) {
-				return 11;
-			} else if (nodeCount > 10) {
-				return 13;
-			} else if (nodeCount > 20) {
-				return 17;
-			}
-			return 8;
-		};
-
-		const data = props.peers.map((p, i) => ({
-			id: i.toString(),
-			city: p.city,
-			country: p.country,
-			latitude: p.ll[0],
-			longitude: p.ll[1],
-			node: p.node,
-			POSITION_CIRCLE_PAINT: {
-				'circle-stroke-width': 0,
-				'circle-radius': getCircleRadius(p.node),
-				'circle-blur': 0.15,
-				'circle-stroke-color': 'white',
-				'circle-color': '#4588D7',
-			},
-		}));
-		return { data };
 	}
 
 	onHover(mapWithEvt, p) {
@@ -79,11 +51,40 @@ class NodeMap extends React.Component {
 		this.setState({ popupData: null });
 	}
 
-	render() {
+	handlePeers() {
+		const { peers } = this.props;
+		const getCircleRadius = (nodeCount) => {
+			if (nodeCount > 1) {
+				return 11;
+			} else if (nodeCount > 10) {
+				return 13;
+			} else if (nodeCount > 20) {
+				return 17;
+			}
+			return 8;
+		};
 
-		const {
-			popupData, data,
-		} = this.state;
+		const data = peers.map((p, i) => ({
+			id: i.toString(),
+			city: p.city,
+			country: p.country,
+			latitude: p.ll[0],
+			longitude: p.ll[1],
+			node: p.node,
+			POSITION_CIRCLE_PAINT: {
+				'circle-stroke-width': 0,
+				'circle-radius': getCircleRadius(p.node),
+				'circle-blur': 0.15,
+				'circle-stroke-color': 'white',
+				'circle-color': '#4588D7',
+			},
+		}));
+		return data;
+	}
+
+	render() {
+		const { popupData } = this.state;
+		const data = this.handlePeers();
 
 		return (
 			<div className="distribution table-container recent-block-table">
@@ -93,47 +94,56 @@ class NodeMap extends React.Component {
 						How to run full node
 					</button>
 				</div>
-				<Map
-					className="distribution-map"
-					// eslint-disable-next-line react/style-prop-object
-					style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
-					zoom={DEFAULT_MAP_ZOOM}
-				>
-					{ReactMapboxGl && data.map((p, key) => (
-						<ReactMapboxGl.Layer
-							type="circle"
-							id={p.id}
-							key={key.toString()}
-							paint={p.POSITION_CIRCLE_PAINT}
-						>
-							<ReactMapboxGl.Feature
-								coordinates={[p.longitude, p.latitude]}
-								onMouseEnter={(mapWithEvt) => this.onHover(mapWithEvt, p)}
-								onMouseLeave={(mapWithEvt) => this.hidePopup(mapWithEvt, p)}
-							/>
-						</ReactMapboxGl.Layer>
-					))
-					}
-					{
-						popupData && ReactMapboxGl &&
-						<ReactMapboxGl.Popup
-							coordinates={[popupData.longitude, popupData.latitude]}
-							anchor="null"
-						>
-							<span>{popupData.city}{popupData.city ? ', ' : ' '}{popupData.country}</span>
-							<br />
-							<span>count = {popupData.node}</span>
-						</ReactMapboxGl.Popup>
-					}
-				</Map>
+				{Map && (
+					<Map
+						className="distribution-map"
+						// eslint-disable-next-line react/style-prop-object
+						style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
+						zoom={DEFAULT_MAP_ZOOM}
+					>
+						{data.map((p, key) => (
+							<ReactMapboxGl.Layer
+								type="circle"
+								id={p.id}
+								key={key.toString()}
+								paint={p.POSITION_CIRCLE_PAINT}
+							>
+								<ReactMapboxGl.Feature
+									coordinates={[p.longitude, p.latitude]}
+									onMouseEnter={(mapWithEvt) => this.onHover(mapWithEvt, p)}
+									onMouseLeave={(mapWithEvt) => this.hidePopup(mapWithEvt, p)}
+								/>
+							</ReactMapboxGl.Layer>
+						))}
+						{popupData &&
+							<ReactMapboxGl.Popup
+								coordinates={[popupData.longitude, popupData.latitude]}
+								anchor="null"
+							>
+								<span>{popupData.city}{popupData.city ? ', ' : ' '}{popupData.country}</span>
+								<br />
+								<span>count = {popupData.node}</span>
+							</ReactMapboxGl.Popup>
+						}
+					</Map>
+				)}
 			</div>
 		);
 	}
 
 }
 
+export function loadData(store) {
+	return store.dispatch(NetworkActions.getPeers(true));
+}
+
 NodeMap.propTypes = {
+	peers: PropTypes.array,
 	getPeers: PropTypes.func.isRequired,
+};
+
+NodeMap.defaultProps = {
+	peers: [],
 };
 
 export default NodeMap;

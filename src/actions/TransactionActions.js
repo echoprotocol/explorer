@@ -647,7 +647,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			try {
 				const block = await echo.api.getBlock(blockNumber);
 
-				console.log('blockNumber', blockNumber);
 				if (!block || !block.transactions[index - 1]) {
 					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
