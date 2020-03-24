@@ -3,24 +3,15 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-
-	@include res-1280 {
-		padding: 38px 20px 60px;
+	@include res-768() {
+		padding: 38px 0 95px;
 	}
-
-	@include res-768 {
-		padding: 38px 24px 48px;
+	@include res-500() {
+		padding: 29px 0 90px;
 	}
-
-	@include res-500 {
-		padding: 38px 18px 48px;
+	@include res-320() {
+		padding: 29px 0 105px;
 	}
-
-	@include res-320 {
-		position: relative;
-		padding: 38px 15px 55px 15px;
-	}
-
 	.input-search-block {
 		@include res-320 {
 			position: absolute;
@@ -61,15 +52,32 @@ header {
 	margin-left: auto;
 	margin-right: 40px;
 
+	@include res-768() {
+		position: absolute;
+		top: 125px;
+	}
+
+	@include res-500() {
+		top: 115px;
+	}
 	button {
 		background-color: transparent;
 		outline: transparent;
 		border: transparent;
 		font-size: 16px;
+		letter-spacing: 1px;
 		@include InterUI_Bold;
 		margin: 0 10px;
 		color: #82818a;
 
+		@include res-768() {
+			margin: 0 15px;
+		}
+		&:first-child {
+			@include res-768() {
+				margin-left: 0;
+			}
+		}
 		&.active {
 			color: #e2e3e7;
 		}
@@ -83,14 +91,40 @@ header {
 			color: #e85e5e;
 		}
 	}
+}
+
+.top-section {
+	background-color: $explorer-black;
+	min-height: 245px;
 
 	@include res-768 {
-		position: absolute;
-		top: 100px;
-		left: 20px;
+		min-height: 205px;
+	}
+
+	@include res-500 {
+		min-height: 210px;
 	}
 
 	@include res-320 {
-		left: 5px;
+		position: relative;
+		z-index: 2;
+	}
+
+	.wrap {
+		@include res-1280 {
+			width: 100%;
+			padding: 0 50px;
+		}
+		@include res-1000 {
+			padding: 0 40px;
+		}
+
+		@include res-500 {
+			padding: 0 30px;
+		}
+
+		@include res-320 {
+			padding: 0 25px;
+		}
 	}
 }

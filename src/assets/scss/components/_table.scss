@@ -1,57 +1,16 @@
-.blue {
-	color: #2995d8 !important;
-	text-decoration: none;
-	transition: 0.2s ease-out;
-	cursor: pointer;
-	display: inline-block;
+.divTable {
+	display: table;
+	width: 100%;
 
-	&:hover {
-		color: #095494 !important;
-	}
+	padding-bottom: 33px;
+	border-bottom: 1px solid #d8d8de;
 
-	&:active {
-		color: #fb0707 !important;
-	}
-}
-
-.gray {
-	color: #828b95;
-}
-
-.accent {
-	color: #2a90e6;
-}
-
-.table {
-	.divTable {
-		display: table;
-		width: 100%;
-
-		padding-bottom: 33px;
-		border-bottom: 1px solid #d8d8de;
-
-		&.n-l-more {
-			border-bottom: 0;
-		}
-	}
-
-	.divTableBody {
-		display: table-row-group;
-	}
-
-	.divider {
-		height: 20px;
-		width: 100%;
-		display: block;
-	}
-	button {
-		&.blue {
-			font-weight: 500;
-		}
+	&.n-l-more {
+		border-bottom: 0;
 	}
 
 	.blue {
-		color: #2995d8;
+		color: $blue;
 		text-decoration: none;
 		transition: 0.2s ease-out;
 		cursor: pointer;
@@ -69,117 +28,149 @@
 	}
 
 	.gray {
-		color: #828b95;
+		color: $lightgrey;
 		font-size: 11px;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		transition: all 0.2s ease-out;
 	}
 
-	.divTableFoot {
-		background-color: #eee;
-		display: table-footer-group;
-		font-weight: bold;
+	.divider {
+		height: 20px;
+		width: 100%;
+		display: block;
 	}
+}
 
-	.divTableHeading {
-		background-color: transparent;
-		display: table-header-group;
-	}
+.divTableBody {
+	display: table-row-group;
+}
 
-	.TableHeading {
-		display: table-row;
-		user-select: none;
+.divTableFoot {
+	background-color: #eee;
+	display: table-footer-group;
+	font-weight: bold;
+}
 
-		background-color: #ebeaee;
+.divTableHeading {
+	background-color: transparent;
+	display: table-header-group;
+}
 
-		@include Hack_Bold;
-		font-size: 10px;
-		text-transform: uppercase;
-		letter-spacing: 0.25em;
+.TableHeading {
+	display: table-row;
+	user-select: none;
 
-		.divTableCell {
-			padding: 12px 30px;
-			color: #828b95;
-			white-space: nowrap;
-			padding-right: 0;
+	background-color: #ebeaee;
 
-			@include res-1280 {
-				padding: 12px 25px;
-				&:not(:last-child) {
-					padding-right: 0;
-				}
-			}
-		}
-	}
+	@include Hack_Bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.25em;
 
-	.divTableRow {
-		display: table-row;
-		@include transition;
-
-		@include InterUI_Medium;
-		font-size: 13px;
-		line-height: 20px;
-		background-color: #f3f2f5;
-
-		&.fade-anim {
-			animation: addd 0.4s ease-out;
-
-			@keyframes addd {
-				from {
-					opacity: 0;
-				}
-				to {
-					opacity: 1;
-				}
-			}
-		}
-
-		&:hover {
-			background-color: #fff;
-			box-shadow: 2px 0px 14px 0px rgba(0, 0, 0, 0.07);
-		}
-
-		&:active {
-			background-color: #f3f2f5;
-			box-shadow: 2px 0 8px rgba(0, 0, 0, 0.07);
-
-			.divTableCell {
-				.gray {
-					color: $lightgrey;
-				}
-				.blue {
-					color: $blue;
-				}
-			}
-		}
-
-		&.last-block {
-			background-color: #ebeaee;
-		}
-
-		.divTableCell {
-			position: relative;
-			padding: 7px 30px;
-			padding-right: 0;
-			color: $explorer-black;
-			transition: all 0.2s ease-out;
-
-			@include res-1280 {
-				padding: 7px 25px;
+	.divTableCell {
+		padding: 12px 30px;
+		padding-right: 0;
+		color: $lightgrey;
+		white-space: nowrap;
+		@include res-1280 {
+			padding: 12px 25px;
+			&:not(:last-child) {
 				padding-right: 0;
 			}
+		}
+	}
+}
 
-			.sub-container {
-				position: relative;
+.divTableRow {
+	display: table-row;
+	@include transition;
+
+	@include InterUI_Medium;
+	font-size: 13px;
+	line-height: 20px;
+	background-color: #f3f2f5;
+
+	&.fade-anim {
+		animation: addd 0.4s ease-out;
+
+		@keyframes addd {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
 			}
 		}
 	}
 
-	.divTableHead,
-	.divTableCell {
-		display: table-cell;
-		padding: 3px 10px;
+	&:hover {
+		background-color: #fff;
+		box-shadow: 2px 0px 14px 0px rgba(0, 0, 0, 0.07);
+	}
+
+	&:active {
+		background-color: #f3f2f5;
+		box-shadow: 2px 0 8px rgba(0, 0, 0, 0.07);
+
+		.divTableCell {
+			.gray {
+				color: $lightgrey;
+			}
+			.blue {
+				color: $blue;
+			}
+		}
+	}
+
+	&.last-block {
+		background-color: #ebeaee;
+	}
+}
+
+.divTableHead,
+.divTableCell {
+	display: table-cell;
+	position: relative;
+	vertical-align: middle;
+	padding: 7px 30px;
+	padding-right: 0;
+	color: $explorer-black;
+	transition: all 0.2s ease-out;
+	&:first-child {
+		width: 9%;
+	}
+	&:nth-child(2) {
+		width: 13%;
+		min-width: 120px;
+	}
+	&:nth-child(3) {
+		width: 22.8%;
+	}
+	&:nth-child(4) {
+		width: 28.3%;
+	}
+	&:nth-child(5) {
+		width: 10%;
+		min-width: 100px;
+	}
+	@include res-1280 {
+		padding: 7px 25px;
+		padding-right: 0;
+	}
+
+	.sub-container {
+		position: relative;
+	}
+
+	&.producer {
+		button {
+			display: flex;
+			align-items: center;
+		}
+		.avatar-image {
+			margin-right: 15px;
+		}
 	}
 }
 

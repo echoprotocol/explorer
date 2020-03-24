@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Media from 'react-media';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Tooltip from 'rc-tooltip';
@@ -112,26 +111,10 @@ class OperationRow extends React.Component {
 					ref={this.props.tableRefs[index]}
 				>
 					<td />
-					<Media query="(max-width: 767px)">
-						{(matches) => !matches && (
-							<td className="number">
-								<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
-							</td>
-						)}
-					</Media>
+					<td className="number">
+						<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
+					</td>
 					<td className="type">
-						<Media query="(max-width: 767px)">
-							{(matches) => matches &&
-								<React.Fragment>
-
-									<div className="col-title">
-										<span className="index">#</span>
-										<span>Type</span>
-									</div>
-									<span className="index">{index + 1}.</span>
-								</React.Fragment>
-							}
-						</Media>
 						<div className="td-in">
 							{detailInfo.type}
 						</div>
@@ -140,9 +123,6 @@ class OperationRow extends React.Component {
 					{
 						timestamp ? (
 							<td className="time">
-								<Media query="(max-width: 767px)">
-									{(matches) => matches && <div className="col-title">DATA, TIME</div>}
-								</Media>
 								<div className="td-in">
 									<span>
 										{FormatHelper.timestampToOperationRowTime(blockTimestamp)}
@@ -152,9 +132,6 @@ class OperationRow extends React.Component {
 						) : null
 					}
 					<td className="sender">
-						<Media query="(max-width: 767px)">
-							{(matches) => matches && <div className="col-title">Sender</div>}
-						</Media>
 						{mainInfo.from.id ?
 							<Link className="td-in avatar-wrap" to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
@@ -163,46 +140,33 @@ class OperationRow extends React.Component {
 						}
 					</td>
 					<td className="reciever">
-						<Media query="(max-width: 767px)">
-							{(matches) => matches && <div className="col-title">Reciever</div>}
-						</Media>
 						{this.renderSubject(subjectValue, mainInfo)}
 					</td>
 					<td className="amount">
-						<Media query="(max-width: 767px)">
-							{(matches) => matches && <div className="col-title">Amount</div>}
-						</Media>
 						{this.renderAmount()}
 					</td>
 					{
 						fee ? (
-							<Media query="(max-width: 1000px)">
-								{
-									(matches) => (!matches && (
-										<td className="fee">
-											<div className="td-in">
-												<span className="value">
-													<Tooltip
-														placement="top"
-														overlayClassName="verify-contract-tooltip"
-														trigger={['hover']}
-														overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
-													>
-														<span className="txt">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
-													</Tooltip>
-												</span>
-												<span className="currency">{detailInfo.fee.symbol}</span>
-											</div>
-										</td>
-									))
-								}
-							</Media>
+
+							<td className="fee">
+								<div className="td-in">
+									<span className="value">
+										<Tooltip
+											placement="top"
+											overlayClassName="verify-contract-tooltip"
+											trigger={['hover']}
+											overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+										>
+											<span className="txt">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
+										</Tooltip>
+									</span>
+									<span className="currency">{detailInfo.fee.symbol}</span>
+								</div>
+							</td>
+
 						) : null
 					}
 					<td className="rezult">
-						<Media query="(max-width: 767px)">
-							{(matches) => matches && <div className="col-title">Result</div>}
-						</Media>
 						{
 							(mainInfo.result && !_.isEmpty(mainInfo.result)) ?
 								<Link to={URLHelper.createUrlById(mainInfo.result)} className="td-in" onClick={(e) => e.stopPropagation()}>{mainInfo.result}</Link>
@@ -212,35 +176,15 @@ class OperationRow extends React.Component {
 					<td className="json">
 						{
 							mainInfo.from.name ? (
-								<Media
-									queries={{
-										small: '(max-width: 767px)',
-										large: '(min-width: 768px)',
-									}}
+								<Tooltip
+									placement="top"
+									trigger={['hover']}
+									overlay={tip}
+									overlayStyle={tooltipStyle}
+									overlayClassName="verify-contract-tooltip"
 								>
-									{(matches) => (
-										<React.Fragment>
-											{
-												matches.small &&
-												<React.Fragment>
-													<div className="col-title">Json</div>
-													{this.renderTransactionLink(block, transactionNum, opIndex)}
-												</React.Fragment>
-											} {
-												matches.large &&
-												<Tooltip
-													placement="top"
-													trigger={['hover']}
-													overlay={tip}
-													overlayStyle={tooltipStyle}
-													overlayClassName="verify-contract-tooltip"
-												>
-													{this.renderTransactionLink(block, transactionNum, opIndex)}
-												</Tooltip>
-											}
-										</React.Fragment>
-									)}
-								</Media>
+									{this.renderTransactionLink(block, transactionNum, opIndex)}
+								</Tooltip>
 							) : <div className="td-in">—</div>
 						}
 					</td>
@@ -254,29 +198,20 @@ class OperationRow extends React.Component {
 				{
 					active &&
 					<tr className="fold">
-						<td colSpan="2" />
-						<Media query="(max-width: 1000px)">
-							{
-								(matches) => (
-									<React.Fragment>
-										<td colSpan={this.getColSpan(matches)}>
-											<OperationInfo
-												details={detailInfo}
-												index={index}
-												block={block}
-												transaction={transactionNum}
-												opIndex={opIndex}
-												objId={objectId}
-											/>
-											<ObjectInfo details={detailInfo} object={objectInfo} />
-										</td>
-										<Media query="(max-width: 767px)">
-											{(matchesIn) => !matchesIn && <td />}
-										</Media>
-									</React.Fragment>
-								)
-							}
-						</Media>
+						<td colSpan="1" />
+						<React.Fragment>
+							<td colSpan="9">
+								<OperationInfo
+									details={detailInfo}
+									index={index}
+									block={block}
+									transaction={transactionNum}
+									opIndex={opIndex}
+									objId={objectId}
+								/>
+								<ObjectInfo details={detailInfo} object={objectInfo} />
+							</td>
+						</React.Fragment>
 					</tr>
 				}
 				{

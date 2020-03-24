@@ -1,21 +1,16 @@
 .block-navigation {
-	position: absolute;
-	right: 0;
-	bottom: 100%;
 	display: flex;
 	align-items: center;
-
-	@include max-vw(500) {
-		right: 15px;
+	@include res-320() {
+		display: none;
 	}
-
 	button {
 		display: inline-flex;
 		font-family: "Hack";
 		font-weight: 700;
 		font-style: normal;
 		font-size: 9px;
-		letter-spacing: 2.25px;
+		letter-spacing: 2px;
 		text-transform: uppercase;
 		padding-top: 5px;
 		padding-bottom: 5px;

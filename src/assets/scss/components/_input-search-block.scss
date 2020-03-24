@@ -4,10 +4,6 @@
 	width: 430px;
 	height: 42px;
 
-	@include res-768 {
-		width: 355px;
-	}
-
 	&.small {
 		width: 40px;
 

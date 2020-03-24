@@ -3,22 +3,26 @@
 	z-index: 2;
 	display: flex;
 	box-shadow: 0 0 62px rgba(64, 64, 64, 0.18);
-	padding: 21px 20px 22px 33px;
+	padding: 24px 20px 18px 33px;
 	margin-bottom: 30px;
 	justify-content: space-between;
 
 	@include res-1280 {
-		padding: 21px 21px 22px 20px;
+		padding: 22px 20px 20px;
+	}
+
+	@include res-1000() {
+		padding: 20px 30px;
 	}
 
 	@include res-768 {
-		flex-wrap: wrap;
 		margin-bottom: 42px;
 	}
 
 	@include res-500 {
 		padding-bottom: 0;
 		padding-left: 19px;
+		flex-wrap: wrap;
 		justify-content: flex-start;
 		padding-right: 19px;
 		margin-bottom: 28px;
@@ -38,12 +42,15 @@
 		word-break: break-all;
 
 		@include res-500 {
-			margin-bottom: 30px;
-			margin-right: auto;
+			margin-bottom: 20px;
+			margin-right: 30px;
 		}
 
+		@include res-320 {
+			margin-right: 0;
+		}
 		&.time {
-			width: 210px;
+			width: 220px;
 
 			@include res-500 {
 				width: 195px;
@@ -55,10 +62,10 @@
 		}
 
 		&.size {
-			width: 100px;
+			width: 113px;
 
 			@include res-500 {
-				width: 130px;
+				width: 80px;
 			}
 
 			@include res-320 {
@@ -68,10 +75,10 @@
 		}
 
 		&.producer {
-			width: 140px;
+			width: 113px;
 
 			@include res-500 {
-				width: 115px;
+				width: 100px;
 			}
 
 			@include res-320 {
@@ -80,21 +87,20 @@
 		}
 
 		&.reward {
-			width: 145px;
+			width: 155px;
 			white-space: nowrap;
-
-			@include res-500 {
-				width: 197px;
-			}
-
 			@include res-320 {
 				width: 50%;
 			}
 		}
 
 		&.verifiers {
-			width: 120px;
+			width: 113px;
 			white-space: nowrap;
+
+			@include res-500() {
+				width: 80px;
+			}
 
 			@include res-320 {
 				padding-left: 30px;
@@ -103,11 +109,9 @@
 		}
 
 		.title {
-			@include Hack_Bold;
-			font-size: 9px;
-			letter-spacing: 2.25px;
-			color: #1f3c4d;
-			text-transform: uppercase;
+			@include InterUI_Medium;
+			font-size: 12px;
+			color: $lightgrey;
 			margin-bottom: 14px;
 			min-height: 10px;
 		}
@@ -116,12 +120,12 @@
 			@include InterUI_Medium;
 			font-size: 16px;
 			letter-spacing: 0.41px;
-			color: #130d32;
+			color: $explorer-black;
 			min-height: 21px;
 			line-height: normal;
-			display: flex;
 			align-items: center;
-
+			@include text-overflow();
+			max-width: 100%;
 			@include res-768 {
 				font-size: 14px;
 				line-height: 20px;

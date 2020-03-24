@@ -5,7 +5,7 @@ import { isString } from 'lodash';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
-
+import InnerHeader from '../InnerHeader';
 import URLHelper from '../../helpers/URLHelper';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -103,8 +103,8 @@ class Objects extends React.Component {
 		};
 
 		return (
-			<div className="table-container object-view">
-				<h2>Object { this.state.id }</h2>
+			<div className="inner-information-container object-view">
+				<InnerHeader title={`Object ${this.state.id}`} />
 				{error ?
 					<div className="json-tree-container">
 						{error}

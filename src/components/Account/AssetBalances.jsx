@@ -29,7 +29,7 @@ class AssetBalances extends React.Component {
 				<span className="txt" title={FormatHelper.formatAmount(amount, asset.get('precision'))}>
 					{FormatHelper.formatAmount(amount, asset.get('precision'))}
 				</span>
-				<span className="accent">
+				<span className="blue">
 					<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
 						{asset.get('symbol')}
 					</Link>

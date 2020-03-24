@@ -78,7 +78,7 @@ class NodeMap extends React.Component {
 		} = this.state;
 
 		return (
-			<div className="distribution recent-block-table">
+			<div className="distribution inner-information-container">
 				<div className="distribution-header">
 					<h1>Nodes Distribution</h1>
 					<button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >

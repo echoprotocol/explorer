@@ -81,7 +81,7 @@ class ManageContract extends React.Component {
 		} = this.props;
 		const defaultIcon = iconBase64.value || contractIconDefault;
 		return (
-			<div className="inner-information-container inner-page with-d-table manage-contract">
+			<div className="inner-information-container inner-page manage-contract">
 				<div className="backwards">
 					<a
 						href=""

@@ -77,7 +77,7 @@ class RecentBlockSidebar extends React.Component {
 				<div className={classnames('sticky-wrap', { sticky: offsetTop > MAIN_HEADER_HEIGHT })}>
 					<div className="help-container">
 						<div className="sidebar-elem">
-							<div className="title">Latest block number</div>
+							<div className="title">Latest Block Number</div>
 							<div className="value">
 								{`${FormatHelper.formatAmount(latestBlock, 0)} `}
 								({FormatHelper.formatLatestBlockTime(this.state.startTimestamp + this.state.timer)})

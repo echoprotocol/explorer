@@ -110,7 +110,7 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<InnerHeader title={`Block ${formattedBlockNumber}`}>
+				<InnerHeader title={`Block ${formattedBlockNumber}`} withTopPanel>
 					<BackwardsLink returnFunction={() => this.returnFunction()} />
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
@@ -135,7 +135,7 @@ class BlockInformation extends React.Component {
 				</InnerHeader>
 				<div className="block-description">
 					<div className="container time">
-						<div className="title">Date, Time</div>
+						<div className="title">Date, time</div>
 						<div className="value">{time}</div>
 					</div>
 					<div className="container size">
@@ -175,11 +175,11 @@ class BlockInformation extends React.Component {
 						isDistributionRewardOpen &&
 						<DistributionTable rewards={rewardDistribution} />
 					) : (
-						<h2>Certificate list will be available after next block will be produced</h2>
+						<TableLable label="Certificate list will be available after next block will be produced" />
 					)
 				}
-				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
 				<div className="help-table-wrapper">
+					<TableLable label={FormatHelper.getFormatTransactionsTitle(transactionCount)} />
 					{
 						(slicedOperations && slicedOperations.size) ?
 							<OperationsTable
@@ -201,7 +201,7 @@ class BlockInformation extends React.Component {
 		const { blockInformation, latestBlock } = this.props;
 
 		return (
-			<div className="inner-information-container block-information account-page with-d-table">
+			<div className="inner-information-container">
 				{
 					!blockInformation.get('blockNumber') || this.state.loader ?
 						this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)

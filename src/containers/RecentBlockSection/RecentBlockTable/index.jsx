@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 import classnames from 'classnames';
 
+import Avatar from '../../../components/Avatar';
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
 import SmallSearchField from '../../../components/SmallSearchField';
 
@@ -52,6 +53,7 @@ class RecentBlockTable extends React.Component {
 
 	onLink(e, path) {
 		e.preventDefault();
+		e.stopPropagation();
 		this.props.history.push(path);
 	}
 
@@ -110,7 +112,7 @@ class RecentBlockTable extends React.Component {
 
 		return (
 			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
-				<div className="recent-block-table">
+				<div className="inner-information-container main-page">
 					<InnerHeader title="Recent blocks">
 						<SmallSearchField
 							errorSearch={errorSearch}
@@ -124,128 +126,117 @@ class RecentBlockTable extends React.Component {
 							setLoading={() => this.setLoading()}
 						/>
 					</InnerHeader>
-					<div className="table">
-						<Media query="(max-width: 767px)">
-							{(matches) =>
-								(matches ? (
-									<div className="recent-block-mobile-view">
+
+					<Media query="(max-width: 767px)">
+						{(matches) =>
+							(matches ? (
+								<div className="recent-block-mobile-view">
+									{
+										blocks.map((data) => (
+											<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="recent-block-element fade-anim">
+												<div className="container">
+													<div className="title">Block #</div>
+													<div className="value">
+														<Link
+															onClick={(e) => this.goToBlock(e, data.round)}
+															to=""
+														>
+															{data.blockNumber}
+														</Link>
+													</div>
+												</div>
+												<div className="container">
+													<div className="title">Block time</div>
+													<div className="value">{data.time}</div>
+												</div>
+												<div className="container">
+													<div className="title">Producer</div>
+													<div className="value">
+														<Link
+															to={URLHelper.createAccountUrlByName(data.producer)}
+															className="blue"
+														>
+															{data.producer}
+														</Link>
+													</div>
+												</div>
+												<div className="container">
+													<div className="title">Reward</div>
+													<div className="value">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
+												</div>
+												<div className="container">
+													<div className="title">Size</div>
+													<div className="value">{data.weight} <span className="gray">{data.weightSize}</span></div>
+												</div>
+												<div className="container">
+													<div className="title">Transactions</div>
+													<div className="value">{data.transactions}</div>
+												</div>
+											</Link>
+										))
+									}
+									{AreEmptyTransactions && (
+										<p className="title-no-transactions">No transactions in recent blocks</p>
+									)}
+								</div>
+							) : (
+								<div className={classnames('divTable', { 'no-border-bottom': AreEmptyTransactions })}>
+									<div className="divTableBody">
+										<div className="TableHeading">
+											<div className="divTableCell">
+													# Block
+											</div>
+											<div className="divTableCell">
+												<Media query="(max-width: 999px)">
+													{() => 'Time'}
+												</Media>
+											</div>
+											<div className="divTableCell">Producer</div>
+											<div className="divTableCell">Reward</div>
+											<div className="divTableCell">Size</div>
+											<div className="divTableCell">Operations</div>
+										</div>
+										<div className="divider" />
 										{
 											blocks.map((data) => (
-												<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="recent-block-element fade-anim">
-													<div className="container">
-														<div className="title">Block #</div>
-														<div className="value">
-															<Link
-																onClick={(e) => this.goToBlock(e, data.round)}
-																to=""
-																className="blue"
-															>
+												<React.Fragment key={data.round}>
+													<Link
+														onClick={(e) => this.goToBlock(e, data.round)}
+														to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
+														key={data.round}
+														className="divTableRow fade-anim"
+													>
+														<div className="divTableCell">
+															<span>
 																{data.blockNumber}
-															</Link>
+															</span>
 														</div>
-													</div>
-													<div className="container">
-														<div className="title">Block time</div>
-														<div className="value">{data.time}</div>
-													</div>
-													<div className="container">
-														<div className="title">Producer</div>
-														<div className="value">
-															<Link
-																to={URLHelper.createAccountUrlByName(data.producer)}
+														<div className="divTableCell">{data.time}</div>
+														<div className="divTableCell producer">
+															<button
 																className="blue"
+																onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
 															>
+																<Avatar accountName={data.producer} />
 																{data.producer}
-															</Link>
+															</button>
 														</div>
-													</div>
-													<div className="container">
-														<div className="title">Reward</div>
-														<div className="value">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
-													</div>
-													<div className="container">
-														<div className="title">Size</div>
-														<div className="value">{data.weight} <span className="gray">{data.weightSize}</span></div>
-													</div>
-													<div className="container">
-														<div className="title">Transactions</div>
-														<div className="value">{data.transactions}</div>
-													</div>
-												</Link>
+														<div className="divTableCell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
+														<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
+														<div className="divTableCell">{data.transactions}</div>
+													</Link>
+												</React.Fragment>
 											))
 										}
 										{AreEmptyTransactions && (
-											<p className="title-no-transactions">No transactions in recent blocks</p>
+											<p className="title-no-transactions">{NO_TRANSACTIONS}</p>
 										)}
 									</div>
-								) : (
-									<div className={classnames('divTable', { 'no-border-bottom': AreEmptyTransactions })}>
-										<div className="divTableBody">
-											<div className="TableHeading">
-												<div className="divTableCell">
-													<Media query="(max-width: 999px)">
-														{(matches) =>
-															(matches ? (
-																'Block #'
-															) : (
-																'Block number'
-															))
-														}
-													</Media>
-												</div>
-												<div className="divTableCell">
-													<Media query="(max-width: 999px)">
-														{() => 'Time'}
-													</Media>
-												</div>
-												<div className="divTableCell">Producer</div>
-												<div className="divTableCell">Reward</div>
-												<div className="divTableCell">Size</div>
-												<div className="divTableCell">Transactions</div>
-											</div>
-											<div className="divider" />
-											{
-												blocks.map((data) => (
-													<React.Fragment key={data.round}>
-														<Link
-															onClick={(e) => this.goToBlock(e, data.round)}
-															to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
-															key={data.round}
-															className="divTableRow fade-anim"
-														>
-															<div className="divTableCell">
-																<span className="blue">
-																	{data.blockNumber}
-																</span>
-															</div>
-															<div className="divTableCell">{data.time}</div>
-															<div className="divTableCell">
-																<div className="inner-container">
-																	<button
-																		className="blue"
-																		onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
-																	>
-																		{data.producer}
-																	</button>
-																</div>
-															</div>
-															<div className="divTableCell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
-															<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
-															<div className="divTableCell">{data.transactions}</div>
-														</Link>
-													</React.Fragment>
-												))
-											}
-											{AreEmptyTransactions && (
-												<p className="title-no-transactions">{NO_TRANSACTIONS}</p>
-											)}
-										</div>
-									</div>
-								))
-							}
-						</Media>
-						{loading && <LoadMoreBtn />}
-					</div>
+								</div>
+							))
+						}
+					</Media>
+					{loading && <LoadMoreBtn />}
 				</div>
 			</InfiniteScroll>
 		);

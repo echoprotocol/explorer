@@ -49,9 +49,14 @@ textarea {
 	outline: none;
 }
 
+.wrapper {
+	overflow: hidden;
+}
+
 .h2 {
 	font-size: 22px;
 	@include InterUI_Bold;
+	letter-spacing: 1px;
 }
 
 .hidden {
@@ -124,4 +129,33 @@ a {
 .progress-render {
 	position: relative;
 	margin-left: auto;
+}
+
+.description-text {
+	@include InterUI_Medium;
+	color: #828b95;
+	padding-left: 30px;
+	margin-bottom: 50px;
+	font-size: 13px;
+	letter-spacing: 0;
+	line-height: 18px;
+	@include res-1280 {
+		padding-left: 20px;
+	}
+
+	@include res-1000 {
+		padding-left: 30px;
+	}
+
+	@include res-500 {
+		padding-left: 20px;
+	}
+
+	@include res-320 {
+		padding-left: 15px;
+	}
+}
+
+.blue {
+	color: $blue;
 }

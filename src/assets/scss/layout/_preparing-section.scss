@@ -3,23 +3,19 @@
 	display: flex;
 	padding-right: 0;
 
-	@include res-1280 {
-		padding: 0px 20px 10px;
+	@include res-1000 {
+		padding-bottom: 20px;
 	}
 
 	@include res-768 {
 		display: flex;
 		justify-content: space-between;
-		padding: 0px 23px 10px;
 	}
 
-	@include res-500 {
-		padding: 0px 29px 0px 18px;
+	@include res-500() {
+		padding-bottom: 20px;
 	}
-
 	@include res-320 {
-		padding-left: 15px;
-		padding-right: 15px;
 		flex-direction: column;
 		padding-bottom: 0px;
 	}
@@ -71,7 +67,7 @@
 	@include res-768 {
 		padding-left: 0;
 		padding-right: 0;
-		padding-bottom: 3px;
+		padding-bottom: 0;
 	}
 
 	@include res-500 {
@@ -221,13 +217,13 @@
 		letter-spacing: 2px;
 		font-size: 9px;
 		text-transform: uppercase;
-		@include res-768 {
+		@include res-1000 {
 			white-space: nowrap;
-			margin-bottom: 19px;
+			margin-bottom: 25px;
 		}
 
 		@include res-500 {
-			margin-bottom: 14px;
+			margin-bottom: 25px;
 		}
 
 		&:active {
@@ -273,8 +269,6 @@
 		font-size: 16px;
 
 		@include res-768 {
-			height: 15px;
-
 			.text {
 				line-height: 13px;
 			}

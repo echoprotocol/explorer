@@ -31,7 +31,7 @@ class AccountInfo extends React.Component {
 						) : <span>{assetAmount}</span>)
 					}
 				</Media>
-				<span className="accent">
+				<span className="blue">
 					<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
 						&nbsp;{ECHO_ASSET.SYMBOL}
 					</Link>
@@ -46,10 +46,12 @@ class AccountInfo extends React.Component {
 			<div className="left-card">
 				<div className="line">
 					<div className="title">Account name</div>
+					<div className="divider" />
 					<div className="val">{name}</div>
 				</div>
 				<div className="line">
-					<div className="title">Echo balance</div>
+					<div className="title">ECHO balance</div>
+					<div className="divider" />
 					{this.renderEcho()}
 				</div>
 				<div className="line">

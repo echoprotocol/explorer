@@ -27,16 +27,48 @@ class TokenBalances extends React.Component {
 		const { id, token: { symbol, decimals } } = contract;
 
 		return (
-			<div key={id} className={classnames('inner-elem')}>
-				<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
-					{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
-				</span>
-				<span className="accent">
-					<Link to={URLHelper.createUrlById(id)} className="blue">
-						{symbol}
-					</Link>
-				</span>
-			</div>
+			<React.Fragment>
+				<div key={id} className={classnames('inner-elem')}>
+					<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
+						{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
+					</span>
+					<span className="blue">
+						<Link to={URLHelper.createUrlById(id)} className="blue">
+							{symbol}
+						</Link>
+					</span>
+				</div>
+				<div key={id} className={classnames('inner-elem')}>
+					<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
+						{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
+					</span>
+					<span className="blue">
+						<Link to={URLHelper.createUrlById(id)} className="blue">
+							{symbol}
+						</Link>
+					</span>
+				</div>
+				<div key={id} className={classnames('inner-elem')}>
+					<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
+						{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
+					</span>
+					<span className="blue">
+						<Link to={URLHelper.createUrlById(id)} className="blue">
+							{symbol}
+						</Link>
+					</span>
+				</div>
+				<div key={id} className={classnames('inner-elem')}>
+					<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
+						{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
+					</span>
+					<span className="blue">
+						<Link to={URLHelper.createUrlById(id)} className="blue">
+							{symbol}
+						</Link>
+					</span>
+				</div>
+			</React.Fragment>
 		);
 	}
 

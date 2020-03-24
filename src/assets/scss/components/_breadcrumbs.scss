@@ -1,6 +1,4 @@
 .breadcrumbs-container {
-	position: absolute;
-	bottom: 100%;
 	display: flex;
 	align-items: center;
 	> .element {
@@ -111,45 +109,7 @@
 	transition: background-color 0.2s;
 	border-radius: 4px;
 
-	@include res-1280 {
-		left: -20px;
-	}
-
-	@include res-768 {
-		top: -2px;
-		left: 12px;
-	}
-
-	@include res-500 {
-		top: 3px;
-		left: 11px;
-	}
-
-	@include res-320 {
-		top: 44px;
-		left: 10px;
-	}
-
 	&:focus {
 		background-color: rgba(#fff, 1);
-	}
-}
-
-.transaction-information {
-	.transaction-time,
-	.transaction-title-operations {
-		padding-left: 32px;
-
-		@include res-1280 {
-			padding-left: 20px;
-		}
-
-		@include res-768 {
-			padding-left: 24px;
-		}
-
-		@include res-500 {
-			padding-left: 16px;
-		}
 	}
 }

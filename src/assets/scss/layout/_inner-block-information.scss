@@ -1,381 +1,7 @@
-// .inner-information-container {
-// 	padding-top: 15px;
-
-// 	h2 {
-// 		padding-left: 32px;
-// 		font-size: 16px;
-// 		line-height: 27px;
-// 		margin-bottom: 15px;
-
-// 		@include res-1280 {
-// 			padding-left: 20px;
-// 		}
-
-// 		@include res-768 {
-// 			padding-left: 23px;
-// 		}
-
-// 		@include res-500 {
-// 			padding-left: 16px;
-// 			margin-bottom: 18px;
-// 		}
-// 	}
-
-// 	.header-collapse {
-// 		cursor: pointer;
-// 		display: inline-flex;
-// 		align-items: center;
-// 		justify-content: center;
-// 		margin-bottom: 15px;
-
-// 		h2 {
-// 			padding-left: 32px;
-// 			font-size: 16px;
-// 			line-height: 27px;
-// 			margin-bottom: 0;
-
-// 			@include res-1280 {
-// 				padding-left: 20px;
-// 			}
-
-// 			@include res-768 {
-// 				padding-left: 23px;
-// 			}
-
-// 			@include res-500 {
-// 				padding-left: 16px;
-// 				margin-bottom: 0;
-// 			}
-// 		}
-
-// 		&.is-open {
-// 			&:after {
-// 				transform: rotate(0deg);
-// 			}
-// 		}
-
-// 		&:after {
-// 			content: "";
-// 			width: 5px;
-// 			height: 4px;
-// 			margin-left: 8px;
-// 			flex-shrink: 0;
-// 			transition: 0.2s ease-out;
-// 			background-image: url(../images/icons/show-list-arrow.svg);
-// 			background-size: auto;
-// 			background-position: center center;
-// 			background-repeat: no-repeat;
-// 			display: inline-block;
-// 			transform: rotate(180deg);
-// 			will-change: transform;
-// 			transition: transform 0.2s ease-out;
-// 		}
-// 	}
-
-// 	&.block-information {
-// 		.divTable {
-// 			.TableHeading {
-// 				.divTableCell {
-// 					padding: 12px 15px;
-// 					padding-right: 0;
-
-// 					&:first-child {
-// 						padding-left: 30px;
-// 						@include allWidth(10px);
-
-// 						@include res-1280 {
-// 							@include allWidth(10px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							padding-left: 20px;
-// 						}
-// 					}
-
-// 					&:nth-child(2) {
-// 						@include allWidth(110px);
-
-// 						@include res-1280 {
-// 							@include allWidth(110px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(85px);
-// 						}
-// 					}
-
-// 					&:nth-child(3) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(130px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(100px);
-// 						}
-// 					}
-
-// 					&:nth-child(4) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(120px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(100px);
-// 						}
-// 					}
-
-// 					&:nth-child(5) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(135px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(110px);
-// 						}
-// 					}
-
-// 					&:nth-child(6) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(150px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(110px);
-// 						}
-// 					}
-
-// 					&:nth-child(7) {
-// 						@include allWidth(105px);
-// 					}
-// 				}
-// 			}
-
-// 			.divTableRow {
-// 				.divTableCell {
-// 					padding: 7px 15px;
-// 					padding-right: 0;
-
-// 					&.fail {
-// 						color: #ff0042;
-// 					}
-
-// 					&:first-child {
-// 						padding-left: 30px;
-
-// 						@include min-vw(1000) {
-// 							padding-left: 20px;
-// 						}
-// 					}
-
-// 					&:nth-child(2) {
-// 						@include allWidth(110px);
-
-// 						@include res-1280 {
-// 							@include allWidth(110px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(85px);
-// 						}
-// 					}
-
-// 					&:nth-child(3) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(130px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(100px);
-// 						}
-// 					}
-
-// 					&:nth-child(4) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(120px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(100px);
-// 						}
-// 					}
-
-// 					&:nth-child(5) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(135px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(110px);
-// 						}
-// 					}
-
-// 					&:nth-child(6) {
-// 						@include allWidth(165px);
-
-// 						@include res-1280 {
-// 							@include allWidth(150px);
-// 						}
-
-// 						@include min-vw(1000) {
-// 							@include allWidth(110px);
-// 						}
-// 					}
-
-// 					&:nth-child(7) {
-// 						@include allWidth(105px);
-// 					}
-// 				}
-
-// 				&.with-subtransfer {
-// 					.divTableCell.transaction-to {
-// 						.sub-container {
-// 							&:before {
-// 								content: "";
-// 								left: -14px;
-// 								top: 7px;
-// 								position: absolute;
-// 								width: 7px;
-// 								height: 1px;
-// 								display: block;
-// 								border-bottom: 1px dotted #929293;
-// 								box-sizing: border-box;
-// 							}
-
-// 							&:after {
-// 								content: "";
-// 								left: -15px;
-// 								top: 8px;
-// 								position: absolute;
-// 								width: 1px;
-// 								height: 18px;
-// 								display: block;
-// 								border-right: 1px dotted #929293;
-// 								box-sizing: border-box;
-// 							}
-// 						}
-// 					}
-// 				}
-
-// 				&.is-subtransfer {
-// 					cursor: default;
-
-// 					&:hover {
-// 						background-color: transparent;
-// 						box-shadow: none;
-// 					}
-
-// 					.divTableCell.transaction-to {
-// 						.sub-container {
-// 							.line-arrow {
-// 								background-image: url(../images/icons/subtransfer-line-arrow.svg);
-// 								background-position: 0 0;
-// 								background-repeat: no-repeat;
-// 								width: 3px;
-// 								height: 5px;
-// 								position: absolute;
-// 								left: -6px;
-// 								top: 7px;
-// 							}
-
-// 							&:before {
-// 								content: "";
-// 								left: -14px;
-// 								top: 9px;
-// 								position: absolute;
-// 								width: 7px;
-// 								height: 1px;
-// 								display: block;
-// 								border-bottom: 1px dotted #929293;
-// 								box-sizing: border-box;
-// 							}
-
-// 							&:after {
-// 								content: "";
-// 								left: -15px;
-// 								top: -5px;
-// 								position: absolute;
-// 								width: 1px;
-// 								height: 31px;
-// 								display: block;
-// 								border-right: 1px dotted #929293;
-// 								box-sizing: border-box;
-// 							}
-// 						}
-// 					}
-
-// 					&_last {
-// 						.divTableCell.transaction-to {
-// 							.sub-container {
-// 								&:after {
-// 									content: "";
-// 									left: -15px;
-// 									top: -5px;
-// 									position: absolute;
-// 									width: 1px;
-// 									height: 14px;
-// 									display: block;
-// 									border-right: 1px dotted #929293;
-// 									box-sizing: border-box;
-// 								}
-// 							}
-// 						}
-// 					}
-// 				}
-
-// 				.subtransfer-type {
-// 					position: absolute;
-// 					@include InterUI_Regular;
-// 					font-size: 10px;
-// 					color: #3f3b55;
-// 					background-color: #e0e0e3;
-// 					border-radius: 2px;
-// 					top: 50%;
-// 					left: calc(100% + 5px);
-// 					transform: translateY(-50%);
-// 					white-space: nowrap;
-// 					padding: 0 3px;
-// 					line-height: 17px;
-// 				}
-// 			}
-// 		}
-
-// 		.help-table-wrapper {
-// 			min-height: 255px;
-
-// 			@include min-vw(1000) {
-// 				min-height: 240px;
-// 			}
-// 		}
-
-// 		.block-navigation {
-// 			@include res-768 {
-// 				display: none;
-// 			}
-
-// 			top: 9px;
-// 			right: 0px;
-// 		}
-// 	}
-// }
-
 .inner-information-container {
-	width: 1010px;
+	width: 1012px;
 	padding-right: 30px;
-	padding-top: 49px;
+	padding-top: 50px;
 	min-height: calc(100vh - 282px);
 	padding-left: 0;
 	background-color: #f3f2f5;
@@ -387,11 +13,6 @@
 		min-height: calc(100vh - 403px);
 	}
 
-	.checkbox {
-		margin-bottom: 20px;
-		padding-left: 30px;
-	}
-
 	@include res-1280 {
 		padding-right: 30px;
 		width: 867px;
@@ -401,33 +22,29 @@
 	@include res-1000 {
 		width: 100%;
 		padding-right: 0;
-
 		min-height: calc(100vh - 363px);
-
-		.checkbox {
-			padding-left: 0;
-		}
-	}
-
-	@include res-768 {
-		padding-top: 50px;
 	}
 
 	@include res-500 {
-		padding-top: 40px;
+		padding-top: 56px;
+	}
+
+	@include res-500 {
 		min-height: calc(100vh - 487px);
 	}
 
 	@include res-320 {
-		padding-top: 45px;
-
 		& > .checkbox {
 			margin-bottom: 20px;
 		}
 	}
 
-	@include max-vw(360) {
-		padding-left: 0;
+	.checkbox {
+		margin-bottom: 20px;
+		padding-left: 30px;
+		@include res-1000() {
+			padding-left: 0;
+		}
 	}
 
 	&:before {
@@ -545,12 +162,6 @@
 
 			&:first-child {
 				min-width: 10px;
-			}
-
-			&:nth-child(2) {
-				@include res-320 {
-					// width: calc(100% - 45px);
-				}
 			}
 
 			.value {

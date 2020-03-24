@@ -1,9 +1,56 @@
 .inner-header {
 	position: relative;
-	padding-left: 41px;
-	margin-bottom: 19px;
+	padding-left: 30px;
+	margin-bottom: 30px;
 	display: flex;
 	align-items: center;
+	@include res-1280() {
+		padding-left: 20px;
+	}
+	@include res-1000() {
+		padding-left: 30px;
+	}
+	@include res-500() {
+		padding-left: 20px;
+	}
+	@include res-320() {
+		padding-left: 15px;
+	}
+	.breadcrumbs-container {
+		margin-right: auto;
+	}
+}
+
+.inner-header__top-panel {
+	position: relative;
+	display: flex;
+	position: absolute;
+	left: 0;
+	bottom: calc(100% + 15px);
+	width: 100%;
+	padding-left: 30px;
+	@include res-1280() {
+		bottom: calc(100% + 10px);
+		padding-left: 20px;
+	}
+	@include res-1000() {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	@include res-500() {
+		padding-left: 20px;
+	}
+	@include res-320() {
+		padding-left: 15px;
+	}
+	.backwards-link {
+		left: -6px;
+		top: calc(100% + 13px);
+		@include res-1280() {
+			position: relative;
+			top: 0;
+		}
+	}
 }
 
 .inner-header__title {

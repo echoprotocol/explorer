@@ -1,0 +1,43 @@
+.wrap:not(.full) {
+	max-width: 1440px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0;
+
+	@include res-1280 {
+		width: 100%;
+		padding: 0 30px;
+	}
+	@include res-1000 {
+		padding: 0 10px;
+	}
+}
+
+.wrap.full {
+	justify-content: center;
+
+	.recent-block-sidebar {
+		width: 430px;
+
+		@include res-1280 {
+			width: 310px;
+		}
+
+		@include res-1000 {
+			width: 900px;
+			margin: auto;
+		}
+
+		@include res-768 {
+			width: 668px;
+		}
+
+		@include res-500 {
+			width: 450px;
+		}
+
+		@include res-320 {
+			width: 300px;
+		}
+	}
+}

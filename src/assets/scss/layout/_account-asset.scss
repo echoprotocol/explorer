@@ -1,155 +1,152 @@
-.table-container {
-    &.account-asset-page {
+.account-asset-page {
+	@include res-1000 {
+		min-height: calc(100vh - 390px);
+	}
 
-        @include res-1000 {
-            min-height: calc(100vh - 390px);
-        }
+	@include res-768 {
+		min-height: calc(100vh - 390px);
+		padding-top: 40px;
+	}
 
-        @include res-768 {
-            min-height: calc(100vh - 390px);
-            padding-top: 40px;
-        }
+	@include res-500 {
+		padding-top: 48px;
+		min-height: calc(100vh - 509px);
+	}
 
-        @include res-500 {
-            padding-top: 48px;
-            min-height: calc(100vh - 509px);
-        }
+	.asset-container {
+		margin-bottom: 30px;
 
-        .asset-container {
-            margin-bottom: 30px;
+		@include res-768 {
+			margin: 0 20px 30px 20px;
+		}
 
-            @include res-768 {
-                margin: 0 20px 30px 20px;
-            }
+		@include res-500 {
+			margin-bottom: 43px;
+		}
 
-            @include res-500 {
-                margin-bottom: 43px;
-            }
+		@include res-320 {
+			margin-bottom: 0;
+		}
 
-            @include res-320 {
-                margin-bottom: 0;
-            }
+		> .title {
+			@include InterUI_Bold;
+			font-size: 23px;
+			color: #18142a;
+			margin-bottom: 52px;
 
-            >.title {
-                @include InterUI_Bold;
-                font-size: 23px;
-                color: #18142a;
-                margin-bottom: 52px;
+			@include res-768 {
+				margin-bottom: 30px;
+			}
+		}
 
-                @include res-768 {
-                    margin-bottom: 30px;
-                }
-            }
+		.help-container {
+			display: flex;
+			align-items: flex-start;
+			flex-direction: column;
 
-            .help-container {
-                display: flex;
-                align-items: flex-start;
-                flex-direction: column;
+			.asset-elem {
+				display: inline-flex;
+				flex-direction: column;
+				flex-shrink: 0;
 
-                .asset-elem {
-                    display: inline-flex;
-                    flex-direction: column;
-                    flex-shrink: 0;
+				&:not(:last-child) {
+					margin-bottom: 50px;
 
-                    &:not(:last-child) {
-                        margin-bottom: 50px;
+					@include res-768 {
+						margin-bottom: 25px;
+					}
+				}
 
-                        @include res-768 {
-                            margin-bottom: 25px;
-                        }
-                    }
+				@include res-768 {
+					// min-height: 190px;
+				}
 
-                    @include res-768 {
-                        // min-height: 190px;
-                    }
+				@include res-500 {
+					// min-height: 167px;
+				}
 
-                    @include res-500 {
-                        // min-height: 167px;
-                    }
+				@include res-320 {
+					width: 100%;
+				}
 
-                    @include res-320 {
-                        width: 100%;
-                    }
+				> .title {
+					@include InterUI_Bold;
+					font-size: 16px;
+					color: #130d32;
+					margin-bottom: 30px;
+				}
 
-                    >.title {
-                        @include InterUI_Bold;
-                        font-size: 16px;
-                        color: #130d32;
-                        margin-bottom: 30px;
-                    }
+				.list {
+					display: flex;
 
-                    .list {
-                        display: flex;
+					@include res-768 {
+						flex-wrap: wrap;
+						flex-direction: column;
+					}
 
-                        @include res-768 {
-                            flex-wrap: wrap;
-                            flex-direction: column;
-                        }
+					&:not(:last-child) {
+						margin-bottom: 35px;
 
-                        &:not(:last-child) {
-                            margin-bottom: 35px;
+						@include res-500 {
+							margin-bottom: 27px;
+						}
+					}
 
-                            @include res-500 {
-                                margin-bottom: 27px;
-                            }
-                        }
+					.block {
+						flex-shrink: 0;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+						align-items: flex-start;
+						min-width: 135px;
 
-                        .block {
-                            flex-shrink: 0;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
-                            align-items: flex-start;
-                            min-width: 135px;
+						&:not(:last-child) {
+							margin-right: 65px;
 
-                            &:not(:last-child) {
-                                margin-right: 65px;
+							@include res-500 {
+								margin-right: 0;
+							}
+						}
 
-                                @include res-500 {
-                                    margin-right: 0;
-                                }
-                            }
+						@include res-768 {
+							margin-bottom: 20px;
+						}
 
-                            @include res-768 {
-                                margin-bottom: 20px;
-                            }
+						@include res-500 {
+							width: 220px;
+							min-width: none;
+						}
 
-                            @include res-500 {
-                                width: 220px;
-                                min-width: none;
-                            }
+						@include res-320 {
+							width: 100%;
+						}
 
-                            @include res-320 {
-                                width: 100%;
-                            }
+						.title {
+							@include Hack_Bold;
+							color: #1f3c4d;
+							font-size: 10px;
+							text-transform: uppercase;
+							display: block;
+							letter-spacing: 0.25em;
+							margin-bottom: 15px;
+						}
 
-                            .title {
-                                @include Hack_Bold;
-                                color: #1f3c4d;
-                                font-size: 10px;
-                                text-transform: uppercase;
-                                display: block;
-                                letter-spacing: 0.25em;
-                                margin-bottom: 15px;
-                            }
+						.val {
+							@include InterUI_Medium;
+							font-size: 16px;
+							color: #130d32;
+							display: flex;
+							word-break: break-all;
+							width: 100%;
 
-                            .val {
-                                @include InterUI_Medium;
-                                font-size: 16px;
-                                color: #130d32;
-                                display: flex;
-                                word-break: break-all;
-                                width: 100%;
-
-                                .txt {
-                                    margin-right: 5px;
-                                    @include text-overflow;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+							.txt {
+								margin-right: 5px;
+								@include text-overflow;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
