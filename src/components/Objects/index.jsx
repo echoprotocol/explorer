@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
-import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import copy from 'copy-to-clipboard';
 
 import URLHelper from '../../helpers/URLHelper';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { getObjectInfo, setError } from '../../actions/ObjectsActions';
+import QueryStringHelper from '../../helpers/QueryStringHelper';
 
 class Objects extends React.Component {
 
@@ -21,6 +22,9 @@ class Objects extends React.Component {
 	}
 
 	componentDidMount() {
+		if (this.props.data) {
+			return;
+		}
 		this.checkObject();
 	}
 
@@ -49,20 +53,10 @@ class Objects extends React.Component {
 		this.props.setError(null);
 	}
 
+
 	getId(props) {
-
-		const parsed = queryString.parse(props.location.search);
-		const regExp = /^\d+\.\d+\.\d+$/;
-
-		if (parsed.opId) {
-			return parsed.opId.trim();
-		}
-
-		if (!parsed.id || parsed.id.trim().search(regExp) === -1) {
-			return null;
-		}
-
-		return parsed.id.trim();
+		const id = QueryStringHelper.getObjectId(props.location.search);
+		return id;
 	}
 
 	checkObject() {
@@ -144,6 +138,17 @@ class Objects extends React.Component {
 		);
 	}
 
+}
+
+export function loadData(store, data) {
+	if (!data.query) {
+		return null;
+	}
+	const id = QueryStringHelper.getObjectId(data.query);
+	if (!id) {
+		return store.dispatch(setError('Object id is Invalid'));
+	}
+	return store.dispatch(getObjectInfo(id));
 }
 
 Objects.propTypes = {

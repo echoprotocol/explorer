@@ -1,29 +1,42 @@
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
-import { matchRoutes, renderRoutes } from 'react-router-config';
+import { renderRoutes, matchRoutes } from 'react-router-config';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import MobileDetect from 'mobile-detect';
+import { parse } from 'url';
 
 import Routes from '../src/routes';
 
 import configureStore from '../src/store';
 import GlobalActions from '../src/actions/GlobalActions';
 import { INDEX_PATH } from '../src/constants/RouterConstants';
+import { loadData as loadDataApp } from '../src/containers/App';
 
 export default async function render(req) {
 	const store = configureStore();
 
 	try {
-		const routes = matchRoutes(Routes, req.url);
+		const { pathname, path, query } = parse(req.url);
+		// console.log('path', path);
+		// console.log('pathname', pathname);
+		// console.log('req.url', req.url);
+
+		const routes = matchRoutes(Routes, pathname);
 
 		if (req.url !== INDEX_PATH) {
-			await Routes[0].routes[0].loadData(store);
+			await loadDataApp(store);
 		}
+		// console.log('routes.filter', routes
+		// 	.filter(({ route }) => route.loadData));
 
 		const promises = routes
 			.filter(({ route }) => route.loadData)
-			.map(({ route, match }) => route.loadData(store, match))
+			.map(({ route, match }) => route.loadData(store, {
+				query,
+				url: req.url,
+				params: match.params,
+			}))
 			.map((promise) => {
 				if (promise) {
 					return new Promise((resolve) => {
@@ -38,7 +51,6 @@ export default async function render(req) {
 		console.log('Error to load data in server', err);
 	}
 
-	const context = {};
 	let content = '';
 
 	const mobile = new MobileDetect(req.headers['user-agent']);
@@ -46,7 +58,7 @@ export default async function render(req) {
 
 	try {
 		content = renderToString(<Provider store={store}>
-			<StaticRouter location={req.url} context={context}>
+			<StaticRouter location={req.url}>
 				<div>{renderRoutes(Routes)}</div>
 			</StaticRouter>
 		</Provider>);

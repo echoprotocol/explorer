@@ -94,11 +94,11 @@ class TransactionsInfo extends React.Component {
 
 }
 
-export function loadData(store, match) {
-	if (!match.params || !match.params.round || !match.params.index) {
+export function loadData(store, data) {
+	if (!data.params || !data.params.round || !data.params.index) {
 		return null;
 	}
-	const { round, index: indexWithQuery } = match.params;
+	const { round, index: indexWithQuery } = data.params;
 	const [index] = indexWithQuery.split('?');
 	store.dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, indexWithQuery).replace(/round/, round)));
 	store.dispatch(getBlockInformation(round));

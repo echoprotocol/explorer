@@ -176,7 +176,7 @@ class PreparingSection extends React.Component {
 	}
 
 	render() {
-		const { stepProgress, preparingBlock, isMobileDevice } = this.props;
+		const { stepProgress, preparingBlock } = this.props;
 		const {	readyProducers } = this.state;
 
 		if (!stepProgress) {
@@ -194,7 +194,7 @@ class PreparingSection extends React.Component {
 			<React.Fragment>
 				<div className="wrap">
 					<div className="preparing-section">
-						<Media query="(max-width: 499px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 499px)" >
 							{(matches) =>
 								(matches ? (
 									<p className="mobile-title">{`Next block ${preparingBlock}`}</p>
@@ -210,7 +210,7 @@ class PreparingSection extends React.Component {
 							}
 						</Media>
 
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 767px)" >
 							{
 								(matches) =>
 									(matches ? (
@@ -271,7 +271,6 @@ PreparingSection.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
 	readyProducers: PropTypes.number.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
-	isMobileDevice: PropTypes.bool.isRequired,
 };
 
 export default connect(

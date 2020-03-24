@@ -216,11 +216,11 @@ class BlockInformation extends React.Component {
 
 }
 
-export function loadData(store, match) {
-	if (!match.params || !match.params.round) {
+export function loadData(store, data) {
+	if (!data.params || !data.params.round) {
 		return null;
 	}
-	return store.dispatch(getBlockInformation(match.params.round));
+	return store.dispatch(getBlockInformation(data.params.round));
 }
 
 BlockInformation.propTypes = {

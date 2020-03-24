@@ -110,14 +110,14 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading, isBlock, isTransaction, timestamp, fee, isMobileDevice,
+			operations, hasMore, loading, isBlock, isTransaction, timestamp, fee,
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
 		return (
 			<div className={classnames('accordion-table-wrap', { 'table-block': isBlock })} >
 				<table>
-					<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+					<Media query="(max-width: 767px)">
 						{ (matches) => !matches &&
 							<thead>
 								<tr>
@@ -153,7 +153,7 @@ class OperationsTable extends React.Component {
 
 
 					<tbody>
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 767px)">
 							{
 								(matches) =>
 									(!matches &&
@@ -165,7 +165,6 @@ class OperationsTable extends React.Component {
 						{
 							operations ? operations.map((op, i) => (
 								<OperationRow
-									isMobileDevice={isMobileDevice}
 									key={i.toString()}
 									isBlock={isBlock}
 									isTransaction={isTransaction}
@@ -213,7 +212,6 @@ OperationsTable.propTypes = {
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
-	isMobileDevice: PropTypes.bool.isRequired,
 	loading: PropTypes.bool,
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,

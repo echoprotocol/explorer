@@ -87,7 +87,6 @@ class OperationRow extends React.Component {
 			timestamp,
 			fee,
 			air,
-			isMobileDevice,
 		} = this.props;
 		const objectId = objectInfo ? objectInfo.get('id') : null;
 		this.props.tableRefs[index] = React.createRef();
@@ -113,7 +112,7 @@ class OperationRow extends React.Component {
 					ref={this.props.tableRefs[index]}
 				>
 					<td />
-					<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+					<Media query="(max-width: 767px)">
 						{(matches) => !matches && (
 							<td className="number">
 								<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
@@ -121,7 +120,7 @@ class OperationRow extends React.Component {
 						)}
 					</Media>
 					<td className="type">
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 767px)" >
 							{(matches) => matches &&
 								<React.Fragment>
 
@@ -141,7 +140,7 @@ class OperationRow extends React.Component {
 					{
 						timestamp ? (
 							<td className="time">
-								<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+								<Media query="(max-width: 767px)" >
 									{(matches) => matches && <div className="col-title">DATA, TIME</div>}
 								</Media>
 								<div className="td-in">
@@ -153,7 +152,7 @@ class OperationRow extends React.Component {
 						) : null
 					}
 					<td className="sender">
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 767px)" >
 							{(matches) => matches && <div className="col-title">Sender</div>}
 						</Media>
 						{mainInfo.from.id ?
@@ -164,13 +163,13 @@ class OperationRow extends React.Component {
 						}
 					</td>
 					<td className="reciever">
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 767px)">
 							{(matches) => matches && <div className="col-title">Reciever</div>}
 						</Media>
 						{this.renderSubject(subjectValue, mainInfo)}
 					</td>
 					<td className="amount">
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 767px)" >
 							{(matches) => matches && <div className="col-title">Amount</div>}
 						</Media>
 						{this.renderAmount()}
@@ -201,7 +200,7 @@ class OperationRow extends React.Component {
 						) : null
 					}
 					<td className="rezult">
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+						<Media query="(max-width: 767px)" >
 							{(matches) => matches && <div className="col-title">Result</div>}
 						</Media>
 						{
@@ -217,10 +216,6 @@ class OperationRow extends React.Component {
 									queries={{
 										small: '(max-width: 767px)',
 										large: '(min-width: 768px)',
-									}}
-									defaultMatches={{
-										small: isMobileDevice,
-										large: isMobileDevice,
 									}}
 								>
 									{(matches) => (
@@ -275,7 +270,7 @@ class OperationRow extends React.Component {
 											/>
 											<ObjectInfo details={detailInfo} object={objectInfo} />
 										</td>
-										<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
+										<Media query="(max-width: 767px)" >
 											{(matchesIn) => !matchesIn && <td />}
 										</Media>
 									</React.Fragment>
@@ -298,7 +293,6 @@ class OperationRow extends React.Component {
 
 
 OperationRow.propTypes = {
-	isMobileDevice: PropTypes.bool.isRequired,
 	timestamp: PropTypes.bool.isRequired,
 	fee: PropTypes.bool.isRequired,
 	operation: PropTypes.object.isRequired,

@@ -101,7 +101,7 @@ class RecentBlockTable extends React.Component {
 
 	render() {
 		const {
-			hasMore, loading, loadingSearch, errorSearch, latestBlock, isMobileDevice,
+			hasMore, loading, loadingSearch, errorSearch, latestBlock,
 		} = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
@@ -123,7 +123,7 @@ class RecentBlockTable extends React.Component {
 						/>
 					</h2>
 					<div className="table">
-						<Media query="(max-width: 767px)" defaultMatches={isMobileDevice} >
+						<Media query="(max-width: 767px)" >
 							{(matches) =>
 								(matches ? (
 									<div className="recent-block-mobile-view">
@@ -257,7 +257,6 @@ RecentBlockTable.propTypes = {
 	loading: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	loadingSearch: PropTypes.bool.isRequired,
-	isMobileDevice: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,

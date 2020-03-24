@@ -27,6 +27,7 @@ import NotFound from './containers/Error/NotFoundScreen';
 import App, { loadData as loadDataApp } from './containers/App';
 import { loadData as loadDataBlockInfo } from './components/BlockInformation';
 import { loadData as loadDataTransactionInfo } from './components/TransactionInfo';
+import { loadData as loadDataObjectInfo } from './components/Objects';
 
 export default [
 	{
@@ -52,8 +53,8 @@ export default [
 			},
 			{
 				path: OBJECTS_PATH,
-				exact: true,
 				component: Objects,
+				loadData: loadDataObjectInfo,
 			},
 			{
 				path: ACCOUNTS_PATH,

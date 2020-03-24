@@ -106,10 +106,6 @@ class App extends React.Component {
 
 		console.log('APP render connected', connected);
 
-		// if (!connected) {
-		// 	return <Loader />;
-		// }
-
 		if (errorPath) {
 			return this.renderNotFound();
 		}
