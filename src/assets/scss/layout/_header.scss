@@ -68,7 +68,7 @@ header {
 		letter-spacing: 1px;
 		@include InterUI_Bold;
 		margin: 0 10px;
-		color: #82818a;
+		color: $lightgrey;
 
 		@include res-768() {
 			margin: 0 15px;
@@ -84,7 +84,7 @@ header {
 
 		&:hover {
 			cursor: pointer;
-			color: #5eb3e8;
+			color: $blue;
 		}
 
 		&:active {
@@ -108,23 +108,5 @@ header {
 	@include res-320 {
 		position: relative;
 		z-index: 2;
-	}
-
-	.wrap {
-		@include res-1280 {
-			width: 100%;
-			padding: 0 50px;
-		}
-		@include res-1000 {
-			padding: 0 40px;
-		}
-
-		@include res-500 {
-			padding: 0 30px;
-		}
-
-		@include res-320 {
-			padding: 0 25px;
-		}
 	}
 }

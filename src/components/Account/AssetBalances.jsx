@@ -44,22 +44,23 @@ class AssetBalances extends React.Component {
 		const count = balances.size || balances.length;
 
 		const elements = isLoadedMore ? balances : balances.slice(0, DEFAULT_COUNT);
-
 		return (
 			<div className="elem">
 				<div className="title">
-					{title}: {count || <span className="gray">none</span>}
+					{title}: <span className="gray">{count || 'None'}</span>
 				</div>
-				<div className="elements-container">
-					{
-						elements.map(({ amount, asset, id }) => this.renderElement(
-							id,
-							asset,
-							amount,
-							owner ? owner.includes(asset.get('id')) : false,
-						))
-					}
-				</div>
+				{ elements.length !== 0 &&
+					<div className="elements-container">
+						{
+							elements.map(({ amount, asset, id }) => this.renderElement(
+								id,
+								asset,
+								amount,
+								owner ? owner.includes(asset.get('id')) : false,
+							))
+						}
+					</div>
+				}
 				{
 					count > DEFAULT_COUNT ?
 						<a href="" className="load-more" onClick={(e) => this.onLoadMore(e)}>

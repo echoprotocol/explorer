@@ -57,14 +57,6 @@
 					}
 				}
 
-				@include res-768 {
-					// min-height: 190px;
-				}
-
-				@include res-500 {
-					// min-height: 167px;
-				}
-
 				@include res-320 {
 					width: 100%;
 				}

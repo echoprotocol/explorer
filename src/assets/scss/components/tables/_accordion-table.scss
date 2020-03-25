@@ -10,60 +10,73 @@
 		a {
 			color: $blue;
 		}
+	}
 
-		td {
-			&.type {
-				.td-in {
-					max-width: 150px;
-					padding: 9px 7px 9px 17px;
-					vertical-align: middle;
+	td {
+		&.type {
+			.td-in {
+				max-width: 150px;
+				padding: 9px 7px 9px 17px;
+				vertical-align: middle;
+				@include text-overflow();
+			}
+		}
+
+		&.time {
+			.td-in {
+				max-width: 150px;
+
+				span {
+					display: inline-block;
+					max-width: 100%;
 					@include text-overflow();
 				}
 			}
+		}
 
-			&.time {
-				.td-in {
-					max-width: 150px;
-
-					span {
-						display: inline-block;
-						max-width: 100%;
-						@include text-overflow();
-					}
-				}
-			}
-
-			&.json {
-				padding: 0px;
-
-				.td-in {
-					padding: 0px;
-				}
-			}
+		&.json {
+			padding: 0px;
 
 			.td-in {
-				padding: 9px 7px;
-				transition: all 0.2s;
+				padding: 0px;
 			}
+		}
 
-			&:first-child,
-			&:last-child {
-				max-width: 13px;
-				width: 13px;
-				min-width: 13px;
+		.td-in {
+			padding: 9px 7px;
+			transition: all 0.2s;
+			@include InterUI_Medium;
+		}
+
+		&:first-child,
+		&:last-child {
+			max-width: 13px;
+			width: 13px;
+			min-width: 13px;
+		}
+
+		&:nth-child(2) .td-in {
+			padding: 9px 7px 9px 20px;
+			@include res-1280() {
+				padding: 9px 7px 9px 10px;
 			}
-
-			&:nth-child(2) .td-in {
+			@include res-1000() {
 				padding: 9px 7px 9px 20px;
 			}
+			@include res-500() {
+				padding: 9px 7px 9px 15px;
+			}
+			@include res-320() {
+				padding: 9px 7px 9px 10px;
+			}
+		}
 
-			@include res-768 {
-				&:first-child,
-				&:last-child {
-					max-width: 8px;
-					width: 8px;
-					min-width: 8px;
-				}
+		@include res-768 {
+			&:first-child,
+			&:last-child {
+				max-width: 8px;
+				width: 8px;
+				min-width: 8px;
 			}
 		}
 	}
@@ -75,7 +88,7 @@
 		font-style: normal;
 		@include InterUI_Medium();
 		font-size: 12px;
-		color: #828b95;
+		color: $lightgrey;
 		position: relative;
 		line-height: 15px;
 	}
@@ -83,7 +96,7 @@
 	tbody {
 		tr {
 			font-size: 12px;
-			color: #0e0936;
+			color: $explorer-black;
 		}
 	}
 
@@ -185,10 +198,6 @@
 				&:nth-child(2) {
 					@include res-500 {
 						background-color: #fff;
-					}
-
-					.td-in {
-						padding: 13px 7px 13px 20px;
 					}
 				}
 
@@ -348,7 +357,7 @@
 		}
 
 		.currency {
-			color: #848b94;
+			color: $lightgrey;
 			overflow: initial;
 		}
 	}

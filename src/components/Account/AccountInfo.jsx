@@ -28,7 +28,7 @@ class AccountInfo extends React.Component {
 							>
 								<span className="txt">{assetAmount}</span>
 							</Tooltip>
-						) : <span>{assetAmount}</span>)
+						) : <span className="amount">{assetAmount}</span>)
 					}
 				</Media>
 				<span className="blue">
@@ -50,7 +50,7 @@ class AccountInfo extends React.Component {
 					<div className="val">{name}</div>
 				</div>
 				<div className="line">
-					<div className="title">ECHO balance</div>
+					<div className="title">ECHO Balance</div>
 					<div className="divider" />
 					{this.renderEcho()}
 				</div>

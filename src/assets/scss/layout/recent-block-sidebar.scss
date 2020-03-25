@@ -29,6 +29,10 @@
 	.help-container {
 		width: 360px;
 
+		@include res-1280() {
+			width: 280px;
+		}
+
 		@include max-vw(1279) {
 			width: 100%;
 			display: flex;
@@ -42,23 +46,43 @@
 	.info-container {
 		padding-top: 60px;
 		padding-bottom: 20px;
+		z-index: 0;
+		position: fixed;
+		bottom: 25px;
+
+		@include max-vh(800) {
+			opacity: 0;
+			transition: opacity 0.2s;
+
+			&.fixed {
+				display: block;
+				opacity: 1;
+			}
+		}
+
+		@include max-vh(640) {
+			&.fixed {
+				opacity: 0;
+				display: none;
+			}
+		}
 
 		.version {
 			@include InterUI_Medium;
-			color: #828b95;
+			color: $grey-mid;
 			font-size: 12px;
 			line-height: 18px;
 			font-weight: 400;
 			letter-spacing: 0.3px;
-			margin-bottom: 18px;
+			margin-bottom: 15px;
 		}
 
 		.copyright {
 			@include Hack_Bold;
 			text-transform: uppercase;
-			font-size: 10px;
-			color: #828b95;
-			letter-spacing: 2.5px;
+			font-size: 9px;
+			color: $lightgrey;
+			letter-spacing: 2.25px;
 		}
 	}
 }
@@ -143,7 +167,6 @@
 
 	.value {
 		@include InterUI_Bold;
-		font-size: 23px;
 		line-height: 45px;
 		color: $explorer-black;
 
@@ -161,5 +184,11 @@
 		.sm {
 			font-size: 16px;
 		}
+	}
+	.main{
+		font-size: 22px;
+	}
+	.secondary{
+		font-size: 16px;
 	}
 }

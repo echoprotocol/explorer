@@ -1,40 +1,35 @@
 .token-transfer-table {
-    display: flex;
-    align-items: flex-start;
+	display: flex;
+	align-items: flex-start;
 
-    .tt-row {
-        font-weight: 400;
-    }
-    .tt-col {
-        padding-bottom: 10px;
+	.tt-row {
+		font-weight: 400;
+	}
+	.tt-col {
+		padding-bottom: 10px;
 
-        &:first-child{
-            padding-right: 50px;
-        }
-        &:last-child {
-            .transfer-direction {
-                display: flex;
-                align-items: center;
-                flex-wrap: wrap;
-            }
-            .direction {
-                margin: 0 8px;
-            }
-            // @include res-500 {
-            //     .direction + .avatar-wrap {
-            //         margin: 8px 0 0;
-            //     }
-            // }
-        }
-    }
+		&:first-child {
+			padding-right: 50px;
+		}
+		&:last-child {
+			.transfer-direction {
+				display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+			}
+			.direction {
+				margin: 0 8px;
+			}
+		}
+	}
 }
 
 @include res-320 {
-    .token-transfer-table {
-        .tt-col {
-            &:first-child{
-                padding-right: 20px;
-            }
-        }
-    }
+	.token-transfer-table {
+		.tt-col {
+			&:first-child {
+				padding-right: 20px;
+			}
+		}
+	}
 }

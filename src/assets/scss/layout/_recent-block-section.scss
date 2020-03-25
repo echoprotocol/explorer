@@ -127,30 +127,6 @@
 			background-color: #fff;
 		}
 
-		.info-container {
-			z-index: 0;
-
-			@include max-vh(800) {
-				opacity: 0;
-				transition: opacity 0.2s;
-
-				&.fixed {
-					display: block;
-					opacity: 1;
-				}
-			}
-
-			@include max-vh(640) {
-				&.fixed {
-					opacity: 0;
-					display: none;
-				}
-			}
-
-			position: fixed;
-			bottom: 0;
-		}
-
 		&.sticky {
 			height: calc(100vh - 50px);
 			position: fixed;

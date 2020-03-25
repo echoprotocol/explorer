@@ -1,7 +1,6 @@
 .divTable {
 	display: table;
 	width: 100%;
-
 	padding-bottom: 33px;
 	border-bottom: 1px solid #d8d8de;
 
@@ -16,8 +15,8 @@
 		cursor: pointer;
 		display: inline-block;
 		background-color: transparent;
-		border: 0;
-
+		border: none;
+		@include InterUI_Medium;
 		&:hover {
 			color: #095494;
 		}
@@ -87,7 +86,7 @@
 	@include transition;
 
 	@include InterUI_Medium;
-	font-size: 13px;
+	font-size: 12px;
 	line-height: 20px;
 	background-color: #f3f2f5;
 

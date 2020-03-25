@@ -50,7 +50,7 @@
 
 	&:hover {
 		.title {
-			color: #5eb3e8;
+			color: $blue;
 		}
 	}
 
@@ -287,7 +287,6 @@
 		.status-icn {
 			opacity: 0;
 			visibility: hidden;
-			// @include transition;
 			position: absolute;
 			display: inline-block;
 			right: 0;

@@ -16,8 +16,12 @@
 		min-width: 747px;
 		td {
 			&:last-child {
-				min-width: 25px;
-				width: 25px;
+				min-width: 13px;
+				width: 13px;
+				@include res-1280() {
+					min-width: 25px;
+					width: 25px;
+				}
 			}
 		}
 	}
@@ -50,9 +54,7 @@
 
 	.origin,
 	.delegate {
-		width: 22%;
-		max-width: 22%;
-
+		width: 27%;
 		span {
 			@include text-overflow;
 			max-width: 175px;
@@ -71,114 +73,26 @@
 		}
 	}
 
-	.reward {
-		width: 34%;
+	.produced {
+		.tooltip {
+			position: absolute;
+			margin-left: 5px;
+			margin-top: 1px;
+			height: 16px;
+			width: 9px;
+		}
 	}
 
 	.avatar-image {
 		margin-right: 5px;
 	}
-	// @include res-500 {
-	// 	margin-bottom: 28px;
 
-	// 	table {
-	// 		td {
-	// 			&:first-child {
-	// 				display: none;
-	// 			}
-
-	// 			&:nth-child(5),
-	// 			&:nth-child(8),
-	// 			&:nth-child(11) {
-	// 				padding-left: 0;
-	// 			}
-	// 		}
-
-	// 		.view {
-	// 			background-color: transparent;
-	// 			display: table-row;
-
-	// 			td {
-	// 				display: table-cell;
-	// 			}
-	// 		}
-
-	// 		tbody {
-	// 			tr {
-	// 				display: table-row;
-	// 			}
-
-	// 			td {
-	// 				margin-bottom: 0px;
-	// 				display: table-cell;
-	// 			}
-	// 		}
-
-	// 		.role {
-	// 			max-width: 22%;
-	// 		}
-
-	// 		.origin,
-	// 		.delegate {
-	// 			max-width: 22%;
-	// 		}
-
-	// 		.reward {
-	// 			max-width: 40%;
-	// 		}
-	// 	}
-	// }
-
-	// @include res-320 {
-	// 	margin-bottom: 33px;
-
-	// 	table {
-	// 		td {
-	// 			&:first-child,
-	// 			&:last-child {
-	// 				display: none;
-	// 			}
-
-	// 			&:nth-child(2) {
-	// 				.td-in {
-	// 					padding: 0;
-	// 				}
-	// 			}
-
-	// 			.td-in {
-	// 				padding: 0;
-	// 			}
-	// 		}
-
-	// 		.view {
-	// 			background-color: #e7e6e9;
-	// 			display: flex;
-
-	// 			&:hover {
-	// 				background-color: #ebebee;
-	// 			}
-	// 		}
-	// 	}
-
-	// 	.role {
-	// 		order: 1;
-	// 	}
-
-	// 	.reward {
-	// 		order: 2;
-
-	// 		.td-in {
-	// 			display: inline-block;
-	// 			line-height: 20px;
-	// 		}
-	// 	}
-
-	// 	.origin {
-	// 		order: 3;
-	// 	}
-
-	// 	.delegate {
-	// 		order: 4;
-	// 	}
-	// }
+	.view {
+		.role {
+			color: $grey;
+		}
+		.produced {
+			color: $lightgrey;
+		}
+	}
 }

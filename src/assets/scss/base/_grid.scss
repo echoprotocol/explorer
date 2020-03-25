@@ -41,3 +41,21 @@
 		}
 	}
 }
+
+.wrap.sm {
+	@include res-1280 {
+		width: 100%;
+		padding: 0 50px;
+	}
+	@include res-1000 {
+		padding: 0 40px;
+	}
+
+	@include res-500 {
+		padding: 0 30px;
+	}
+
+	@include res-320 {
+		padding: 0 25px;
+	}
+}

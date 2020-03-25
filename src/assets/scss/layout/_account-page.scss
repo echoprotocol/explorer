@@ -114,6 +114,9 @@
 
 .account-page-table {
 	padding: 50px 30px 50px 0;
+	@include res-768() {
+		padding: 50px 0 0;
+	}
 }
 
 .account-page-t-block {
@@ -211,9 +214,16 @@
 			@include InterUI_Medium;
 			font-size: 15px;
 			line-height: 1em;
+			display: flex;
+			align-items: center;
 			.txt {
 				margin-right: 5px;
 				@include text-overflow;
+			}
+			.amount {
+				display: inline-block;
+				@include text-overflow();
+				max-width: 120px;
 			}
 		}
 
@@ -225,7 +235,7 @@
 			background-image: url("../images/icons/point.svg");
 			background-size: auto;
 			background-repeat: repeat;
-			transform: translateY(-2px);
+			transform: translateY(-3px);
 			@include res-320() {
 				display: none;
 			}
@@ -245,10 +255,7 @@
 	margin-left: 55px;
 	width: 100%;
 	@include res-768 {
-		margin-left: 30px;
-	}
-	@include res-500 {
-		margin-left: 40px;
+		margin-left: 50px;
 	}
 
 	@include res-500 {
@@ -299,10 +306,6 @@
 		@include InterUI_Medium;
 		font-size: 12px;
 		border-bottom: 1px solid #d8d9de;
-
-		&:only-child {
-			border-bottom: 0;
-		}
 
 		&:nth-child(3n) {
 			margin-right: 0;

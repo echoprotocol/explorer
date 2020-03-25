@@ -19,7 +19,7 @@ class DistributionTable extends React.Component {
 			<React.Fragment key={index}>
 				<tr className="view">
 					<td />
-					<td className="reward">
+					<td className="role">
 						<div className="td-in">
 							<span className="type">{type}</span>
 						</div>
@@ -53,7 +53,7 @@ class DistributionTable extends React.Component {
 							}
 						</React.Fragment>
 					</td>
-					<td className="reward">
+					<td className="produced">
 						<div className="td-in">
 							<span className="currency">{producedByCommittee ? 'Yes' : 'No'}</span>
 						</div>
@@ -94,7 +94,7 @@ class DistributionTable extends React.Component {
 										/>
 									</div>
 								</td>
-								<td className="delegate">
+								<td className="produced">
 									<div className="td-in">
 												Produced by the committee
 										<InfoTooltip

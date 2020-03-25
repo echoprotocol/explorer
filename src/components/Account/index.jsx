@@ -5,7 +5,7 @@ import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import InnerHeader from '../InnerHeader';
-
+import TableLable from '../TableLable';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 
@@ -97,7 +97,7 @@ class Account extends React.Component {
 					{
 						account && !loading ?
 							<React.Fragment>
-								<h2>Transactions</h2>
+								<TableLable label="Transactions" />
 								{
 									accountHistory.size ?
 										<OperationsTable
