@@ -3,6 +3,7 @@
 		"__IS_SERVER__": true,
 		"__IS_CLIENT__": true,
 		"__API_URL__": true,
+		"__ECHO_CONFIG__": true,
 		"__LANDING_BRIDGE__": true,
 		"__INSTALL_NODE_LINK__": true,
 		"__GRAPHQL_URL_HTTP_LINK__": true,

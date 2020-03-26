@@ -1,8 +1,9 @@
 import express from 'express';
-import echo from 'echojs-lib';
+import config from 'config';
+
 import template from './template';
 import render from './render';
-import config from '../src/config/chain';
+import serverIninitializer from './server.initializer';
 
 const server = express();
 const PORT = process.env.PORT || 3000;
@@ -17,16 +18,17 @@ server.get('/*', async (req, res) => {
 	res.send(response);
 });
 
-server.listen(PORT, async () => {
-	// TODO refactoring
-	await echo.connect(config.API_URL, {
-		connectionTimeout: 5000,
-		maxRetries: 1e10,
-		pingTimeout: 6000,
-		pingDelay: 5000,
-		debug: false,
-		apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
-	});
+(async () => {
+	try {
+		await serverIninitializer.init({
+			url: config.API_URL,
+			...config.ECHO_CONFIG,
+		});
+		server.listen(PORT, async () => {
+			console.log(`Server listen port ${PORT}`);
+		});
+	} catch (err) {
+		console.log('Server can not connect to echo', err);
+	}
+})();
 
-	console.log(`Server listen port ${PORT}`);
-});

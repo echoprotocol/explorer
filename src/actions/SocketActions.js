@@ -112,7 +112,6 @@ const blockRelease = () => async (dispatch) => {
  */
 export const serverConnect = () => async (dispatch) => {
 	try {
-		console.log('serverConnect');
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
@@ -143,18 +142,7 @@ export const serverConnect = () => async (dispatch) => {
  */
 export const clientConnect = () => async (dispatch) => {
 	try {
-		console.log('clientConnect');
-		console.log('connect __IS_SERVER__', __IS_SERVER__);
-		console.log('echo.isConnected', echo.isConnected);
-
-		await echo.connect(config.API_URL, {
-			connectionTimeout: 5000,
-			maxRetries: 1e10,
-			pingTimeout: 6000,
-			pingDelay: 5000,
-			debug: false,
-			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
-		});
+		await echo.connect(config.API_URL, config.ECHO_CONFIG);
 
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));

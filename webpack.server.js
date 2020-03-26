@@ -16,6 +16,7 @@ const {
 	SOLC_BIN_URL,
 	MAP_API_TOKEN,
 	INSTALL_NODE_LINK,
+	ECHO_CONFIG,
 } = require('config');
 
 const webpackIsomorphicToolsPlugin =
@@ -68,6 +69,7 @@ module.exports = {
 			__IS_SERVER__: true,
 			__IS_CLIENT__: false,
 			__API_URL__: JSON.stringify(API_URL),
+			__ECHO_CONFIG__: JSON.stringify(ECHO_CONFIG),
 			__SERVER_URL__: JSON.stringify(SERVER_URL),
 			__SOLC_LIST_URL__: JSON.stringify(SOLC_LIST_URL),
 			__SOLC_BIN_URL__: JSON.stringify(SOLC_BIN_URL),

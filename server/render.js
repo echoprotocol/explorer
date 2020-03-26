@@ -14,18 +14,13 @@ import GlobalActions from '../src/actions/GlobalActions';
 
 export default async function render(req) {
 	const store = configureStore();
+
 	echo.syncCacheWithStore(store);
 
 	try {
-		const { pathname, path, query } = parse(req.url);
-		// console.log('path', path);
-		// console.log('pathname', pathname);
-		// console.log('req.url', req.url);
+		const { pathname, query } = parse(req.url);
 
 		const routes = matchRoutes(Routes, pathname);
-
-		// console.log('routes.filter', routes
-		// 	.filter(({ route }) => route.loadData));
 
 		const promises = routes
 			.filter(({ route }) => route.loadData)
@@ -54,16 +49,17 @@ export default async function render(req) {
 	store.dispatch(GlobalActions.setValue('isMobileDevice', !!mobile.mobile()));
 
 	try {
-		content = renderToString(<Provider store={store}>
-			<StaticRouter location={req.url}>
-				<div>{renderRoutes(Routes)}</div>
-			</StaticRouter>
-		</Provider>);
+		content = renderToString(
+			<Provider store={store}>
+				<StaticRouter location={req.url}>
+					<div>{renderRoutes(Routes)}</div>
+				</StaticRouter>
+			</Provider>
+		);
 	} catch (err) {
 		console.log(`Error render server: ${err}`);
 	}
 
-	// Get a copy of store data to create the same store on client side
 	const preloadedState = store.getState();
 
 	return {
