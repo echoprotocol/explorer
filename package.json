@@ -106,7 +106,7 @@
 		"redux-modules-middleware": "^1.2.0",
 		"redux-thunk": "^2.3.0",
 		"reselect": "^4.0.0",
-		"semantic-ui-react": "^0.84.0",
+		"semantic-ui-react": "^0.88.2",
 		"solc": "^0.5.12",
 		"subscriptions-transport-ws": "^0.9.16",
 		"transit-immutable-js": "^0.8.0",

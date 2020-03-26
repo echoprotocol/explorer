@@ -83,6 +83,7 @@ export default [
 				loadData: loadDataManageContract,
 			},
 			{
+				// dont need preload info
 				path: VERIFY_CONTRACT_PATH,
 				exact: true,
 				component: VerifyContract,

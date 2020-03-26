@@ -1,10 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
 export const loadScript = (src) => new Promise((resolve, reject) => {
-	if (!__IS_CLIENT__) {
-		return resolve();
-	}
-
 	const findScript = [...document.scripts].find((script) => script.src === src);
 	if (findScript) {
 		return resolve();
