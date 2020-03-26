@@ -3,17 +3,17 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	@include res-768() {
+	@include max-vw(999) {
 		padding: 38px 0 95px;
 	}
-	@include res-500() {
+	@include max-vw(767) {
 		padding: 29px 0 90px;
 	}
-	@include res-320() {
+	@include max-vw(499) {
 		padding: 29px 0 105px;
 	}
 	.input-search-block {
-		@include res-320 {
+		@include max-vw(499) {
 			position: absolute;
 			right: 20px;
 			background-color: #18142a;
@@ -31,11 +31,11 @@ header {
 			}
 
 			&.is-active-small {
-				@include res-500 {
+				@include max-vw(767) {
 					width: 185px;
 				}
 
-				@include res-320 {
+				@include max-vw(499) {
 					width: calc(100% - 35px);
 				}
 			}
@@ -52,12 +52,12 @@ header {
 	margin-left: auto;
 	margin-right: 40px;
 
-	@include res-768() {
+	@include max-vw(999) {
 		position: absolute;
 		top: 125px;
 	}
 
-	@include res-500() {
+	@include max-vw(767) {
 		top: 115px;
 	}
 	button {
@@ -70,11 +70,11 @@ header {
 		margin: 0 10px;
 		color: $lightgrey;
 
-		@include res-768() {
+		@include max-vw(999) {
 			margin: 0 15px;
 		}
 		&:first-child {
-			@include res-768() {
+			@include max-vw(999) {
 				margin-left: 0;
 			}
 		}
@@ -97,15 +97,15 @@ header {
 	background-color: $explorer-black;
 	min-height: 245px;
 
-	@include res-768 {
+	@include max-vw(999) {
 		min-height: 205px;
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		min-height: 210px;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		position: relative;
 		z-index: 2;
 	}

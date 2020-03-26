@@ -30,7 +30,7 @@
 		&.is-active-small {
 			width: 277px;
 
-			@include res-500 {
+			@include max-vw(767) {
 				width: 200px;
 			}
 
@@ -121,7 +121,7 @@
 	&.go-to-block {
 		width: 175px;
 
-		@include res-320 {
+		@include max-vw(499) {
 			position: relative !important;
 			right: 0 !important;
 			width: 100%;
@@ -396,11 +396,11 @@
 		.element {
 			@include transition;
 
-			@include res-1280 {
+			@include max-vw(1534) {
 				height: 46px;
 			}
 
-			@include res-768 {
+			@include max-vw(999) {
 				height: 41px;
 			}
 

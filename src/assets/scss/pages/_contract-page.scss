@@ -17,25 +17,25 @@
 				right: -30px;
 				z-index: 0;
 
-				@include res-1280 {
+				@include max-vw(1534) {
 					right: -30px;
 				}
 
-				@include res-1000 {
+				@include max-vw(1279) {
 					right: -1000px;
 					top: -58px;
 				}
 
-				@include res-500 {
+				@include max-vw(767) {
 					top: -8px;
 				}
 
-				@include res-320 {
+				@include max-vw(499) {
 					top: -8px;
 				}
 			}
 
-			@include res-320 {
+			@include max-vw(499) {
 				padding: 0 15px;
 			}
 
@@ -43,11 +43,11 @@
 				margin: 43px 0 3px 0;
 				padding: 7px 0 2px 0;
 
-				@include res-768 {
+				@include max-vw(999) {
 					padding-top: 34px;
 				}
 
-				@include res-500 {
+				@include max-vw(767) {
 					margin-top: -7px;
 					margin-bottom: 17px;
 					padding-top: 62px;
@@ -59,11 +59,11 @@
 				align-items: center;
 				margin: 0;
 
-				@include res-1000 {
+				@include max-vw(1279) {
 					margin-left: 0px;
 				}
 
-				@include res-500 {
+				@include max-vw(767) {
 					margin: 10px 0 0;
 				}
 
@@ -72,7 +72,7 @@
 					margin: 0;
 					z-index: 1;
 
-					@include res-768 {
+					@include max-vw(999) {
 						margin: 0 15px 0 0;
 					}
 				}
@@ -83,16 +83,16 @@
 						height: 32px;
 					}
 
-					@include res-500 {
+					@include max-vw(767) {
 						display: none;
 					}
 				}
 
-				@include res-1000 {
+				@include max-vw(1279) {
 					padding: 0;
 				}
 
-				@include res-500 {
+				@include max-vw(767) {
 					.title {
 						padding: 0;
 					}
@@ -126,7 +126,7 @@
 						}
 					}
 
-					@include res-320 {
+					@include max-vw(499) {
 						&:last-child {
 							.action-button-wrap {
 								.action-label {
@@ -146,7 +146,7 @@
 		.tab-body {
 			margin-top: 29px;
 
-			@include res-1000 {
+			@include max-vw(1279) {
 				margin-top: 21px;
 			}
 		}
@@ -201,15 +201,15 @@
 		color: #498fdf;
 	}
 
-	@include res-768 {
+	@include max-vw(999) {
 		max-width: 278px;
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		max-width: none;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		margin-left: 16px;
 	}
 }
@@ -221,11 +221,11 @@
 		max-width: 798px;
 		flex-wrap: wrap;
 
-		@include res-1280 {
+		@include max-vw(1534) {
 			max-width: 100%;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			width: auto;
 
 			.column-right {
@@ -241,11 +241,11 @@
 		font-size: 12.63px;
 		line-height: 1.5;
 
-		@include res-768 {
+		@include max-vw(999) {
 			max-width: 278px;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			max-width: none;
 		}
 
@@ -274,12 +274,12 @@
 		border-bottom: 1px solid rgba(#3f465a, 0.15);
 		letter-spacing: 2.2px;
 
-		@include res-768 {
+		@include max-vw(999) {
 			max-width: 278px;
 			margin: 12px 0;
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			max-width: 100%;
 		}
 	}
@@ -292,11 +292,11 @@
 		flex-wrap: wrap;
 		justify-content: space-between;
 
-		@include res-768 {
+		@include max-vw(999) {
 			max-width: 278px;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			max-width: none;
 		}
 
@@ -308,15 +308,15 @@
 			width: 170px;
 			text-transform: uppercase;
 
-			@include res-768 {
+			@include max-vw(999) {
 				width: 100%;
 			}
 
-			@include res-500 {
+			@include max-vw(767) {
 				width: 48%;
 			}
 
-			@include res-320 {
+			@include max-vw(499) {
 				width: 100%;
 			}
 
@@ -341,7 +341,7 @@
 	padding: 29px 30px;
 	width: 356px;
 
-	@include res-500 {
+	@include max-vw(767) {
 		width: 100%;
 	}
 
@@ -433,16 +433,16 @@
 	margin-left: 0px;
 	padding-top: 15px;
 
-	@include res-500 {
+	@include max-vw(767) {
 		margin-left: 0px;
 		padding-top: 10px;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		margin-left: 0;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		padding-left: 30px;
 		padding-right: 30px;
 	}
@@ -451,7 +451,7 @@
 		display: flex;
 		align-items: flex-start;
 
-		@include res-320 {
+		@include max-vw(499) {
 			flex-direction: column;
 		}
 
@@ -464,7 +464,7 @@
 			margin-right: 120px;
 			flex-shrink: 0;
 
-			@include res-320 {
+			@include max-vw(499) {
 				margin-bottom: 15px;
 			}
 		}
@@ -472,7 +472,7 @@
 		.right-column {
 			margin-top: -3px;
 
-			@include res-500 {
+			@include max-vw(767) {
 				position: relative;
 				padding-top: 45px;
 			}
@@ -500,7 +500,7 @@
 			padding-left: 15px;
 			padding-right: 15px;
 
-			@include res-500 {
+			@include max-vw(767) {
 				right: auto;
 				left: 0;
 			}
@@ -513,21 +513,21 @@
 	padding-top: 15px;
 	width: 785px;
 
-	@include res-1280 {
+	@include max-vw(1534) {
 		width: 755px;
 	}
 
-	@include res-768 {
+	@include max-vw(999) {
 		width: 570px;
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		margin-left: 0px;
 		padding-top: 10px;
 		width: 370px;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		width: 100%;
 		padding-left: 30px;
 		padding-right: 30px;
@@ -537,7 +537,7 @@
 		&:not(:last-child) {
 			margin-bottom: 35px;
 
-			@include res-500 {
+			@include max-vw(767) {
 				margin-bottom: 30px;
 			}
 		}
@@ -551,7 +551,7 @@
 			border-bottom: 1px solid #d8d9de;
 			padding-bottom: 8px;
 
-			@include res-320 {
+			@include max-vw(499) {
 				padding-left: 0px;
 			}
 
@@ -565,7 +565,7 @@
 			display: flex;
 			flex-wrap: wrap;
 
-			@include res-500 {
+			@include max-vw(767) {
 				justify-content: space-between;
 			}
 
@@ -580,7 +580,7 @@
 				position: relative;
 				margin-right: 35px;
 
-				@include res-1280 {
+				@include max-vw(1534) {
 					margin-right: 25px;
 				}
 
@@ -588,7 +588,7 @@
 					margin-right: 0;
 				}
 
-				@include res-768 {
+				@include max-vw(999) {
 					margin-right: 30px;
 
 					&:nth-child(3n) {
@@ -600,7 +600,7 @@
 					}
 				}
 
-				@include res-500 {
+				@include max-vw(767) {
 					margin-right: 0 !important;
 				}
 
@@ -608,7 +608,7 @@
 					border-bottom: 0;
 				}
 
-				@include res-320 {
+				@include max-vw(499) {
 					padding-left: 0px;
 					width: 100%;
 				}
@@ -637,7 +637,7 @@
 		.load-more {
 			display: inline-flex;
 
-			@include res-320 {
+			@include max-vw(499) {
 				margin-left: 20px;
 			}
 		}

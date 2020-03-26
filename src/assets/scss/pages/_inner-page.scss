@@ -2,7 +2,7 @@
 	.backwards {
 		margin: 0 0 15px 0;
 
-		@include res-768 {
+		@include max-vw(999) {
 			margin: 30px 0 0 0;
 		}
 	}
@@ -24,7 +24,7 @@
 			font-size: 23px;
 			color: #18142a;
 
-			@include res-768 {
+			@include max-vw(999) {
 				padding-left: 19px;
 			}
 		}
@@ -39,11 +39,11 @@
 			}
 		}
 
-		@include res-1000 {
+		@include max-vw(1279) {
 			padding: 0;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			padding: 0;
 
 			.title {
@@ -67,21 +67,21 @@
 			border: 1px solid #e2e3e7;
 			margin-bottom: 35px;
 
-			@include res-1280 {
+			@include max-vw(1534) {
 				padding: 15px 20px;
 			}
 
-			@include res-768 {
+			@include max-vw(999) {
 				padding: 15px 38px;
 				margin-bottom: 47px;
 			}
 
-			@include res-500 {
+			@include max-vw(767) {
 				padding: 15px 30px;
 				margin-bottom: 35px;
 			}
 
-			@include res-320 {
+			@include max-vw(499) {
 				padding: 10px 15px 14px;
 				margin-bottom: 22px;
 			}

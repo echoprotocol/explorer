@@ -17,11 +17,11 @@
 	padding: 0 12px;
 	white-space: nowrap;
 
-	@include res-500 {
+	@include max-vw(767) {
 		margin-top: 20px;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		margin-top: 15px;
 	}
 

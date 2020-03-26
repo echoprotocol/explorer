@@ -1,7 +1,7 @@
 .footer {
 	padding: 35px 0 40px;
 	display: none;
-	@include res-1000() {
+	@include max-vw(1279) {
 		display: block;
 	}
 }

@@ -11,12 +11,12 @@
 		border-bottom: 1px solid rgba(#707070, 0.2);
 		padding: 20px 10px 10px 0px;
 
-		@include res-500 {
+		@include max-vw(767) {
 			flex-direction: column;
 			align-items: start;
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			padding: 3px 10px 29px 11px;
 		}
 
@@ -28,7 +28,7 @@
 			color: #130d32;
 			letter-spacing: 0.55px;
 
-			@include res-320 {
+			@include max-vw(499) {
 				margin-bottom: 35px;
 			}
 		}

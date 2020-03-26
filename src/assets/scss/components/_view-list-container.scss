@@ -46,7 +46,7 @@
 			transition: transform 0.3s ease;
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			margin-left: 20px;
 		}
 	}
@@ -72,12 +72,12 @@
 			}
 		}
 
-		@include res-768 {
+		@include max-vw(999) {
 			right: auto;
 			left: -30px;
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			left: 16px;
 		}
 

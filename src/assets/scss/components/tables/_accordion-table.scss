@@ -59,21 +59,21 @@
 			padding: 9px 7px 9px 20px;
 			position: relative;
 			z-index: 2;
-			@include res-1280() {
+			@include max-vw(1534) {
 				padding: 9px 7px 9px 10px;
 			}
-			@include res-1000() {
+			@include max-vw(1279) {
 				padding: 9px 7px 9px 20px;
 			}
-			@include res-500() {
+			@include max-vw(767) {
 				padding: 9px 7px 9px 15px;
 			}
-			@include res-320() {
+			@include max-vw(499) {
 				padding: 9px 7px 9px 10px;
 			}
 		}
 
-		@include res-768 {
+		@include max-vw(999) {
 			&:first-child,
 			&:last-child {
 				max-width: 8px;
@@ -190,7 +190,7 @@
 				}
 
 				&:nth-child(2) {
-					@include res-500 {
+					@include max-vw(767) {
 						background-color: #fff;
 					}
 				}
@@ -279,7 +279,7 @@
 					background-color: #fff;
 					box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.16);
 
-					@include res-500 {
+					@include max-vw(767) {
 						display: none;
 					}
 				}
@@ -288,7 +288,7 @@
 			&:last-child {
 				background-color: #f3f3f5;
 
-				@include res-768() {
+				@include max-vw(999) {
 					background-color: #fff;
 				}
 			}
@@ -318,11 +318,11 @@
 			& + .operation-detail-table {
 				margin-top: 8px;
 
-				@include res-768 {
+				@include max-vw(999) {
 					margin-top: 19px;
 				}
 
-				@include res-500 {
+				@include max-vw(767) {
 					margin-top: 13px;
 				}
 			}
@@ -385,7 +385,7 @@
 				text-overflow: ellipsis;
 				white-space: nowrap;
 
-				@include res-1280 {
+				@include max-vw(1534) {
 					max-width: 80px;
 				}
 			}
@@ -396,7 +396,7 @@
 		}
 	}
 
-	@include res-1280 {
+	@include max-vw(1534) {
 		width: 100%;
 		margin-left: 0;
 
@@ -433,12 +433,12 @@
 	}
 	.ps {
 		overflow: visible;
-		@include res-500() {
+		@include max-vw(767) {
 			overflow: hidden;
 		}
 	}
 	.scrollbar-container {
-		@include res-500() {
+		@include max-vw(767) {
 			padding-bottom: 55px;
 			&:after {
 				content: "";

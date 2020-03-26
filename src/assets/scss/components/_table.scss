@@ -61,7 +61,7 @@
 		padding-right: 0;
 		color: $lightgrey;
 		white-space: nowrap;
-		@include res-1280 {
+		@include max-vw(1534) {
 			padding: 12px 25px;
 			&:not(:last-child) {
 				padding-right: 0;
@@ -141,7 +141,7 @@
 		width: 10%;
 		min-width: 100px;
 	}
-	@include res-1280 {
+	@include max-vw(1534) {
 		padding: 7px 25px;
 		padding-right: 0;
 	}
@@ -174,11 +174,11 @@
 
 	height: 35px;
 
-	@include res-500 {
+	@include max-vw(767) {
 		margin: 30px auto 0;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		margin: 20px auto 0;
 	}
 

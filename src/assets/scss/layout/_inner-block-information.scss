@@ -9,31 +9,25 @@
 	padding-bottom: 37px;
 	flex-shrink: 0;
 
-	@include res-1000() {
-		min-height: calc(100vh - 403px);
-	}
-
-	@include res-1280 {
+	@include max-vw(1534) {
 		padding-right: 30px;
 		width: 867px;
 		flex-shrink: 0;
 	}
 
-	@include res-1000 {
+	@include max-vw(1279) {
+		min-height: calc(100vh - 403px);
 		width: 100%;
 		padding-right: 0;
 		min-height: calc(100vh - 363px);
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		padding-top: 56px;
-	}
-
-	@include res-500 {
 		min-height: calc(100vh - 487px);
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		& > .checkbox {
 			margin-bottom: 20px;
 		}
@@ -42,7 +36,7 @@
 	.checkbox {
 		margin-bottom: 20px;
 		padding-left: 30px;
-		@include res-1000() {
+		@include max-vw(1279) {
 			padding-left: 0;
 		}
 	}
@@ -59,7 +53,7 @@
 		width: 1000vw;
 	}
 
-	@include res-1000 {
+	@include max-vw(1279) {
 		&:after {
 			content: "";
 			width: 100%;
@@ -107,7 +101,7 @@
 			}
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			justify-content: flex-start;
 		}
 
@@ -133,7 +127,7 @@
 				&.amount {
 					width: 138px;
 
-					@include res-320 {
+					@include max-vw(499) {
 						width: 120px;
 					}
 				}
@@ -156,7 +150,7 @@
 				}
 			}
 
-			@include res-320 {
+			@include max-vw(499) {
 				width: 140px;
 			}
 

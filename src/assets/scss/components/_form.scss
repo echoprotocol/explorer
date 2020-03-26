@@ -1,128 +1,120 @@
 .form {
+	input,
+	textarea {
+		@include InterUI_Regular;
+		width: 100%;
+		border-radius: 2px;
+		border: 1px solid #b0b7bd;
+		font-size: 13px;
+		color: #000;
+		padding: 10px 12px;
+		line-height: 18px;
+		transition: border 0.2s, background-color 0.2s;
+		background-color: transparent;
 
-    input,
-    textarea {
-        @include InterUI_Regular;
-        width: 100%;
-        border-radius: 2px;
-        border: 1px solid #B0B7BD;
-        font-size: 13px;
-        color: #000;
-        padding: 10px 12px;
-        line-height: 18px;
-        transition: border .2s, background-color .2s;
-        background-color: transparent;
+		&::placeholder {
+			color: rgba(#000, 0.5);
+		}
 
-        &::placeholder {
-            color: rgba(#000, 0.5);
-        }
+		&:hover {
+			border: 1px solid #9ea5aa;
+		}
 
-        &:hover {
-            border: 1px solid #9EA5AA;
-        }
+		&:focus {
+			border: 1px solid #4588d7;
+		}
 
+		&:disabled {
+			background-color: #e6e5e8;
+			border: 1px solid #e6e5e8;
+			color: rgba(#000, 0.5);
+		}
+	}
 
+	input {
+		&[type="file"] {
+			position: absolute;
+			z-index: -1;
+		}
+	}
 
-        &:focus {
-            border: 1px solid #4588D7;
-        }
+	textarea {
+		resize: none;
+	}
 
-        &:disabled {
-            background-color: #E6E5E8;
-            border: 1px solid #E6E5E8;
-            color: rgba(#000, 0.5);
-        }
+	.field {
+		font-size: 0;
+		width: 100%;
+		position: relative;
+	}
 
-    }
+	.field-label {
+		@include InterUI_Regular;
+		line-height: 18px;
+		font-size: 13px;
+	}
 
-    input {
-        &[type="file"] {
-            position: absolute;
-            z-index: -1;
-        }
-    }
+	.error {
+		@include InterUI_Regular;
+		color: #e83425;
+		padding: 3px 5px;
+		background-color: #fff;
+		position: absolute;
+		left: 8px;
+		bottom: -8px;
+		font-size: 10px;
+		line-height: 14px;
 
-    textarea {
-        resize: none;
-    }
+		&-icon {
+			bottom: 4px;
+		}
+	}
 
-    .field {
-        font-size: 0;
-        width: 100%;
-        position: relative;
-    }
-
-    .field-label {
-        @include InterUI_Regular;
-        line-height: 18px;
-        font-size: 13px;
-    }
-
-    .error {
-        @include InterUI_Regular;
-        color: #E83425;
-        padding: 3px 5px;
-        background-color: #fff;
-        position: absolute;
-        left: 8px;
-        bottom: -8px;
-        font-size: 10px;
-        line-height: 14px;
-
-        &-icon {
-            bottom: 4px;
-        }
-    }
-
-    .hint {
-        @include InterUI_Regular;
-        line-height: 18px;
-        font-size: 12px;
-        color: #848B94;
-        margin-top: 7px;
-        margin-bottom: 5px;
-    }
-
+	.hint {
+		@include InterUI_Regular;
+		line-height: 18px;
+		font-size: 12px;
+		color: #848b94;
+		margin-top: 7px;
+		margin-bottom: 5px;
+	}
 }
 
 .page-helper-section {
-    .form {
-        .row {
-            display: flex;
+	.form {
+		.row {
+			display: flex;
 
-            @include res-500 {
-                flex-direction: column;
-            }
+			@include max-vw(767) {
+				flex-direction: column;
+			}
 
-            &:not(:last-child) {
-                margin-bottom: 16px;
-            }
+			&:not(:last-child) {
+				margin-bottom: 16px;
+			}
 
-            .field-label {
-                white-space: nowrap;
-                padding: 10px 20px 10px 0;
+			.field-label {
+				white-space: nowrap;
+				padding: 10px 20px 10px 0;
+			}
 
-            }
+			.field-wrap {
+				width: 100%;
+				max-width: 467px;
+				margin-left: auto;
 
-            .field-wrap {
-                width: 100%;
-                max-width: 467px;
-                margin-left: auto;
+				@include max-vw(999) {
+					max-width: 317px;
+				}
 
-                @include res-768 {
-                    max-width: 317px;
-                }
+				@include max-vw(767) {
+					max-width: none;
+				}
+			}
 
-                @include res-500 {
-                    max-width: none;
-                }
-
-            }
-
-            textarea {
-                min-height: 110px;
-
-            }
-        }
-    }
+			textarea {
+				min-height: 110px;
+			}
+		}
+	}
 }

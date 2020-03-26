@@ -7,16 +7,16 @@
 		background-color: #ebeaee;
 		display: flex;
 		padding: 19px 30px;
-		@include res-1280() {
+		@include max-vw(1534) {
 			padding-left: 19px 20px;
 		}
-		@include res-1000() {
+		@include max-vw(1279) {
 			padding-left: 19px 30px;
 		}
-		@include res-500() {
+		@include max-vw(767) {
 			padding-left: 19px 20px;
 		}
-		@include res-320 {
+		@include max-vw(499) {
 			padding-left: 19px 15px;
 			flex-direction: column-reverse;
 			align-items: flex-start;
@@ -26,7 +26,7 @@
 			margin-left: auto;
 			margin-top: 0;
 
-			@include res-320 {
+			@include max-vw(499) {
 				margin-left: 0;
 				margin-bottom: 20px;
 			}
@@ -40,7 +40,7 @@
 			max-width: calc(100% - 140px);
 			width: 100%;
 
-			@include res-500 {
+			@include max-vw(767) {
 				max-width: 100%;
 			}
 

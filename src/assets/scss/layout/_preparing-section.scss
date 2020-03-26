@@ -3,19 +3,19 @@
 	display: flex;
 	padding-right: 0;
 
-	@include res-1000 {
+	@include max-vw(1279) {
 		padding-bottom: 20px;
 	}
 
-	@include res-768 {
+	@include max-vw(999) {
 		display: flex;
 		justify-content: space-between;
 	}
 
-	@include res-500() {
+	@include max-vw(767) {
 		padding-bottom: 20px;
 	}
-	@include res-320 {
+	@include max-vw(499) {
 		flex-direction: column;
 		padding-bottom: 0px;
 	}
@@ -54,27 +54,27 @@
 		}
 	}
 
-	@include res-1280 {
+	@include max-vw(1534) {
 		padding-left: 25px;
 		padding-right: 25px;
 	}
 
-	@include res-1000 {
+	@include max-vw(1279) {
 		padding-left: 25px;
 		padding-right: 20px;
 	}
 
-	@include res-768 {
+	@include max-vw(999) {
 		padding-left: 0;
 		padding-right: 0;
 		padding-bottom: 0;
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		width: 190px;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		width: 100%;
 	}
 
@@ -92,7 +92,7 @@
 			position: absolute;
 			right: 0;
 			bottom: 0;
-			@include res-768 {
+			@include max-vw(999) {
 				display: none;
 			}
 		}
@@ -102,17 +102,17 @@
 		.status-container {
 			.description {
 				.text {
-					@include res-768 {
+					@include max-vw(999) {
 						display: none;
 					}
 
-					@include res-500 {
+					@include max-vw(767) {
 						display: block;
 					}
 				}
 			}
 
-			@include res-320 {
+			@include max-vw(499) {
 				display: none;
 			}
 		}
@@ -131,7 +131,7 @@
 			right: 0;
 			bottom: 0;
 
-			@include res-768 {
+			@include max-vw(999) {
 				display: none;
 			}
 		}
@@ -217,12 +217,12 @@
 		letter-spacing: 2px;
 		font-size: 9px;
 		text-transform: uppercase;
-		@include res-1000 {
+		@include max-vw(1279) {
 			white-space: nowrap;
 			margin-bottom: 25px;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			margin-bottom: 25px;
 		}
 
@@ -268,19 +268,19 @@
 		display: flex;
 		font-size: 16px;
 
-		@include res-768 {
+		@include max-vw(999) {
 			.text {
 				line-height: 13px;
 			}
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			.text {
 				line-height: 18px;
 			}
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			font-size: 15px;
 		}
 
@@ -296,15 +296,15 @@
 			background-position: center center;
 			background-repeat: no-repeat;
 
-			@include res-768 {
+			@include max-vw(999) {
 				position: relative;
 			}
 
-			@include res-500 {
+			@include max-vw(767) {
 				position: absolute;
 			}
 
-			@include res-320 {
+			@include max-vw(499) {
 				right: 11px;
 			}
 		}

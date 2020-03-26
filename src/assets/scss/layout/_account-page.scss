@@ -4,7 +4,7 @@
 		position: relative;
 		margin-top: 45px;
 
-		@include res-1000 {
+		@include max-vw(1279) {
 			margin-top: 45px;
 		}
 	}
@@ -18,7 +18,7 @@
 		align-items: center;
 		margin-bottom: 25px;
 
-		@include res-320 {
+		@include max-vw(499) {
 			padding-left: 0px;
 			justify-content: center;
 		}
@@ -80,11 +80,11 @@
 	background-color: $lightgrey-darker;
 	position: relative;
 
-	@include res-1280() {
+	@include max-vw(1534) {
 		padding: 50px 40px 40px 0;
 	}
 
-	@include res-1000() {
+	@include max-vw(1279) {
 		padding: 50px 30px 40px 0;
 		&:after {
 			content: "";
@@ -98,7 +98,7 @@
 		}
 	}
 
-	@include res-500() {
+	@include max-vw(767) {
 		padding: 50px 0 40px;
 	}
 	&:before {
@@ -114,7 +114,7 @@
 
 .account-page-table {
 	padding: 50px 30px 50px 0;
-	@include res-768() {
+	@include max-vw(999) {
 		padding: 50px 0 0;
 	}
 }
@@ -130,16 +130,16 @@
 		margin-top: 50px;
 		margin-left: 30px;
 
-		@include res-1280 {
+		@include max-vw(1534) {
 			margin-left: 19px;
 		}
 
-		@include res-768 {
+		@include max-vw(999) {
 			margin-left: 23px;
 			margin-bottom: 29px;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			margin-left: 17px;
 		}
 	}
@@ -148,7 +148,7 @@
 		display: flex;
 		align-items: flex-start;
 
-		@include res-500 {
+		@include max-vw(767) {
 			flex-direction: column;
 		}
 	}
@@ -162,12 +162,12 @@
 	padding: 43px 30px 30px;
 	flex-shrink: 0;
 
-	@include res-500 {
+	@include max-vw(767) {
 		padding: 30px 20px;
 		width: 100%;
 	}
 
-	@include res-320() {
+	@include max-vw(499) {
 		padding: 45px 25px;
 		position: relative;
 		z-index: 2;
@@ -178,21 +178,21 @@
 		display: flex;
 		align-items: center;
 
-		@include res-320() {
+		@include max-vw(499) {
 			align-items: flex-start;
 			flex-direction: column;
 		}
 
 		&:not(:last-child) {
 			margin-bottom: 20px;
-			@include res-320() {
+			@include max-vw(499) {
 				margin-bottom: 30px;
 			}
 		}
 
 		&:last-child {
 			margin-top: 13px;
-			@include res-320() {
+			@include max-vw(499) {
 				margin-top: 5px;
 			}
 		}
@@ -205,7 +205,7 @@
 			display: block;
 			white-space: nowrap;
 
-			@include res-320() {
+			@include max-vw(499) {
 				margin-bottom: 10px;
 			}
 		}
@@ -237,7 +237,7 @@
 			background-size: auto;
 			background-repeat: repeat;
 			transform: translateY(-3px);
-			@include res-320() {
+			@include max-vw(499) {
 				display: none;
 			}
 		}
@@ -255,24 +255,24 @@
 	padding-top: 15px;
 	margin-left: 55px;
 	width: 100%;
-	@include res-768 {
+	@include max-vw(999) {
 		margin-left: 50px;
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		padding: 30px 20px 0;
 		width: 100%;
 		margin-left: 0;
 	}
 
-	@include res-320() {
+	@include max-vw(499) {
 		padding: 30px 15px 0;
 	}
 	.elem {
 		&:not(:last-child) {
 			margin-bottom: 35px;
 
-			@include res-500 {
+			@include max-vw(767) {
 				margin-bottom: 30px;
 			}
 		}
@@ -290,7 +290,7 @@
 		.load-more {
 			display: inline-flex;
 
-			@include res-320 {
+			@include max-vw(499) {
 				margin-left: 20px;
 			}
 		}
@@ -312,20 +312,20 @@
 			margin-right: 0;
 		}
 
-		@include res-1280 {
+		@include max-vw(1534) {
 			width: 48%;
 			margin-right: 0;
 		}
 
-		@include res-768 {
+		@include max-vw(999) {
 			width: 100%;
 		}
 
-		@include res-500() {
+		@include max-vw(767) {
 			width: 48%;
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			width: 100%;
 		}
 
@@ -343,15 +343,15 @@
 				max-width: 70px;
 				vertical-align: bottom;
 
-				@include res-768 {
+				@include max-vw(999) {
 					max-width: 180px;
 				}
 
-				@include res-500 {
+				@include max-vw(767) {
 					max-width: 90px;
 				}
 
-				@include res-320 {
+				@include max-vw(499) {
 					overflow: unset;
 				}
 			}
@@ -382,7 +382,7 @@
 		display: flex;
 		flex-wrap: wrap;
 
-		@include res-1280 {
+		@include max-vw(1534) {
 			justify-content: space-between;
 		}
 	}

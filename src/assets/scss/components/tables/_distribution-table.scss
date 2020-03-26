@@ -18,7 +18,7 @@
 			&:last-child {
 				min-width: 13px;
 				width: 13px;
-				@include res-1280() {
+				@include max-vw(1534) {
 					min-width: 25px;
 					width: 25px;
 				}
@@ -59,7 +59,7 @@
 			@include text-overflow;
 			max-width: 175px;
 
-			@include res-768 {
+			@include max-vw(999) {
 				max-width: 75px;
 			}
 		}

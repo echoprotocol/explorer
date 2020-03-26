@@ -24,7 +24,7 @@
 	}
 }
 
-@include res-320 {
+@include max-vw(499) {
 	.token-transfer-table {
 		.tt-col {
 			&:first-child {

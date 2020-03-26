@@ -4,11 +4,11 @@
 	margin: 0 auto;
 	padding: 0;
 
-	@include res-1280 {
+	@include max-vw(1534) {
 		width: 100%;
 		padding: 0 30px;
 	}
-	@include res-1000 {
+	@include max-vw(1279) {
 		padding: 0 10px;
 	}
 }
@@ -19,43 +19,43 @@
 	.recent-block-sidebar {
 		width: 430px;
 
-		@include res-1280 {
+		@include max-vw(1534) {
 			width: 310px;
 		}
 
-		@include res-1000 {
+		@include max-vw(1279) {
 			width: 900px;
 			margin: auto;
 		}
 
-		@include res-768 {
+		@include max-vw(999) {
 			width: 668px;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			width: 450px;
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			width: 300px;
 		}
 	}
 }
 
 .wrap.sm {
-	@include res-1280 {
+	@include max-vw(1534) {
 		width: 100%;
 		padding: 0 50px;
 	}
-	@include res-1000 {
+	@include max-vw(1279) {
 		padding: 0 40px;
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		padding: 0 30px;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		padding: 0 25px;
 	}
 }

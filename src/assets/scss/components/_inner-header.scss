@@ -4,16 +4,16 @@
 	margin-bottom: 30px;
 	display: flex;
 	align-items: center;
-	@include res-1280() {
+	@include max-vw(1534) {
 		padding-left: 20px;
 	}
-	@include res-1000() {
+	@include max-vw(1279) {
 		padding-left: 30px;
 	}
-	@include res-500() {
+	@include max-vw(767) {
 		padding-left: 20px;
 	}
-	@include res-320() {
+	@include max-vw(499) {
 		padding-left: 15px;
 	}
 	.breadcrumbs-container {
@@ -29,24 +29,24 @@
 	bottom: calc(100% + 15px);
 	width: 100%;
 	padding-left: 30px;
-	@include res-1280() {
+	@include max-vw(1534) {
 		bottom: calc(100% + 10px);
 		padding-left: 20px;
 	}
-	@include res-1000() {
+	@include max-vw(1279) {
 		padding-left: 30px;
 		padding-right: 30px;
 	}
-	@include res-500() {
+	@include max-vw(767) {
 		padding-left: 20px;
 	}
-	@include res-320() {
+	@include max-vw(499) {
 		padding-left: 15px;
 	}
 	.backwards-link {
 		left: -6px;
 		top: calc(100% + 13px);
-		@include res-1280() {
+		@include max-vw(1534) {
 			position: relative;
 			top: 0;
 		}

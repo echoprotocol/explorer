@@ -55,15 +55,15 @@
 		}
 	}
 
-	@include res-768 {
+	@include max-vw(999) {
 		padding-left: 18px;
 	}
 
-	@include res-500 {
+	@include max-vw(767) {
 		padding-left: 23px;
 	}
 
-	@include res-320 {
+	@include max-vw(499) {
 		padding-top: 86px;
 		padding-left: 25px;
 	}
@@ -76,19 +76,19 @@
 		letter-spacing: 0.025em;
 		margin-left: 32px;
 
-		@include res-1280 {
+		@include max-vw(1534) {
 			margin-left: 18px;
 		}
 
-		@include res-768 {
+		@include max-vw(999) {
 			margin-left: 0;
 		}
 
-		@include res-500 {
+		@include max-vw(767) {
 			margin-left: -7px;
 		}
 
-		@include res-320 {
+		@include max-vw(499) {
 			width: 100%;
 			margin-left: -9px;
 			padding-right: 30px;
