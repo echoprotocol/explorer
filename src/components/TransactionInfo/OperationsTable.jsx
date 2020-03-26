@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import queryString from 'query-string';
 import InfiniteScroll from 'react-infinite-scroller';
-import classnames from 'classnames';
 import OperationRow from './OperationRow';
 import LoadMoreBtn from '../LoadMoreBtn';
 
@@ -212,7 +211,6 @@ OperationsTable.defaultProps = {
 	hasMore: false,
 	changeUrl: false,
 	loading: false,
-	isBlock: false,
 	isTransaction: false,
 	timestamp: false,
 	fee: false,
