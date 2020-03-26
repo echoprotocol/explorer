@@ -31,7 +31,7 @@ class Asset extends React.Component {
 			this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.props.asset.get('symbol')));
 		}
 
-		if (this.props.match.params.id !== prevProps.match.params.id) {
+		if (prevProps.match.params && this.props.match.params.id !== prevProps.match.params.id) {
 			this.props.getAssetInfo();
 		}
 	}
