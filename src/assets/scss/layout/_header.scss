@@ -1,97 +1,112 @@
 header {
-  padding: 38px 0px 68px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+	padding: 38px 0px 61px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	@include max-vw(999) {
+		padding: 38px 0 95px;
+	}
+	@include max-vw(767) {
+		padding: 29px 0 90px;
+	}
+	@include max-vw(499) {
+		padding: 29px 0 105px;
+	}
+	.input-search-block {
+		@include max-vw(499) {
+			position: absolute;
+			right: 20px;
+			background-color: #18142a;
+		}
 
-  @include res-1280 {
-    padding: 38px 20px 68px;
-  }
+		&.small {
+			.input-container {
+				.icon {
+					opacity: 1;
 
-  @include res-768 {
-    padding: 38px 24px 48px;
-  }
+					&:hover {
+						cursor: pointer;
+					}
+				}
+			}
 
-  @include res-500 {
-    padding: 38px 18px 48px;
-  }
+			&.is-active-small {
+				@include max-vw(767) {
+					width: 185px;
+				}
 
-  @include res-320 {
-    position: relative;
-    padding: 38px 15px 55px 15px;
-  }
-
-  .input-search-block {
-    @include res-320 {
-      position: absolute;
-      right: 20px;
-      background-color: #18142a;
-    }
-
-    &.small {
-
-      .input-container {
-        .icon {
-          opacity: 1;
-
-          &:hover {
-            cursor: pointer;
-          }
-        }
-      }
-
-      &.is-active-small {
-        @include res-500 {
-          width: 185px;
-        }
-
-        @include res-320 {
-          width: calc(100% - 35px);
-        }
-      }
-    }
-  }
+				@include max-vw(499) {
+					width: calc(100% - 35px);
+				}
+			}
+		}
+	}
 }
 
 .logotype {
-  display: inline-block;
-  height: 41px;
+	display: inline-block;
+	height: 41px;
 }
 
 .navigation-tabs {
-  margin-left: auto;
-  margin-right: 40px;
+	margin-left: auto;
+	margin-right: 40px;
 
-  button {
-    background-color: transparent;
-    outline: transparent;
-    border: transparent;
-    font-size: 16px;
-    @include InterUI_Bold;
-    margin: 0 10px;
-    color: #82818A;
+	@include max-vw(999) {
+		position: absolute;
+		top: 125px;
+	}
 
-    &.active {
-      color: #E2E3E7;
-    }
+	@include max-vw(767) {
+		top: 115px;
+	}
+	button {
+		background-color: transparent;
+		outline: transparent;
+		border: transparent;
+		font-size: 16px;
+		letter-spacing: 1px;
+		@include InterUI_Bold;
+		margin: 0 10px;
+		color: $lightgrey;
 
-    &:hover {
-      cursor: pointer;
-      color: #5EB3E8;
-    }
+		@include max-vw(999) {
+			margin: 0 15px;
+		}
+		&:first-child {
+			@include max-vw(999) {
+				margin-left: 0;
+			}
+		}
+		&.active {
+			color: #e2e3e7;
+		}
 
-    &:active {
-      color: #E85E5E;
-    }
-  }
+		&:hover {
+			cursor: pointer;
+			color: $blue;
+		}
 
-  @include res-768 {
-    position: absolute;
-    top: 100px;
-    left: 20px;
-  }
+		&:active {
+			color: #e85e5e;
+		}
+	}
+}
 
-  @include res-320 {
-    left: 5px;
-  }
+.top-section {
+	background-color: $explorer-black;
+	min-height: 245px;
+
+	@include max-vw(999) {
+		min-height: 205px;
+	}
+
+	@include max-vw(767) {
+		min-height: 210px;
+	}
+
+	@include max-vw(499) {
+		position: relative;
+		z-index: 2;
+	}
 }

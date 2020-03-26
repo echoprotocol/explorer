@@ -218,7 +218,7 @@ class VerifyContract extends React.Component {
 		};
 
 		return (
-			<div className="table-container inner-information-container inner-page with-d-table verify-contract">
+			<div className="inner-information-container inner-page verify-contract">
 				<div className="backwards">
 					<a
 						href=""

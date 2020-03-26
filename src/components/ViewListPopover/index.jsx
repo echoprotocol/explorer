@@ -15,7 +15,7 @@ class ViewListPopover extends Component {
 					className={`view-list ${isOpen ? 'is-open' : ''}`}
 					onClick={(e) => { e.preventDefault(); toggleReward(); }}
 				>
-					<span className="view-list-text">{isOpen ? 'hide' : 'show'}</span>
+					<span className="view-list-text">{isOpen ? 'Hide' : 'Show'}</span>
 					<span className="view-list-icon">
 						<img src={arrow} alt="" />
 					</span>

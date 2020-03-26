@@ -170,7 +170,7 @@ class Asset extends React.Component {
 	render() {
 		const { asset, issuer } = this.props;
 		return (
-			<div className="table-container inner-information-container block-information account-asset-page">
+			<div className="inner-information-container account-asset-page">
 				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset(asset, issuer)}
 			</div>
 		);

@@ -1,128 +1,105 @@
 .inner-page.verify-contract {
-  padding-top: 15px;
+	padding-top: 15px;
 
-  @include res-320 {
-    padding-top: 45px;
-  }
+	@include max-vw(499) {
+		padding-top: 45px;
+	}
 
-  .page-helper-section {
-    margin-top: 40px;
-    padding-bottom: 50px;
+	.page-helper-section {
+		margin-top: 40px;
+		padding-bottom: 50px;
 
-    @include res-320 {
-      margin-top: 30px;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-  }
+		@include max-vw(499) {
+			margin-top: 30px;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+	}
 
-  .backwards {
-    margin-bottom: 0;
-    margin-top: 0;
+	.section-description {
+		line-height: 23px;
+		padding: 20px 135px 20px 0;
+		margin-bottom: 30px;
 
-    @include res-500 {
-      padding-top: 50px;
-      padding-left: 17px;
+		@include max-vw(767) {
+			padding-right: 0;
+		}
 
-      .backwards-link {
-        top: 0;
-        left: 12px;
-      }
-    }
+		@include max-vw(499) {
+			font-size: 14px;
+		}
+	}
 
-    @include res-320 {
+	.code-block {
+		margin-bottom: 30px;
 
-      .backwards-link {
-        left: 12px;
-      }
-    }
-  }
+		@include max-vw(499) {
+			margin-bottom: 10px;
+		}
+	}
 
-  .section-description {
-    line-height: 23px;
-    padding: 20px 135px 20px 0;
-    margin-bottom: 30px;
+	.verify-contract-table {
+		&.mb40 {
+			margin-bottom: 40px;
 
-    @include res-500 {
-      padding-right: 0;
-    }
+			@include max-vw(499) {
+				margin-bottom: 20px;
+			}
+		}
 
-    @include res-320 {
-      font-size: 14px;
-    }
-  }
+		.row {
+			display: flex;
+			align-items: center;
 
-  .code-block {
-    margin-bottom: 30px;
+			@include max-vw(767) {
+				flex-direction: column;
+				align-items: flex-start;
+			}
 
-    @include res-320 {
-      margin-bottom: 10px;
-    }
-  }
+			&:not(:last-child) {
+				margin-bottom: 20px;
+			}
+		}
 
-  .verify-contract-table {
+		.t-name {
+			width: 255px;
+			padding-right: 20px;
+			font-size: 13px;
+			flex-shrink: 0;
+			color: #18142a;
+			@include InterUI_Regular;
+			line-height: 18px;
 
-    &.mb40 {
-      margin-bottom: 40px;
+			@include max-vw(767) {
+				margin-bottom: 10px;
+			}
+		}
 
-      @include res-320 {
-        margin-bottom: 20px;
-      }
-    }
+		.t-value {
+			display: flex;
+			align-items: center;
+			width: 100%;
 
-    .row {
-      display: flex;
-      align-items: center;
+			> div {
+				&:not(:last-child) {
+					margin-right: 15px;
+				}
+			}
 
-      @include res-500 {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+			.ui.selection.dropdown {
+				width: 100%;
+			}
+		}
+	}
 
-      &:not(:last-child) {
-        margin-bottom: 20px;
-      }
-    }
+	.buttons-wrap {
+		@include max-vw(499) {
+			padding-left: 0;
+			padding-right: 0;
 
-    .t-name {
-      width: 255px;
-      padding-right: 20px;
-      font-size: 13px;
-      flex-shrink: 0;
-      color: #18142a;
-      @include InterUI_Regular;
-      line-height: 18px;
-
-      @include res-500 {
-        margin-bottom: 10px;
-      }
-    }
-
-    .t-value {
-      display: flex;
-      align-items: center;
-      width: 100%;
-
-      >div {
-        &:not(:last-child) {
-          margin-right: 15px;
-        }
-      }
-
-      .ui.selection.dropdown {
-        width: 100%;
-      }
-    }
-  }
-
-  .buttons-wrap {
-    @include res-320 {
-      padding-left: 0;
-      padding-right: 0;
-
-      button {
-        width: 100%;
-      }
-    }
-  }
+			button {
+				width: 100%;
+			}
+		}
+	}
 }

@@ -6,6 +6,9 @@ import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
+import BackwardsLink from '../BackwardLink';
+import InnerHeader from '../InnerHeader';
+import TableLable from '../TableLable';
 import OperationsTable from './OperationsTable';
 import Loader from '../Loader';
 
@@ -57,17 +60,18 @@ class TransactionsInfo extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="table-container transaction inner-information-container transaction-information with-d-table">
-					<BreadCrumbs
-						breadcrumbs={breadcrumbs}
-						title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}
-						returnFunction={() => this.returnFunction()}
-					/>
+				<div className="inner-information-container transaction-information">
+					<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`} withTopPanel>
+						<BackwardsLink returnFunction={() => this.returnFunction()} />
+						<BreadCrumbs
+							breadcrumbs={breadcrumbs}
+						/>
+					</InnerHeader>
 					{
 						!loading ?
 							<React.Fragment>
-								<p className="transaction-time">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
-								<p className="transaction-title-operations">{FormatHelper.getFormaOperationsTitle(operations.size)}</p>
+								<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
+								<TableLable label={FormatHelper.getFormaOperationsTitle(operations.size)} />
 								<OperationsTable
 									isTransaction
 									operations={operations}

@@ -192,7 +192,7 @@ class PreparingSection extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="wrap">
+				<div className="wrap sm">
 					<div className="preparing-section">
 						<Media query="(max-width: 499px)">
 							{(matches) =>

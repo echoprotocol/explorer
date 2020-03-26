@@ -1,0 +1,135 @@
+.block-description {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	box-shadow: 0 0 62px rgba(64, 64, 64, 0.18);
+	padding: 24px 20px 18px 33px;
+	margin-bottom: 30px;
+	justify-content: space-between;
+
+	@include max-vw(1534) {
+		padding: 22px 20px 20px;
+	}
+
+	@include max-vw(1279) {
+		padding: 20px 30px;
+	}
+
+	@include max-vw(999) {
+		margin-bottom: 42px;
+	}
+
+	@include max-vw(767) {
+		padding-bottom: 0;
+		padding-left: 19px;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		padding-right: 19px;
+		margin-bottom: 28px;
+	}
+
+	@include max-vw(499) {
+		width: 100%;
+		margin: 0;
+		padding-left: 18px;
+		padding-right: 18px;
+		padding-top: 26px;
+		margin-bottom: 33px;
+	}
+
+	> .container {
+		flex-shrink: 0;
+		word-break: break-all;
+
+		@include max-vw(767) {
+			margin-bottom: 20px;
+			margin-right: 30px;
+		}
+
+		@include max-vw(499) {
+			margin-right: 0;
+		}
+		&.time {
+			width: 220px;
+
+			@include max-vw(767) {
+				width: 195px;
+			}
+
+			@include max-vw(499) {
+				width: 50%;
+			}
+		}
+
+		&.size {
+			width: 113px;
+
+			@include max-vw(767) {
+				width: 80px;
+			}
+
+			@include max-vw(499) {
+				padding-left: 30px;
+				width: 50%;
+			}
+		}
+
+		&.producer {
+			width: 113px;
+
+			@include max-vw(767) {
+				width: 100px;
+			}
+
+			@include max-vw(499) {
+				width: 50%;
+			}
+		}
+
+		&.reward {
+			width: 155px;
+			white-space: nowrap;
+			@include max-vw(499) {
+				width: 50%;
+			}
+		}
+
+		&.verifiers {
+			width: 113px;
+			white-space: nowrap;
+
+			@include max-vw(767) {
+				width: 80px;
+			}
+
+			@include max-vw(499) {
+				padding-left: 30px;
+				width: 50%;
+			}
+		}
+
+		.title {
+			@include InterUI_Medium;
+			font-size: 12px;
+			color: $lightgrey;
+			margin-bottom: 14px;
+			min-height: 10px;
+		}
+
+		.value {
+			@include InterUI_Medium;
+			font-size: 16px;
+			letter-spacing: 0.41px;
+			color: $explorer-black;
+			min-height: 21px;
+			line-height: normal;
+			align-items: center;
+			@include text-overflow();
+			max-width: 100%;
+			@include max-vw(999) {
+				font-size: 14px;
+				line-height: 20px;
+			}
+		}
+	}
+}

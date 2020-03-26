@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Media from 'react-media';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import queryString from 'query-string';
 import InfiniteScroll from 'react-infinite-scroller';
-import classnames from 'classnames';
 import OperationRow from './OperationRow';
 import LoadMoreBtn from '../LoadMoreBtn';
 
@@ -110,84 +109,70 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading, isBlock, isTransaction, timestamp, fee,
+			operations, hasMore, loading, isTransaction, timestamp, fee,
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
 		return (
-			<div className={classnames('accordion-table-wrap', { 'table-block': isBlock })} >
-				<table>
-					<Media query="(max-width: 767px)">
-						{ (matches) => !matches &&
-							<thead>
-								<tr>
-									<td />
-									<td className="number"><div className="td-in">#</div></td>
-									<td className="type">
-										<div className="td-in">
-											{ fee ? 'Type' : 'Operation' }
-										</div>
-									</td>
-									{timestamp ? <td className=""><div className="td-in">Date, time</div></td> : null}
-									<td className="sender"><div className="td-in">Sender</div></td>
-									<td className="reciever"><div className="td-in">Receiver</div></td>
-									<td className="amount"><div className="td-in">Amount</div></td>
-									{
-										fee ? (
-											<Media query="(max-width: 1000px)">
-												{
-													(matchesIn) =>
-														(!matchesIn && <td className="fee"><div className="td-in">fee</div></td>)
-												}
-											</Media>
-										) : null
-									}
-									<td className="rezult"><div className="td-in">Result</div></td>
-									<td className="json"><div className="td-in">JSON</div></td>
-									<td className="dd" />
-									<td />
-								</tr>
-							</thead>
-						}
-					</Media>
-
-
-					<tbody>
-						<Media query="(max-width: 767px)">
+			<div className="accordion-table-wrap" >
+				<PerfectScrollbar>
+					<table>
+						<thead>
+							<tr>
+								<td />
+								<td className="number"><div className="td-in">#</div></td>
+								<td className="type">
+									<div className="td-in">
+										{ fee ? 'Type' : 'Operation' }
+									</div>
+								</td>
+								{timestamp ? <td className=""><div className="td-in">Date, time</div></td> : null}
+								<td className="sender"><div className="td-in">Sender</div></td>
+								<td className="reciever"><div className="td-in">Receiver</div></td>
+								<td className="amount"><div className="td-in">Amount</div></td>
+								{
+									fee ?
+										<React.Fragment>
+											<td className="fee"><div className="td-in">fee</div></td>
+										</React.Fragment>
+										: null
+								}
+								<td className="rezult"><div className="td-in">Result</div></td>
+								<td className="json"><div className="td-in">JSON</div></td>
+								<td className="dd" />
+								<td />
+							</tr>
+						</thead>
+						<tbody>
+							<tr className="air">
+								<td colSpan="9" />
+							</tr>
 							{
-								(matches) =>
-									(!matches &&
-									<tr className="air">
-										<td colSpan="9" />
-									</tr>)
+								operations ? operations.map((op, i) => (
+									<OperationRow
+										key={i.toString()}
+										isTransaction={isTransaction}
+										timestamp={timestamp}
+										fee={fee}
+										operation={op}
+										index={i}
+										active={showedOperations.includes(i)}
+										air={airRows.includes(i)}
+										tableRefs={this.tableRefs}
+										toggleOperationDetails={(index) => this.toggleOperationDetails(index)}
+									/>
+								)) : null
 							}
-						</Media>
-						{
-							operations ? operations.map((op, i) => (
-								<OperationRow
-									key={i.toString()}
-									isBlock={isBlock}
-									isTransaction={isTransaction}
-									timestamp={timestamp}
-									fee={fee}
-									operation={op}
-									index={i}
-									active={showedOperations.includes(i)}
-									air={airRows.includes(i)}
-									tableRefs={this.tableRefs}
-									toggleOperationDetails={(index) => this.toggleOperationDetails(index)}
-								/>
-							)) : null
-						}
-					</tbody>
-				</table>
-				{
-					hasMore ?
-						<LoadMoreBtn
-							loading={loading}
-							loadMore={() => this.props.loadMore()}
-						/> : null
-				}
+						</tbody>
+					</table>
+					{
+						hasMore ?
+							<LoadMoreBtn
+								loading={loading}
+								loadMore={() => this.props.loadMore()}
+							/> : null
+					}
+				</PerfectScrollbar>
 			</div>
 		);
 	}
@@ -215,7 +200,6 @@ OperationsTable.propTypes = {
 	loading: PropTypes.bool,
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,
-	isBlock: PropTypes.bool,
 	isTransaction: PropTypes.bool,
 	timestamp: PropTypes.bool,
 	fee: PropTypes.bool,
@@ -227,7 +211,6 @@ OperationsTable.defaultProps = {
 	hasMore: false,
 	changeUrl: false,
 	loading: false,
-	isBlock: false,
 	isTransaction: false,
 	timestamp: false,
 	fee: false,

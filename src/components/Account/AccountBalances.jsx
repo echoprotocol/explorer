@@ -11,8 +11,8 @@ class AccountBalances extends React.Component {
 
 		return (
 			<div className="right-container">
-				<AssetBalances title="other assets" owner={owner} balances={balances} />
-				<TokenBalances title="tokens" tokens={tokens} />
+				<AssetBalances title="Other assets" owner={owner} balances={balances} />
+				<TokenBalances title="Tokens" tokens={tokens} />
 			</div>
 		);
 	}

@@ -1,5 +1,6 @@
 body {
 	letter-spacing: 0.025em;
+	color: $explorer-black;
 	font-family: "InterUI";
 }
 
@@ -19,7 +20,6 @@ main.inner {
 	box-sizing: border-box;
 }
 
-
 h1,
 h2,
 h3,
@@ -35,9 +35,9 @@ button {
 	outline: none;
 }
 
-input[type='text'],
-input[type='phone'],
-input[type='email'],
+input[type="text"],
+input[type="phone"],
+input[type="email"],
 textarea {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -49,6 +49,15 @@ textarea {
 	outline: none;
 }
 
+.wrapper {
+	overflow: hidden;
+}
+
+.h2 {
+	font-size: 22px;
+	@include InterUI_Bold;
+	letter-spacing: 1px;
+}
 
 .hidden {
 	display: none;
@@ -69,23 +78,19 @@ a {
 
 .hover {
 	opacity: 1;
-	transition: opacity .3s;
+	transition: opacity 0.3s;
 }
 
 .warn {
-	color: #D37E4A;
+	color: #d37e4a;
 }
 
-
-@media (max-width: 499px) and (-webkit-min-device-pixel-ratio:0) {
-
+@media (max-width: 499px) and (-webkit-min-device-pixel-ratio: 0) {
 	.no-wrap {
 		white-space: nowrap;
 	}
 
-
-	@include res-320 {
-
+	@include max-vw(499) {
 		select,
 		textarea,
 		input {
@@ -124,4 +129,33 @@ a {
 .progress-render {
 	position: relative;
 	margin-left: auto;
+}
+
+.description-text {
+	@include InterUI_Medium;
+	color: #828b95;
+	padding-left: 30px;
+	margin-bottom: 50px;
+	font-size: 13px;
+	letter-spacing: 0;
+	line-height: 18px;
+	@include max-vw(1534) {
+		padding-left: 20px;
+	}
+
+	@include max-vw(1279) {
+		padding-left: 30px;
+	}
+
+	@include max-vw(767) {
+		padding-left: 20px;
+	}
+
+	@include max-vw(499) {
+		padding-left: 15px;
+	}
+}
+
+.blue {
+	color: $blue;
 }

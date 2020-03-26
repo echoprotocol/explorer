@@ -77,16 +77,17 @@ class RecentBlockSidebar extends React.Component {
 				<div className={classnames('sticky-wrap', { sticky: offsetTop > MAIN_HEADER_HEIGHT })}>
 					<div className="help-container">
 						<div className="sidebar-elem">
-							<div className="title">Latest block number</div>
+							<div className="title">Latest Block Number</div>
 							<div className="value">
-								{`${FormatHelper.formatAmount(latestBlock, 0)} `}
-								({FormatHelper.formatLatestBlockTime(this.state.startTimestamp + this.state.timer)})
+								<span className="main">{`${FormatHelper.formatAmount(latestBlock, 0)} `}</span>
+								<span className="secondary">({FormatHelper.formatLatestBlockTime(this.state.startTimestamp + this.state.timer)})</span>
 							</div>
 						</div>
 						<div className="sidebar-elem">
 							<div className="title">Average block time (24h)</div>
 							<div className="value">
-								{this.averageBlockTime(averageTime)} ({`${averageTr} tx per block`})
+								<span className="main">{this.averageBlockTime(averageTime)} </span>
+								<span className="secondary">({`${averageTr} tx per block`})</span>
 							</div>
 						</div>
 					</div>
@@ -95,7 +96,7 @@ class RecentBlockSidebar extends React.Component {
 							(matches) => !matches &&
 							<div className={classnames('info-container', { fixed: offsetTop > MAIN_HEADER_HEIGHT })}>
 								<div className="version">v{appVersion}</div>
-								<div className="copyright">©Echo Technological Solutions LLC, {FormatHelper.getYear(new Date())}</div>
+								<div className="copyright">©ECHO DEVELOPMENT LTD, {FormatHelper.getYear(new Date())}</div>
 							</div>
 						}
 					</Media>

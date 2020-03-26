@@ -1,87 +1,65 @@
-.recent-block-section {
-    .object-view {
-        padding-top: 47px;
-        padding-bottom: 25px;
+.object-view {
+	padding-top: 47px;
+	padding-bottom: 25px;
+	flex-shrink: 0;
 
-        &.table-container {
-            flex-shrink: 0;
+	.json-tree-container {
+		background-color: #ebeaee;
+		display: flex;
+		padding: 19px 30px;
+		@include max-vw(1534) {
+			padding-left: 19px 20px;
+		}
+		@include max-vw(1279) {
+			padding-left: 19px 30px;
+		}
+		@include max-vw(767) {
+			padding-left: 19px 20px;
+		}
+		@include max-vw(499) {
+			padding-left: 19px 15px;
+			flex-direction: column-reverse;
+			align-items: flex-start;
+			margin: 0 auto;
+		}
+		.copy-bytecode {
+			margin-left: auto;
+			margin-top: 0;
 
-            >h2 {
-                padding-left: 0;
-                margin-bottom: 38px;
+			@include max-vw(499) {
+				margin-left: 0;
+				margin-bottom: 20px;
+			}
+		}
 
-                @include res-768 {
-                    padding-left: 20px;
-                }
+		> ul {
+			@include Hack_Regular;
+			font-size: 13px;
+			background: transparent !important;
+			margin: 0 !important;
+			max-width: calc(100% - 140px);
+			width: 100%;
 
-                @include res-320 {
-                    padding-left: 15px;
-                }
-            }
+			@include max-vw(767) {
+				max-width: 100%;
+			}
 
-            .json-tree-container {
-                background-color: #ebeaee;
-                display: flex;
-                padding-bottom: 19px;
+			span {
+				line-height: normal;
+			}
 
-                @include res-320 {
-                    flex-direction: column-reverse;
-                    align-items: flex-start;
-                    width: calc(100% - 20px);
-                    margin: 0 auto;
-                }
+			li {
+				padding-top: 3px !important;
+				padding-bottom: 3px !important;
 
-                .copy-bytecode {
-                    margin-left: auto;
-                    margin-right: 25px;
-                    margin-top: 20px;
-                    position: sticky;
-                    top: 20px;
+				& > div > div {
+					top: -1px;
+				}
+			}
 
-                    @include res-320 {
-                        margin-left: 20px;
-                    }
-                }
-
-                >ul {
-                    @include Hack_Regular;
-                    font-size: 13px;
-                    padding-left: 45px !important;
-                    padding-top: 18px !important;
-                    background: transparent !important;
-                    margin: 0 !important;
-                    max-width: calc(100% - 140px);
-                    width: 100%;
-
-                    @include res-500 {
-                        max-width: calc(100% - 125px);
-                    }
-
-                    @include res-320 {
-                        padding-top: 22px !important;
-                        padding-left: 20px !important;
-                        max-width: 100%;
-                        padding-right: 20px !important;
-                    }
-
-                    span {
-                        line-height: normal;
-                    }
-
-                    li {
-                        padding-top: 3px !important;
-                        padding-bottom: 3px !important;
-
-                        &>div>div {
-                            top: -1px;
-                        }
-                    }
-
-                    a {
-                        color: #0000ee;
-                    }
-                }
-            }
-        }
-    }
+			a {
+				color: #0000ee;
+			}
+		}
+	}
 }

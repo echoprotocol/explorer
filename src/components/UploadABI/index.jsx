@@ -57,7 +57,7 @@ class UploadABI extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="table-container inner-information-container inner-page with-d-table">
+			<div className="inner-information-container inner-page">
 				<div className="backwards">
 					<a
 						href=""

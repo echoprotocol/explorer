@@ -31,7 +31,7 @@ class TokenBalances extends React.Component {
 				<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
 					{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
 				</span>
-				<span className="accent">
+				<span className="blue">
 					<Link to={URLHelper.createUrlById(id)} className="blue">
 						{symbol}
 					</Link>
@@ -50,16 +50,18 @@ class TokenBalances extends React.Component {
 		return (
 			<div className="elem">
 				<div className="title">
-					{title}: {count || <span className="gray">none</span>}
+					{title}: <span className="gray">{count || 'None'}</span>
 				</div>
-				<div className="elements-container">
-					{
-						elements.map(({ amount, contract }) => this.renderElement(
-							amount,
-							contract,
-						))
-					}
-				</div>
+				{ elements.length !== 0 &&
+					<div className="elements-container">
+						{
+							elements.map(({ amount, contract }) => this.renderElement(
+								amount,
+								contract,
+							))
+						}
+					</div>
+				}
 				{
 					count > DEFAULT_COUNT ?
 						<a href="" className="load-more" onClick={(e) => this.onLoadMore(e)}>
