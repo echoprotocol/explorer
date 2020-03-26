@@ -31,6 +31,7 @@ import { loadData as loadObjectInfo } from './components/Objects';
 import { loadData as loadAssetInfo } from './components/Asset';
 import { loadData as loadDataNodeMap } from './components/NodeMap';
 import { loadData as loadDataContract } from './components/Contract';
+import { loadData as loadDataManageContract } from './components/ManageContract';
 
 export default [
 	{
@@ -79,6 +80,7 @@ export default [
 				path: MANAGE_CONTRACT_PATH,
 				exact: true,
 				component: ManageContract,
+				loadData: loadDataManageContract,
 			},
 			{
 				path: VERIFY_CONTRACT_PATH,

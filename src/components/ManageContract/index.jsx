@@ -14,6 +14,7 @@ import Avatar from '../Avatar';
 import { ContractIcon } from '../Contract/ContractIcon';
 import contractIconDefault from '../../assets/images/icons/default-icn.svg';
 import bridge from '../../assets/images/icons/bridge-logo.svg';
+import ContractActions from '../../actions/ContractActions';
 
 class ManageContract extends React.Component {
 
@@ -197,6 +198,13 @@ class ManageContract extends React.Component {
 		);
 	}
 
+}
+
+export function loadData(store, data) {
+	if (!data.params || !data.params.id) {
+		return null;
+	}
+	return store.dispatch(ContractActions.getContractInfo(data.params.id));
 }
 
 ManageContract.propTypes = {

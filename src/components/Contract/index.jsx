@@ -66,6 +66,9 @@ class Contract extends React.Component {
 			this.props.history.push(URLHelper.createContractUrl(id));
 		}
 
+		if (!this.props.blockNumber) {
+			this.initContract();
+		}
 		if (window.innerWidth > 400) {
 			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
 		}
