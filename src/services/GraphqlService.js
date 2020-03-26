@@ -9,6 +9,8 @@ import { MAX_RETRIES } from '../constants/GlobalConstants';
 import { OPERATION_DEFINITION, SUBSCRIPTION } from '../constants/GraphqlConstans';
 import config from '../config/chain';
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 const cache = new InMemoryCache({
 	dataIdFromObject: (o) => (o._id ? `${o.__typename}:${o._id}` : null), // eslint-disable-line no-underscore-dangle
@@ -25,7 +27,7 @@ const defaultOptions = {
 	},
 };
 
-class Graphql {
+class GraphqlBrowser {
 
 	constructor() {
 		const httpLink = new HttpLink({
@@ -60,5 +62,23 @@ class Graphql {
 
 }
 
+class GraphqlNode {
 
-export default __IS_SERVER__ ? null : new Graphql();
+	constructor() {
+		const httpLink = new HttpLink({
+			uri: config.GRAPHQL_URL.HTTP,
+		});
+
+		this.client = new ApolloClient({ cache, link: httpLink, defaultOptions });
+	}
+
+	getClient() {
+		return this.client;
+	}
+
+}
+
+const client = __IS_SERVER__ ? new GraphqlNode() : new GraphqlBrowser();
+
+export default client;
+

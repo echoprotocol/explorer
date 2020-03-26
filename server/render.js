@@ -5,6 +5,7 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import MobileDetect from 'mobile-detect';
 import { parse } from 'url';
+import echo from 'echojs-lib';
 
 import Routes from '../src/routes';
 
@@ -12,8 +13,8 @@ import configureStore from '../src/store';
 import GlobalActions from '../src/actions/GlobalActions';
 
 export default async function render(req) {
-	console.log('render in server');
 	const store = configureStore();
+	echo.syncCacheWithStore(store);
 
 	try {
 		const { pathname, path, query } = parse(req.url);

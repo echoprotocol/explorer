@@ -30,16 +30,17 @@ import { loadData as loadTransactionInfo } from './components/TransactionInfo';
 import { loadData as loadObjectInfo } from './components/Objects';
 import { loadData as loadAssetInfo } from './components/Asset';
 import { loadData as loadDataNodeMap } from './components/NodeMap';
+import { loadData as loadDataContract } from './components/Contract';
 
 export default [
 	{
 		component: App,
+		loadData: loadAppInfo,
 		routes: [
 			{
 				path: INDEX_PATH,
 				exact: true,
 				component: RecentBlockSection,
-				loadData: loadAppInfo,
 			},
 			{
 				path: BLOCK_INFORMATION_PATH,
@@ -88,6 +89,7 @@ export default [
 				path: CONTRACT_PATH_DETAIL,
 				exact: true,
 				component: Contract,
+				loadData: loadDataContract,
 			},
 			{
 				path: NODE_MAP,

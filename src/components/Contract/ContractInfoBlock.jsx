@@ -47,7 +47,7 @@ class ContractInfoBlock extends React.Component {
 					<div className="key">Creation FEE:</div>
 					<div className="underline" />
 					<div className="value">
-						<Media query="(max-width: 350px)">
+						<Media query="(max-width: 350px)" data={data.get('isMobileDevice')}>
 							{(matches) =>
 								(matches ? (
 									<Tooltip

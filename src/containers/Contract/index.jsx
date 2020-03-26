@@ -1,33 +1,15 @@
-import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { CACHE_MAPS } from 'echojs-lib';
-import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 
 import Contract from '../../components/Contract';
 import ContractActions from '../../actions/ContractActions';
 import GlobalActions from '../../actions/GlobalActions';
 import AccountActions from '../../actions/AccountActions';
 
-const filteredObjects = createSelector(
-	(state) => state.contract.get('balances'),
-	(state) => state.echoCache.get(CACHE_MAPS.OBJECTS_BY_ID),
-	(balances, objects) => balances.map((b) => objects.get(b.get('asset_id'))),
-);
-
-const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
-const balanceSelector = createImmutableSelector(
-	(state) => state.contract.get('balances'),
-	(state) => filteredObjects(state),
-	(balances, objects) => balances.map((b, i) => ({
-		id: i,
-		amount: b.get('amount'),
-		asset: objects.get(i),
-	})),
-);
-
 export default withRouter(connect(
 	(state) => ({
+		isMobileDevice: state.global.get('isMobileDevice'),
+		connected: state.global.get('connected'),
 		loading: state.contract.get('loading'),
 		isFullHistory: state.contract.get('isFullHistory'),
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
@@ -43,7 +25,7 @@ export default withRouter(connect(
 		creationFee: state.contract.get('creationFee'),
 		createdAt: state.contract.get('createdAt'),
 		type: state.contract.get('type'),
-		balances: balanceSelector(state),
+		balances: state.contract.get('balances'),
 		owner: state.contract.get('owner'),
 
 		name: state.contract.get('name'),
@@ -55,8 +37,6 @@ export default withRouter(connect(
 		verified: state.contract.get('verified'),
 		stars: state.contract.get('stars'),
 		error: state.contract.get('error'),
-
-		activeAccount: state.global.get('activeAccount'),
 	}),
 	(dispatch, props) => ({
 		getContractInfo: () => dispatch(ContractActions.getContractInfo(props.match.params.id)),

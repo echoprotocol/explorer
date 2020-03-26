@@ -98,8 +98,18 @@ class ContractActions extends BaseActionsClass {
 				await dispatch(this.getContractInfoFromExplorer(id));
 				await dispatch(this.getContractInfoFromGraphql(id));
 
-				const balances = await echo.api.getContractBalances(id);
-				await echo.api.getObjects(balances.map((b) => b.asset_id));
+				let balances = await echo.api.getContractBalances(id);
+				const assets = await echo.api.getObjects(balances.map((b) => b.asset_id));
+
+				balances = balances.map((balance, index) => {
+
+					const asset = assets.find(({ id: assetId }) => assetId === balance.asset_id);
+					return ({
+						id: index,
+						amount: balance.amount,
+						asset: new Map(asset),
+					});
+				});
 
 				let { owner } = await echo.api.getObject(id);
 				owner = new Map(await echo.api.getObject(owner));
@@ -107,7 +117,7 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({
 					bytecode: contract[1].code,
-					balances: fromJS(balances),
+					balances: List(balances),
 					owner,
 				}));
 

@@ -13,7 +13,6 @@ import copy from 'copy-to-clipboard';
 import { Helmet } from 'react-helmet';
 
 import { CONTRACT_TABS, CHANGE_TEXT_TIME } from '../../constants/ContractConstants';
-import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
 	CONTRACT_BALANCES,
 	CONTRACT_BYTECODE,
@@ -38,6 +37,7 @@ import { ContractIcon } from './ContractIcon';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
+import ContractActions from '../../actions/ContractActions';
 
 class Contract extends React.Component {
 
@@ -52,11 +52,10 @@ class Contract extends React.Component {
 		};
 	}
 
-
-	async componentDidMount() {
+	componentDidMount() {
 		const { match: { params: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
-		await this.initContract();
+
 		const { verified } = this.props;
 
 		if (this.props.location.search) {
@@ -67,17 +66,20 @@ class Contract extends React.Component {
 			this.props.history.push(URLHelper.createContractUrl(id));
 		}
 
-		this.props.loadActiveAccount();
-
 		if (window.innerWidth > 400) {
 			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
 		}
-		this.subscribe(id);
 	}
 
-
-	componentDidUpdate(prevProps) {
-		if (prevProps.match.params.id !== this.props.match.params.id) {
+	async componentDidUpdate(prevProps) {
+		if (this.props.connected && !prevProps.connected) {
+			this.props.loadActiveAccount();
+			this.subscribe(this.props.match.params.id).catch((err) => {
+				console.log(`Error to update contract info: ${err}`);
+			});
+		}
+		if (!prevProps.blockNumber ||
+			(prevProps.connected && prevProps.match.params.id !== this.props.match.params.id)) {
 			this.initContract();
 		}
 	}
@@ -94,8 +96,8 @@ class Contract extends React.Component {
 	async initContract() {
 		const { id } = this.props.match.params;
 
-		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
 		await this.props.getContractInfo();
+
 		echo.subscriber.removeContractSubscribe(this.subscriber);
 		echo.subscriber.setContractSubscribe([id], this.subscriber);
 	}
@@ -188,7 +190,7 @@ class Contract extends React.Component {
 
 		return (
 			<Helmet>
-				<title>Contract ${name || id} | Echo Explorer</title>
+				<title>Contract {name || id} | Echo Explorer</title>
 				<meta property="og:description" name={description || 'ECHO contract page'} />
 				<meta property="og:image" content={URLHelper.getUrlContractIcon(icon)} />
 			</Helmet>
@@ -201,7 +203,7 @@ class Contract extends React.Component {
 			bytecode, contractHistory, balances, match: { params: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner,
-			activeAccount, error,
+			error, isMobileDevice,
 		} = this.props;
 
 		const tabList = [
@@ -209,6 +211,7 @@ class Contract extends React.Component {
 				tab: !loading ?
 					<ContractInfo
 						dataGeneral={new Map({
+							isMobileDevice,
 							error,
 							blockNumber,
 							creationFee,
@@ -227,6 +230,7 @@ class Contract extends React.Component {
 						})}
 						dataAssets={new Map({
 							balances,
+							isMobileDevice,
 						})}
 					/>
 					: <Loader />,
@@ -282,6 +286,7 @@ class Contract extends React.Component {
 			initialSlide: CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0,
 			responsive: [
 				{
+					defaultMatches: isMobileDevice,
 					breakpoint: 768,
 					settings: {
 						slidesToShow: 3,
@@ -305,7 +310,7 @@ class Contract extends React.Component {
 					<div className="tab-head">
 						<div className="backwards action">
 							<div className="account-page-t-block">
-								<Media query="(max-width: 380px)">
+								<Media query="(max-width: 380px)" defaultMatches={this.props.isMobileDevice}>
 									{(matches) =>
 										!matches &&
 										<div className="ava">
@@ -323,7 +328,6 @@ class Contract extends React.Component {
 							<div className="item">
 								<ContractStar
 									stars={stars}
-									activeAccount={activeAccount}
 									setStarToContract={this.props.setStarToContract}
 								/>
 							</div>
@@ -339,10 +343,10 @@ class Contract extends React.Component {
 								<Verify id={id} verified={verified} />
 							</div>
 						</div>
-						<Media query="(max-width: 400px)">
+						<Media query="(max-width: 400px)" defaultMatches={this.props.isMobileDevice}>
 							{(matches) =>
 								(!matches ?
-									<div className="horizontal-tab-panel">
+									<div className={classnames('horizontal-tab-panel', { 'server-slick-track': __IS_SERVER__ })}>
 										<Slider ref={this.slider} {...settings} >
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
 												<Link
@@ -453,7 +457,17 @@ class Contract extends React.Component {
 
 }
 
+export function loadData(store, data) {
+	if (!data.params || !data.params.id) {
+		return null;
+	}
+	return store.dispatch(ContractActions.getContractInfo(data.params.id));
+}
+
+
 Contract.propTypes = {
+	isMobileDevice: PropTypes.bool.isRequired,
+	connected: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 	loading: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
@@ -492,7 +506,6 @@ Contract.propTypes = {
 	verified: PropTypes.bool.isRequired,
 	stars: PropTypes.object.isRequired,
 
-	activeAccount: PropTypes.object,
 	owner: PropTypes.object.isRequired,
 	updateContractHistory: PropTypes.func.isRequired,
 };
@@ -505,7 +518,6 @@ Contract.defaultProps = {
 	bytecode: null,
 	sourceCode: null,
 	supportedAsset: '',
-	activeAccount: new Map(),
 };
 
 export default withRouter(Contract);

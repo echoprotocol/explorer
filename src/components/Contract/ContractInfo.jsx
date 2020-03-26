@@ -9,24 +9,23 @@ class ContractInfo extends React.Component {
 
 	render() {
 		const { dataDescription, dataAssets, dataGeneral } = this.props;
-
+		console.log('ContractInfo dataGeneral', dataGeneral.get('isMobileDevice'));
 		return (
 			<div className="contract-info-panel">
 				<div className="row">
 					<div className="column-left">
 						<ContractDescription data={dataDescription} />
 						<ContractGeneralInfo data={dataGeneral} matches />
-						<Media query="(max-width: 768px)">
+						<Media query="(max-width: 768px)" defaultMatches={dataGeneral.get('isMobileDevice')} >
 							{(matches) =>
 								(
 									!matches && <ContractAssets data={dataAssets} />
 								)
 							}
 						</Media>
-
 					</div>
 					<div className="column-right">
-						<Media query="(max-width: 768px)">
+						<Media query="(max-width: 768px)" defaultMatches={dataGeneral.get('isMobileDevice')}>
 							{(matches) =>
 								(
 									matches ?

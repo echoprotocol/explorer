@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List } from 'immutable';
+import { connect } from 'react-redux';
+
 import Star from '../StarButton';
 
 class ContractStar extends React.Component {
@@ -30,4 +32,9 @@ ContractStar.defaultProps = {
 	stars: new List(),
 };
 
-export default ContractStar;
+export default connect(
+	(state) => ({
+		activeAccount: state.global.get('activeAccount'),
+	}),
+	null,
+)(ContractStar);

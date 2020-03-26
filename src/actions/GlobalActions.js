@@ -1,7 +1,7 @@
 import { MODAL_ERROR, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
 import GlobalReducer from '../reducers/GlobalReducer';
 import BaseActionsClass from './BaseActionsClass';
-import { connect } from './SocketActions';
+import { clientConnect, serverConnect } from './SocketActions';
 import ModalActions from './ModalActions';
 import { BridgeService } from '../services/BridgeService';
 
@@ -35,6 +35,7 @@ class GlobalActionsClass extends BaseActionsClass {
 	 * @returns {function(*=): Promise<any>}
 	 */
 	init() {
+		const connect = __IS_CLIENT__ ? clientConnect : serverConnect;
 		return (dispatch) => new Promise((resolve) => {
 			Promise.all([
 				dispatch(connect()),

@@ -106,26 +106,13 @@ const blockRelease = () => async (dispatch) => {
 };
 
 /**
- *  @method connect
+ * @method serverConnect
  *
- * 	WS connect to blockchain and set subscribe callbacks
+ * Server WS init preload data
  */
-export const connect = () => async (dispatch) => {
+export const serverConnect = () => async (dispatch) => {
 	try {
-		console.log('connect __IS_SERVER__', __IS_SERVER__);
-		console.log('echo.isConnected', echo.isConnected);
-
-		if (!echo.isConnected) {
-			await echo.connect(config.API_URL, {
-				connectionTimeout: 5000,
-				maxRetries: 1e10,
-				pingTimeout: 6000,
-				pingDelay: 5000,
-				debug: false,
-				apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
-			});
-		}
-
+		console.log('serverConnect');
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
@@ -134,6 +121,41 @@ export const connect = () => async (dispatch) => {
 		]));
 
 		await dispatch(initBlocks());
+
+		const global = globalParams.echorand_config;
+		const producers = global._creator_count;
+		dispatch(RoundReducer.actions.set({ field: 'producers', value: producers }));
+	} catch (err) {
+		dispatch(batchActions([
+			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
+			GlobalReducer.actions.set({ field: 'connected', value: false }),
+		]));
+
+		throw err;
+	}
+
+};
+
+/**
+ *  @method clientConnect
+ *
+ * 	Client WS connect to blockchain and set subscribe callbacks
+ */
+export const clientConnect = () => async (dispatch) => {
+	try {
+		console.log('clientConnect');
+		console.log('connect __IS_SERVER__', __IS_SERVER__);
+		console.log('echo.isConnected', echo.isConnected);
+
+		await echo.connect(config.API_URL, {
+			connectionTimeout: 5000,
+			maxRetries: 1e10,
+			pingTimeout: 6000,
+			pingDelay: 5000,
+			debug: false,
+			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
+		});
+
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 
@@ -142,12 +164,9 @@ export const connect = () => async (dispatch) => {
 
 		dispatch(blockRelease());
 
-		const global = globalParams.echorand_config;
-		const producers = global._creator_count;
-
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'connected', value: true }),
-			RoundReducer.actions.set({ field: 'producers', value: producers }),
+
 		]));
 	} catch (err) {
 		dispatch(batchActions([

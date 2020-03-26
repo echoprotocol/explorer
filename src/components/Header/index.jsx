@@ -12,13 +12,13 @@ class Header extends React.Component {
 	render() {
 
 		const {
-			history, hints, getHints, loadingSearch, errorSearch,
+			history, hints, getHints, loadingSearch, errorSearch, isMobileDevice,
 		} = this.props;
 		return (
 			<header>
 				<Logotype onClick={() => this.props.history.push(INDEX_PATH)} />
 				<NavTabs />
-				<Media query="(max-width: 767px)">
+				<Media query="(max-width: 767px)" defaultMatches={isMobileDevice}>
 					{(matches) =>
 						(matches ? (
 							<HeaderSearch
@@ -51,6 +51,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+	isMobileDevice: PropTypes.bool.isRequired,
 	errorSearch: PropTypes.string,
 	loadingSearch: PropTypes.bool,
 	history: PropTypes.object,
