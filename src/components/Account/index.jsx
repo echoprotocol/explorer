@@ -77,7 +77,7 @@ class Account extends React.Component {
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
-			account, balances, tokens, accountHistory,
+			account, balances, tokens, accountHistory, isMobileDevice,
 		} = this.props;
 
 		return (
@@ -110,6 +110,7 @@ class Account extends React.Component {
 							{
 								accountHistory.size ?
 									<OperationsTable
+										isMobileDevice={isMobileDevice}
 										operations={accountHistory}
 										history={this.props.history}
 										location={this.props.location}
@@ -135,6 +136,7 @@ export function loadData(store, data) {
 }
 
 Account.propTypes = {
+	isMobileDevice: PropTypes.bool.isRequired,
 	connected: PropTypes.bool.isRequired,
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,

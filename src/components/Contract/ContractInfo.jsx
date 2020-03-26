@@ -9,7 +9,7 @@ class ContractInfo extends React.Component {
 
 	render() {
 		const { dataDescription, dataAssets, dataGeneral } = this.props;
-		console.log('ContractInfo dataGeneral', dataGeneral.get('isMobileDevice'));
+
 		return (
 			<div className="contract-info-panel">
 				<div className="row">

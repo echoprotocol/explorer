@@ -38,6 +38,7 @@ import { subscribeContractHistoryUpdate } from '../../services/subscriptions/con
 
 import URLHelper from '../../helpers/URLHelper';
 import ContractActions from '../../actions/ContractActions';
+import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 class Contract extends React.Component {
 
@@ -100,7 +101,7 @@ class Contract extends React.Component {
 		const { id } = this.props.match.params;
 
 		await this.props.getContractInfo();
-
+		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
 		echo.subscriber.removeContractSubscribe(this.subscriber);
 		echo.subscriber.setContractSubscribe([id], this.subscriber);
 	}
@@ -242,6 +243,7 @@ class Contract extends React.Component {
 			{
 				tab: !loading ?
 					<OperationsTable
+						isMobileDevice={isMobileDevice}
 						operations={contractHistory}
 						history={this.props.history}
 						location={this.props.location}

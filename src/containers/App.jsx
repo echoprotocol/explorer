@@ -104,8 +104,6 @@ class App extends React.Component {
 			return this.renderErrorScreen(error);
 		}
 
-		console.log('APP render connected', connected);
-
 		if (errorPath) {
 			return this.renderNotFound();
 		}

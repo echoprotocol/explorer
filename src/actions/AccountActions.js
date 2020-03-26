@@ -123,7 +123,6 @@ class AccountActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({ tokens }));
 			} catch (e) {
-				console.log('heheehe', e);
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));
