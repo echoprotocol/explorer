@@ -20,7 +20,7 @@
 		.form {
 			padding: 0 100px 0 115px;
 
-			@include max-vw(1550) {
+			@include res-1280 {
 				padding: 0px 60px;
 			}
 

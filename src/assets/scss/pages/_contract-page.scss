@@ -35,7 +35,7 @@
 				}
 			}
 
-			@include max-vw(380) {
+			@include res-320 {
 				padding: 0 15px;
 			}
 
@@ -43,11 +43,11 @@
 				margin: 43px 0 3px 0;
 				padding: 7px 0 2px 0;
 
-				@include max-vw(999) {
+				@include res-768 {
 					padding-top: 34px;
 				}
 
-				@include max-vw(768) {
+				@include res-500 {
 					margin-top: -7px;
 					margin-bottom: 17px;
 					padding-top: 62px;
@@ -59,11 +59,11 @@
 				align-items: center;
 				margin: 0;
 
-				@include max-vw(999) {
+				@include res-1000 {
 					margin-left: 0px;
 				}
 
-				@include max-vw(380) {
+				@include res-500 {
 					margin: 10px 0 0;
 				}
 
@@ -72,7 +72,7 @@
 					margin: 0;
 					z-index: 1;
 
-					@include max-vw(768) {
+					@include res-768 {
 						margin: 0 15px 0 0;
 					}
 				}
@@ -83,7 +83,7 @@
 						height: 32px;
 					}
 
-					@include max-vw(500) {
+					@include res-500 {
 						display: none;
 					}
 				}
@@ -126,7 +126,7 @@
 						}
 					}
 
-					@include max-vw(415) {
+					@include res-320 {
 						&:last-child {
 							.action-button-wrap {
 								.action-label {
@@ -146,7 +146,7 @@
 		.tab-body {
 			margin-top: 29px;
 
-			@include max-vw(1000) {
+			@include res-1000 {
 				margin-top: 21px;
 			}
 		}
@@ -209,7 +209,7 @@
 		max-width: none;
 	}
 
-	@include max-vw(380) {
+	@include res-320 {
 		margin-left: 16px;
 	}
 }
@@ -221,7 +221,7 @@
 		max-width: 798px;
 		flex-wrap: wrap;
 
-		@include max-vw(1280) {
+		@include res-1280 {
 			max-width: 100%;
 		}
 

@@ -9,7 +9,7 @@
 	padding-bottom: 37px;
 	flex-shrink: 0;
 
-	@include max-vw(1279) {
+	@include res-1000() {
 		min-height: calc(100vh - 403px);
 	}
 

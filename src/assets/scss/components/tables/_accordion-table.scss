@@ -57,6 +57,8 @@
 
 		&:nth-child(2) .td-in {
 			padding: 9px 7px 9px 20px;
+			position: relative;
+			z-index: 2;
 			@include res-1280() {
 				padding: 9px 7px 9px 10px;
 			}
@@ -181,14 +183,6 @@
 			td {
 				background-color: #fff;
 
-				.td-in {
-					padding: 13px 7px;
-
-					@include res-500 {
-						padding: 0px;
-					}
-				}
-
 				&:nth-child(1),
 				&:nth-child(2),
 				&:last-child {
@@ -294,7 +288,7 @@
 			&:last-child {
 				background-color: #f3f3f5;
 
-				@include max-vw(1000) {
+				@include res-768() {
 					background-color: #fff;
 				}
 			}

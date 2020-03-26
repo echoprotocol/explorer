@@ -80,7 +80,7 @@ class DistributionTable extends React.Component {
 								</td>
 								<td className="origin">
 									<div className="td-in">
-												Origin
+										Origin
 										<InfoTooltip
 											tooltipText="Account selected by consensus as a participant for the current block preparation"
 										/>
@@ -88,7 +88,7 @@ class DistributionTable extends React.Component {
 								</td>
 								<td className="delegate">
 									<div className="td-in">
-												Delegate
+										Delegate
 										<InfoTooltip
 											tooltipText="An account that has been trusted to issue messages on behalf of the Origin. Only considered if there are no messages from the original participant"
 										/>
@@ -96,7 +96,7 @@ class DistributionTable extends React.Component {
 								</td>
 								<td className="produced">
 									<div className="td-in">
-												Produced by the committee
+										Produced by the committee
 										<InfoTooltip
 											tooltipText="If Origin and Delegate did not send messages, the message will be sent by the committee"
 										/>
@@ -106,7 +106,7 @@ class DistributionTable extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							<td colSpan="11" className="air" />
+							<tr colSpan="11" className="air" />
 							{
 								rewards.map((r, i) => this.renderRow(r, i))
 							}

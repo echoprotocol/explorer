@@ -110,12 +110,12 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading, isBlock, isTransaction, timestamp, fee,
+			operations, hasMore, loading, isTransaction, timestamp, fee,
 		} = this.props;
 		const { showedOperations, airRows } = this.state;
 
 		return (
-			<div className={classnames('accordion-table-wrap', { 'table-block': isBlock })} >
+			<div className="accordion-table-wrap" >
 				<PerfectScrollbar>
 					<table>
 						<thead>
@@ -152,7 +152,6 @@ class OperationsTable extends React.Component {
 								operations ? operations.map((op, i) => (
 									<OperationRow
 										key={i.toString()}
-										isBlock={isBlock}
 										isTransaction={isTransaction}
 										timestamp={timestamp}
 										fee={fee}
@@ -202,7 +201,6 @@ OperationsTable.propTypes = {
 	loading: PropTypes.bool,
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,
-	isBlock: PropTypes.bool,
 	isTransaction: PropTypes.bool,
 	timestamp: PropTypes.bool,
 	fee: PropTypes.bool,

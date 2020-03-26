@@ -183,7 +183,6 @@ class BlockInformation extends React.Component {
 					{
 						(slicedOperations && slicedOperations.size) ?
 							<OperationsTable
-								isBlock
 								fee
 								operations={slicedOperations}
 								history={this.props.history}

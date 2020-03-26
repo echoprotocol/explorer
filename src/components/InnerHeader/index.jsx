@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const InnerHeader = ({
+const InnerHeader = React.memo(({
 	children, title, className, withTopPanel,
 }) => (
 	<div className={`inner-header ${className}`}>
@@ -12,13 +12,12 @@ const InnerHeader = ({
 			</div> :
 			<React.Fragment>{ children }</React.Fragment>
 		}
-
 	</div>
-);
+));
 
 
 InnerHeader.propTypes = {
-	children: PropTypes.element,
+	children: PropTypes.node,
 	title: PropTypes.string,
 	className: PropTypes.string,
 	withTopPanel: PropTypes.bool,

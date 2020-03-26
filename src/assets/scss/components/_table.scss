@@ -1,4 +1,4 @@
-.divTable {
+.div-table {
 	display: table;
 	width: 100%;
 	padding-bottom: 33px;
@@ -41,22 +41,11 @@
 	}
 }
 
-.divTableBody {
+.div-table-body {
 	display: table-row-group;
 }
 
-.divTableFoot {
-	background-color: #eee;
-	display: table-footer-group;
-	font-weight: bold;
-}
-
-.divTableHeading {
-	background-color: transparent;
-	display: table-header-group;
-}
-
-.TableHeading {
+.table-heading {
 	display: table-row;
 	user-select: none;
 
@@ -67,7 +56,7 @@
 	text-transform: uppercase;
 	letter-spacing: 0.25em;
 
-	.divTableCell {
+	.div-table-cell {
 		padding: 12px 30px;
 		padding-right: 0;
 		color: $lightgrey;
@@ -81,7 +70,7 @@
 	}
 }
 
-.divTableRow {
+.div-table-row {
 	display: table-row;
 	@include transition;
 
@@ -112,7 +101,7 @@
 		background-color: #f3f2f5;
 		box-shadow: 2px 0 8px rgba(0, 0, 0, 0.07);
 
-		.divTableCell {
+		.div-table-cell {
 			.gray {
 				color: $lightgrey;
 			}
@@ -127,8 +116,7 @@
 	}
 }
 
-.divTableHead,
-.divTableCell {
+.div-table-cell {
 	display: table-cell;
 	position: relative;
 	vertical-align: middle;

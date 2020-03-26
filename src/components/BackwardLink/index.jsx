@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BackwardIcon from '../BackwardIcon';
 
-const BackwardLink = ({ returnFunction }) => (
+const BackwardLink = React.memo(({ returnFunction }) => (
 	<React.Fragment>
 		<a
 			href=""
@@ -12,7 +12,7 @@ const BackwardLink = ({ returnFunction }) => (
 			<BackwardIcon />
 		</a>
 	</React.Fragment>
-);
+));
 
 BackwardLink.propTypes = {
 	returnFunction: PropTypes.func,

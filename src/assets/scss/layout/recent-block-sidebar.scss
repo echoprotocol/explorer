@@ -4,7 +4,7 @@
 	padding-top: 32px;
 	height: 100%;
 
-	@include max-vw(1535) {
+	@include res-1280 {
 		padding-left: 55px;
 	}
 
@@ -33,12 +33,12 @@
 			width: 280px;
 		}
 
-		@include max-vw(1279) {
+		@include res-1000 {
 			width: 100%;
 			display: flex;
 		}
 
-		@include max-vw(768) {
+		@include res-500 {
 			flex-wrap: wrap;
 		}
 	}
@@ -120,28 +120,20 @@
 			}
 		}
 	}
-	@include max-vw(1279) {
+	@include res-1000 {
 		border-bottom: none;
 		min-width: 167px;
 		width: 50%;
 		padding-bottom: 0px;
 		display: flex;
 		flex-direction: column-reverse;
-		justify-content: space-between;
+		justify-content: flex-start;
 		margin-bottom: 0;
 	}
 
-	@include max-vw(768) {
-		min-width: 250px;
-	}
-
-	@include max-vw(580) {
-		justify-content: flex-start;
-		min-width: 180px;
-	}
-
-	@include res-500() {
+	@include res-500 {
 		flex-direction: column;
+		min-width: 180px;
 	}
 
 	@include res-320() {
@@ -170,7 +162,7 @@
 		line-height: 45px;
 		color: $explorer-black;
 
-		@include max-vw(1279) {
+		@include res-1000 {
 			line-height: 25px;
 		}
 
@@ -185,10 +177,10 @@
 			font-size: 16px;
 		}
 	}
-	.main{
+	.main {
 		font-size: 22px;
 	}
-	.secondary{
+	.secondary {
 		font-size: 16px;
 	}
 }

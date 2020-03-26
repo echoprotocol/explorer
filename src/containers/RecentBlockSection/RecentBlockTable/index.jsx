@@ -180,21 +180,21 @@ class RecentBlockTable extends React.Component {
 									)}
 								</div>
 							) : (
-								<div className={classnames('divTable', { 'no-border-bottom': AreEmptyTransactions })}>
-									<div className="divTableBody">
-										<div className="TableHeading">
-											<div className="divTableCell">
-													# Block
+								<div className={classnames('div-table', { 'no-border-bottom': AreEmptyTransactions })}>
+									<div className="div-table-body">
+										<div className="table-heading">
+											<div className="div-table-cell">
+												# Block
 											</div>
-											<div className="divTableCell">
+											<div className="div-table-cell">
 												<Media query="(max-width: 999px)">
 													{() => 'Time'}
 												</Media>
 											</div>
-											<div className="divTableCell">Producer</div>
-											<div className="divTableCell">Reward</div>
-											<div className="divTableCell">Size</div>
-											<div className="divTableCell">Operations</div>
+											<div className="div-table-cell">Producer</div>
+											<div className="div-table-cell">Reward</div>
+											<div className="div-table-cell">Size</div>
+											<div className="div-table-cell">Operations</div>
 										</div>
 										<div className="divider" />
 										{
@@ -204,15 +204,15 @@ class RecentBlockTable extends React.Component {
 														onClick={(e) => this.goToBlock(e, data.round)}
 														to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
 														key={data.round}
-														className="divTableRow fade-anim"
+														className="div-table-row fade-anim"
 													>
-														<div className="divTableCell">
+														<div className="div-table-cell">
 															<span>
 																{data.blockNumber}
 															</span>
 														</div>
-														<div className="divTableCell">{data.time}</div>
-														<div className="divTableCell producer">
+														<div className="div-table-cell">{data.time}</div>
+														<div className="div-table-cell producer">
 															<button
 																className="blue"
 																onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
@@ -221,9 +221,9 @@ class RecentBlockTable extends React.Component {
 																{data.producer}
 															</button>
 														</div>
-														<div className="divTableCell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
-														<div className="divTableCell">{data.weight} <span className="gray">{data.weightSize}</span></div>
-														<div className="divTableCell">{data.transactions}</div>
+														<div className="div-table-cell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
+														<div className="div-table-cell">{data.weight} <span className="gray">{data.weightSize}</span></div>
+														<div className="div-table-cell">{data.transactions}</div>
 													</Link>
 												</React.Fragment>
 											))
