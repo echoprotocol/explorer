@@ -9,11 +9,14 @@ import OperationsTable from '../TransactionInfo/OperationsTable';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 import URLHelper from '../../helpers/URLHelper';
+import AccountActions from '../../actions/AccountActions';
 
 class Account extends React.Component {
 
 	componentDidMount() {
-		this.props.getAccountInfo();
+		if (this.props.connected) {
+			this.props.getAccountInfo();
+		}
 		if (this.props.location.search) {
 			this.props.history.push(this.props.location.pathname);
 		}
@@ -24,7 +27,8 @@ class Account extends React.Component {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
 		}
 
-		if (prevProps.match.params.id !== this.props.match.params.id) {
+		if (prevProps.connected && prevProps.match.params.id
+			&& prevProps.match.params.id !== this.props.match.params.id) {
 			this.props.getAccountInfo();
 			return;
 		}
@@ -41,10 +45,6 @@ class Account extends React.Component {
 
 		if (prevAccountHistory.size !== accountHistory.size) {
 			this.props.updateAccountHistory(account.get('id'), account.get('history'), prevAccount.get('history'));
-		}
-
-		if (!prevAccount.get('balances').equals(account.get('balances'))) {
-			this.props.updateAccountBalances(account.get('balances'));
 		}
 
 	}
@@ -127,7 +127,15 @@ class Account extends React.Component {
 
 }
 
+export function loadData(store, data) {
+	if (!data.params || !data.params.id) {
+		return null;
+	}
+	return store.dispatch(AccountActions.getAccountInfo(data.params.id));
+}
+
 Account.propTypes = {
+	connected: PropTypes.bool.isRequired,
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
@@ -141,7 +149,6 @@ Account.propTypes = {
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
 	updateAccountHistory: PropTypes.func.isRequired,
-	updateAccountBalances: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };

@@ -33,6 +33,7 @@ import { loadData as loadDataNodeMap } from './components/NodeMap';
 import { loadData as loadDataContract } from './components/Contract';
 import { loadData as loadDataManageContract } from './components/ManageContract';
 import { loadData as loadDataUploadAbi } from './components/UploadABI';
+import { loadData as loadDataAccountInfo } from './components/Account';
 
 export default [
 	{
@@ -65,6 +66,7 @@ export default [
 				path: ACCOUNTS_PATH,
 				exact: true,
 				component: Account,
+				loadData: loadDataAccountInfo,
 			},
 			{
 				path: ASSET_PATH,

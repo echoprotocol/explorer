@@ -1,5 +1,5 @@
-import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
-import { List, fromJS } from 'immutable';
+import echo, { validators, OPERATIONS_IDS, CACHE_MAPS } from 'echojs-lib';
+import Immutable, { List, fromJS } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 import BN from 'bignumber.js';
 
@@ -72,7 +72,7 @@ class AccountActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	getAccountInfo(id) {
-		return async (dispatch) => {
+		return async (dispatch, getState) => {
 			if (!validators.isAccountId(id) && !validators.isAccountName(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));
 				return;
@@ -92,7 +92,22 @@ class AccountActions extends BaseActionsClass {
 
 				await echo.api.getObjects(objectIds);
 
-				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
+				const objects = getState().echoCache.get(CACHE_MAPS.OBJECTS_BY_ID);
+
+				const filteredObjects = fromJS(account.balances).reduce(
+					(map, s, a) => map.set(a, objects.get(a)).set(s, objects.get(s)),
+					Immutable.Map({}),
+				);
+				const balanceToSave = fromJS(account.balances).mapEntries(([assetId, statsId]) => ([
+					assetId,
+					{
+						asset: filteredObjects.get(assetId),
+						amount: filteredObjects.getIn([statsId, 'balance']),
+						id: filteredObjects.getIn([statsId, 'id']),
+					},
+				]));
+
+				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
 
 				const transactions = await this.formatAccountHistory(id, account.history.slice(0, DEFAULT_ROWS_COUNT));
 
@@ -108,6 +123,7 @@ class AccountActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({ tokens }));
 			} catch (e) {
+				console.log('heheehe', e);
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));
@@ -130,20 +146,6 @@ class AccountActions extends BaseActionsClass {
 				field: 'history',
 				value: new List(transactions),
 			}));
-		};
-	}
-
-	/**
-	 * Update account balances
-	 * @param {Map} balances
-	 * @returns {function}
-	 */
-	updateAccountBalances(balances) {
-		return async (dispatch) => {
-			const objectIds = balances.reduce((arr, key, value) => [...arr, key, value], []);
-			await echo.api.getObjects(objectIds);
-
-			dispatch(this.setMultipleValue({ balances }));
 		};
 	}
 
