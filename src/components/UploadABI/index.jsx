@@ -5,6 +5,7 @@ import URLHelper from '../../helpers/URLHelper';
 import { CONTRACT_ABI } from '../../constants/RouterConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import { ContractIcon } from '../Contract/ContractIcon';
+import ContractActions from '../../actions/ContractActions';
 
 let CodeMirror = null;
 if (__IS_CLIENT__) {
@@ -24,7 +25,10 @@ class UploadABI extends React.Component {
 	}
 
 	async componentDidMount() {
-		await this.props.getContractInfo();
+		if (!this.props.blockNumber) {
+			await this.props.getContractInfo();
+		}
+
 		const { abi, verified, match: { params: { id } } } = this.props;
 		this.props.setFormAbi(abi);
 
@@ -139,7 +143,15 @@ class UploadABI extends React.Component {
 
 }
 
+export function loadData(store, data) {
+	if (!data.params || !data.params.id) {
+		return null;
+	}
+	return store.dispatch(ContractActions.getContractInfo(data.params.id));
+}
+
 UploadABI.propTypes = {
+	blockNumber: PropTypes.number.isRequired,
 	abiInput: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,

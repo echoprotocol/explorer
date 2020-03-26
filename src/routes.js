@@ -32,6 +32,7 @@ import { loadData as loadAssetInfo } from './components/Asset';
 import { loadData as loadDataNodeMap } from './components/NodeMap';
 import { loadData as loadDataContract } from './components/Contract';
 import { loadData as loadDataManageContract } from './components/ManageContract';
+import { loadData as loadDataUploadAbi } from './components/UploadABI';
 
 export default [
 	{
@@ -75,6 +76,7 @@ export default [
 				path: UPLOAD_ABI_PATH,
 				exact: true,
 				component: UploadABI,
+				loadData: loadDataUploadAbi,
 			},
 			{
 				path: MANAGE_CONTRACT_PATH,

@@ -11,6 +11,7 @@ export default withRouter(connect(
 	(state) => ({
 		abiInput: state.form.getIn([FORM_ABI, 'abi']),
 		abi: state.contract.get('abi'),
+		blockNumber: state.contract.get('blockNumber'),
 		icon: state.contract.get('icon'),
 		verified: state.contract.get('verified'),
 	}),
