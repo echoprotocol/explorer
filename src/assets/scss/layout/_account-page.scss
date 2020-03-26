@@ -217,6 +217,7 @@
 			display: flex;
 			align-items: center;
 			white-space: nowrap;
+			max-width: 100%;
 			.txt {
 				margin-right: 5px;
 				@include text-overflow;
@@ -225,6 +226,13 @@
 				display: inline-block;
 				@include text-overflow();
 				max-width: 120px;
+			}
+			.name {
+				@include text-overflow();
+				max-width: 200px;
+				@include max-vw(767) {
+					max-width: 100%;
+				}
 			}
 		}
 
