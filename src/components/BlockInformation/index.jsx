@@ -7,9 +7,10 @@ import BN from 'bignumber.js';
 
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
+import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
 import TableLable from '../TableLable';
-
+import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
@@ -112,10 +113,10 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="block-navigation-wrap">
+				<InnerHeader title={`Block ${formattedBlockNumber}`} withTopPanel>
+					<BackwardsLink returnFunction={() => this.returnFunction()} />
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
-						title={`Block ${formattedBlockNumber}`}
 						returnFunction={() => this.returnFunction()}
 					/>
 					<div className="block-navigation">
@@ -134,11 +135,10 @@ class BlockInformation extends React.Component {
 							Next <span>block</span>
 						</button>
 					</div>
-				</div>
-
+				</InnerHeader>
 				<div className="block-description">
 					<div className="container time">
-						<div className="title">Date, Time</div>
+						<div className="title">Date, time</div>
 						<div className="value">{time}</div>
 					</div>
 					<div className="container size">
@@ -178,15 +178,14 @@ class BlockInformation extends React.Component {
 						isDistributionRewardOpen &&
 						<DistributionTable rewards={rewardDistribution} />
 					) : (
-						<h2>Certificate list will be available after next block will be produced</h2>
+						<TableLable label="Certificate list will be available after next block will be produced" />
 					)
 				}
-				<h2>{FormatHelper.getFormatTransactionsTitle(transactionCount)}</h2>
 				<div className="help-table-wrapper">
+					<TableLable label={FormatHelper.getFormatTransactionsTitle(transactionCount)} />
 					{
 						(slicedOperations && slicedOperations.size) ?
 							<OperationsTable
-								isBlock
 								fee
 								isMobileDevice={isMobileDevice}
 								operations={slicedOperations}
@@ -205,7 +204,7 @@ class BlockInformation extends React.Component {
 		const { blockInformation, latestBlock } = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information account-page with-d-table">
+			<div className="inner-information-container">
 				{
 					!blockInformation.get('blockNumber') || this.state.loader ?
 						this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)

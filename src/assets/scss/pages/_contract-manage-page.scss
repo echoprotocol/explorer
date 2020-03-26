@@ -1,114 +1,77 @@
-.table-container.inner-information-container.inner-page.manage-contract {
-    .backwards {
-        margin-top: 0;
-    }
+.inner-page.manage-contract {
+	.backwards {
+		margin-top: 0;
+	}
+	.page-helper-section {
+		padding: 23px 22px 40px;
 
-    .backwards-link {
-        @include res-768 {
-            top: 51px;
-            left: 0px;
-        }
+		@include max-vw(1534) {
+			padding: 28px 30px 40px;
+		}
 
-        @include res-500 {
-            left: -8px;
-        }
+		@include max-vw(767) {
+			padding: 25px 23px;
+		}
 
-        @include res-320 {
+		@include max-vw(499) {
+			padding: 12px;
+		}
 
-            left: 12px;
-            top: -2px;
-        }
-    }
+		.form {
+			padding: 0 100px 0 115px;
 
-    .account-page-t-block {
-        margin-left: 31px;
+			@include max-vw(1534) {
+				padding: 0px 60px;
+			}
 
-        @include res-768 {
-            margin-left: 12px;
-        }
+			@include max-vw(1534) {
+				padding: 0 17px;
+			}
 
-        @include res-500 {
-            margin-left: 0;
-        }
+			@include max-vw(1279) {
+				padding: 0 100px;
+			}
 
-        @include res-320 {
-            .icon {
-                display: none;
-            }
-        }
-    }
+			@include max-vw(999) {
+				padding: 0 40px;
+			}
 
-    .page-helper-section {
-        padding: 23px 22px 40px;
+			@include max-vw(767) {
+				padding: 0 23px;
+			}
 
-        @include res-1280 {
-            padding: 28px 30px 40px;
-        }
+			@include max-vw(499) {
+				padding: 0 16px;
+			}
 
-        @include res-500 {
-            padding: 25px 23px;
-        }
+			input {
+				line-height: 14px;
 
-        @include res-320 {
-            padding: 12px;
-        }
+				@include max-vw(499) {
+					line-height: 24px;
+					padding: 4px 12px;
+				}
+			}
 
-        .form {
-            padding: 0 100px 0 115px;
+			.row {
+				margin-bottom: 12px;
 
-            @include max-vw(1550) {
-                padding: 0px 60px;
-            }
+				@include max-vw(767) {
+					margin-bottom: 20px;
+				}
+			}
+		}
+	}
 
-            @include res-1280 {
-                padding: 0 17px;
-            }
+	.buttons-wrap {
+		padding: 27px 40px 43px;
 
-            @include res-1000 {
-                padding: 0 100px;
-            }
+		@include max-vw(767) {
+			padding: 27px 0px 43px;
+		}
 
-            @include res-768 {
-                padding: 0 40px;
-            }
-
-            @include res-500 {
-                padding: 0 23px;
-            }
-
-            @include res-320 {
-                padding: 0 16px;
-            }
-
-            input {
-                line-height: 14px;
-
-                @include res-320 {
-                    line-height: 24px;
-                    padding: 4px 12px;
-                }
-            }
-
-            .row {
-                margin-bottom: 12px;
-
-                @include res-500 {
-                    margin-bottom: 20px;
-                }
-            }
-        }
-    }
-
-    .buttons-wrap {
-        padding: 27px 40px 43px;
-
-        @include res-500 {
-            padding: 27px 0px 43px;
-
-        }
-
-        @include res-320 {
-            padding: 30px;
-        }
-    }
+		@include max-vw(499) {
+			padding: 30px;
+		}
+	}
 }

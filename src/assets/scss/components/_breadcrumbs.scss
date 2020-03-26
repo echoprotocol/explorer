@@ -1,0 +1,115 @@
+.breadcrumbs-container {
+	display: flex;
+	align-items: center;
+	> .element {
+		position: relative;
+		display: inline-block;
+		@include Hack_Bold;
+		font-size: 9px;
+		letter-spacing: 2.25px;
+		color: #2a90e6;
+		text-transform: uppercase;
+		padding-top: 5px;
+		padding-bottom: 5px;
+
+		transition: 0.2s ease-out;
+
+		&:hover {
+			color: #095494;
+		}
+
+		&:active {
+			color: #fb0707;
+		}
+
+		&:not(:last-child) {
+			margin-right: 25px;
+
+			&:after {
+				content: "";
+				position: absolute;
+				right: -12px;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 1px;
+				height: 9px;
+				background-color: #b6b6b8;
+			}
+		}
+	}
+}
+
+.backwards {
+	display: flex;
+	align-items: center;
+	position: relative;
+	padding-top: 45px;
+
+	&.action {
+		.account-page-t-block {
+			width: 100%;
+
+			.copy-bytecode {
+				margin: auto 0 auto auto;
+			}
+		}
+	}
+
+	@include max-vw(999) {
+		padding-left: 18px;
+	}
+
+	@include max-vw(767) {
+		padding-left: 23px;
+	}
+
+	@include max-vw(499) {
+		padding-top: 86px;
+		padding-left: 25px;
+	}
+
+	> .title {
+		@include InterUI_Bold;
+		font-size: 23px;
+		color: #130d32;
+		line-height: 33px;
+		letter-spacing: 0.025em;
+		margin-left: 32px;
+
+		@include max-vw(1534) {
+			margin-left: 18px;
+		}
+
+		@include max-vw(999) {
+			margin-left: 0;
+		}
+
+		@include max-vw(767) {
+			margin-left: -7px;
+		}
+
+		@include max-vw(499) {
+			width: 100%;
+			margin-left: -9px;
+			padding-right: 30px;
+		}
+	}
+}
+
+.backwards-link {
+	@include onFocus(4px, 2px, 2px, rgba(#3570b6, 0.3));
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	left: -6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 15;
+	transition: background-color 0.2s;
+	border-radius: 4px;
+
+	&:focus {
+		background-color: rgba(#fff, 1);
+	}
+}

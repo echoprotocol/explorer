@@ -218,18 +218,14 @@ class OperationInfo extends React.Component {
 
 						if (key === 'Fee') {
 							return (
-								<Media query="(max-width: 1000px)" key={`${opKey}_${key}_media`}>
-									{
-										(matches) =>
-											(matches &&
-												<div className="od-row" key={`${opKey}_${key}`}>
-													<div className="od-col">{key}:</div>
-													<div className="od-col">
-														{this.renderOperationRowValue(key, value, index)}
-													</div>
-												</div>)
-									}
-								</Media>
+								<React.Fragment key={`${opKey}_${key}_media`}>
+									<div className="od-row" key={`${opKey}_${key}`}>
+										<div className="od-col">{key}:</div>
+										<div className="od-col">
+											{this.renderOperationRowValue(key, value, index)}
+										</div>
+									</div>
+								</React.Fragment>
 							);
 						} else if (key === 'token transfers') {
 							return (

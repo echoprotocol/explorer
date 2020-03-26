@@ -11,7 +11,7 @@ class Navigation extends React.Component {
 			history, hints, getHints, loadingSearch, errorSearch, isMobileDevice,
 		} = this.props;
 		return (
-			<div className="wrap">
+			<div className="wrap sm">
 				<Header
 					isMobileDevice={isMobileDevice}
 					errorSearch={errorSearch}

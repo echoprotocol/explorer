@@ -5,7 +5,8 @@ import { Helmet } from 'react-helmet';
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
 import OperationsTable from '../TransactionInfo/OperationsTable';
-
+import InnerHeader from '../InnerHeader';
+import TableLable from '../TableLable';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 import URLHelper from '../../helpers/URLHelper';
@@ -81,47 +82,51 @@ class Account extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="table-container inner-information-container block-information account-page with-d-table">
+			<div className="inner-information-container account-page">
 				{this.renderMeta()}
-				<div className="account-page-t-block">
-					{account && <div className="title">Account {account.get('id')}</div>}
-					<div className="help-container">
-						{
-							account ?
-								<React.Fragment>
-									<AccountInfo
-										echo={balances.get(ECHO_ASSET.ID)}
-										name={account.get('name')}
-										id={account.get('id')}
-									/>
-									<AccountBalances
-										balances={balances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
-										tokens={tokens}
-										owner={account.get('assets')}
-									/>
-								</React.Fragment> : null
-						}
+				<div className="account-page-info">
+					{account && <InnerHeader title={`Account ${account.get('id')}`} />}
+					<div className="account-page-t-block">
+						<div className="help-container">
+							{
+								account ?
+									<React.Fragment>
+										<AccountInfo
+											echo={balances.get(ECHO_ASSET.ID)}
+											name={account.get('name')}
+											id={account.get('id')}
+										/>
+										<AccountBalances
+											balances={balances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
+											tokens={tokens}
+											owner={account.get('assets')}
+										/>
+									</React.Fragment> : null
+							}
+						</div>
 					</div>
 				</div>
-				{
-					account && !loading ?
-						<React.Fragment>
-							<h2>Transactions</h2>
-							{
-								accountHistory.size ?
-									<OperationsTable
-										isMobileDevice={isMobileDevice}
-										operations={accountHistory}
-										history={this.props.history}
-										location={this.props.location}
-										loading={loadingMoreHistory}
-										loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
-										hasMore={!isFullHistory}
-										timestamp
-									/> : null
-							}
-						</React.Fragment> : this.renderLoader(loading)
-				}
+				<div className="account-page-table">
+					{
+						account && !loading ?
+							<React.Fragment>
+								<TableLable label="Transactions" />
+								{
+									accountHistory.size ?
+										<OperationsTable
+											isMobileDevice={isMobileDevice}
+											operations={accountHistory}
+											history={this.props.history}
+											location={this.props.location}
+											loading={loadingMoreHistory}
+											loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+											hasMore={!isFullHistory}
+											timestamp
+										/> : null
+								}
+							</React.Fragment> : this.renderLoader(loading)
+					}
+				</div>
 			</div>
 		);
 	}

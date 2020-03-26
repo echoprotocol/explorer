@@ -1,320 +1,312 @@
 .preparing-section {
-    padding-bottom: 10px;
-    display: flex;
-    padding-right: 0;
+	padding-bottom: 10px;
+	display: flex;
+	padding-right: 0;
 
-    @include res-1280 {
-        padding: 0px 20px 10px;
-    }
+	@include max-vw(1279) {
+		padding-bottom: 20px;
+	}
 
-    @include res-768 {
-        display: flex;
-        justify-content: space-between;
-        padding: 0px 23px 10px;
-    }
+	@include max-vw(999) {
+		display: flex;
+		justify-content: space-between;
+	}
 
-    @include res-500 {
-        padding: 0px 29px 0px 18px;
-    }
+	@include max-vw(767) {
+		padding-bottom: 20px;
+	}
+	@include max-vw(499) {
+		flex-direction: column;
+		padding-bottom: 0px;
+	}
 
-    @include res-320 {
-        padding-left: 15px;
-        padding-right: 15px;
-        flex-direction: column;
-        padding-bottom: 0px;
-    }
+	.mobile-title {
+		@include Hack_Bold;
+		font-size: 9px;
+		color: #fff;
+		text-transform: uppercase;
+		letter-spacing: 0.25em;
+		margin-bottom: 9px;
+	}
+}
 
-    .mobile-title {
-        @include Hack_Bold;
-        font-size: 9px;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 0.25em;
-        margin-bottom: 9px;
-    }
+.preparing-element {
+	width: 25%;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-start;
+	position: relative;
+	padding-left: 35px;
+	padding-right: 20px;
+	padding-top: 15px;
+	padding-bottom: 11px;
+	@include transition;
 
-    .preparing-element {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: flex-start;
+	.title img {
+		width: 9px;
+		height: 9px;
+		margin: 2px 2px 2px 9px;
+	}
 
-        position: relative;
+	&:hover {
+		.title {
+			color: $blue;
+		}
+	}
 
-        padding-left: 35px;
-        padding-right: 35px;
-        width: 100%;
-        padding-top: 15px;
-        padding-bottom: 11px;
-        @include transition;
+	@include max-vw(1534) {
+		padding-left: 25px;
+		padding-right: 25px;
+	}
 
-        &:hover {
-            .title {
-                color: #5eb3e8;
-            }
-        }
+	@include max-vw(1279) {
+		padding-left: 25px;
+		padding-right: 20px;
+	}
 
-        .title img {
-            width: 9px;
-            height: 9px;
-            margin: 2px 2px 2px 9px;
-        }
+	@include max-vw(999) {
+		padding-left: 0;
+		padding-right: 0;
+		padding-bottom: 0;
+	}
 
-        @include res-1280 {
-            // width: 285px;
-            padding-left: 25px;
-            padding-right: 25px;
-        }
+	@include max-vw(767) {
+		width: 190px;
+	}
 
-        @include res-1000 {
-            padding-left: 25px;
-            padding-right: 20px;
-            // width: 224px;
-        }
+	@include max-vw(499) {
+		width: 100%;
+	}
 
-        @include res-768 {
-            padding-left: 0;
-            padding-right: 0;
-            // width: 140px;
-            padding-bottom: 3px;
-        }
+	&:first-child {
+		padding-left: 0;
+	}
 
-        @include res-500 {
-            width: 190px;
-        }
+	&:not(:last-child) {
+		&:after {
+			content: "";
+			width: 1px;
+			height: 80px;
+			background-color: #33374d;
+			display: inline-block;
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			@include max-vw(999) {
+				display: none;
+			}
+		}
+	}
 
-        @include res-320 {
-            width: 100%;
-        }
+	&:not(:first-child) {
+		.status-container {
+			.description {
+				.text {
+					@include max-vw(999) {
+						display: none;
+					}
 
-        &:first-child {
-            padding-left: 0;
-        }
+					@include max-vw(767) {
+						display: block;
+					}
+				}
+			}
 
-        &:not(:last-child) {
-            border-right: 1px solid #33374d;
+			@include max-vw(499) {
+				display: none;
+			}
+		}
+	}
 
-            @include res-768 {
-                border: none;
-            }
-        }
+	&.sm-border {
+		border-color: transparent;
 
-        &:not(:first-child) {
-            .status-container {
-                .description {
-                    .text {
-                        @include res-768 {
-                            display: none;
-                        }
+		&:after {
+			content: "";
+			width: 1px;
+			height: 31px;
+			background-color: #33374d;
+			display: inline-block;
+			position: absolute;
+			right: 0;
+			bottom: 0;
 
-                        @include res-500 {
-                            display: block;
-                        }
-                    }
-                }
+			@include max-vw(999) {
+				display: none;
+			}
+		}
+	}
 
-                @include res-320 {
-                    display: none;
-                }
-            }
-        }
+	&.done {
+		.status-container {
+			.description {
+				color: #f5f5f5;
 
-        &.sm-border {
-            border-color: transparent;
+				.status-icn {
+					background-color: #5eb3e8;
+					background-image: url(../images/icons/check-icn.svg);
+					background-size: 9px 7px;
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+	}
 
-            &:after {
-                content: '';
-                width: 1px;
-                height: 35px;
-                background-color: #33374d;
-                display: inline-block;
-                position: absolute;
-                right: 0;
-                bottom: 0;
+	&.progress {
+		.status-container {
+			.description {
+				color: #f5f5f5;
 
-                @include res-768 {
-                    display: none;
-                }
-            }
-        }
+				.status-icn {
+					opacity: 1;
+					visibility: visible;
+					width: 14px;
+					height: 14px;
 
-        &.done {
-            .status-container {
-                .description {
-                    color: #f5f5f5;
+					@keyframes spin {
+						0% {
+							-webkit-transform: rotate(0deg);
+							-ms-transform: rotate(0deg);
+							-o-transform: rotate(0deg);
+							transform: rotate(0deg);
+						}
 
-                    .status-icn {
-                        background-color: #5eb3e8;
-                        background-image: url(../images/icons/check-icn.svg);
-                        background-size: 9px 7px;
-                        opacity: 1;
-                        visibility: visible;
-                    }
-                }
-            }
-        }
+						100% {
+							-webkit-transform: rotate(360deg);
+							-ms-transform: rotate(360deg);
+							-o-transform: rotate(360deg);
+							transform: rotate(360deg);
+						}
+					}
 
-        &.progress {
-            .status-container {
-                .description {
-                    color: #f5f5f5;
+					&:before {
+						content: "";
+						position: absolute;
+						width: 100%;
+						height: 100%;
+						border-radius: 100%;
+						border: 1px solid transparent;
+						border-top-color: #5eb3e8;
+						z-index: 2;
+						animation: spin 1s infinite;
+					}
 
-                    .status-icn {
-                        opacity: 1;
-                        visibility: visible;
-                        width: 14px;
-                        height: 14px;
+					&:after {
+						content: "";
+						position: absolute;
+						width: 100%;
+						height: 100%;
+						border-radius: 100%;
+						border: 1px solid transparent;
+						border-top-color: #5eb3e8;
+						border: 1px solid #304a6b;
+						z-index: 1;
+					}
+				}
+			}
+		}
+	}
 
-                        @keyframes spin {
-                            0% {
-                                -webkit-transform: rotate(0deg);
-                                -ms-transform: rotate(0deg);
-                                -o-transform: rotate(0deg);
-                                transform: rotate(0deg);
-                            }
+	.title {
+		display: inline-flex;
+		@include Hack_Bold;
+		margin-bottom: 28px;
+		color: $grey;
+		line-height: 15px;
+		letter-spacing: 2px;
+		font-size: 9px;
+		text-transform: uppercase;
+		@include max-vw(1279) {
+			white-space: nowrap;
+			margin-bottom: 25px;
+		}
 
-                            100% {
-                                -webkit-transform: rotate(360deg);
-                                -ms-transform: rotate(360deg);
-                                -o-transform: rotate(360deg);
-                                transform: rotate(360deg);
-                            }
-                        }
+		@include max-vw(767) {
+			margin-bottom: 25px;
+		}
 
-                        &:before {
-                            content: "";
-                            position: absolute;
-                            width: 100%;
-                            height: 100%;
-                            border-radius: 100%;
-                            border: 1px solid transparent;
-                            border-top-color: #5eb3e8;
-                            z-index: 2;
-                            animation: spin 1s infinite;
-                        }
+		&:active {
+			color: #e85e5e;
 
-                        &:after {
-                            content: "";
-                            position: absolute;
-                            width: 100%;
-                            height: 100%;
-                            border-radius: 100%;
-                            border: 1px solid transparent;
-                            border-top-color: #5eb3e8;
-                            border: 1px solid #304a6b;
-                            z-index: 1;
-                        }
-                    }
-                }
-            }
-        }
+			.tooltip {
+				svg {
+					path {
+						fill: #e85e5e;
+					}
+				}
+			}
+		}
 
-        .title {
-            display: inline-flex;
-            @include Hack_Bold;
-            // font-size: 9px;
-            // letter-spacing: 0.25em;
-            margin-bottom: 25px;
-            // text-transform: uppercase;
-            color: #556270;
-            line-height: 15px;
-            letter-spacing: 0.02em;
-            font-size: 12px;
+		.tooltip {
+			cursor: help;
+			display: inline-block;
+			margin-left: 9px;
+			width: 9px;
+			height: 9px;
 
-            @include res-768 {
-                white-space: nowrap;
-                margin-bottom: 19px;
-            }
+			svg {
+				path {
+					@include transition;
+				}
+			}
+		}
 
-            @include res-500 {
-                margin-bottom: 14px;
-            }
+		.current-step {
+			color: #fff;
+		}
+	}
 
-            &:active {
-                color: #e85e5e;
+	.status-container {
+		@include InterUI_Bold;
+		color: $grey;
+		width: 100%;
+	}
 
-                .tooltip {
-                    svg {
-                        path {
-                            fill: #e85e5e;
-                        }
-                    }
-                }
-            }
+	.description {
+		position: relative;
+		display: flex;
+		font-size: 16px;
 
-            .tooltip {
-                cursor: help;
-                display: inline-block;
-                margin-left: 9px;
-                width: 9px;
-                height: 9px;
+		@include max-vw(999) {
+			.text {
+				line-height: 13px;
+			}
+		}
 
-                svg {
-                    path {
-                        @include transition;
-                    }
-                }
-            }
+		@include max-vw(767) {
+			.text {
+				line-height: 18px;
+			}
+		}
 
-            .current-step {
-                color: #fff;
-            }
-        }
+		@include max-vw(499) {
+			font-size: 15px;
+		}
 
-        .status-container {
-            @include InterUI_Bold;
-            color: #556270;
-            width: 100%;
+		.status-icn {
+			opacity: 0;
+			visibility: hidden;
+			position: absolute;
+			display: inline-block;
+			right: 0;
+			border-radius: 1000px;
+			width: 15px;
+			height: 15px;
+			background-position: center center;
+			background-repeat: no-repeat;
 
-            .description {
-                position: relative;
-                display: flex;
-                font-size: 16px;
-                // @include transition;
+			@include max-vw(999) {
+				position: relative;
+			}
 
-                @include res-768 {
-                    height: 15px;
+			@include max-vw(767) {
+				position: absolute;
+			}
 
-                    .text {
-                        line-height: 13px;
-                    }
-                }
-
-                @include res-500 {
-                    .text {
-                        line-height: 18px;
-                    }
-                }
-
-                @include res-320 {
-                    font-size: 15px;
-                }
-
-                .status-icn {
-                    opacity: 0;
-                    visibility: hidden;
-                    // @include transition;
-                    position: absolute;
-                    display: inline-block;
-                    right: 0;
-                    border-radius: 1000px;
-                    width: 15px;
-                    height: 15px;
-                    background-position: center center;
-                    background-repeat: no-repeat;
-
-                    @include res-768 {
-                        position: relative;
-                    }
-
-                    @include res-500 {
-                        position: absolute;
-                    }
-
-                    @include res-320 {
-                        right: 11px;
-                    }
-                }
-            }
-        }
-    }
+			@include max-vw(499) {
+				right: 11px;
+			}
+		}
+	}
 }

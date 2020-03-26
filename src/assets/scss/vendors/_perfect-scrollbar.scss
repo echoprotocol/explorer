@@ -1,0 +1,108 @@
+.scrollbar-container {
+	position: relative;
+}
+
+.ps {
+	overflow: hidden;
+	overflow-anchor: none;
+	-ms-overflow-style: none;
+	-ms-touch-action: auto;
+	touch-action: auto;
+}
+
+.ps__rail-x {
+	position: absolute;
+	bottom: 0px;
+	display: none;
+	height: 15px;
+	opacity: 0;
+	-webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
+	transition: background-color 0.2s linear, opacity 0.2s linear;
+}
+
+.ps__rail-y {
+	position: absolute;
+	right: 6px;
+	display: none;
+	width: 15px;
+	opacity: 0;
+	-webkit-transition: background-color 0.2s linear, opacity 0.2s linear;
+	transition: background-color 0.2s linear, opacity 0.2s linear;
+}
+
+.ps--active-x > .ps__rail-x,
+.ps--active-y > .ps__rail-y {
+	display: block;
+	background-color: transparent;
+}
+
+.ps:hover > .ps__rail-x,
+.ps:hover > .ps__rail-y,
+.ps--focus > .ps__rail-x,
+.ps--focus > .ps__rail-y,
+.ps--scrolling-x > .ps__rail-x,
+.ps--scrolling-y > .ps__rail-y {
+	opacity: 1;
+}
+
+.ps .ps__rail-x:hover,
+.ps .ps__rail-y:hover,
+.ps .ps__rail-x:focus,
+.ps .ps__rail-y:focus,
+.ps .ps__rail-x.ps--clicking,
+.ps .ps__rail-y.ps--clicking {
+	background-color: transparent;
+	opacity: 1;
+}
+
+.ps__thumb-x {
+	position: absolute;
+	bottom: 6px;
+	height: 10px;
+	border-radius: 6px;
+	background-color: $grey-mid;
+	-webkit-transition: background-color 0.2s linear, height 0.2s ease-in-out;
+	transition: background-color 0.2s linear, height 0.2s ease-in-out;
+}
+
+.ps__thumb-y {
+	position: absolute;
+	right: 3px;
+	width: 6px;
+	border-radius: 6px;
+	background-color: $grey-mid;
+	-webkit-transition: background-color 0.2s linear, width 0.2s ease-in-out,
+		margin 0.2s ease-in-out;
+	transition: background-color 0.2s linear, width 0.2s ease-in-out;
+}
+
+.ps__rail-x:hover > .ps__thumb-x,
+.ps__rail-x:focus > .ps__thumb-x,
+.ps__rail-x.ps--clicking .ps__thumb-x {
+	height: 10px;
+}
+
+.ps__rail-y:hover > .ps__thumb-y,
+.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-y.ps--clicking .ps__thumb-y {
+	width: 8px;
+	background-color: rgba(#fff, 0.5);
+}
+
+.ps__thumb-y {
+	&:focus {
+		outline: none;
+	}
+}
+
+@supports (-ms-overflow-style: none) {
+	.ps {
+		overflow: auto !important;
+	}
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	.ps {
+		overflow: auto !important;
+	}
+}

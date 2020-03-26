@@ -17,18 +17,16 @@ class Header extends React.Component {
 		} = this.props;
 
 		return (
-			<div>
-				<div className="top-section">
-					<Navigation
-						isMobileDevice={isMobileDevice}
-						loadingSearch={loadingSearch}
-						errorSearch={errorSearch}
-						history={history}
-						hints={hints}
-						getHints={getHints}
-					/>
-					<PreparingSection />
-				</div>
+			<div className="top-section">
+				<Navigation
+					isMobileDevice={isMobileDevice}
+					loadingSearch={loadingSearch}
+					errorSearch={errorSearch}
+					history={history}
+					hints={hints}
+					getHints={getHints}
+				/>
+				<PreparingSection />
 			</div>
 		);
 	}

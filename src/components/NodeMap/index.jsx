@@ -87,7 +87,7 @@ class NodeMap extends React.Component {
 		const data = this.handlePeers();
 
 		return (
-			<div className="distribution table-container recent-block-table">
+			<div className="distribution inner-information-container">
 				<div className="distribution-header">
 					<h1>Nodes Distribution</h1>
 					<button onClick={(() => __IS_CLIENT__ && window.open(config.INSTALL_NODE_LINK, '_blank'))} >
