@@ -1,6 +1,6 @@
 import echo from 'echojs-lib';
 import { batchActions } from 'redux-batched-actions';
-import { Map } from 'immutable';
+import { fromJS, Map } from 'immutable';
 
 import GlobalActions from './GlobalActions';
 import AssetReducer from '../reducers/AssetReducer';
@@ -21,8 +21,8 @@ export const getFullAssetInformation = (assetId) => async (dispatch) => {
 		const issuer = await echo.api.getObject(asset.issuer);
 
 		dispatch(batchActions([
-			AssetReducer.actions.set({ field: 'asset', value: new Map(asset) }),
-			AssetReducer.actions.set({ field: 'issuer', value: new Map(issuer) }),
+			AssetReducer.actions.set({ field: 'asset', value: fromJS(asset) }),
+			AssetReducer.actions.set({ field: 'issuer', value: issuer ? new Map(issuer) : null }),
 		]));
 	} catch (err) {
 		dispatch(GlobalActions.toggleErrorPath(true));

@@ -20,10 +20,9 @@ import { getFullAssetInformation } from '../../actions/AssetActions';
 class Asset extends React.Component {
 
 	componentDidMount() {
-		if (this.props.asset) {
-			return;
+		if (!this.props.asset && !this.props.issuer) {
+			this.props.getAssetInfo();
 		}
-		this.props.getAssetInfo();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -175,7 +174,7 @@ class Asset extends React.Component {
 		const { asset, issuer } = this.props;
 		return (
 			<div className="inner-information-container account-asset-page">
-				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset(asset, issuer)}
+				{(asset != null && issuer != null) ? this.renderAsset(asset, issuer) : this.renderLoader() }
 			</div>
 		);
 	}
