@@ -60,14 +60,30 @@
   td {
     &:first-child,
     &:last-child {
+      padding: 0;
+
       max-width: 30px;
       min-width: 30px;
       width: 30px;
-      padding: 0;
-      @include max-vw($res-1440) {
+      @include max-vw(1534) {
         max-width: 20px;
         min-width: 20px;
         width: 20px;
+      }
+      @include max-vw(1279) {
+        max-width: 30px;
+        min-width: 30px;
+        width: 30px;
+      }
+      @include max-vw(767) {
+        max-width: 20px;
+        min-width: 20px;
+        width: 20px;
+      }
+      @include max-vw(499) {
+        max-width: 15px;
+        min-width: 15px;
+        width: 15px;
       }
     }
     &:nth-child(2) {

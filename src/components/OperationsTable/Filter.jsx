@@ -4,6 +4,7 @@ import cn from 'classnames';
 import Input from '../Input';
 
 const OperationsFilter = ({ open }) => {
+	// TODO: Remove state, hundleChange and hundleClear; use Ract.Memo
 	const [receiver, setReceiver] = useState('');
 	const [sender, setSender] = useState('');
 
@@ -39,7 +40,6 @@ const OperationsFilter = ({ open }) => {
 				/>
 			</div>
 			<div className="operations-filter-item">
-
 				<span className="operations-filter-caption">Sender</span>
 				<Input
 					name="sender-input"
