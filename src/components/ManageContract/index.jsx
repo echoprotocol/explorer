@@ -29,6 +29,12 @@ class ManageContract extends React.Component {
 		this.initData();
 	}
 
+	componentDidUpdate() {
+		if (!this.props.owner || !this.props.owner.size) {
+			this.props.getContractInfo();
+		}
+	}
+
 	componentWillUnmount() {
 		// BridgeService.unsubscribeSwitchAccount(this.props.setActiveAccount);
 	}
@@ -72,7 +78,6 @@ class ManageContract extends React.Component {
 		const { match: { params: { id } } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
-		await this.props.getContractInfo();
 		this.props.setDefaultDateContract(id);
 	}
 

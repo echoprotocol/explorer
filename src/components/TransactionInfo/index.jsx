@@ -47,7 +47,7 @@ class TransactionsInfo extends React.Component {
 		const { round, index } = this.props.match.params;
 
 		const {
-			operations, blockInformation, loading, history, location, isMobileDevice,
+			operations, blockInformation, loading, history, location,
 		} = this.props;
 
 		const breadcrumbs = [
@@ -78,7 +78,6 @@ class TransactionsInfo extends React.Component {
 								<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
 								<TableLable label={FormatHelper.getFormaOperationsTitle(operations.size)} />
 								<OperationsTable
-									isMobileDevice={isMobileDevice}
 									isTransaction
 									operations={operations}
 									history={history}
@@ -96,21 +95,21 @@ class TransactionsInfo extends React.Component {
 
 }
 
-export function loadData(store, data) {
+export async function loadData(store, data) {
 	if (!data.params || !data.params.round || !data.params.index) {
 		return null;
 	}
 	const { round, index: indexWithQuery } = data.params;
 	const [index] = indexWithQuery.split('?');
-	store.dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, indexWithQuery).replace(/round/, round)));
-	store.dispatch(getBlockInformation(round));
+	store.dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, indexWithQuery)
+		.replace(/round/, round)));
+	await store.dispatch(getBlockInformation(round));
 	return store.dispatch(TransactionActions.getTransaction(round, index));
 }
 
 
 TransactionsInfo.propTypes = {
 	loading: PropTypes.bool,
-	isMobileDevice: PropTypes.bool.isRequired,
 	match: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,

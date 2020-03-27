@@ -90,7 +90,7 @@ class NodeMap extends React.Component {
 			<div className="distribution inner-information-container">
 				<div className="distribution-header">
 					<h1>Nodes Distribution</h1>
-					<button onClick={(() => __IS_CLIENT__ && window.open(config.INSTALL_NODE_LINK, '_blank'))} >
+					<button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
 						How to run full node
 					</button>
 				</div>

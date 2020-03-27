@@ -15,7 +15,6 @@ export default withRouter(connect(
 		accountHistory: state.account.get('history'),
 		account: state.account.get('echoAccountInfo'),
 		connected: state.global.get('connected'),
-		isMobileDevice: state.global.get('isMobileDevice'),
 	}),
 	(dispatch, props) => ({
 		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),

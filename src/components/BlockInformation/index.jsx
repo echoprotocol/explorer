@@ -89,7 +89,7 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInformation(blockInformation, latestBlock) {
-		const { toggleRewardDistribution, isDistributionRewardOpen, isMobileDevice } = this.props;
+		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
 		const { currentTransactionLength } = this.state;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
@@ -187,7 +187,6 @@ class BlockInformation extends React.Component {
 						(slicedOperations && slicedOperations.size) ?
 							<OperationsTable
 								fee
-								isMobileDevice={isMobileDevice}
 								operations={slicedOperations}
 								history={this.props.history}
 								location={this.props.location}
@@ -223,7 +222,6 @@ export function loadData(store, data) {
 }
 
 BlockInformation.propTypes = {
-	isMobileDevice: PropTypes.bool.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
