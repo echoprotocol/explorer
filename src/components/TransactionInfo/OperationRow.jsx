@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import _ from 'lodash';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
 
@@ -16,10 +15,6 @@ import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 
 class OperationRow extends React.Component {
-
-	getColSpan(matches) {
-		return !matches ? 8 : 7;
-	}
 
 	renderTransactionLink(block, transactionNum, index) {
 		return (
@@ -83,25 +78,12 @@ class OperationRow extends React.Component {
 			},
 			index,
 			active,
-			timestamp,
-			fee,
 			air,
+			isTransaction,
 		} = this.props;
 		const objectId = objectInfo ? objectInfo.get('id') : null;
 		this.props.tableRefs[index] = React.createRef();
 		const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
-
-		const tip = (
-			<React.Fragment>
-				<p>
-					View raw JSON object
-				</p>
-			</React.Fragment>
-		);
-
-		const tooltipStyle = {
-			width: 175,
-		};
 
 		return (
 			<React.Fragment>
@@ -114,112 +96,66 @@ class OperationRow extends React.Component {
 					<td className="number">
 						<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
 					</td>
-					<td className="type">
+					<td className="operation">
+						<div className="td-in">{detailInfo.type}</div>
+					</td>
+
+					<td className="time">
 						<div className="td-in">
-							{detailInfo.type}
+							<span>{FormatHelper.timestampToOperationRowTime(blockTimestamp)}</span>
 						</div>
 					</td>
-					{/* FOR ACCOUNT AND CONTRACT */}
-					{
-						timestamp ? (
-							<td className="time">
-								<div className="td-in">
-									<span>
-										{FormatHelper.timestampToOperationRowTime(blockTimestamp)}
-									</span>
-								</div>
-							</td>
-						) : null
-					}
+
 					<td className="sender">
-						{mainInfo.from.id ?
+						{ mainInfo.from.id ?
 							<Link className="td-in avatar-wrap" to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
 							</Link> : <div className="td-in">—</div>
 						}
 					</td>
-					<td className="reciever">
-						{this.renderSubject(subjectValue, mainInfo)}
-					</td>
-					<td className="amount">
-						{this.renderAmount()}
-					</td>
-					{
-						fee ? (
-
-							<td className="fee">
-								<div className="td-in">
-									<span className="value">
-										<Tooltip
-											placement="top"
-											overlayClassName="verify-contract-tooltip"
-											trigger={['hover']}
-											overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
-										>
-											<span className="txt">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
-										</Tooltip>
-									</span>
-									<span className="currency">{detailInfo.fee.symbol}</span>
-								</div>
-							</td>
-
-						) : null
-					}
-					<td className="rezult">
-						{
-							(mainInfo.result && !_.isEmpty(mainInfo.result)) ?
-								<Link to={URLHelper.createUrlById(mainInfo.result)} className="td-in" onClick={(e) => e.stopPropagation()}>{mainInfo.result}</Link>
-								: <div className="td-in">—</div>
-						}
-					</td>
-					<td className="json">
-						{
-							mainInfo.from.name ? (
+					<td className="reciever">{this.renderSubject(subjectValue, mainInfo)}</td>
+					<td className="amount">{this.renderAmount()}</td>
+					<td className="fee">
+						<div className="td-in">
+							<span className="value">
 								<Tooltip
 									placement="top"
-									trigger={['hover']}
-									overlay={tip}
-									overlayStyle={tooltipStyle}
 									overlayClassName="verify-contract-tooltip"
+									trigger={['hover']}
+									overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
 								>
-									{this.renderTransactionLink(block, transactionNum, opIndex)}
+									<span className="txt">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
 								</Tooltip>
-							) : <div className="td-in">—</div>
-						}
-					</td>
-					<td className="dd">
-						<div className="td-in">
-							<img src={ddIcon} alt="" />
+							</span>
+							<span className="currency">{detailInfo.fee.symbol}</span>
 						</div>
 					</td>
+					{ isTransaction &&
+						<td className="dd">
+							<div className="td-in"><img src={ddIcon} alt="" /></div>
+						</td>
+					}
 					<td />
 				</tr>
-				{
-					active &&
+				{ active &&
 					<tr className="fold">
-						<td colSpan="1" />
-						<React.Fragment>
-							<td colSpan="9">
-								<OperationInfo
-									details={detailInfo}
-									index={index}
-									block={block}
-									transaction={transactionNum}
-									opIndex={opIndex}
-									objId={objectId}
-								/>
-								<ObjectInfo details={detailInfo} object={objectInfo} />
-							</td>
-						</React.Fragment>
+						<td />
+						<td colSpan="8">
+							<OperationInfo
+								details={detailInfo}
+								index={index}
+								block={block}
+								transaction={transactionNum}
+								opIndex={opIndex}
+								objId={objectId}
+							/>
+							<ObjectInfo details={detailInfo} object={objectInfo} />
+						</td>
+						<td />
 					</tr>
 				}
-				{
-					air &&
-					<tr className="air">
-						<td colSpan="9" />
-					</tr>
-				}
+				{ air && <tr className="air"><td /></tr> }
 			</React.Fragment>
 		);
 	}
@@ -228,15 +164,17 @@ class OperationRow extends React.Component {
 
 
 OperationRow.propTypes = {
-	timestamp: PropTypes.bool.isRequired,
-	fee: PropTypes.bool.isRequired,
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
 	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
+	isTransaction: PropTypes.bool,
 };
 
+OperationRow.defaultProps = {
+	isTransaction: false,
+};
 
 export default OperationRow;

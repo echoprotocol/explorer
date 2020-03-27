@@ -9,10 +9,22 @@ import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import BackwardsLink from '../BackwardLink';
 import InnerHeader from '../InnerHeader';
 import TableLable from '../TableLable';
-import OperationsTable from './OperationsTable';
 import Loader from '../Loader';
+import FilterBtn from '../../components/FilterBtn';
+
+import OperationsTable from './OperationsTable';
+import OperationsFilter from './OperationsFilter';
+import OperationsPagination from './OperationsPagination';
 
 class TransactionsInfo extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			isFilterOpen: false,
+		};
+		this.toggleFilter = this.toggleFilter.bind(this);
+	}
 
 	componentDidMount() {
 		const { round, index } = this.props.match.params;
@@ -24,6 +36,13 @@ class TransactionsInfo extends React.Component {
 
 	componentWillUnmount() {
 		this.props.clearTransaction();
+	}
+
+
+	toggleFilter(e) {
+		const { isFilterOpen } = this.state;
+		e.target.blur();
+		this.setState({ isFilterOpen: !isFilterOpen });
 	}
 
 	returnFunction() {
@@ -40,6 +59,7 @@ class TransactionsInfo extends React.Component {
 
 	render() {
 		const { round, index } = this.props.match.params;
+		const { isFilterOpen } = this.state;
 
 		const {
 			operations, blockInformation, loading, history, location,
@@ -59,32 +79,30 @@ class TransactionsInfo extends React.Component {
 		const timeBlockCreated = FormatHelper.timestampToBlockCreationTime(blockInformation.get('time'));
 
 		return (
-			<React.Fragment>
-				<div className="inner-information-container transaction-information">
-					<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`} withTopPanel>
-						<BackwardsLink returnFunction={() => this.returnFunction()} />
-						<BreadCrumbs
-							breadcrumbs={breadcrumbs}
+			<div className="inner-information-container transaction-information">
+				<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`} withTopPanel>
+					<BackwardsLink returnFunction={() => this.returnFunction()} />
+					<BreadCrumbs breadcrumbs={breadcrumbs} />
+				</InnerHeader>
+				{ !loading ?
+					<React.Fragment>
+						<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
+						<TableLable label={FormatHelper.getFormaOperationsTitle(operations.size)}>
+							<FilterBtn onClick={this.toggleFilter} />
+						</TableLable>
+						<OperationsFilter open={isFilterOpen} />
+						<OperationsTable
+							isTransaction
+							operations={operations}
+							history={history}
+							location={location}
+							loading={loading}
+							changeUrl
 						/>
-					</InnerHeader>
-					{
-						!loading ?
-							<React.Fragment>
-								<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
-								<TableLable label={FormatHelper.getFormaOperationsTitle(operations.size)} />
-								<OperationsTable
-									isTransaction
-									operations={operations}
-									history={history}
-									location={location}
-									loading={loading}
-									changeUrl
-									fee
-								/>
-							</React.Fragment> : this.renderLoader(loading)
-					}
-				</div>
-			</React.Fragment>
+						<OperationsPagination />
+					</React.Fragment> : this.renderLoader(loading)
+				}
+			</div>
 		);
 	}
 
