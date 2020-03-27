@@ -1,0 +1,371 @@
+@mixin view-highlight($hover: false) {
+  td,
+  td:before {
+    transition: background-color $speed;
+  }
+  td:first-child {
+    position: relative;
+    &:before {
+      @include absolute-stretch(0, 0, 0, 15px);
+    }
+  }
+  td:last-child {
+    position: relative;
+    &:before {
+      @include absolute-stretch(0, 15px, 0, 0);
+    }
+  }
+
+  @if $hover {
+    @include only-hover() {
+      &:hover {
+        td:first-child,
+        td:last-child {
+          &:before {
+            background-color: #fff;
+          }
+        }
+        td:not(:first-child):not(:last-child) {
+          background-color: #fff;
+        }
+      }
+    }
+  } @else {
+    td:first-child,
+    td:last-child {
+      &:before {
+        background-color: #fff;
+      }
+    }
+    td:not(:first-child):not(:last-child) {
+      background-color: #fff;
+    }
+  }
+}
+
+.operations-table {
+  position: relative;
+  transition: background-color 0.3s, padding 0.8s linear;
+
+  table {
+    min-width: 748px;
+    width: 100%;
+    border-collapse: collapse;
+    z-index: 1;
+    a {
+      color: $blue;
+    }
+  }
+
+  td {
+    &:first-child,
+    &:last-child {
+      max-width: 30px;
+      min-width: 30px;
+      width: 30px;
+      padding: 0;
+      @include max-vw($res-1440) {
+        max-width: 20px;
+        min-width: 20px;
+        width: 20px;
+      }
+    }
+    &:nth-child(2) {
+      .td-in {
+        padding-left: 0;
+      }
+    }
+    &:nth-last-child(2) {
+      .td-in {
+        padding-right: 0;
+      }
+    }
+
+    &.operation {
+      .td-in {
+        max-width: 150px;
+        vertical-align: middle;
+        @include text-overflow();
+      }
+    }
+
+    &.time {
+      .td-in {
+        max-width: 150px;
+
+        span {
+          display: inline-block;
+          max-width: 100%;
+          @include text-overflow();
+        }
+      }
+    }
+
+    .td-in {
+      padding: 10px;
+      transition: all 0.2s;
+      @include InterUI_Medium;
+    }
+
+    &:nth-child(2) .td-in {
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  thead {
+    position: relative;
+    background-color: $lightgrey-darker;
+    user-select: none;
+    font-weight: 700;
+    font-style: normal;
+    @include InterUI_Medium();
+    font-size: 12px;
+    color: $lightgrey;
+    position: relative;
+    line-height: 15px;
+    &:before {
+      position: absolute;
+      content: "";
+      right: 0;
+      left: 0;
+      top: -1px;
+      height: 1px;
+      background-color: $grey-mid;
+    }
+  }
+
+  tbody {
+    tr {
+      font-size: 12px;
+      color: $grey;
+    }
+  }
+
+  .air {
+    background-color: transparent;
+    height: 13px;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .fold-operation-info {
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
+
+  .avatar-wrap {
+    display: inline-flex;
+    align-items: center;
+
+    .avatar-image {
+      margin-right: 5px;
+
+      img {
+        display: block;
+        max-height: 100%;
+      }
+    }
+  }
+
+  .dd {
+    .td-in {
+      text-align: right;
+    }
+    img {
+      display: block;
+      transform: rotate(60deg);
+      transition: transform $speed;
+      margin: 0 0 0 auto;
+    }
+  }
+
+  .view {
+    cursor: pointer;
+    font-family: InterUI;
+    z-index: 1;
+    @include view-highlight(true);
+
+    &.active {
+      @include view-highlight();
+      & + .fold {
+        display: table-row;
+
+        td:first-child {
+          background-color: #f3f3f5;
+        }
+      }
+
+      .dd {
+        img {
+          transform: rotate(0);
+        }
+      }
+    }
+  }
+
+  .fold {
+    display: none;
+    animation: fade-in $speed;
+    position: relative;
+    z-index: 1;
+    @include view-highlight();
+    td {
+      &:nth-child(2) {
+        padding: 12px 30px;
+      }
+    }
+
+    .fold-title {
+      padding-left: 17px;
+      font-size: 13px;
+      letter-spacing: 0.33px;
+      color: #120e30;
+      display: block;
+      width: 100%;
+      border-bottom: 1px solid rgba(#3f465a, 0.15);
+      padding-bottom: 10px;
+      font-family: InterUI;
+      font-weight: 700;
+
+      & + .operation-detail-table {
+        margin-top: 8px;
+
+        @include max-vw(999) {
+          margin-top: 19px;
+        }
+
+        @include max-vw(767) {
+          margin-top: 13px;
+        }
+      }
+    }
+  }
+
+  .amount,
+  .fee,
+  .reward {
+    .td-in {
+      display: flex;
+    }
+
+    .value {
+      margin-right: 4px;
+      @include text-overflow;
+      max-width: 74px;
+
+      display: flex;
+      word-break: break-all;
+      width: 100%;
+    }
+
+    .type {
+      color: $grey;
+    }
+
+    .currency {
+      color: $lightgrey;
+      overflow: initial;
+    }
+  }
+
+  // SIZES
+
+  td {
+    &.number {
+      width: 20px;
+    }
+
+    &.time {
+      .td-in {
+        color: $blue;
+        white-space: nowrap;
+      }
+    }
+
+    &.json {
+      max-width: 20px;
+      width: 20px;
+      min-width: 20px;
+    }
+
+    &.fee,
+    &.sender,
+    &.reciever,
+    &.amount {
+      span {
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @include max-vw(1534) {
+          max-width: 80px;
+        }
+      }
+    }
+
+    &.type {
+      white-space: nowrap;
+    }
+  }
+
+  @include max-vw(1534) {
+    width: 100%;
+    margin-left: 0;
+
+    td {
+      &.type {
+        max-width: 120px;
+        width: 120px;
+      }
+
+      &.amount {
+        max-width: 140px;
+        width: 140px;
+      }
+
+      &.fee {
+        max-width: 140px;
+        width: 140px;
+      }
+
+      &.rezult {
+        max-width: 80px;
+        width: 80px;
+      }
+
+      &.dd {
+        max-width: 30px;
+        width: 30px;
+      }
+    }
+  }
+
+  .ps__rail-x {
+    opacity: 1;
+  }
+  .ps {
+    overflow: visible;
+    @include max-vw(767) {
+      overflow: hidden;
+    }
+  }
+  .scrollbar-container {
+    @include max-vw(767) {
+      padding-bottom: 55px;
+      &:after {
+        content: "";
+        position: absolute;
+        width: 747px;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+        background-color: $grey-mid;
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 @import "helpers/variables";
+@import "helpers/animations";
 @import "helpers/mixins";
 
 @import "base/normalize";
@@ -30,6 +31,8 @@
 
 @import "components/table";
 @import "components/input-search-block";
+@import "components/input/input-wrapper";
+@import "components/input/clear-btn";
 @import "components/tooltip";
 @import "components/form";
 @import "components/breadcrumbs";
@@ -45,16 +48,18 @@
 @import "components/dropdown-tabs";
 @import "components/drop-area";
 @import "components/select-input";
-@import "components/input-wrapper";
 @import "components/checkbox";
 @import "components/avatar";
 @import "components/operation-detail-table";
 @import "components/token-transfer-table";
 @import "components/node-map";
-@import "components/_view-list-container";
+@import "components/view-list-container";
 @import "components/table-label";
 @import "components/inner-header";
 @import "components/block-description";
 
-@import "components/tables/accordion-table";
+@import "components/operations-table/operations-table";
+@import "components/operations-table/operations-filter";
+@import "components/operations-table/operations-pagination";
+@import "components/operations-table/filter-btn";
 @import "components/tables/distribution-table";

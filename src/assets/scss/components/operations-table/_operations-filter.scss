@@ -1,0 +1,52 @@
+.operations-filter {
+  display: none;
+  position: relative;
+  padding: 8px 30px;
+  background-color: $lightgrey-darker;
+  align-items: center;
+  animation: fade-in $speed;
+  @include max-vw(1534) {
+    padding: 8px 20px;
+  }
+  @include max-vw(1279) {
+    padding: 8px 30px;
+  }
+  @include max-vw(767) {
+    padding: 8px 20px;
+  }
+  @include max-vw(499) {
+    padding: 8px 15px;
+  }
+  &:before {
+    position: absolute;
+    content: "";
+    right: 0;
+    left: 0;
+    top: -1px;
+    height: 1px;
+    background-color: $grey-mid;
+  }
+  &.open {
+    display: flex;
+  }
+  .input-wrapper {
+    min-width: 218px;
+  }
+}
+.operations-filter-caption {
+  @include InterUI_Bold();
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.02em;
+  color: $explorer-black;
+  margin-right: 10px;
+}
+.operations-filter-item {
+  display: flex;
+  align-items: center;
+}
+.operations-filter-item + .operations-filter-item {
+  margin-left: 20px;
+}

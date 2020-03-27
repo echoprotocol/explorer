@@ -1,0 +1,47 @@
+.operations-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid $grey-mid;
+  padding: 14px 0;
+  margin-top: 40px;
+}
+
+.pg-nav-1 {
+  display: flex;
+  align-items: center;
+  color: $lightgrey;
+  font-size: 11px;
+  @include InterUI_Medium();
+  letter-spacing: 0.02em;
+}
+.pg-caption + .pg-page-btn {
+  margin-left: 20px;
+}
+.pg-page-btn + .pg-page-btn {
+  margin-left: 5px;
+}
+.pg-page-btn {
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 22px;
+  color: $lightgrey;
+  transition: border-color $speed, background-color $speed;
+  font-size: 12px;
+  line-height: 15px;
+  background-color: transparent;
+  @include onFocus(22px, 2px, 2px, rgba(#3570b6, 0.3));
+  &:hover {
+    background-color: rgba(#fff, 0.7);
+  }
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+  &.active {
+    border-color: $explorer-black;
+    color: $explorer-black;
+  }
+}
+.pg-nav-2 {
+  display: flex;
+}
