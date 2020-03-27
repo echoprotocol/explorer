@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ClearBtn = ({ onClearFocus, onClearBlur, ...props }) => (
+const ClearBtn = React.memo(({ onClearFocus, onClearBlur, ...props }) => (
 	<button {...props} onFocus={onClearFocus} onBlur={onClearBlur} className="clear-btn">
 		<div className="cear-btn-contnet">
 			<svg width="16" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -13,7 +13,7 @@ const ClearBtn = ({ onClearFocus, onClearBlur, ...props }) => (
 			</svg>
 		</div>
 	</button>
-);
+));
 
 ClearBtn.propTypes = {
 	onClearFocus: PropTypes.func.isRequired,

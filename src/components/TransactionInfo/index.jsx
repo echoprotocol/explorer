@@ -8,23 +8,11 @@ import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import BackwardsLink from '../BackwardLink';
 import InnerHeader from '../InnerHeader';
-import TableLable from '../TableLable';
 import Loader from '../Loader';
-import FilterBtn from '../../components/FilterBtn';
 
-import OperationsTable from './OperationsTable';
-import OperationsFilter from './OperationsFilter';
-import OperationsPagination from './OperationsPagination';
+import OperationsTable from '../OperationsTable';
 
 class TransactionsInfo extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			isFilterOpen: false,
-		};
-		this.toggleFilter = this.toggleFilter.bind(this);
-	}
 
 	componentDidMount() {
 		const { round, index } = this.props.match.params;
@@ -36,13 +24,6 @@ class TransactionsInfo extends React.Component {
 
 	componentWillUnmount() {
 		this.props.clearTransaction();
-	}
-
-
-	toggleFilter(e) {
-		const { isFilterOpen } = this.state;
-		e.target.blur();
-		this.setState({ isFilterOpen: !isFilterOpen });
 	}
 
 	returnFunction() {
@@ -59,7 +40,6 @@ class TransactionsInfo extends React.Component {
 
 	render() {
 		const { round, index } = this.props.match.params;
-		const { isFilterOpen } = this.state;
 
 		const {
 			operations, blockInformation, loading, history, location,
@@ -87,11 +67,8 @@ class TransactionsInfo extends React.Component {
 				{ !loading ?
 					<React.Fragment>
 						<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
-						<TableLable label={FormatHelper.getFormaOperationsTitle(operations.size)}>
-							<FilterBtn onClick={this.toggleFilter} />
-						</TableLable>
-						<OperationsFilter open={isFilterOpen} />
 						<OperationsTable
+							label={FormatHelper.getFormaOperationsTitle(operations.size)}
 							isTransaction
 							operations={operations}
 							history={history}
@@ -99,7 +76,6 @@ class TransactionsInfo extends React.Component {
 							loading={loading}
 							changeUrl
 						/>
-						<OperationsPagination />
 					</React.Fragment> : this.renderLoader(loading)
 				}
 			</div>

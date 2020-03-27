@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
-const OpeartionHead = memo(({ isTransaction }) => (
+const Thead = memo(({ isTransaction }) => (
 	<thead>
 		<tr>
 			<td />
@@ -19,11 +19,11 @@ const OpeartionHead = memo(({ isTransaction }) => (
 ));
 
 
-OpeartionHead.propTypes = {
+Thead.propTypes = {
 	isTransaction: PropTypes.bool,
 };
-OpeartionHead.defaultProps = {
+Thead.defaultProps = {
 	isTransaction: false,
 };
 
-export default OpeartionHead;
+export default Thead;

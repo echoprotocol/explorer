@@ -3,12 +3,17 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import queryString from 'query-string';
 import InfiniteScroll from 'react-infinite-scroller';
-import OperationRow from './OperationRow';
-import LoadMoreBtn from '../LoadMoreBtn';
 
 import URLHelper from '../../helpers/URLHelper';
+import TableLable from '../TableLable';
+import FilterBtn from '../FilterBtn';
+import LoadMoreBtn from '../LoadMoreBtn';
 import Operations from '../../constants/Operations';
-import OpeartionsHead from './OpeartionsHead';
+
+import OperationRow from './Row';
+import Thead from './Thead';
+import OperationsPagination from './Pagination';
+import OperationsFilter from './Filter';
 
 class OperationsTable extends React.Component {
 
@@ -18,8 +23,9 @@ class OperationsTable extends React.Component {
 		this.state = {
 			showedOperations: [],
 			airRows: [],
+			isFilterOpen: false,
 		};
-
+		this.toggleFilter = this.toggleFilter.bind(this);
 		this.tableRefs = [];
 	}
 
@@ -54,6 +60,12 @@ class OperationsTable extends React.Component {
 		if (!parsed.op && prevParsed.op) {
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
 		}
+	}
+
+	toggleFilter(e) {
+		const { isFilterOpen } = this.state;
+		e.target.blur();
+		this.setState({ isFilterOpen: !isFilterOpen });
 	}
 
 	toggleOperationDetails(index) {
@@ -111,15 +123,19 @@ class OperationsTable extends React.Component {
 
 	renderTable() {
 		const {
-			operations, hasMore, loading, isTransaction,
+			operations, hasMore, loading, isTransaction, label, loadMore,
 		} = this.props;
-		const { showedOperations, airRows } = this.state;
+		const { showedOperations, airRows, isFilterOpen } = this.state;
 
 		return (
 			<div className="operations-table">
+				<TableLable label={label}>
+					<FilterBtn onClick={this.toggleFilter} />
+				</TableLable>
+				<OperationsFilter open={isFilterOpen} />
 				<PerfectScrollbar>
 					<table>
-						<OpeartionsHead isTransaction={isTransaction} />
+						<Thead isTransaction={isTransaction} />
 						<tbody>
 							<tr className="air"><td /></tr>
 							{ operations ? operations.map((op, i) => (
@@ -133,17 +149,12 @@ class OperationsTable extends React.Component {
 									tableRefs={this.tableRefs}
 									toggleOperationDetails={(index) => this.toggleOperationDetails(index)}
 								/>
-							)) : null
-							}
+							)) : null }
 						</tbody>
 					</table>
-					{ hasMore ?
-						<LoadMoreBtn
-							loading={loading}
-							loadMore={() => this.props.loadMore()}
-						/> : null
-					}
+					{hasMore && <LoadMoreBtn loading={loading} loadMore={() => loadMore()} />}
 				</PerfectScrollbar>
+				<OperationsPagination />
 			</div>
 		);
 	}
@@ -163,7 +174,6 @@ class OperationsTable extends React.Component {
 
 }
 
-
 OperationsTable.propTypes = {
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 	history: PropTypes.object.isRequired,
@@ -173,10 +183,12 @@ OperationsTable.propTypes = {
 	changeUrl: PropTypes.bool,
 	isTransaction: PropTypes.bool,
 	loadMore: PropTypes.func,
+	label: PropTypes.string,
 };
 
 
 OperationsTable.defaultProps = {
+	label: '',
 	hasMore: false,
 	changeUrl: false,
 	loading: false,
