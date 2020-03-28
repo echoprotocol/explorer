@@ -4,28 +4,27 @@ import cn from 'classnames';
 import ClearBtn from './ClearBtn';
 
 const Input = ({
-	placeholder, type, clear, onChange, value, name, className,
+	hundleClear, className, value, onChange, name, ...props
 }) => {
 	const [isFocused, setFocus] = useState(false);
 	const input = useRef(null);
 	const onClear = () => {
 		input.current.focus();
-		clear(name);
+		hundleClear(name);
 	};
 	return (
 		<div className={cn('input-wrapper', className)}>
 			<input
-				className={cn('input', { focus: isFocused, clerable: clear, filled: value })}
+				className={cn('input', { focus: isFocused, clerable: hundleClear, filled: value })}
 				name={name}
-				onChange={onChange}
-				placeholder={placeholder}
 				onFocus={() => setFocus(true)}
 				onBlur={() => setFocus(false)}
-				type={type}
 				value={value}
+				onChange={onChange}
 				ref={input}
+				{...props}
 			/>
-			{clear && value && <ClearBtn
+			{hundleClear && value && <ClearBtn
 				onClearFocus={() => setFocus(true)}
 				onClearBlur={() => setFocus(false)}
 				onClick={() => onClear()}
@@ -35,19 +34,16 @@ const Input = ({
 };
 
 Input.propTypes = {
-	placeholder: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
-	type: PropTypes.string,
 	value: PropTypes.string,
 	className: PropTypes.string,
-	clear: PropTypes.func,
+	hundleClear: PropTypes.func,
 	onChange: PropTypes.func,
 };
 Input.defaultProps = {
-	type: 'text',
 	className: '',
 	value: '',
-	clear: null,
+	hundleClear: null,
 	onChange: () => {},
 };
 export default Input;

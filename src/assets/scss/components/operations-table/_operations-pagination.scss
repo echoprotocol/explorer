@@ -9,6 +9,10 @@
     margin-top: 0;
     border-top: 0;
   }
+  .col {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .pg-caption {
@@ -59,4 +63,28 @@
 .pg-nav-2 {
   display: flex;
   align-items: center;
+}
+.pg-nav-3 {
+  margin-left: 20px;
+  .btn:not(:last-child) {
+    margin-right: 7px;
+  }
+}
+.pg-arrow {
+  display: flex;
+  align-items: center;
+  svg {
+    transform: rotateY(180deg);
+    margin: 0 10px 0 0;
+  }
+  @include max-vw(500px) {
+    display: none;
+  }
+}
+
+.pg-arrow-caption {
+  & + svg {
+    transform: rotateY(0);
+    margin: 0 0 0 10px;
+  }
 }
