@@ -9,7 +9,7 @@ import OperationsTable from '../OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
-import TableLable from '../TableLable';
+import TableLabel from '../TableLabel';
 import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
@@ -160,7 +160,7 @@ class BlockInformation extends React.Component {
 					</div>
 				</div>
 
-				<TableLable label="Block Certificate">
+				<TableLabel label="Block Certificate">
 					{
 						rewardDistribution && rewardDistribution.length && (
 							<ViewListPopover
@@ -169,13 +169,13 @@ class BlockInformation extends React.Component {
 							/>
 						)
 					}
-				</TableLable>
+				</TableLabel>
 				{
 					(rewardDistribution && rewardDistribution.length) ? (
 						isDistributionRewardOpen &&
 						<DistributionTable rewards={rewardDistribution} />
 					) : (
-						<TableLable label="Certificate list will be available after next block will be produced" />
+						<TableLabel label="Certificate list will be available after next block will be produced" />
 					)
 				}
 				<div className="blocks-table-wrap">
