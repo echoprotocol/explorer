@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 
-const Thead = memo(({ isTransaction }) => (
+const OperationsThead = memo(({ isTransaction }) => (
 	<thead>
 		<tr>
 			<td />
@@ -19,11 +19,11 @@ const Thead = memo(({ isTransaction }) => (
 ));
 
 
-Thead.propTypes = {
+OperationsThead.propTypes = {
 	isTransaction: PropTypes.bool,
 };
-Thead.defaultProps = {
+OperationsThead.defaultProps = {
 	isTransaction: false,
 };
 
-export default Thead;
+export default OperationsThead;

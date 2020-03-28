@@ -1,4 +1,5 @@
 import React from 'react';
+import Input from '../Input';
 // import PropTypes from 'prop-types';
 
 const OperationsPagination = () => (
@@ -14,7 +15,7 @@ const OperationsPagination = () => (
 		<div className="col">
 			<div className="pg-nav-2">
 				<div className="pg-caption">Page:</div>
-				<input className="pg-input" type="text" />
+				<Input name="pg-input" className="pg-input" placeholder="page" value="1" />
 				<div className="pg-caption">out of <a href="/">720</a></div>
 			</div>
 		</div>

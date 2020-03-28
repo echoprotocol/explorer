@@ -35,7 +35,8 @@
     &.clerable {
       padding-right: 34px;
     }
-    &.focus {
+    &.focus,
+    &.filled {
       background-color: #fff;
     }
   }
