@@ -5,7 +5,6 @@ import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
 import OperationsTable from '../OperationsTable';
 import InnerHeader from '../InnerHeader';
-import TableLable from '../TableLable';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 

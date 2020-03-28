@@ -5,7 +5,7 @@ import queryString from 'query-string';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import URLHelper from '../../helpers/URLHelper';
-import TableLable from '../TableLable';
+import TableLabel from '../TableLabel';
 import FilterBtn from '../FilterBtn';
 import LoadMoreBtn from '../LoadMoreBtn';
 import Operations from '../../constants/Operations';
@@ -129,9 +129,9 @@ class OperationsTable extends React.Component {
 
 		return (
 			<div className="operations-table">
-				<TableLable label={label}>
+				<TableLabel label={label}>
 					<FilterBtn onClick={this.toggleFilter} />
-				</TableLable>
+				</TableLabel>
 				<OperationsFilter open={isFilterOpen} />
 				<PerfectScrollbar>
 					<table>
