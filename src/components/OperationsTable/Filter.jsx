@@ -33,7 +33,7 @@ const OperationsFilter = ({ open }) => {
 				<span className="operations-filter-caption">Receiver</span>
 				<Input
 					name="receiver-input"
-					clear={(name) => hundleClear(name)}
+					hundleClear={(name) => hundleClear(name)}
 					value={receiver}
 					onChange={(e) => hundleChange(e)}
 					placeholder="Receiver name"
@@ -43,7 +43,7 @@ const OperationsFilter = ({ open }) => {
 				<span className="operations-filter-caption">Sender</span>
 				<Input
 					name="sender-input"
-					clear={(name) => hundleClear(name)}
+					hundleClear={(name) => hundleClear(name)}
 					value={sender}
 					onChange={(e) => hundleChange(e)}
 					placeholder="Sender name"
