@@ -56,16 +56,16 @@ const OperationsRow = React.memo(({
 		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
 		return (
 			<div className="td-in">
-				<span className="value">
-					<Tooltip
-						placement="top"
-						overlayClassName="verify-contract-tooltip"
-						trigger={['hover']}
-						overlay={assetAmount}
-					>
-						<span className="txt">{assetAmount}</span>
-					</Tooltip>
-				</span>
+				<Tooltip
+					placement="top"
+					overlayClassName="verify-contract-tooltip"
+					trigger={['hover']}
+					overlay={assetAmount}
+				>
+					<span className="value">
+						{assetAmount}
+					</span>
+				</Tooltip>
 				<span className="currency">{mainInfo.value.symbol}</span>
 			</div>
 		);
@@ -109,16 +109,16 @@ const OperationsRow = React.memo(({
 				<td className="amount">{renderAmount()}</td>
 				<td className="fee">
 					<div className="td-in">
-						<span className="value">
-							<Tooltip
-								placement="top"
-								overlayClassName="verify-contract-tooltip"
-								trigger={['hover']}
-								overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
-							>
-								<span className="txt">{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}</span>
-							</Tooltip>
-						</span>
+						<Tooltip
+							placement="top"
+							overlayClassName="verify-contract-tooltip"
+							trigger={['hover']}
+							overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+						>
+							<span className="value">
+								{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+							</span>
+						</Tooltip>
 						<span className="currency">{detailInfo.fee.symbol}</span>
 					</div>
 				</td>

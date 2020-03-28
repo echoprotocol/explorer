@@ -1,6 +1,7 @@
 @import "helpers/variables";
 @import "helpers/animations";
 @import "helpers/mixins";
+@import "helpers/table-helper";
 
 @import "base/normalize";
 @import "base/fonts";
@@ -27,7 +28,13 @@
 @import "layout/transaction-component";
 @import "layout/recent-block-sidebar";
 
-@import "pages/all";
+@import "pages/main-page";
+@import "pages/contract-page";
+@import "pages/contract-manage-page";
+@import "pages/blocks";
+@import "pages/inner-page";
+@import "pages/404";
+@import "pages/verify-contract-page";
 
 @import "components/table";
 @import "components/input-search-block";
@@ -62,4 +69,4 @@
 @import "components/operations-table/operations-filter";
 @import "components/operations-table/operations-pagination";
 @import "components/operations-table/filter-btn";
-@import "components/tables/distribution-table";
+@import "components/distribution-table";

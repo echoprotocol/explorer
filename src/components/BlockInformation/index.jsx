@@ -122,14 +122,14 @@ class BlockInformation extends React.Component {
 							disabled={blockNumber <= 1}
 							onClick={(e) => this.onBlockLink(blockNumber - 1, e)}
 						>
-							Older <span>block</span>
+							Older block
 						</button>
 						<button
 							className={classnames('next', { active: latestBlock !== blockNumber })}
 							disabled={latestBlock === blockNumber}
 							onClick={(e) => this.onBlockLink(blockNumber + 1, e)}
 						>
-							Next <span>block</span>
+							Next block
 						</button>
 					</div>
 				</InnerHeader>
@@ -178,18 +178,17 @@ class BlockInformation extends React.Component {
 						<TableLable label="Certificate list will be available after next block will be produced" />
 					)
 				}
-				<div className="help-table-wrapper">
-					<TableLable label={FormatHelper.getFormatTransactionsTitle(transactionCount)} />
-					{
-						(slicedOperations && slicedOperations.size) ?
-							<OperationsTable
-								fee
-								operations={slicedOperations}
-								history={this.props.history}
-								location={this.props.location}
-								loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
-								hasMore={currentTransactionLength < operations.size}
-							/> : null
+				<div className="blocks-table-wrap">
+					{ (slicedOperations && slicedOperations.size) ?
+						<OperationsTable
+							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
+							fee
+							operations={slicedOperations}
+							history={this.props.history}
+							location={this.props.location}
+							loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
+							hasMore={currentTransactionLength < operations.size}
+						/> : null
 					}
 				</div>
 			</React.Fragment>

@@ -4,7 +4,7 @@ import cn from 'classnames';
 import ClearBtn from './ClearBtn';
 
 const Input = ({
-	placeholder, type, clear, onChange, value, name,
+	placeholder, type, clear, onChange, value, name, className,
 }) => {
 	const [isFocused, setFocus] = useState(false);
 	const input = useRef(null);
@@ -13,9 +13,9 @@ const Input = ({
 		clear(name);
 	};
 	return (
-		<div className="input-wrapper">
+		<div className={cn('input-wrapper', className)}>
 			<input
-				className={cn('input', { focus: isFocused, clerable: clear })}
+				className={cn('input', { focus: isFocused, clerable: clear, filled: value })}
 				name={name}
 				onChange={onChange}
 				placeholder={placeholder}
@@ -39,11 +39,13 @@ Input.propTypes = {
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string,
 	value: PropTypes.string,
+	className: PropTypes.string,
 	clear: PropTypes.func,
 	onChange: PropTypes.func,
 };
 Input.defaultProps = {
 	type: 'text',
+	className: '',
 	value: '',
 	clear: null,
 	onChange: () => {},
