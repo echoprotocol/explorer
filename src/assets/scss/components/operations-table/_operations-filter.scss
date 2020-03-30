@@ -38,7 +38,7 @@
   }
 }
 .operations-filter-caption {
-  @include InterUI_Bold();
+  @include inter-bold();
   font-size: 12px;
   line-height: 15px;
   display: flex;

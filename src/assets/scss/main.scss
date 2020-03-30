@@ -15,9 +15,10 @@
 @import "vendors/input-semantic-ui";
 @import "vendors/perfect-scrollbar";
 
-@import "layout/header";
+@import "layout/header/header";
+@import "layout/header/nav-tabs";
+@import "layout/header/preparing-section";
 @import "layout/footer";
-@import "layout/preparing-section";
 @import "layout/recent-block-section";
 @import "layout/inner-block-information";
 @import "layout/transactions-info-table";

@@ -187,7 +187,7 @@ class SearchField extends React.Component {
 		return (
 			<div
 				className={classnames('input-search-block', {
-					small, 'is-active-small': (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock,
+					small, active: (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock,
 				})}
 				ref={this.setWrapperRef}
 			>
@@ -221,23 +221,18 @@ class SearchField extends React.Component {
 							inputRef={(node) => { this.inputEl = node; }}
 						/>
 						{ this.renderIcon() }
-
 					</div>
 				</div>
 
-				{
-					(withHelp) && (
-						(isChange || focus) && (
-							<div className="search-block-result">
-								<Dropdown
-									options={options}
-									open
-									onChange={(even, data) => this.onChangeDropdown(data)}
-								/>
-							</div>
-						)
-					)
-				}
+				{ (withHelp) && ((isChange || focus) && (
+					<div className="search-block-result">
+						<Dropdown
+							options={options}
+							open
+							onChange={(even, data) => this.onChangeDropdown(data)}
+						/>
+					</div>
+				))}
 			</div>
 		);
 	}

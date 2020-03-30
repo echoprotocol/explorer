@@ -1,0 +1,46 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+
+  .input-search-block {
+    // @include max-vw(500) {
+    //   position: absolute;
+    //   right: 20px;
+    //   background-color: #18142a;
+    // }
+
+    &.small {
+      .input-container {
+        .icon {
+          opacity: 1;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
+      &.active {
+        @include max-vw(768) {
+          width: 185px;
+        }
+
+        @include max-vw(500) {
+          width: calc(100% - 35px);
+        }
+      }
+    }
+  }
+}
+
+.logotype {
+  display: inline-block;
+  height: 41px;
+}
+
+.top-section {
+  padding: 20px 0 10px;
+  background-color: $explorer-dark;
+}

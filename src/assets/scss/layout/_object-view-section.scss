@@ -1,65 +1,65 @@
 .object-view {
-	padding-top: 47px;
-	padding-bottom: 25px;
-	flex-shrink: 0;
+  padding-top: 47px;
+  padding-bottom: 25px;
+  flex-shrink: 0;
 
-	.json-tree-container {
-		background-color: #ebeaee;
-		display: flex;
-		padding: 19px 30px;
-		@include max-vw(1534) {
-			padding-left: 19px 20px;
-		}
-		@include max-vw(1279) {
-			padding-left: 19px 30px;
-		}
-		@include max-vw(767) {
-			padding-left: 19px 20px;
-		}
-		@include max-vw(499) {
-			padding-left: 19px 15px;
-			flex-direction: column-reverse;
-			align-items: flex-start;
-			margin: 0 auto;
-		}
-		.copy-bytecode {
-			margin-left: auto;
-			margin-top: 0;
+  .json-tree-container {
+    background-color: #ebeaee;
+    display: flex;
+    padding: 19px 30px;
+    @include max-vw(1534) {
+      padding-left: 19px 20px;
+    }
+    @include max-vw(1279) {
+      padding-left: 19px 30px;
+    }
+    @include max-vw(767) {
+      padding-left: 19px 20px;
+    }
+    @include max-vw(499) {
+      padding-left: 19px 15px;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      margin: 0 auto;
+    }
+    .copy-bytecode {
+      margin-left: auto;
+      margin-top: 0;
 
-			@include max-vw(499) {
-				margin-left: 0;
-				margin-bottom: 20px;
-			}
-		}
+      @include max-vw(499) {
+        margin-left: 0;
+        margin-bottom: 20px;
+      }
+    }
 
-		> ul {
-			@include Hack_Regular;
-			font-size: 13px;
-			background: transparent !important;
-			margin: 0 !important;
-			max-width: calc(100% - 140px);
-			width: 100%;
+    > ul {
+      @include hack-regular;
+      font-size: 13px;
+      background: transparent !important;
+      margin: 0 !important;
+      max-width: calc(100% - 140px);
+      width: 100%;
 
-			@include max-vw(767) {
-				max-width: 100%;
-			}
+      @include max-vw(767) {
+        max-width: 100%;
+      }
 
-			span {
-				line-height: normal;
-			}
+      span {
+        line-height: normal;
+      }
 
-			li {
-				padding-top: 3px !important;
-				padding-bottom: 3px !important;
+      li {
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
 
-				& > div > div {
-					top: -1px;
-				}
-			}
+        & > div > div {
+          top: -1px;
+        }
+      }
 
-			a {
-				color: #0000ee;
-			}
-		}
-	}
+      a {
+        color: #0000ee;
+      }
+    }
+  }
 }

@@ -27,14 +27,12 @@
     }
   }
   input:focus ~ &-icon {
-      box-shadow:
-        0 0 0 2px rgba(#2a90e6, .2),
-        0 0 0 2px rgba(#2a90e6, .2);
+    box-shadow: 0 0 0 2px rgba(#2a90e6, 0.2), 0 0 0 2px rgba(#2a90e6, 0.2);
   }
 
   &-text {
     color: #18142a;
-    @include InterUI_Regular;
+    @include inter-regular;
     font-size: 13px;
     margin-left: 10px;
   }
@@ -49,14 +47,14 @@
     position: relative;
 
     &:after {
-      content: '';
+      content: "";
       display: block;
       width: 5px;
       height: 5px;
       background-color: #2a90e6;
       border-radius: 1000px;
       opacity: 0;
-      transition: all .2s ease-out;
+      transition: all 0.2s ease-out;
       position: absolute;
       top: 0;
       left: 0;
@@ -68,15 +66,15 @@
 }
 
 .checkbox {
-  input[type='checkbox'] {
-    @include onFocus(2px, 3px, 0, rgba(#298fe5, .4));
+  input[type="checkbox"] {
+    @include onFocus(2px, 3px, 0, rgba(#298fe5, 0.4));
     width: 14px;
     height: 14px;
     border-radius: 1px;
     background-color: #ffffff;
     border: 1px solid #c1c1cb;
     cursor: pointer;
-    transition: all .2s;
+    transition: all 0.2s;
 
     &:hover {
       border-color: #9a9aac;
@@ -84,7 +82,7 @@
 
     &:checked ~ label {
       &:before {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         top: 4px;
@@ -99,11 +97,11 @@
   }
 
   label {
-    @include InterUI_Regular;
+    @include inter-regular;
     font-size: 12px;
     letter-spacing: 0;
     line-height: 18px;
-    color: #0E0936;
+    color: #0e0936;
     cursor: pointer;
     display: inline-block;
     position: relative;

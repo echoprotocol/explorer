@@ -23,7 +23,7 @@
 .pg-caption {
   color: $lightgrey;
   font-size: 11px;
-  @include InterUI_Medium();
+  @include inter-medium();
   letter-spacing: 0.02em;
 
   a {

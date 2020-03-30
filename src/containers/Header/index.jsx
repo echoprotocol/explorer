@@ -5,34 +5,28 @@ import PropTypes from 'prop-types';
 
 import searchActions from '../../actions/SearchActions';
 
-import Navigation from '../../containers/Navigation';
-import PreparingSection from '../../containers/PreparingSection';
+import PreparingSection from '../PreparingSection';
+import { Header } from '../../components/Header';
 
-class Header extends React.Component {
+const HeaderContainer = React.memo(({
+	history, hints, getHints, loadingSearch, errorSearch,
+}) => (
+	<div className="top-section">
+		<div className="wrap">
+			<Header
+				errorSearch={errorSearch}
+				loadingSearch={loadingSearch}
+				hints={hints}
+				history={history}
+				getHints={getHints}
+			/>
+			<PreparingSection />
+		</div>
+	</div>
+));
 
-	render() {
 
-		const {
-			history, hints, getHints, loadingSearch, errorSearch,
-		} = this.props;
-
-		return (
-			<div className="top-section">
-				<Navigation
-					loadingSearch={loadingSearch}
-					errorSearch={errorSearch}
-					history={history}
-					hints={hints}
-					getHints={getHints}
-				/>
-				<PreparingSection />
-			</div>
-		);
-	}
-
-}
-
-Header.propTypes = {
+HeaderContainer.propTypes = {
 	history: PropTypes.object.isRequired,
 	hints: PropTypes.array.isRequired,
 	loadingSearch: PropTypes.bool.isRequired,
@@ -49,4 +43,4 @@ export default withRouter(connect(
 	(dispatch) => ({
 		getHints: (str) => dispatch(searchActions.headerSearchHint(str)),
 	}),
-)(Header));
+)(HeaderContainer));

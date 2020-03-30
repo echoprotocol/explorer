@@ -59,8 +59,8 @@
 
   .view {
     cursor: pointer;
-    font-family: InterUI;
     z-index: 1;
+    @include inter-regular();
     @include table-row-highlight(true);
 
     &.active {
@@ -102,8 +102,7 @@
       width: 100%;
       border-bottom: 1px solid rgba(#3f465a, 0.15);
       padding-bottom: 10px;
-      font-family: InterUI;
-      font-weight: 700;
+      @include inter-bold();
 
       & + .operation-detail-table {
         margin-top: 8px;

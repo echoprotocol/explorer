@@ -63,12 +63,10 @@ class App extends React.Component {
 		return (
 			<React.Fragment>
 				{this.renderModals()}
+				<Header />
 				<div className={classnames('wrapper', { 'wrapper-min': isShowModal })}>
-					<Header />
 					<div className="recent-block-section">
-						<div
-							className={classnames('wrap', { full })}
-						>
+						<div className={classnames('wrap', { full })}>
 							{children}
 							<RecentBlockSidebar />
 						</div>
