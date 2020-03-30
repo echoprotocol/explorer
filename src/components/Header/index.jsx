@@ -8,12 +8,12 @@ import NavTabs from './NavTabs';
 import { INDEX_PATH } from '../../constants/RouterConstants';
 
 
-export const Header = React.memo(({
-	history, hints, getHints, loadingSearch, errorSearch,
+const Header = React.memo(({
+	history, hints, getHints, loadingSearch, errorSearch, pathName,
 }) => (
 	<header>
 		<Logotype onClick={() => history.push(INDEX_PATH)} />
-		<NavTabs />
+		<NavTabs pathName={pathName} />
 		<Media query="(max-width: 768px)">
 			{(matches) =>
 				(<SearchField
@@ -25,13 +25,13 @@ export const Header = React.memo(({
 					history={history}
 					small={matches}
 					placeholder="Search"
-				/>)
-			}
+				/>)}
 		</Media>
 	</header>
 ));
 
 Header.propTypes = {
+	pathName: PropTypes.string.isRequired,
 	errorSearch: PropTypes.string,
 	loadingSearch: PropTypes.bool,
 	history: PropTypes.object,
