@@ -1,20 +1,13 @@
 /* eslint-disable no-undef */
 export default {
-	// API_URL: __API_URL__,
-	// LANDING_BRIDGE: __LANDING_BRIDGE__,
-	// INSTALL_NODE_LINK: __INSTALL_NODE_LINK__,
-	// GRAPHQL_URL: {
-	// 	HTTP: __GRAPHQL_URL_HTTP_LINK__,
-	// 	WS: __GRAPHQL_URL_WS_LINK__,
-	// },
-	// SERVER_URL: __SERVER_URL__,
-	API_URL: 'wss://testnet.echo-dev.io/ws',
-	LANDING_BRIDGE: 'https://bridge.echo.org',
+	API_URL: __API_URL__,
+	LANDING_BRIDGE: __LANDING_BRIDGE__,
+	INSTALL_NODE_LINK: __INSTALL_NODE_LINK__,
 	GRAPHQL_URL: {
-		HTTP: 'https://645-echodb.pixelplexlabs.com/graphql',
-		WS: 'wss://645-echodb.pixelplexlabs.com/graphql',
+		HTTP: __GRAPHQL_URL_HTTP_LINK__,
+		WS: __GRAPHQL_URL_WS_LINK__,
 	},
-	SERVER_URL: 'https://explorer.echo.org',
+	SERVER_URL: __SERVER_URL__,
 	SOLC_LIST_URL: __SOLC_LIST_URL__,
 	SOLC_BIN_URL: __SOLC_BIN_URL__,
 	APP_VERSION: __APP_VERSION__,

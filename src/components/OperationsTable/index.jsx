@@ -188,7 +188,7 @@ OperationsTable.propTypes = {
 
 
 OperationsTable.defaultProps = {
-	label: '',
+	label: 'Transactions',
 	hasMore: false,
 	changeUrl: false,
 	loading: false,

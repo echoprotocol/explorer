@@ -7,12 +7,24 @@
     position: relative;
     &:before {
       @include absolute-stretch(0, 0, 0, 15px);
+      @include max-vw(1534) {
+        left: 10px;
+      }
+      @include max-vw(768) {
+        left: 0;
+      }
     }
   }
   td:last-child {
     position: relative;
     &:before {
       @include absolute-stretch(0, 15px, 0, 0);
+      @include max-vw(1534) {
+        right: 10px;
+      }
+      @include max-vw(768) {
+        right: 0;
+      }
     }
   }
 

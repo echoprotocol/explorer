@@ -1,17 +1,22 @@
 .operations-pagination {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   border-top: 1px solid $grey-mid;
   padding: 14px 0;
   margin-top: 40px;
-  @include max-vw(767) {
+  @include max-vw(1000) {
+    flex-wrap: wrap;
+    padding-left: 30px;
+    padding-right: 20px;
+  }
+  @include max-vw(768) {
+    padding-left: 20px;
     margin-top: 0;
     border-top: 0;
   }
-  .col {
-    display: flex;
-    align-items: center;
+  @include max-vw(500) {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 
@@ -55,36 +60,56 @@
 .pg-input {
   max-width: 44px;
   margin: 0 10px;
+  @include max-vw(1000) {
+    width: 30%;
+  }
 }
 .pg-nav-1 {
   display: flex;
   align-items: center;
+  @include max-vw(767) {
+    margin-top: 20px;
+    width: 100%;
+    order: 3;
+  }
 }
 .pg-nav-2 {
   display: flex;
   align-items: center;
+  margin-left: auto;
+  @include max-vw(767) {
+    margin-left: 0;
+  }
 }
 .pg-nav-3 {
   margin-left: 20px;
   .btn:not(:last-child) {
     margin-right: 7px;
   }
+  @include max-vw(1000) {
+    margin-left: auto;
+  }
 }
+
 .pg-arrow {
   display: flex;
   align-items: center;
   svg {
     transform: rotateY(180deg);
-    margin: 0 10px 0 0;
-  }
-  @include max-vw(500px) {
-    display: none;
+    @include min-vw(500) {
+      margin: 0 10px 0 0;
+    }
   }
 }
 
 .pg-arrow-caption {
   & + svg {
     transform: rotateY(0);
-    margin: 0 0 0 10px;
+    @include min-vw(500) {
+      margin: 0 0 0 10px;
+    }
+  }
+  @include max-vw(500) {
+    display: none;
   }
 }
