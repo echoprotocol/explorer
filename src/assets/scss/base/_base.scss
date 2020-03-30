@@ -4,11 +4,6 @@ body {
   font-family: "inter-ui";
 }
 
-.wrapper-min {
-  max-height: 100vh;
-  overflow-y: hidden;
-}
-
 main.inner {
   display: inline-block;
   min-width: 100%;
@@ -49,9 +44,6 @@ textarea {
   outline: none;
 }
 
-.wrapper {
-  overflow: hidden;
-}
 
 .h2 {
   font-size: 22px;

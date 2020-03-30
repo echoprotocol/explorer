@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import cn from 'classnames';
 
 import { disconnect } from '../actions/SocketActions';
 
@@ -44,9 +44,11 @@ class App extends React.Component {
 		this.props.disconnect();
 	}
 
-	renderModals() {
+	renderModals(isShowModal) {
 		return (
-			<Modal />
+			<div className={cn({ 'wrapper-min': isShowModal })}>
+				<Modal />
+			</div>
 		);
 	}
 
@@ -62,21 +64,17 @@ class App extends React.Component {
 
 		return (
 			<React.Fragment>
-				{this.renderModals()}
 				<Header />
-				<div className={classnames('wrapper', { 'wrapper-min': isShowModal })}>
-					<div className="recent-block-section">
-						<div className={classnames('wrap', { full })}>
-							{children}
-							<RecentBlockSidebar />
-						</div>
+				<div className="recent-block-section">
+					<div className={cn('wrap', { full })}>
+						{children}
+						<RecentBlockSidebar />
 					</div>
-					<Footer />
-					<Toast />
-					{
-						showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />
-					}
 				</div>
+				{this.renderModals(isShowModal)}
+				{ showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} /> }
+				<Toast />
+				<Footer />
 			</React.Fragment>
 		);
 	}
