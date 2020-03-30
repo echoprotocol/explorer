@@ -3,8 +3,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .filter-btn {
-    margin-right: -8px;
+  @include min-vw(1280) {
+    .filter-btn {
+      margin-right: -8px;
+    }
+  }
+  @include max-vw(1279) {
+    .filter-btn {
+      margin-right: 4px;
+    }
+  }
+  @include max-vw(1000) {
+    margin-right: 20px;
   }
 }
 

@@ -15,15 +15,7 @@
   @include table-head();
   @include table-air();
   thead {
-    &:before {
-      position: absolute;
-      content: "";
-      right: 0;
-      left: 0;
-      top: -1px;
-      height: 1px;
-      background-color: $grey-mid;
-    }
+    border-top: 1px solid $grey-mid;
   }
 
   tbody {

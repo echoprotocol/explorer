@@ -29,25 +29,27 @@ const OperationsFilter = ({ open }) => {
 
 	return (
 		<div className={cn('operations-filter', { open })}>
-			<div className="operations-filter-item">
-				<span className="operations-filter-caption">Receiver</span>
-				<Input
-					name="receiver-input"
-					hundleClear={(name) => hundleClear(name)}
-					value={receiver}
-					onChange={(e) => hundleChange(e)}
-					placeholder="Receiver name"
-				/>
-			</div>
-			<div className="operations-filter-item">
-				<span className="operations-filter-caption">Sender</span>
-				<Input
-					name="sender-input"
-					hundleClear={(name) => hundleClear(name)}
-					value={sender}
-					onChange={(e) => hundleChange(e)}
-					placeholder="Sender name"
-				/>
+			<div className="operations-filter-wrap">
+				<div className="operations-filter-item">
+					<span className="operations-filter-caption">Receiver</span>
+					<Input
+						name="receiver-input"
+						hundleClear={(name) => hundleClear(name)}
+						value={receiver}
+						onChange={(e) => hundleChange(e)}
+						placeholder="Receiver name"
+					/>
+				</div>
+				<div className="operations-filter-item">
+					<span className="operations-filter-caption">Sender</span>
+					<Input
+						name="sender-input"
+						hundleClear={(name) => hundleClear(name)}
+						value={sender}
+						onChange={(e) => hundleChange(e)}
+						placeholder="Sender name"
+					/>
+				</div>
 			</div>
 		</div>
 	);
