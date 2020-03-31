@@ -1,156 +1,156 @@
 @mixin max-vw($width) {
-    @media (max-width: $width + "px") {
-        @content;
-    }
+	@media (max-width: $width + "px") {
+		@content;
+	}
 }
 
 @mixin min-vw($width) {
-    @media (min-width: $width + "px") {
-        @content;
-    }
+	@media (min-width: $width + "px") {
+		@content;
+	}
 }
 
 @mixin max-vh($height) {
-    @media (max-height: $height + "px") {
-        @content;
-    }
+	@media (max-height: $height + "px") {
+		@content;
+	}
 }
 
 @mixin min-vh($height) {
-    @media (min-height: $height + "px") {
-        @content;
-    }
+	@media (min-height: $height + "px") {
+		@content;
+	}
 }
 
 @mixin transition {
-    transition: all $speed ease-out;
+	transition: all $speed ease-out;
 }
 
 @mixin allWidth($width) {
-    width: $width;
-    max-width: $width;
-    min-width: $width;
+	width: $width;
+	max-width: $width;
+	min-width: $width;
 }
 
 @mixin scrollBar {
-    &::-webkit-scrollbar-button {
-        background-image: url("");
-        background-repeat: no-repeat;
-        width: 5px;
-        height: 0px;
-    }
+	&::-webkit-scrollbar-button {
+		background-image: url("");
+		background-repeat: no-repeat;
+		width: 5px;
+		height: 0px;
+	}
 
-    &::-webkit-scrollbar-track {
-        background-color: transparent;
-    }
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
 
-    &::-webkit-scrollbar-thumb {
-        -webkit-border-radius: 100px;
-        border-radius: 100px;
-        background-color: rgba(255, 255, 255, 0.1);
-    }
+	&::-webkit-scrollbar-thumb {
+		-webkit-border-radius: 100px;
+		border-radius: 100px;
+		background-color: rgba(255, 255, 255, 0.1);
+	}
 
-    &::-webkit-scrollbar-thumb:hover {
-        background-color: #f1f4f8;
-    }
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: #f1f4f8;
+	}
 
-    &::-webkit-resizer {
-        background-image: url("");
-        background-repeat: no-repeat;
-        width: 4px;
-        height: 0px;
-    }
+	&::-webkit-resizer {
+		background-image: url("");
+		background-repeat: no-repeat;
+		width: 4px;
+		height: 0px;
+	}
 
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
 }
 
 @mixin hardware-accel() {
-    -webkit-transform: translateZ(0) scale(1, 1);
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
+	-webkit-transform: translateZ(0) scale(1, 1);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
 }
 
 @mixin btn() {
-    position: relative;
-    white-space: nowrap;
-    transition: color $speed, border $speed, background-color $speed;
+	position: relative;
+	white-space: nowrap;
+	transition: color $speed, border $speed, background-color $speed;
 
-    &:not(:disabled) {
-        cursor: pointer;
-    }
+	&:not(:disabled) {
+		cursor: pointer;
+	}
 }
 
 @mixin onFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
-    @include hardware-accel();
-    position: relative;
+	@include hardware-accel();
+	position: relative;
 
-    &:before {
-        content: "";
-        position: absolute;
-        top: -($outerBorderWidth + $innerBorderWidth);
-        right: -($outerBorderWidth + $innerBorderWidth);
-        bottom: -($outerBorderWidth + $innerBorderWidth);
-        left: -($outerBorderWidth + $innerBorderWidth);
-        border: $outerBorderWidth solid transparent;
-        border-radius: $angular + 2px;
-        transition: border-color $speed;
-    }
+	&:before {
+		content: "";
+		position: absolute;
+		top: -($outerBorderWidth + $innerBorderWidth);
+		right: -($outerBorderWidth + $innerBorderWidth);
+		bottom: -($outerBorderWidth + $innerBorderWidth);
+		left: -($outerBorderWidth + $innerBorderWidth);
+		border: $outerBorderWidth solid transparent;
+		border-radius: $angular + 2px;
+		transition: border-color $speed;
+	}
 
-    &:not(:active) {
-        &:focus {
-            &:before {
-                border-color: $color;
-            }
-        }
-    }
+	&:not(:active) {
+		&:focus {
+			&:before {
+				border-color: $color;
+			}
+		}
+	}
 }
 
 @mixin onDropAreaFocus($angular, $outerBorderWidth, $innerBorderWidth, $color) {
-    @include hardware-accel();
+	@include hardware-accel();
 
-    &:before {
-        top: -($outerBorderWidth + $innerBorderWidth);
-        right: -($outerBorderWidth + $innerBorderWidth);
-        bottom: -($outerBorderWidth + $innerBorderWidth);
-        left: -($outerBorderWidth + $innerBorderWidth);
-        border: $outerBorderWidth solid $color;
-        border-radius: $angular + 2px;
-    }
+	&:before {
+		top: -($outerBorderWidth + $innerBorderWidth);
+		right: -($outerBorderWidth + $innerBorderWidth);
+		bottom: -($outerBorderWidth + $innerBorderWidth);
+		left: -($outerBorderWidth + $innerBorderWidth);
+		border: $outerBorderWidth solid $color;
+		border-radius: $angular + 2px;
+	}
 }
 
 @mixin text-overflow() {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 @mixin only-hover() {
-    @media (hover: hover) {
-        @content;
-    }
+	@media (hover: hover) {
+		@content;
+	}
 }
 
 @mixin absolute-stretch($top: 0, $right: 0, $bottom: 0, $left: 0) {
-    position: absolute;
-    content: "";
-    top: $top;
-    right: $right;
-    bottom: $bottom;
-    left: $left;
+	position: absolute;
+	content: "";
+	top: $top;
+	right: $right;
+	bottom: $bottom;
+	left: $left;
 }
 
 @mixin link() {
-    color: $blue;
-    transition: color $speed ease-out;
-    &:not(:disabled):hover {
-        color: #095494;
-    }
-    &:not(:disabled):active {
-        color: #fb0707;
-    }
-    &:focus {
-        color: #095494;
-    }
+	color: $blue;
+	transition: color $speed ease-out;
+	&:not(:disabled):hover {
+		color: #095494;
+	}
+	&:not(:disabled):active {
+		color: #fb0707;
+	}
+	&:focus {
+		color: #095494;
+	}
 }
