@@ -1,7 +1,7 @@
 .block-navigation {
 	display: flex;
 	align-items: center;
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		display: none;
 	}
 	button {
@@ -24,7 +24,7 @@
 			margin-left: 8px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			span {
 				display: none;
 			}

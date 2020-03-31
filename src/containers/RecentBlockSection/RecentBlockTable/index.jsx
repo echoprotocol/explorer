@@ -10,7 +10,7 @@ import classnames from 'classnames';
 
 import Avatar from '../../../components/Avatar';
 import LoadMoreBtn from '../../../components/LoadMoreBtn';
-import SmallSearchField from '../../../components/SmallSearchField';
+import TableLabel from '../../../components/TableLabel';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 import URLHelper from '../../../helpers/URLHelper';
@@ -25,8 +25,6 @@ import {
 	setMaxDisplayedBlocks,
 } from '../../../actions/BlockActions';
 import SearchActions from '../../../actions/SearchActions';
-
-import InnerHeader from '../../../components/InnerHeader';
 
 class RecentBlockTable extends React.Component {
 
@@ -104,28 +102,14 @@ class RecentBlockTable extends React.Component {
 	}
 
 	render() {
-		const {
-			hasMore, loading, loadingSearch, errorSearch, latestBlock,
-		} = this.props;
+		const { hasMore, loading } = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
 
 		return (
 			<InfiniteScroll loadMore={() => !loading && this.props.loadBlocks()} hasMore={hasMore}>
-				<div className="inner-information-container main-page">
-					<InnerHeader title="Recent blocks">
-						<SmallSearchField
-							errorSearch={errorSearch}
-							loadingSearch={loadingSearch}
-							getHints={(str) => this.props.getHints(str)}
-							withHelp
-							goToBlock
-							white
-							placeholder="Go to block"
-							latestBlock={latestBlock}
-							setLoading={() => this.setLoading()}
-						/>
-					</InnerHeader>
+				<div className="inner-information-container">
+					<TableLabel label="Recent blocks" />
 
 					<Media query="(max-width: 767px)">
 						{(matches) =>
@@ -249,14 +233,11 @@ RecentBlockTable.propTypes = {
 	errorSearch: PropTypes.string.isRequired,
 	loading: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
-	loadingSearch: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
-	getHints: PropTypes.func.isRequired,
-	latestBlock: PropTypes.number.isRequired,
 };
 
 export default withRouter(connect(

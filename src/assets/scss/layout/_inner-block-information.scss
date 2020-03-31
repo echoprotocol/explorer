@@ -21,12 +21,12 @@
 		min-height: calc(100vh - 363px);
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding-top: 56px;
 		min-height: calc(100vh - 487px);
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		& > .checkbox {
 			margin-bottom: 20px;
 		}
@@ -100,7 +100,7 @@
 			}
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			justify-content: flex-start;
 		}
 
@@ -126,7 +126,7 @@
 				&.amount {
 					width: 138px;
 
-					@include max-vw(499) {
+					@include max-vw($res-500) {
 						width: 120px;
 					}
 				}
@@ -149,7 +149,7 @@
 				}
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				width: 140px;
 			}
 

@@ -1,105 +1,105 @@
 .inner-page.verify-contract {
-  padding-top: 15px;
+	padding-top: 15px;
 
-  @include max-vw(499) {
-    padding-top: 45px;
-  }
+	@include max-vw($res-500) {
+		padding-top: 45px;
+	}
 
-  .page-helper-section {
-    margin-top: 40px;
-    padding-bottom: 50px;
+	.page-helper-section {
+		margin-top: 40px;
+		padding-bottom: 50px;
 
-    @include max-vw(499) {
-      margin-top: 30px;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-  }
+		@include max-vw($res-500) {
+			margin-top: 30px;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+	}
 
-  .section-description {
-    line-height: 23px;
-    padding: 20px 135px 20px 0;
-    margin-bottom: 30px;
+	.section-description {
+		line-height: 23px;
+		padding: 20px 135px 20px 0;
+		margin-bottom: 30px;
 
-    @include max-vw(767) {
-      padding-right: 0;
-    }
+		@include max-vw($res-768) {
+			padding-right: 0;
+		}
 
-    @include max-vw(499) {
-      font-size: 14px;
-    }
-  }
+		@include max-vw($res-500) {
+			font-size: 14px;
+		}
+	}
 
-  .code-block {
-    margin-bottom: 30px;
+	.code-block {
+		margin-bottom: 30px;
 
-    @include max-vw(499) {
-      margin-bottom: 10px;
-    }
-  }
+		@include max-vw($res-500) {
+			margin-bottom: 10px;
+		}
+	}
 
-  .verify-contract-table {
-    &.mb40 {
-      margin-bottom: 40px;
+	.verify-contract-table {
+		&.mb40 {
+			margin-bottom: 40px;
 
-      @include max-vw(499) {
-        margin-bottom: 20px;
-      }
-    }
+			@include max-vw($res-500) {
+				margin-bottom: 20px;
+			}
+		}
 
-    .row {
-      display: flex;
-      align-items: center;
+		.row {
+			display: flex;
+			align-items: center;
 
-      @include max-vw(767) {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+			@include max-vw($res-768) {
+				flex-direction: column;
+				align-items: flex-start;
+			}
 
-      &:not(:last-child) {
-        margin-bottom: 20px;
-      }
-    }
+			&:not(:last-child) {
+				margin-bottom: 20px;
+			}
+		}
 
-    .t-name {
-      width: 255px;
-      padding-right: 20px;
-      font-size: 13px;
-      flex-shrink: 0;
-      color: #18142a;
-      @include inter-regular;
-      line-height: 18px;
+		.t-name {
+			width: 255px;
+			padding-right: 20px;
+			font-size: 13px;
+			flex-shrink: 0;
+			color: #18142a;
+			@include inter-regular;
+			line-height: 18px;
 
-      @include max-vw(767) {
-        margin-bottom: 10px;
-      }
-    }
+			@include max-vw($res-768) {
+				margin-bottom: 10px;
+			}
+		}
 
-    .t-value {
-      display: flex;
-      align-items: center;
-      width: 100%;
+		.t-value {
+			display: flex;
+			align-items: center;
+			width: 100%;
 
-      > div {
-        &:not(:last-child) {
-          margin-right: 15px;
-        }
-      }
+			> div {
+				&:not(:last-child) {
+					margin-right: 15px;
+				}
+			}
 
-      .ui.selection.dropdown {
-        width: 100%;
-      }
-    }
-  }
+			.ui.selection.dropdown {
+				width: 100%;
+			}
+		}
+	}
 
-  .buttons-wrap {
-    @include max-vw(499) {
-      padding-left: 0;
-      padding-right: 0;
+	.buttons-wrap {
+		@include max-vw($res-500) {
+			padding-left: 0;
+			padding-right: 0;
 
-      button {
-        width: 100%;
-      }
-    }
-  }
+			button {
+				width: 100%;
+			}
+		}
+	}
 }

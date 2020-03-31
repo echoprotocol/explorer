@@ -28,15 +28,15 @@
 			margin: auto;
 		}
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			width: 668px;
 		}
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			width: 450px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			width: 300px;
 		}
 	}
@@ -51,11 +51,11 @@
 		padding: 0 40px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding: 0 30px;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding: 0 25px;
 	}
 }

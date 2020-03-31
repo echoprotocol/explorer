@@ -107,11 +107,11 @@
 			& + .operation-detail-table {
 				margin-top: 8px;
 
-				@include max-vw(999) {
+				@include max-vw($res-1000) {
 					margin-top: 19px;
 				}
 
-				@include max-vw(767) {
+				@include max-vw($res-768) {
 					margin-top: 13px;
 				}
 			}
@@ -206,12 +206,12 @@
 	}
 	.ps {
 		overflow: visible;
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			overflow: hidden;
 		}
 	}
 	.scrollbar-container {
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			padding-bottom: 55px;
 			&:after {
 				content: "";

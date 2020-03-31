@@ -3,8 +3,8 @@ import Media from 'react-media';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import SimplePreparingBlock from './PreparingBlock/SimplePreparingBlock';
-import CompositePreparingBlock from './PreparingBlock/CompositePreparingBlock';
+import SimplePreparingBlock from './PreparingBlockOLD/SimplePreparingBlock';
+import CompositePreparingBlock from './PreparingBlockOLD/CompositePreparingBlock';
 
 import {
 	BBA_TIP,

@@ -1,87 +1,87 @@
 // DISTRIBUTION TABLE AT BLOCK PAGE
 
 .distribution-table {
-  margin-bottom: 55px;
-  animation: fade-in $speed;
-  table {
-    min-width: 748px;
-    width: 100%;
-    border-collapse: collapse;
-    z-index: 1;
-    a {
-      @include link();
-    }
-  }
-  @include table-y-rythm();
-  @include table-head();
-  @include table-air();
-  tbody {
-    tr {
-      font-size: 12px;
-      color: $grey;
-    }
-  }
-  .td-in {
-    @include text-overflow();
-  }
+	margin-bottom: 55px;
+	animation: fade-in $speed;
+	table {
+		min-width: 748px;
+		width: 100%;
+		border-collapse: collapse;
+		z-index: 1;
+		a {
+			@include link();
+		}
+	}
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	tbody {
+		tr {
+			font-size: 12px;
+			color: $grey;
+		}
+	}
+	.td-in {
+		@include text-overflow();
+	}
 
-  .view {
-    @include table-row-highlight(true);
-    cursor: default;
-    .origin,
-    .delegate {
-      .td-in {
-        display: flex;
-        align-items: center;
-      }
-    }
-  }
+	.view {
+		@include table-row-highlight(true);
+		cursor: default;
+		.origin,
+		.delegate {
+			.td-in {
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
 
-  .role {
-    width: 22%;
-  }
+	.role {
+		width: 22%;
+	}
 
-  .origin,
-  .delegate {
-    width: 27%;
-    span {
-      @include text-overflow;
-      max-width: 175px;
+	.origin,
+	.delegate {
+		width: 27%;
+		span {
+			@include text-overflow;
+			max-width: 175px;
 
-      @include max-vw(999) {
-        max-width: 75px;
-      }
-    }
+			@include max-vw($res-1000) {
+				max-width: 75px;
+			}
+		}
 
-    .tooltip {
-      position: absolute;
-      margin-left: 5px;
-      margin-top: 1px;
-      height: 16px;
-      width: 9px;
-    }
-  }
+		.tooltip {
+			position: absolute;
+			margin-left: 5px;
+			margin-top: 1px;
+			height: 16px;
+			width: 9px;
+		}
+	}
 
-  .produced {
-    .tooltip {
-      position: absolute;
-      margin-left: 5px;
-      margin-top: 1px;
-      height: 16px;
-      width: 9px;
-    }
-  }
+	.produced {
+		.tooltip {
+			position: absolute;
+			margin-left: 5px;
+			margin-top: 1px;
+			height: 16px;
+			width: 9px;
+		}
+	}
 
-  .avatar-image {
-    margin-right: 5px;
-  }
+	.avatar-image {
+		margin-right: 5px;
+	}
 
-  .view {
-    .role {
-      color: $grey;
-    }
-    .produced {
-      color: $lightgrey;
-    }
-  }
+	.view {
+		.role {
+			color: $grey;
+		}
+		.produced {
+			color: $lightgrey;
+		}
+	}
 }

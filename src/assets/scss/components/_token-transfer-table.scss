@@ -24,7 +24,7 @@
 	}
 }
 
-@include max-vw(499) {
+@include max-vw($res-500) {
 	.token-transfer-table {
 		.tt-col {
 			&:first-child {

@@ -45,15 +45,15 @@
 		}
 	}
 
-	@include max-vw(999) {
+	@include max-vw($res-1000) {
 		padding-left: 18px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding-left: 23px;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding-top: 86px;
 		padding-left: 25px;
 	}
@@ -70,15 +70,15 @@
 			margin-left: 18px;
 		}
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			margin-left: 0;
 		}
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			margin-left: -7px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			width: 100%;
 			margin-left: -9px;
 			padding-right: 30px;

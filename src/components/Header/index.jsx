@@ -24,7 +24,7 @@ const Header = React.memo(({
 					hints={hints}
 					history={history}
 					small={matches}
-					placeholder="Search"
+					placeholder="Search by account / block / transaction"
 				/>)}
 		</Media>
 	</header>
