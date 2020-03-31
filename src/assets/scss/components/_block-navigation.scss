@@ -1,105 +1,105 @@
 .block-navigation {
-  display: flex;
-  align-items: center;
-  @include max-vw(499) {
-    display: none;
-  }
-  button {
-    display: inline-flex;
-    font-family: "Hack";
-    font-weight: 700;
-    font-style: normal;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    transition: 0.2s ease-out;
-    background-color: transparent;
-    border: 0;
-    position: relative;
-    align-items: center;
-    @include link();
-    span {
-      margin-left: 8px;
-    }
+	display: flex;
+	align-items: center;
+	@include max-vw(499) {
+		display: none;
+	}
+	button {
+		display: inline-flex;
+		font-family: "Hack";
+		font-weight: 700;
+		font-style: normal;
+		font-size: 9px;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		transition: 0.2s ease-out;
+		background-color: transparent;
+		border: 0;
+		position: relative;
+		align-items: center;
+		@include link();
+		span {
+			margin-left: 8px;
+		}
 
-    @include max-vw(499) {
-      span {
-        display: none;
-      }
-    }
+		@include max-vw(499) {
+			span {
+				display: none;
+			}
+		}
 
-    &:not(:disabled) {
-      cursor: pointer;
-    }
+		&:not(:disabled) {
+			cursor: pointer;
+		}
 
-    &:hover {
-      &:before,
-      &:after {
-        background-image: url(../images/icons/nav-arrow-active-hover.svg);
-      }
-    }
+		&:hover {
+			&:before,
+			&:after {
+				background-image: url(../images/icons/nav-arrow-active-hover.svg);
+			}
+		}
 
-    &:before,
-    &:after {
-      background-image: url(../images/icons/nav-arrow-active.svg);
-    }
+		&:before,
+		&:after {
+			background-image: url(../images/icons/nav-arrow-active.svg);
+		}
 
-    &:active {
-      &:before,
-      &:after {
-        background-image: url(../images/icons/nav-arrow-active-active.svg);
-      }
-    }
+		&:active {
+			&:before,
+			&:after {
+				background-image: url(../images/icons/nav-arrow-active-active.svg);
+			}
+		}
 
-    &[disabled] {
-      color: #828b95;
+		&[disabled] {
+			color: #828b95;
 
-      &:before,
-      &:after {
-        background-image: url(../images/icons/nav-arrow-disabled.svg);
-        background-repeat: no-repeat;
-        transition: background-image 0.2s;
-      }
-    }
+			&:before,
+			&:after {
+				background-image: url(../images/icons/nav-arrow-disabled.svg);
+				background-repeat: no-repeat;
+				transition: background-image 0.2s;
+			}
+		}
 
-    &.prev {
-      margin-right: 14px;
+		&.prev {
+			margin-right: 14px;
 
-      &[disabled] {
-        &:before {
-          transform: rotate(180deg);
-        }
-      }
+			&[disabled] {
+				&:before {
+					transform: rotate(180deg);
+				}
+			}
 
-      &:before {
-        margin-top: -1px;
-        display: block;
-        content: "";
-        width: 5px;
-        height: 6px;
-        margin-right: 9px;
-      }
-    }
+			&:before {
+				margin-top: -1px;
+				display: block;
+				content: "";
+				width: 5px;
+				height: 6px;
+				margin-right: 9px;
+			}
+		}
 
-    &.next {
-      margin-left: 14px;
+		&.next {
+			margin-left: 14px;
 
-      &:not(:disabled) {
-        &:after {
-          transform: rotate(180deg);
-        }
-      }
+			&:not(:disabled) {
+				&:after {
+					transform: rotate(180deg);
+				}
+			}
 
-      &:after {
-        margin-top: -1px;
-        display: block;
-        content: "";
-        width: 5px;
-        height: 6px;
-        margin-left: 9px;
-      }
-    }
-  }
+			&:after {
+				margin-top: -1px;
+				display: block;
+				content: "";
+				width: 5px;
+				height: 6px;
+				margin-left: 9px;
+			}
+		}
+	}
 }
