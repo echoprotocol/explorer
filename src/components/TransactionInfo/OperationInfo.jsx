@@ -181,7 +181,7 @@ class OperationInfo extends React.Component {
 				<React.Fragment>
 					{words[0]}&nbsp;
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(objId)}>
-						{words[1]}
+						<a>{words[1]}</a>
 					</Link>
 				</React.Fragment>
 			);
@@ -266,7 +266,9 @@ class OperationInfo extends React.Component {
 				<div className="od-row">
 					<div className="od-col">OPERATION:</div>
 					<div className="od-col">
-						<Link href={TRANSACTION_INFORMATION_PATH} as={operationUrl}>{`${window.location.origin}${operationUrl}`}</Link>
+						<Link href={TRANSACTION_INFORMATION_PATH} as={operationUrl}>
+							<a>{`${window.location.origin}${operationUrl}`}</a>
+						</Link>
 					</div>
 				</div>
 			</React.Fragment>

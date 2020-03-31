@@ -1,15 +1,22 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+
 import { Select, Input, Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-
+import Router from 'next/router';
 import BackwardIcon from '../BackwardIcon';
 import verifyIcon from '../../../public/images/icons/verify-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
+import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+let CodeMirror = null;
+if (typeof window !== 'undefined') {
+	/* eslint-disable global-require */
+	({ UnControlled: CodeMirror } = require('react-codemirror2'));
+	require('codemirror/mode/xml/xml.js');
+	require('codemirror/mode/javascript/javascript.js');
+	/* eslint-enable global-require */
+}
 
 class VerifyContract extends React.Component {
 
@@ -25,13 +32,18 @@ class VerifyContract extends React.Component {
 		this.checkboxEVM = React.createRef();
 		this.intervalId = 0;
 	}
+
+	static async getInitialProps({ query }) {
+		return { query };
+	}
+
 	componentDidMount() {
 		this.props.contractCompilerInit();
 
-		const { verified, match: { params: { id } } } = this.props;
+		const { verified, query: { id } } = this.props;
 
 		if (verified) {
-			this.props.history.push(URLHelper.createContractUrl(id));
+			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 		}
 	}
 
@@ -161,9 +173,9 @@ class VerifyContract extends React.Component {
 	goBack(e, id) {
 		e.preventDefault();
 		if (!this.props.historyLength) {
-			this.props.history.push(URLHelper.createContractUrl(id));
+			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 		} else {
-			this.props.history.goBack();
+			Router.back();
 		}
 	}
 
@@ -208,7 +220,7 @@ class VerifyContract extends React.Component {
 
 	render() {
 		const {
-			match: { params: { id } }, form, contracts,
+			query: { id }, form, contracts,
 		} = this.props;
 		const { loader } = this.state;
 		const CODEMIRROR_OPTIONS = {
@@ -216,7 +228,7 @@ class VerifyContract extends React.Component {
 			lineNumbers: true,
 			readOnly: form.get('loading'),
 		};
-
+		console.log('render');
 		return (
 			<div className="inner-information-container inner-page verify-contract">
 				<div className="backwards">
@@ -258,12 +270,14 @@ class VerifyContract extends React.Component {
 					</div>
 
 					<div className="code-block">
-						<CodeMirror
-							value={form.get('code')}
-							options={CODEMIRROR_OPTIONS}
-							onKeyDown={(editor, e) => this.onKeyDown(e)}
-							onChange={(editor, metadata, value) => this.onContractCodeCompile(value)}
-						/>
+						{CodeMirror && (
+							<CodeMirror
+								value={form.get('code')}
+								options={CODEMIRROR_OPTIONS}
+								onKeyDown={(editor, e) => this.onKeyDown(e)}
+								onChange={(editor, metadata, value) => this.onContractCodeCompile(value)}
+							/>)
+						}
 					</div>
 
 					<div className="section-description">
@@ -384,8 +398,7 @@ class VerifyContract extends React.Component {
 VerifyContract.propTypes = {
 	historyLength: PropTypes.number,
 	form: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
+	query: PropTypes.object.isRequired,
 	compilersList: PropTypes.object.isRequired,
 	contracts: PropTypes.object.isRequired,
 	verified: PropTypes.bool.isRequired,

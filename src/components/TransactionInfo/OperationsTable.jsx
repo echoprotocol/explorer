@@ -27,13 +27,13 @@ class OperationsTable extends React.Component {
 	}
 
 	componentDidMount() {
+		const { query } = this.props.router;
 		const { showedOperations } = this.state;
-		const queryProps = queryString.parse(this.props.location.search);
-
-		if (!queryProps.op) {
+		console.log('router', this.props.router);
+		if (!query.op) {
 			return;
 		}
-		const op = parseInt(queryProps.op, 10);
+		const op = parseInt(query.op, 10);
 		if (!this.tableRefs[op - 1]) {
 			return;
 		}
@@ -42,26 +42,24 @@ class OperationsTable extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { loading, location: { search } } = this.props;
-		const { loading: prevLoading, location: { search: prevSearch } } = prevProps;
+		const { loading, router: { query } } = this.props;
+		const { loading: prevLoading, router: { query: prevQuery } } = prevProps;
 
-		const parsed = queryString.parse(search);
-		const prevParsed = queryString.parse(prevSearch);
 		if (!loading && loading !== prevLoading) {
-			if (!parsed.op || !this.tableRefs[parsed.op - 1]) {
+			if (!query.op || !this.tableRefs[query.op - 1]) {
 				return;
 			}
-			this.tableRefs[parsed.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			this.tableRefs[query.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
 
-		if (!parsed.op && prevParsed.op) {
+		if (!prevQuery.op && prevQuery.op) {
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
 		}
 	}
 
 	toggleOperationDetails(index) {
 		const { operations } = this.props;
-		const { pathname, search } = this.props.location;
+		const { asPath: pathname, search } = this.props.router;
 		const { showedOperations, airRows } = this.state;
 		const queryProps = queryString.parse(search);
 		const v = showedOperations.indexOf(index);
@@ -199,7 +197,7 @@ class OperationsTable extends React.Component {
 
 OperationsTable.propTypes = {
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
-	location: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	hasMore: PropTypes.bool,
 	changeUrl: PropTypes.bool,

@@ -1,5 +1,5 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
-import { List, fromJS } from 'immutable';
+import Inmmutable, { List, fromJS } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 import BN from 'bignumber.js';
 
@@ -83,7 +83,6 @@ class AccountActions extends BaseActionsClass {
 			dispatch(this.setValue('loading', true));
 
 			try {
-				console.log('echo.api', echo.isConnected);
 				const [account] = await echo.api.getFullAccounts([id]);
 
 				if (!account) {
@@ -93,9 +92,25 @@ class AccountActions extends BaseActionsClass {
 
 				const objectIds = Object.entries(account.balances).reduce((arr, b) => [...arr, ...b], []);
 
-				await echo.api.getObjects(objectIds);
+				let objects = await echo.api.getObjects(objectIds);
 
-				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
+				objects = objects.reduce((result, item) => result.set(item.id, fromJS(item)), new Map());
+
+				const filteredObjects = fromJS(account.balances).reduce(
+					(map, s, a) => map.set(a, objects.get(a)).set(s, objects.get(s)),
+					Inmmutable.Map({}),
+				);
+
+				const balanceToSave = fromJS(account.balances).mapEntries(([assetId, statsId]) => ([
+					assetId,
+					{
+						asset: filteredObjects.get(assetId),
+						amount: filteredObjects.getIn([statsId, 'balance']),
+						id: filteredObjects.getIn([statsId, 'id']),
+					},
+				]));
+
+				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
 
 				const transactions = await this.formatAccountHistory(id, account.history.slice(0, DEFAULT_ROWS_COUNT));
 
@@ -110,10 +125,7 @@ class AccountActions extends BaseActionsClass {
 					balanceItem.type === TOKEN_TYPE && !(new BN(balanceItem.amount)).isEqualTo(0));
 
 				dispatch(this.setMultipleValue({ tokens }));
-
-				console.log('hehehehe');
 			} catch (e) {
-				console.log('EROROR', e);
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));

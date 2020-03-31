@@ -14,7 +14,6 @@ class AccountInfo extends React.Component {
 	renderEcho() {
 		const { echo } = this.props;
 		if (!echo) return <div className="val"><span className="txt">None</span></div>;
-		console.log('echo.asset', echo.asset.get);
 		const assetAmount = FormatHelper.formatAmount(echo.amount, echo.asset.get('precision'));
 		return (
 			<div className="val">
@@ -33,8 +32,8 @@ class AccountInfo extends React.Component {
 				{/*	}*/}
 				{/*</Media>*/}
 				<span className="blue">
-					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(ECHO_ASSET.ID)} >
-						<span className="blue">&nbsp;{ECHO_ASSET.SYMBOL}</span>
+					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(ECHO_ASSET.ID)}>
+						<a className="blue">&nbsp;{ECHO_ASSET.SYMBOL}</a>
 					</Link>
 				</span>
 			</div>

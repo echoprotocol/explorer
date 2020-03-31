@@ -1,6 +1,8 @@
 import React from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
+
 import BackwardIcon from '../BackwardIcon';
 import URLHelper from '../../helpers/URLHelper';
 import { CONTRACT_ABI } from '../../constants/RouterConstants';
@@ -24,13 +26,13 @@ class UploadABI extends React.Component {
 		this.props.setFormAbi(abi);
 
 		if (verified) {
-			this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+			Router.push(CONTRACT_ABI, URLHelper.createContractUrl(id, CONTRACT_ABI));
 		}
 	}
 
 	onBack(e, id) {
 		e.preventDefault();
-		this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+		Router.push(CONTRACT_ABI, URLHelper.createContractUrl(id, CONTRACT_ABI));
 	}
 
 	uploadFile(event) {
@@ -114,7 +116,7 @@ class UploadABI extends React.Component {
 				<div className="buttons-wrap">
 					<button
 						className="decline-button"
-						onClick={() => this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_ABI))}
+						onClick={() => Router.push(CONTRACT_ABI, URLHelper.createContractUrl(id, CONTRACT_ABI))}
 					>
 						Cancel
 					</button>
@@ -134,7 +136,6 @@ class UploadABI extends React.Component {
 
 UploadABI.propTypes = {
 	abiInput: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
 	abi: PropTypes.string.isRequired,
 	icon: PropTypes.string.isRequired,

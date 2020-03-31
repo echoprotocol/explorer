@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { List } from 'immutable';
 import BN from 'bignumber.js';
 
-// import OperationsTable from '../TransactionInfo/OperationsTable';
+import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
@@ -15,7 +15,11 @@ import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
-import { ACCOUNTS_PATH, INDEX_PATH } from '../../constants/RouterConstants';
+import {
+	INDEX_PATH,
+	SSR_ACCOUNTS_PATH,
+	SSR_BLOCK_INFORMATION_PATH,
+} from '../../constants/RouterConstants';
 import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
 import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
@@ -35,15 +39,9 @@ class BlockInformation extends React.Component {
 		};
 	}
 
-	static async getInitialProps({ query: { round }, store, router }) {
-		console.log('getInitialProps BlockInformation', router);
-		console.log('round', round);
+	static async getInitialProps({ query: { round }, store }) {
 		await store.dispatch(getBlockInformation(round));
-		return { round, router };
-	}
-
-	componentDidMount() {
-		// this.props.getBlockInfo();
+		return { round };
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -65,7 +63,6 @@ class BlockInformation extends React.Component {
 			this.props.round !== prevProps.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			console.log('componentDidUpdate');
 			this.props.getBlockInfo(this.props.round);
 		}
 	}
@@ -78,7 +75,7 @@ class BlockInformation extends React.Component {
 		e.preventDefault();
 		this.setState({ loader: true });
 
-		Router.push(URLHelper.createBlockUrl(blockNumber));
+		Router.push(SSR_BLOCK_INFORMATION_PATH, URLHelper.createBlockUrl(blockNumber));
 	}
 
 	returnFunction() {
@@ -112,7 +109,8 @@ class BlockInformation extends React.Component {
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',
-				path: INDEX_PATH,
+				as: INDEX_PATH,
+				href: INDEX_PATH,
 			},
 		];
 
@@ -154,9 +152,9 @@ class BlockInformation extends React.Component {
 					</div>
 					<div className="container producer">
 						<div className="title">Producer</div>
-						{/*<Link href={ACCOUNTS_PATH} as={URLHelper.createAccountUrl(producer.name)}>*/}
-						{/*	<a className="value blue">{producer.name}</a>*/}
-						{/*</Link>*/}
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(producer.name)}>
+							<a className="value blue">{producer.name}</a>
+						</Link>
 					</div>
 					<div className="container verifiers">
 						<div className="title">Verifiers</div>
@@ -190,16 +188,16 @@ class BlockInformation extends React.Component {
 				}
 				<div className="help-table-wrapper">
 					<TableLable label={FormatHelper.getFormatTransactionsTitle(transactionCount)} />
-					{/*{*/}
-					{/*	(slicedOperations && slicedOperations.size) ?*/}
-					{/*		<OperationsTable*/}
-					{/*			fee*/}
-					{/*			operations={slicedOperations}*/}
-					{/*			location={this.props.router.location}*/}
-					{/*			loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}*/}
-					{/*			hasMore={currentTransactionLength < operations.size}*/}
-					{/*		/> : null*/}
-					{/*}*/}
+					{
+						(slicedOperations && slicedOperations.size) ?
+							<OperationsTable
+								fee
+								operations={slicedOperations}
+								router={this.props.router}
+								loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
+								hasMore={currentTransactionLength < operations.size}
+							/> : null
+					}
 				</div>
 			</React.Fragment>
 		);
@@ -207,9 +205,6 @@ class BlockInformation extends React.Component {
 
 	render() {
 		const { blockInformation, latestBlock } = this.props;
-
-		console.log('this.state.loader', this.state.loader);
-		console.log('blockInformation', blockInformation);
 
 		return (
 			<div className="inner-information-container">
@@ -224,7 +219,7 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
-	router: PropTypes.object,
+	router: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
 	round: PropTypes.string.isRequired,
@@ -235,8 +230,6 @@ BlockInformation.propTypes = {
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
 };
 
-BlockInformation.defaultProps = {
-	router: {},
-};
+BlockInformation.defaultProps = {};
 
 export default BlockInformation;

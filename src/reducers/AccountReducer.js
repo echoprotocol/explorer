@@ -14,6 +14,7 @@ const DEFAULT_FIELDS = new Map({
 	tokens: new List([]),
 	history: new List([]),
 	lastOperationId: '',
+	echoAccountInfo: null,
 });
 
 export default createModule({

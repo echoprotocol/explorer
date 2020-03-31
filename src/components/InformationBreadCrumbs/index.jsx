@@ -12,7 +12,8 @@ class BreadCrumbs extends React.Component {
 					{this.props.breadcrumbs && this.props.breadcrumbs.map((breadcrumb) => (
 						<Link
 							key={breadcrumb.title}
-							href={breadcrumb.path}
+							href={breadcrumb.href}
+							as={breadcrumb.as}
 						>
 							<a className="element">{breadcrumb.title}</a>
 						</Link>

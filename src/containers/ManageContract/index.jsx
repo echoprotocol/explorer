@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import { FORM_MANAGE_CONTRACT } from '../../constants/FormConstants';
 

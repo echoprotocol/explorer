@@ -176,10 +176,8 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 
-		console.log('value', value);
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
-		console.log('error hehehehhe', error);
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));
 	}

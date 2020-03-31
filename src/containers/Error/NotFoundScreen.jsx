@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import NotFound from '../../components/Error/NotFoundScreen';
 import GlobalActions from '../../actions/GlobalActions';

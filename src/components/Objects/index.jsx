@@ -2,46 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
-import queryString from 'query-string';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import copy from 'copy-to-clipboard';
 import InnerHeader from '../InnerHeader';
 import URLHelper from '../../helpers/URLHelper';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { getObjectInfo } from '../../actions/ObjectsActions';
+import { OBJECTS_PATH } from '../../constants/RouterConstants';
+import QueryStringHelper from '../../helpers/QueryStringHelper';
 
 class Objects extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.copy = this.copy.bind(this);
-		this.state = {
-			id: this.getId(this.props),
-		};
+	}
+
+	static async getInitialProps({ query, store, asPath }) {
+		let { id } = query;
+		if (!id) {
+			id = QueryStringHelper.getObjectId(asPath.split('?')[1]);
+		}
+		await store.dispatch(getObjectInfo(id));
+		return { query: { id } };
 	}
 
 	componentDidMount() {
-		this.checkObject();
+		// this.checkObject();
 	}
 
-	componentWillReceiveProps(nextProps) {
-
-		const newId = this.getId(nextProps);
-
-		if (newId !== this.state.id) {
-
-			this.setState({
-				id: newId,
-			}, () => {
-				this.checkObject();
-			});
-
+	componentDidUpdate(prevProps) {
+		if (this.props.query.id) {
+			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.props.query.id));
 		}
-	}
 
-	componentDidUpdate() {
-		if (this.state.id) {
-			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.state.id));
+		if (this.props.query.id && prevProps.query.id !== this.props.query.id) {
+			this.checkObject(this.props.query.id);
 		}
 	}
 
@@ -49,25 +46,7 @@ class Objects extends React.Component {
 		this.props.setError(null);
 	}
 
-	getId(props) {
-
-		const parsed = queryString.parse(props.location.search);
-		const regExp = /^\d+\.\d+\.\d+$/;
-
-		if (parsed.opId) {
-			return parsed.opId.trim();
-		}
-
-		if (!parsed.id || parsed.id.trim().search(regExp) === -1) {
-			return null;
-		}
-
-		return parsed.id.trim();
-	}
-
-	checkObject() {
-		const { id } = this.state;
-
+	checkObject(id) {
 		if (!id) {
 			this.props.setError('Object id is Invalid');
 		} else {
@@ -104,7 +83,7 @@ class Objects extends React.Component {
 
 		return (
 			<div className="inner-information-container object-view">
-				<InnerHeader title={`Object ${this.state.id}`} />
+				<InnerHeader title={`Object ${this.props.query.id}`} />
 				{error ?
 					<div className="json-tree-container">
 						{error}
@@ -123,10 +102,8 @@ class Objects extends React.Component {
 									const url = URLHelper.createUrlById(raw.substr(1, raw.length - 1 - 1));
 
 									return (
-										<Link
-											to={url}
-										>
-											{raw}
+										<Link href={OBJECTS_PATH} as={url}>
+											<a>{raw}</a>
 										</Link>
 									);
 								}
@@ -147,6 +124,7 @@ class Objects extends React.Component {
 }
 
 Objects.propTypes = {
+	query: PropTypes.object.isRequired,
 	data: PropTypes.any,
 	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,

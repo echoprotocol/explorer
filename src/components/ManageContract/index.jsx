@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Dropzone from 'react-dropzone';
+import Router from 'next/router';
 
 import { MAX_KB_CONTRACT_ICON, MAX_LENGTH_CONTRACT_DESCRIPTION } from '../../constants/GlobalConstants';
 
@@ -12,8 +13,9 @@ import URLHelper from '../../helpers/URLHelper';
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
 import { ContractIcon } from '../Contract/ContractIcon';
-import contractIconDefault from '../../../public/icons/default-icn.svg';
-import bridge from '../../../public/icons/bridge-logo.svg';
+import contractIconDefault from '../../../public/images/icons/default-icn.svg';
+import bridge from '../../../public/images/icons/bridge-logo.svg';
+import { SSR_ACCOUNTS_PATH, SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
 class ManageContract extends React.Component {
 
@@ -22,6 +24,10 @@ class ManageContract extends React.Component {
 
 		this.onSave = this.onSave.bind(this);
 		this.removeIcon = this.removeIcon.bind(this);
+	}
+
+	static async getInitialProps({ query }) {
+		return { query };
 	}
 
 	componentDidMount() {
@@ -33,7 +39,7 @@ class ManageContract extends React.Component {
 	}
 
 	async onSave() {
-		const { match: { params: { id } } } = this.props;
+		const { query: { id } } = this.props;
 		const {
 			name, icon, description, clickSaveCounter,
 		} = this.props;
@@ -61,23 +67,23 @@ class ManageContract extends React.Component {
 	goBack(e, id) {
 		e.preventDefault();
 		if (!this.props.historyLength) {
-			this.props.history.push(URLHelper.createContractUrl(id));
+			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 		} else {
-			this.props.history.goBack();
+			Router.back();
 		}
 	}
 
 	async initData() {
-		const { match: { params: { id } } } = this.props;
+		const { query: { id } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
-		await this.props.getContractInfo();
+		// await this.props.getContractInfo();
 		this.props.setDefaultDateContract(id);
 	}
 
 	render() {
 		const {
-			match: { params: { id } }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm, iconBase64,
+			query: { id }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm, iconBase64,
 		} = this.props;
 		const defaultIcon = iconBase64.value || contractIconDefault;
 		return (
@@ -106,7 +112,9 @@ class ManageContract extends React.Component {
 							<span className="plain-text">Only {' '}</span>
 							<span className="no-wrap">
 								<Avatar accountName={owner.get('name')} />
-								<Link className="link" to={URLHelper.createAccountUrl(owner.get('name'))} >{owner.get('name')}</Link>
+								<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(owner.get('name'))} >
+									<a className="link">{owner.get('name')}</a>
+								</Link>
 							</span>
 							<span className="plain-text">
 								{' '} can manage this contract.
@@ -200,9 +208,8 @@ class ManageContract extends React.Component {
 }
 
 ManageContract.propTypes = {
-	match: PropTypes.object.isRequired,
+	query: PropTypes.object.isRequired,
 	iconBase64: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 	owner: PropTypes.object,
 	validateContract: PropTypes.func.isRequired,
 	setFormValue: PropTypes.func.isRequired,

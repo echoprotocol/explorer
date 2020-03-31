@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Dropdown } from 'semantic-ui-react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
@@ -76,7 +77,7 @@ class SearchField extends React.Component {
 
 		if (!loadingSearch && KEY_CODE_ENTER === code && this.state.inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
-				this.props.history.push(this.state.to);
+				Router.push(this.state.to, this.state.to);
 				this.setState({ focus: false, isChange: false });
 				this.inputEl.blur();
 			}
@@ -157,12 +158,12 @@ class SearchField extends React.Component {
 
 		const options = hints
 			.map(({
-				section, prefix, value, to, postfix,
+				section, prefix, value, to, postfix, href,
 			}, i) => ({
 				key: i,
 				value: to,
 				content: (
-					<Link key={to} href="/assets/[id]/info" as={to} >
+					<Link key={to} href={href} as={to} >
 						<a className="element">
 							<div className="section-name">{section}</div>
 							<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
@@ -254,7 +255,6 @@ SearchField.propTypes = {
 	withHelp: PropTypes.bool,
 	goToBlock: PropTypes.bool,
 	hints: PropTypes.array,
-	history: PropTypes.object,
 	getHints: PropTypes.func,
 };
 
@@ -267,7 +267,6 @@ SearchField.defaultProps = {
 	withHelp: false,
 	hints: [],
 	goToBlock: null,
-	history: {},
 	getHints: () => {},
 };
 

@@ -27,14 +27,14 @@ class Asset extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getAssetInfo(this.props.query.id);
+		// this.props.getAssetInfo(this.props.query.id);
 	}
 
 	componentDidUpdate(prevProps) {
-		// if (this.props.asset) {
-		// 	this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.props.asset.symbol));
-		// }
-		//
+		if (this.props.asset) {
+			this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.asset.get('symbol')));
+		}
+
 		if (this.props.query.id !== prevProps.query.id) {
 			this.props.getAssetInfo();
 		}

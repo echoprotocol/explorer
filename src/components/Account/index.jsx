@@ -19,7 +19,7 @@ class Account extends React.Component {
 
 	componentDidMount() {
 		console.log('componentDidMount', this.props.query.id);
-		this.props.getAccountInfo(this.props.query.id);
+		// this.props.getAccountInfo(this.props.query.id);
 
 		// if (this.props.query.search) {
 		// 	this.props.history.push(this.props.location.pathname);
@@ -108,7 +108,7 @@ class Account extends React.Component {
 								{
 									accountHistory.size ?
 										<OperationsTable
-											location={this.props.router}
+											router={this.props.router}
 											operations={accountHistory}
 											loading={loadingMoreHistory}
 											loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}

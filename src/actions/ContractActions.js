@@ -2,6 +2,7 @@ import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 import * as wrapper from 'solc/wrapper';
+import Router from 'next/router';
 
 import {
 	CONTRACT_FIELDS,
@@ -12,7 +13,7 @@ import {
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
-import { CONTRACT_ABI } from '../constants/RouterConstants';
+import { CONTRACT_ABI, SSR_CONTRACT_PATH } from '../constants/RouterConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 import URLHelper from '../helpers/URLHelper';
@@ -41,8 +42,8 @@ import { BridgeService } from '../services/BridgeService';
 import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
-import browserHistory from '../history';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
+import config from '../config/chain';
 
 class ContractActions extends BaseActionsClass {
 
@@ -233,7 +234,7 @@ class ContractActions extends BaseActionsClass {
 				'currentCompiler',
 				lastVersion && lastVersion.longVersion,
 			));
-			await loadScript(`${__SOLC_BIN_URL__}${solcLatestRelease}`); // eslint-disable-line no-undef
+			await loadScript(`${config.SOLC_BIN_URL}${solcLatestRelease}`); // eslint-disable-line no-undef
 		};
 	}
 
@@ -252,7 +253,7 @@ class ContractActions extends BaseActionsClass {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
 
 				// eslint-disable-next-line no-undef
-				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
+				const response = await fetch(`${config.SOLC_BIN_URL}${compilerBuild.get('path')}`);
 				const total = Number.parseInt(response.headers.get('content-length'), 10);
 				const reader = response.body.getReader();
 				let bytesReceived = 0;
@@ -541,7 +542,7 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(this.setValue('abi', FormatHelper.formatAbi(response.abi)));
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'ABI successfully uploaded' }));
-				browserHistory.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+				Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id, CONTRACT_ABI));
 			} catch (err) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));
 			}
@@ -662,7 +663,7 @@ class ContractActions extends BaseActionsClass {
 					sourceCode: response.source_code,
 				}));
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'Contract verified' }));
-				browserHistory.push(URLHelper.createContractUrl(id));
+				Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 
 			} catch (err) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));

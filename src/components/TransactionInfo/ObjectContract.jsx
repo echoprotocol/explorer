@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Avatar from '../Avatar';
 
 class ObjectContract extends React.Component {
@@ -33,15 +33,19 @@ class ObjectContract extends React.Component {
 								<div className="title">Accounts:</div>
 								<ul className="accounts">
 									<li>
-										<Link className="avatar-wrap" to="/">
-											<Avatar accountName="Homersimpson3423" />
-											<span>Homersimpson3423</span>
+										<Link as="/" href="/">
+											<a className="avatar-wrap">
+												<Avatar accountName="Homersimpson3423" />
+												<span>Homersimpson3423</span>
+											</a>
 										</Link>
 									</li>
 									<li>
-										<Link className="avatar-wrap" to="/">
-											<Avatar accountName="Homersimp" />
-											<span>Homersimp</span>
+										<Link as="/" href="/">
+											<a className="avatar-wrap">
+												<Avatar accountName="Homersimp" />
+												<span>Homersimp</span>
+											</a>
 										</Link>
 									</li>
 								</ul>

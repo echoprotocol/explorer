@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import UploadABI from '../../components/UploadABI';
 import ContractActions from '../../actions/ContractActions';

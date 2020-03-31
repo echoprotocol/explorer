@@ -19,6 +19,7 @@ import { getLimitHints } from '../helpers/SearchHelper';
 import { getToken, getContractBySymbol } from '../services/queries/contract';
 import { getAssetsBySymbols } from '../services/queries/asset';
 import ApiService from '../services/ApiService';
+import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH, SSR_CONTRACT_PATH } from '../constants/RouterConstants';
 
 class SearchActions extends BaseActionsClass {
 
@@ -85,6 +86,7 @@ class SearchActions extends BaseActionsClass {
 			}
 
 			if (token) {
+				href = SSR_CONTRACT_PATH;
 				section = 'ERC20 token';
 				prefix = `${token.symbol} `;
 				str = `(${object.id})`;
@@ -95,12 +97,13 @@ class SearchActions extends BaseActionsClass {
 		if (isAccount) {
 			prefix = `${object.name} `;
 			str = `(${str})`;
+			href = SSR_ACCOUNTS_PATH;
 		}
 
 		if (isAsset) {
 			prefix = `${object.symbol} `;
 			str = `(${object.id})`;
-			href = `/assets/${object.id}/info`;
+			href = SSR_ASSET_PATH;
 		}
 
 		const hint = [{

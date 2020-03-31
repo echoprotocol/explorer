@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Controlled as CodeMirror } from 'react-codemirror2';
 import copy from 'copy-to-clipboard';
-import { withRouter } from 'react-router';
-import URLHelper from '../../helpers/URLHelper';
+import Router, { withRouter } from 'next/router';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+import URLHelper from '../../helpers/URLHelper';
+import { SSR_UPLOAD_ABI_PATH } from '../../constants/RouterConstants';
+
+let CodeMirror = null;
+if (typeof window !== 'undefined') {
+	/* eslint-disable global-require */
+	({ Controlled: CodeMirror } = require('react-codemirror2'));
+	require('codemirror/mode/xml/xml.js');
+	require('codemirror/mode/javascript/javascript.js');
+	/* eslint-enable global-require */
+}
 
 class ContractAbi extends React.Component {
 
@@ -22,7 +29,7 @@ class ContractAbi extends React.Component {
 						role="presentation"
 						className="action-button"
 						htmlFor="upload-abi"
-						onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+						onClick={() => Router.push(SSR_UPLOAD_ABI_PATH, URLHelper.createUploadAbiUrl(id))}
 					>
 						Upload ABI
 					</label>
@@ -56,7 +63,7 @@ class ContractAbi extends React.Component {
 								role="presentation"
 								className="action-button"
 								htmlFor="upload-abi"
-								onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+								onClick={() => Router.push(SSR_UPLOAD_ABI_PATH, URLHelper.createUploadAbiUrl(id))}
 							>
 								Upload new ABI
 							</label>
@@ -67,11 +74,14 @@ class ContractAbi extends React.Component {
 
 				{/* If code-block readonly add class uncontrolled  */}
 				<div className="code-block uncontrolled">
-					<CodeMirror
-						value={abi}
-						onFocus={(editor) => { editor.refresh(); }}
-						options={CODEMIRROR_OPTIONS}
-					/>
+					{CodeMirror && (
+						<CodeMirror
+							value={abi}
+							onFocus={(editor) => { editor.refresh(); }}
+							options={CODEMIRROR_OPTIONS}
+						/>
+					)}
+
 				</div>
 			</React.Fragment>
 		);
@@ -94,7 +104,6 @@ ContractAbi.propTypes = {
 	id: PropTypes.string.isRequired,
 	abi: PropTypes.string.isRequired,
 	verified: PropTypes.bool.isRequired,
-	history: PropTypes.object.isRequired,
 };
 
 ContractAbi.defaultProps = {};
