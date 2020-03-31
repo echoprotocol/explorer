@@ -9,6 +9,7 @@ export default connect(
 	(state) => ({
 		asset: state.asset.get('asset'),
 		issuer: state.asset.get('issuer'),
+		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
 		getAssetInfo: (id) => dispatch(getFullAssetInformation(id)),

@@ -44,7 +44,8 @@ class Asset extends React.Component {
 		return <Loader />;
 	}
 
-	renderAsset(asset, issuer) {
+	renderAsset() {
+		const { isMobile, asset, issuer } = this.props;
 		const issuerName = issuer.get('name');
 
 		const assetSymbol = asset.get('symbol');
@@ -87,7 +88,7 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Issuer</div>
 								<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(issuerName)}>
-									<a className="val blue">{issuerName}</a>
+									<a className="blue">{issuerName}</a>
 								</Link>
 							</div>
 							<div className="block">
@@ -97,7 +98,7 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Current supply</div>
 								<div className="val">
-									<Media query="(max-width: 300px)">
+									<Media query="(max-width: 300px)" defaultMatches={isMobile}>
 										{(matches) =>
 											(matches ? (
 												<Tooltip
@@ -118,7 +119,7 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Max supply</div>
 								<div className="val">
-									<Media query="(max-width: 300px)">
+									<Media query="(max-width: 300px)" defaultMatches={isMobile}>
 										{(matches) =>
 											(matches ? (
 												<Tooltip
@@ -183,7 +184,7 @@ class Asset extends React.Component {
 
 		return (
 			<div className="inner-information-container account-asset-page">
-				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset(asset, issuer)}
+				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset()}
 			</div>
 		);
 	}
@@ -191,6 +192,7 @@ class Asset extends React.Component {
 }
 
 Asset.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	asset: PropTypes.object,
 	issuer: PropTypes.object,
 	query: PropTypes.object.isRequired,
