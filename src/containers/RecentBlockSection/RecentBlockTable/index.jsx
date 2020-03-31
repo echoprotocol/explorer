@@ -16,7 +16,6 @@ import FormatHelper from '../../../helpers/FormatHelper';
 import URLHelper from '../../../helpers/URLHelper';
 
 import {
-	ACCOUNTS_PATH,
 	BLOCK_INFORMATION_PATH,
 	SSR_BLOCK_INFORMATION_PATH,
 	SSR_ACCOUNTS_PATH,
@@ -42,7 +41,6 @@ class RecentBlockTable extends React.Component {
 		};
 	}
 
-
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.MAIN);
 	}
@@ -61,15 +59,6 @@ class RecentBlockTable extends React.Component {
 		e.preventDefault();
 		e.stopPropagation();
 		Router.push(SSR_ACCOUNTS_PATH, path);
-	}
-
-	getInitialProps({ ctx }) {
-		const isMobileView = (ctx.req ? ctx.req.headers['user-agent'] : navigator.userAgent).match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i);
-
-		console.log('isMobileView', isMobileView);
-		return {
-			isMobileView: Boolean(isMobileView),
-		};
 	}
 
 	getBlocks() {
@@ -121,7 +110,7 @@ class RecentBlockTable extends React.Component {
 
 	render() {
 		const {
-			hasMore, loading, loadingSearch, errorSearch, latestBlock, isMobileView,
+			hasMore, loading, loadingSearch, errorSearch, latestBlock, isMobile,
 		} = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
@@ -143,14 +132,14 @@ class RecentBlockTable extends React.Component {
 						/>
 					</InnerHeader>
 
-					<Media query="(max-width: 767px)" defaultMatches={isMobileView}>
+					<Media query="(max-width: 767px)" defaultMatches={isMobile}>
 						{(matches) =>
 							(matches ? (
 								<div className="recent-block-mobile-view">
 									{
 										blocks.map((data) => (
 											<Link href="" key={data.round}>
-												<a className="recent-block-element fade-anim" onClick={(e) => this.goToBlock(e, data.round)}>
+												<div className="recent-block-element fade-anim" onClick={(e) => this.goToBlock(e, data.round)}>
 													<div className="container">
 														<div className="title">Block #</div>
 														<div className="value">
@@ -186,7 +175,7 @@ class RecentBlockTable extends React.Component {
 														<div className="title">Transactions</div>
 														<div className="value">{data.transactions}</div>
 													</div>
-												</a>
+												</div>
 											</Link>
 										))
 									}
@@ -216,7 +205,7 @@ class RecentBlockTable extends React.Component {
 											blocks.map((data) => (
 												<React.Fragment key={data.round}>
 													<Link href="" key={data.round}>
-														<a className="div-table-row fade-anim" onClick={(e) => this.goToBlock(e, data.round, BLOCK_INFORMATION_PATH)}>
+														<div className="div-table-row fade-anim" onClick={(e) => this.goToBlock(e, data.round, BLOCK_INFORMATION_PATH)}>
 															<div className="div-table-cell">
 																<span>
 																	{data.blockNumber}
@@ -235,7 +224,7 @@ class RecentBlockTable extends React.Component {
 															<div className="div-table-cell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
 															<div className="div-table-cell">{data.weight} <span className="gray">{data.weightSize}</span></div>
 															<div className="div-table-cell">{data.transactions}</div>
-														</a>
+														</div>
 													</Link>
 												</React.Fragment>
 											))
@@ -257,7 +246,7 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
-	isMobileView: PropTypes.bool,
+	isMobile: PropTypes.bool.isRequired,
 	hints: PropTypes.array.isRequired,
 	errorSearch: PropTypes.string.isRequired,
 	loading: PropTypes.bool.isRequired,
@@ -271,9 +260,7 @@ RecentBlockTable.propTypes = {
 	latestBlock: PropTypes.number.isRequired,
 };
 
-RecentBlockTable.defaultProps = {
-	isMobileView: false,
-};
+RecentBlockTable.defaultProps = {};
 
 export default withRouter(connect(
 	(state) => ({
@@ -284,6 +271,8 @@ export default withRouter(connect(
 		loadingSearch: state.search.getIn(['blockSearch', 'loading']),
 		blocks: state.block.get('blocks'),
 		latestBlock: state.round.get('latestBlock'),
+		isMobile: state.global.get('isMobile'),
+		connected: state.global.get('connected'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(SearchActions.blockSearchHint(str)),

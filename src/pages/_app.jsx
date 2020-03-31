@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { serialize, deserialize } from 'json-immutable';
+import MobileDetect from 'mobile-detect';
 
 import React from 'react';
 import configureStore from '../store';
@@ -19,20 +20,15 @@ import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
 import Footer from '../containers/Footer';
 import RecentBlockSidebar from '../containers/RecentBlockSection/RecentBlockSidebar';
 import GlobalActions from '../actions/GlobalActions';
-
-// import '../src/assets/favicon.ico';
+import { serverConnect } from '../actions/SocketActions';
+// import Toast from '../components/Toast';
 
 class ExplorerApp extends App {
 
 	static async getInitialProps({ Component, ctx }) {
 		console.log('getInitialProps ExplorerApp', ctx.isServer);
-
 		try {
-			// console.log('process.env.API_URL', ctx.isServer);
-			// console.log('echo.isConnectedL', echo.isConnected);
-
 			if (ctx.isServer && !echo.isConnected) {
-				console.log('connect', process.env.API_URL);
 				await echo.connect(process.env.API_URL, {
 					connectionTimeout: 5000,
 					maxRetries: 1e10,
@@ -47,16 +43,18 @@ class ExplorerApp extends App {
 			console.log('err connect to echo', JSON.stringify(err, null, 10));
 		}
 
-		// const mobile = new MobileDetect(req.headers['user-agent']);
+		const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
+		const isMobile = !!(new MobileDetect(userAgent)).mobile();
 
-		// await ctx.store.dispatch(globalActions.init());
+		await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
+		await ctx.store.dispatch(serverConnect());
 
 		const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+
 		return { pageProps };
 	}
 
 	componentDidMount() {
-		console.log('componentDidMount ExplorerApp');
 		this.props.store.dispatch(GlobalActions.init());
 	}
 
@@ -68,7 +66,6 @@ class ExplorerApp extends App {
 
 	render() {
 		const {
-			// children,
 			// error,
 			// errorPath,
 			// errorScreen,
@@ -81,9 +78,6 @@ class ExplorerApp extends App {
 		} = this.props;
 		const parsedLocation = pathname.split('/')[1];
 		const full = Object.keys(CONTRACT_DETAILS_NUMBERS_TAB).includes(parsedLocation);
-
-		const connected = store.getState().global.get('connected');
-		console.log('store.global.get(\'connected\')', connected, typeof window !== 'undefined');
 
 		return (
 			<Provider store={store}>
@@ -100,7 +94,7 @@ class ExplorerApp extends App {
 							</div>
 						</div>
 						<Footer />
-						{/* <Toast /> */}
+						{/*<Toast />*/}
 						{/* { */}
 						{/*	showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} /> */}
 						{/* } */}
@@ -120,30 +114,11 @@ ExplorerApp.defaultProps = {
 	router: {},
 };
 
-const STORE = () => {
-	try {
-		const store = configureStore().getState();
-		var serializedStore = serialize(configureStore().getState());
-	} catch (err) {
-		console.log('err', err);
-	}
-	return serializedStore;
-};
-
 const withReduxJob = withRedux(
-	(initialState) => {
-		console.log('configureStore');
-		return configureStore(initialState);
-	},
+	(initialState) => configureStore(initialState),
 	{
-		serializeState: (state = {}) => {
-			console.log('serializeState');
-			return serialize(state);
-		},
-		deserializeState: (state = STORE()) => {
-			console.log('deserializeState');
-			return deserialize(state);
-		},
+		serializeState: (state = {}) => serialize(state),
+		deserializeState: (state = serialize({})) => deserialize(state),
 	},
 );
 

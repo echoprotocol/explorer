@@ -13,6 +13,7 @@ const DEFAULT_FIELDS = Map({
 	errorPath: false,
 	errorScreen: false,
 	activeAccount: new Map(),
+	isMobile: false,
 });
 
 export default createModule({

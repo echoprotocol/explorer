@@ -101,13 +101,46 @@ const blockRelease = () => async (dispatch) => {
 };
 
 /**
+ * @method serverConnect
+ *
+ * Server WS init preload data
+ */
+
+export const serverConnect = () => async (dispatch) => {
+	try {
+		console.log('server connect');
+		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
+		const blockReward = globalParams.block_producer_reward_ratio;
+
+		await dispatch(batchActions([
+			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
+		]));
+
+		await dispatch(initBlocks());
+
+		const global = globalParams.echorand_config;
+		const producers = global._creator_count;
+		dispatch(RoundReducer.actions.set({ field: 'producers', value: producers }));
+	} catch (err) {
+		dispatch(batchActions([
+			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
+			GlobalReducer.actions.set({ field: 'connected', value: false }),
+		]));
+
+		throw err;
+	}
+
+};
+
+
+/**
  *  @method connect
  *
  * 	WS connect to blockchain and set subscribe callbacks
  */
 export const connect = () => async (dispatch) => {
 	try {
-		console.log('befpre client connect');
+		console.log('client connect');
 		await echo.connect(config.API_URL, {
 			connectionTimeout: 5000,
 			maxRetries: 1e10,
@@ -118,17 +151,7 @@ export const connect = () => async (dispatch) => {
 			// apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
 		});
 
-		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
-		const blockReward = globalParams.block_producer_reward_ratio;
-
-		await dispatch(batchActions([
-			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
-		]));
-
-		await dispatch(initBlocks());
-
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
-
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 
 		echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
@@ -136,13 +159,7 @@ export const connect = () => async (dispatch) => {
 
 		dispatch(blockRelease());
 
-		const global = globalParams.echorand_config;
-		const producers = global._creator_count;
-
 		dispatch(GlobalReducer.actions.set({ field: 'connected', value: true }));
-		dispatch(RoundReducer.actions.set({ field: 'producers', value: producers }));
-
-		console.log('hehehe');
 	} catch (err) {
 		console.log('hehehe  connect to echo', JSON.stringify(err, null, 10));
 		dispatch(batchActions([
