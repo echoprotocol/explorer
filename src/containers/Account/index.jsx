@@ -14,6 +14,7 @@ export default withRouter(connect(
 		tokens: state.account.get('tokens'),
 		accountHistory: state.account.get('history'),
 		account: state.account.get('echoAccountInfo'),
+		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
 		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),

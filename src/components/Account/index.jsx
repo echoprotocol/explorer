@@ -17,15 +17,6 @@ class Account extends React.Component {
 		return { query };
 	}
 
-	componentDidMount() {
-		console.log('componentDidMount', this.props.query.id);
-		// this.props.getAccountInfo(this.props.query.id);
-
-		// if (this.props.query.search) {
-		// 	this.props.history.push(this.props.location.pathname);
-		// }
-	}
-
 	componentDidUpdate(prevProps) {
 		if (this.props.account) {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
@@ -73,7 +64,7 @@ class Account extends React.Component {
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
-			account, balances, tokens, accountHistory,
+			account, balances, tokens, accountHistory, isMobile,
 		} = this.props;
 
 		return (
@@ -86,6 +77,7 @@ class Account extends React.Component {
 								account ?
 									<React.Fragment>
 										<AccountInfo
+											isMobile={isMobile}
 											echo={balances.get(ECHO_ASSET.ID)}
 											name={account.get('name')}
 											id={account.get('id')}
@@ -126,6 +118,7 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	router: PropTypes.object.isRequired,
 	query: PropTypes.object.isRequired,
 	loading: PropTypes.bool,

@@ -12,25 +12,25 @@ import { OBJECTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
 class AccountInfo extends React.Component {
 
 	renderEcho() {
-		const { echo } = this.props;
+		const { echo, isMobile } = this.props;
 		if (!echo) return <div className="val"><span className="txt">None</span></div>;
 		const assetAmount = FormatHelper.formatAmount(echo.amount, echo.asset.get('precision'));
 		return (
 			<div className="val">
-				{/*<Media query="(max-width: 760px)">*/}
-				{/*	{*/}
-				{/*		(matches) => (matches ? (*/}
-				{/*			<Tooltip*/}
-				{/*				placement="top"*/}
-				{/*				overlayClassName="verify-contract-tooltip"*/}
-				{/*				trigger={['hover']}*/}
-				{/*				overlay={assetAmount}*/}
-				{/*			>*/}
-				{/*				<span className="txt">{assetAmount}</span>*/}
-				{/*			</Tooltip>*/}
-				{/*		) : <span className="amount">{assetAmount}</span>)*/}
-				{/*	}*/}
-				{/*</Media>*/}
+				<Media query="(max-width: 760px)" defaultMatches={isMobile}>
+					{
+						(matches) => (matches ? (
+							<Tooltip
+								placement="top"
+								overlayClassName="verify-contract-tooltip"
+								trigger={['hover']}
+								overlay={assetAmount}
+							>
+								<span className="txt">{assetAmount}</span>
+							</Tooltip>
+						) : <span className="amount">{assetAmount}</span>)
+					}
+				</Media>
 				<span className="blue">
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(ECHO_ASSET.ID)}>
 						<a className="blue">&nbsp;{ECHO_ASSET.SYMBOL}</a>
@@ -66,6 +66,7 @@ class AccountInfo extends React.Component {
 }
 
 AccountInfo.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	echo: PropTypes.object,
 	name: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,
