@@ -11,7 +11,7 @@ import { serialize, deserialize } from 'json-immutable';
 import React from 'react';
 import configureStore from '../store';
 
-import '../../public/loader';
+import '../public/loader';
 import Header from '../containers/Header';
 import Modal from '../containers/Modals';
 

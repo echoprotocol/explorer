@@ -4,7 +4,7 @@ import { Select, Input, Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 import BackwardIcon from '../BackwardIcon';
-import verifyIcon from '../../../public/images/icons/verify-icn.svg';
+import verifyIcon from '../../public/images/icons/verify-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';

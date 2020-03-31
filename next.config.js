@@ -42,7 +42,7 @@ module.exports = withFonts(withSass({
 			use: {
 				loader: 'url-loader?limit=100000',
 				options: {
-					name: '/public/images/[name].[ext]',
+					name: '/src/public/images/[name].[ext]',
 				},
 			},
 		});

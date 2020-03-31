@@ -13,8 +13,8 @@ import URLHelper from '../../helpers/URLHelper';
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
 import { ContractIcon } from '../Contract/ContractIcon';
-import contractIconDefault from '../../../public/images/icons/default-icn.svg';
-import bridge from '../../../public/images/icons/bridge-logo.svg';
+import contractIconDefault from '../../public/images/icons/default-icn.svg';
+import bridge from '../../public/images/icons/bridge-logo.svg';
 import { SSR_ACCOUNTS_PATH, SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
 class ManageContract extends React.Component {

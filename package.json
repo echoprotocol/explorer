@@ -11,9 +11,9 @@
 	"license": "MIT",
 	"main": "index.js",
 	"scripts": {
-		"dev": "next",
-		"build": "next build",
-		"start": "next start",
+		"dev": "next ./src",
+		"build": "next build ./src",
+		"start": "next start ./src",
 		"build-master": "cross-env NODE_ENV=production webpack --progress --display-error-details --colors --mode production",
 		"build-dev": "cross-env NODE_ENV=development webpack --progress --display-error-details --colors --mode production",
 		"build-stage": "cross-env NODE_ENV=stage webpack --progress --display-error-details --colors --mode production",
