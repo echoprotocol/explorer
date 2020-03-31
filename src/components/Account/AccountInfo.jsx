@@ -1,39 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Tooltip from 'rc-tooltip';
 import Media from 'react-media';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-
+import { OBJECTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
 
 class AccountInfo extends React.Component {
 
 	renderEcho() {
 		const { echo } = this.props;
 		if (!echo) return <div className="val"><span className="txt">None</span></div>;
+		console.log('echo.asset', echo.asset.get);
 		const assetAmount = FormatHelper.formatAmount(echo.amount, echo.asset.get('precision'));
 		return (
 			<div className="val">
-				<Media query="(max-width: 760px)">
-					{
-						(matches) => (matches ? (
-							<Tooltip
-								placement="top"
-								overlayClassName="verify-contract-tooltip"
-								trigger={['hover']}
-								overlay={assetAmount}
-							>
-								<span className="txt">{assetAmount}</span>
-							</Tooltip>
-						) : <span className="amount">{assetAmount}</span>)
-					}
-				</Media>
+				{/*<Media query="(max-width: 760px)">*/}
+				{/*	{*/}
+				{/*		(matches) => (matches ? (*/}
+				{/*			<Tooltip*/}
+				{/*				placement="top"*/}
+				{/*				overlayClassName="verify-contract-tooltip"*/}
+				{/*				trigger={['hover']}*/}
+				{/*				overlay={assetAmount}*/}
+				{/*			>*/}
+				{/*				<span className="txt">{assetAmount}</span>*/}
+				{/*			</Tooltip>*/}
+				{/*		) : <span className="amount">{assetAmount}</span>)*/}
+				{/*	}*/}
+				{/*</Media>*/}
 				<span className="blue">
-					<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
-						&nbsp;{ECHO_ASSET.SYMBOL}
+					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(ECHO_ASSET.ID)} >
+						<span className="blue">&nbsp;{ECHO_ASSET.SYMBOL}</span>
 					</Link>
 				</span>
 			</div>
@@ -55,8 +56,8 @@ class AccountInfo extends React.Component {
 					{this.renderEcho()}
 				</div>
 				<div className="line">
-					<Link to={URLHelper.createObjectsUrl(id)} className="raw-link blue">
-						Raw account object
+					<Link href={OBJECTS_PATH} as={URLHelper.createObjectsUrl(id)}>
+						<a className="raw-link blue">Raw account object</a>
 					</Link>
 				</div>
 			</div>

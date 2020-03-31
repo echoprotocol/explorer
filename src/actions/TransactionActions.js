@@ -494,7 +494,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		delete options.gasPrice;
 		delete options.eth_accuracy;
 
-		const {
+		let {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
 

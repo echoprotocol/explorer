@@ -3,13 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { DebounceInput } from 'react-debounce-input';
-
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
-import loadingIcon from '../../assets/images/icons/loader.png';
+import loadingIcon from '../../../public/images/icons/loader.png';
 
 class SearchField extends React.Component {
 
@@ -163,9 +162,11 @@ class SearchField extends React.Component {
 				key: i,
 				value: to,
 				content: (
-					<Link key={to} to={to} className="element" onClick={() => this.blurInput()} >
-						<div className="section-name">{section}</div>
-						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+					<Link key={to} href="/assets/[id]/info" as={to} >
+						<a className="element">
+							<div className="section-name">{section}</div>
+							<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+						</a>
 					</Link>
 				),
 			}));

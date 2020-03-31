@@ -210,7 +210,7 @@ class PreparingSection extends React.Component {
 							}
 						</Media>
 
-						<Media query="(max-width: 767px)">
+						<Media query="(max-width: 767px)" defaultMatches={false}>
 							{
 								(matches) =>
 									(matches ? (

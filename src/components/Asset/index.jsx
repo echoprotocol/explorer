@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+
 import { validators } from 'echojs-lib';
 import BN from 'bignumber.js';
 import Tooltip from 'rc-tooltip';
@@ -15,19 +16,26 @@ import {
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { getFullAssetInformation } from '../../actions/AssetActions';
+import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
 
 class Asset extends React.Component {
 
+	static async getInitialProps({ query, store }) {
+		await store.dispatch(getFullAssetInformation(query.id));
+		return { query };
+	}
+
 	componentDidMount() {
-		this.props.getAssetInfo();
+		this.props.getAssetInfo(this.props.query.id);
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.asset) {
-			this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.props.asset.get('symbol')));
-		}
-
-		if (this.props.match.params.id !== prevProps.match.params.id) {
+		// if (this.props.asset) {
+		// 	this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.props.asset.symbol));
+		// }
+		//
+		if (this.props.query.id !== prevProps.query.id) {
 			this.props.getAssetInfo();
 		}
 	}
@@ -37,7 +45,6 @@ class Asset extends React.Component {
 	}
 
 	renderAsset(asset, issuer) {
-
 		const issuerName = issuer.get('name');
 
 		const assetSymbol = asset.get('symbol');
@@ -79,7 +86,9 @@ class Asset extends React.Component {
 						<div className="list">
 							<div className="block">
 								<div className="title">Issuer</div>
-								<Link to={URLHelper.createAccountUrl(issuerName)} className="val blue">{issuerName}</Link>
+								<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(issuerName)}>
+									<a className="val blue">{issuerName}</a>
+								</Link>
 							</div>
 							<div className="block">
 								<div className="title">Precision</div>
@@ -138,8 +147,8 @@ class Asset extends React.Component {
 										<div className="title">Echo exchange rate</div>
 										<div className="val">
 											<span className="txt">{exchangeRate}</span>
-											<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
-												<span className="blue">{ECHO_ASSET.SYMBOL}</span>
+											<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+												<a className="blue">{ECHO_ASSET.SYMBOL}</a>
 											</Link>
 											<span className="gray">&nbsp;/&nbsp;</span>
 											<span className="gray">{assetSymbol}</span>
@@ -149,7 +158,9 @@ class Asset extends React.Component {
 										<div className="title">Pool balance</div>
 										<div className="val">
 											<span className="txt">{poolBalance}</span>
-											<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
+											<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)} >
+												<a className="blue">{ECHO_ASSET.SYMBOL}</a>
+											</Link>
 										</div>
 									</div>
 									<div className="block">
@@ -169,6 +180,7 @@ class Asset extends React.Component {
 
 	render() {
 		const { asset, issuer } = this.props;
+
 		return (
 			<div className="inner-information-container account-asset-page">
 				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset(asset, issuer)}
@@ -181,8 +193,8 @@ class Asset extends React.Component {
 Asset.propTypes = {
 	asset: PropTypes.object,
 	issuer: PropTypes.object,
+	query: PropTypes.object.isRequired,
 	getAssetInfo: PropTypes.func.isRequired,
-	match: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 

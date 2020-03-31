@@ -57,6 +57,7 @@ class SearchActions extends BaseActionsClass {
 		let isAccount = false;
 		let isAsset = false;
 		let prefix = '';
+		let href = '';
 		const to = str;
 
 		if (validators.isAccountId(str)) {
@@ -99,9 +100,11 @@ class SearchActions extends BaseActionsClass {
 		if (isAsset) {
 			prefix = `${object.symbol} `;
 			str = `(${object.id})`;
+			href = `/assets/${object.id}/info`;
 		}
 
 		const hint = [{
+			href,
 			section,
 			prefix,
 			value: str,

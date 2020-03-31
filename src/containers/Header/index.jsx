@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -13,7 +13,7 @@ class Header extends React.Component {
 	render() {
 
 		const {
-			history, hints, getHints, loadingSearch, errorSearch,
+			hints, getHints, loadingSearch, errorSearch,
 		} = this.props;
 
 		return (
@@ -21,7 +21,6 @@ class Header extends React.Component {
 				<Navigation
 					loadingSearch={loadingSearch}
 					errorSearch={errorSearch}
-					history={history}
 					hints={hints}
 					getHints={getHints}
 				/>
@@ -33,7 +32,6 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-	history: PropTypes.object.isRequired,
 	hints: PropTypes.array.isRequired,
 	loadingSearch: PropTypes.bool.isRequired,
 	errorSearch: PropTypes.string.isRequired,
@@ -49,4 +47,4 @@ export default withRouter(connect(
 	(dispatch) => ({
 		getHints: (str) => dispatch(searchActions.headerSearchHint(str)),
 	}),
-)(Header));
+)((Header)));

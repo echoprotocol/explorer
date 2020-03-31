@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 import { CACHE_MAPS } from 'echojs-lib';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 
@@ -41,8 +41,8 @@ export default withRouter(connect(
 		accountHistory: state.account.get('history'),
 		account: state.echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, state.account.get('id')]),
 	}),
-	(dispatch, props) => ({
-		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),
+	(dispatch) => ({
+		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
 		updateAccountHistory: (accountId, newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
 			accountId,
 			newHistory,

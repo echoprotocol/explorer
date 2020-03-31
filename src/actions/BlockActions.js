@@ -93,12 +93,17 @@ const getRewardDistribution = async (targetBlock, nextBlock) => {
  */
 export const getBlockInformation = (round) => async (dispatch, getState) => {
 	try {
+		console.log('getBlockInformation');
 		let planeBlock = null;
 		let nextPlaneBlock = null;
 		try {
+			console.log('echo.api.getBlock', echo.api.getBlock);
 			planeBlock = await echo.api.getBlock(round);
 			nextPlaneBlock = await echo.api.getBlock(new BN(round).plus(1).toString(10));
+
+			console.log('round', round);
 		} catch (err) {
+			console.log('eeee here', err);
 			dispatch(GlobalReducer.actions.set({ field: 'error', value: NETWORK_CONNECTED_ERROR }));
 			dispatch(GlobalActions.toggleErrorScreen(true));
 			return;
@@ -171,8 +176,10 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 
+		console.log('value', value);
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
+		console.log('error hehehehhe', error);
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));
 	}

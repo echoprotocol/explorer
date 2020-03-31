@@ -107,6 +107,7 @@ const blockRelease = () => async (dispatch) => {
  */
 export const connect = () => async (dispatch) => {
 	try {
+		console.log('befpre client connect');
 		await echo.connect(config.API_URL, {
 			connectionTimeout: 5000,
 			maxRetries: 1e10,
@@ -137,11 +138,12 @@ export const connect = () => async (dispatch) => {
 		const global = globalParams.echorand_config;
 		const producers = global._creator_count;
 
-		dispatch(batchActions([
-			GlobalReducer.actions.set({ field: 'connected', value: true }),
-			RoundReducer.actions.set({ field: 'producers', value: producers }),
-		]));
+		dispatch(GlobalReducer.actions.set({ field: 'connected', value: true }));
+		dispatch(RoundReducer.actions.set({ field: 'producers', value: producers }));
+
+		console.log('hehehe');
 	} catch (err) {
+		console.log('hehehe  connect to echo', JSON.stringify(err, null, 10));
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
 			GlobalReducer.actions.set({ field: 'connected', value: false }),

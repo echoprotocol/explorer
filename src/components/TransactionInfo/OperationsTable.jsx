@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import queryString from 'query-string';
 import InfiniteScroll from 'react-infinite-scroller';
+
+import Router from 'next/router';
+
 import OperationRow from './OperationRow';
 import LoadMoreBtn from '../LoadMoreBtn';
 
 import URLHelper from '../../helpers/URLHelper';
 import Operations from '../../constants/Operations';
+import { SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 class OperationsTable extends React.Component {
 
@@ -73,7 +77,7 @@ class OperationsTable extends React.Component {
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
 			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
-			this.props.history.push(operationUrl);
+			Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
 			return;
 		}
 
@@ -81,7 +85,7 @@ class OperationsTable extends React.Component {
 			showedOperations.splice(v, 1);
 
 			if (queryProps.op && parseInt(queryProps.op, 10) - 1 === index) {
-				this.props.history.push(pathname);
+				Router.push(SSR_TRANSACTION_INFORMATION_PATH, pathname);
 			}
 
 			[index - 1, index].forEach((i) => {
@@ -93,7 +97,7 @@ class OperationsTable extends React.Component {
 			});
 		} else {
 			showedOperations.push(index);
-			this.props.history.push(URLHelper.createTransactionOperationUrl(pathname, index + 1));
+			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1));
 		}
 
 		if (showedOperations.includes(index) && airRows.indexOf(index - 1) === -1) {
@@ -195,7 +199,6 @@ class OperationsTable extends React.Component {
 
 OperationsTable.propTypes = {
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
-	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	hasMore: PropTypes.bool,

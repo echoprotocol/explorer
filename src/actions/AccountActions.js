@@ -63,6 +63,7 @@ class AccountActions extends BaseActionsClass {
 		});
 
 		accountHistory = await Promise.all(accountHistory);
+
 		return accountHistory.filter((t) => t);
 	}
 
@@ -72,6 +73,7 @@ class AccountActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	getAccountInfo(id) {
+		console.log('getAccountInfo');
 		return async (dispatch) => {
 			if (!validators.isAccountId(id) && !validators.isAccountName(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));
@@ -81,6 +83,7 @@ class AccountActions extends BaseActionsClass {
 			dispatch(this.setValue('loading', true));
 
 			try {
+				console.log('echo.api', echo.isConnected);
 				const [account] = await echo.api.getFullAccounts([id]);
 
 				if (!account) {
@@ -107,7 +110,10 @@ class AccountActions extends BaseActionsClass {
 					balanceItem.type === TOKEN_TYPE && !(new BN(balanceItem.amount)).isEqualTo(0));
 
 				dispatch(this.setMultipleValue({ tokens }));
+
+				console.log('hehehehe');
 			} catch (e) {
+				console.log('EROROR', e);
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
 
-import ddIcon from '../../assets/images/icons/curret-sm.svg';
+import ddIcon from '../../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
 import OperationInfo from './OperationInfo';
@@ -14,6 +14,7 @@ import ObjectInfo from './ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { OBJECTS_PATH, SSR_ACCOUNTS_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 class OperationRow extends React.Component {
 
@@ -23,25 +24,25 @@ class OperationRow extends React.Component {
 
 	renderTransactionLink(block, transactionNum, index) {
 		return (
-			<Link
-				to={URLHelper.createOperationObjectsUrl(block, transactionNum + 1, index + 1)}
-				onClick={(e) => e.stopPropagation()}
-				className="td-in"
-			/>
+			<Link href={SSR_TRANSACTION_INFORMATION_PATH}>
+				<a href={URLHelper.createOperationObjectsUrl(block, transactionNum + 1, index + 1)} className="td-in"/>
+			</Link>
 		);
 	}
 
 	renderSubject(subject, mainInfo) {
 		if (!subject) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in">{subject}</span>;
+		// TODO fix href
+		{/*{mainInfo.subject.name && <Avatar accountName={subject} />}*/}
 		return (
-			<Link
-				className="td-in avatar-wrap"
-				to={URLHelper.createUrlById(subject)}
-				onClick={(e) => e.stopPropagation()}
-			>
-				{mainInfo.subject.name && <Avatar accountName={subject} />}
-				<span>{subject}</span>
+			<Link href={SSR_ACCOUNTS_PATH}>
+				<a
+					href=""
+					className="td-in avatar-wrap"
+				>
+					<span>{subject}</span>
+				</a>
 			</Link>
 		);
 	}
@@ -132,12 +133,15 @@ class OperationRow extends React.Component {
 						) : null
 					}
 					<td className="sender">
-						{mainInfo.from.id ?
-							<Link className="td-in avatar-wrap" to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)} onClick={(e) => e.stopPropagation()}>
-								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
-								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
-							</Link> : <div className="td-in">—</div>
-						}
+						{/*{mainInfo.from.id ?*/}
+						{/*	<Link className="td-in avatar-wrap" */}
+						{/*		  to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)}*/}
+						{/*		  onClick={(e) => e.stopPropagation()}>*/}
+						{/*		{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}*/}
+						{/*		<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>*/}
+						{/*	</Link> : <div className="td-in">—</div>*/}
+						{/*}*/}
+						<div className="td-in">—</div>
 					</td>
 					<td className="reciever">
 						{this.renderSubject(subjectValue, mainInfo)}
@@ -169,7 +173,9 @@ class OperationRow extends React.Component {
 					<td className="rezult">
 						{
 							(mainInfo.result && !_.isEmpty(mainInfo.result)) ?
-								<Link to={URLHelper.createUrlById(mainInfo.result)} className="td-in" onClick={(e) => e.stopPropagation()}>{mainInfo.result}</Link>
+								<Link href={OBJECTS_PATH} as={URLHelper.createUrlById(mainInfo.result)} className="td-in" >
+									<a className="td-in">{mainInfo.result}</a>
+								</Link>
 								: <div className="td-in">—</div>
 						}
 					</td>

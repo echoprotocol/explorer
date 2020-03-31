@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Router from 'next/router';
+import Link from 'next/link';
 import classnames from 'classnames';
 import { List } from 'immutable';
 import BN from 'bignumber.js';
 
-import OperationsTable from '../TransactionInfo/OperationsTable';
+// import OperationsTable from '../TransactionInfo/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
@@ -14,12 +15,13 @@ import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
-import { INDEX_PATH } from '../../constants/RouterConstants';
+import { ACCOUNTS_PATH, INDEX_PATH } from '../../constants/RouterConstants';
 import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
 import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { getBlockInformation } from '../../actions/BlockActions';
 
 class BlockInformation extends React.Component {
 
@@ -33,8 +35,15 @@ class BlockInformation extends React.Component {
 		};
 	}
 
+	static async getInitialProps({ query: { round }, store, router }) {
+		console.log('getInitialProps BlockInformation', router);
+		console.log('round', round);
+		await store.dispatch(getBlockInformation(round));
+		return { round, router };
+	}
+
 	componentDidMount() {
-		this.props.getBlockInfo();
+		// this.props.getBlockInfo();
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -50,13 +59,14 @@ class BlockInformation extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.blockInformation) {
-			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.match.params.round));
+			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.round));
 		}
 		if (
-			this.props.match.params.round !== prevProps.match.params.round ||
+			this.props.round !== prevProps.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			this.props.getBlockInfo(this.props.match.params.round);
+			console.log('componentDidUpdate');
+			this.props.getBlockInfo(this.props.round);
 		}
 	}
 
@@ -68,11 +78,11 @@ class BlockInformation extends React.Component {
 		e.preventDefault();
 		this.setState({ loader: true });
 
-		this.props.history.push(URLHelper.createBlockUrl(blockNumber));
+		Router.push(URLHelper.createBlockUrl(blockNumber));
 	}
 
 	returnFunction() {
-		this.props.history.push(INDEX_PATH);
+		Router.push(INDEX_PATH);
 	}
 
 	loadMoreTransactions() {
@@ -144,9 +154,9 @@ class BlockInformation extends React.Component {
 					</div>
 					<div className="container producer">
 						<div className="title">Producer</div>
-						<Link to={URLHelper.createAccountUrl(producer.name)}>
-							<div className="value blue">{producer.name}</div>
-						</Link>
+						{/*<Link href={ACCOUNTS_PATH} as={URLHelper.createAccountUrl(producer.name)}>*/}
+						{/*	<a className="value blue">{producer.name}</a>*/}
+						{/*</Link>*/}
 					</div>
 					<div className="container verifiers">
 						<div className="title">Verifiers</div>
@@ -180,17 +190,16 @@ class BlockInformation extends React.Component {
 				}
 				<div className="help-table-wrapper">
 					<TableLable label={FormatHelper.getFormatTransactionsTitle(transactionCount)} />
-					{
-						(slicedOperations && slicedOperations.size) ?
-							<OperationsTable
-								fee
-								operations={slicedOperations}
-								history={this.props.history}
-								location={this.props.location}
-								loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
-								hasMore={currentTransactionLength < operations.size}
-							/> : null
-					}
+					{/*{*/}
+					{/*	(slicedOperations && slicedOperations.size) ?*/}
+					{/*		<OperationsTable*/}
+					{/*			fee*/}
+					{/*			operations={slicedOperations}*/}
+					{/*			location={this.props.router.location}*/}
+					{/*			loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}*/}
+					{/*			hasMore={currentTransactionLength < operations.size}*/}
+					{/*		/> : null*/}
+					{/*}*/}
 				</div>
 			</React.Fragment>
 		);
@@ -198,6 +207,9 @@ class BlockInformation extends React.Component {
 
 	render() {
 		const { blockInformation, latestBlock } = this.props;
+
+		console.log('this.state.loader', this.state.loader);
+		console.log('blockInformation', blockInformation);
 
 		return (
 			<div className="inner-information-container">
@@ -212,16 +224,19 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
+	router: PropTypes.object,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
+	round: PropTypes.string.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
-	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
+};
+
+BlockInformation.defaultProps = {
+	router: {},
 };
 
 export default BlockInformation;

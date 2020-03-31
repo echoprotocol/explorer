@@ -8,15 +8,22 @@ import InnerHeader from '../InnerHeader';
 import TableLable from '../TableLable';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
+import AccountActions from '../../actions/AccountActions';
 
 class Account extends React.Component {
 
-	componentDidMount() {
-		this.props.getAccountInfo();
+	static async getInitialProps({ query, store }) {
+		await store.dispatch(AccountActions.getAccountInfo(query.id));
+		return { query };
+	}
 
-		if (this.props.location.search) {
-			this.props.history.push(this.props.location.pathname);
-		}
+	componentDidMount() {
+		console.log('componentDidMount', this.props.query.id);
+		this.props.getAccountInfo(this.props.query.id);
+
+		// if (this.props.query.search) {
+		// 	this.props.history.push(this.props.location.pathname);
+		// }
 	}
 
 	componentDidUpdate(prevProps) {
@@ -24,7 +31,7 @@ class Account extends React.Component {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
 		}
 
-		if (prevProps.match.params.id !== this.props.match.params.id) {
+		if (prevProps.query.id !== this.props.query.id) {
 			this.props.getAccountInfo();
 			return;
 		}
@@ -101,9 +108,8 @@ class Account extends React.Component {
 								{
 									accountHistory.size ?
 										<OperationsTable
+											location={this.props.router}
 											operations={accountHistory}
-											history={this.props.history}
-											location={this.props.location}
 											loading={loadingMoreHistory}
 											loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 											hasMore={!isFullHistory}
@@ -120,16 +126,15 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
+	router: PropTypes.object.isRequired,
+	query: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-	history: PropTypes.object,
 	accountHistory: PropTypes.object,
-	location: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
 	updateAccountHistory: PropTypes.func.isRequired,
@@ -145,7 +150,6 @@ Account.defaultProps = {
 	account: null,
 	balances: null,
 	tokens: null,
-	history: null,
 	accountHistory: null,
 };
 
