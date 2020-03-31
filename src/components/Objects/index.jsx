@@ -9,7 +9,6 @@ import URLHelper from '../../helpers/URLHelper';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import { getObjectInfo } from '../../actions/ObjectsActions';
-import { OBJECTS_PATH } from '../../constants/RouterConstants';
 import QueryStringHelper from '../../helpers/QueryStringHelper';
 
 class Objects extends React.Component {
@@ -32,13 +31,9 @@ class Objects extends React.Component {
 		// this.checkObject();
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate() {
 		if (this.props.query.id) {
 			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.props.query.id));
-		}
-
-		if (this.props.query.id && prevProps.query.id !== this.props.query.id) {
-			this.checkObject(this.props.query.id);
 		}
 	}
 
@@ -97,12 +92,12 @@ class Objects extends React.Component {
 
 								const idRegExp = /^"\d+\.\d+\.\d+"$/;
 
-								if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
-
-									const url = URLHelper.createUrlById(raw.substr(1, raw.length - 1 - 1));
-
+								if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {''
+									const id = raw.substr(1, raw.length - 1 - 1);
+									const as = URLHelper.createUrlById(id);
+									const href = URLHelper.getSsrHrefByObjectId(id);
 									return (
-										<Link href={OBJECTS_PATH} as={url}>
+										<Link href={href} as={as}>
 											<a>{raw}</a>
 										</Link>
 									);
