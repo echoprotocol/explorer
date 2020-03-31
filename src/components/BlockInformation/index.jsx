@@ -39,9 +39,10 @@ class BlockInformation extends React.Component {
 		};
 	}
 
-	static async getInitialProps({ query: { round }, store }) {
-		await store.dispatch(getBlockInformation(round));
-		return { round };
+	static async getInitialProps({ query, store }) {
+		console.log('getInitialProps', query.round);
+		await store.dispatch(getBlockInformation(query.round));
+		return { query };
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -57,13 +58,13 @@ class BlockInformation extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.blockInformation) {
-			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.round));
+			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.query.round));
 		}
 		if (
-			this.props.round !== prevProps.round ||
+			this.props.query.round !== prevProps.query.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			this.props.getBlockInfo(this.props.round);
+			this.props.getBlockInfo(this.props.query.round);
 		}
 	}
 
@@ -153,7 +154,7 @@ class BlockInformation extends React.Component {
 					<div className="container producer">
 						<div className="title">Producer</div>
 						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(producer.name)}>
-							<a className="value blue">{producer.name}</a>
+							<a className="link value blue">{producer.name}</a>
 						</Link>
 					</div>
 					<div className="container verifiers">
@@ -219,10 +220,10 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
+	query: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
-	round: PropTypes.string.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,

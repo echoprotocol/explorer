@@ -47,7 +47,10 @@ class ExplorerApp extends App {
 		const isMobile = !!(new MobileDetect(userAgent)).mobile();
 
 		await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
-		await ctx.store.dispatch(serverConnect());
+
+		if (ctx.isServer) {
+			await ctx.store.dispatch(serverConnect());
+		}
 
 		const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
 
@@ -55,7 +58,9 @@ class ExplorerApp extends App {
 	}
 
 	componentDidMount() {
-		this.props.store.dispatch(GlobalActions.init());
+		if (!this.props.store.isServer) {
+			this.props.store.dispatch(GlobalActions.init());
+		}
 	}
 
 	renderModals() {
@@ -94,7 +99,7 @@ class ExplorerApp extends App {
 							</div>
 						</div>
 						<Footer />
-						{/*<Toast />*/}
+						{/* <Toast /> */}
 						{/* { */}
 						{/*	showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} /> */}
 						{/* } */}
