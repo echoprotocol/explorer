@@ -1,85 +1,84 @@
 .page-helper-section {
-    .drop-area {
-        @include onFocus(4px, 2px, 1px, rgba(#8F969A, .27));
-        width: 100%;
-        border: 1px dashed #8E8E8E;
-        display: flex;
-        border-radius: 4px;
-        position: relative;
-        font-size: initial;
-        padding: 18px;
-        align-items: center;
-        transition: background-color .2s;
+	.drop-area {
+		@include onFocus(4px, 2px, 1px, rgba(#8f969a, 0.27));
+		width: 100%;
+		border: 1px dashed #8e8e8e;
+		display: flex;
+		border-radius: 4px;
+		position: relative;
+		font-size: initial;
+		padding: 18px;
+		align-items: center;
+		transition: background-color 0.2s;
 
-        .image-preview {
-            height: 30px;
-            width: 30px;
-            margin-right: 22px;
-            background-color: #E7E6E9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+		.image-preview {
+			height: 30px;
+			width: 30px;
+			margin-right: 22px;
+			background-color: #e7e6e9;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 
-            img {
-                width: 32px;
-                height: 32px;
-            }
-        }
+			img {
+				width: 32px;
+				height: 32px;
+			}
+		}
 
-        .action-description {
-            @include InterUI_Medium;
-            font-size: 14px;
-            color: #6E6D6F;
-            margin-bottom: 6px;
-            transition: color .2s;
-        }
+		.action-description {
+			@include InterUI_Medium;
+			font-size: 14px;
+			color: #6e6d6f;
+			margin-bottom: 6px;
+			transition: color 0.2s;
+		}
 
-        .file-description {
-            @include InterUI_Regular;
-            font-size: 12px;
-            color: #848B94;
-            transition: color .2s;
+		.file-description {
+			@include InterUI_Regular;
+			font-size: 12px;
+			color: #848b94;
+			transition: color 0.2s;
+		}
 
-        }
+		& + .text-button {
+			margin: 14px 0 0 12px;
+		}
 
-        &+.text-button {
-            margin: 14px 0 0 12px;
-        }
+		&.loading {
+			.image-preview {
+				background-color: transparent;
+				background-image: url(../images/icons/loader.png);
+				background-position: center;
+				background-repeat: no-repeat;
+				animation-name: spin;
+				animation-duration: 0.5s;
+				animation-iteration-count: infinite;
+				animation-timing-function: linear;
+				transition: opacity 0.2s;
 
-        &.loading {
-            .image-preview {
-                background-color: transparent;
-                background-image: url(../images/icons/loader.png);
-                background-position: center;
-                background-repeat: no-repeat;
-                animation-name: spin;
-                animation-duration: .5s;
-                animation-iteration-count: infinite;
-                animation-timing-function: linear;
-                transition: opacity .2s;
+				img {
+					display: none;
+				}
+			}
+		}
 
-                img {
-                    display: none;
-                }
-            }
-        }
+		&:active {
+			background-color: #edecf0;
 
-        &:active {
-            background-color: #EDECF0;
+			.image-preview {
+				opacity: 0.6;
+			}
 
-            .image-preview {
-                opacity: .6;
-            }
+			.action-description {
+				color: rgba(#6e6d6f, 0.6);
+			}
 
-            .action-description {
-                color: rgba(#6E6D6F, .6);
-            }
-
-            .file-description {
-                @include InterUI_Regular;
-                font-size: 12px;
-                color: rgba(#848B94, .6);
-            }
-        }
-    }
+			.file-description {
+				@include InterUI_Regular;
+				font-size: 12px;
+				color: rgba(#848b94, 0.6);
+			}
+		}
+	}
 }
