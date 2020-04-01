@@ -53,6 +53,9 @@ class Avatar extends React.Component {
 	}
 
 	updateAvatarSize() {
+		if (!this.imageRef.current) {
+			return
+		}
 		const avatarSize = this.imageRef.current.offsetHeight;
 		if (avatarSize !== this.state.avatarSize) {
 			this.setState({ avatarSize });

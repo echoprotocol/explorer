@@ -67,6 +67,7 @@ class Account extends React.Component {
 			account, balances, tokens, accountHistory, isMobile,
 		} = this.props;
 
+		console.log('accountHistory.size', accountHistory.size);
 		return (
 			<div className="inner-information-container account-page">
 				<div className="account-page-info">

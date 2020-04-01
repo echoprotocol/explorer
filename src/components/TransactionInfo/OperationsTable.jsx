@@ -27,13 +27,13 @@ class OperationsTable extends React.Component {
 	}
 
 	componentDidMount() {
-		const { query } = this.props.router;
 		const { showedOperations } = this.state;
-		console.log('router', this.props.router);
-		if (!query.op) {
+		const queryProps = queryString.parse(this.props.router.asPath.split('?')[1]);
+		if (!queryProps.op) {
 			return;
 		}
-		const op = parseInt(query.op, 10);
+		const op = parseInt(queryProps.op, 10);
+
 		if (!this.tableRefs[op - 1]) {
 			return;
 		}
@@ -53,13 +53,15 @@ class OperationsTable extends React.Component {
 		}
 
 		if (!prevQuery.op && prevQuery.op) {
+			console.log('componentDidUpdate');
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
 		}
 	}
 
 	toggleOperationDetails(index) {
 		const { operations } = this.props;
-		const { asPath: pathname, search } = this.props.router;
+		const { asPath } = this.props.router;
+		const [pathname, search] = asPath.split('?');
 		const { showedOperations, airRows } = this.state;
 		const queryProps = queryString.parse(search);
 		const v = showedOperations.indexOf(index);

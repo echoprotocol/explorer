@@ -72,7 +72,7 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
-							<Link href={OBJECTS_PATH} as={URLHelper.createUrlById(object.get('id'))}>
+							<Link href={SsrHrefHelper.getHrefByObjectId(object.get('id'))} as={URLHelper.createUrlById(object.get('id'))}>
 								<a>{object.get('id')}</a>
 							</Link>
 						</div>

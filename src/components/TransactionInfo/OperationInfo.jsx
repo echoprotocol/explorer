@@ -15,13 +15,14 @@ import URLHelper from '../../helpers/URLHelper';
 
 import {
 	BLOCK_INFORMATION_PATH,
-	SSR_ACCOUNTS_PATH, SSR_ASSET_PATH,
+	SSR_ASSET_PATH,
 	SSR_BLOCK_INFORMATION_PATH,
-	SSR_CONTRACT_PATH, TRANSACTION_INFORMATION_PATH
+	SSR_CONTRACT_PATH, SSR_TRANSACTION_INFORMATION_PATH,
 } from '../../constants/RouterConstants';
 import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
 
 import Avatar from '../Avatar';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class OperationInfo extends React.Component {
 
@@ -63,15 +64,19 @@ class OperationInfo extends React.Component {
 				</div>
 				<div className="tt-col">
 					<div className="transfer-direction">
-						{/*<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>*/}
-						{/*	{op.from.name && <Avatar accountName={op.from.name} />}*/}
-						{/*	<span>{op.from.name || op.from.id}</span>*/}
-						{/*</Link>*/}
+						<Link href={SsrHrefHelper.getHrefByObjectId(op.from.id)} as={URLHelper.createUrlById(op.from.id)}>
+							<div className="avatar-wrap link">
+								{op.from.name && <Avatar accountName={op.from.name} />}
+								<span className="blue">{op.from.name || op.from.id}</span>
+							</div>
+						</Link>
 						{(op.subject.name || op.subject.id) && <img src={directionIcon} alt="" className="direction" />}
-						{/*<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>*/}
-						{/*	{op.subject.name && <Avatar accountName={op.subject.name} />}*/}
-						{/*	<span>{op.subject.name || op.subject.id}</span>*/}
-						{/*</Link>*/}
+						<Link href={SsrHrefHelper.getHrefByObjectId(op.subject.id)} as={URLHelper.createUrlById(op.subject.id)}>
+							<div className="avatar-wrap link">
+								{op.subject.name && <Avatar accountName={op.subject.name} />}
+								<span className="blue">{op.subject.name || op.subject.id}</span>
+							</div>
+						</Link>
 					</div>
 				</div>
 			</div>
@@ -142,10 +147,13 @@ class OperationInfo extends React.Component {
 				);
 			} else {
 				const isAccount = validators.isAccountId(value.link);
-				{/*{validators.isAccountId(value.link) && <Avatar accountName={value.value} />}*/}
+
 				value = (
-					<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(value.link)}>
-						<span className={classnames({ 'avatar-wrap': isAccount })}>{value.value}</span>
+					<Link href={SsrHrefHelper.getHrefByObjectId(value.link)} as={URLHelper.createUrlById(value.link)}>
+						<div className={classnames('link', { 'avatar-wrap': isAccount })}>
+							{validators.isAccountId(value.link) && <Avatar accountName={value.value} />}
+							<span className="blue">{value.value}</span>
+						</div>
 					</Link>
 				);
 			}
@@ -266,7 +274,7 @@ class OperationInfo extends React.Component {
 				<div className="od-row">
 					<div className="od-col">OPERATION:</div>
 					<div className="od-col">
-						<Link href={TRANSACTION_INFORMATION_PATH} as={operationUrl}>
+						<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={operationUrl}>
 							<a>{`${window.location.origin}${operationUrl}`}</a>
 						</Link>
 					</div>

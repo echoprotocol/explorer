@@ -14,7 +14,8 @@ import ObjectInfo from './ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import { OBJECTS_PATH, SSR_ACCOUNTS_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { OBJECTS_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class OperationRow extends React.Component {
 
@@ -33,13 +34,12 @@ class OperationRow extends React.Component {
 	renderSubject(subject, mainInfo) {
 		if (!subject) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in">{subject}</span>;
-		// TODO fix href
-		{ /* {mainInfo.subject.name && <Avatar accountName={subject} />} */ }
 		return (
-			<Link href={SSR_ACCOUNTS_PATH}>
-				<a className="td-in avatar-wrap">
+			<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.subject.id)} as={URLHelper.createUrlById(subject)} >
+				<div className="td-in avatar-wrap">
+					{mainInfo.subject.name && <Avatar accountName={subject} />}
 					<span>{subject}</span>
-				</a>
+				</div>
 			</Link>
 		);
 	}
@@ -130,15 +130,17 @@ class OperationRow extends React.Component {
 						) : null
 					}
 					<td className="sender">
-						 {/*{mainInfo.from.id ?*/}
-							{/*<Link className="td-in avatar-wrap"*/}
-							{/*	  to={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)}*/}
-							{/*	  onClick={(e) => e.stopPropagation()}>*/}
-							{/*	{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}*/}
-							{/*	<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>*/}
-							{/*</Link> : <div className="td-in">—</div>*/}
-						 {/*} */}
-						<div className="td-in">—</div>
+						{mainInfo.from.id ?
+							<Link
+								href={SsrHrefHelper.getHrefByObjectId(mainInfo.from)}
+								as={!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ? URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name)}
+							>
+								<div className="td-in avatar-wrap" >
+									{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
+									<span className="blue">{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+								</div>
+							</Link> : <div className="td-in">—</div>
+						}
 					</td>
 					<td className="reciever">
 						{this.renderSubject(subjectValue, mainInfo)}

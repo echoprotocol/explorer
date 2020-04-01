@@ -22,20 +22,23 @@ class TransactionsInfo extends React.Component {
 	static async getInitialProps({ store, query }) {
 		const { round, index } = query;
 		const title = TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round);
-		await Promise.all([
-			store.dispatch(GlobalActions.setTitle(title)),
-			store.dispatch(getBlockInformation(round)),
-			store.dispatch(TransactionActions.getTransaction(round, index)),
-		]);
+		if (!store.getState().block.getIn(['blockInformation', 'blockNumber'])) {
+			await Promise.all([
+				store.dispatch(GlobalActions.setTitle(title)),
+				store.dispatch(getBlockInformation(round)),
+				store.dispatch(TransactionActions.getTransaction(round, index)),
+			]);
+		}
 		return { query };
 	}
 
 	componentDidMount() {
-		// const { round, index } = this.props.match.params;
-		//
-		// this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
-		// this.props.getBlockInfo(round);
-		// this.props.getTransaction();
+		const { query: { round, index }, blockInformation, operations } = this.props;
+		if (!blockInformation.get('blockNumber') || !operations.size) {
+			this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
+			this.props.getBlockInfo(round);
+			this.props.getTransaction(round, index);
+		}
 	}
 
 	componentWillUnmount() {
