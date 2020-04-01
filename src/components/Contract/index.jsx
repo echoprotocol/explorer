@@ -10,6 +10,7 @@ import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
 import copy from 'copy-to-clipboard';
+import { Helmet } from 'react-helmet';
 
 import { CONTRACT_TABS, CHANGE_TEXT_TIME } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -189,6 +190,22 @@ class Contract extends React.Component {
 		return elment[selected];
 	}
 
+	renderMeta() {
+		const {
+			icon, description, name, query:  { id },
+		} = this.props;
+
+		return (
+			<Helmet
+				title={`Contract ${name || id} | Echo Explorer`}
+				meta={[
+					{ property: 'og:description', name: description || 'ECHO contract page' },
+					{ property: 'og:image', content: URLHelper.getUrlContractIcon(icon) },
+				]}
+			/>
+		);
+	}
+
 	render() {
 		const {
 			loading, isFullHistory, loadingMoreHistory,
@@ -295,6 +312,7 @@ class Contract extends React.Component {
 
 		return (
 			<div className="inner-information-container contract-page">
+				{this.renderMeta()}
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards action">

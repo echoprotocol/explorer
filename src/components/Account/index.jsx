@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
@@ -9,6 +10,7 @@ import TableLable from '../TableLable';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 import AccountActions from '../../actions/AccountActions';
+import URLHelper from '../../helpers/URLHelper';
 
 class Account extends React.Component {
 
@@ -61,15 +63,28 @@ class Account extends React.Component {
 		return loading ? <Loader /> : null;
 	}
 
+	renderMeta() {
+		const { account } = this.props;
+		return !account ? null : (
+			<Helmet
+				title={`Account ${account.get('name')} | Echo Explorer`}
+				meta={[
+					{ property: 'og:description', name: 'ECHO account page' },
+					{ property: 'og:image', content: URLHelper.getUrlAccountIcon(account.get('name')) },
+				]}
+			/>
+		);
+	}
+
 	render() {
 		const {
 			loading, loadingMoreHistory, isFullHistory,
 			account, balances, tokens, accountHistory, isMobile,
 		} = this.props;
 
-		console.log('accountHistory.size', accountHistory.size);
 		return (
 			<div className="inner-information-container account-page">
+				{this.renderMeta()}
 				<div className="account-page-info">
 					{account && <InnerHeader title={`Account ${account.get('id')}`} />}
 					<div className="account-page-t-block">
