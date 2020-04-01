@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-
+import ArrowBtn from '../../../components/Buttons/ArrowBtn';
 
 import TableLabel from '../../../components/TableLabel';
 
@@ -30,6 +30,7 @@ const LatestBlocksTable = memo(({ blocks, goToBlock }) => (
 			</tbody>
 
 		</table>
+		<ArrowBtn>View all Blocks</ArrowBtn>
 	</div>
 ));
 
