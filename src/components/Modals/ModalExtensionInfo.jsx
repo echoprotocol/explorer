@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ModalBase from './ModalBase';
-import headerBg from '../../assets/images/modal-ext-header.png';
+import headerBg from '../../public/images/modal-ext-header.png';
 import config from '../../config/chain';
 
 class ModalExtensionInfo extends React.PureComponent {

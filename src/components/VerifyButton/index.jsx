@@ -4,9 +4,9 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-import infoIcon from '../../assets/images/icons/info.svg';
-import infoHoverIcon from '../../assets/images/icons/info-hover.svg';
-import infoWhiteIcon from '../../assets/images/icons/info-white.svg';
+import infoIcon from '../../public/images/icons/info.svg';
+import infoHoverIcon from '../../public/images/icons/info-hover.svg';
+import infoWhiteIcon from '../../public/images/icons/info-white.svg';
 import URLHelper from '../../helpers/URLHelper';
 
 class Verify extends Component {

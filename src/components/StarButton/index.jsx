@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import starIcon from '../../assets/images/icons/star.svg';
+import starIcon from '../../public/images/icons/star.svg';
 
 class Star extends Component {
 

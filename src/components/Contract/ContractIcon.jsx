@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import defaultIcon from '../../assets/images/icons/default-icn.svg';
+import defaultIcon from '../../public/images/icons/default-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
 
 export class ContractIcon extends React.Component {

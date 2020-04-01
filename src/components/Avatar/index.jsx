@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { svgAvatar } from 'echojs-ping';
 import classnames from 'classnames';
 
-import avatar from '../../assets/images/default-avatar.svg';
+import avatar from '../../public/images/default-avatar.svg';
 
 class Avatar extends React.Component {
 

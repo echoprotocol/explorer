@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import arrow from '../../assets/images/icons/show-list-arrow.svg';
+import arrow from '../../public/images/icons/show-list-arrow.svg';
 
 class ViewListPopover extends Component {
 

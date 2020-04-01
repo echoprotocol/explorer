@@ -6,8 +6,8 @@ import echo from 'echojs-lib';
 
 import Routes from './routes'; // Or wherever you keep your reducers
 
-import './assets/loader';
-import './assets/favicon.ico';
+import './public/loader';
+import './public/favicon.ico';
 import GlobalActions from './actions/GlobalActions';
 
 import history from './history';

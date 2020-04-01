@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ModalBase from './ModalBase';
-import check from '../../assets/images/icons/check.svg';
+import check from '../../public/images/icons/check.svg';
 
 class ModalSuccess extends React.PureComponent {
 

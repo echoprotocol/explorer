@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import BN from 'bignumber.js';
 import Tooltip from 'rc-tooltip';
 
-import directionIcon from '../../assets/images/icons/direction-icon.svg';
+import directionIcon from '../../public/images/icons/direction-icon.svg';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';

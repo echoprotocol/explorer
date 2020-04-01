@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ModalBase from './ModalBase';
-import cross from '../../assets/images/icons/cross.svg';
+import cross from '../../public/images/icons/cross.svg';
 
 class ModalError extends React.PureComponent {
 
