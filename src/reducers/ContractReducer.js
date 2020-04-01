@@ -37,6 +37,8 @@ const DEFAULT_FIELDS = new Map({
 	clickSaveCounter: 0,
 	downloadedCompilers: new Set(),
 	progress: 0,
+	token: null,
+	countTokenTransfer: 0,
 });
 
 export default createModule({

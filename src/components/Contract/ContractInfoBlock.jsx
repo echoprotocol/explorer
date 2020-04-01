@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 import Media from 'react-media';
 
-import { NONE_SYMBOL } from '../../constants/GlobalConstants';
+import { NONE_SYMBOL, NOT_AVAILABLE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 
@@ -14,6 +14,8 @@ class ContractInfoBlock extends React.Component {
 		const { data } = this.props;
 		let [blockNumber, creationFee, type, contractTxs, countUsedByAccount,
 			assets, accuracy, compilerVersion] = NONE_SYMBOL.repeat(8);
+		let erc20Token = null;
+		let countTokenTransfer = 0;
 		if (!data.get('error')) {
 			blockNumber = data.get('blockNumber');
 			creationFee = FormatHelper.formatAmount(data.getIn(['creationFee', 'amount']), data.getIn(['creationFee', 'precision']), data.getIn(['creationFee', 'symbol']));
@@ -23,8 +25,11 @@ class ContractInfoBlock extends React.Component {
 			assets = data.get('supportedAsset') || 'All';
 			accuracy = data.get('ethAccuracy') ? 'Active' : 'Inactive';
 			compilerVersion = data.get('compilerVersion');
+			countTokenTransfer = data.get('countTokenTransfer');
+			if (data.get('token') && data.get('token').type === 'erc20') {
+				erc20Token = data.get('token');
+			}
 		}
-
 		const creationFeeData = creationFee.split(' ');
 
 		return (
@@ -93,6 +98,35 @@ class ContractInfoBlock extends React.Component {
 					<div className="underline" />
 					<div className="value">{accuracy}</div>
 				</div>
+				{erc20Token && (
+					<React.Fragment>
+						<div className="line">
+							<div className="key">Token symbol(name):</div>
+							<div className="underline" />
+							<div className="value">{`${erc20Token.symbol || NOT_AVAILABLE_SYMBOL} (${erc20Token.name || NOT_AVAILABLE_SYMBOL})`}</div>
+						</div>
+						<div className="line">
+							<div className="key">Decimals:</div>
+							<div className="underline" />
+							<div className="value">{erc20Token.decimals || NOT_AVAILABLE_SYMBOL}</div>
+						</div>
+						<div className="line">
+							<div className="key">Total supply:</div>
+							<div className="underline" />
+							<div className="value">{erc20Token.total_supply || NOT_AVAILABLE_SYMBOL}</div>
+						</div>
+						{/* <div className="line"> */}
+						{/*	<div className="key">Holders:</div> */}
+						{/*	<div className="underline" /> */}
+						{/*	<div className="value">{erc20Token.holders || 0}</div> */}
+						{/* </div> */}
+						<div className="line">
+							<div className="key">Transfers:</div>
+							<div className="underline" />
+							<div className="value">{countTokenTransfer}</div>
+						</div>
+					</React.Fragment>
+				)}
 				{data.get('compilerVersion') &&
 					<div className="line">
 						<div className="key">Compiler version:</div>

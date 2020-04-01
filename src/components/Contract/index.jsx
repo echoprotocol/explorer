@@ -185,8 +185,8 @@ class Contract extends React.Component {
 			loading, isFullHistory, loadingMoreHistory,
 			bytecode, contractHistory, balances, match: { params: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
-			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner,
-			activeAccount, error,
+			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
+			countTokenTransfer, activeAccount, error,
 		} = this.props;
 
 		const tabList = [
@@ -194,6 +194,8 @@ class Contract extends React.Component {
 				tab: !loading ?
 					<ContractInfo
 						dataGeneral={new Map({
+							token,
+							countTokenTransfer,
 							error,
 							blockNumber,
 							creationFee,
@@ -466,6 +468,8 @@ Contract.propTypes = {
 	creationFee: PropTypes.object.isRequired,
 	createdAt: PropTypes.string.isRequired,
 	type: PropTypes.object.isRequired,
+	token: PropTypes.object,
+	countTokenTransfer: PropTypes.number.isRequired,
 
 	name: PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,
@@ -490,6 +494,7 @@ Contract.defaultProps = {
 	sourceCode: null,
 	supportedAsset: '',
 	activeAccount: new Map(),
+	token: null,
 };
 
 export default withRouter(Contract);

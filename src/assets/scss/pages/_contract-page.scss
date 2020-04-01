@@ -367,12 +367,14 @@
 	.underline {
 		height: 1px;
 		background-color: rgba(#3f465a, 0.15);
-		width: 100%;
+		flex-grow: 1;
 		align-self: baseline;
 		margin: 0 7px;
 	}
 
 	.value {
+		overflow: hidden;
+		text-overflow: ellipsis;
 		@include InterUI_Medium;
 		font-size: 13px;
 		color: #000;
