@@ -26,6 +26,8 @@ export default withRouter(connect(
 		type: state.contract.get('type'),
 		balances: state.contract.get('balances'),
 		owner: state.contract.get('owner'),
+		token: state.contract.get('token'),
+		countTokenTransfer: state.contract.get('countTokenTransfer'),
 
 		name: state.contract.get('name'),
 		description: state.contract.get('description'),

@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 import { serialize, deserialize } from 'json-immutable';
 import MobileDetect from 'mobile-detect';
-
+import { Helmet } from 'react-helmet';
 import React from 'react';
 import configureStore from '../store';
 
@@ -69,6 +69,29 @@ class ExplorerApp extends App {
 		);
 	}
 
+	renderMeta() {
+		return (
+			<Helmet
+				htmlAttributes={{ lang: 'en' }}
+				title="Echo Explorer"
+				meta={[
+					{
+						charset: 'UTF-8',
+					},
+					{
+						name: 'viewport',
+						id: 'viewport',
+						content: 'width=device-width, initial-scale=1',
+					},
+					{
+						'http-equiv': 'Content-Type',
+						content: 'text/html; charset=utf-8',
+					},
+				]}
+			/>
+		);
+	}
+
 	render() {
 		const {
 			// error,
@@ -87,6 +110,7 @@ class ExplorerApp extends App {
 		return (
 			<Provider store={store}>
 				<div>
+					{this.renderMeta()}
 					{this.renderModals()}
 					<div className={classnames('wrapper', { 'wrapper-min': isShowModal })}>
 						<Header />
