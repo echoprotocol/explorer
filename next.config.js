@@ -1,5 +1,7 @@
 require('@babel/polyfill');
+
 const withSass = require('@zeit/next-sass');
+const withCSS = require('@zeit/next-css');
 const withFonts = require('next-fonts');
 
 const {
@@ -15,7 +17,9 @@ const {
 
 const packageJson = require('./package.json');
 
-module.exports = withFonts(withSass({
+const chainWrapper = (appConfig) => withFonts(withSass(withCSS(appConfig)));
+
+module.exports = chainWrapper({
 	env: {
 		API_URL,
 		SERVER_URL,
@@ -48,4 +52,4 @@ module.exports = withFonts(withSass({
 		});
 		return _config;
 	},
-}));
+});

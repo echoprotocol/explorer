@@ -1,13 +1,29 @@
 import React from 'react';
-import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
 
 import config from '../../config/chain';
 import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
+import Loader from '../Loader';
 
-const Map = ReactMapboxGl({
-	accessToken: config.MAP_API_TOKEN,
+const Map = dynamic(() => import('./mapbox'), {
+	ssr: false,
+	loading: () => <Loader/>
 });
+
+const Layer = dynamic(() => import('./mapbox').then((component) => component.Layer), {
+	ssr: false,
+	loading: () => <Loader/>
+});
+const Feature = dynamic(() => import('./mapbox').then((component) => component.Feature), {
+	ssr: false,
+	loading: () => <Loader/>
+});
+const Popup = dynamic(() => import('./mapbox').then((component) => component.Popup), {
+	ssr: false,
+	loading: () => <Loader/>
+});
+
 class NodeMap extends React.Component {
 
 	constructor(props) {
@@ -85,39 +101,38 @@ class NodeMap extends React.Component {
 						How to run full node
 					</button>
 				</div>
-				<Map
-					className="distribution-map"
-					// eslint-disable-next-line react/style-prop-object
-					style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
-					zoom={DEFAULT_MAP_ZOOM}
-				>
-					{data.map((p, key) => (
-						<Layer
-							type="circle"
-							id={p.id}
-							key={key.toString()}
-							paint={p.POSITION_CIRCLE_PAINT}
-						>
-							<Feature
-								coordinates={[p.longitude, p.latitude]}
-								onMouseEnter={(mapWithEvt) => this.onHover(mapWithEvt, p)}
-								onMouseLeave={(mapWithEvt) => this.hidePopup(mapWithEvt, p)}
-							/>
-						</Layer>
-					))
-					}
-					{
-						popupData &&
-						<Popup
-							coordinates={[popupData.longitude, popupData.latitude]}
-							anchor="null"
-						>
-							<span>{popupData.city}{popupData.city ? ', ' : ' '}{popupData.country}</span>
-							<br />
-							<span>count = {popupData.node}</span>
-						</Popup>
-					}
-				</Map>
+					<Map
+						className="distribution-map"
+						// eslint-disable-next-line react/style-prop-object
+						style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
+						zoom={DEFAULT_MAP_ZOOM}
+					>
+						{data.map((p, key) => (
+							<Layer
+								type="circle"
+								id={p.id}
+								key={key.toString()}
+								paint={p.POSITION_CIRCLE_PAINT}
+							>
+								<Feature
+									coordinates={[p.longitude, p.latitude]}
+									onMouseEnter={(mapWithEvt) => this.onHover(mapWithEvt, p)}
+									onMouseLeave={(mapWithEvt) => this.hidePopup(mapWithEvt, p)}
+								/>
+							</Layer>
+						))
+						}
+						{popupData &&
+							<Popup
+								coordinates={[popupData.longitude, popupData.latitude]}
+								anchor="null"
+							>
+								<span>{popupData.city}{popupData.city ? ', ' : ' '}{popupData.country}</span>
+								<br />
+								<span>count = {popupData.node}</span>
+							</Popup>
+						}
+					</Map>
 			</div>
 		);
 	}
