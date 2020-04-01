@@ -154,7 +154,7 @@
 }
 
 .created-info {
-	@include inter-regular;
+	@include inter-ui-regular;
 	font-size: 13px;
 	margin: 6px 0 24px;
 	line-height: 30px;
@@ -197,7 +197,7 @@
 	}
 
 	.link {
-		@include inter-medium;
+		@include inter-ui-medium;
 		color: #498fdf;
 	}
 
@@ -236,7 +236,7 @@
 	}
 
 	.description {
-		@include inter-regular;
+		@include inter-ui-regular;
 		max-width: 360px;
 		font-size: 12.63px;
 		line-height: 1.5;
@@ -301,7 +301,7 @@
 		}
 
 		li {
-			@include inter-regular;
+			@include inter-ui-regular;
 			font-size: 11.66px;
 			padding: 10px 0 12px;
 			border-bottom: 1px solid rgba(#3f465a, 0.15);
@@ -373,7 +373,7 @@
 	}
 
 	.value {
-		@include inter-medium;
+		@include inter-ui-medium;
 		font-size: 13px;
 		color: #000;
 		white-space: nowrap;
@@ -401,7 +401,7 @@
 	}
 	.rc-tooltip-inner {
 		max-width: none;
-		@include inter-regular;
+		@include inter-ui-regular;
 		font-size: 11px;
 		color: #93a9bb;
 		letter-spacing: 0;
@@ -422,7 +422,7 @@
 }
 
 .abi-info {
-	@include inter-regular;
+	@include inter-ui-regular;
 	color: #6e6d6f;
 	font-size: 13px;
 	margin-bottom: 25px;
@@ -571,7 +571,7 @@
 
 			.inner-elem {
 				width: 170px;
-				@include inter-regular;
+				@include inter-ui-regular;
 				font-size: 12px;
 				color: #0f0739;
 				border-bottom: 1px solid #d8d9de;

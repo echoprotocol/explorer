@@ -34,7 +34,7 @@
 			padding-left: 28px;
 			width: 100%;
 			vertical-align: bottom;
-			@include inter-medium();
+			@include inter-ui-medium();
 
 			.val {
 				display: flex;
@@ -106,7 +106,7 @@
 			font-style: normal;
 			color: #000;
 			line-height: 20px;
-			@include inter-medium();
+			@include inter-ui-medium();
 
 			li {
 				&:not(:last-child) {

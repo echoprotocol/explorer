@@ -18,7 +18,7 @@ import ErrorScreen from '../components/Error/ErrorScreen';
 import Modal from '../containers/Modals';
 import Loader from '../components/Loader';
 
-import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
+import { CONTRACT_DETAILS_NUMBERS_TAB, ROUTES_WITH_COLUMN_DIRECTION } from '../constants/RouterConstants';
 import { MODAL_EXTENSION_INFO, MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 
 
@@ -65,12 +65,21 @@ class App extends React.Component {
 		return (
 			<React.Fragment>
 				<Header />
-				<div className="recent-block-section">
-					<div className={cn('wrap', { full })}>
+				{ ROUTES_WITH_COLUMN_DIRECTION.includes(pathName) ?
+					<React.Fragment>
+						<div className="wrap">
+							<RecentBlockSidebar />
+						</div>
 						{children}
-						<RecentBlockSidebar />
+					</React.Fragment> :
+					<div className="recent-block-section">
+						<div className={cn('wrap', { full })}>
+							{children}
+							<RecentBlockSidebar />
+						</div>
 					</div>
-				</div>
+
+				}
 				{this.renderModals(isShowModal)}
 				{ showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} /> }
 				<Toast />

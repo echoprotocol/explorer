@@ -46,7 +46,7 @@ textarea {
 
 .h2 {
 	font-size: 22px;
-	@include inter-bold;
+	@include inter-ui-bold;
 	letter-spacing: 1px;
 }
 
@@ -107,7 +107,7 @@ a {
 }
 
 .description-text {
-	@include inter-medium;
+	@include inter-ui-medium;
 	color: #828b95;
 	padding-left: 30px;
 	margin-bottom: 50px;

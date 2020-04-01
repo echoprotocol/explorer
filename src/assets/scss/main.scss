@@ -37,12 +37,12 @@
 @import "pages/404";
 @import "pages/verify-contract-page";
 
-@import "components/table";
 @import "components/input-search-block";
 @import "components/input/input-wrapper";
 @import "components/input/clear-btn";
 @import "components/tooltip";
 @import "components/form";
+@import "components/loaders";
 @import "components/breadcrumbs";
 @import "components/internet-popup";
 @import "components/block-navigation";
@@ -60,6 +60,7 @@
 @import "components/select-input";
 @import "components/checkbox";
 @import "components/avatar";
+@import "components/main-page-table";
 @import "components/operation-detail-table";
 @import "components/token-transfer-table";
 @import "components/node-map";

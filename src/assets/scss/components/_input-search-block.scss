@@ -357,12 +357,12 @@
 
 		@include transition;
 
-		@include inter-medium;
+		@include inter-ui-medium;
 		font-size: 14px;
 		color: rgba(104, 108, 134, 0.6);
 
 		&::placeholder {
-			@include inter-regular;
+			@include inter-ui-regular;
 			color: rgba(104, 108, 134, 0.6);
 			@include transition;
 		}
@@ -449,7 +449,7 @@
 		.value {
 			white-space: nowrap;
 			color: #18142a;
-			@include inter-regular;
+			@include inter-ui-regular;
 			font-size: 15px;
 
 			.select {
@@ -461,7 +461,7 @@
 		}
 
 		.no-results {
-			@include inter-regular;
+			@include inter-ui-regular;
 			font-size: 12px;
 			letter-spacing: 0.3px;
 			color: #18142a;

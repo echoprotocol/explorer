@@ -29,7 +29,7 @@
 		}
 
 		> .title {
-			@include inter-bold;
+			@include inter-ui-bold;
 			font-size: 23px;
 			color: #18142a;
 			margin-bottom: 52px;
@@ -62,7 +62,7 @@
 				}
 
 				> .title {
-					@include inter-bold;
+					@include inter-ui-bold;
 					font-size: 16px;
 					color: #130d32;
 					margin-bottom: 30px;
@@ -124,7 +124,7 @@
 						}
 
 						.val {
-							@include inter-medium;
+							@include inter-ui-medium;
 							font-size: 16px;
 							color: #130d32;
 							display: flex;
