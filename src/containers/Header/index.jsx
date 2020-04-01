@@ -13,12 +13,13 @@ class Header extends React.Component {
 	render() {
 
 		const {
-			hints, getHints, loadingSearch, errorSearch,
+			hints, getHints, loadingSearch, errorSearch, isMobile,
 		} = this.props;
 
 		return (
 			<div className="top-section">
 				<Navigation
+					isMobile={isMobile}
 					loadingSearch={loadingSearch}
 					errorSearch={errorSearch}
 					hints={hints}
@@ -32,6 +33,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	hints: PropTypes.array.isRequired,
 	loadingSearch: PropTypes.bool.isRequired,
 	errorSearch: PropTypes.string.isRequired,
@@ -43,6 +45,7 @@ export default withRouter(connect(
 		hints: state.search.getIn(['headerSearch', 'hints']),
 		errorSearch: state.search.getIn(['headerSearch', 'error']),
 		loadingSearch: state.search.getIn(['headerSearch', 'loading']),
+		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(searchActions.headerSearchHint(str)),

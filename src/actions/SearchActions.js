@@ -2,7 +2,12 @@ import echo, { validators } from 'echojs-lib';
 
 import SearchReducer from '../reducers/SearchReducer';
 
-import { SEARCH_LIMIT, DEFAULT_ERROR_SEARCH, ERROR_BLOCK_SEARCH } from '../constants/SearchConstants';
+import {
+	SEARCH_LIMIT,
+	DEFAULT_ERROR_SEARCH,
+	ERROR_BLOCK_SEARCH,
+	TYPE_SEARCH_SECTION
+} from '../constants/SearchConstants';
 import {
 	ACCOUNT_OBJECT_PREFIX,
 	ASSET_OBJECT_PREFIX,
@@ -19,7 +24,6 @@ import { getLimitHints } from '../helpers/SearchHelper';
 import { getToken, getContractBySymbol } from '../services/queries/contract';
 import { getAssetsBySymbols } from '../services/queries/asset';
 import ApiService from '../services/ApiService';
-import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH, SSR_CONTRACT_PATH } from '../constants/RouterConstants';
 
 class SearchActions extends BaseActionsClass {
 
@@ -58,7 +62,6 @@ class SearchActions extends BaseActionsClass {
 		let isAccount = false;
 		let isAsset = false;
 		let prefix = '';
-		let href = '';
 		const to = str;
 
 		if (validators.isAccountId(str)) {
@@ -86,7 +89,6 @@ class SearchActions extends BaseActionsClass {
 			}
 
 			if (token) {
-				href = SSR_CONTRACT_PATH;
 				section = 'ERC20 token';
 				prefix = `${token.symbol} `;
 				str = `(${object.id})`;
@@ -97,17 +99,14 @@ class SearchActions extends BaseActionsClass {
 		if (isAccount) {
 			prefix = `${object.name} `;
 			str = `(${str})`;
-			href = SSR_ACCOUNTS_PATH;
 		}
 
 		if (isAsset) {
 			prefix = `${object.symbol} `;
 			str = `(${object.id})`;
-			href = SSR_ASSET_PATH;
 		}
 
 		const hint = [{
-			href,
 			section,
 			prefix,
 			value: str,
@@ -139,7 +138,7 @@ class SearchActions extends BaseActionsClass {
 
 		if (block) {
 			const blockHint = {
-				section: 'Block',
+				section: TYPE_SEARCH_SECTION.BLOCK,
 				value: str,
 				to: URLHelper.createBlockUrl(str),
 			};
@@ -153,7 +152,7 @@ class SearchActions extends BaseActionsClass {
 
 		if (account) {
 			const accountHint = {
-				section: 'Account',
+				section: TYPE_SEARCH_SECTION.ACCOUNT,
 				prefix: `${account.name} (${ACCOUNT_OBJECT_PREFIX}.`,
 				postfix: ')',
 				value: str,
@@ -164,7 +163,7 @@ class SearchActions extends BaseActionsClass {
 
 		if (asset) {
 			const assetHint = {
-				section: 'Asset',
+				section: TYPE_SEARCH_SECTION.ASSET,
 				prefix: `${asset.symbol} (${ASSET_OBJECT_PREFIX}.`,
 				value: str,
 				postfix: ')',
@@ -234,7 +233,7 @@ class SearchActions extends BaseActionsClass {
 
 		let contractHints = contractFromGraphql.items.map(({ contract, symbol }) => ({
 			id: contract.id,
-			section: 'ERC20 Token',
+			section: TYPE_SEARCH_SECTION.ERC_20,
 			value: symbol,
 			postfix: ` (${contract.id})`,
 			to: URLHelper.createContractUrl(contract.id),
@@ -250,7 +249,7 @@ class SearchActions extends BaseActionsClass {
 				const item = {
 					prefix: name.slice(0, index),
 					postfix: `${name.slice(index + str.length)} (${id})`,
-					section: 'Contract',
+					section: TYPE_SEARCH_SECTION.CONTRACT,
 					value: name.slice(index, str.length),
 					to: URLHelper.createContractUrl(id),
 				};
@@ -269,7 +268,7 @@ class SearchActions extends BaseActionsClass {
 			.map(([name, id]) => {
 				const { index } = regExp.exec(name);
 				return {
-					section: 'Account',
+					section: TYPE_SEARCH_SECTION.ACCOUNT,
 					prefix: name.slice(0, index),
 					postfix: `${name.slice(index + str.length)} (${id})`,
 					value: name.slice(index, index + str.length),
@@ -287,7 +286,7 @@ class SearchActions extends BaseActionsClass {
 		}
 
 		const assetHints = assets.items.map(({ id }) => ({
-			section: 'Asset',
+			section: TYPE_SEARCH_SECTION.ASSET,
 			value: str.toUpperCase(),
 			postfix: ` (${id})`,
 			to: URLHelper.createAssetUrl(id),
@@ -360,7 +359,7 @@ class SearchActions extends BaseActionsClass {
 
 					if (block) {
 						const blockHint = {
-							section: 'Block',
+							section: TYPE_SEARCH_SECTION.BLOCK,
 							value: str,
 							to: URLHelper.createBlockUrl(str),
 						};

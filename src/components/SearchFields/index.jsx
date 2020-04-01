@@ -10,6 +10,7 @@ import { DebounceInput } from 'react-debounce-input';
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
 import loadingIcon from '../../public/images/icons/loader.png';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class SearchField extends React.Component {
 
@@ -22,6 +23,7 @@ class SearchField extends React.Component {
 			isActiveSmall: false,
 			inputValue: '',
 			to: '',
+			href: '',
 		};
 		this.timeoutSearch = null;
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -44,7 +46,8 @@ class SearchField extends React.Component {
 	}
 
 	onChangeDropdown(data) {
-		this.setState({ to: data.value });
+		const option = data.options.find(({ value }) => value === data.value);
+		this.setState({ to: data.value, href: option.href });
 	}
 
 	onChange(e) {
@@ -77,7 +80,7 @@ class SearchField extends React.Component {
 
 		if (!loadingSearch && KEY_CODE_ENTER === code && this.state.inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
-				Router.push(this.state.to, this.state.to);
+				Router.push(this.state.href, this.state.to);
 				this.setState({ focus: false, isChange: false });
 				this.inputEl.blur();
 			}
@@ -158,16 +161,17 @@ class SearchField extends React.Component {
 
 		const options = hints
 			.map(({
-				section, prefix, value, to, postfix, href,
+				section, prefix, value, to, postfix,
 			}, i) => ({
 				key: i,
 				value: to,
+				href: SsrHrefHelper.getHrefByTypeSection(section),
 				content: (
-					<Link key={to} href={href} as={to} >
-						<a className="element">
+					<Link key={to} href={SsrHrefHelper.getHrefByTypeSection(section)} as={to} >
+						<div className="element">
 							<div className="section-name">{section}</div>
 							<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
-						</a>
+						</div>
 					</Link>
 				),
 			}));

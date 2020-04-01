@@ -10,6 +10,7 @@ import URLHelper from '../../helpers/URLHelper';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import { getObjectInfo } from '../../actions/ObjectsActions';
 import QueryStringHelper from '../../helpers/QueryStringHelper';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class Objects extends React.Component {
 
@@ -92,10 +93,10 @@ class Objects extends React.Component {
 
 								const idRegExp = /^"\d+\.\d+\.\d+"$/;
 
-								if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {''
+								if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
 									const id = raw.substr(1, raw.length - 1 - 1);
 									const as = URLHelper.createUrlById(id);
-									const href = URLHelper.getSsrHrefByObjectId(id);
+									const href = SsrHrefHelper.getHrefByObjectId(id);
 									return (
 										<Link href={href} as={as}>
 											<a>{raw}</a>

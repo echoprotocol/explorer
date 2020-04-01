@@ -8,7 +8,7 @@ import {
 	VERIFY_CONTRACT_PATH,
 	MANAGE_CONTRACT_PATH,
 	UPLOAD_ABI_PATH,
-	TRANSACTION_INFORMATION_PATH, SSR_ACCOUNTS_PATH, SSR_CONTRACT_PATH, SSR_ASSET_PATH, OBJECTS_PATH,
+	TRANSACTION_INFORMATION_PATH,
 } from '../constants/RouterConstants';
 
 import config from '../config/chain';
@@ -131,26 +131,6 @@ class URLHelper {
 
 	}
 
-	/**
-	 * @method getSsrPathByObjectId
-	 * @param {string} id
-	 * @return {string} href
-	 */
-	static getSsrHrefByObjectId(id) {
-		let href;
-
-		if (validators.isAccountName(id) || validators.isAccountId(id)) {
-			href = SSR_ACCOUNTS_PATH;
-		} else if (validators.isContractId(id)) {
-			href = SSR_CONTRACT_PATH;
-		} else if (validators.isAssetId(id)) {
-			href = SSR_ASSET_PATH;
-		} else {
-			href = OBJECTS_PATH;
-		}
-
-		return href;
-	}
 	/**
 	 *
 	 * @param icon
