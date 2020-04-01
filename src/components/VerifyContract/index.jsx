@@ -1,5 +1,5 @@
 import React from 'react';
-
+import dynamic from 'next/dynamic';
 import { Select, Input, Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
@@ -9,14 +9,9 @@ import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
-let CodeMirror = null;
-if (typeof window !== 'undefined') {
-	/* eslint-disable global-require */
-	({ UnControlled: CodeMirror } = require('react-codemirror2'));
-	require('codemirror/mode/xml/xml.js');
-	require('codemirror/mode/javascript/javascript.js');
-	/* eslint-enable global-require */
-}
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.UnControlled), {
+	ssr: false,
+});
 
 class VerifyContract extends React.Component {
 
@@ -270,14 +265,12 @@ class VerifyContract extends React.Component {
 					</div>
 
 					<div className="code-block">
-						{CodeMirror && (
-							<CodeMirror
-								value={form.get('code')}
-								options={CODEMIRROR_OPTIONS}
-								onKeyDown={(editor, e) => this.onKeyDown(e)}
-								onChange={(editor, metadata, value) => this.onContractCodeCompile(value)}
-							/>)
-						}
+						<CodeMirror
+							value={form.get('code')}
+							options={CODEMIRROR_OPTIONS}
+							onKeyDown={(editor, e) => this.onKeyDown(e)}
+							onChange={(editor, metadata, value) => this.onContractCodeCompile(value)}
+						/>
 					</div>
 
 					<div className="section-description">

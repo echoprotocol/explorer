@@ -9,7 +9,7 @@ class NotFoundScreen extends Component {
 
 	goToHome() {
 		this.props.resetErrorPath();
-		Router.push(INDEX_PATH, INDEX_PATH);
+		Router.push(INDEX_PATH);
 	}
 
 	render() {

@@ -7,7 +7,7 @@ import Avatar from '../Avatar';
 
 
 import URLHelper from '../../helpers/URLHelper';
-import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
+import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 
 class ContractDescription extends React.Component {
 

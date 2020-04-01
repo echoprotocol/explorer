@@ -1,16 +1,11 @@
 import React from 'react';
-
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 
-let CodeMirror = null;
-if (typeof window !== 'undefined') {
-	/* eslint-disable global-require */
-	({ Controlled: CodeMirror } = require('react-codemirror2'));
-	require('codemirror/mode/xml/xml.js');
-	require('codemirror/mode/javascript/javascript.js');
-	/* eslint-enable global-require */
-}
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
+	ssr: false,
+});
 
 class ContractSourceCode extends React.Component {
 
@@ -30,13 +25,10 @@ class ContractSourceCode extends React.Component {
 				</div>
 
 				<div className="code-block max-height-none">
-					{CodeMirror && (
-						<CodeMirror
-							value={sourceCode}
-							options={CODEMIRROR_OPTIONS}
-						/>
-					)}
-
+					<CodeMirror
+						value={sourceCode}
+						options={CODEMIRROR_OPTIONS}
+					/>
 				</div>
 
 			</div>

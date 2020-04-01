@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 import Router, { withRouter } from 'next/router';
@@ -6,14 +7,9 @@ import Router, { withRouter } from 'next/router';
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_UPLOAD_ABI_PATH } from '../../constants/RouterConstants';
 
-let CodeMirror = null;
-if (typeof window !== 'undefined') {
-	/* eslint-disable global-require */
-	({ Controlled: CodeMirror } = require('react-codemirror2'));
-	require('codemirror/mode/xml/xml.js');
-	require('codemirror/mode/javascript/javascript.js');
-	/* eslint-enable global-require */
-}
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
+	ssr: false,
+});
 
 class ContractAbi extends React.Component {
 
@@ -74,14 +70,11 @@ class ContractAbi extends React.Component {
 
 				{/* If code-block readonly add class uncontrolled  */}
 				<div className="code-block uncontrolled">
-					{CodeMirror && (
-						<CodeMirror
-							value={abi}
-							onFocus={(editor) => { editor.refresh(); }}
-							options={CODEMIRROR_OPTIONS}
-						/>
-					)}
-
+					<CodeMirror
+						value={abi}
+						onFocus={(editor) => { editor.refresh(); }}
+						options={CODEMIRROR_OPTIONS}
+					/>
 				</div>
 			</React.Fragment>
 		);

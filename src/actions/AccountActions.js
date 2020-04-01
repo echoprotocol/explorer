@@ -73,7 +73,6 @@ class AccountActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	getAccountInfo(id) {
-		console.log('getAccountInfo');
 		return async (dispatch) => {
 			if (!validators.isAccountId(id) && !validators.isAccountName(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));

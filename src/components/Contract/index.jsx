@@ -22,9 +22,7 @@ import {
 	CONTRACT_ABI,
 	SSR_CONTRACT_PATH,
 	SSR_MANAGE_CONTRACT_PATH,
-	SSR_CONTRACT_BYTECODE_PATH,
-	SSR_CONTRACT_ABI_PATH,
-	SSR_CONTRACT_BALANCES_PATH, SSR_CONTRACT_SOURCE_CODE_PATH,
+	SSR_CONTRACT_DETAILS_PATH,
 } from '../../constants/RouterConstants';
 
 import ContractBytecode from './ContractBytecode';
@@ -122,6 +120,7 @@ class Contract extends React.Component {
 	changeTab(id, index) {
 		Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id, CONTRACT_TABS[index].path));
 	}
+
 	goToSlide(e, slide) {
 		this.slider.current.slickGoTo(slide);
 	}
@@ -196,7 +195,7 @@ class Contract extends React.Component {
 			bytecode, contractHistory, balances, query: { id, detail }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner,
-			activeAccount, error,
+			activeAccount, error, isMobile,
 		} = this.props;
 
 		const tabList = [
@@ -204,6 +203,7 @@ class Contract extends React.Component {
 				tab: !loading ?
 					<ContractInfo
 						dataGeneral={new Map({
+							isMobile,
 							error,
 							blockNumber,
 							creationFee,
@@ -221,6 +221,7 @@ class Contract extends React.Component {
 							owner,
 						})}
 						dataAssets={new Map({
+							isMobile,
 							balances,
 						})}
 					/>
@@ -298,7 +299,7 @@ class Contract extends React.Component {
 					<div className="tab-head">
 						<div className="backwards action">
 							<div className="account-page-t-block">
-								<Media query="(max-width: 380px)">
+								<Media query="(max-width: 380px)" defaultMatches={isMobile}>
 									{(matches) =>
 										!matches &&
 										<div className="ava">
@@ -332,85 +333,52 @@ class Contract extends React.Component {
 								<Verify id={id} verified={verified} />
 							</div>
 						</div>
-						<Media query="(max-width: 400px)">
+						<Media query="(max-width: 400px)" defaultMatches={isMobile}>
 							{(matches) =>
 								(!matches ?
 									<div className="horizontal-tab-panel">
 										<Slider ref={this.slider} {...settings} >
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
-												<Link
-													href={SSR_CONTRACT_PATH}
-													as={URLHelper.createContractUrl(id)}
-												>
-													<a
-														tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null}
-														className={classnames('menu-item-content')}
-														onClick={() => this.goToSlide(0)}
-													>
-														Contract info
+												<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(id)}>
+													<a onClick={(e) => this.goToSlide(e, 0)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null} >
+														<span className="menu-item-content">Contract info</span>
 													</a>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
-												<Link href={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
-													<a onClick={() => this.goToSlide(1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
+													<a onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
 														<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
 													</a>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
-												<Link
-													href={SSR_CONTRACT_BYTECODE_PATH}
-													as={URLHelper.createContractUrl(id)}
-												>
-													<a
-														onClick={() => this.goToSlide(2)}
-														tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}
-													>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}>
+													<a onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
 														<span className="menu-item-content">Byte Сode</span>
 													</a>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
-												<Link
-													href={SSR_CONTRACT_ABI_PATH}
-													as={URLHelper.createContractUrl(id)}
-												>
-													<a
-														onClick={() => this.goToSlide(4)}
-														tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}
-													>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)}>
+													<a onClick={(e) => this.goToSlide(e, 4)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}>
 														<span className="menu-item-content">ABI</span>
 													</a>
 												</Link>
 											</div>
 											{
 												verified &&
-												<div
-													className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}
-												>
-													<Link
-														href={SSR_CONTRACT_SOURCE_CODE_PATH}
-														as={URLHelper.createContractUrl(id)}
-													>
-														<a
-															onClick={() => this.goToSlide(5)}
-															tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 ? -1 : null}
-														>
+												<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}>
+													<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}>
+														<a onClick={(e) => this.goToSlide(e, 5)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 ? -1 : null}>
 															<span className="menu-item-content">Source code</span>
 														</a>
 													</Link>
 												</div>
 											}
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
-												<Link
-													href={SSR_CONTRACT_BALANCES_PATH}
-													as={URLHelper.createContractUrl(id)}
-												>
-													<a
-														onClick={() => this.goToSlide(3)}
-														tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
-													>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}>
+													<a onClick={(e) => this.goToSlide(e, 3)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}>
 														<span className="menu-item-content">Balances</span>
 													</a>
 												</Link>
@@ -465,6 +433,7 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 	loading: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
