@@ -27,7 +27,7 @@ import AssetBalances from '../Account/AssetBalances';
 import OperationsTable from '../TransactionInfo/OperationsTable';
 import Loader from '../Loader';
 import Verify from '../VerifyButton';
-import manageIcon from '../../assets/images/icons/pencil.svg';
+import manageIcon from '../../public/images/icons/pencil.svg';
 import ContractStar from './ContractStar';
 import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';

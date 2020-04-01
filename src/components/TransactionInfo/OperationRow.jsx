@@ -6,7 +6,7 @@ import _ from 'lodash';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
 
-import ddIcon from '../../assets/images/icons/curret-sm.svg';
+import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
 import OperationInfo from './OperationInfo';
