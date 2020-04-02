@@ -6,6 +6,7 @@ import { validators } from 'echojs-lib';
 import BN from 'bignumber.js';
 import Tooltip from 'rc-tooltip';
 import Media from 'react-media';
+import { fromJS } from 'immutable';
 
 import Loader from '../Loader';
 
@@ -18,26 +19,15 @@ import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import { getFullAssetInformation } from '../../actions/AssetActions';
 import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
+import GlobalActions from '../../actions/GlobalActions';
 
 class Asset extends React.Component {
 
 	static async getInitialProps({ query, store }) {
-		await store.dispatch(getFullAssetInformation(query.id));
-		return { query };
-	}
-
-	componentDidMount() {
-		// this.props.getAssetInfo(this.props.query.id);
-	}
-
-	componentDidUpdate(prevProps) {
-		if (this.props.asset) {
-			this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.asset.get('symbol')));
-		}
-
-		if (this.props.query.id !== prevProps.query.id) {
-			this.props.getAssetInfo();
-		}
+		const { asset, issuer } = await store.dispatch(getFullAssetInformation(query.id));
+		const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);
+		await store.dispatch(GlobalActions.setTitle(title));
+		return { asset, issuer };
 	}
 
 	renderLoader() {
@@ -45,7 +35,14 @@ class Asset extends React.Component {
 	}
 
 	renderAsset() {
-		const { isMobile, asset, issuer } = this.props;
+		const { isMobile } = this.props;
+		let { asset, issuer } = this.props;
+		if (!asset.get) {
+			asset = fromJS(asset);
+		}
+		if (!issuer.get) {
+			issuer = fromJS(issuer);
+		}
 		const issuerName = issuer.get('name');
 
 		const assetSymbol = asset.get('symbol');
@@ -195,9 +192,6 @@ Asset.propTypes = {
 	isMobile: PropTypes.bool.isRequired,
 	asset: PropTypes.object,
 	issuer: PropTypes.object,
-	query: PropTypes.object.isRequired,
-	getAssetInfo: PropTypes.func.isRequired,
-	setTitle: PropTypes.func.isRequired,
 };
 
 Asset.defaultProps = {

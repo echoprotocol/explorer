@@ -1,8 +1,6 @@
 import echo from 'echojs-lib';
-import { fromJS, Map } from 'immutable';
 
 import GlobalActions from './GlobalActions';
-import AssetReducer from '../reducers/AssetReducer';
 
 /**
  * @method getFullAssetInformation
@@ -20,8 +18,8 @@ export const getFullAssetInformation = (assetId) => async (dispatch) => {
 
 		const issuer = await echo.api.getObject(asset.issuer);
 
-		dispatch(AssetReducer.actions.set({ field: 'asset', value: fromJS(asset) }));
-		dispatch(AssetReducer.actions.set({ field: 'issuer', value: issuer ? new Map(issuer) : null }));
+		// eslint-disable-next-line consistent-return
+		return { asset, issuer };
 	} catch (err) {
 		dispatch(GlobalActions.toggleErrorPath(true));
 	}
