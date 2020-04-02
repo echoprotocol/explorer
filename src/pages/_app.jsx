@@ -23,12 +23,11 @@ import { disconnect, serverConnect } from '../actions/SocketActions';
 import ErrorScreen from '../components/Error/ErrorScreen';
 import NotFoundScreen from '../components/Error/NotFoundScreen';
 import Toast from '../components/Toast';
-import InternetPopup from '../components/InternetPopup';
+import InternetPopup from '../containers/InternetPopup';
 
 class ExplorerApp extends App {
 
 	static async getInitialProps({ Component, ctx }) {
-		console.log('getInitialProps ExplorerApp', ctx.isServer);
 		const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
 		const isMobile = !!(new MobileDetect(userAgent)).mobile();
 
@@ -109,8 +108,6 @@ class ExplorerApp extends App {
 		const error = store.getState().global.get('error');
 		const errorScreen = store.getState().global.get('errorScreen');
 		const errorPath = store.getState().global.get('errorPath');
-		const subscribeConnect = store.getState().internetPopup.get('connect');
-		const showInternetConnectionBar = store.getState().internetPopup.get('show');
 
 		if (error || errorScreen) {
 			return this.renderErrorScreen(error);
@@ -120,8 +117,6 @@ class ExplorerApp extends App {
 			return this.renderNotFound();
 		}
 
-		console.log('showInternetConnectionBar', showInternetConnectionBar);
-		console.log('subscribeConnect', subscribeConnect);
 		return (
 			<Provider store={store}>
 				<div>
@@ -139,7 +134,7 @@ class ExplorerApp extends App {
 						</div>
 						<Footer />
 						<Toast />
-						{showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />}
+						<InternetPopup />
 					</div>
 				</div>
 			</Provider>
