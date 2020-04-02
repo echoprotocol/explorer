@@ -724,14 +724,14 @@ class ContractActions extends BaseActionsClass {
 					return;
 				}
 
-				let { history, contractInfo } = await getContractInfo(id);
+				let { history, contractInfo, transferHistory } = await getContractInfo(id);
 				const contractTxs = (await getTotalHistory([id])).total;
 
 				const creationFee = history.items[0].body.fee;
 				const feeAsset = await echo.api.getObject(creationFee.asset_id);
 
 				const {
-					registrar, block, callers, type, eth_accuracy: ethAccuracy,
+					registrar, block, callers, type, eth_accuracy: ethAccuracy, token,
 				} = contractInfo;
 
 				let { supported_asset_id: supportedAsset } = contractInfo;
@@ -742,6 +742,8 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(this.setMultipleValue({
 					error: '',
+					token,
+					countTokenTransfer: transferHistory.total,
 					registrar: registrar.name,
 					blockNumber: block.round,
 					countUsedByAccount: callers.accounts.length,

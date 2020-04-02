@@ -2,8 +2,8 @@ import React from 'react';
 import Tooltip from 'rc-tooltip';
 import PropTypes from 'prop-types';
 
-import infoIcon from '../../assets/images/icons/info-icn.svg';
-import infoHoverIcon from '../../assets/images/icons/info-hover.svg';
+import infoIcon from '../../public/images/icons/info-icn.svg';
+import infoHoverIcon from '../../public/images/icons/info-hover.svg';
 
 class InfoTooltip extends React.Component {
 
