@@ -12,3 +12,16 @@
 	margin-right: 5px;
 	@include inter-medium();
 }
+.blockchain-rates-block-info {
+	margin-top: 22px;
+	display: flex;
+	align-items: center;
+}
+.blockchain-rates-block-percent {
+	color: $explorer-black;
+	font-size: 16px;
+	line-height: 27px;
+	letter-spacing: 0.02em;
+	margin-right: 10px;
+	@include inter-semibold();
+}
