@@ -28,11 +28,11 @@ class TransactionsInfo extends React.Component {
 				store.dispatch(TransactionActions.getTransaction(round, index)),
 			]);
 		}
-		return { query };
+		return {};
 	}
 
 	componentDidMount() {
-		const { query: { round, index }, blockInformation, operations } = this.props;
+		const { router: { query: { round, index } }, blockInformation, operations } = this.props;
 		if (!blockInformation.get('blockNumber') || !operations.size) {
 			this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
 			this.props.getBlockInfo(round);
@@ -46,7 +46,7 @@ class TransactionsInfo extends React.Component {
 
 	returnFunction() {
 		if (!this.props.historyLength) {
-			Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, this.props.query.round));
+			Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, this.props.router.query.round));
 		} else {
 			Router.back();
 		}
@@ -57,7 +57,7 @@ class TransactionsInfo extends React.Component {
 	}
 
 	render() {
-		const { round, index } = this.props.query;
+		const { query: { round, index } } = this.props.router;
 
 		const {
 			operations, blockInformation, loading, router,
@@ -106,7 +106,6 @@ class TransactionsInfo extends React.Component {
 TransactionsInfo.propTypes = {
 	router: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
-	query: PropTypes.object.isRequired,
 	operations: PropTypes.object,
 	historyLength: PropTypes.number,
 	getTransaction: PropTypes.func.isRequired,

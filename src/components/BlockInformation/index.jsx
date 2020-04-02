@@ -41,7 +41,14 @@ class BlockInformation extends React.Component {
 
 	static async getInitialProps({ query, store }) {
 		await store.dispatch(getBlockInformation(query.round));
-		return { query };
+		return {};
+	}
+
+	componentDidMount() {
+		const { router: { query: { round } }, blockInformation } = this.props;
+		if (blockInformation.get('blockNumber') !== round) {
+			this.props.getBlockInfo(round);
+		}
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -57,13 +64,13 @@ class BlockInformation extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.blockInformation) {
-			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.query.round));
+			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.router.query.round));
 		}
 		if (
-			this.props.query.round !== prevProps.query.round ||
+			this.props.router.query.round !== prevProps.router.query.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			this.props.getBlockInfo(this.props.query.round);
+			this.props.getBlockInfo(this.props.router.query.round);
 		}
 	}
 
@@ -74,7 +81,6 @@ class BlockInformation extends React.Component {
 	onBlockLink(blockNumber, e) {
 		e.preventDefault();
 		this.setState({ loader: true });
-
 		Router.push(SSR_BLOCK_INFORMATION_PATH, URLHelper.createBlockUrl(blockNumber));
 	}
 
@@ -218,7 +224,6 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
-	query: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,

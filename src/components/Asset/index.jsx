@@ -23,11 +23,51 @@ import GlobalActions from '../../actions/GlobalActions';
 
 class Asset extends React.Component {
 
+	constructor() {
+		super();
+		this.state = {
+			asset: null,
+			issuer: null,
+		};
+	}
 	static async getInitialProps({ query, store }) {
 		const { asset, issuer } = await store.dispatch(getFullAssetInformation(query.id));
 		const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);
 		await store.dispatch(GlobalActions.setTitle(title));
 		return { asset, issuer };
+	}
+
+	static getDerivedStateFromProps(nextProps, state) {
+		if (nextProps.asset && nextProps.asset !== state.asset) {
+			return {
+				asset: fromJS(nextProps.asset),
+				issuer: fromJS(nextProps.issuer),
+			};
+		}
+		return null;
+	}
+
+	componentDidMount() {
+		if (!this.state.asset) {
+			this.updateAssetData(this.props.router.query.id);
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.router.query.id !== this.props.router.query.id) {
+			this.updateAssetData(this.props.router.query.id);
+		}
+	}
+
+	updateAssetData(id) {
+		this.props.getAssetInfo(id)
+			.then(({ asset, issuer }) => {
+				this.setState({
+					asset: fromJS(asset),
+					issuer: fromJS(issuer),
+				});
+				this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol));
+			});
 	}
 
 	renderLoader() {
@@ -36,13 +76,7 @@ class Asset extends React.Component {
 
 	renderAsset() {
 		const { isMobile } = this.props;
-		let { asset, issuer } = this.props;
-		if (!asset.get) {
-			asset = fromJS(asset);
-		}
-		if (!issuer.get) {
-			issuer = fromJS(issuer);
-		}
+		const { asset, issuer } = this.state;
 		const issuerName = issuer.get('name');
 
 		const assetSymbol = asset.get('symbol');
@@ -177,8 +211,7 @@ class Asset extends React.Component {
 	}
 
 	render() {
-		const { asset, issuer } = this.props;
-
+		const { asset, issuer } = this.state;
 		return (
 			<div className="inner-information-container account-asset-page">
 				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset()}
@@ -189,14 +222,13 @@ class Asset extends React.Component {
 }
 
 Asset.propTypes = {
+	router: PropTypes.object.isRequired,
 	isMobile: PropTypes.bool.isRequired,
-	asset: PropTypes.object,
-	issuer: PropTypes.object,
+	getAssetInfo: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
 };
 
 Asset.defaultProps = {
-	asset: null,
-	issuer: null,
 };
 
 export default Asset;

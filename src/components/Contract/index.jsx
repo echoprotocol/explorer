@@ -58,11 +58,11 @@ class Contract extends React.Component {
 
 	static async getInitialProps({ query, store }) {
 		await store.dispatch(ContractActions.getContractInfo(query.id));
-		return { query };
+		return {};
 	}
 
 	async componentDidMount() {
-		const { query: { detail, id } } = this.props;
+		const { router: { query: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
 		await this.initContract();
 		const { verified } = this.props;
@@ -80,10 +80,10 @@ class Contract extends React.Component {
 	}
 
 
-	componentDidUpdate() {
-		// if (prevProps.query.id && prevProps.query.id !== this.props.query.id) {
-		// 	this.initContract();
-		// }
+	componentDidUpdate(prevProps) {
+		if (prevProps.router.query.id && prevProps.router.query.id !== this.props.router.query.id) {
+			this.initContract();
+		}
 	}
 
 	componentWillUnmount() {
@@ -96,7 +96,7 @@ class Contract extends React.Component {
 	}
 
 	async initContract() {
-		const { id } = this.props.query;
+		const { query: { id } } = this.props.router;
 		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
 
 		if (echo.isConnected) {
@@ -124,8 +124,7 @@ class Contract extends React.Component {
 	}
 
 	async manageContract() {
-		const { query: { id } } = this.props;
-		Router.push(SSR_MANAGE_CONTRACT_PATH, URLHelper.createManageContractUrl(id));
+		Router.push(SSR_MANAGE_CONTRACT_PATH, URLHelper.createManageContractUrl(this.props.router.query.id));
 	}
 
 	async subscribe(id) {
@@ -189,7 +188,7 @@ class Contract extends React.Component {
 
 	renderMeta() {
 		const {
-			icon, description, name, query: { id },
+			icon, description, name, router: { query: { id } },
 		} = this.props;
 
 		return (
@@ -206,7 +205,7 @@ class Contract extends React.Component {
 	render() {
 		const {
 			loading, isFullHistory, loadingMoreHistory,
-			bytecode, contractHistory, balances, query: { id, detail }, abi, sourceCode, icon,
+			bytecode, contractHistory, balances, router: { query: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
 			countTokenTransfer, activeAccount, error, isMobile,
@@ -459,7 +458,6 @@ Contract.propTypes = {
 	router: PropTypes.object.isRequired,
 	contractHistory: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
-	query: PropTypes.object.isRequired,
 	getContractInfo: PropTypes.func.isRequired,
 	clearContractInfo: PropTypes.func.isRequired,
 	loadContractHistory: PropTypes.func.isRequired,

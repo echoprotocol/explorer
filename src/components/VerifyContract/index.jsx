@@ -28,14 +28,10 @@ class VerifyContract extends React.Component {
 		this.intervalId = 0;
 	}
 
-	static async getInitialProps({ query }) {
-		return { query };
-	}
-
 	componentDidMount() {
 		this.props.contractCompilerInit();
 
-		const { verified, query: { id } } = this.props;
+		const { verified, router: { query: { id } } } = this.props;
 
 		if (verified) {
 			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
@@ -215,7 +211,7 @@ class VerifyContract extends React.Component {
 
 	render() {
 		const {
-			query: { id }, form, contracts,
+			router: { query: { id } }, form, contracts,
 		} = this.props;
 		const { loader } = this.state;
 		const CODEMIRROR_OPTIONS = {
@@ -391,7 +387,7 @@ class VerifyContract extends React.Component {
 VerifyContract.propTypes = {
 	historyLength: PropTypes.number,
 	form: PropTypes.object.isRequired,
-	query: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	compilersList: PropTypes.object.isRequired,
 	contracts: PropTypes.object.isRequired,
 	verified: PropTypes.bool.isRequired,

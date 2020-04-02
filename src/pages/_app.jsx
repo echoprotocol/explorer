@@ -19,10 +19,11 @@ import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
 import Footer from '../containers/Footer';
 import RecentBlockSidebar from '../containers/RecentBlockSection/RecentBlockSidebar';
 import GlobalActions from '../actions/GlobalActions';
-import { serverConnect } from '../actions/SocketActions';
+import { disconnect, serverConnect } from '../actions/SocketActions';
 import ErrorScreen from '../components/Error/ErrorScreen';
 import NotFoundScreen from '../components/Error/NotFoundScreen';
-// import Toast from '../components/Toast';
+import Toast from '../components/Toast';
+import InternetPopup from '../components/InternetPopup';
 
 class ExplorerApp extends App {
 
@@ -33,24 +34,25 @@ class ExplorerApp extends App {
 
 		await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
 
+		let pageProps = {};
 		if (ctx.isServer) {
 			await ctx.store.dispatch(serverConnect());
-		}
+			if (Component.getInitialProps) {
+				pageProps = await Component.getInitialProps(ctx);
+			}
 
-		const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+		}
 		return { pageProps };
 	}
 
 	componentDidMount() {
 		if (!this.props.store.isServer) {
 			this.props.store.dispatch(GlobalActions.init());
-			document.title = this.props.title;
 		}
 	}
 
 	componentWillUnmount() {
-		console.log('componentWillUnmount');
-		// this.props.store.dispatch(disconnect());
+		this.props.store.dispatch(disconnect());
 	}
 
 	renderModals() {
@@ -99,8 +101,6 @@ class ExplorerApp extends App {
 	render() {
 		const {
 			router: { pathname },
-			// subscribeConnect,
-			// showInternetConnectionBar,
 			isShowModal,
 			Component, pageProps, store,
 		} = this.props;
@@ -109,6 +109,8 @@ class ExplorerApp extends App {
 		const error = store.getState().global.get('error');
 		const errorScreen = store.getState().global.get('errorScreen');
 		const errorPath = store.getState().global.get('errorPath');
+		const subscribeConnect = store.getState().internetPopup.get('connect');
+		const showInternetConnectionBar = store.getState().internetPopup.get('show');
 
 		if (error || errorScreen) {
 			return this.renderErrorScreen(error);
@@ -118,6 +120,8 @@ class ExplorerApp extends App {
 			return this.renderNotFound();
 		}
 
+		console.log('showInternetConnectionBar', showInternetConnectionBar);
+		console.log('subscribeConnect', subscribeConnect);
 		return (
 			<Provider store={store}>
 				<div>
@@ -134,10 +138,8 @@ class ExplorerApp extends App {
 							</div>
 						</div>
 						<Footer />
-						{/* <Toast /> */}
-						{/* { */}
-						{/*	showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} /> */}
-						{/* } */}
+						<Toast />
+						{showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />}
 					</div>
 				</div>
 			</Provider>

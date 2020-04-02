@@ -23,8 +23,8 @@ export default withRouter(connect(
 		historyLength: state.global.get('historyLength'),
 		clickSaveCounter: state.contract.get('clickSaveCounter'),
 	}),
-	(dispatch, props) => ({
-		getContractInfo: () => dispatch(ContractActions.getContractInfo(props.match.params.id)),
+	(dispatch) => ({
+		getContractInfo: (id) => dispatch(ContractActions.getContractInfo(id)),
 		validateContract: (field, value) => dispatch(ContractActions.validateContract(field, value)),
 		manageContract: (id, name, icon, description, clickSaveCounter) => dispatch(ContractActions.manageContract(id, name, icon, description, clickSaveCounter)),
 		setActiveAccount: (account) => dispatch(AccountActions.setActiveAccount(account)),

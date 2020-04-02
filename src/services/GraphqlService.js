@@ -34,8 +34,6 @@ class GraphqlBrowser {
 			uri: config.GRAPHQL_URL.HTTP,
 		});
 
-		console.log('config.GRAPHQL_URL.WS', config.GRAPHQL_URL.WS);
-
 		const wsLink = new WebSocketLink({
 			uri: config.GRAPHQL_URL.WS,
 			options: {
@@ -80,8 +78,6 @@ class GraphqlNode {
 
 }
 
-console.log('process.browser', process.browser);
-
-const client = process.browser ? new GraphqlBrowser() : new GraphqlNode();
+const client = typeof window !== 'undefined' ? new GraphqlBrowser() : new GraphqlNode();
 
 export default client;

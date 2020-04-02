@@ -15,12 +15,23 @@ class Account extends React.Component {
 
 	static async getInitialProps({ query, store }) {
 		await store.dispatch(AccountActions.getAccountInfo(query.id));
-		return { query };
+		return {};
+	}
+
+	componentDidMount() {
+		if (!this.props.account || this.props.router.query.id !== this.props.account.get('id')) {
+			this.props.getAccountInfo(this.props.router.query.id);
+		}
 	}
 
 	componentDidUpdate(prevProps) {
 		if (this.props.account) {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
+		}
+
+		if (prevProps.router.query.id !== this.props.router.query.id) {
+			this.props.getAccountInfo(this.props.router.query.id);
+			return;
 		}
 
 		if (!prevProps.account) {
@@ -134,6 +145,7 @@ Account.propTypes = {
 	updateAccountHistory: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	getAccountInfo: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {

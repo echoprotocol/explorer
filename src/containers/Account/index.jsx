@@ -17,6 +17,7 @@ export default withRouter(connect(
 		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
+		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
 		updateAccountHistory: (accountId, newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
 			accountId,
 			newHistory,

@@ -28,14 +28,36 @@ class Objects extends React.Component {
 		return { query: { id } };
 	}
 
-	componentDidUpdate() {
-		if (this.props.query.id) {
-			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.props.query.id));
+	componentDidMount() {
+		if (!this.props.data) {
+			const id = QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1]);
+			this.checkObject(id);
+		}
+
+	}
+
+	componentDidUpdate(prevProps) {
+		const id = QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1]);
+
+		if (id) {
+			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, id));
+		}
+
+		if (prevProps.router.asPath !== this.props.router.asPath) {
+			this.checkObject(id);
 		}
 	}
 
 	componentWillUnmount() {
 		this.props.setError(null);
+	}
+
+	checkObject(id) {
+		if (!id) {
+			this.props.setError('Object id is Invalid');
+		} else {
+			this.props.getObjectInfo(id);
+		}
 	}
 
 	copy() {
@@ -64,10 +86,9 @@ class Objects extends React.Component {
 			base0E: '#ae81ff',
 			base0F: '#cc6633',
 		};
-
 		return (
 			<div className="inner-information-container object-view">
-				<InnerHeader title={`Object ${this.props.query.id}`} />
+				<InnerHeader title={`Object ${QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1])}`} />
 				{error ?
 					<div className="json-tree-container">
 						{error}
@@ -108,11 +129,12 @@ class Objects extends React.Component {
 }
 
 Objects.propTypes = {
-	query: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	data: PropTypes.any,
 	setError: PropTypes.func,
 	error: PropTypes.string,
 	setTitle: PropTypes.func.isRequired,
+	getObjectInfo: PropTypes.func.isRequired,
 };
 
 Objects.defaultProps = {

@@ -26,10 +26,6 @@ class ManageContract extends React.Component {
 		this.removeIcon = this.removeIcon.bind(this);
 	}
 
-	static async getInitialProps({ query }) {
-		return { query };
-	}
-
 	componentDidMount() {
 		this.initData();
 	}
@@ -39,7 +35,7 @@ class ManageContract extends React.Component {
 	}
 
 	async onSave() {
-		const { query: { id } } = this.props;
+		const { router: { query: { id } } } = this.props;
 		const {
 			name, icon, description, clickSaveCounter,
 		} = this.props;
@@ -74,16 +70,16 @@ class ManageContract extends React.Component {
 	}
 
 	async initData() {
-		const { query: { id } } = this.props;
+		const { router: { query: { id } } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
-		// await this.props.getContractInfo();
+		await this.props.getContractInfo(id);
 		this.props.setDefaultDateContract(id);
 	}
 
 	render() {
 		const {
-			query: { id }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm, iconBase64,
+			router: { query: { id } }, owner, name, description, icon, contractIcon, isChangedForm, isErrorForm, iconBase64,
 		} = this.props;
 		const defaultIcon = iconBase64.value || contractIconDefault;
 		return (
@@ -208,7 +204,7 @@ class ManageContract extends React.Component {
 }
 
 ManageContract.propTypes = {
-	query: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	iconBase64: PropTypes.object.isRequired,
 	owner: PropTypes.object,
 	validateContract: PropTypes.func.isRequired,
