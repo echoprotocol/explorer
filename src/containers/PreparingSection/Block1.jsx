@@ -1,7 +1,6 @@
 import React from 'react';
-import Tooltip from 'rc-tooltip';
 import { NextBlockIcon } from '../../components/Icons/HeaderIcons';
-import { InfoIcon } from '../../components/Icons/InfoIcon';
+import InfoTooltip from '../../components/InfoTooltip';
 
 const Block1 = React.memo(() => (
 	<React.Fragment>
@@ -12,13 +11,7 @@ const Block1 = React.memo(() => (
 		<div className="preparing-line">
 			<span className="preparing-text">
 				Next block: waiting for txs
-				<Tooltip
-					placement="rightBottom"
-					trigger={['hover']}
-					overlay={<span>next block information</span>}
-				>
-					<span className="preparing-tooltip"><InfoIcon /></span>
-				</Tooltip>
+				<InfoTooltip iconFilled={false} overlay="Next block info" />
 			</span>
 			<a href="">Echo rand info</a>
 		</div>

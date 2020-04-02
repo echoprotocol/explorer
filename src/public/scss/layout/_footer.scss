@@ -1,0 +1,30 @@
+.recent-block-section + .footer {
+	display: none;
+	@include max-vw($res-1280) {
+		display: block;
+	}
+}
+.footer {
+	height: 90px;
+	display: flex;
+	align-items: center;
+	font-size: 11px;
+	line-height: 13px;
+	letter-spacing: 0.02em;
+	@include inter-medium();
+
+	.wrap {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.footer-version {
+	color: $grey-mid;
+	margin-left: 12px;
+}
+
+.footer-info {
+	color: $grey;
+	text-transform: uppercase;
+}

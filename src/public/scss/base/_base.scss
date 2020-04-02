@@ -1,0 +1,136 @@
+body {
+	letter-spacing: 0.02em;
+	color: $explorer-black;
+	font-family: "inter";
+}
+
+main.inner {
+	display: inline-block;
+	min-width: 100%;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+}
+
+input:focus,
+select:focus,
+button {
+	outline: none;
+}
+
+input[type="text"],
+input[type="phone"],
+input[type="email"],
+textarea {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: none;
+}
+
+textarea {
+	outline: none;
+}
+
+.h2 {
+	font-size: 22px;
+	@include inter-ui-bold;
+	letter-spacing: 1px;
+}
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: block;
+}
+
+a {
+	@include transition;
+	text-decoration: none;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.hover {
+	opacity: 1;
+	transition: opacity 0.3s;
+}
+
+.warn {
+	color: #d37e4a;
+}
+
+@media (max-width: 500px) and (-webkit-min-device-pixel-ratio: 0) {
+	.no-wrap {
+		white-space: nowrap;
+	}
+
+	@include max-vw($res-500) {
+		select,
+		textarea,
+		input {
+			font-size: 13px !important;
+		}
+	}
+}
+
+.blue-loader {
+	position: relative;
+	width: 15px;
+	height: 15px;
+	background-image: url(../images/icons/blue-loader.png);
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	animation: spin 1s infinite;
+}
+
+.progress-render {
+	position: relative;
+	margin-left: auto;
+}
+
+.description-text {
+	@include inter-ui-medium;
+	color: #828b95;
+	padding-left: 30px;
+	margin-bottom: 50px;
+	font-size: 13px;
+	letter-spacing: 0;
+	line-height: 18px;
+	@include max-vw(1534) {
+		padding-left: 20px;
+	}
+
+	@include max-vw(1279) {
+		padding-left: 30px;
+	}
+
+	@include max-vw($res-768) {
+		padding-left: 20px;
+	}
+
+	@include max-vw($res-500) {
+		padding-left: 15px;
+	}
+}
+
+.blue {
+	color: $blue;
+}

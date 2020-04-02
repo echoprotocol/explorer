@@ -10,7 +10,7 @@ import GlobalActions from '../actions/GlobalActions';
 import Toast from '../components/Toast';
 import Header from './Header';
 import Footer from './Footer';
-import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
+import Sidebar from './Sidebar';
 
 import InternetPopup from '../components/InternetPopup';
 import NotFoundScreen from '../containers/Error/NotFoundScreen';
@@ -68,22 +68,25 @@ class App extends React.Component {
 				{ ROUTES_WITH_COLUMN_DIRECTION.includes(pathName) ?
 					<React.Fragment>
 						<div className="wrap">
-							<RecentBlockSidebar />
+							<Sidebar />
 						</div>
 						{children}
+						<Footer />
 					</React.Fragment> :
-					<div className="recent-block-section">
-						<div className={cn('wrap', { full })}>
-							{children}
-							<RecentBlockSidebar />
+					<React.Fragment>
+						<div className="recent-block-section">
+							<div className={cn('wrap', { full })}>
+								{children}
+								<Sidebar />
+							</div>
 						</div>
-					</div>
-
+						<Footer />
+					</React.Fragment>
 				}
 				{this.renderModals(isShowModal)}
 				{ showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} /> }
 				<Toast />
-				<Footer />
+
 			</React.Fragment>
 		);
 	}

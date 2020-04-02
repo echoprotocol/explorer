@@ -33,7 +33,12 @@ const OperationsRow = React.memo(({
 					<span>{to}</span>
 				</Link>
 			</td>
-			<td className="size"><div className="td-in">{amount.value} {amount.coin}</div></td>
+			<td className="amount">
+				<div className="td-in">
+					<span className="value">{amount.value}</span>
+					<span className="type">{amount.coin}</span>
+				</div>
+			</td>
 			<td />
 		</tr>
 	</React.Fragment>

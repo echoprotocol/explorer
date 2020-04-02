@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
 
-import ddIcon from '../../assets/images/icons/curret-sm.svg';
+import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
 import OperationInfo from '../TransactionInfo/OperationInfo';
@@ -39,7 +39,7 @@ const OperationsRow = React.memo(({
 
 	const renderSubject = (subject) => {
 		if (!subject) return <div className="td-in">—</div>;
-		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in">{subject}</span>;
+		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
 		return (
 			<Link
 				className="td-in avatar-wrap"
@@ -109,17 +109,21 @@ const OperationsRow = React.memo(({
 				<td className="amount">{renderAmount()}</td>
 				<td className="fee">
 					<div className="td-in">
-						<Tooltip
-							placement="top"
-							overlayClassName="verify-contract-tooltip"
-							trigger={['hover']}
-							overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
-						>
-							<span className="value">
-								{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
-							</span>
-						</Tooltip>
-						<span className="currency">{detailInfo.fee.symbol}</span>
+						{detailInfo.fee ?
+							<React.Fragment>
+								<Tooltip
+									placement="top"
+									overlayClassName="verify-contract-tooltip"
+									trigger={['hover']}
+									overlay={FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+								>
+									<span className="value">
+										{FormatHelper.formatAmount(detailInfo.fee.amount, detailInfo.fee.precision)}
+									</span>
+								</Tooltip>
+								<span className="currency">{detailInfo.fee.symbol}</span>
+
+							</React.Fragment> : '-'}
 					</div>
 				</td>
 				{ isTransaction &&

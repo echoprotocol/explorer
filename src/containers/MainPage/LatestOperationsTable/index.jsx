@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 
+import ArrowBtn from '../../../components/Buttons/ArrowBtn';
 import TableLabel from '../../../components/TableLabel';
 
 import Thead from './Thead';
@@ -19,8 +20,8 @@ const LatestOperationsTable = memo(() => (
 					amount={{ value: 0.00000670, coin: 'ECHO' }}
 				/>
 			</tbody>
-
 		</table>
+		<ArrowBtn>View all Operations</ArrowBtn>
 	</div>
 ));
 

@@ -1,0 +1,60 @@
+.main-page-table {
+	position: relative;
+	max-width: calc(50% - 20px);
+	width: 100%;
+	@include max-vw($res-1280) {
+		max-width: 100%;
+		& + .main-page-table {
+			margin-top: 60px;
+		}
+	}
+	@include max-vw($res-768) {
+		& + .main-page-table {
+			margin-top: 50px;
+		}
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		z-index: 1;
+		margin-bottom: 40px;
+		a {
+			@include link();
+		}
+	}
+	@include table();
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	@include table-avatar();
+
+	.view {
+		cursor: pointer;
+		z-index: 1;
+		@include inter-ui-regular();
+		@include table-row-highlight(true);
+	}
+
+	.amount {
+		.td-in {
+			display: flex;
+		}
+
+		.value {
+			@include text-overflow;
+			margin-right: 4px;
+			max-width: 140px;
+			display: block;
+			word-break: break-all;
+		}
+
+		.type {
+			color: $grey-mid;
+		}
+
+		.currency {
+			overflow: initial;
+		}
+	}
+}

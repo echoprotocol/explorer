@@ -5,7 +5,7 @@ const Block2 = React.memo(() => (
 	<React.Fragment>
 		<div className="preparing-head">
 			<LatestBlockIcon />
-			<span className="preparing-caption ">
+			<span className="preparing-caption">
 				<span className="accent">12h </span> : 33m : 43s
 			</span>
 		</div>

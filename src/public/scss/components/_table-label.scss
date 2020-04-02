@@ -1,0 +1,40 @@
+.table-label-wrap {
+	margin-bottom: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	@include min-vw(1280) {
+		.filter-btn {
+			margin-right: -8px;
+		}
+	}
+	@include max-vw(1279) {
+		.filter-btn {
+			margin-right: 4px;
+		}
+	}
+	@include max-vw(1000) {
+		margin-right: 20px;
+	}
+}
+
+.table-label {
+	font-size: 16px;
+	line-height: 27px;
+	color: #130d32;
+	padding: 0 0 0 30px;
+	letter-spacing: 0.02em;
+	@include inter-semibold();
+	@include max-vw(1534) {
+		padding: 0 0 0 20px;
+	}
+	@include max-vw(1279) {
+		padding: 0 0 0 30px;
+	}
+	@include max-vw(767) {
+		padding: 0 0 0 20px;
+	}
+	@include max-vw(500) {
+		padding: 0 0 0 15px;
+	}
+}

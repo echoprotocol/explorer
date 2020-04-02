@@ -1,24 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
-import Tooltip from 'rc-tooltip';
-// import 'rc-tooltip/assets/bootstrap_white.css';
-
-import infoIcon from '../../../assets/images/icons/info-icn.svg';
-import infoHoverIcon from '../../../assets/images/icons/info-blue.svg';
+import InfoTooltip from 'rc-tooltip';
 
 class SimplePreparingBlock extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			hovered: false,
-		};
-	}
-
-	changeHover(value) {
-		this.setState({ hovered: value });
-	}
 
 	render() {
 
@@ -26,7 +11,6 @@ class SimplePreparingBlock extends React.Component {
 			title, smallTitle, description, status, tooltip, className, tip,
 		} = this.props;
 
-		const { hovered } = this.state;
 		return (
 			<React.Fragment>
 				<div
@@ -36,11 +20,7 @@ class SimplePreparingBlock extends React.Component {
 				>
 					{
 						(tooltip) ? (
-							<Tooltip
-								placement="rightBottom"
-								trigger={['hover']}
-								overlay={<span>{tip}</span>}
-							>
+							<InfoTooltip overlay={<span>{tip}</span>}>
 								<div className="title has-tooltip">
 									<Media query="(max-width: 999px)">
 										{(matches) =>
@@ -51,9 +31,8 @@ class SimplePreparingBlock extends React.Component {
 											))
 										}
 									</Media>
-									<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
 								</div>
-							</Tooltip>
+							</InfoTooltip>
 						) : (
 							<div className="title">
 								<Media query="(max-width: 999px)">

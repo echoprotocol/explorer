@@ -1,0 +1,14 @@
+.blockchain-rates-wrap {
+	display: flex;
+}
+
+.blockchain-rates-block-title {
+	display: flex;
+	align-items: center;
+	color: $lightgrey;
+	font-size: 11px;
+	line-height: 13px;
+	letter-spacing: 0.02em;
+	margin-right: 5px;
+	@include inter-medium();
+}

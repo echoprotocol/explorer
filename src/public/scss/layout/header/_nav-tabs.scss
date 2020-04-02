@@ -1,0 +1,50 @@
+.nav-tabs {
+	margin-left: auto;
+	margin-right: 20px;
+	align-self: stretch;
+	display: flex;
+
+	@include max-vw($res-768) {
+		position: absolute;
+		top: 33px;
+		right: 50px;
+	}
+	button {
+		background-color: transparent;
+		outline: transparent;
+		border: transparent;
+		font-size: 14px;
+		letter-spacing: 0.02em;
+		@include inter-medium;
+		padding: 0 10px;
+		line-height: 17px;
+		color: $grey;
+		position: relative;
+
+		&:before {
+			@include absolute-stretch(-20px, 0, auto, 0);
+			transition: background-color $speed;
+			background-color: transparent;
+			height: 3px;
+			border-radius: 0px 0px 2px 2px;
+			@include max-vw($res-768) {
+				top: -33px;
+			}
+		}
+		&.active {
+			color: $lightgrey-darker;
+			&:before {
+				background-color: $blue;
+			}
+		}
+
+		&:hover {
+			cursor: pointer;
+			color: $blue;
+		}
+
+		&:active {
+			color: #e85e5e;
+		}
+	}
+}

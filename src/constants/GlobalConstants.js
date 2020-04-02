@@ -25,7 +25,7 @@ export const DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES = constants.DYNAMIC_GLOBAL_OBJ
 export const START_AVERAGE_TRS_BLOCKS = 10;
 export const MAX_AVERAGE_TRS_BLOCKS = 100;
 
-export const PAGE_BLOCKS_COUNT = 20;
+export const PAGE_BLOCKS_COUNT = 11;
 export const PAGE_ADD_BLOCKS_COUNT = 10;
 
 export const MAX_BLOCK_REQUESTS = PAGE_BLOCKS_COUNT;
@@ -99,5 +99,6 @@ export const MIN_ACCESS_VERSION_BUILD = '0.4.0';
 export const NO_TRANSACTIONS = 'No transactions in recent blocks';
 export const NETWORK_CONNECTED_ERROR = 'Couldn\'t reach server or bad internet access';
 export const NONE_SYMBOL = '-';
+export const NOT_AVAILABLE_SYMBOL = 'N/A';
 
 export const TOKEN_TYPE = 'TOKEN';

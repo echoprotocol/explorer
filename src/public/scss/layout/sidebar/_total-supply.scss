@@ -1,0 +1,26 @@
+.total-supply {
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+	line-height: 19px;
+	letter-spacing: 0.02em;
+	color: $explorer-black;
+	@include inter-semibold();
+}
+
+.total-supply-value {
+	@include text-overflow();
+	max-width: 277px;
+	margin-left: 10px;
+}
+.total-supply-coin {
+	color: $blue;
+}
+.total-supply-link {
+	@include link();
+	font-size: 11px;
+	line-height: 13px;
+	letter-spacing: 0.02em;
+	margin-top: 26px;
+	display: inline-flex;
+}

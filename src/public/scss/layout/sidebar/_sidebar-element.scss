@@ -1,0 +1,28 @@
+.sidebar-element {
+	padding: 0 30px 20px;
+	min-height: 115px;
+	position: relative;
+	border: 1px solid #e9eaef;
+	border-radius: 4px;
+	display: flex;
+	flex-direction: column;
+	&:not(:first-child) {
+		margin-left: 10px;
+	}
+}
+
+.sidebar-element-title {
+	position: absolute;
+	background-color: #fff;
+	padding: 4px 10px;
+	color: $grey;
+	font-size: 12px;
+	line-height: 15px;
+	letter-spacing: 0.02em;
+	@include inter-semibold();
+	top: -12px;
+	left: 20px;
+}
+.sidebar-element-wrap {
+	margin-top: auto;
+}

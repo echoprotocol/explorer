@@ -20,7 +20,7 @@ const {
 } = require('config');
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
-	template: `${__dirname}/src/assets/index.html`,
+	template: `${__dirname}/src/public/index.html`,
 	filename: 'index.html',
 	inject: 'body',
 });

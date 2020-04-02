@@ -17,11 +17,21 @@ export const getContractInfo = async (contractId) => {
         		type,
         		supported_asset_id
         		eth_accuracy
+        		token {
+        			name,
+					symbol,
+					type,
+					decimals,
+					total_supply
+        		}
 			}
 			getHistory(contracts: [$contractId], operations:[CONTRACT_CREATE]) {
 				items {
 					body
 				}
+			}
+			getTransferHistory(contracts: [$contractId]) {
+				total
 			}
 		}
 	`;
@@ -30,6 +40,7 @@ export const getContractInfo = async (contractId) => {
 		.then(({ data }) => ({
 			history: data.getHistory,
 			contractInfo: data.getContract,
+			transferHistory: data.getTransferHistory,
 		}));
 };
 
