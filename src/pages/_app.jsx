@@ -21,6 +21,8 @@ import Footer from '../containers/Footer';
 import RecentBlockSidebar from '../containers/RecentBlockSection/RecentBlockSidebar';
 import GlobalActions from '../actions/GlobalActions';
 import { serverConnect } from '../actions/SocketActions';
+import ErrorScreen from '../components/Error/ErrorScreen';
+import NotFoundScreen from '../containers/Error/NotFoundScreen';
 // import Toast from '../components/Toast';
 
 class ExplorerApp extends App {
@@ -92,20 +94,40 @@ class ExplorerApp extends App {
 		);
 	}
 
+	renderErrorScreen(error) {
+		return (
+			<ErrorScreen error={error} />
+		);
+	}
+
+	renderNotFound() {
+		return (
+			<NotFoundScreen />
+		);
+	}
+
 	render() {
 		const {
-			// error,
-			// errorPath,
-			// errorScreen,
 			router: { pathname },
 			// subscribeConnect,
 			// showInternetConnectionBar,
 			isShowModal,
-
 			Component, pageProps, store,
 		} = this.props;
 		const parsedLocation = pathname.split('/')[1];
 		const full = Object.keys(CONTRACT_DETAILS_NUMBERS_TAB).includes(parsedLocation);
+		const error = store.getState().global.get('error');
+		const errorScreen = store.getState().global.get('errorScreen');
+		const errorPath = store.getState().global.get('errorPath');
+
+		if (error || errorScreen) {
+			return this.renderErrorScreen(error);
+		}
+
+		console.log('errorPath', errorPath);
+		if (errorPath) {
+			return this.renderNotFound();
+		}
 
 		return (
 			<Provider store={store}>

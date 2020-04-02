@@ -15,7 +15,7 @@ import URLHelper from '../../helpers/URLHelper';
 class Account extends React.Component {
 
 	static async getInitialProps({ query, store }) {
-		await store.dispatch(AccountActions.getAccountInfo(query.id));
+		store.dispatch(AccountActions.getAccountInfo(query.id));
 		return { query };
 	}
 

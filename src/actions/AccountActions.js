@@ -83,6 +83,8 @@ class AccountActions extends BaseActionsClass {
 			try {
 				const [account] = await echo.api.getFullAccounts([id]);
 
+				console.log('account', account);
+
 				if (!account) {
 					dispatch(GlobalActions.toggleErrorPath(true));
 					return;

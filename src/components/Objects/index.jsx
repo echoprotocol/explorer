@@ -28,10 +28,6 @@ class Objects extends React.Component {
 		return { query: { id } };
 	}
 
-	componentDidMount() {
-		// this.checkObject();
-	}
-
 	componentDidUpdate() {
 		if (this.props.query.id) {
 			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.props.query.id));
@@ -40,14 +36,6 @@ class Objects extends React.Component {
 
 	componentWillUnmount() {
 		this.props.setError(null);
-	}
-
-	checkObject(id) {
-		if (!id) {
-			this.props.setError('Object id is Invalid');
-		} else {
-			this.props.getObjectInfo(id);
-		}
 	}
 
 	copy() {
@@ -122,7 +110,6 @@ class Objects extends React.Component {
 Objects.propTypes = {
 	query: PropTypes.object.isRequired,
 	data: PropTypes.any,
-	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
 	error: PropTypes.string,
 	setTitle: PropTypes.func.isRequired,
@@ -130,7 +117,6 @@ Objects.propTypes = {
 
 Objects.defaultProps = {
 	data: null,
-	getObjectInfo: null,
 	setError: null,
 	error: null,
 };
