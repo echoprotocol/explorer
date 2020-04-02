@@ -16,6 +16,7 @@ import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import { OBJECTS_PATH, SSR_ACCOUNTS_PATH, SSR_ASSET_PATH, SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class ObjectInfo extends React.Component {
 

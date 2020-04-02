@@ -35,7 +35,7 @@ class DistributionTable extends React.Component {
 
 					<td className="origin">
 						<Link href={SSR_ACCOUNTS_PATH}>
-							<a className="td-in" onClick={(e) => this.onClick(e, producer)}>
+							<a href="" className="td-in" onClick={(e) => this.onClick(e, producer)}>
 								<Avatar accountName={producer} />
 								<span>{producer}</span>
 							</a>
@@ -46,7 +46,7 @@ class DistributionTable extends React.Component {
 							{
 								delegate ? (
 									<Link href={SSR_ACCOUNTS_PATH}>
-										<a className="td-in" onClick={(e) => this.onClick(e, delegate)}>
+										<a href="" className="td-in" onClick={(e) => this.onClick(e, delegate)}>
 											<Avatar accountName={producer} />
 											<span>{delegate}</span>
 										</a>

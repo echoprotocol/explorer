@@ -1,6 +1,5 @@
 import App from 'next/app';
-import Error from 'next/error';
-import Router, { withRouter } from 'next/router';
+import { withRouter } from 'next/router';
 import classnames from 'classnames';
 
 import PropTypes from 'prop-types';
@@ -20,7 +19,7 @@ import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
 import Footer from '../containers/Footer';
 import RecentBlockSidebar from '../containers/RecentBlockSection/RecentBlockSidebar';
 import GlobalActions from '../actions/GlobalActions';
-import { disconnect, serverConnect } from '../actions/SocketActions';
+import { serverConnect } from '../actions/SocketActions';
 import ErrorScreen from '../components/Error/ErrorScreen';
 import NotFoundScreen from '../components/Error/NotFoundScreen';
 // import Toast from '../components/Toast';

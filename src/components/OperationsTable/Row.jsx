@@ -49,7 +49,7 @@ const OperationsRow = React.memo(({
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
 		return (
 			<Link href={SsrHrefHelper.getHrefByObjectId(subject)}>
-				<a className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
+				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
 					{mainInfo.subject.name && <Avatar accountName={subject} />}
 					<span>{subject}</span>
 				</a>
@@ -101,7 +101,7 @@ const OperationsRow = React.memo(({
 				<td className="sender">
 					{ mainInfo.from.id ?
 						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
-							<a className="td-in avatar-wrap" onClick={(e) => goToLink(e, getSenderLink(), mainInfo.from.id)}>
+							<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, getSenderLink(), mainInfo.from.id)}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
 							</a>

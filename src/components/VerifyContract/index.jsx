@@ -9,9 +9,11 @@ import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
-const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.UnControlled), {
+/* eslint-disable global-require */
+const CodeMirror = dynamic(() => require('../CodeMirror').UnControlled, {
 	ssr: false,
 });
+/* eslint-enable global-require */
 
 class VerifyContract extends React.Component {
 
@@ -223,7 +225,7 @@ class VerifyContract extends React.Component {
 			lineNumbers: true,
 			readOnly: form.get('loading'),
 		};
-		console.log('render');
+
 		return (
 			<div className="inner-information-container inner-page verify-contract">
 				<div className="backwards">

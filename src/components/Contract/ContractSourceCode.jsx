@@ -3,9 +3,11 @@ import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 
-const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
+/* eslint-disable global-require */
+const CodeMirror = dynamic(() => require('../CodeMirror').Controlled, {
 	ssr: false,
 });
+/* eslint-enable global-require */
 
 class ContractSourceCode extends React.Component {
 

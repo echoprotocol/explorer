@@ -13,7 +13,7 @@ import Footer from './Footer';
 import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
 
 import InternetPopup from '../components/InternetPopup';
-import NotFoundScreen from '../containers/Error/NotFoundScreen';
+import NotFoundScreen from '../components/Error/NotFoundScreen';
 import ErrorScreen from '../components/Error/ErrorScreen';
 import Modal from '../containers/Modals';
 import Loader from '../components/Loader';

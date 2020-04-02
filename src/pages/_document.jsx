@@ -25,7 +25,7 @@ export default class extends Document {
 
 	render() {
 		return (
-			<html {...this.helmetHtmlAttrComponents}>
+			<html lang="en" {...this.helmetHtmlAttrComponents}>
 				<Head>{this.helmetHeadComponents}</Head>
 				<body {...this.helmetBodyAttrComponents}>
 					<Main />

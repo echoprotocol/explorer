@@ -5,9 +5,11 @@ import classnames from 'classnames';
 
 import avatar from '../../public/images/default-avatar.svg';
 
-const SvgAvatar = dynamic(() => import('./svgAvatar'), {
+/* eslint-disable global-require */
+const SvgAvatar = dynamic(() => require('./svgAvatar'), {
 	ssr: false,
 });
+/* eslint-enable global-require */
 
 class Avatar extends React.Component {
 
@@ -54,7 +56,7 @@ class Avatar extends React.Component {
 
 	updateAvatarSize() {
 		if (!this.imageRef.current) {
-			return
+			return;
 		}
 		const avatarSize = this.imageRef.current.offsetHeight;
 		if (avatarSize !== this.state.avatarSize) {

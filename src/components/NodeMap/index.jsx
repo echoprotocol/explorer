@@ -6,23 +6,25 @@ import config from '../../config/chain';
 import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
 import Loader from '../Loader';
 
-const Map = dynamic(() => import('./mapbox'), {
+/* eslint-disable global-require */
+const Map = dynamic(() => require('./mapbox'), {
 	ssr: false,
-	loading: () => <Loader/>
+	loading: () => <Loader />,
 });
 
-const Layer = dynamic(() => import('./mapbox').then((component) => component.Layer), {
+const Layer = dynamic(() => require('./mapbox').Layer, {
 	ssr: false,
-	loading: () => <Loader/>
+	loading: () => <Loader />,
 });
-const Feature = dynamic(() => import('./mapbox').then((component) => component.Feature), {
+const Feature = dynamic(() => require('./mapbox').Feature, {
 	ssr: false,
-	loading: () => <Loader/>
+	loading: () => <Loader />,
 });
-const Popup = dynamic(() => import('./mapbox').then((component) => component.Popup), {
+const Popup = dynamic(() => require('./mapbox').Popup, {
 	ssr: false,
-	loading: () => <Loader/>
+	loading: () => <Loader />,
 });
+/* eslint-disable global-require */
 
 class NodeMap extends React.Component {
 
@@ -101,38 +103,38 @@ class NodeMap extends React.Component {
 						How to run full node
 					</button>
 				</div>
-					<Map
-						className="distribution-map"
-						// eslint-disable-next-line react/style-prop-object
-						style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
-						zoom={DEFAULT_MAP_ZOOM}
+				<Map
+					className="distribution-map"
+					// eslint-disable-next-line react/style-prop-object
+					style="mapbox://styles/maxshev/ck2lyn9ua0bv61cp7598loxiq"
+					zoom={DEFAULT_MAP_ZOOM}
+				>
+					{data.map((p, key) => (
+						<Layer
+							type="circle"
+							id={p.id}
+							key={key.toString()}
+							paint={p.POSITION_CIRCLE_PAINT}
+						>
+							<Feature
+								coordinates={[p.longitude, p.latitude]}
+								onMouseEnter={(mapWithEvt) => this.onHover(mapWithEvt, p)}
+								onMouseLeave={(mapWithEvt) => this.hidePopup(mapWithEvt, p)}
+							/>
+						</Layer>
+					))
+					}
+					{popupData &&
+					<Popup
+						coordinates={[popupData.longitude, popupData.latitude]}
+						anchor="null"
 					>
-						{data.map((p, key) => (
-							<Layer
-								type="circle"
-								id={p.id}
-								key={key.toString()}
-								paint={p.POSITION_CIRCLE_PAINT}
-							>
-								<Feature
-									coordinates={[p.longitude, p.latitude]}
-									onMouseEnter={(mapWithEvt) => this.onHover(mapWithEvt, p)}
-									onMouseLeave={(mapWithEvt) => this.hidePopup(mapWithEvt, p)}
-								/>
-							</Layer>
-						))
-						}
-						{popupData &&
-							<Popup
-								coordinates={[popupData.longitude, popupData.latitude]}
-								anchor="null"
-							>
-								<span>{popupData.city}{popupData.city ? ', ' : ' '}{popupData.country}</span>
-								<br />
-								<span>count = {popupData.node}</span>
-							</Popup>
-						}
-					</Map>
+						<span>{popupData.city}{popupData.city ? ', ' : ' '}{popupData.country}</span>
+						<br />
+						<span>count = {popupData.node}</span>
+					</Popup>
+					}
+				</Map>
 			</div>
 		);
 	}
