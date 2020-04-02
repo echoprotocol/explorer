@@ -24,11 +24,6 @@ class Account extends React.Component {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
 		}
 
-		if (prevProps.query.id !== this.props.query.id) {
-			this.props.getAccountInfo();
-			return;
-		}
-
 		if (!prevProps.account) {
 			return;
 		}
@@ -42,11 +37,6 @@ class Account extends React.Component {
 		if (prevAccountHistory.size !== accountHistory.size) {
 			this.props.updateAccountHistory(account.get('id'), account.get('history'), prevAccount.get('history'));
 		}
-
-		if (!prevAccount.get('balances').equals(account.get('balances'))) {
-			this.props.updateAccountBalances(account.get('balances'));
-		}
-
 	}
 
 	componentWillUnmount() {
@@ -136,7 +126,6 @@ class Account extends React.Component {
 Account.propTypes = {
 	isMobile: PropTypes.bool.isRequired,
 	router: PropTypes.object.isRequired,
-	query: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
@@ -144,10 +133,8 @@ Account.propTypes = {
 	balances: PropTypes.object,
 	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	accountHistory: PropTypes.object,
-	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
 	updateAccountHistory: PropTypes.func.isRequired,
-	updateAccountBalances: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };

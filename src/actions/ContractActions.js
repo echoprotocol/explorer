@@ -13,7 +13,7 @@ import {
 import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
-import { CONTRACT_ABI, SSR_CONTRACT_PATH } from '../constants/RouterConstants';
+import { CONTRACT_ABI, SSR_CONTRACT_DETAILS_PATH, SSR_CONTRACT_PATH } from '../constants/RouterConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 import URLHelper from '../helpers/URLHelper';
@@ -542,7 +542,7 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(this.setValue('abi', FormatHelper.formatAbi(response.abi)));
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'ABI successfully uploaded' }));
-				Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id, CONTRACT_ABI));
+				Router.push(SSR_CONTRACT_DETAILS_PATH, URLHelper.createContractUrl(id, CONTRACT_ABI));
 			} catch (err) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));
 			}

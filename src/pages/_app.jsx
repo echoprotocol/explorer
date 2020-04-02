@@ -35,8 +35,8 @@ class ExplorerApp extends App {
 					pingTimeout: 6000,
 					pingDelay: 5000,
 					debug: false,
-					apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
-					// apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
+					// apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
+					apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
 				});
 			}
 		} catch (err) {

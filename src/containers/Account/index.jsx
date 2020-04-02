@@ -17,7 +17,6 @@ export default withRouter(connect(
 		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
-		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
 		updateAccountHistory: (accountId, newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
 			accountId,
 			newHistory,
@@ -27,7 +26,6 @@ export default withRouter(connect(
 			accountId,
 			lastOperationId,
 		)),
-		updateAccountBalances: (balances) => dispatch(AccountActions.updateAccountBalances(balances)),
 		clearAccountInfo: () => dispatch(AccountActions.clear()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),

@@ -1,6 +1,5 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import Inmmutable, { List, fromJS } from 'immutable';
-import { batchActions } from 'redux-batched-actions';
 import BN from 'bignumber.js';
 
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT, TOKEN_TYPE } from '../constants/GlobalConstants';
@@ -151,20 +150,6 @@ class AccountActions extends BaseActionsClass {
 	}
 
 	/**
-	 * Update account balances
-	 * @param {Map} balances
-	 * @returns {function}
-	 */
-	updateAccountBalances(balances) {
-		return async (dispatch) => {
-			const objectIds = balances.reduce((arr, key, value) => [...arr, key, value], []);
-			await echo.api.getObjects(objectIds);
-
-			dispatch(this.setMultipleValue({ balances }));
-		};
-	}
-
-	/**
 	 * Load account history
 	 * @param {string} accountId
 	 * @param {number} lastOperationId
@@ -192,16 +177,9 @@ class AccountActions extends BaseActionsClass {
 				const isFullHistory = transactions.length <= DEFAULT_ROWS_COUNT;
 				transactions = await this.formatAccountHistory(accountId, transactions.slice(0, DEFAULT_ROWS_COUNT));
 
-				dispatch(batchActions([
-					this.reducer.actions.concat({
-						field: 'history',
-						value: new List(transactions),
-					}),
-					this.reducer.actions.set({
-						field: 'isFullHistory',
-						value: isFullHistory,
-					}),
-				]));
+
+				dispatch(this.reducer.actions.concat({ field: 'history', value: new List(transactions) }));
+				dispatch(this.reducer.actions.set({ field: 'isFullHistory', value: isFullHistory }));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {

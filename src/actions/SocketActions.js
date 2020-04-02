@@ -147,8 +147,8 @@ export const connect = () => async (dispatch) => {
 			pingTimeout: 6000,
 			pingDelay: 5000,
 			debug: false,
-			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
-			// apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
+			// apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
+			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
 		});
 
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
@@ -161,7 +161,6 @@ export const connect = () => async (dispatch) => {
 
 		dispatch(GlobalReducer.actions.set({ field: 'connected', value: true }));
 	} catch (err) {
-		console.log('hehehe  connect to echo', JSON.stringify(err, null, 10));
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
 			GlobalReducer.actions.set({ field: 'connected', value: false }),
