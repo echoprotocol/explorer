@@ -40,7 +40,7 @@ class BlockInformation extends React.Component {
 	}
 
 	static async getInitialProps({ query, store }) {
-		store.dispatch(getBlockInformation(query.round));
+		await store.dispatch(getBlockInformation(query.round));
 		return { query };
 	}
 

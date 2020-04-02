@@ -1,6 +1,6 @@
 import App from 'next/app';
-import { withRouter } from 'next/router';
-import echo from 'echojs-lib';
+import Error from 'next/error';
+import Router, { withRouter } from 'next/router';
 import classnames from 'classnames';
 
 import PropTypes from 'prop-types';
@@ -20,31 +20,15 @@ import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
 import Footer from '../containers/Footer';
 import RecentBlockSidebar from '../containers/RecentBlockSection/RecentBlockSidebar';
 import GlobalActions from '../actions/GlobalActions';
-import { serverConnect } from '../actions/SocketActions';
+import { disconnect, serverConnect } from '../actions/SocketActions';
 import ErrorScreen from '../components/Error/ErrorScreen';
-import NotFoundScreen from '../containers/Error/NotFoundScreen';
+import NotFoundScreen from '../components/Error/NotFoundScreen';
 // import Toast from '../components/Toast';
 
 class ExplorerApp extends App {
 
 	static async getInitialProps({ Component, ctx }) {
 		console.log('getInitialProps ExplorerApp', ctx.isServer);
-		try {
-			if (ctx.isServer && !echo.isConnected) {
-				await echo.connect(process.env.API_URL, {
-					connectionTimeout: 5000,
-					maxRetries: 1e10,
-					pingTimeout: 6000,
-					pingDelay: 5000,
-					debug: false,
-					// apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
-					apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
-				});
-			}
-		} catch (err) {
-			console.log('err connect to echo', JSON.stringify(err, null, 10));
-		}
-
 		const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
 		const isMobile = !!(new MobileDetect(userAgent)).mobile();
 
@@ -55,14 +39,19 @@ class ExplorerApp extends App {
 		}
 
 		const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
-
 		return { pageProps };
 	}
 
 	componentDidMount() {
 		if (!this.props.store.isServer) {
 			this.props.store.dispatch(GlobalActions.init());
+			document.title = this.props.title;
 		}
+	}
+
+	componentWillUnmount() {
+		console.log('componentWillUnmount');
+		// this.props.store.dispatch(disconnect());
 	}
 
 	renderModals() {
@@ -72,10 +61,11 @@ class ExplorerApp extends App {
 	}
 
 	renderMeta() {
+		const title = this.props.store.getState().global.get('title');
 		return (
 			<Helmet
 				htmlAttributes={{ lang: 'en' }}
-				title="Echo Explorer"
+				title={title || 'Echo Explorer'}
 				meta={[
 					{
 						charset: 'UTF-8',
@@ -101,8 +91,9 @@ class ExplorerApp extends App {
 	}
 
 	renderNotFound() {
+		const resetErrorPath = () => this.props.store.dispatch(GlobalActions.toggleErrorPath(false));
 		return (
-			<NotFoundScreen />
+			<NotFoundScreen resetErrorPath={() => resetErrorPath()} />
 		);
 	}
 
@@ -124,7 +115,6 @@ class ExplorerApp extends App {
 			return this.renderErrorScreen(error);
 		}
 
-		console.log('errorPath', errorPath);
 		if (errorPath) {
 			return this.renderNotFound();
 		}
@@ -159,6 +149,7 @@ class ExplorerApp extends App {
 
 ExplorerApp.propTypes = {
 	router: PropTypes.object,
+	store: PropTypes.object.isRequired,
 };
 
 ExplorerApp.defaultProps = {
