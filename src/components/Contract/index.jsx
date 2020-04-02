@@ -57,7 +57,6 @@ class Contract extends React.Component {
 	}
 
 	static async getInitialProps({ query, store }) {
-		console.log(query);
 		await store.dispatch(ContractActions.getContractInfo(query.id));
 		return { query };
 	}
@@ -68,25 +67,21 @@ class Contract extends React.Component {
 		await this.initContract();
 		const { verified } = this.props;
 
-		// if (this.props.location.search) {
-		// 	this.props.history.push(this.props.location.pathname);
-		// }
-		//
 		if (!verified && detail === CONTRACT_SOURCE_CODE) {
 			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 		}
 
 		this.props.loadActiveAccount();
 
-		// if (window.innerWidth > 400) {
-		// 	this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
-		// }
+		if (window.innerWidth > 400) {
+			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
+		}
 		this.subscribe(id);
 	}
 
 
 	componentDidUpdate(prevProps) {
-		// if (prevProps.query.params.id !== this.props.query.params.id) {
+		// if (prevProps.query.id && prevProps.query.id !== this.props.query.id) {
 		// 	this.initContract();
 		// }
 	}
@@ -102,11 +97,13 @@ class Contract extends React.Component {
 
 	async initContract() {
 		const { id } = this.props.query;
-
 		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
-		// await this.props.getContractInfo(id);
-		// echo.subscriber.removeContractSubscribe(this.subscriber);
-		// echo.subscriber.setContractSubscribe([id], this.subscriber);
+
+		if (echo.isConnected) {
+			await this.props.getContractInfo(id);
+			echo.subscriber.removeContractSubscribe(this.subscriber);
+			echo.subscriber.setContractSubscribe([id], this.subscriber);
+		}
 	}
 
 
@@ -192,7 +189,7 @@ class Contract extends React.Component {
 
 	renderMeta() {
 		const {
-			icon, description, name, query:  { id },
+			icon, description, name, query: { id },
 		} = this.props;
 
 		return (
@@ -356,7 +353,7 @@ class Contract extends React.Component {
 						<Media query="(max-width: 400px)" defaultMatches={isMobile}>
 							{(matches) =>
 								(!matches ?
-									<div className="horizontal-tab-panel">
+									<div className={classnames('horizontal-tab-panel', { 'server-slick-track': typeof window == 'undefined' })}>
 										<Slider ref={this.slider} {...settings} >
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
 												<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(id)}>

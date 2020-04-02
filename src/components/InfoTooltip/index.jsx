@@ -23,19 +23,18 @@ class InfoTooltip extends React.Component {
 		const { hovered } = this.state;
 		const { tooltipText	} = this.props;
 
-		// <Tooltip
-		// 	placement="rightBottom"
-		// 	trigger={['hover']}
-		// 	overlay={<span>{tooltipText}</span>}
-		// 	onMouseEnter={() => this.changeHover(true)}
-		// 	onMouseLeave={() => this.changeHover(false)}
-		// >
-		// 		<span className="tooltip">
-		// 			<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
-		// 		</span>
-		// </Tooltip>
 		return (
-			<div>InfoTooltip</div>
+			<Tooltip
+				placement="rightBottom"
+				trigger={['hover']}
+				overlay={<span>{tooltipText}</span>}
+				onMouseEnter={() => this.changeHover(true)}
+				onMouseLeave={() => this.changeHover(false)}
+			>
+				<span className="tooltip">
+					<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
+				</span>
+			</Tooltip>
 		);
 	}
 

@@ -4,7 +4,7 @@ import React from 'react';
 
 function SvgAvatarComponent({ accountName, avatarSize }) {
 	return (
-		<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize)}} />
+		<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />
 	);
 }
 

@@ -1,3 +1,3 @@
-import NotFound from '../../containers/Error/NotFoundScreen';
+import NotFound from '../../components/Error/NotFoundScreen';
 
 export default NotFound;

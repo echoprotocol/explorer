@@ -26,7 +26,11 @@ class NotFoundScreen extends Component {
 }
 
 NotFoundScreen.propTypes = {
-	resetErrorPath: PropTypes.func.isRequired,
+	resetErrorPath: PropTypes.func,
+};
+
+NotFoundScreen.defaultProps = {
+	resetErrorPath: () => {},
 };
 
 export default NotFoundScreen;

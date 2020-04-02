@@ -6,10 +6,10 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import URLHelper from '../../helpers/URLHelper';
 
-import Avatar from '../Avatar';
 import Thead from './Thead';
 
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
+import Avatar from '../Avatar';
 
 class DistributionTable extends React.Component {
 
