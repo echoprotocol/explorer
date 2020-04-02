@@ -16,7 +16,6 @@
 	}
 
 	@include max-vw(1279) {
-		min-height: calc(100vh - 403px);
 		width: 100%;
 		padding-right: 0;
 		min-height: calc(100vh - 363px);

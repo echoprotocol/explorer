@@ -1,0 +1,27 @@
+.primary-btn {
+	@include InterUI_Medium();
+	font-size: 12px;
+	line-height: 15px;
+	border-radius: 22px;
+	color: $explorer-black;
+	border: 1px solid transparent;
+	background-color: transparent;
+	min-height: 34px;
+	@include onFocus(22px, 2px, 2px, rgba(#498fdf, 0.5));
+
+	path {
+		fill: $explorer-black;
+		transition: fill $speed;
+	}
+	&:disabled {
+		background-color: $lightgrey-darker;
+		border: 1px solid $lightgrey-darker;
+		color: $lightgrey;
+		path {
+			fill: $lightgrey;
+		}
+	}
+	&:hover:not(:disabled) {
+		border: 1px solid $lightgrey;
+	}
+}

@@ -658,7 +658,7 @@ const Operations = {
 		options: {
 			from: null,
 			subject: ['receiver', 'name'],
-			value: 'amount',
+			value: 'assets[0].amount',
 			asset: null,
 		},
 	},

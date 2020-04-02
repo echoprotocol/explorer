@@ -4,9 +4,8 @@ import { Helmet } from 'react-helmet';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import OperationsTable from '../TransactionInfo/OperationsTable';
+import OperationsTable from '../OperationsTable';
 import InnerHeader from '../InnerHeader';
-import TableLable from '../TableLable';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 import AccountActions from '../../actions/AccountActions';
@@ -99,22 +98,20 @@ class Account extends React.Component {
 					</div>
 				</div>
 				<div className="account-page-table">
-					{
-						account && !loading ?
-							<React.Fragment>
-								<TableLable label="Transactions" />
-								{
-									accountHistory.size ?
-										<OperationsTable
-											router={this.props.router}
-											operations={accountHistory}
-											loading={loadingMoreHistory}
-											loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
-											hasMore={!isFullHistory}
-											timestamp
-										/> : null
-								}
-							</React.Fragment> : this.renderLoader(loading)
+					{ account && !loading ?
+						<React.Fragment>
+							{ accountHistory.size ?
+								<OperationsTable
+									label="Transactions"
+									router={this.props.router}
+									operations={accountHistory}
+									loading={loadingMoreHistory}
+									loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+									hasMore={!isFullHistory}
+									timestamp
+								/> : null
+							}
+						</React.Fragment> : this.renderLoader(loading)
 					}
 				</div>
 			</div>

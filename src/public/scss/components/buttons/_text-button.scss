@@ -1,14 +1,14 @@
 .text-button {
-    @include InterUI_Regular;
-    background-color: transparent;
-    font-size: 12px;
-    border: 0;
-    color: #848B94;
-    cursor: pointer;
+	@include InterUI_Regular;
+	background-color: transparent;
+	font-size: 12px;
+	border: 0;
+	color: #848b94;
+	cursor: pointer;
 
-    &.blue {
-        color: #4588D7;
-        top: 10px;
-        position: relative;
-    }
+	&.blue {
+		color: #4588d7;
+		top: 10px;
+		position: relative;
+	}
 }

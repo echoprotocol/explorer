@@ -290,7 +290,6 @@ class OperationInfo extends React.Component {
 				<div className="operation-detail-table">
 					{this.renderInfo()}
 				</div>
-
 			</div>
 		);
 	}

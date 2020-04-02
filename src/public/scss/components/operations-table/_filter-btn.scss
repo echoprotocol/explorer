@@ -1,0 +1,31 @@
+.filter-btn {
+	background-color: transparent;
+	height: 30px;
+	padding: 0 8px;
+	border: 0;
+	font-size: 11px;
+	line-height: 13px;
+	letter-spacing: 0.02em;
+	transition: color $speed;
+
+	&:not(:disabled) {
+		cursor: pointer;
+	}
+	&:active {
+		color: rgba($grey, 0.6);
+		path {
+			fill: rgba($grey, 0.6);
+		}
+	}
+	@include onFocus(4px, 2px, 2px, rgba(#498fdf, 0.5));
+	@include InterUI_Medium();
+
+	.caption {
+		color: $grey;
+		margin-left: 10px;
+	}
+	path {
+		transition: fill $speed;
+		fill: $grey;
+	}
+}

@@ -1,10 +1,3 @@
-$res-320: 320px;
-$res-500: 500px;
-$res-768: 768px;
-$res-1000: 1000px;
-$res-1280: 1280px;
-$res-1440: 1535px;
-
 @mixin max-vw($width) {
 	@media (max-width: $width + "px") {
 		@content;
@@ -29,28 +22,8 @@ $res-1440: 1535px;
 	}
 }
 
-@keyframes fade-in {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-}
-
-@keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-
-	to {
-		transform: rotate(360deg);
-	}
-}
-
 @mixin transition {
-	transition: all 0.2s ease-out;
+	transition: all $speed ease-out;
 }
 
 @mixin allWidth($width) {
@@ -153,8 +126,31 @@ $res-1440: 1535px;
 	white-space: nowrap;
 }
 
-@mixin onlyHover() {
+@mixin only-hover() {
 	@media (hover: hover) {
 		@content;
+	}
+}
+
+@mixin absolute-stretch($top: 0, $right: 0, $bottom: 0, $left: 0) {
+	position: absolute;
+	content: "";
+	top: $top;
+	right: $right;
+	bottom: $bottom;
+	left: $left;
+}
+
+@mixin link() {
+	color: $blue;
+	transition: color $speed ease-out;
+	&:not(:disabled):hover {
+		color: #095494;
+	}
+	&:not(:disabled):active {
+		color: #fb0707;
+	}
+	&:focus {
+		color: #095494;
 	}
 }

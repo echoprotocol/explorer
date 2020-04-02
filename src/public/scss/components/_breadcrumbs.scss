@@ -2,25 +2,15 @@
 	display: flex;
 	align-items: center;
 	> .element {
+		@include link();
+		@include Hack_Bold;
 		position: relative;
 		display: inline-block;
-		@include Hack_Bold;
 		font-size: 9px;
 		letter-spacing: 2.25px;
-		color: #2a90e6;
 		text-transform: uppercase;
 		padding-top: 5px;
 		padding-bottom: 5px;
-
-		transition: 0.2s ease-out;
-
-		&:hover {
-			color: #095494;
-		}
-
-		&:active {
-			color: #fb0707;
-		}
 
 		&:not(:last-child) {
 			margin-right: 25px;
