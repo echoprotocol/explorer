@@ -6,10 +6,6 @@
 		"allowImportExportEverywhere": true
 	},
 	"globals": {
-		"IS_SERVER": true,
-		"IS_CLIENT": true,
-		"API_URL": true,
-		"ECHO_CONFIG": true,
 		"LANDING_BRIDGE": true,
 		"INSTALL_NODE_LINK": true,
 		"GRAPHQL_URL_HTTP_LINK": true,
@@ -18,7 +14,8 @@
 		"SOLC_LIST_URL": true,
 		"SOLC_BIN_URL": true,
 		"APP_VERSION": true,
-		"MAP_API_TOKEN": true
+		"MAP_API_TOKEN": true,
+		"ECHO_NODE": true
 	},
 	"env": {
 		"browser": true,

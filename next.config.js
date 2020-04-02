@@ -3,7 +3,6 @@ const withCSS = require('@zeit/next-css');
 const withFonts = require('next-fonts');
 
 const {
-	API_URL,
 	LANDING_BRIDGE,
 	GRAPHQL_URL,
 	SERVER_URL,
@@ -11,6 +10,7 @@ const {
 	SOLC_BIN_URL,
 	MAP_API_TOKEN,
 	INSTALL_NODE_LINK,
+	ECHO_NODE,
 } = require('config');
 
 const packageJson = require('./package.json');
@@ -19,7 +19,7 @@ const chainWrapper = (appConfig) => withFonts(withSass(withCSS(appConfig)));
 
 module.exports = chainWrapper({
 	env: {
-		API_URL,
+		ECHO_NODE,
 		SERVER_URL,
 		SOLC_LIST_URL,
 		SOLC_BIN_URL,

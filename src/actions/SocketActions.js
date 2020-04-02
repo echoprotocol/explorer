@@ -108,15 +108,14 @@ const blockRelease = () => async (dispatch) => {
 
 export const serverConnect = () => async (dispatch) => {
 	try {
-		console.log('server connect');
+		console.log('server connect', echo.isConnected);
 		if (!echo.isConnected) {
-			await echo.connect(process.env.API_URL, {
-				connectionTimeout: 5000,
-				maxRetries: 1e10,
-				pingTimeout: 6000,
-				pingDelay: 5000,
-				debug: false,
-				apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
+			await echo.connect(config.ECHO_NODE.API_URL, {
+				connectionTimeout: config.ECHO_NODE.CONNECTION_TIMEOUT,
+				maxRetries: config.ECHO_NODE.MAX_RETRIES,
+				pingDelay: config.ECHO_NODE.PING_DELAY,
+				debug: config.ECHO_NODE.DEBUG,
+				apis: config.ECHO_NODE.APIS,
 			});
 		}
 
@@ -149,18 +148,18 @@ export const serverConnect = () => async (dispatch) => {
  *
  * 	WS connect to blockchain and set subscribe callbacks
  */
-export const connect = () => async (dispatch) => {
+export const clientConnect = () => async (dispatch) => {
 	try {
-		console.log('client connect');
-		await echo.connect(config.API_URL, {
-			connectionTimeout: 5000,
-			maxRetries: 1e10,
-			pingTimeout: 6000,
-			pingDelay: 5000,
-			debug: false,
-			// apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node'],
-			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
-		});
+		console.log('client connect', echo.isConnected);
+		if (!echo.isConnected) {
+			await echo.connect(config.ECHO_NODE.API_URL, {
+				connectionTimeout: config.ECHO_NODE.CONNECTION_TIMEOUT,
+				maxRetries: config.ECHO_NODE.MAX_RETRIES,
+				pingDelay: config.ECHO_NODE.PING_DELAY,
+				debug: config.ECHO_NODE.DEBUG,
+				apis: config.ECHO_NODE.APIS,
+			});
+		}
 
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));

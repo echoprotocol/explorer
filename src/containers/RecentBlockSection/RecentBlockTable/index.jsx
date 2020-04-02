@@ -105,7 +105,7 @@ class RecentBlockTable extends React.Component {
 	transitionToBlock() {
 		const { errorSearch, hints: [hint] } = this.props;
 		if (errorSearch) return;
-		Router.push(hint.to);
+		Router.push(SSR_BLOCK_INFORMATION_PATH, hint.to);
 	}
 
 	render() {
@@ -139,7 +139,13 @@ class RecentBlockTable extends React.Component {
 									{
 										blocks.map((data) => (
 											<Link href={SSR_BLOCK_INFORMATION_PATH} key={data.round}>
-												<a href="" className="recent-block-element fade-anim" onClick={(e) => this.goToBlock(e, data.round)}>
+												<div
+													role="button"
+													tabIndex={0}
+													onKeyPress={() => { }}
+													className="recent-block-element fade-anim"
+													onClick={(e) => this.goToBlock(e, data.round)}
+												>
 													<div className="container">
 														<div className="title">Block #</div>
 														<div className="value">
@@ -175,7 +181,7 @@ class RecentBlockTable extends React.Component {
 														<div className="title">Transactions</div>
 														<div className="value">{data.transactions}</div>
 													</div>
-												</a>
+												</div>
 											</Link>
 										))
 									}
@@ -205,7 +211,13 @@ class RecentBlockTable extends React.Component {
 											blocks.map((data) => (
 												<React.Fragment key={data.round}>
 													<Link href={SSR_BLOCK_INFORMATION_PATH} key={data.round}>
-														<a href="" className="div-table-row fade-anim" onClick={(e) => this.goToBlock(e, data.round, BLOCK_INFORMATION_PATH)}>
+														<div
+															role="button"
+															tabIndex={0}
+															onKeyPress={() => { }}
+															className="div-table-row fade-anim"
+															onClick={(e) => this.goToBlock(e, data.round, BLOCK_INFORMATION_PATH)}
+														>
 															<div className="div-table-cell">
 																<span>
 																	{data.blockNumber}
@@ -224,7 +236,7 @@ class RecentBlockTable extends React.Component {
 															<div className="div-table-cell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
 															<div className="div-table-cell">{data.weight} <span className="gray">{data.weightSize}</span></div>
 															<div className="div-table-cell">{data.transactions}</div>
-														</a>
+														</div>
 													</Link>
 												</React.Fragment>
 											))
