@@ -7,11 +7,9 @@ import Router, { withRouter } from 'next/router';
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_UPLOAD_ABI_PATH } from '../../constants/RouterConstants';
 
-/* eslint-disable global-require */
-const CodeMirror = dynamic(() => require('../CodeMirror').Controlled, {
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
 	ssr: false,
 });
-/* eslint-enable global-require */
 
 class ContractAbi extends React.Component {
 

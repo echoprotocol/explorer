@@ -9,11 +9,9 @@ import { CONTRACT_ABI, SSR_CONTRACT_DETAILS_PATH } from '../../constants/RouterC
 import FormatHelper from '../../helpers/FormatHelper';
 import { ContractIcon } from '../Contract/ContractIcon';
 
-/* eslint-disable global-require */
-const CodeMirror = dynamic(() => require('../CodeMirror').Controlled, {
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
 	ssr: false,
 });
-/* eslint-enable global-require */
 
 class UploadABI extends React.Component {
 

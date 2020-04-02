@@ -1,5 +1,10 @@
 {
 	"extends": "airbnb",
+	"parser": "babel-eslint",
+	"parserOptions": {
+		"sourceType": "module",
+		"allowImportExportEverywhere": true
+	},
 	"globals": {
 		"IS_SERVER": true,
 		"IS_CLIENT": true,

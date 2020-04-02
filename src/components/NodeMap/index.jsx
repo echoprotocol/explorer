@@ -6,25 +6,23 @@ import config from '../../config/chain';
 import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
 import Loader from '../Loader';
 
-/* eslint-disable global-require */
-const Map = dynamic(() => require('./mapbox'), {
+const Map = dynamic(() => import('./mapbox'), {
 	ssr: false,
 	loading: () => <Loader />,
 });
 
-const Layer = dynamic(() => require('./mapbox').Layer, {
+const Layer = dynamic(() => import('./mapbox').then((component) => component.Layer), {
 	ssr: false,
 	loading: () => <Loader />,
 });
-const Feature = dynamic(() => require('./mapbox').Feature, {
+const Feature = dynamic(() => import('./mapbox').then((component) => component.Feature), {
 	ssr: false,
 	loading: () => <Loader />,
 });
-const Popup = dynamic(() => require('./mapbox').Popup, {
+const Popup = dynamic(() => import('./mapbox').then((component) => component.Popup), {
 	ssr: false,
 	loading: () => <Loader />,
 });
-/* eslint-disable global-require */
 
 class NodeMap extends React.Component {
 

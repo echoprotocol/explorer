@@ -9,11 +9,9 @@ import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
-/* eslint-disable global-require */
-const CodeMirror = dynamic(() => require('../CodeMirror').UnControlled, {
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.UnControlled), {
 	ssr: false,
 });
-/* eslint-enable global-require */
 
 class VerifyContract extends React.Component {
 

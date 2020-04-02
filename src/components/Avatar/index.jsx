@@ -5,11 +5,9 @@ import classnames from 'classnames';
 
 import avatar from '../../public/images/default-avatar.svg';
 
-/* eslint-disable global-require */
-const SvgAvatar = dynamic(() => require('./svgAvatar'), {
+const SvgAvatar = dynamic(() => import('./svgAvatar'), {
 	ssr: false,
 });
-/* eslint-enable global-require */
 
 class Avatar extends React.Component {
 
