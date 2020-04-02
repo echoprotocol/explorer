@@ -1,95 +1,95 @@
 .action-button-wrap {
-    @include InterUI_Regular;
-    display: flex;
+	@include InterUI_Regular;
+	display: flex;
 
-    .content {
-        letter-spacing: 0.2px;
-    }
+	.content {
+		letter-spacing: 0.2px;
+	}
 
-    .action-button {
-        @include btn();
-        @include onFocus(4px, 2px, 2px, rgba(#498FDF, .53));
-        font-size: 12px;
-        background-color: #fff;
-        background-image: linear-gradient(to top, #efeef1 0%, #ffffff 100%);
-        border-radius: 3px;
-        height: 22px;
-        border: 1px solid #B0B7BD;
-        z-index: 1;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        padding: 0 9px 0 7px;
+	.action-button {
+		@include btn();
+		@include onFocus(4px, 2px, 2px, rgba(#498fdf, 0.53));
+		font-size: 12px;
+		background-color: #fff;
+		background-image: linear-gradient(to top, #efeef1 0%, #ffffff 100%);
+		border-radius: 3px;
+		height: 22px;
+		border: 1px solid #b0b7bd;
+		z-index: 1;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		padding: 0 9px 0 7px;
 
-        img {
-            padding-bottom: 1px;
-            width: 9px;
+		img {
+			padding-bottom: 1px;
+			width: 9px;
 
-            &+.content {
-                margin-left: 4px;
-            }
-        }
+			& + .content {
+				margin-left: 4px;
+			}
+		}
 
-        &+.action-label {
-            margin-left: -2px;
-            padding: 0 6px 0 10px;
-            line-height: 22px;
-        }
+		& + .action-label {
+			margin-left: -2px;
+			padding: 0 6px 0 10px;
+			line-height: 22px;
+		}
 
-        &:hover:not(:focus) {
-            box-shadow: 0px 1px 1px 0px rgba(176, 183, 189, 1);
-        }
+		&:hover:not(:focus) {
+			box-shadow: 0px 1px 1px 0px rgba(176, 183, 189, 1);
+		}
 
-        &.star {
-            padding: 0 6px 0 7px;
-        }
+		&.star {
+			padding: 0 6px 0 7px;
+		}
 
-        &:active {
-            background-color: #D8DADF;
-        }
-    }
+		&:active {
+			background-color: #d8dadf;
+		}
+	}
 
-    .action-label {
-        background-color: rgba(#CFCDD4, .6);
-        font-size: 12px;
-        padding: 0px 20px 0px 8px;
-        line-height: 22px;
-        color: #120E30;
-        display: flex;
-        border-radius: 1px;
+	.action-label {
+		background-color: rgba(#cfcdd4, 0.6);
+		font-size: 12px;
+		padding: 0px 20px 0px 8px;
+		line-height: 22px;
+		color: #120e30;
+		display: flex;
+		border-radius: 1px;
 
-        .info-icon {
-            padding: 0;
-            border: 0;
-            background-color: transparent;
-            width: 9px;
-            margin-left: 6px;
-            cursor: pointer;
-        }
+		.info-icon {
+			padding: 0;
+			border: 0;
+			background-color: transparent;
+			width: 9px;
+			margin-left: 6px;
+			cursor: pointer;
+		}
 
-        .content {
-            white-space: nowrap;
+		.content {
+			white-space: nowrap;
 
-            &+img {
-                width: 9px;
-                margin-left: 4px;
-            }
-        }
+			& + img {
+				width: 9px;
+				margin-left: 4px;
+			}
+		}
 
-        &+.action-button {
-            margin-left: -11px;
-        }
-    }
+		& + .action-button {
+			margin-left: -11px;
+		}
+	}
 
-    &.verified {
-        .action-label {
-            padding: 4px 6px;
-            color: #fff;
-            background-color: #498FDF;
-        }
+	&.verified {
+		.action-label {
+			padding: 4px 6px;
+			color: #fff;
+			background-color: #498fdf;
+		}
 
-        .action-button {
-            display: none;
-        }
-    }
+		.action-button {
+			display: none;
+		}
+	}
 }

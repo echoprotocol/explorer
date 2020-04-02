@@ -1,33 +1,33 @@
 .decline-button {
-    @include InterUI_Medium;
-    @include btn();
-    @include onFocus(4px, 2px, 2px, rgba(#62686D, .3));
-    min-width: 135px;
-    height: 33px;
-    color: #000000;
-    background-color: transparent;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-    font-size: 13px;
-    border: 0;
+	@include InterUI_Medium;
+	@include btn();
+	@include onFocus(4px, 2px, 2px, rgba(#62686d, 0.3));
+	min-width: 135px;
+	height: 33px;
+	color: #000000;
+	background-color: transparent;
+	border-radius: 4px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 10px;
+	font-size: 13px;
+	border: 0;
 
-    &:hover {
-        background-color: #D8DADF;
-    }
+	&:hover {
+		background-color: #d8dadf;
+	}
 
-    &:active {
-        background-color: #CDD0D6;
-        color: rgba(#000, 0.6);
-    }
-    &:disabled {
-        color: rgba(#000, 0.4);
-        background-color: transparent;
-    }
+	&:active {
+		background-color: #cdd0d6;
+		color: rgba(#000, 0.6);
+	}
+	&:disabled {
+		color: rgba(#000, 0.4);
+		background-color: transparent;
+	}
 
-    & + button {
-        margin-left: 8px;
-    }
+	& + button {
+		margin-left: 8px;
+	}
 }

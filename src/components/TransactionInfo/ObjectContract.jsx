@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Avatar from '../Avatar';
 
@@ -61,10 +60,8 @@ class ObjectContract extends React.Component {
 						</div>
 						<div className="od-col">
 							<div className="mono">
-
-								{
-									bytecode.length > 410 ?
-										`${bytecode.slice(0, 410)}..` : bytecode
+								{ bytecode.length > 410 ?
+									`${bytecode.slice(0, 410)}..` : bytecode
 								}
 							</div>
 							<button className="text-button">Expand</button>
@@ -76,8 +73,5 @@ class ObjectContract extends React.Component {
 	}
 
 }
-
-
-ObjectContract.propTypes = {};
 
 export default ObjectContract;

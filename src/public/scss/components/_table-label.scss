@@ -2,6 +2,20 @@
 	margin-bottom: 15px;
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
+	@include min-vw(1280) {
+		.filter-btn {
+			margin-right: -8px;
+		}
+	}
+	@include max-vw(1279) {
+		.filter-btn {
+			margin-right: 4px;
+		}
+	}
+	@include max-vw(1000) {
+		margin-right: 20px;
+	}
 }
 
 .table-label {
@@ -10,20 +24,18 @@
 	line-height: 27px;
 	font-weight: 700;
 	color: #130d32;
+	padding: 0 0 0 30px;
 
 	@include max-vw(1534) {
-		padding-left: 20px;
+		padding: 0 0 0 20px;
 	}
-
 	@include max-vw(1279) {
-		padding-left: 30px;
+		padding: 0 0 0 30px;
 	}
-
 	@include max-vw(767) {
-		padding-left: 20px;
+		padding: 0 0 0 20px;
 	}
-
 	@include max-vw(499) {
-		padding-left: 15px;
+		padding: 0 0 0 15px;
 	}
 }

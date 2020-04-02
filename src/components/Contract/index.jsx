@@ -24,7 +24,7 @@ import {
 
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
-import OperationsTable from '../TransactionInfo/OperationsTable';
+import OperationsTable from '../OperationsTable';
 import Loader from '../Loader';
 import Verify from '../VerifyButton';
 import manageIcon from '../../public/images/icons/pencil.svg';

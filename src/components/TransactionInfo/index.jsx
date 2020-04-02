@@ -8,9 +8,9 @@ import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import BackwardsLink from '../BackwardLink';
 import InnerHeader from '../InnerHeader';
-import TableLable from '../TableLable';
-import OperationsTable from './OperationsTable';
 import Loader from '../Loader';
+
+import OperationsTable from '../OperationsTable';
 
 class TransactionsInfo extends React.Component {
 
@@ -59,32 +59,26 @@ class TransactionsInfo extends React.Component {
 		const timeBlockCreated = FormatHelper.timestampToBlockCreationTime(blockInformation.get('time'));
 
 		return (
-			<React.Fragment>
-				<div className="inner-information-container transaction-information">
-					<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`} withTopPanel>
-						<BackwardsLink returnFunction={() => this.returnFunction()} />
-						<BreadCrumbs
-							breadcrumbs={breadcrumbs}
+			<div className="inner-information-container transaction-information">
+				<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`} withTopPanel>
+					<BackwardsLink returnFunction={() => this.returnFunction()} />
+					<BreadCrumbs breadcrumbs={breadcrumbs} />
+				</InnerHeader>
+				{ !loading ?
+					<React.Fragment>
+						<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
+						<OperationsTable
+							label={FormatHelper.getFormaOperationsTitle(operations.size)}
+							isTransaction
+							operations={operations}
+							history={history}
+							location={location}
+							loading={loading}
+							changeUrl
 						/>
-					</InnerHeader>
-					{
-						!loading ?
-							<React.Fragment>
-								<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
-								<TableLable label={FormatHelper.getFormaOperationsTitle(operations.size)} />
-								<OperationsTable
-									isTransaction
-									operations={operations}
-									history={history}
-									location={location}
-									loading={loading}
-									changeUrl
-									fee
-								/>
-							</React.Fragment> : this.renderLoader(loading)
-					}
-				</div>
-			</React.Fragment>
+					</React.Fragment> : this.renderLoader(loading)
+				}
+			</div>
 		);
 	}
 

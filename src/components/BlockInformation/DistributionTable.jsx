@@ -6,8 +6,8 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import URLHelper from '../../helpers/URLHelper';
 
 import Avatar from '../Avatar';
+import Thead from './Thead';
 
-import InfoTooltip from '../InfoTooltip';
 
 class DistributionTable extends React.Component {
 
@@ -69,47 +69,13 @@ class DistributionTable extends React.Component {
 		const { rewards } = this.props;
 
 		return (
-			<div className="distribution-table accordion-table-wrap" >
+			<div className="distribution-table">
 				<PerfectScrollbar>
 					<table>
-						<thead>
-							<tr>
-								<td />
-								<td className="role">
-									<div className="td-in">Role</div>
-								</td>
-								<td className="origin">
-									<div className="td-in">
-										Origin
-										<InfoTooltip
-											tooltipText="Account selected by consensus as a participant for the current block preparation"
-										/>
-									</div>
-								</td>
-								<td className="delegate">
-									<div className="td-in">
-										Delegate
-										<InfoTooltip
-											tooltipText="An account that has been trusted to issue messages on behalf of the Origin. Only considered if there are no messages from the original participant"
-										/>
-									</div>
-								</td>
-								<td className="produced">
-									<div className="td-in">
-										Produced by the committee
-										<InfoTooltip
-											tooltipText="If Origin and Delegate did not send messages, the message will be sent by the committee"
-										/>
-									</div>
-								</td>
-								<td />
-							</tr>
-						</thead>
+						<Thead />
 						<tbody>
-							<tr colSpan="11" className="air" />
-							{
-								rewards.map((r, i) => this.renderRow(r, i))
-							}
+							<tr className="air" />
+							{ rewards.map((r, i) => this.renderRow(r, i)) }
 						</tbody>
 					</table>
 				</PerfectScrollbar>

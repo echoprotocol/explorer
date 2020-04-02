@@ -1,44 +1,33 @@
 // DISTRIBUTION TABLE AT BLOCK PAGE
-@keyframes fadein {
-	from {
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-}
 
 .distribution-table {
 	margin-bottom: 55px;
-	animation: fadein $speed;
+	animation: fade-in $speed;
 	table {
-		min-width: 747px;
-		td {
-			&:last-child {
-				min-width: 13px;
-				width: 13px;
-				@include max-vw(1534) {
-					min-width: 25px;
-					width: 25px;
-				}
-			}
+		min-width: 748px;
+		width: 100%;
+		border-collapse: collapse;
+		z-index: 1;
+		a {
+			@include link();
 		}
 	}
-
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	tbody {
+		tr {
+			font-size: 12px;
+			color: $grey;
+		}
+	}
 	.td-in {
 		@include text-overflow();
 	}
 
 	.view {
+		@include table-row-highlight(true);
 		cursor: default;
-
-		@include onlyHover() {
-			&:hover:not(.active) td:nth-child(2) {
-				background-color: #ebebee;
-			}
-		}
-
 		.origin,
 		.delegate {
 			.td-in {

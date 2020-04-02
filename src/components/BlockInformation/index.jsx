@@ -5,11 +5,11 @@ import classnames from 'classnames';
 import { List } from 'immutable';
 import BN from 'bignumber.js';
 
-import OperationsTable from '../TransactionInfo/OperationsTable';
+import OperationsTable from '../OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
-import TableLable from '../TableLable';
+import TableLabel from '../TableLabel';
 import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
@@ -122,14 +122,14 @@ class BlockInformation extends React.Component {
 							disabled={blockNumber <= 1}
 							onClick={(e) => this.onBlockLink(blockNumber - 1, e)}
 						>
-							Older <span>block</span>
+							Older block
 						</button>
 						<button
 							className={classnames('next', { active: latestBlock !== blockNumber })}
 							disabled={latestBlock === blockNumber}
 							onClick={(e) => this.onBlockLink(blockNumber + 1, e)}
 						>
-							Next <span>block</span>
+							Next block
 						</button>
 					</div>
 				</InnerHeader>
@@ -160,7 +160,7 @@ class BlockInformation extends React.Component {
 					</div>
 				</div>
 
-				<TableLable label="Block Certificate">
+				<TableLabel label="Block Certificate">
 					{
 						rewardDistribution && rewardDistribution.length && (
 							<ViewListPopover
@@ -169,27 +169,26 @@ class BlockInformation extends React.Component {
 							/>
 						)
 					}
-				</TableLable>
+				</TableLabel>
 				{
 					(rewardDistribution && rewardDistribution.length) ? (
 						isDistributionRewardOpen &&
 						<DistributionTable rewards={rewardDistribution} />
 					) : (
-						<TableLable label="Certificate list will be available after next block will be produced" />
+						<TableLabel label="Certificate list will be available after next block will be produced" />
 					)
 				}
-				<div className="help-table-wrapper">
-					<TableLable label={FormatHelper.getFormatTransactionsTitle(transactionCount)} />
-					{
-						(slicedOperations && slicedOperations.size) ?
-							<OperationsTable
-								fee
-								operations={slicedOperations}
-								history={this.props.history}
-								location={this.props.location}
-								loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
-								hasMore={currentTransactionLength < operations.size}
-							/> : null
+				<div className="blocks-table-wrap">
+					{ (slicedOperations && slicedOperations.size) ?
+						<OperationsTable
+							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
+							fee
+							operations={slicedOperations}
+							history={this.props.history}
+							location={this.props.location}
+							loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
+							hasMore={currentTransactionLength < operations.size}
+						/> : null
 					}
 				</div>
 			</React.Fragment>

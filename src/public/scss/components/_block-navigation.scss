@@ -19,8 +19,7 @@
 		border: 0;
 		position: relative;
 		align-items: center;
-		color: #2a90e6;
-
+		@include link();
 		span {
 			margin-left: 8px;
 		}
@@ -36,8 +35,6 @@
 		}
 
 		&:hover {
-			color: #095494;
-
 			&:before,
 			&:after {
 				background-image: url(../images/icons/nav-arrow-active-hover.svg);
@@ -50,8 +47,6 @@
 		}
 
 		&:active {
-			color: #fb0707;
-
 			&:before,
 			&:after {
 				background-image: url(../images/icons/nav-arrow-active-active.svg);

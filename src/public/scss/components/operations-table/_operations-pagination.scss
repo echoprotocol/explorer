@@ -1,0 +1,115 @@
+.operations-pagination {
+	display: flex;
+	align-items: center;
+	border-top: 1px solid $grey-mid;
+	padding: 14px 0;
+	margin-top: 40px;
+	@include max-vw(1000) {
+		flex-wrap: wrap;
+		padding-left: 30px;
+		padding-right: 20px;
+	}
+	@include max-vw(768) {
+		padding-left: 20px;
+		margin-top: 0;
+		border-top: 0;
+	}
+	@include max-vw(500) {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+.pg-caption {
+	color: $lightgrey;
+	font-size: 11px;
+	@include InterUI_Medium();
+	letter-spacing: 0.02em;
+
+	a {
+		@include link();
+	}
+}
+.pg-caption + .pg-page-btn {
+	margin-left: 20px;
+}
+.pg-page-btn + .pg-page-btn {
+	margin-left: 5px;
+}
+.pg-page-btn {
+	padding: 6px 12px;
+	border: 1px solid transparent;
+	border-radius: 22px;
+	color: $lightgrey;
+	transition: border-color $speed, background-color $speed;
+	font-size: 12px;
+	line-height: 15px;
+	background-color: transparent;
+	@include onFocus(22px, 2px, 2px, rgba(#3570b6, 0.3));
+	&:hover {
+		background-color: rgba(#fff, 0.7);
+	}
+	&:not(:disabled) {
+		cursor: pointer;
+	}
+	&.active {
+		border-color: $explorer-black;
+		color: $explorer-black;
+	}
+}
+.pg-input {
+	max-width: 44px;
+	margin: 0 10px;
+	@include max-vw(1000) {
+		width: 30%;
+	}
+}
+.pg-nav-1 {
+	display: flex;
+	align-items: center;
+	@include max-vw(767) {
+		margin-top: 20px;
+		width: 100%;
+		order: 3;
+	}
+}
+.pg-nav-2 {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	@include max-vw(767) {
+		margin-left: 0;
+	}
+}
+.pg-nav-3 {
+	margin-left: 20px;
+	.btn:not(:last-child) {
+		margin-right: 7px;
+	}
+	@include max-vw(1000) {
+		margin-left: auto;
+	}
+}
+
+.pg-arrow {
+	display: flex;
+	align-items: center;
+	svg {
+		transform: rotateY(180deg);
+		@include min-vw(500) {
+			margin: 0 10px 0 0;
+		}
+	}
+}
+
+.pg-arrow-caption {
+	& + svg {
+		transform: rotateY(0);
+		@include min-vw(500) {
+			margin: 0 0 0 10px;
+		}
+	}
+	@include max-vw(500) {
+		display: none;
+	}
+}

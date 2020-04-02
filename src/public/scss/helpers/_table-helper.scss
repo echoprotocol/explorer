@@ -1,0 +1,124 @@
+@mixin table-row-highlight($hover: false) {
+	td,
+	td:before {
+		transition: background-color $speed;
+	}
+	td:first-child {
+		position: relative;
+		&:before {
+			@include absolute-stretch(0, 0, 0, 15px);
+			@include max-vw(1534) {
+				left: 10px;
+			}
+			@include max-vw(768) {
+				left: 0;
+			}
+		}
+	}
+	td:last-child {
+		position: relative;
+		&:before {
+			@include absolute-stretch(0, 15px, 0, 0);
+			@include max-vw(1534) {
+				right: 10px;
+			}
+			@include max-vw(768) {
+				right: 0;
+			}
+		}
+	}
+
+	@if $hover {
+		@include only-hover() {
+			&:hover {
+				td:first-child,
+				td:last-child {
+					&:before {
+						background-color: #fff;
+					}
+				}
+				td:not(:first-child):not(:last-child) {
+					background-color: #fff;
+				}
+			}
+		}
+	} @else {
+		td:first-child,
+		td:last-child {
+			&:before {
+				background-color: #fff;
+			}
+		}
+		td:not(:first-child):not(:last-child) {
+			background-color: #fff;
+		}
+	}
+}
+
+@mixin table-y-rythm() {
+	td {
+		&:first-child,
+		&:last-child {
+			padding: 0;
+			max-width: 30px;
+			min-width: 30px;
+			width: 30px;
+			@include max-vw(1534) {
+				max-width: 20px;
+				min-width: 20px;
+				width: 20px;
+			}
+			@include max-vw(1279) {
+				max-width: 30px;
+				min-width: 30px;
+				width: 30px;
+			}
+			@include max-vw(767) {
+				max-width: 20px;
+				min-width: 20px;
+				width: 20px;
+			}
+			@include max-vw(499) {
+				max-width: 15px;
+				min-width: 15px;
+				width: 15px;
+			}
+		}
+		&:nth-child(2) {
+			.td-in {
+				padding-left: 0;
+			}
+		}
+		&:nth-last-child(2) {
+			.td-in {
+				padding-right: 0;
+			}
+		}
+		.td-in {
+			padding: 10px;
+			@include InterUI_Medium;
+		}
+	}
+}
+
+@mixin table-head() {
+	thead {
+		position: relative;
+		background-color: $lightgrey-darker;
+		user-select: none;
+		font-weight: 700;
+		font-style: normal;
+		@include InterUI_Medium();
+		font-size: 12px;
+		color: $lightgrey;
+		position: relative;
+		line-height: 15px;
+	}
+}
+
+@mixin table-air() {
+	.air {
+		background-color: transparent;
+		height: 13px;
+	}
+}
