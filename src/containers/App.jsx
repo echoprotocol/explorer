@@ -7,6 +7,7 @@ import { disconnect } from '../actions/SocketActions';
 
 import GlobalActions from '../actions/GlobalActions';
 
+import Toast from '../components/Toast';
 import Header from './Header';
 import Footer from './Footer';
 import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
@@ -72,6 +73,7 @@ class App extends React.Component {
 							<RecentBlockSidebar />
 						</div>
 					</div>
+					<Toast />
 					<Footer />
 					{
 						showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />
