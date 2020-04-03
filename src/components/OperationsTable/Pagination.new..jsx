@@ -34,8 +34,11 @@ class OperationsPagination extends React.Component {
 		const { value } = e.target;
 
 		if (KEY_CODE_ENTER === code) {
-			if (TypesHelper.isStringNumber(value) && value > 0 && value < totalPages + 1) {
-				this.props.onChangeCurrentPage(value);
+			if (TypesHelper.isStringNumber(value)) {
+				const newNumberPage = parseInt(value, 10);
+				if (newNumberPage > 0 && newNumberPage < totalPages + 1) {
+					this.props.onChangeCurrentPage(newNumberPage);
+				}
 			}
 		}
 	}
@@ -43,13 +46,15 @@ class OperationsPagination extends React.Component {
 	render() {
 		const { sizePerPage, currentPage, totalDataSize } = this.props;
 		const totalPages = Math.ceil(totalDataSize / sizePerPage);
-		const index = SIZES_PER_PAGE.find((size) => size < totalDataSize + 1);
+		const index = SIZES_PER_PAGE.findIndex((size) => size > totalDataSize);
+
+		console.log('index', index);
 
 		return (
 			<div className="operations-pagination">
 				<div className="pg-nav-1">
 					<div className="pg-caption">Operations per page:</div>
-					{SIZES_PER_PAGE.slice(0, index - 1).map((size) => (
+					{SIZES_PER_PAGE.slice(0, index + 1).map((size) => (
 						<button
 							key={size}
 							onClick={() => this.props.onChangeSizePerPage(size)}

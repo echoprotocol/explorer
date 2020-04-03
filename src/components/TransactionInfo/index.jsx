@@ -9,6 +9,7 @@ import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import BackwardsLink from '../BackwardLink';
 import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
+
 import OperationsTable from '../OperationsTable';
 
 class TransactionsInfo extends React.Component {

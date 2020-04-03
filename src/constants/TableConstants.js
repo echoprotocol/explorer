@@ -1,4 +1,4 @@
-export const DEFAULT_SIZE_PER_PAGE = 3;
+export const DEFAULT_SIZE_PER_PAGE = 10;
 export const SIZES_PER_PAGE = [DEFAULT_SIZE_PER_PAGE, 20, 50, 100];
 
 export const ACCOUNT_GRID = 'account_grid';
