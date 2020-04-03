@@ -41,7 +41,7 @@ module.exports = {
 	},
 	entry: {
 		babel: '@babel/polyfill',
-		app: path.resolve('src/index.js'),
+		app: path.resolve('src/index.jsx'),
 	},
 	output: {
 		publicPath: '/',

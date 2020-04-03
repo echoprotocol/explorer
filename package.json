@@ -79,6 +79,7 @@
 		"react-scroll-to-component": "^1.0.2",
 		"react-slick": "^0.24.0",
 		"react-tabs": "^3.0.0",
+		"react-toastify": "^4.4.0",
 		"redux": "^3.7.2",
 		"redux-batched-actions": "^0.4.1",
 		"redux-modules": "^1.1.0",
