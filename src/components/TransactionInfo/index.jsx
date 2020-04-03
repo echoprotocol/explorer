@@ -10,7 +10,7 @@ import BackwardsLink from '../BackwardLink';
 import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 
-import OperationsTable from '../OperationsTable';
+import OperationsTable from '../OperationsTable/index.old';
 
 class TransactionsInfo extends React.Component {
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import OperationsTable from '../OperationsTable';
+import OperationsTable from '../OperationsTable/index.old';
 import InnerHeader from '../InnerHeader';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
