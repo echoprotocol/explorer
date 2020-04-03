@@ -27,22 +27,28 @@ import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList 
 const onConnectSubscriber = () => (dispatch) => {
 
 	const timeoutId = setTimeout(() => {
-		dispatch(InternetPopupReducer.actions.set({ field: 'show', value: false }));
-		dispatch(InternetPopupReducer.actions.clearTimeout());
+		dispatch(batchActions([
+			InternetPopupReducer.actions.set({ field: 'show', value: false }),
+			InternetPopupReducer.actions.clearTimeout(),
+		]));
 	}, 3000);
 
-	dispatch(InternetPopupReducer.actions.set({ field: 'timeoutId', value: timeoutId }));
-	dispatch(InternetPopupReducer.actions.set({ field: 'show', value: true }));
-	dispatch(InternetPopupReducer.actions.set({ field: 'connect', value: true }));
+	dispatch(batchActions([
+		InternetPopupReducer.actions.set({ field: 'timeoutId', value: timeoutId }),
+		InternetPopupReducer.actions.set({ field: 'show', value: true }),
+		InternetPopupReducer.actions.set({ field: 'connect', value: true }),
+	]));
 };
 
 /**
  * set connected parameter to false
  */
 const onDisconnectSubscriber = () => (dispatch) => {
-	dispatch(InternetPopupReducer.actions.clearTimeout());
-	dispatch(InternetPopupReducer.actions.set({ field: 'connect', value: false }));
-	dispatch(InternetPopupReducer.actions.set({ field: 'show', value: true }));
+	dispatch(batchActions([
+		InternetPopupReducer.actions.clearTimeout(),
+		InternetPopupReducer.actions.set({ field: 'connect', value: false }),
+		InternetPopupReducer.actions.set({ field: 'show', value: true }),
+	]));
 };
 
 /**

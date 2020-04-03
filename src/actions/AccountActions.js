@@ -1,6 +1,7 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import Inmmutable, { List, fromJS } from 'immutable';
 import BN from 'bignumber.js';
+import { batchActions } from 'redux-batched-actions';
 
 import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT, TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
@@ -177,9 +178,10 @@ class AccountActions extends BaseActionsClass {
 				const isFullHistory = transactions.length <= DEFAULT_ROWS_COUNT;
 				transactions = await this.formatAccountHistory(accountId, transactions.slice(0, DEFAULT_ROWS_COUNT));
 
-
-				dispatch(this.reducer.actions.concat({ field: 'history', value: new List(transactions) }));
-				dispatch(this.reducer.actions.set({ field: 'isFullHistory', value: isFullHistory }));
+				dispatch(batchActions([
+					this.reducer.actions.concat({ field: 'history', value: new List(transactions) }),
+					this.reducer.actions.set({ field: 'isFullHistory', value: isFullHistory }),
+				]));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {

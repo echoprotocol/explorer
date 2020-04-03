@@ -1,6 +1,6 @@
 import thunk from 'redux-thunk';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-
+import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
+import { batchDispatchMiddleware } from 'redux-batched-actions';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducers from './reducers';
@@ -10,6 +10,9 @@ export default function configureStore(preloadState) {
 		combineReducers({
 			...reducers,
 		}), preloadState,
-		composeWithDevTools(applyMiddleware(thunk)),
+		composeWithDevTools(compose(
+			applyMiddleware(thunk),
+			applyMiddleware(batchDispatchMiddleware),
+		)),
 	);
 }
