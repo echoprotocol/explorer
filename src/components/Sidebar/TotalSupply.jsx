@@ -6,11 +6,11 @@ const TotalSupply = () => (
 		<div className="total-supply">
 			<TotalSupplyIcon />
 			<div className="total-supply-value">
-				3,440,012,300,233,310,342. 00kokoko
+				3,440,012,300,233,310,342. 00
 			</div>
 			<div className="total-supply-coin">ECHO</div>
 		</div>
-		<a href="" className="total-supply-link">View all Assets</a>
+		<a href="" className="sidebar-element-link">View all Assets</a>
 	</React.Fragment>
 );
 

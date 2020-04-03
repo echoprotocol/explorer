@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 
 import Sidebar from '../../components/Sidebar';
 
-const SidebarContainer = React.memo(() => (
-	<Sidebar />
+const SidebarContainer = React.memo(({ ...props }) => (
+	<Sidebar {...props} />
 ));
 
 SidebarContainer.propTypes = {};

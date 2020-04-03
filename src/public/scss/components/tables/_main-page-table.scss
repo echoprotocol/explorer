@@ -14,20 +14,16 @@
 		}
 	}
 
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		z-index: 1;
-		margin-bottom: 40px;
-		a {
-			@include link();
-		}
-	}
 	@include table();
 	@include table-y-rythm();
 	@include table-head();
 	@include table-air();
 	@include table-avatar();
+	@include table-vertical-scroll();
+
+	table {
+		margin-bottom: 40px;
+	}
 
 	.view {
 		cursor: pointer;

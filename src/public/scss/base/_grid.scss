@@ -4,7 +4,6 @@
 	margin: 0 auto;
 	padding: 0;
 
-	// 1534
 	@include max-vw(1600) {
 		width: 100%;
 		padding: 0 30px;
@@ -16,49 +15,8 @@
 
 .wrap.full {
 	justify-content: center;
-
-	.recent-block-sidebar {
-		width: 430px;
-
-		// 1534
-		@include max-vw(1600) {
-			width: 310px;
-		}
-
-		@include max-vw($res-1280) {
-			width: 900px;
-			margin: auto;
-		}
-
-		@include max-vw($res-1000) {
-			width: 668px;
-		}
-
-		@include max-vw($res-768) {
-			width: 450px;
-		}
-
-		@include max-vw($res-500) {
-			width: 300px;
-		}
-	}
 }
 
-.wrap.sm {
-	// 1534
-	@include max-vw(1600) {
-		width: 100%;
-		padding: 0 50px;
-	}
-	@include max-vw($res-1280) {
-		padding: 0 40px;
-	}
-
-	@include max-vw($res-768) {
-		padding: 0 30px;
-	}
-
-	@include max-vw($res-500) {
-		padding: 0 25px;
-	}
+.wrap.flex {
+	display: flex;
 }

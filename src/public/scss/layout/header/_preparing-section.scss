@@ -27,10 +27,16 @@
 	border-radius: 4px;
 	padding: 16px 30px 12px;
 	justify-content: space-between;
-
+	@include max-vw($res-1600) {
+		padding: 16px 20px 12px;
+	}
 	@include max-vw($res-1280) {
+		padding: 16px 30px 12px;
 		display: flex;
 		flex-direction: column-reverse;
+	}
+	@include max-vw($res-768) {
+		padding: 16px 20px 12px;
 	}
 }
 .preparing-tooltip {

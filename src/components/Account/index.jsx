@@ -69,7 +69,7 @@ class Account extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="inner-information-container account-page">
+			<div className="inner-container">
 				<div className="account-page-info">
 					{account && <InnerHeader title={`Account ${account.get('id')}`} />}
 					<div className="account-page-t-block">
@@ -92,24 +92,23 @@ class Account extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className="account-page-table">
-					{ account && !loading ?
-						<React.Fragment>
-							{ accountHistory.size ?
-								<OperationsTable
-									label="Transactions"
-									operations={accountHistory}
-									history={this.props.history}
-									location={this.props.location}
-									loading={loadingMoreHistory}
-									loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
-									hasMore={!isFullHistory}
-									timestamp
-								/> : null
-							}
-						</React.Fragment> : this.renderLoader(loading)
-					}
-				</div>
+				{ accountHistory.size ?
+					<div className="account-page-table">
+						{ account && !loading ?
+							<OperationsTable
+								label="Transactions"
+								operations={accountHistory}
+								history={this.props.history}
+								location={this.props.location}
+								loading={loadingMoreHistory}
+								loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
+								hasMore={!isFullHistory}
+								timestamp
+							/>
+							: this.renderLoader(loading)
+						}
+					</div> : null
+				}
 			</div>
 		);
 	}

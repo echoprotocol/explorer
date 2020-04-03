@@ -1,41 +1,6 @@
-.recent-block-section {
-	padding: 12px 0;
-	background-color: #fff;
-
-	@include max-vw($res-1000) {
-		padding-bottom: 0px;
-	}
-
-	.title-no-transactions {
-		@include inter-ui-regular();
-		position: absolute;
-		left: 14px;
-		font-size: 13px;
-		letter-spacing: 0;
-		line-height: 18px;
-		color: #0f0739;
-	}
-
-	@include max-vw($res-1280) {
-		overflow: hidden;
-	}
-
-	.wrap {
-		display: flex;
-
-		@include max-vw($res-1280) {
-			flex-direction: column-reverse;
-		}
-
-		@include max-vw($res-500) {
-			width: 100%;
-		}
-	}
-
-	.select {
-		position: relative;
-		color: #fff;
-		background-color: #5eb3e8;
-		@include transition;
-	}
+.select {
+	position: relative;
+	color: #fff;
+	background-color: #5eb3e8;
+	@include transition;
 }

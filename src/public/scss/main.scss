@@ -1,6 +1,7 @@
 @import "helpers/variables";
 @import "helpers/animations";
 @import "helpers/mixins";
+@import "helpers/typography";
 @import "helpers/table-helper";
 
 @import "base/normalize";
@@ -23,6 +24,7 @@
 @import "layout/sidebar/sidebar-element";
 @import "layout/sidebar/total-supply";
 @import "layout/sidebar/blockchain-rates";
+@import "layout/sidebar/frozen-funds";
 @import "layout/recent-block-section";
 @import "layout/inner-block-information";
 @import "layout/transactions-info-table";
@@ -31,7 +33,6 @@
 @import "layout/account-asset";
 @import "layout/modals";
 @import "layout/transaction-component";
-// @import "layout/recent-block-sidebar";
 
 @import "pages/main-page";
 @import "pages/contract-page";

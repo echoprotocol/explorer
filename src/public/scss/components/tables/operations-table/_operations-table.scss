@@ -1,20 +1,13 @@
 .operations-table {
 	position: relative;
 
-	table {
-		min-width: 748px;
-		width: 100%;
-		border-collapse: collapse;
-		z-index: 1;
-		a {
-			@include link();
-		}
-	}
 	@include table();
 	@include table-y-rythm();
 	@include table-head();
 	@include table-air();
 	@include table-avatar();
+	@include table-vertical-scroll();
+
 	thead {
 		border-top: 1px solid $grey-mid;
 	}
@@ -177,30 +170,6 @@
 		.dd {
 			max-width: 30px;
 			width: 30px;
-		}
-	}
-
-	.ps__rail-x {
-		opacity: 1;
-	}
-	.ps {
-		overflow: visible;
-		@include max-vw($res-768) {
-			overflow: hidden;
-		}
-	}
-	.scrollbar-container {
-		@include max-vw($res-768) {
-			padding-bottom: 55px;
-			&:after {
-				content: "";
-				position: absolute;
-				width: 747px;
-				height: 1px;
-				bottom: 0;
-				left: 0;
-				background-color: $grey-mid;
-			}
 		}
 	}
 }

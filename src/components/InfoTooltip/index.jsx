@@ -8,7 +8,6 @@ const InfoTooltip = React.memo(({ placement, iconFilled, ...props }) => (
 	<Tooltip
 		trigger={['hover']}
 		placement={placement}
-		className="info-tooltip"
 		{...props}
 	>
 		<span className={cn('tooltip-icon', { filled: iconFilled })}>

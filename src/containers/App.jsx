@@ -74,11 +74,9 @@ class App extends React.Component {
 						<Footer />
 					</React.Fragment> :
 					<React.Fragment>
-						<div className="recent-block-section">
-							<div className={cn('wrap', { full })}>
-								{children}
-								<Sidebar />
-							</div>
+						<div className={cn('wrap', 'flex', { full })}>
+							{children}
+							<Sidebar pinned />
 						</div>
 						<Footer />
 					</React.Fragment>

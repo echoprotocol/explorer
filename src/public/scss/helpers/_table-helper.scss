@@ -115,6 +115,12 @@
 @mixin table() {
 	table {
 		font-size: 11px;
+		border-collapse: collapse;
+		z-index: 1;
+		width: 100%;
+		a {
+			@include link();
+		}
 	}
 	tbody {
 		tr {
@@ -129,7 +135,36 @@
 		height: 15px;
 	}
 }
-
+@mixin table-vertical-scroll() {
+	@include max-vw($res-768) {
+		table {
+			min-width: 747px;
+		}
+		.ps__rail-x {
+			opacity: 1;
+		}
+		.ps {
+			overflow: visible;
+			@include max-vw($res-768) {
+				overflow: hidden;
+			}
+		}
+		.scrollbar-container {
+			@include max-vw($res-768) {
+				padding-bottom: 55px;
+				&:after {
+					content: "";
+					position: absolute;
+					width: 747px;
+					height: 1px;
+					bottom: 0;
+					left: 0;
+					background-color: $grey-mid;
+				}
+			}
+		}
+	}
+}
 @mixin table-avatar() {
 	.avatar-wrap {
 		display: inline-flex;

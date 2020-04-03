@@ -1,6 +1,8 @@
 import React from 'react';
 import { LineChart, Line } from 'recharts';
+import PropTypes from 'prop-types';
 import InfoTooltip from '../../components/InfoTooltip';
+import { SIDEBAR_CHART_WIDTH, SIDEBAR_CHART_HEIGHT } from '../../constants/UiConstants';
 
 const data = [
 	{
@@ -25,22 +27,48 @@ const data = [
 		name: '9', uv: 1890, pv: 4800, amt: 2181,
 	},
 ];
-const BlockchainRates = () => (
+
+const BlockchainRates = ({ pinned }) => (
 	<div className="blockchain-rates-wrap">
-		<div className="blockchain-rates-block">
-			<div className="blockchain-rates-block-title">
+		<div className="sidebar-element-block">
+			<div className="sidebar-element-block-title">
 				Delegation rate
 				<InfoTooltip overlay="Delegation rate information" />
 			</div>
 			<div className="blockchain-rates-block-info">
 				<div className="blockchain-rates-block-percent">35%</div>
+				<LineChart
+					width={pinned ? SIDEBAR_CHART_WIDTH + 20 : SIDEBAR_CHART_WIDTH}
+					height={SIDEBAR_CHART_HEIGHT}
+					data={data}
+				>
+					<Line dot={false} type="monotone" dataKey="uv" stroke="#2995D8" />
+				</LineChart>
+			</div>
+		</div>
+		<div className="sidebar-element-block">
+			<div className="sidebar-element-block-title">
+				Decentralisation rate
+				<InfoTooltip overlay="Decentralisation rate information" />
+			</div>
+			<div className="blockchain-rates-block-info">
+				<div className="blockchain-rates-block-percent">0.03%</div>
 
-				<LineChart width={135} height={20} data={data} className="preview-chart">
+				<LineChart
+					width={pinned ? SIDEBAR_CHART_WIDTH + 20 : SIDEBAR_CHART_WIDTH}
+					height={SIDEBAR_CHART_HEIGHT}
+					data={data}
+				>
 					<Line dot={false} type="monotone" dataKey="uv" stroke="#2995D8" />
 				</LineChart>
 			</div>
 		</div>
 	</div>
 );
+
+BlockchainRates.propTypes = {
+	pinned: PropTypes.bool.isRequired,
+};
+
 
 export default BlockchainRates;

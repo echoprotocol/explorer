@@ -286,24 +286,15 @@ class Contract extends React.Component {
 		};
 
 		return (
-			<div className="inner-information-container contract-page">
-				<div className="react-tabs">
+			<div className="inner-container">
+				<div className="contract-tabs">
 					<div className="tab-head">
-						<div className="backwards action">
-							<div className="account-page-t-block">
-								<Media query="(max-width: 380px)">
-									{(matches) =>
-										!matches &&
-										<div className="ava">
-											<ContractIcon icon={icon} />
-										</div>
-									}
-								</Media>
-								<div className="title">Contract {id} {name && `:  ${name}`}</div>
-								<button className="copy-bytecode"	onClick={() => this.changeButtonText(bytecode)}>
-									{this.state.text}
-								</button>
-							</div>
+						<div className="contract-header">
+							<ContractIcon icon={icon} />
+							<div className="contract-header-title">Contract {id} {name && `: ${name}`}</div>
+							<button className="copy-bytecode"	onClick={() => this.changeButtonText(bytecode)}>
+								{this.state.text}
+							</button>
 						</div>
 						<div className="buttons-wrap">
 							<div className="item">
@@ -425,12 +416,9 @@ class Contract extends React.Component {
 								)
 							}
 						</Media>
-
 					</div>
 					<div className="tab-body">
-						{
-							this.renderTabs(tabList, CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0)
-						}
+						{ this.renderTabs(tabList, CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) }
 					</div>
 				</div>
 			</div>

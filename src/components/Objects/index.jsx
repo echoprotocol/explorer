@@ -103,7 +103,7 @@ class Objects extends React.Component {
 		};
 
 		return (
-			<div className="inner-information-container object-view">
+			<div className="inner-container object-view">
 				<InnerHeader title={`Object ${this.state.id}`} />
 				{error ?
 					<div className="json-tree-container">
