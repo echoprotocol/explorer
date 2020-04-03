@@ -1,11 +1,9 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import { List, fromJS } from 'immutable';
-import { batchActions } from 'redux-batched-actions';
 import BN from 'bignumber.js';
 
-import { DEFAULT_OPERATION_HISTORY_ID, DEFAULT_ROWS_COUNT, TOKEN_TYPE } from '../constants/GlobalConstants';
+import { TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
-import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
 import AccountReducer from '../reducers/AccountReducer';
 
@@ -16,6 +14,9 @@ import TransactionActions from './TransactionActions';
 
 import { BridgeService } from '../services/BridgeService';
 import { getBalances } from '../services/queries/balance';
+import { getAccountHistory } from '../services/queries/account';
+import { ACCOUNT_GRID } from '../constants/TableConstants';
+import GridActions from './GridActions';
 
 class AccountActions extends BaseActionsClass {
 
@@ -93,14 +94,6 @@ class AccountActions extends BaseActionsClass {
 				await echo.api.getObjects(objectIds);
 
 				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
-
-				const transactions = await this.formatAccountHistory(id, account.history.slice(0, DEFAULT_ROWS_COUNT));
-
-				dispatch(this.setMultipleValue({
-					history: new List(transactions),
-					isFullHistory: account.history.length <= DEFAULT_ROWS_COUNT,
-				}));
-
 				const balances = await getBalances([account.id]);
 
 				const tokens = balances.data.getBalances.filter((balanceItem) =>
@@ -148,43 +141,60 @@ class AccountActions extends BaseActionsClass {
 	}
 
 	/**
+	 * @method formatHistoryFromEchoDB
+	 * @param history
+	 * @return {*}
+	 */
+	formatHistoryFromEchoDB(history) {
+		return history.map((data) => {
+			const operationId = parseInt(data.id, 10);
+			// TODO change id: data.id(id operation 1.6.*); trx_in_block: 0, op_in_trx: 0,
+			return ({
+				id: operationId,
+				op: [operationId, data.body],
+				result: [0, data.result],
+				block_num: data.transaction.block.round,
+				trx_in_block: 0,
+				op_in_trx: 0,
+				virtual_op: 0,
+			});
+		});
+	}
+
+	/**
 	 * Load account history
 	 * @param {string} accountId
-	 * @param {number} lastOperationId
 	 * @returns {function}
 	 */
-	loadAccountHistory(accountId, lastOperationId) {
+	loadAccountHistory(accountId) {
 		return async (dispatch, getState) => {
-			const lastOperationIdState = getState().account.get('lastOperationId');
-
-			if (lastOperationIdState === lastOperationId) {
-				return;
-			}
-
 			try {
-				dispatch(this.setValue('lastOperationId', lastOperationId));
+				const queryData = getState().grid.get(ACCOUNT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
 
-				let transactions = await echo.api.getAccountHistory(
-					accountId,
-					DEFAULT_OPERATION_HISTORY_ID,
-					DEFAULT_ROWS_COUNT + 1,
-					`${OPERATION_HISTORY_OBJECT_PREFIX}.${lastOperationId - 1}`,
-				);
+				let to = null;
+				if (queryData.filters.to) {
+					let toAccount = null;
+					try {
+						toAccount = await echo.api.getAccountByName(queryData.filters.to);
+						to = toAccount ? [toAccount.id] : [];
+					} catch (err) {
+						to = [];
+					}
+				}
 
-				const isFullHistory = transactions.length <= DEFAULT_ROWS_COUNT;
-				transactions = await this.formatAccountHistory(accountId, transactions.slice(0, DEFAULT_ROWS_COUNT));
+				const { items, total } = await getAccountHistory({
+					from: [accountId],
+					to: to || undefined,
+					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+					count: queryData.sizePerPage,
+					operations: Object.keys(OPERATIONS_IDS).splice(0, 40),
+				});
 
-				dispatch(batchActions([
-					this.reducer.actions.concat({
-						field: 'history',
-						value: new List(transactions),
-					}),
-					this.reducer.actions.set({
-						field: 'isFullHistory',
-						value: isFullHistory,
-					}),
-				]));
+				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
+				let transactions = this.formatHistoryFromEchoDB(items);
+				transactions = await this.formatAccountHistory(accountId, transactions);
+				dispatch(this.setValue('history', new List(transactions)));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {

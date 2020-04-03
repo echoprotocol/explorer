@@ -5,7 +5,8 @@ import classnames from 'classnames';
 import { List } from 'immutable';
 import BN from 'bignumber.js';
 
-import OperationsTable from '../OperationsTable/index.old';
+import OperationsTable from '../OperationsTable';
+
 import BreadCrumbs from '../InformationBreadCrumbs';
 import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';

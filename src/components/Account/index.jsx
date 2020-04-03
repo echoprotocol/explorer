@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import OperationsTable from '../OperationsTable/index.old';
+import OperationsTable from '../../containers/OperationsTable';
 import InnerHeader from '../InnerHeader';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
+import { ACCOUNT_GRID } from '../../constants/TableConstants';
 
 class Account extends React.Component {
 
@@ -23,9 +24,19 @@ class Account extends React.Component {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
 		}
 
+		if (prevProps.filterAndPaginateData !== this.props.filterAndPaginateData) {
+			this.onLoadMoreHistory();
+		}
+
 		if (prevProps.match.params.id !== this.props.match.params.id) {
 			this.props.getAccountInfo();
 			return;
+		}
+
+		if (prevProps.account !== this.props.account) {
+			this.props.setTotalDataSize(this.props.account.getIn(['statistics', 'total_ops']));
+			this.props.onChangeFilter({ to: '', from: this.props.account.get('name') });
+			this.onLoadMoreHistory();
 		}
 
 		if (!prevProps.account) {
@@ -35,11 +46,12 @@ class Account extends React.Component {
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
 
-		const prevAccountHistory = prevAccount.get('history');
-		const accountHistory = account.get('history');
+		const prevAccountHistory = prevAccount.getIn(['statistics', 'total_ops']);
+		const accountHistory = account.getIn(['statistics', 'total_ops']);
 
+		// if new account operations
 		if (prevAccountHistory.size !== accountHistory.size) {
-			this.props.updateAccountHistory(account.get('id'), account.get('history'), prevAccount.get('history'));
+			this.props.getAccountInfo();
 		}
 
 		if (!prevAccount.get('balances').equals(account.get('balances'))) {
@@ -54,8 +66,29 @@ class Account extends React.Component {
 
 
 	onLoadMoreHistory() {
-		const { account, accountHistory } = this.props;
-		this.props.loadAccountHistory(account.get('id'), accountHistory.last().id.split('.')[2]);
+		const { account } = this.props;
+		this.props.loadAccountHistory(account.get('id'));
+	}
+
+	async onChangeFilter(e) {
+		const { name, value } = e.target;
+		if (name === 'from') {
+			return;
+		}
+		const { filterAndPaginateData } = this.props;
+		const { filters } = filterAndPaginateData.toJS();
+		filters[name] = value;
+		this.props.onChangeFilter(filters);
+	}
+
+	onClearFilter(name) {
+		if (name === 'from') {
+			return;
+		}
+		const { filterAndPaginateData } = this.props;
+		const { filters } = filterAndPaginateData.toJS();
+		filters[name] = '';
+		this.props.onChangeFilter(filters);
 	}
 
 	renderLoader(loading) {
@@ -64,8 +97,7 @@ class Account extends React.Component {
 
 	render() {
 		const {
-			loading, loadingMoreHistory, isFullHistory,
-			account, balances, tokens, accountHistory,
+			loading, loadingMoreHistory, account, balances, tokens, accountHistory,
 		} = this.props;
 
 		return (
@@ -95,17 +127,18 @@ class Account extends React.Component {
 				<div className="account-page-table">
 					{ account && !loading ?
 						<React.Fragment>
-							{ accountHistory.size ?
+							{account.getIn(['statistics', 'total_ops']) ? (
 								<OperationsTable
+									onChangeFilter={(e) => this.onChangeFilter(e)}
+									onClearFilter={(e) => this.onClearFilter(e)}
+									gridName={ACCOUNT_GRID}
 									label="Transactions"
 									operations={accountHistory}
 									history={this.props.history}
 									location={this.props.location}
 									loading={loadingMoreHistory}
-									loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
-									hasMore={!isFullHistory}
 									timestamp
-								/> : null
+								/>) : null
 							}
 						</React.Fragment> : this.renderLoader(loading)
 					}
@@ -117,9 +150,12 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
+	filterAndPaginateData: PropTypes.object.isRequired,
+	setTotalDataSize: PropTypes.func.isRequired,
+	onChangeFilter: PropTypes.func.isRequired,
+
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
-	isFullHistory: PropTypes.bool,
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
@@ -129,7 +165,6 @@ Account.propTypes = {
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
-	updateAccountHistory: PropTypes.func.isRequired,
 	updateAccountBalances: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
@@ -138,7 +173,6 @@ Account.propTypes = {
 Account.defaultProps = {
 	loading: false,
 	loadingMoreHistory: false,
-	isFullHistory: false,
 	account: null,
 	balances: null,
 	tokens: null,

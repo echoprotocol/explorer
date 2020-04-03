@@ -10,10 +10,10 @@ import FilterBtn from '../FilterBtn';
 import LoadMoreBtn from '../LoadMoreBtn';
 import Operations from '../../constants/Operations';
 
-import OperationRow from './Row.old';
+import OperationRow from './Row';
 import Thead from './Thead';
-import OperationsPagination from './Pagination.old';
-import OperationsFilter from './Filter.old';
+import OperationsPagination from './Pagination';
+import OperationsFilter from './Filter';
 
 class OperationsTable extends React.Component {
 

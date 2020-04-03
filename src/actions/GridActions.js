@@ -54,12 +54,11 @@ export class GridActionsClass extends BaseActionsClass {
 	 * Set page
 	 * @param {String} gridName
 	 * @param {Number} currentPage
-	 * @param {Number} offset
 	 * @return {function(*, *)}
 	 */
-	setPage(gridName, currentPage, offset) {
+	setPage(gridName, currentPage) {
 		return (dispatch) => {
-			dispatch(this.reducer.actions.setPage({ gridName, currentPage, offset }));
+			dispatch(this.reducer.actions.setPage({ gridName, currentPage }));
 		};
 	}
 
@@ -72,6 +71,7 @@ export class GridActionsClass extends BaseActionsClass {
 	setPageSize(gridName, value) {
 		return (dispatch) => {
 			dispatch(this.setValue([gridName, 'sizePerPage'], value));
+			dispatch(this.setPage(gridName, 1, 0));
 		};
 	}
 

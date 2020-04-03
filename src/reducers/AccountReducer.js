@@ -8,12 +8,10 @@ import { DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 const DEFAULT_FIELDS = new Map({
 	loading: false,
 	loadingMoreHistory: false,
-	isFullHistory: false,
 	id: null,
 	balances: new Map({}),
 	tokens: new List([]),
 	history: new List([]),
-	lastOperationId: '',
 });
 
 export default createModule({
