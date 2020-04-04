@@ -19,4 +19,7 @@
 
 .wrap.flex {
 	display: flex;
+	& + .footer {
+		position: fixed;
+	}
 }
