@@ -109,24 +109,6 @@ class AccountActions extends BaseActionsClass {
 	}
 
 	/**
-	 * Update account history
-	 * @param {string} accountId
-	 * @param {array} accountHistory
-	 * @returns {function}
-	 */
-	updateAccountHistory(accountId, newAccountHistory, oldAccountHistory) {
-		return async (dispatch) => {
-			const diff = newAccountHistory.filter((historyItem) =>
-				!oldAccountHistory.find((oldHistoryItem) => oldHistoryItem.get('id') === historyItem.get('id')));
-			const transactions = await this.formatAccountHistory(accountId, diff.toJS());
-			dispatch(this.reducer.actions.update({
-				field: 'history',
-				value: new List(transactions),
-			}));
-		};
-	}
-
-	/**
 	 * Update account balances
 	 * @param {Map} balances
 	 * @returns {function}

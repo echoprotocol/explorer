@@ -44,14 +44,8 @@ export default withRouter(connect(
 		account: state.echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, state.account.get('id')]),
 	}),
 	(dispatch, props) => ({
-		setTotalDataSize: (value) => dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, value)),
 		onChangeFilter: (params) => dispatch(GridActions.setFilter(ACCOUNT_GRID, params)),
 		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),
-		updateAccountHistory: (accountId, newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
-			accountId,
-			newHistory,
-			oldHistory,
-		)),
 		loadAccountHistory: (accountId, lastOperationId) => dispatch(AccountActions.loadAccountHistory(
 			accountId,
 			lastOperationId,

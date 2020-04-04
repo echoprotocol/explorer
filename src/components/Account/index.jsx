@@ -34,7 +34,6 @@ class Account extends React.Component {
 		}
 
 		if (prevProps.account !== this.props.account) {
-			this.props.setTotalDataSize(this.props.account.getIn(['statistics', 'total_ops']));
 			this.props.onChangeFilter({ to: '', from: this.props.account.get('name') });
 			this.onLoadMoreHistory();
 		}
@@ -51,7 +50,7 @@ class Account extends React.Component {
 
 		// if new account operations
 		if (prevCountOps !== currCountOps) {
-			this.props.getAccountInfo();
+			this.onLoadMoreHistory();
 		}
 
 		if (!prevAccount.get('balances').equals(account.get('balances'))) {
@@ -150,7 +149,6 @@ class Account extends React.Component {
 
 Account.propTypes = {
 	filterAndPaginateData: PropTypes.object.isRequired,
-	setTotalDataSize: PropTypes.func.isRequired,
 	onChangeFilter: PropTypes.func.isRequired,
 
 	loading: PropTypes.bool,
