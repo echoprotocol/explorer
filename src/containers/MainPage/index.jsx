@@ -8,28 +8,14 @@ import FormatHelper from '../../helpers/FormatHelper';
 import BlockReducer from '../../reducers/BlockReducer';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import GlobalActions from '../../actions/GlobalActions';
-import SearchActions from '../../actions/SearchActions';
 import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import LatestBlocksTable from './LatestBlocksTable';
 import LatestOperationsTable from './LatestOperationsTable';
 
 class MainPage extends React.Component {
 
-	constructor() {
-		super();
-		this.state = {
-			loading: false,
-		};
-	}
-
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.MAIN);
-	}
-
-	componentDidUpdate(prevProps) {
-		if (this.state.loading && prevProps.hints !== this.props.hints && this.props.hints.length) {
-			this.transitionToBlock();
-		}
 	}
 
 	getBlocks() {
@@ -60,21 +46,9 @@ class MainPage extends React.Component {
 		});
 	}
 
-	setLoading() {
-		this.setState({
-			loading: true,
-		});
-	}
-
 	goToBlock(e, block) {
 		e.preventDefault();
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
-	}
-
-	transitionToBlock() {
-		const { errorSearch, hints: [hint] } = this.props;
-		if (errorSearch) return;
-		this.props.history.push(hint.to);
 	}
 
 	render() {
@@ -94,8 +68,6 @@ class MainPage extends React.Component {
 }
 
 MainPage.propTypes = {
-	hints: PropTypes.array.isRequired,
-	errorSearch: PropTypes.string.isRequired,
 	blocks: PropTypes.object.isRequired,
 	history: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
@@ -105,14 +77,10 @@ export default withRouter(connect(
 	(state) => ({
 		hasMore: state.block.get('hasMore'),
 		loading: state.block.get('loading'),
-		hints: state.search.getIn(['blockSearch', 'hints']),
-		errorSearch: state.search.getIn(['blockSearch', 'error']),
-		loadingSearch: state.search.getIn(['blockSearch', 'loading']),
 		blocks: state.block.get('blocks'),
 		latestBlock: state.round.get('latestBlock'),
 	}),
 	(dispatch) => ({
-		getHints: (str) => dispatch(SearchActions.blockSearchHint(str)),
 		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),
