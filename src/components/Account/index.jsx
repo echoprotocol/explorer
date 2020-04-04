@@ -46,11 +46,11 @@ class Account extends React.Component {
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
 
-		const prevAccountHistory = prevAccount.getIn(['statistics', 'total_ops']);
-		const accountHistory = account.getIn(['statistics', 'total_ops']);
+		const prevCountOps = prevAccount.getIn(['statistics', 'total_ops']);
+		const currCountOps = account.getIn(['statistics', 'total_ops']);
 
 		// if new account operations
-		if (prevAccountHistory.size !== accountHistory.size) {
+		if (prevCountOps !== currCountOps) {
 			this.props.getAccountInfo();
 		}
 
@@ -63,7 +63,6 @@ class Account extends React.Component {
 	componentWillUnmount() {
 		this.props.clearAccountInfo();
 	}
-
 
 	onLoadMoreHistory() {
 		const { account } = this.props;

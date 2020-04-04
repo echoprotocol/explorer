@@ -13,6 +13,7 @@ import OperationRow from './Row.new';
 import Thead from './Thead';
 import OperationsPagination from './Pagination.new.';
 import OperationsFilter from './Filter.new';
+import { DEFAULT_SIZE_PER_PAGE } from '../../constants/TableConstants';
 
 class OperationsTable extends React.Component {
 
@@ -163,13 +164,15 @@ class OperationsTable extends React.Component {
 					</table>
 					{loading && <LoadMoreBtn />}
 				</PerfectScrollbar>
-				<OperationsPagination
-					totalDataSize={filterAndPaginateData.totalDataSize}
-					currentPage={filterAndPaginateData.currentPage}
-					sizePerPage={filterAndPaginateData.sizePerPage}
-					onChangeCurrentPage={(value) => this.props.onChangeCurrentPage(value)}
-					onChangeSizePerPage={(value) => this.props.onChangeSizePerPage(value)}
-				/>
+				{filterAndPaginateData.totalDataSize > DEFAULT_SIZE_PER_PAGE ? (
+					<OperationsPagination
+						totalDataSize={filterAndPaginateData.totalDataSize}
+						currentPage={filterAndPaginateData.currentPage}
+						sizePerPage={filterAndPaginateData.sizePerPage}
+						onChangeCurrentPage={(value) => this.props.onChangeCurrentPage(value)}
+						onChangeSizePerPage={(value) => this.props.onChangeSizePerPage(value)}
+					/>
+				) : null}
 			</div>
 		);
 	}
