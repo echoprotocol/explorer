@@ -24,8 +24,9 @@ class Account extends React.Component {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
 		}
 
-		if (prevProps.filterAndPaginateData !== this.props.filterAndPaginateData) {
+		if (!prevProps.filterAndPaginateData.equals(this.props.filterAndPaginateData)) {
 			this.onLoadMoreHistory();
+			return;
 		}
 
 		if (prevProps.match.params.id !== this.props.match.params.id) {

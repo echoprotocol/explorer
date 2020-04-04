@@ -45,7 +45,6 @@ export default createModule({
 		setPage: {
 			reducer: (state, { payload }) => {
 				state = state.setIn([payload.gridName, 'currentPage'], payload.currentPage);
-				state = state.setIn([payload.gridName, 'offset'], payload.offset);
 
 				return state;
 			},
