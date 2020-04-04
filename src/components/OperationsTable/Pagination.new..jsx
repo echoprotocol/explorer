@@ -27,8 +27,8 @@ const OperationsPagination = ({
 	};
 
 	useEffect(() => {
-		onChangeInputCurrentPage(currentPage);
-	}, [currentPage]);
+		setCurrentPage(currentPage);
+	}, [currentPage, sizePerPage]);
 
 	useEffect(() => {
 		setTotalPages(Math.ceil(totalDataSize / sizePerPage));
