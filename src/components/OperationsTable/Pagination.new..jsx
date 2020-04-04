@@ -34,7 +34,11 @@ const OperationsPagination = ({
 		setTotalPages(Math.ceil(totalDataSize / sizePerPage));
 	}, [totalDataSize, sizePerPage]);
 
-	const index = SIZES_PER_PAGE.findIndex((size) => size > totalDataSize);
+	let index = SIZES_PER_PAGE.findIndex((size) => size > totalDataSize);
+
+	if (index === -1) {
+		index = SIZES_PER_PAGE.length - 1;
+	}
 
 	return (
 		<div className="operations-pagination">

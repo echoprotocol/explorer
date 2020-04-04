@@ -170,7 +170,7 @@ class AccountActions extends BaseActionsClass {
 					to: to || undefined,
 					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 					count: queryData.sizePerPage,
-					operations: Object.keys(OPERATIONS_IDS).splice(0, 40),
+					operations: Object.keys(OPERATIONS_IDS).slice(0, 64),
 				});
 
 				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
