@@ -19,7 +19,9 @@
 
 .wrap.flex {
 	display: flex;
-	& + .footer {
-		position: fixed;
+	@include min-vw($res-1400) {
+		& + .footer {
+			display: none;
+		}
 	}
 }

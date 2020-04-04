@@ -118,7 +118,6 @@
 	.operation {
 		white-space: nowrap;
 		.td-in {
-			max-width: 150px;
 			vertical-align: middle;
 			@include text-overflow();
 		}
@@ -145,18 +144,76 @@
 			white-space: nowrap;
 			display: block;
 
-			@include max-vw(1600) {
+			@include max-vw($res-1600) {
+				max-width: 80px;
+			}
+			@include max-vw($res-1280) {
+				max-width: 150px;
+			}
+			@include max-vw(1190) {
+				max-width: 130px;
+			}
+			@include max-vw($res-1000) {
 				max-width: 80px;
 			}
 		}
 	}
 
-	@include max-vw(1600) {
+	@include max-vw($res-1600) {
 		width: 100%;
 		margin-left: 0;
 		.operation {
-			max-width: 120px;
-			width: 120px;
+			max-width: 130px;
+			width: 130px;
+		}
+		.amount {
+			max-width: 140px;
+			width: 140px;
+		}
+		.fee {
+			max-width: 140px;
+			width: 140px;
+		}
+
+		.dd {
+			max-width: 30px;
+			width: 30px;
+		}
+	}
+	@include max-vw($res-1400) {
+		.amount {
+			max-width: 130px;
+			width: 130px;
+		}
+		.fee {
+			max-width: 130px;
+			width: 130px;
+		}
+	}
+	@include max-vw($res-1280) {
+		.amount {
+			max-width: 200px;
+			width: 200px;
+		}
+		.fee {
+			max-width: 200px;
+			width: 200px;
+		}
+	}
+	@include max-vw(1190) {
+		.amount {
+			max-width: 150px;
+			width: 150px;
+		}
+		.fee {
+			max-width: 150px;
+			width: 150px;
+		}
+	}
+	@include max-vw($res-1000) {
+		.operation {
+			max-width: 100px;
+			width: 100px;
 		}
 		.amount {
 			max-width: 120px;
@@ -165,11 +222,6 @@
 		.fee {
 			max-width: 120px;
 			width: 120px;
-		}
-
-		.dd {
-			max-width: 30px;
-			width: 30px;
 		}
 	}
 }

@@ -76,7 +76,7 @@ class App extends React.Component {
 					<React.Fragment>
 						<div className={cn('wrap', 'flex', { full })}>
 							{children}
-							<Sidebar pinned />
+							<Sidebar pinned withFooter />
 						</div>
 						<Footer />
 					</React.Fragment>

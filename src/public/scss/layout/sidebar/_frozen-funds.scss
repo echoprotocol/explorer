@@ -9,7 +9,7 @@
 .sidebar:not(.pinned) {
 	.frozen-funds-wrap {
 		display: flex;
-		height: 40px;
+		min-height: 40px;
 		margin-bottom: 3px;
 	}
 }

@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import BackwardsLink from '../../components/BackwardLink';
 
 const InnerHeader = React.memo(({
 	children, title, className, returnFunction,
 }) => (
-	<div className={`inner-header ${className}`}>
+	<div className={cn('inner-header', className)}>
+		{children &&
 		<div className="inner-header-line">
 			{ children }
-		</div>
+		</div>}
 		<div className="inner-header-line">
 			{returnFunction && <BackwardsLink returnFunction={returnFunction} />}
 			<div className="inner-header-title">

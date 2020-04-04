@@ -1,18 +1,22 @@
 .inner-container {
-	padding-top: 27px;
-	width: 1012px;
-	padding-right: 30px;
-	background-color: #f3f2f5;
 	position: relative;
-
-	@include max-vw(1534) {
-		padding-right: 30px;
-		width: 867px;
+	padding-top: 27px;
+	padding-bottom: 30px;
+	padding-right: 30px;
+	width: 1012px;
+	background-color: #f3f2f5;
+	min-height: calc(100vh - 182px - 12px);
+	@include max-vw($res-1600) {
+		width: 960px;
 	}
-
+	@include max-vw($res-1400) {
+		width: calc(100vw - 342px - 90px);
+	}
 	@include max-vw($res-1280) {
 		width: 100%;
 		padding-right: 0;
+		//min-height: 100vh - (header + footer)
+		min-height: calc(100vh - 263px - 90px);
 	}
 
 	@include max-vw($res-500) {
@@ -35,11 +39,16 @@
 	}
 	&:before {
 		height: calc(100% - 12px);
-		width: 100%;
 		top: 12px;
 		left: -1000vw;
 		width: 1000vw;
 		background-color: #f3f2f5;
+		z-index: -1;
+		@include max-vw($res-1280) {
+			width: auto;
+			left: -10px;
+			right: -10px;
+		}
 	}
 	&:after {
 		top: 0;
@@ -47,19 +56,12 @@
 		left: 0;
 		right: 0;
 		background-color: #fff;
-	}
-
-	@include max-vw($res-1280) {
-		&:after {
-			content: "";
-			width: 100%;
-			height: 100%;
-			background-color: #f3f2f5;
-			position: absolute;
+		@include max-vw($res-1280) {
 			top: 0;
-			display: block;
-			right: -1000vw;
-			width: 1000vw;
+			height: 12px;
+			left: -10px;
+			right: -10px;
+			background-color: #fff;
 		}
 	}
 }

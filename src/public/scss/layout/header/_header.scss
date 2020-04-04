@@ -7,8 +7,10 @@ header {
 	.input-search-block {
 		@include max-vw($res-500) {
 			position: absolute;
-			right: 20px;
-			background-color: #18142a;
+			right: 10px;
+			&.active {
+				left: 10px;
+			}
 		}
 
 		&.small {

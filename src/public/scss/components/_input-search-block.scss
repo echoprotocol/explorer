@@ -34,7 +34,7 @@
 			width: 277px;
 
 			@include max-vw($res-768) {
-				width: 200px;
+				width: auto;
 			}
 
 			.input-container {
@@ -54,151 +54,6 @@
 			}
 		}
 	}
-
-	// &.white {
-	// 	&:hover {
-	// 		.input-field {
-	// 			input {
-	// 				&::placeholder {
-	// 					color: lighten(#61657e, 15%);
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-
-	// 	.input-field {
-	// 		input {
-	// 			&::placeholder {
-	// 				color: rgba(104, 108, 134, 0.6);
-
-	// 				.search-block-result {
-	// 					&.no-results-wrap {
-	// 						width: auto;
-	// 						right: 0;
-	// 						left: initial;
-	// 					}
-
-	// 					.element {
-	// 						&.no-results {
-	// 							height: 18px;
-	// 							padding: 0;
-	// 							white-space: nowrap;
-	// 						}
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-
-	// 	.search-block-result {
-	// 		&.no-results-wrap {
-	// 			width: auto;
-	// 			right: 0;
-	// 			left: initial;
-	// 		}
-
-	// 		.element {
-	// 			&.no-results {
-	// 				height: 30px;
-	// 				padding: 0;
-	// 				white-space: nowrap;
-	// 			}
-	// 		}
-	// 	}
-
-	// 	&.is-active-small {
-	// 		.input-container {
-	// 			border-color: rgba(49, 53, 79, 0.4);
-
-	// 			&.focus {
-	// 				border-color: #18142a;
-	// 			}
-
-	// 			.icon {
-	// 				opacity: 1;
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// &.go-to-block {
-	// 	width: 175px;
-
-	// 	@include max-vw($res-500) {
-	// 		position: relative !important;
-	// 		right: 0 !important;
-	// 		width: 100%;
-	// 		margin-top: 15px;
-	// 	}
-
-	// 	.input-container {
-	// 		border: 1px solid $grey-mid;
-
-	// 		&:hover {
-	// 			border: 1px solid rgba(49, 53, 79, 0.4);
-
-	// 			.input-field {
-	// 				input {
-	// 					color: rgba(24, 20, 42, 0.4);
-
-	// 					&::placeholder {
-	// 						color: rgba(24, 20, 42, 0.4);
-	// 					}
-	// 				}
-	// 			}
-
-	// 			.g-t-btn {
-	// 				opacity: 0.5;
-	// 			}
-	// 		}
-
-	// 		&.focus {
-	// 			border: 1px solid #31354f;
-
-	// 			.input-field {
-	// 				input {
-	// 					color: #18142a;
-	// 				}
-	// 			}
-
-	// 			.g-t-btn {
-	// 				opacity: 0.6;
-
-	// 				&:hover {
-	// 					opacity: 1;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-
-	// 	.input-field {
-	// 		input {
-	// 			padding-left: 12px;
-	// 			color: rgba(24, 20, 42, 0.4);
-
-	// 			&::placeholder {
-	// 				color: rgba(24, 20, 42, 0.4);
-	// 			}
-	// 		}
-	// 	}
-
-	// 	.g-t-btn {
-	// 		flex-shrink: 0;
-	// 		cursor: pointer;
-	// 		background-image: url(../images/icons/enter.svg);
-	// 		background-size: 13px 10px;
-	// 		background-position: center center;
-	// 		background-repeat: no-repeat;
-	// 		width: 35px;
-	// 		height: 100%;
-	// 		outline: none;
-	// 		border: none;
-	// 		background-color: transparent;
-	// 		opacity: 0.3;
-	// 		transition: all 0.2s ease-out;
-	// 	}
-	// }
-
 	.input-container {
 		display: flex;
 		align-items: center;
@@ -357,7 +212,7 @@
 
 		@include transition;
 
-		@include inter-ui-medium;
+		@include inter-medium;
 		font-size: 14px;
 		color: rgba(104, 108, 134, 0.6);
 

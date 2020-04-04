@@ -9,7 +9,6 @@ import { DebounceInput } from 'react-debounce-input';
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
-// import loadingIcon from '../../public/images/icons/loader.png';
 
 class SearchField extends React.Component {
 
@@ -73,9 +72,10 @@ class SearchField extends React.Component {
 
 	onKeyPress(e) {
 		const { loadingSearch } = this.props;
+		const { inputValue } = this.state;
 		const code = e.keyCode || e.which;
 
-		if (!loadingSearch && KEY_CODE_ENTER === code && this.state.inputValue && this.state.to) {
+		if (!loadingSearch && KEY_CODE_ENTER === code && inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
 				this.props.history.push(this.state.to);
 				this.setState({ focus: false, isChange: false });
@@ -127,13 +127,13 @@ class SearchField extends React.Component {
 		this.props.getHints();
 	}
 
-	renderIcon() {
+	renderIcon(active) {
 		const { loadingSearch } = this.props;
 
 		return (
 			loadingSearch ?
 				<span className="search-loading" /> :
-				<button tabIndex="0" className="close-icn" onClick={() => this.clearInput()} />
+				<button tabIndex={active ? 0 : -1} className="close-icn" onClick={() => this.clearInput()} />
 		);
 
 	}
@@ -141,7 +141,7 @@ class SearchField extends React.Component {
 	render() {
 
 		const {
-			focus, isChange, isActiveSmall,
+			focus, isChange, isActiveSmall, inputValue,
 		} = this.state;
 
 		const {
@@ -179,7 +179,7 @@ class SearchField extends React.Component {
 		return (
 			<div
 				className={classnames('input-search-block', {
-					small, active: (isActiveSmall || this.state.inputValue), white,
+					small, active: (isActiveSmall || inputValue), white,
 				})}
 				ref={this.setWrapperRef}
 			>
@@ -196,7 +196,7 @@ class SearchField extends React.Component {
 					<div className="input-field">
 						<DebounceInput
 							type="text"
-							value={this.state.inputValue}
+							value={inputValue}
 							placeholder={placeholder}
 							onFocus={() => this.onFocus()}
 							onChange={(e) => this.onChange(e)}
@@ -204,7 +204,7 @@ class SearchField extends React.Component {
 							debounceTimeout={DEBOUNCE_TIMEOUT}
 							inputRef={(node) => { this.inputEl = node; }}
 						/>
-						{ this.renderIcon() }
+						{ this.renderIcon(isActiveSmall || inputValue) }
 					</div>
 				</div>
 

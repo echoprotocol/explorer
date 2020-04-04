@@ -42,7 +42,13 @@ const BlockchainRates = ({ pinned }) => (
 					height={SIDEBAR_CHART_HEIGHT}
 					data={data}
 				>
-					<Line dot={false} type="monotone" dataKey="uv" stroke="#2995D8" />
+					<Line
+						dot={false}
+						isAnimationActive={false}
+						type="monotone"
+						dataKey="uv"
+						stroke="#2995D8"
+					/>
 				</LineChart>
 			</div>
 		</div>
@@ -59,7 +65,13 @@ const BlockchainRates = ({ pinned }) => (
 					height={SIDEBAR_CHART_HEIGHT}
 					data={data}
 				>
-					<Line dot={false} type="monotone" dataKey="uv" stroke="#2995D8" />
+					<Line
+						isAnimationActive={false}
+						dot={false}
+						type="monotone"
+						dataKey="uv"
+						stroke="#2995D8"
+					/>
 				</LineChart>
 			</div>
 		</div>
