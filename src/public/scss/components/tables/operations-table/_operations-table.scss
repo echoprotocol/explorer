@@ -114,7 +114,9 @@
 		.value {
 			@include text-overflow;
 			margin-right: 4px;
-			max-width: 140px;
+			min-width: 80px;
+			width: 80px;
+			max-width: 80px;
 			display: block;
 			word-break: break-all;
 		}
@@ -132,7 +134,9 @@
 	}
 
 	.number {
-		width: 20px;
+		width: 30px;
+		min-width: 30px;
+		max-width: 30px;
 	}
 	.operation {
 		white-space: nowrap;
