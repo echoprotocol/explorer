@@ -13,7 +13,12 @@ const OperationsRow = React.memo(({
 		<tr onClick={onClick} className={cn('view')}>
 			<td />
 			<td className="number"><div className="td-in">{number}</div></td>
-			<td className="age"><div className="td-in">{age}</div></td>
+			<td className="age">
+				<div className="td-in">
+					<span className="age-hint">25 Mar,</span>
+					<span className="age-value">{age}</span>
+				</div>
+			</td>
 			<td className="producer">
 				<Link
 					className="td-in avatar-wrap"

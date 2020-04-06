@@ -33,6 +33,12 @@
 		z-index: 1;
 		@include inter-ui-regular();
 		@include table-row-highlight(true);
+		&:hover {
+			.age-hint {
+				max-width: 120px;
+				padding-right: 5px;
+			}
+		}
 	}
 
 	.amount {
@@ -71,5 +77,19 @@
 		.btn {
 			margin-left: 0;
 		}
+	}
+	.age {
+		width: 200px;
+		max-width: 200px;
+		min-width: 200px;
+		white-space: nowrap;
+	}
+	.age-hint {
+		max-width: 0;
+		transition: max-width $speed, padding $speed;
+		padding-right: 0;
+		display: inline-flex;
+		overflow: hidden;
+		color: $grey-mid;
 	}
 }
