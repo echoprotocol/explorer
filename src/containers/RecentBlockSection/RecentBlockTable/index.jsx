@@ -9,7 +9,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import classnames from 'classnames';
 
 import Avatar from '../../../components/Avatar';
-import LoadMoreBtn from '../../../components/LoadMoreBtn';
+import LoadMore from '../../../components/LoadMore';
 import SmallSearchField from '../../../components/SmallSearchField';
 
 import FormatHelper from '../../../helpers/FormatHelper';
@@ -236,7 +236,7 @@ class RecentBlockTable extends React.Component {
 							))
 						}
 					</Media>
-					{loading && <LoadMoreBtn />}
+					{loading && <LoadMore />}
 				</div>
 			</InfiniteScroll>
 		);

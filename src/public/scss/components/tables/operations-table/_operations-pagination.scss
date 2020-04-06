@@ -3,7 +3,6 @@
 	align-items: center;
 	border-top: 1px solid $grey-mid;
 	padding: 14px 0;
-	margin-top: 40px;
 	@include max-vw($res-1000) {
 		flex-wrap: wrap;
 		padding-left: 30px;
@@ -11,7 +10,6 @@
 	}
 	@include max-vw($res-768) {
 		padding-left: 20px;
-		margin-top: 0;
 		border-top: 0;
 	}
 	@include max-vw($res-500) {

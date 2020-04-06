@@ -8,13 +8,13 @@
 
 .footer__version {
 	margin-bottom: 15px;
-	@include InterUI_Medium;
+	@include inter-ui-medium;
 	font-size: 12px;
 	color: $grey-mid;
 }
 
 .footer__info {
-	@include Hack_Bold;
+	@include hack-bold;
 	font-size: 9px;
 	color: $lightgrey;
 	letter-spacing: 2.25px;
