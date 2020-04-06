@@ -1,113 +1,111 @@
 .radio-button {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
 
-  label {
-    display: inline-flex;
-    cursor: pointer;
-    align-items: center;
-  }
+	label {
+		display: inline-flex;
+		cursor: pointer;
+		align-items: center;
+	}
 
-  input {
-    width: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: none;
-    opacity: 0;
-    z-index: -1;
-    position: absolute;
-  }
+	input {
+		width: 0;
+		height: 0;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		outline: none;
+		opacity: 0;
+		z-index: -1;
+		position: absolute;
+	}
 
-  input:checked ~ &-icon {
-    &:after {
-      opacity: 1;
-    }
-  }
-  input:focus ~ &-icon {
-      box-shadow:
-        0 0 0 2px rgba(#2a90e6, .2),
-        0 0 0 2px rgba(#2a90e6, .2);
-  }
+	input:checked ~ &-icon {
+		&:after {
+			opacity: 1;
+		}
+	}
+	input:focus ~ &-icon {
+		box-shadow: 0 0 0 2px rgba(#2a90e6, 0.2), 0 0 0 2px rgba(#2a90e6, 0.2);
+	}
 
-  &-text {
-    color: #18142a;
-    @include InterUI_Regular;
-    font-size: 13px;
-    margin-left: 10px;
-  }
+	&-text {
+		color: #18142a;
+		@include inter-ui-regular;
+		font-size: 13px;
+		margin-left: 10px;
+	}
 
-  &-icon {
-    width: 9px;
-    height: 9px;
-    border: 1px solid #c1c1cb;
-    background-color: #ffffff;
-    border-radius: 1000px;
-    box-sizing: content-box;
-    position: relative;
+	&-icon {
+		width: 9px;
+		height: 9px;
+		border: 1px solid #c1c1cb;
+		background-color: #ffffff;
+		border-radius: 1000px;
+		box-sizing: content-box;
+		position: relative;
 
-    &:after {
-      content: '';
-      display: block;
-      width: 5px;
-      height: 5px;
-      background-color: #2a90e6;
-      border-radius: 1000px;
-      opacity: 0;
-      transition: all .2s ease-out;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-    }
-  }
+		&:after {
+			content: "";
+			display: block;
+			width: 5px;
+			height: 5px;
+			background-color: #2a90e6;
+			border-radius: 1000px;
+			opacity: 0;
+			transition: all 0.2s ease-out;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+		}
+	}
 }
 
 .checkbox {
-  input[type='checkbox'] {
-    @include onFocus(2px, 3px, 0, rgba(#298fe5, .4));
-    width: 14px;
-    height: 14px;
-    border-radius: 1px;
-    background-color: #ffffff;
-    border: 1px solid #c1c1cb;
-    cursor: pointer;
-    transition: all .2s;
+	input[type="checkbox"] {
+		@include onFocus(2px, 3px, 0, rgba(#298fe5, 0.4));
+		width: 14px;
+		height: 14px;
+		border-radius: 1px;
+		background-color: #ffffff;
+		border: 1px solid #c1c1cb;
+		cursor: pointer;
+		transition: all 0.2s;
 
-    &:hover {
-      border-color: #9a9aac;
-    }
+		&:hover {
+			border-color: #9a9aac;
+		}
 
-    &:checked ~ label {
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 4px;
-        left: -19px;
-        width: 3px;
-        height: 7px;
-        border: 2px #298fe5;
-        border-style: none solid solid none;
-        transform: rotate(45deg);
-      }
-    }
-  }
+		&:checked ~ label {
+			&:before {
+				content: "";
+				display: block;
+				position: absolute;
+				top: 4px;
+				left: -19px;
+				width: 3px;
+				height: 7px;
+				border: 2px #298fe5;
+				border-style: none solid solid none;
+				transform: rotate(45deg);
+			}
+		}
+	}
 
-  label {
-    @include InterUI_Regular;
-    font-size: 12px;
-    letter-spacing: 0;
-    line-height: 18px;
-    color: #0E0936;
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-    top: -3px;
-    left: 10px;
-  }
+	label {
+		@include inter-ui-regular;
+		font-size: 12px;
+		letter-spacing: 0;
+		line-height: 18px;
+		color: #0e0936;
+		cursor: pointer;
+		display: inline-block;
+		position: relative;
+		top: -3px;
+		left: 10px;
+	}
 }

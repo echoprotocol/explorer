@@ -1,7 +1,7 @@
 body {
 	letter-spacing: 0.025em;
 	color: $explorer-black;
-	font-family: "InterUI";
+	font-family: "inter";
 }
 
 .wrapper-min {
@@ -55,7 +55,7 @@ textarea {
 
 .h2 {
 	font-size: 22px;
-	@include InterUI_Bold;
+	@include inter-ui-bold;
 	letter-spacing: 1px;
 }
 
@@ -132,7 +132,7 @@ a {
 }
 
 .description-text {
-	@include InterUI_Medium;
+	@include inter-ui-medium;
 	color: #828b95;
 	padding-left: 30px;
 	margin-bottom: 50px;

@@ -1,23 +1,22 @@
 .code-block {
-    @include Hack_Regular;
-    font-size: 12px;
-    line-height: 20px;
-    border: 1px solid #B0B7BD;
-    border-radius: 2px;
+	@include hack-regular;
+	font-size: 12px;
+	line-height: 20px;
+	border: 1px solid #b0b7bd;
+	border-radius: 2px;
 
-    &.max-height-none  {
-        .CodeMirror-scroll {
-            max-height: none;
-        }
-    }
+	&.max-height-none {
+		.CodeMirror-scroll {
+			max-height: none;
+		}
+	}
 
-    &.uncontrolled {
-        .CodeMirror {
-            background-color: #F3F2F5;
-        }
-        .CodeMirror-gutters {
-            background-color: #E5E4E8;
-        }
-    }
-
+	&.uncontrolled {
+		.CodeMirror {
+			background-color: #f3f2f5;
+		}
+		.CodeMirror-gutters {
+			background-color: #e5e4e8;
+		}
+	}
 }

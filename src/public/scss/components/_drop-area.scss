@@ -27,7 +27,7 @@
 		}
 
 		.action-description {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 14px;
 			color: #6e6d6f;
 			margin-bottom: 6px;
@@ -35,7 +35,7 @@
 		}
 
 		.file-description {
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			font-size: 12px;
 			color: #848b94;
 			transition: color 0.2s;
@@ -75,7 +75,7 @@
 			}
 
 			.file-description {
-				@include InterUI_Regular;
+				@include inter-ui-regular;
 				font-size: 12px;
 				color: rgba(#848b94, 0.6);
 			}

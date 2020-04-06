@@ -1,5 +1,5 @@
 .approve-button {
-	@include InterUI_Medium;
+	@include inter-ui-medium;
 	@include btn();
 	@include onFocus(4px, 2px, 2px, rgba(#3570b6, 0.3));
 

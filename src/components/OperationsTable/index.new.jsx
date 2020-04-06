@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import URLHelper from '../../helpers/URLHelper';
 import TableLabel from '../TableLabel';
 import FilterBtn from '../FilterBtn';
-import LoadMoreBtn from '../LoadMoreBtn';
+import LoadMore from '../LoadMore';
 import Operations from '../../constants/Operations';
 
 import OperationRow from './Row.new';
@@ -162,7 +162,7 @@ class OperationsTable extends React.Component {
 							)) : null }
 						</tbody>
 					</table>
-					{loading && <LoadMoreBtn />}
+					{loading && <LoadMore />}
 				</PerfectScrollbar>
 				{filterAndPaginateData.totalDataSize > DEFAULT_SIZE_PER_PAGE ? (
 					<OperationsPagination
