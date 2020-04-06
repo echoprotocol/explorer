@@ -67,7 +67,7 @@
 			font-size: 13px;
 			flex-shrink: 0;
 			color: #18142a;
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			line-height: 18px;
 
 			@include max-vw(767) {

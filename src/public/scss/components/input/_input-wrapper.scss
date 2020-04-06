@@ -4,7 +4,7 @@
 	.error-field {
 		color: #fb0707;
 		font-size: 10px;
-		@include InterUI_Regular;
+		@include inter-ui-regular;
 		color: #fb0707;
 		font-size: 10px;
 		display: inline-block;
@@ -28,7 +28,7 @@
 		color: $explorer-black;
 		transition: background-color $speed;
 		width: 100%;
-		@include InterUI_Regular();
+		@include inter-ui-regular();
 		:placeholder {
 			color: rgba($explorer-black, 0.5);
 		}
@@ -53,12 +53,12 @@
 
 		font-size: 13px;
 		color: #18142a;
-		@include InterUI_Regular;
+		@include inter-ui-regular;
 
 		&:placeholder {
 			font-size: 13px;
 			color: rgba(24, 20, 42, 0.4);
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 		}
 	}
 }

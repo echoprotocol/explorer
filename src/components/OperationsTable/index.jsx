@@ -7,7 +7,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import URLHelper from '../../helpers/URLHelper';
 import TableLabel from '../TableLabel';
 import FilterBtn from '../FilterBtn';
-import LoadMoreBtn from '../LoadMoreBtn';
+import LoadMore from '../LoadMore';
 import Operations from '../../constants/Operations';
 
 import OperationRow from './Row';
@@ -152,7 +152,7 @@ class OperationsTable extends React.Component {
 							)) : null }
 						</tbody>
 					</table>
-					{hasMore && <LoadMoreBtn loading={loading} loadMore={() => loadMore()} />}
+					{hasMore && <LoadMore loading={loading} loadMore={() => loadMore()} />}
 				</PerfectScrollbar>
 				<OperationsPagination />
 			</div>
