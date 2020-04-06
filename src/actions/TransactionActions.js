@@ -560,7 +560,6 @@ class TransactionActionsClass extends BaseActionsClass {
 		if ([
 			OPERATIONS_IDS.CONTRACT_CREATE,
 			OPERATIONS_IDS.CONTRACT_CALL,
-			OPERATIONS_IDS.CONTRACT_TRANSFER,
 		].includes(type)) {
 			if (internal) {
 				options['token transfers'] = internal;

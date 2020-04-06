@@ -25,11 +25,13 @@ class OperationsTable extends React.Component {
 			airRows: [],
 			isFilterOpen: false,
 		};
+		this.timeoutSearch = null;
 		this.toggleFilter = this.toggleFilter.bind(this);
 		this.tableRefs = [];
 	}
 
 	componentDidMount() {
+		this.props.onChangeFilter({ from: '', to: '' });
 		const { showedOperations } = this.state;
 		const queryProps = queryString.parse(this.props.location.search);
 
@@ -62,10 +64,67 @@ class OperationsTable extends React.Component {
 		}
 	}
 
-	toggleFilter(e) {
-		const { isFilterOpen } = this.state;
-		e.target.blur();
-		this.setState({ isFilterOpen: !isFilterOpen });
+	componentWillUnmount() {
+		if (this.timeoutSearch) {
+			clearTimeout(this.timeoutSearch);
+		}
+	}
+
+	async onChangeFilter(e) {
+		const { name, value } = e.target;
+		const { filterAndPaginateData } = this.props;
+		const { filters } = filterAndPaginateData.toJS();
+		filters[name] = value;
+		if (this.timeoutSearch) {
+			clearTimeout(this.timeoutSearch);
+		}
+		this.timeoutSearch = setTimeout(() => {
+			this.props.onChangeFilter(filters);
+		}, 0);
+
+	}
+
+	onClearFilter(name) {
+		const { filterAndPaginateData } = this.props;
+		const { filters } = filterAndPaginateData.toJS();
+		filters[name] = '';
+		if (this.timeoutSearch) {
+			clearTimeout(this.timeoutSearch);
+		}
+		this.timeoutSearch = setTimeout(() => {
+			this.props.onChangeFilter(filters);
+		}, 300);
+	}
+
+	filteredOperations() {
+		let { operations, filterAndPaginateData } = this.props;
+		filterAndPaginateData = filterAndPaginateData.toJS();
+
+		if (operations && (filterAndPaginateData.filters.from || filterAndPaginateData.filters.to)) {
+			const { filters: { from, to } } = filterAndPaginateData;
+			operations = operations.filter((operation) => {
+				let [isAllowFrom, isAllowTo] = [false, false];
+				if (!from && !to) {
+					return true;
+				}
+				if (from && operation.mainInfo.from) {
+					if (from === operation.mainInfo.from.name || from === operation.mainInfo.from.id) {
+						isAllowFrom = true;
+					}
+				} else {
+					isAllowFrom = true;
+				}
+				if (to && operation.mainInfo.subject) {
+					if (to === operation.mainInfo.subject.name || to === operation.mainInfo.subject.id) {
+						isAllowTo = true;
+					}
+				} else {
+					isAllowTo = true;
+				}
+				return isAllowFrom && isAllowTo;
+			});
+		}
+		return operations;
 	}
 
 	toggleOperationDetails(index) {
@@ -121,13 +180,19 @@ class OperationsTable extends React.Component {
 		this.setState({ showedOperations, airRows });
 	}
 
+	toggleFilter(e) {
+		const { isFilterOpen } = this.state;
+		e.target.blur();
+		this.setState({ isFilterOpen: !isFilterOpen });
+	}
+
 	renderTable() {
-		const {
-			operations, isTransaction, label, loading,
-		} = this.props;
+		const { isTransaction, label, loading } = this.props;
 		let { filterAndPaginateData } = this.props;
 		const { showedOperations, airRows, isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
+
+		const filteredOperations = this.filteredOperations();
 
 		return (
 			<div className="operations-table">
@@ -138,15 +203,15 @@ class OperationsTable extends React.Component {
 					from={filterAndPaginateData.filters.from}
 					to={filterAndPaginateData.filters.to}
 					open={isFilterOpen}
-					onChangeFilter={(e) => this.props.onChangeFilter(e)}
-					onClearFilter={(name) => this.props.onClearFilter(name)}
+					onChangeFilter={(e) => this.onChangeFilter(e)}
+					onClearFilter={(name) => this.onClearFilter(name)}
 				/>
 				<PerfectScrollbar>
 					<table>
 						<Thead isTransaction={isTransaction} />
 						<tbody>
 							<tr className="air"><td /></tr>
-							{ operations ? operations.map((op, i) => (
+							{filteredOperations.map((op, i) => (
 								<OperationRow
 									sizePerPage={filterAndPaginateData.sizePerPage}
 									currentPage={filterAndPaginateData.currentPage}
@@ -159,7 +224,7 @@ class OperationsTable extends React.Component {
 									tableRefs={this.tableRefs}
 									toggleOperationDetails={(index) => this.toggleOperationDetails(index)}
 								/>
-							)) : null }
+							))}
 						</tbody>
 					</table>
 					{loading && <LoadMoreBtn />}
@@ -188,7 +253,6 @@ OperationsTable.propTypes = {
 	onChangeCurrentPage: PropTypes.func,
 	onChangeSizePerPage: PropTypes.func,
 	onChangeFilter: PropTypes.func,
-	onClearFilter: PropTypes.func,
 
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 	history: PropTypes.object.isRequired,
@@ -209,7 +273,6 @@ OperationsTable.defaultProps = {
 	onChangeCurrentPage: () => {},
 	onChangeSizePerPage: () => {},
 	onChangeFilter: () => {},
-	onClearFilter: () => {},
 };
 
 export default OperationsTable;

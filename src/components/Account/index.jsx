@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
@@ -13,18 +14,22 @@ class Account extends React.Component {
 
 	componentDidMount() {
 		this.props.getAccountInfo();
-
 		if (this.props.location.search) {
 			this.props.history.push(this.props.location.pathname);
 		}
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.account) {
+		if ((!prevProps.account && this.props.account) ||
+			(prevProps.account && prevProps.account.get('name') !== this.props.account.get('name'))
+		) {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
+			this.onLoadMoreHistory();
 		}
 
-		if (!prevProps.filterAndPaginateData.equals(this.props.filterAndPaginateData)) {
+		const prevFilter = prevProps.filterAndPaginateData.delete('totalDataSize');
+		const currFilter = this.props.filterAndPaginateData.delete('totalDataSize');
+		if (!_.isEqual(prevFilter.toJS(), currFilter.toJS())) {
 			this.onLoadMoreHistory();
 			return;
 		}
@@ -32,11 +37,6 @@ class Account extends React.Component {
 		if (prevProps.match.params.id !== this.props.match.params.id) {
 			this.props.getAccountInfo();
 			return;
-		}
-
-		if (prevProps.account !== this.props.account) {
-			this.props.onChangeFilter({ to: '', from: this.props.account.get('name') });
-			this.onLoadMoreHistory();
 		}
 
 		if (!prevProps.account) {
@@ -49,7 +49,6 @@ class Account extends React.Component {
 		const prevCountOps = prevAccount.getIn(['statistics', 'total_ops']);
 		const currCountOps = account.getIn(['statistics', 'total_ops']);
 
-		// if new account operations
 		if (prevCountOps !== currCountOps) {
 			this.onLoadMoreHistory();
 		}
@@ -67,27 +66,6 @@ class Account extends React.Component {
 	onLoadMoreHistory() {
 		const { account } = this.props;
 		this.props.loadAccountHistory(account.get('id'));
-	}
-
-	async onChangeFilter(e) {
-		const { name, value } = e.target;
-		if (name === 'from') {
-			return;
-		}
-		const { filterAndPaginateData } = this.props;
-		const { filters } = filterAndPaginateData.toJS();
-		filters[name] = value;
-		this.props.onChangeFilter(filters);
-	}
-
-	onClearFilter(name) {
-		if (name === 'from') {
-			return;
-		}
-		const { filterAndPaginateData } = this.props;
-		const { filters } = filterAndPaginateData.toJS();
-		filters[name] = '';
-		this.props.onChangeFilter(filters);
 	}
 
 	renderLoader(loading) {
@@ -128,8 +106,6 @@ class Account extends React.Component {
 						<React.Fragment>
 							{account.getIn(['statistics', 'total_ops']) ? (
 								<OperationsTable
-									onChangeFilter={(e) => this.onChangeFilter(e)}
-									onClearFilter={(e) => this.onClearFilter(e)}
 									gridName={ACCOUNT_GRID}
 									label="Transactions"
 									operations={accountHistory}
@@ -150,7 +126,6 @@ class Account extends React.Component {
 
 Account.propTypes = {
 	filterAndPaginateData: PropTypes.object.isRequired,
-	onChangeFilter: PropTypes.func.isRequired,
 
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,

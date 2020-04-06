@@ -27,6 +27,13 @@ const OperationsPagination = ({
 	};
 
 	useEffect(() => {
+		const index = SIZES_PER_PAGE.findIndex((size) => size > totalDataSize);
+		const initIndex = SIZES_PER_PAGE.findIndex((size) => size === sizePerPage);
+		if (initIndex > index) {
+			onChangeSizePerPage(SIZES_PER_PAGE[0]);
+		}
+	}, []);
+	useEffect(() => {
 		setCurrentPage(currentPage);
 	}, [currentPage, sizePerPage]);
 

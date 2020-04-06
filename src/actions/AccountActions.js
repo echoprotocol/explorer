@@ -14,7 +14,7 @@ import TransactionActions from './TransactionActions';
 
 import { BridgeService } from '../services/BridgeService';
 import { getBalances } from '../services/queries/balance';
-import { getAccountHistory } from '../services/queries/account';
+import { getHistory } from '../services/queries/history';
 import { ACCOUNT_GRID } from '../constants/TableConstants';
 import GridActions from './GridActions';
 
@@ -37,18 +37,8 @@ class AccountActions extends BaseActionsClass {
 		await TransactionActions.fetchTransactionsObjects(transactions);
 
 		let accountHistory = transactions.map(async (t) => {
-			let { op: operation, result } = t;
+			const { op: operation, result } = t;
 			const block = await echo.api.getBlock(t.block_num);
-			if (OPERATIONS_IDS.CONTRACT_TRANSFER === t.op[0]) {
-
-				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
-
-				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
-
-				if (operation[1].registrar === accountId) {
-					return null;
-				}
-			}
 
 			return TransactionActions.getOperation(
 				operation,
@@ -130,14 +120,13 @@ class AccountActions extends BaseActionsClass {
 	formatHistoryFromEchoDB(history) {
 		return history.map((data) => {
 			const operationId = parseInt(data.id, 10);
-			// TODO change id: data.id(id operation 1.6.*); trx_in_block: 0, op_in_trx: 0,
 			return ({
 				id: operationId,
 				op: [operationId, data.body],
 				result: [0, data.result],
-				block_num: data.transaction.block.round,
-				trx_in_block: 0,
-				op_in_trx: 0,
+				block_num: data.transaction ? data.transaction.block.round : data.block.round,
+				trx_in_block: data.trx_in_block || 0,
+				op_in_trx: data.op_in_trx || 0,
 				virtual_op: 0,
 			});
 		});
@@ -154,25 +143,34 @@ class AccountActions extends BaseActionsClass {
 				const queryData = getState().grid.get(ACCOUNT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
 
-				let to = null;
-				if (queryData.filters.to) {
-					let toAccount = null;
-					try {
-						toAccount = await echo.api.getAccountByName(queryData.filters.to);
-						to = toAccount ? [toAccount.id] : [];
-					} catch (err) {
-						to = [];
-					}
-				}
+				const subject = accountId;
+				const relationSubjects = [];
 
-				const { items, total } = await getAccountHistory({
-					from: [accountId],
-					to: to || undefined,
+				const addRelationSubjects = async (objectId) => {
+					if (!objectId) { return; }
+					if (validators.isContractId(objectId)) {
+						relationSubjects.push(objectId);
+					} else {
+						let account = null;
+						try {
+							account = await echo.api.getAccountByName(objectId);
+							if (account && accountId !== account.id) {
+								relationSubjects.push(account.id);
+							}
+						} catch (err) {
+							console.log('Error set filter', objectId, err);
+						}
+					}
+				};
+				await Promise.all([queryData.filters.from, queryData.filters.to].map((filter) => addRelationSubjects(filter)));
+
+				const { items, total } = await getHistory({
+					subject,
+					relationSubjects,
 					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 					count: queryData.sizePerPage,
-					operations: Object.keys(OPERATIONS_IDS).slice(0, 64),
+					operations: Object.keys(OPERATIONS_IDS).slice(0, 40),
 				});
-
 				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatAccountHistory(accountId, transactions);

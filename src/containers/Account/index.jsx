@@ -8,7 +8,6 @@ import Account from '../../components/Account';
 import AccountActions from '../../actions/AccountActions';
 import GlobalActions from '../../actions/GlobalActions';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
-import GridActions from '../../actions/GridActions';
 
 const filteredObjects = createSelector(
 	(state) => state.account.get('balances'),
@@ -44,7 +43,6 @@ export default withRouter(connect(
 		account: state.echoCache.getIn([CACHE_MAPS.FULL_ACCOUNTS, state.account.get('id')]),
 	}),
 	(dispatch, props) => ({
-		onChangeFilter: (params) => dispatch(GridActions.setFilter(ACCOUNT_GRID, params)),
 		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),
 		loadAccountHistory: (accountId, lastOperationId) => dispatch(AccountActions.loadAccountHistory(
 			accountId,
