@@ -39,11 +39,6 @@ class BlockInformation extends React.Component {
 		};
 	}
 
-	static async getInitialProps({ query, store }) {
-		await store.dispatch(getBlockInformation(query.round));
-		return {};
-	}
-
 	componentDidMount() {
 		const { router: { query: { round } }, blockInformation } = this.props;
 		if (blockInformation.get('blockNumber') !== round) {
@@ -235,5 +230,10 @@ BlockInformation.propTypes = {
 };
 
 BlockInformation.defaultProps = {};
+
+BlockInformation.getInitialProps = async ({ query, store }) => {
+	await store.dispatch(getBlockInformation(query.round));
+	return {};
+};
 
 export default BlockInformation;

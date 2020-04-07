@@ -18,19 +18,6 @@ import TransactionActions from '../../actions/TransactionActions';
 
 class TransactionsInfo extends React.Component {
 
-	static async getInitialProps({ store, query }) {
-		const { round, index } = query;
-		const title = TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round);
-		if (!store.getState().block.getIn(['blockInformation', 'blockNumber'])) {
-			await Promise.all([
-				store.dispatch(GlobalActions.setTitle(title)),
-				store.dispatch(getBlockInformation(round)),
-				store.dispatch(TransactionActions.getTransaction(round, index)),
-			]);
-		}
-		return {};
-	}
-
 	componentDidMount() {
 		const { router: { query: { round, index } }, blockInformation, operations } = this.props;
 		if (!blockInformation.get('blockNumber') || !operations.size) {
@@ -119,6 +106,19 @@ TransactionsInfo.defaultProps = {
 	operations: null,
 	historyLength: 0,
 	loading: false,
+};
+
+TransactionsInfo.getInitialProps = async ({ store, query }) => {
+	const { round, index } = query;
+	const title = TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round);
+	if (!store.getState().block.getIn(['blockInformation', 'blockNumber'])) {
+		await Promise.all([
+			store.dispatch(GlobalActions.setTitle(title)),
+			store.dispatch(getBlockInformation(round)),
+			store.dispatch(TransactionActions.getTransaction(round, index)),
+		]);
+	}
+	return {};
 };
 
 export default TransactionsInfo;

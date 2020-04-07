@@ -56,11 +56,6 @@ class Contract extends React.Component {
 		};
 	}
 
-	static async getInitialProps({ query, store }) {
-		await store.dispatch(ContractActions.getContractInfo(query.id));
-		return {};
-	}
-
 	async componentDidMount() {
 		const { router: { query: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
@@ -503,6 +498,11 @@ Contract.defaultProps = {
 	supportedAsset: '',
 	activeAccount: new Map(),
 	token: null,
+};
+
+Contract.getInitialProps = async ({ query, store }) => {
+	await store.dispatch(ContractActions.getContractInfo(query.id));
+	return {};
 };
 
 export default withRouter(Contract);

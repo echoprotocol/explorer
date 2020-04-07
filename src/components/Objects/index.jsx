@@ -19,15 +19,6 @@ class Objects extends React.Component {
 		this.copy = this.copy.bind(this);
 	}
 
-	static async getInitialProps({ query, store, asPath }) {
-		let { id } = query;
-		if (!id) {
-			id = QueryStringHelper.getObjectId(asPath.split('?')[1]);
-		}
-		await store.dispatch(getObjectInfo(id));
-		return { query: { id } };
-	}
-
 	componentDidMount() {
 		if (!this.props.data) {
 			const id = QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1]);
@@ -141,6 +132,15 @@ Objects.defaultProps = {
 	data: null,
 	setError: null,
 	error: null,
+};
+
+Objects.getInitialProps = async ({ query, store, asPath }) => {
+	let { id } = query;
+	if (!id) {
+		id = QueryStringHelper.getObjectId(asPath.split('?')[1]);
+	}
+	await store.dispatch(getObjectInfo(id));
+	return { query: { id } };
 };
 
 export default Objects;
