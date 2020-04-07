@@ -28,7 +28,8 @@ export default class extends Document {
 			<html lang="en" {...this.helmetHtmlAttrComponents}>
 				<Head>
 					{this.helmetHeadComponents}
-					<link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
+					{/* eslint-disable-next-line global-require */}
+					<link rel="icon" type="image/x-icon" href={require('../public/favicon.ico')} />
 				</Head>
 				<body {...this.helmetBodyAttrComponents}>
 					<Main />
