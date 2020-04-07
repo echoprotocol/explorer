@@ -78,8 +78,9 @@ class OperationsTable extends React.Component {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
+		this.props.onChangeFilter(filters);
 		this.timeoutSearch = setTimeout(() => {
-			this.props.onChangeFilter(filters);
+			this.props.onLoadMoreHistory();
 		}, 0);
 
 	}
@@ -91,9 +92,20 @@ class OperationsTable extends React.Component {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
+		this.props.onChangeFilter(filters);
 		this.timeoutSearch = setTimeout(() => {
-			this.props.onChangeFilter(filters);
+			this.props.onLoadMoreHistory();
 		}, 300);
+	}
+
+	onChangeCurrentPage(value) {
+		this.props.onChangeCurrentPage(value);
+		this.props.onLoadMoreHistory();
+	}
+
+	onChangeSizePerPage(value) {
+		this.props.onChangeSizePerPage(value);
+		this.props.onLoadMoreHistory();
 	}
 
 	filteredOperations() {
@@ -234,8 +246,8 @@ class OperationsTable extends React.Component {
 						totalDataSize={filterAndPaginateData.totalDataSize}
 						currentPage={filterAndPaginateData.currentPage}
 						sizePerPage={filterAndPaginateData.sizePerPage}
-						onChangeCurrentPage={(value) => this.props.onChangeCurrentPage(value)}
-						onChangeSizePerPage={(value) => this.props.onChangeSizePerPage(value)}
+						onChangeCurrentPage={(value) => this.onChangeCurrentPage(value)}
+						onChangeSizePerPage={(value) => this.onChangeSizePerPage(value)}
 					/>
 				) : null}
 			</div>
@@ -253,6 +265,7 @@ OperationsTable.propTypes = {
 	onChangeCurrentPage: PropTypes.func,
 	onChangeSizePerPage: PropTypes.func,
 	onChangeFilter: PropTypes.func,
+	onLoadMoreHistory: PropTypes.func,
 
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 	history: PropTypes.object.isRequired,
@@ -273,6 +286,7 @@ OperationsTable.defaultProps = {
 	onChangeCurrentPage: () => {},
 	onChangeSizePerPage: () => {},
 	onChangeFilter: () => {},
+	onLoadMoreHistory: () => {},
 };
 
 export default OperationsTable;

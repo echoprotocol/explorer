@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
@@ -25,13 +24,6 @@ class Account extends React.Component {
 		) {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
 			this.onLoadMoreHistory();
-		}
-
-		const prevFilter = prevProps.filterAndPaginateData.delete('totalDataSize');
-		const currFilter = this.props.filterAndPaginateData.delete('totalDataSize');
-		if (!_.isEqual(prevFilter.toJS(), currFilter.toJS())) {
-			this.onLoadMoreHistory();
-			return;
 		}
 
 		if (prevProps.match.params.id !== this.props.match.params.id) {
@@ -106,6 +98,7 @@ class Account extends React.Component {
 						<React.Fragment>
 							{account.getIn(['statistics', 'total_ops']) ? (
 								<OperationsTable
+									onLoadMoreHistory={() => this.onLoadMoreHistory()}
 									gridName={ACCOUNT_GRID}
 									label="Transactions"
 									operations={accountHistory}
@@ -125,8 +118,6 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
-	filterAndPaginateData: PropTypes.object.isRequired,
-
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	account: PropTypes.object,
