@@ -30,12 +30,6 @@ class Asset extends React.Component {
 			issuer: null,
 		};
 	}
-	static async getInitialProps({ query, store }) {
-		const { asset, issuer } = await store.dispatch(getFullAssetInformation(query.id));
-		const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);
-		await store.dispatch(GlobalActions.setTitle(title));
-		return { asset, issuer };
-	}
 
 	static getDerivedStateFromProps(nextProps, state) {
 		if (nextProps.asset && nextProps.asset !== state.asset) {
@@ -228,7 +222,13 @@ Asset.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 };
 
-Asset.defaultProps = {
+Asset.defaultProps = {};
+
+Asset.getInitialProps = async ({ query, store }) => {
+	const { asset, issuer } = await store.dispatch(getFullAssetInformation(query.id));
+	const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);
+	await store.dispatch(GlobalActions.setTitle(title));
+	return { asset, issuer };
 };
 
 export default Asset;
