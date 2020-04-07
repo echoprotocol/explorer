@@ -18,7 +18,7 @@
 		align-items: center;
 		margin-bottom: 25px;
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			padding-left: 0px;
 			justify-content: center;
 		}
@@ -27,7 +27,7 @@
 			position: relative;
 			height: 100%;
 			cursor: pointer;
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			font-size: 13px;
 			display: flex;
 			align-items: center;
@@ -67,7 +67,7 @@
 			}
 
 			&--selected {
-				@include InterUI_Bold;
+				@include inter-ui-bold;
 				color: rgba(0, 0, 0, 1);
 				background-color: rgba(226, 224, 230, 1);
 			}
@@ -76,6 +76,8 @@
 }
 
 .account-page-info {
+	margin-top: -15px;
+	margin-right: -30px;
 	padding: 50px 30px 40px 0;
 	background-color: $lightgrey-darker;
 	position: relative;
@@ -98,7 +100,7 @@
 		}
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding: 50px 0 40px;
 	}
 	&:before {
@@ -114,7 +116,7 @@
 
 .account-page-table {
 	padding: 50px 30px 50px 0;
-	@include max-vw(999) {
+	@include max-vw($res-1000) {
 		padding: 50px 0 0;
 	}
 }
@@ -122,7 +124,7 @@
 .account-page-t-block {
 	margin-bottom: 30px;
 	> .title {
-		@include InterUI_Bold;
+		@include inter-ui-bold;
 		font-size: 23px;
 		color: #18142a;
 		margin-bottom: 33px;
@@ -134,12 +136,12 @@
 			margin-left: 19px;
 		}
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			margin-left: 23px;
 			margin-bottom: 29px;
 		}
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			margin-left: 17px;
 		}
 	}
@@ -148,7 +150,7 @@
 		display: flex;
 		align-items: flex-start;
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			flex-direction: column;
 		}
 	}
@@ -162,12 +164,12 @@
 	padding: 43px 30px 30px;
 	flex-shrink: 0;
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding: 30px 20px;
 		width: 100%;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding: 45px 25px;
 		position: relative;
 		z-index: 2;
@@ -178,40 +180,40 @@
 		display: flex;
 		align-items: center;
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			align-items: flex-start;
 			flex-direction: column;
 		}
 
 		&:not(:last-child) {
 			margin-bottom: 20px;
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				margin-bottom: 30px;
 			}
 		}
 
 		&:last-child {
 			margin-top: 13px;
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				margin-top: 5px;
 			}
 		}
 
 		.title {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			color: $grey;
 			font-size: 12px;
 			line-height: 1em;
 			display: block;
 			white-space: nowrap;
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				margin-bottom: 10px;
 			}
 		}
 
 		.val {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 15px;
 			line-height: 1em;
 			display: flex;
@@ -237,14 +239,14 @@
 			background-size: auto;
 			background-repeat: repeat;
 			transform: translateY(-3px);
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				display: none;
 			}
 		}
 	}
 
 	.raw-link {
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		letter-spacing: 0.3px;
 		font-size: 12px;
 		color: $blue;
@@ -255,30 +257,30 @@
 	padding-top: 15px;
 	margin-left: 55px;
 	width: 100%;
-	@include max-vw(999) {
+	@include max-vw($res-1000) {
 		margin-left: 50px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding: 30px 20px 0;
 		width: 100%;
 		margin-left: 0;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding: 30px 15px 0;
 	}
 	.elem {
 		&:not(:last-child) {
 			margin-bottom: 35px;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				margin-bottom: 30px;
 			}
 		}
 
 		.title {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 12px;
 			color: $grey;
 
@@ -290,7 +292,7 @@
 		.load-more {
 			display: inline-flex;
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				margin-left: 20px;
 			}
 		}
@@ -304,7 +306,7 @@
 		position: relative;
 		padding-bottom: 14px;
 		width: 31%;
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		font-size: 12px;
 		border-bottom: 1px solid #d8d9de;
 
@@ -317,15 +319,15 @@
 			margin-right: 0;
 		}
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			width: 100%;
 		}
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			width: 48%;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			width: 100%;
 		}
 
@@ -343,15 +345,15 @@
 				max-width: 70px;
 				vertical-align: bottom;
 
-				@include max-vw(999) {
+				@include max-vw($res-1000) {
 					max-width: 180px;
 				}
 
-				@include max-vw(767) {
+				@include max-vw($res-768) {
 					max-width: 90px;
 				}
 
-				@include max-vw(499) {
+				@include max-vw($res-500) {
 					overflow: unset;
 				}
 			}
@@ -364,7 +366,7 @@
 				right: 0;
 				background-color: #cadef0;
 				top: -2px;
-				@include Hack_Bold;
+				@include hack-bold;
 				padding: 3px;
 				font-size: 9px;
 				color: $blue;

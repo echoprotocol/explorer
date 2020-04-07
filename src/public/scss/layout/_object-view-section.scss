@@ -13,10 +13,10 @@
 		@include max-vw(1279) {
 			padding-left: 19px 30px;
 		}
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			padding-left: 19px 20px;
 		}
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			padding-left: 19px 15px;
 			flex-direction: column-reverse;
 			align-items: flex-start;
@@ -26,21 +26,21 @@
 			margin-left: auto;
 			margin-top: 0;
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				margin-left: 0;
 				margin-bottom: 20px;
 			}
 		}
 
 		> ul {
-			@include Hack_Regular;
+			@include hack-regular;
 			font-size: 13px;
 			background: transparent !important;
 			margin: 0 !important;
 			max-width: calc(100% - 140px);
 			width: 100%;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				max-width: 100%;
 			}
 

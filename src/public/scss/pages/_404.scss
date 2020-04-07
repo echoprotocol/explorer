@@ -15,11 +15,11 @@
 		left: 0;
 		top: 0;
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			padding-left: 50px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			padding-left: 25px;
 			padding-top: 25px;
 		}
@@ -51,7 +51,7 @@
 				width: 280px;
 			}
 
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				display: none;
 			}
 		}
@@ -62,12 +62,12 @@
 			align-items: center;
 			margin-top: -90px;
 
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				margin-top: 0;
 			}
 
 			.title {
-				@include InterUI_Bold;
+				@include inter-ui-bold;
 				font-size: 160px;
 				color: #ffffff;
 
@@ -75,18 +75,18 @@
 					font-size: 150px;
 				}
 
-				@include max-vw(999) {
+				@include max-vw($res-1000) {
 					font-size: 140px;
 				}
 
-				@include max-vw(499) {
+				@include max-vw($res-500) {
 					font-size: 65px;
 					margin-bottom: 10px;
 				}
 			}
 
 			.desc {
-				@include Hack_Regular;
+				@include hack-regular;
 				font-size: 20px;
 				color: #556270;
 				text-transform: uppercase;
@@ -96,7 +96,7 @@
 					font-size: 18px;
 				}
 
-				@include max-vw(999) {
+				@include max-vw($res-1000) {
 					font-size: 15px;
 				}
 			}
@@ -105,7 +105,7 @@
 		.n-f-button {
 			cursor: pointer;
 			margin-top: 35px;
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 14px;
 			color: #000000;
 			text-transform: uppercase;
@@ -125,7 +125,7 @@
 				opacity: 0.7;
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				font-size: 13px;
 			}
 		}
@@ -146,10 +146,10 @@
 
 				.title {
 					font-size: 24px;
-					@include InterUI_Medium;
+					@include inter-ui-medium;
 					line-height: 32px;
 
-					@include max-vw(499) {
+					@include max-vw($res-500) {
 						font-size: 20px;
 						padding-right: 15px;
 						padding-left: 15px;

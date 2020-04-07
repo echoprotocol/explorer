@@ -15,11 +15,11 @@
 		padding: 20px 30px;
 	}
 
-	@include max-vw(999) {
+	@include max-vw($res-1000) {
 		margin-bottom: 42px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding-bottom: 0;
 		padding-left: 19px;
 		flex-wrap: wrap;
@@ -28,7 +28,7 @@
 		margin-bottom: 28px;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		width: 100%;
 		margin: 0;
 		padding-left: 18px;
@@ -41,22 +41,22 @@
 		flex-shrink: 0;
 		word-break: break-all;
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			margin-bottom: 20px;
 			margin-right: 30px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			margin-right: 0;
 		}
 		&.time {
 			width: 220px;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				width: 195px;
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				width: 50%;
 			}
 		}
@@ -64,11 +64,11 @@
 		&.size {
 			width: 113px;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				width: 80px;
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				padding-left: 30px;
 				width: 50%;
 			}
@@ -77,11 +77,11 @@
 		&.producer {
 			width: 113px;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				width: 100px;
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				width: 50%;
 			}
 		}
@@ -89,7 +89,7 @@
 		&.reward {
 			width: 155px;
 			white-space: nowrap;
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				width: 50%;
 			}
 		}
@@ -98,18 +98,18 @@
 			width: 113px;
 			white-space: nowrap;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				width: 80px;
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				padding-left: 30px;
 				width: 50%;
 			}
 		}
 
 		.title {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 12px;
 			color: $lightgrey;
 			margin-bottom: 14px;
@@ -117,7 +117,7 @@
 		}
 
 		.value {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 16px;
 			letter-spacing: 0.41px;
 			color: $explorer-black;
@@ -126,7 +126,7 @@
 			align-items: center;
 			@include text-overflow();
 			max-width: 100%;
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				font-size: 14px;
 				line-height: 20px;
 			}

@@ -9,7 +9,7 @@ import Avatar from '../Avatar';
 import Thead from './Thead';
 
 
-class DistributionTable extends React.Component {
+class DistributionTable extends React.PureComponent {
 
 	renderRow({
 		type, delegate, producer, producedByCommittee,

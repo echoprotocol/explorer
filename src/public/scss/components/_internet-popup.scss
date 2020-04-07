@@ -1,20 +1,20 @@
 .internet-popup {
-    width: 100%;
-    min-height: 27px;
-    background-color: #e73e3e;
-    @include InterUI_Medium;
-    font-size: 12px;
-    line-height: 18px;
-    color: #ffffff;
-    padding: 4.5px 0;
-    position: fixed;
-    bottom: 0;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+	width: 100%;
+	min-height: 27px;
+	background-color: #e73e3e;
+	@include inter-ui-medium;
+	font-size: 12px;
+	line-height: 18px;
+	color: #ffffff;
+	padding: 4.5px 0;
+	position: fixed;
+	bottom: 0;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
 
-    &.isConnected {
-        background-color: #59cc97;
-    }
+	&.isConnected {
+		background-color: #59cc97;
+	}
 }

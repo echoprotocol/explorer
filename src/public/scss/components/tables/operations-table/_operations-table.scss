@@ -1,0 +1,227 @@
+.operations-table {
+	position: relative;
+
+	@include table();
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	@include table-avatar();
+	@include table-vertical-scroll();
+
+	thead {
+		border-top: 1px solid $grey-mid;
+	}
+
+	.dd {
+		.td-in {
+			text-align: right;
+		}
+		img {
+			display: block;
+			transform: rotate(60deg);
+			transition: transform $speed;
+			margin: 0 0 0 auto;
+		}
+	}
+
+	.view {
+		cursor: pointer;
+		z-index: 1;
+		@include inter-ui-regular();
+		@include table-row-highlight(true);
+
+		&.active {
+			@include table-row-highlight();
+			& + .fold {
+				display: table-row;
+
+				td:first-child {
+					background-color: #f3f3f5;
+				}
+			}
+
+			.dd {
+				img {
+					transform: rotate(0);
+				}
+			}
+		}
+	}
+	.fold-operation-info {
+		&:not(:last-child) {
+			margin-bottom: 20px;
+		}
+	}
+	.fold {
+		display: none;
+		animation: fade-in $speed;
+		position: relative;
+		z-index: 1;
+		@include table-row-highlight();
+		td {
+			&:nth-child(2) {
+				padding: 12px 30px;
+			}
+		}
+
+		.fold-title {
+			padding-left: 17px;
+			font-size: 13px;
+			letter-spacing: 0.33px;
+			color: #120e30;
+			display: block;
+			width: 100%;
+			border-bottom: 1px solid rgba(#3f465a, 0.15);
+			padding-bottom: 10px;
+			@include inter-ui-bold();
+
+			& + .operation-detail-table {
+				margin-top: 8px;
+
+				@include max-vw($res-1000) {
+					margin-top: 19px;
+				}
+
+				@include max-vw($res-768) {
+					margin-top: 13px;
+				}
+			}
+		}
+	}
+
+	.amount,
+	.fee {
+		.td-in {
+			display: flex;
+		}
+
+		.value {
+			@include text-overflow;
+			margin-right: 4px;
+			max-width: 140px;
+			display: block;
+			word-break: break-all;
+		}
+
+		.type {
+			color: $grey;
+		}
+
+		.currency {
+			overflow: initial;
+		}
+	}
+
+	.number {
+		width: 20px;
+	}
+	.operation {
+		white-space: nowrap;
+		.td-in {
+			vertical-align: middle;
+			@include text-overflow();
+		}
+	}
+	.time {
+		width: 130px;
+		.td-in {
+			max-width: 130px;
+			color: $blue;
+			white-space: nowrap;
+			span {
+				display: inline-block;
+				max-width: 100%;
+				@include text-overflow();
+			}
+		}
+	}
+	.sender,
+	.reciever {
+		span {
+			max-width: 85px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			display: block;
+
+			@include max-vw($res-1600) {
+				max-width: 80px;
+			}
+			@include max-vw($res-1280) {
+				max-width: 150px;
+			}
+			@include max-vw(1190) {
+				max-width: 130px;
+			}
+			@include max-vw($res-1000) {
+				max-width: 80px;
+			}
+		}
+	}
+
+	@include max-vw($res-1600) {
+		width: 100%;
+		margin-left: 0;
+		.operation {
+			max-width: 130px;
+			width: 130px;
+		}
+		.amount {
+			max-width: 140px;
+			width: 140px;
+		}
+		.fee {
+			max-width: 140px;
+			width: 140px;
+		}
+
+		.dd {
+			max-width: 30px;
+			width: 30px;
+		}
+	}
+	@include max-vw($res-1400) {
+		.amount {
+			max-width: 130px;
+			width: 130px;
+		}
+		.fee {
+			max-width: 130px;
+			width: 130px;
+		}
+	}
+	@include max-vw($res-1280) {
+		.amount {
+			max-width: 200px;
+			width: 200px;
+		}
+		.fee {
+			max-width: 200px;
+			width: 200px;
+		}
+	}
+	@include max-vw(1190) {
+		.amount {
+			max-width: 150px;
+			width: 150px;
+		}
+		.fee {
+			max-width: 150px;
+			width: 150px;
+		}
+	}
+	@include max-vw($res-1000) {
+		.operation {
+			max-width: 100px;
+			width: 100px;
+		}
+		.amount {
+			max-width: 120px;
+			width: 120px;
+		}
+		.fee {
+			max-width: 120px;
+			width: 120px;
+		}
+	}
+}

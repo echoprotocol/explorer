@@ -5,10 +5,9 @@
 	justify-content: center;
 	min-width: 85px;
 	height: 21px;
-	margin-top: 20px;
 	border-radius: 11px;
 	background-color: #e2e0e6;
-	@include InterUI_Regular;
+	@include inter-ui-regular;
 	font-size: 12px;
 	color: #000000;
 	border: none;
@@ -17,11 +16,11 @@
 	padding: 0 12px;
 	white-space: nowrap;
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		margin-top: 20px;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		margin-top: 15px;
 	}
 

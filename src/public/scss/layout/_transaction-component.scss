@@ -1,5 +1,5 @@
 .transaction-time {
-	@include InterUI_Medium;
+	@include inter-ui-medium;
 	color: #828b95;
 	padding-left: 30px;
 	margin-bottom: 50px;
@@ -14,11 +14,11 @@
 		padding-left: 30px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding-left: 20px;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding-left: 15px;
 	}
 }

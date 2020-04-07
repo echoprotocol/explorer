@@ -3,12 +3,12 @@
 		min-height: calc(100vh - 390px);
 	}
 
-	@include max-vw(999) {
+	@include max-vw($res-1000) {
 		min-height: calc(100vh - 390px);
 		padding-top: 40px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding-top: 48px;
 		min-height: calc(100vh - 509px);
 	}
@@ -16,25 +16,25 @@
 	.asset-container {
 		margin-bottom: 30px;
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			margin: 0 20px 30px 20px;
 		}
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			margin-bottom: 43px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			margin-bottom: 0;
 		}
 
 		> .title {
-			@include InterUI_Bold;
+			@include inter-ui-bold;
 			font-size: 23px;
 			color: #18142a;
 			margin-bottom: 52px;
 
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				margin-bottom: 30px;
 			}
 		}
@@ -52,17 +52,17 @@
 				&:not(:last-child) {
 					margin-bottom: 50px;
 
-					@include max-vw(999) {
+					@include max-vw($res-1000) {
 						margin-bottom: 25px;
 					}
 				}
 
-				@include max-vw(499) {
+				@include max-vw($res-500) {
 					width: 100%;
 				}
 
 				> .title {
-					@include InterUI_Bold;
+					@include inter-ui-bold;
 					font-size: 16px;
 					color: #130d32;
 					margin-bottom: 30px;
@@ -71,7 +71,7 @@
 				.list {
 					display: flex;
 
-					@include max-vw(999) {
+					@include max-vw($res-1000) {
 						flex-wrap: wrap;
 						flex-direction: column;
 					}
@@ -79,7 +79,7 @@
 					&:not(:last-child) {
 						margin-bottom: 35px;
 
-						@include max-vw(767) {
+						@include max-vw($res-768) {
 							margin-bottom: 27px;
 						}
 					}
@@ -95,26 +95,26 @@
 						&:not(:last-child) {
 							margin-right: 65px;
 
-							@include max-vw(767) {
+							@include max-vw($res-768) {
 								margin-right: 0;
 							}
 						}
 
-						@include max-vw(999) {
+						@include max-vw($res-1000) {
 							margin-bottom: 20px;
 						}
 
-						@include max-vw(767) {
+						@include max-vw($res-768) {
 							width: 220px;
 							min-width: none;
 						}
 
-						@include max-vw(499) {
+						@include max-vw($res-500) {
 							width: 100%;
 						}
 
 						.title {
-							@include Hack_Bold;
+							@include hack-bold;
 							color: #1f3c4d;
 							font-size: 10px;
 							text-transform: uppercase;
@@ -124,7 +124,7 @@
 						}
 
 						.val {
-							@include InterUI_Medium;
+							@include inter-ui-medium;
 							font-size: 16px;
 							color: #130d32;
 							display: flex;

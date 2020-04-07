@@ -10,7 +10,7 @@
 			@include max-vw(1534) {
 				left: 10px;
 			}
-			@include max-vw(768) {
+			@include max-vw($res-768) {
 				left: 0;
 			}
 		}
@@ -22,7 +22,7 @@
 			@include max-vw(1534) {
 				right: 10px;
 			}
-			@include max-vw(768) {
+			@include max-vw($res-768) {
 				right: 0;
 			}
 		}
@@ -73,12 +73,12 @@
 				min-width: 30px;
 				width: 30px;
 			}
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				max-width: 20px;
 				min-width: 20px;
 				width: 20px;
 			}
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				max-width: 15px;
 				min-width: 15px;
 				width: 15px;
@@ -96,7 +96,17 @@
 		}
 		.td-in {
 			padding: 10px;
-			@include InterUI_Medium;
+			@include inter-medium;
+
+			@include max-vw($res-1400) {
+				padding: 10px 6px;
+			}
+			@include max-vw($res-1280) {
+				padding: 10px;
+			}
+			@include max-vw($res-1000) {
+				padding: 10px 6px;
+			}
 		}
 	}
 }
@@ -106,19 +116,80 @@
 		position: relative;
 		background-color: $lightgrey-darker;
 		user-select: none;
-		font-weight: 700;
-		font-style: normal;
-		@include InterUI_Medium();
-		font-size: 12px;
 		color: $lightgrey;
 		position: relative;
 		line-height: 15px;
+		@include inter-medium();
+	}
+}
+
+@mixin table() {
+	table {
+		font-size: 11px;
+		border-collapse: collapse;
+		z-index: 1;
+		width: 100%;
+		a {
+			@include link();
+		}
+	}
+	tbody {
+		tr {
+			color: $grey;
+		}
 	}
 }
 
 @mixin table-air() {
 	.air {
 		background-color: transparent;
-		height: 13px;
+		height: 15px;
+	}
+}
+
+@mixin table-vertical-scroll() {
+	@include max-vw($res-768) {
+		table {
+			min-width: 747px;
+		}
+		.ps__rail-x {
+			opacity: 1;
+		}
+		.ps {
+			overflow: visible;
+			@include max-vw($res-768) {
+				overflow: hidden;
+			}
+		}
+		.scrollbar-container {
+			@include max-vw($res-768) {
+				padding-bottom: 40px;
+				&:after {
+					content: "";
+					position: absolute;
+					width: 747px;
+					height: 1px;
+					bottom: 0;
+					left: 0;
+					background-color: $grey-mid;
+				}
+			}
+		}
+	}
+}
+
+@mixin table-avatar() {
+	.avatar-wrap {
+		display: inline-flex;
+		align-items: center;
+
+		.avatar-image {
+			margin-right: 5px;
+
+			img {
+				display: block;
+				max-height: 100%;
+			}
+		}
 	}
 }

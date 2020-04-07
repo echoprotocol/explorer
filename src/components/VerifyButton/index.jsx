@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import Tooltip from 'rc-tooltip';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-import infoIcon from '../../public/images/icons/info.svg';
-import infoHoverIcon from '../../public/images/icons/info-hover.svg';
-import infoWhiteIcon from '../../public/images/icons/info-white.svg';
+import InfoTooltip from '../../components/InfoTooltip';
 import URLHelper from '../../helpers/URLHelper';
 
 class Verify extends Component {
@@ -14,7 +11,6 @@ class Verify extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hovered: false,
 			tooltipSize: 290,
 		};
 		this.listener = this.updateTooltipSize.bind(this);
@@ -41,13 +37,9 @@ class Verify extends Component {
 		});
 	}
 
-	changeHover(value) {
-		this.setState({ hovered: value });
-	}
-
 	render() {
 		const { verified, id } = this.props;
-		const { hovered, tooltipSize } = this.state;
+		const { tooltipSize } = this.state;
 		const tip = (
 			<React.Fragment>
 				<p>
@@ -74,26 +66,13 @@ class Verify extends Component {
 							<span className="content">Unverified contract</span>
 					}
 
-					<Tooltip
+					<InfoTooltip
 						placement={tooltipSize === 200 ? 'rightTop' : 'rightBottom'}
-						trigger={['hover']}
 						overlay={tip}
 						overlayStyle={tooltipStyle}
 						overlayClassName="verify-contract-tooltip"
-					>
-						<button
-							onMouseEnter={() => this.changeHover(true)}
-							onMouseLeave={() => this.changeHover(false)}
-							tabIndex={-1}
-							className="info-icon"
-						>
-							{
-								verified ?
-									<img src={infoWhiteIcon} alt="" /> :
-									<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
-							}
-						</button>
-					</Tooltip>
+						iconFilled={false}
+					/>
 				</div>
 				<button className="action-button" onClick={() => this.props.history.push(URLHelper.createVerifyContractUrl(id))}>
 					<span className="content">Verify</span>

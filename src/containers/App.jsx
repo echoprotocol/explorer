@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import cn from 'classnames';
 
 import { disconnect } from '../actions/SocketActions';
 
@@ -10,7 +10,7 @@ import GlobalActions from '../actions/GlobalActions';
 import Toast from '../components/Toast';
 import Header from './Header';
 import Footer from './Footer';
-import RecentBlockSidebar from './RecentBlockSection/RecentBlockSidebar';
+import Sidebar from './Sidebar';
 
 import InternetPopup from '../components/InternetPopup';
 import NotFoundScreen from '../containers/Error/NotFoundScreen';
@@ -18,7 +18,7 @@ import ErrorScreen from '../components/Error/ErrorScreen';
 import Modal from '../containers/Modals';
 import Loader from '../components/Loader';
 
-import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
+import { CONTRACT_DETAILS_NUMBERS_TAB, ROUTES_WITH_COLUMN_DIRECTION } from '../constants/RouterConstants';
 import { MODAL_EXTENSION_INFO, MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 
 
@@ -44,9 +44,11 @@ class App extends React.Component {
 		this.props.disconnect();
 	}
 
-	renderModals() {
+	renderModals(isShowModal) {
 		return (
-			<Modal />
+			<div className={cn({ 'wrapper-min': isShowModal })}>
+				<Modal />
+			</div>
 		);
 	}
 
@@ -62,23 +64,27 @@ class App extends React.Component {
 
 		return (
 			<React.Fragment>
-				{this.renderModals()}
-				<div className={classnames('wrapper', { 'wrapper-min': isShowModal })}>
-					<Header />
-					<div className="recent-block-section">
-						<div
-							className={classnames('wrap', { full })}
-						>
-							{children}
-							<RecentBlockSidebar />
+				<Header />
+				{ ROUTES_WITH_COLUMN_DIRECTION.includes(pathName) ?
+					<React.Fragment>
+						<div className="wrap">
+							<Sidebar />
 						</div>
-					</div>
-					<Footer />
-					<Toast />
-					{
-						showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />
-					}
-				</div>
+						{children}
+						<Footer />
+					</React.Fragment> :
+					<React.Fragment>
+						<div className={cn('wrap', 'flex', { full })}>
+							{children}
+							<Sidebar pinned withFooter />
+						</div>
+						<Footer />
+					</React.Fragment>
+				}
+				{this.renderModals(isShowModal)}
+				{ showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} /> }
+				<Toast />
+
 			</React.Fragment>
 		);
 	}

@@ -2,7 +2,7 @@
 	.backwards {
 		margin: 0 0 15px 0;
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			margin: 30px 0 0 0;
 		}
 	}
@@ -20,11 +20,11 @@
 		}
 
 		.title {
-			@include InterUI_Bold;
+			@include inter-ui-bold;
 			font-size: 23px;
 			color: #18142a;
 
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				padding-left: 19px;
 			}
 		}
@@ -43,7 +43,7 @@
 			padding: 0;
 		}
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			padding: 0;
 
 			.title {
@@ -58,7 +58,7 @@
 		padding: 20px 47px 43px;
 
 		.page-helper-info {
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			background-color: #f3f2f5;
 			color: #171529;
 			font-size: 13px;
@@ -71,17 +71,17 @@
 				padding: 15px 20px;
 			}
 
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				padding: 15px 38px;
 				margin-bottom: 47px;
 			}
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				padding: 15px 30px;
 				margin-bottom: 35px;
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				padding: 10px 15px 14px;
 				margin-bottom: 22px;
 			}
@@ -123,7 +123,7 @@
 	}
 
 	.section-description {
-		@include InterUI_Regular;
+		@include inter-ui-regular;
 		font-size: 15px;
 		color: #171529;
 		padding: 24px 0;
@@ -137,7 +137,7 @@
 		margin: 0 0 20px;
 
 		.action-description {
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			font-size: 13px;
 			color: #6e6d6f;
 			margin-left: 10px;

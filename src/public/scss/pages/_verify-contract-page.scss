@@ -1,7 +1,7 @@
 .inner-page.verify-contract {
 	padding-top: 15px;
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding-top: 45px;
 	}
 
@@ -9,7 +9,7 @@
 		margin-top: 40px;
 		padding-bottom: 50px;
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			margin-top: 30px;
 			padding-left: 15px;
 			padding-right: 15px;
@@ -21,11 +21,11 @@
 		padding: 20px 135px 20px 0;
 		margin-bottom: 30px;
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			padding-right: 0;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			font-size: 14px;
 		}
 	}
@@ -33,7 +33,7 @@
 	.code-block {
 		margin-bottom: 30px;
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			margin-bottom: 10px;
 		}
 	}
@@ -42,7 +42,7 @@
 		&.mb40 {
 			margin-bottom: 40px;
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				margin-bottom: 20px;
 			}
 		}
@@ -51,7 +51,7 @@
 			display: flex;
 			align-items: center;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				flex-direction: column;
 				align-items: flex-start;
 			}
@@ -67,10 +67,10 @@
 			font-size: 13px;
 			flex-shrink: 0;
 			color: #18142a;
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			line-height: 18px;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				margin-bottom: 10px;
 			}
 		}
@@ -93,7 +93,7 @@
 	}
 
 	.buttons-wrap {
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			padding-left: 0;
 			padding-right: 0;
 

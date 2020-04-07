@@ -1,21 +1,31 @@
 .footer {
-	padding: 35px 0 40px;
-	display: none;
-	@include max-vw(1279) {
-		display: block;
+	height: 90px;
+	display: flex;
+	align-items: center;
+	font-size: 11px;
+	line-height: 13px;
+	letter-spacing: 0.02em;
+	@include inter-medium();
+
+	.wrap {
+		display: flex;
+		align-items: center;
 	}
 }
 
-.footer__version {
-	margin-bottom: 15px;
-	@include InterUI_Medium;
-	font-size: 12px;
+.footer-version {
 	color: $grey-mid;
+	margin-left: 12px;
 }
 
-.footer__info {
-	@include Hack_Bold;
-	font-size: 9px;
-	color: $lightgrey;
-	letter-spacing: 2.25px;
+.footer-info {
+	color: $grey;
+	text-transform: uppercase;
+	margin-left: 30px;
+	@include max-vw($res-768) {
+		margin-left: 20px;
+	}
+	@include max-vw($res-500) {
+		margin-left: 0;
+	}
 }
