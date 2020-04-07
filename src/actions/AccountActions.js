@@ -1,5 +1,5 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
-import { List, fromJS } from 'immutable';
+import { List, fromJS, Set } from 'immutable';
 import BN from 'bignumber.js';
 
 import { TOKEN_TYPE } from '../constants/GlobalConstants';
@@ -162,7 +162,9 @@ class AccountActions extends BaseActionsClass {
 						}
 					}
 				};
-				await Promise.all([queryData.filters.from, queryData.filters.to].map((filter) => addRelationSubjects(filter)));
+				await Promise.all(new Set([queryData.filters.from, queryData.filters.to])
+					.toJS()
+					.map((filter) => addRelationSubjects(filter)));
 
 				const { items, total } = await getHistory({
 					subject,
