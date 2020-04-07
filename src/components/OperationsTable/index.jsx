@@ -58,7 +58,6 @@ class OperationsTable extends React.Component {
 		}
 
 		if (!prevQuery.op && prevQuery.op) {
-			console.log('componentDidUpdate');
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
 		}
 	}

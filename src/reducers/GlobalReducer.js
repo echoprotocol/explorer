@@ -9,6 +9,7 @@ const DEFAULT_FIELDS = Map({
 	title: DEFAULT_TITLE,
 	historyLength: 0,
 	connected: false,
+	connectedServer: false,
 	error: '',
 	errorPath: false,
 	errorScreen: false,

@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import echo from 'echojs-lib';
 import { batchActions } from 'redux-batched-actions';
+import Router from 'next/router';
 
 import config from '../config/chain';
 
@@ -20,6 +21,7 @@ import {
 import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
+import { INDEX_PATH } from '../constants/RouterConstants';
 
 /**
  * set connected parameter to true
@@ -109,13 +111,8 @@ const blockRelease = () => async (dispatch) => {
 export const serverConnect = () => async (dispatch) => {
 	try {
 		if (!echo.isConnected) {
-			await echo.connect(config.ECHO_NODE.API_URL, {
-				connectionTimeout: config.ECHO_NODE.CONNECTION_TIMEOUT,
-				maxRetries: config.ECHO_NODE.MAX_RETRIES,
-				pingDelay: config.ECHO_NODE.PING_DELAY,
-				debug: config.ECHO_NODE.DEBUG,
-				apis: config.ECHO_NODE.APIS,
-			});
+			dispatch(RoundReducer.actions.set({ field: 'connectedServer', value: false }));
+			return;
 		}
 
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
@@ -129,7 +126,60 @@ export const serverConnect = () => async (dispatch) => {
 
 		const global = globalParams.echorand_config;
 		const producers = global._creator_count;
-		dispatch(RoundReducer.actions.set({ field: 'producers', value: producers }));
+		dispatch(batchActions([
+			RoundReducer.actions.set({ field: 'producers', value: producers }),
+			RoundReducer.actions.set({ field: 'connectedServer', value: true }),
+		]));
+	} catch (err) {
+		dispatch(batchActions([
+			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
+			GlobalReducer.actions.set({ field: 'connected', value: false }),
+		]));
+	}
+
+};
+
+/**
+ *  @method fullClientInit
+ *
+ * 	WS connect to blockchain and set subscribe callbacks
+ */
+export const fullClientInit = () => async (dispatch) => {
+	try {
+		await echo.connect(config.ECHO_NODE.API_URL, {
+			connectionTimeout: config.ECHO_NODE.CONNECTION_TIMEOUT,
+			maxRetries: config.ECHO_NODE.MAX_RETRIES,
+			pingDelay: config.ECHO_NODE.PING_DELAY,
+			debug: config.ECHO_NODE.DEBUG,
+			apis: config.ECHO_NODE.APIS,
+		});
+
+		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
+		const blockReward = globalParams.block_producer_reward_ratio;
+
+		await dispatch(batchActions([
+			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
+		]));
+
+		await dispatch(initBlocks());
+
+		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
+
+		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
+
+		echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
+		echo.subscriber.setStatusSubscribe('disconnect', () => dispatch(onDisconnectSubscriber()));
+
+		dispatch(blockRelease());
+
+		const global = globalParams.echorand_config;
+		const producers = global._creator_count;
+
+		dispatch(batchActions([
+			GlobalReducer.actions.set({ field: 'connected', value: true }),
+			RoundReducer.actions.set({ field: 'producers', value: producers }),
+		]));
+		Router.push(INDEX_PATH);
 	} catch (err) {
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
@@ -138,16 +188,15 @@ export const serverConnect = () => async (dispatch) => {
 
 		throw err;
 	}
-
 };
 
 
 /**
- *  @method connect
+ *  @method partialClientConnect
  *
  * 	WS connect to blockchain and set subscribe callbacks
  */
-export const clientConnect = () => async (dispatch) => {
+export const partialClientConnect = () => async (dispatch) => {
 	try {
 		if (!echo.isConnected) {
 			await echo.connect(config.ECHO_NODE.API_URL, {

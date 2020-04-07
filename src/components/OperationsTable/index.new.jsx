@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import queryString from 'query-string';
+import Router from 'next/router';
 
 import URLHelper from '../../helpers/URLHelper';
 import TableLabel from '../TableLabel';
@@ -14,6 +15,7 @@ import Thead from './Thead';
 import OperationsPagination from './Pagination.new.';
 import OperationsFilter from './Filter.new';
 import { DEFAULT_SIZE_PER_PAGE } from '../../constants/TableConstants';
+import { SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 class OperationsTable extends React.Component {
 
@@ -33,7 +35,7 @@ class OperationsTable extends React.Component {
 	componentDidMount() {
 		this.props.onChangeFilter({ from: '', to: '' });
 		const { showedOperations } = this.state;
-		const queryProps = queryString.parse(this.props.location.search);
+		const queryProps = queryString.parse(this.props.router.asPath.split('?')[1]);
 
 		if (!queryProps.op) {
 			return;
@@ -47,19 +49,17 @@ class OperationsTable extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { loading, location: { search } } = this.props;
-		const { loading: prevLoading, location: { search: prevSearch } } = prevProps;
+		const { loading, router: { query } } = this.props;
+		const { loading: prevLoading, router: { query: prevQuery } } = prevProps;
 
-		const parsed = queryString.parse(search);
-		const prevParsed = queryString.parse(prevSearch);
 		if (!loading && loading !== prevLoading) {
-			if (!parsed.op || !this.tableRefs[parsed.op - 1]) {
+			if (!query.op || !this.tableRefs[query.op - 1]) {
 				return;
 			}
-			this.tableRefs[parsed.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			this.tableRefs[query.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
 
-		if (!parsed.op && prevParsed.op) {
+		if (!prevQuery.op && prevQuery.op) {
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
 		}
 	}
@@ -141,7 +141,8 @@ class OperationsTable extends React.Component {
 
 	toggleOperationDetails(index) {
 		const { operations } = this.props;
-		const { pathname, search } = this.props.location;
+		const { asPath } = this.props.router;
+		const [pathname, search] = asPath.split('?');
 		const { showedOperations, airRows } = this.state;
 		const queryProps = queryString.parse(search);
 		const v = showedOperations.indexOf(index);
@@ -157,7 +158,7 @@ class OperationsTable extends React.Component {
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
 			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
-			this.props.history.push(operationUrl);
+			Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
 
 			return;
 		}
@@ -166,7 +167,7 @@ class OperationsTable extends React.Component {
 			showedOperations.splice(v, 1);
 
 			if (queryProps.op && parseInt(queryProps.op, 10) - 1 === index) {
-				this.props.history.push(pathname);
+				Router.push(SSR_TRANSACTION_INFORMATION_PATH, pathname);
 			}
 
 			[index - 1, index].forEach((i) => {
@@ -178,7 +179,7 @@ class OperationsTable extends React.Component {
 			});
 		} else {
 			showedOperations.push(index);
-			this.props.history.push(URLHelper.createTransactionOperationUrl(pathname, index + 1));
+			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1));
 		}
 
 		if (showedOperations.includes(index) && airRows.indexOf(index - 1) === -1) {
@@ -268,12 +269,11 @@ OperationsTable.propTypes = {
 	onLoadMoreHistory: PropTypes.func,
 
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
-	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	changeUrl: PropTypes.bool,
 	isTransaction: PropTypes.bool,
 	label: PropTypes.string,
+	router: PropTypes.object.isRequired,
 };
 
 

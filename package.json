@@ -11,9 +11,9 @@
 	"license": "MIT",
 	"main": "index.js",
 	"scripts": {
-		"dev": "next ./src",
+		"dev": "node server.js",
 		"build": "next build",
-		"start": "next start",
+		"start": "NODE_ENV=production node server.js",
 		"prebuild": "rimraf .next",
 		"lint": "$(npm bin)/eslint 'src/**/*.jsx' 'src/**/*.js'",
 		"lint-win": "cross-env eslint 'src/**/*.jsx' 'src/**/*.js' --fix"

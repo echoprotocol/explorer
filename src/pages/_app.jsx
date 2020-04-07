@@ -24,17 +24,17 @@ import ErrorScreen from '../components/Error/ErrorScreen';
 import NotFoundScreen from '../components/Error/NotFoundScreen';
 import Toast from '../components/Toast';
 import InternetPopup from '../containers/InternetPopup';
+import Loader from '../components/Loader';
 
 class ExplorerApp extends App {
 
 	static async getInitialProps({ Component, ctx }) {
-		const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
-		const isMobile = !!(new MobileDetect(userAgent)).mobile();
-
-		await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
-
 		let pageProps = {};
 		if (ctx.isServer) {
+			const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
+			const isMobile = !!(new MobileDetect(userAgent)).mobile();
+
+			await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
 			await ctx.store.dispatch(serverConnect());
 			if (Component.getInitialProps) {
 				pageProps = await Component.getInitialProps(ctx);
@@ -45,9 +45,8 @@ class ExplorerApp extends App {
 	}
 
 	componentDidMount() {
-		if (!this.props.store.isServer) {
-			this.props.store.dispatch(GlobalActions.init());
-		}
+		if (typeof window === 'undefined') { return; }
+		this.props.store.dispatch(GlobalActions.init());
 	}
 
 	componentWillUnmount() {
@@ -108,9 +107,15 @@ class ExplorerApp extends App {
 		const error = store.getState().global.get('error');
 		const errorScreen = store.getState().global.get('errorScreen');
 		const errorPath = store.getState().global.get('errorPath');
+		const connected = store.getState().global.get('connected');
+		const connectedServer = store.getState().global.get('connectedServer');
 
 		if (error || errorScreen) {
 			return this.renderErrorScreen(error);
+		}
+
+		if ((typeof window === 'undefined' && !connectedServer) || (typeof window !== 'undefined' && !connected)) {
+			return <Loader global />;
 		}
 
 		if (errorPath) {
