@@ -81,7 +81,7 @@ class OperationsTable extends React.Component {
 		this.props.onChangeFilter(filters);
 		this.timeoutSearch = setTimeout(() => {
 			this.props.onLoadMoreHistory();
-		}, 0);
+		}, 300);
 
 	}
 

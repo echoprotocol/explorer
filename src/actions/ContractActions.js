@@ -144,18 +144,14 @@ class ContractActions extends BaseActionsClass {
 				const relationSubjects = [];
 				const addRelationSubjects = async (objectId) => {
 					if (!objectId) { return; }
-					if (validators.isContractId(objectId)) {
-						relationSubjects.push(objectId);
-					} else {
-						let account = null;
-						try {
-							account = await echo.api.getAccountByName(objectId);
-							if (account && contractId !== account.id) {
-								relationSubjects.push(account.id);
-							}
-						} catch (err) {
-							console.log('Error set filter', objectId, err);
+					let account = null;
+					try {
+						account = await echo.api.getAccountByName(objectId);
+						if (account && contractId !== account.id) {
+							relationSubjects.push(account.id);
 						}
+					} catch (err) {
+						console.log('Error set filter', objectId, err);
 					}
 				};
 				await Promise.all(Array.from(new Set([queryData.filters.from, queryData.filters.to]))
@@ -170,16 +166,10 @@ class ContractActions extends BaseActionsClass {
 				});
 				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
-				// transactions = await this.formatContractHistory(contractId, transactions);
-				console.log();
-				console.log('transactions', transactions);
-
-				transactions = [];
-
+				transactions = await this.formatContractHistory(transactions);
 				dispatch(this.setValue('history', new List(transactions)));
 			} catch (e) {
-				console.log('err', e);
-				// dispatch(this.setValue('error', e.message));
+				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loadingMoreHistory', false));
 			}
@@ -197,7 +187,7 @@ class ContractActions extends BaseActionsClass {
 				let balances = await echo.api.getContractBalances(contractId);
 				await echo.api.getObjects(balances.map((b) => b.asset_id));
 				balances = fromJS(balances);
-				this.loadContractHistory(contractId);
+				dispatch(this.loadContractHistory(contractId));
 				dispatch(batchActions([
 					this.reducer.actions.set({ field: 'balances', value: balances }),
 				]));
