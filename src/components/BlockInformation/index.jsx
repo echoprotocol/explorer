@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { List } from 'immutable';
 import BN from 'bignumber.js';
 
-import OperationsTable from '../OperationsTable';
+import OperationsTable from '../../containers/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
@@ -15,11 +15,12 @@ import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
-import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
+import { BLOCK_GRID } from '../../constants/TableConstants';
 import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+
 
 class BlockInformation extends React.Component {
 
@@ -27,10 +28,20 @@ class BlockInformation extends React.Component {
 		super(props);
 
 		this.state = {
-			currentTransactionLength: DEFAULT_TABLE_LENGTH,
+			operations: null,
 			currentBlockNumber: '',
 			loader: false,
 		};
+	}
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
+		if (!prevState.operations && nextProps.blockInformation.get('round')) {
+			return {
+				operations: nextProps.blockInformation.get('operations').slice(0, sizePerPage),
+			};
+		}
+		return null;
 	}
 
 	componentDidMount() {
@@ -76,9 +87,16 @@ class BlockInformation extends React.Component {
 	}
 
 	loadMoreTransactions() {
-		this.setState({
-			currentTransactionLength: this.state.currentTransactionLength + DEFAULT_TABLE_LENGTH,
+		let operations = this.props.blockInformation.get('operations') || new List([]);
+		const { filters: { from, to }, currentPage, sizePerPage } = this.props.filterAndPaginateData.toJS();
+		operations = operations.filter((operation) => {
+			const isAllowFrom = from ? (from === operation.mainInfo.from.name || from === operation.mainInfo.from.id) : true;
+			const isAllowTo = to ? (to === operation.mainInfo.subject.name || to === operation.mainInfo.subject.id) : true;
+			return isAllowFrom && isAllowTo;
 		});
+		this.props.setTotalDataSize(operations.size);
+		operations = operations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage);
+		this.setState({ operations });
 	}
 
 	renderLoader() {
@@ -87,17 +105,15 @@ class BlockInformation extends React.Component {
 
 	renderBlockInformation(blockInformation, latestBlock) {
 		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
-		const { currentTransactionLength } = this.state;
+		const { operations } = this.state;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
-		const operations = blockInformation.get('operations') || new List([]);
 		const transactionCount = blockInformation.get('transactionCount') || 0;
 		const rewardDistribution = blockInformation.get('rewardDistribution');
-		const slicedOperations = operations.slice(0, currentTransactionLength);
 
 		const breadcrumbs = [
 			{
@@ -179,15 +195,15 @@ class BlockInformation extends React.Component {
 					)
 				}
 				<div className="blocks-table-wrap">
-					{ (slicedOperations && slicedOperations.size) ?
+					{ (transactionCount) ?
 						<OperationsTable
+							gridName={BLOCK_GRID}
+							onLoadMoreHistory={() => this.loadMoreTransactions()}
 							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
 							fee
-							operations={slicedOperations}
+							operations={operations}
 							history={this.props.history}
 							location={this.props.location}
-							loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
-							hasMore={currentTransactionLength < operations.size}
 						/> : null
 					}
 				</div>
@@ -197,7 +213,6 @@ class BlockInformation extends React.Component {
 
 	render() {
 		const { blockInformation, latestBlock } = this.props;
-
 		return (
 			<div className="inner-information-container">
 				{
@@ -211,6 +226,7 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
+	filterAndPaginateData: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
 	match: PropTypes.object.isRequired,
@@ -219,6 +235,7 @@ BlockInformation.propTypes = {
 	history: PropTypes.object.isRequired,
 	location: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	setTotalDataSize: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
 };
