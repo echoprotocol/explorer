@@ -29,7 +29,6 @@ const balanceSelector = createImmutableSelector(
 export default withRouter(connect(
 	(state) => ({
 		loading: state.contract.get('loading'),
-		isFullHistory: state.contract.get('isFullHistory'),
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
 		contractHistory: state.contract.get('history'),
 		bytecode: state.contract.get('bytecode'),
@@ -61,18 +60,12 @@ export default withRouter(connect(
 		activeAccount: state.global.get('activeAccount'),
 	}),
 	(dispatch, props) => ({
-		getContractInfo: () => dispatch(ContractActions.getContractInfo(props.match.params.id)),
+		getContractInfo: (contractId) => dispatch(ContractActions.getContractInfo(contractId)),
 		clearContractInfo: () => dispatch(ContractActions.clear()),
-		loadContractHistory: (lastOperationId) => dispatch(ContractActions.loadContractHistory(
-			props.match.params.id,
-			lastOperationId,
-		)),
+		loadContractHistory: (contractId) => dispatch(ContractActions.loadContractHistory(contractId)),
 		getActiveAccount: () => dispatch(AccountActions.getActiveAccount()),
 		setStarToContract: () => dispatch(ContractActions.setStarToContract(props.match.params.id)),
-		updateContractInfo: (recetOperationId) => dispatch(ContractActions.updateContractInfo(
-			props.match.params.id,
-			recetOperationId,
-		)),
+		updateContractInfo: (contractId) => dispatch(ContractActions.updateContractInfo(contractId)),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		setActiveAccount: (account) => dispatch(AccountActions.setActiveAccount(account)),
 		loadActiveAccount: () => dispatch(AccountActions.loadActiveAccount()),

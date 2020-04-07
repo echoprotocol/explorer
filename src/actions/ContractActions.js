@@ -5,11 +5,8 @@ import * as wrapper from 'solc/wrapper';
 
 import {
 	CONTRACT_FIELDS,
-	DEFAULT_OPERATION_HISTORY_ID,
-	DEFAULT_ROWS_COUNT,
 	MIN_ACCESS_VERSION_BUILD,
 } from '../constants/GlobalConstants';
-import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
 import { CONTRACT_ABI } from '../constants/RouterConstants';
@@ -43,8 +40,31 @@ import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 import { loadScript } from '../api/ContractApi';
 import browserHistory from '../history';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
+import { ACCOUNT_GRID, CONTRACT_GRID } from '../constants/TableConstants';
+import { getHistory as getContractHistory } from '../services/queries/history';
+import GridActions from './GridActions';
 
 class ContractActions extends BaseActionsClass {
+
+	/**
+	 * @method formatHistoryFromEchoDB
+	 * @param history
+	 * @return {*}
+	 */
+	formatHistoryFromEchoDB(history) {
+		return history.map((data) => {
+			const operationId = parseInt(data.id, 10);
+			return ({
+				id: operationId,
+				op: [operationId, data.body],
+				result: [0, data.result],
+				block_num: data.transaction ? data.transaction.block.round : data.block.round,
+				trx_in_block: data.trx_in_block || 0,
+				op_in_trx: data.op_in_trx || 0,
+				virtual_op: 0,
+			});
+		});
+	}
 
 	/**
 	 * Format contract history
@@ -55,16 +75,8 @@ class ContractActions extends BaseActionsClass {
 		await TransactionActions.fetchTransactionsObjects(transactions);
 
 		let history = transactions.map(async (t) => {
-			let { op: operation, result } = t;
-
+			const { op: operation, result } = t;
 			const block = await echo.api.getBlock(t.block_num);
-
-			if (OPERATIONS_IDS.CONTRACT_TRANSFER === t.op[0]) {
-
-				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
-				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
-			}
-
 			return TransactionActions.getOperation(operation, t.block_num, block.timestamp, t.trx_in_block, t.op_in_trx, result);
 		});
 
@@ -110,22 +122,6 @@ class ContractActions extends BaseActionsClass {
 					balances: fromJS(balances),
 					owner,
 				}));
-
-				let history = await echo.api.getContractHistory(
-					id,
-					DEFAULT_OPERATION_HISTORY_ID,
-					DEFAULT_ROWS_COUNT + 1,
-					DEFAULT_OPERATION_HISTORY_ID,
-				);
-
-				const isFullHistory = history.length <= DEFAULT_ROWS_COUNT;
-				if (history.length > DEFAULT_ROWS_COUNT) {
-					history = history.slice(0, history.length - 1);
-				}
-
-				history = await this.formatContractHistory(history);
-
-				dispatch(this.setMultipleValue({ history: new List(history), isFullHistory }));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -136,40 +132,54 @@ class ContractActions extends BaseActionsClass {
 
 	/**
 	 * Load contract history
-	 * @param {string} id
-	 * @param {number} lastOperationId
+	 * @param {string} contractId
 	 * @returns {function}
 	 */
-	loadContractHistory(id, lastOperationId) {
+	loadContractHistory(contractId) {
 		return async (dispatch, getState) => {
-			const lastOperationIdState = getState().contract.get('lastOperationId');
-
-			if (lastOperationIdState === lastOperationId) {
-				return;
-			}
-
 			try {
-				dispatch(this.setValue('lastOperationId', lastOperationId));
+				const queryData = getState().grid.get(CONTRACT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
+				const subject = contractId;
+				const relationSubjects = [];
+				const addRelationSubjects = async (objectId) => {
+					if (!objectId) { return; }
+					if (validators.isContractId(objectId)) {
+						relationSubjects.push(objectId);
+					} else {
+						let account = null;
+						try {
+							account = await echo.api.getAccountByName(objectId);
+							if (account && contractId !== account.id) {
+								relationSubjects.push(account.id);
+							}
+						} catch (err) {
+							console.log('Error set filter', objectId, err);
+						}
+					}
+				};
+				await Promise.all(Array.from(new Set([queryData.filters.from, queryData.filters.to]))
+					.map((filter) => addRelationSubjects(filter)));
 
-				let history = await echo.api.getContractHistory(
-					id,
-					DEFAULT_OPERATION_HISTORY_ID,
-					DEFAULT_ROWS_COUNT + 1,
-					`${OPERATION_HISTORY_OBJECT_PREFIX}.${lastOperationId - 1}`,
-				);
+				const { items, total } = await getContractHistory({
+					subject,
+					relationSubjects,
+					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+					count: queryData.sizePerPage,
+					operations: Object.keys(OPERATIONS_IDS),
+				});
+				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
+				let transactions = this.formatHistoryFromEchoDB(items);
+				// transactions = await this.formatContractHistory(contractId, transactions);
+				console.log();
+				console.log('transactions', transactions);
 
-				history = await this.formatContractHistory(history.slice(0, DEFAULT_ROWS_COUNT));
+				transactions = [];
 
-				dispatch(batchActions([
-					this.reducer.actions.concat({ field: 'history', value: new List(history) }),
-					this.reducer.actions.set({
-						field: 'isFullHistory',
-						value: history.length < DEFAULT_ROWS_COUNT,
-					}),
-				]));
+				dispatch(this.setValue('history', new List(transactions)));
 			} catch (e) {
-				dispatch(this.setValue('error', e.message));
+				console.log('err', e);
+				// dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loadingMoreHistory', false));
 			}
@@ -178,41 +188,17 @@ class ContractActions extends BaseActionsClass {
 
 	/**
 	 * Update contract info
-	 * @param {string} id
-	 * @param {number} recentOperationId
+	 * @param {string} contractId
 	 * @returns {function}
 	 */
-	updateContractInfo(id, recentOperationId = DEFAULT_OPERATION_HISTORY_ID) {
-		const getHistory = async (history = []) => {
-
-			const chunk = await echo.api.getContractHistory(
-				id,
-				history.length ? [history.length - 1].id : recentOperationId,
-				DEFAULT_ROWS_COUNT + 1,
-				DEFAULT_OPERATION_HISTORY_ID,
-			);
-
-			history = history.concat(chunk);
-
-			if (chunk.length > DEFAULT_ROWS_COUNT) {
-				return getHistory(history);
-			}
-
-			return history;
-		};
-
+	updateContractInfo(contractId) {
 		return async (dispatch) => {
 			try {
-				let balances = await echo.api.getContractBalances(id);
+				let balances = await echo.api.getContractBalances(contractId);
 				await echo.api.getObjects(balances.map((b) => b.asset_id));
 				balances = fromJS(balances);
-
-				let history = await getHistory();
-				history = await this.formatContractHistory(history);
-				history = new List(history);
-
+				this.loadContractHistory(contractId);
 				dispatch(batchActions([
-					this.reducer.actions.update({ field: 'history', value: history }),
 					this.reducer.actions.set({ field: 'balances', value: balances }),
 				]));
 			} catch (e) {

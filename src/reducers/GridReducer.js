@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import {
 	DEFAULT_SIZE_PER_PAGE,
-	ACCOUNT_GRID,
+	ACCOUNT_GRID, CONTRACT_GRID,
 } from '../constants/TableConstants';
 import TransformModules from '../utils/TransformModules';
 
@@ -20,6 +20,7 @@ const DEFAULT_FIELDS = Map({
 
 const DEFAULT_STATE = Map({
 	[ACCOUNT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
+	[CONTRACT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 });
 
 export default createModule({

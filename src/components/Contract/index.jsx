@@ -24,7 +24,6 @@ import {
 
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
-import OperationsTable from '../OperationsTable';
 import Loader from '../Loader';
 import Verify from '../VerifyButton';
 import manageIcon from '../../public/images/icons/pencil.svg';
@@ -37,6 +36,8 @@ import { ContractIcon } from './ContractIcon';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
+import OperationsTable from '../../containers/OperationsTable';
+import { CONTRACT_GRID } from '../../constants/TableConstants';
 
 class Contract extends React.Component {
 
@@ -87,25 +88,24 @@ class Contract extends React.Component {
 	}
 
 	onLoadMoreHistory() {
-		this.props.loadContractHistory(this.props.contractHistory.last().id.split('.')[2]);
+		this.props.loadContractHistory(this.props.match.params.id);
 	}
 
 	async initContract() {
 		const { id } = this.props.match.params;
 
 		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
-		await this.props.getContractInfo();
+		await this.props.getContractInfo(id);
+		this.onLoadMoreHistory();
 		echo.subscriber.removeContractSubscribe(this.subscriber);
 		echo.subscriber.setContractSubscribe([id], this.subscriber);
 	}
 
 
 	updateInfo() {
-		const { contractHistory, loading } = this.props;
-		const first = contractHistory.first();
-
+		const { loading, match: { params: { id } } } = this.props;
 		if (loading) { return; }
-		this.props.updateContractInfo(first ? first[0].id : first);
+		this.props.updateContractInfo(id);
 	}
 
 	changeTab(id, index) {
@@ -182,7 +182,7 @@ class Contract extends React.Component {
 
 	render() {
 		const {
-			loading, isFullHistory, loadingMoreHistory,
+			loading, loadingMoreHistory,
 			bytecode, contractHistory, balances, match: { params: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
@@ -222,12 +222,12 @@ class Contract extends React.Component {
 			{
 				tab: !loading ?
 					<OperationsTable
+						onLoadMoreHistory={() => this.onLoadMoreHistory()}
+						gridName={CONTRACT_GRID}
 						operations={contractHistory}
 						history={this.props.history}
 						location={this.props.location}
 						loading={loadingMoreHistory}
-						loadMore={contractHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
-						hasMore={!isFullHistory}
 						timestamp
 					/> : <Loader />,
 				key: 'tab-1',
@@ -442,7 +442,6 @@ class Contract extends React.Component {
 Contract.propTypes = {
 	error: PropTypes.string,
 	loading: PropTypes.bool,
-	isFullHistory: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
 	history: PropTypes.object.isRequired,
@@ -488,7 +487,6 @@ Contract.propTypes = {
 Contract.defaultProps = {
 	error: '',
 	loading: false,
-	isFullHistory: false,
 	loadingMoreHistory: false,
 	bytecode: null,
 	sourceCode: null,
