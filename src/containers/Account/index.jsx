@@ -3,7 +3,6 @@ import { withRouter } from 'next/router';
 
 import Account from '../../components/Account';
 import AccountActions from '../../actions/AccountActions';
-import GlobalActions from '../../actions/GlobalActions';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
 
 export default withRouter(connect(
@@ -11,7 +10,6 @@ export default withRouter(connect(
 		filterAndPaginateData: state.grid.get(ACCOUNT_GRID),
 		loading: state.account.get('loading'),
 		loadingMoreHistory: state.account.get('loadingMoreHistory'),
-		isFullHistory: state.account.get('isFullHistory'),
 		balances: state.account.get('balances'),
 		tokens: state.account.get('tokens'),
 		accountHistory: state.account.get('history'),
@@ -22,6 +20,5 @@ export default withRouter(connect(
 		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
 		loadAccountHistory: (accountId) => dispatch(AccountActions.loadAccountHistory(accountId)),
 		clearAccountInfo: () => dispatch(AccountActions.clear()),
-		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),
 )(Account));

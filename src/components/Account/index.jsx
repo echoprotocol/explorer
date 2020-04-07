@@ -6,7 +6,7 @@ import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
 import OperationsTable from '../../containers/OperationsTable';
 import InnerHeader from '../InnerHeader';
-import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 import AccountActions from '../../actions/AccountActions';
 import URLHelper from '../../helpers/URLHelper';
@@ -14,27 +14,16 @@ import { ACCOUNT_GRID } from '../../constants/TableConstants';
 
 class Account extends React.Component {
 
-	static async getInitialProps({ query, store }) {
-		await store.dispatch(AccountActions.getAccountInfo(query.id));
-		return {};
-	}
-
 	componentDidMount() {
-		if (!this.props.account || this.props.router.query.id !== this.props.account.get('id')) {
+		const { router: { query: { id } } } = this.props;
+		if (!this.props.account || (id !== this.props.account.get('id') && id !== this.props.account.get('name'))) {
 			this.props.getAccountInfo(this.props.router.query.id);
 		}
 	}
 
-	componentDidUpdate(prevProps) {
-		if ((!prevProps.account && this.props.account) ||
-			(prevProps.account && prevProps.account.get('name') !== this.props.account.get('name'))
-		) {
-			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
-			this.onLoadMoreHistory();
-		}
-
+	async componentDidUpdate(prevProps) {
 		if (prevProps.router.query.id !== this.props.router.query.id) {
-			this.props.getAccountInfo(this.props.router.query.id);
+			await this.props.getAccountInfo(this.props.router.query.id);
 			return;
 		}
 
@@ -144,7 +133,6 @@ Account.propTypes = {
 	accountHistory: PropTypes.object,
 	clearAccountInfo: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
-	setTitle: PropTypes.func.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 };
 
@@ -155,6 +143,11 @@ Account.defaultProps = {
 	balances: null,
 	tokens: null,
 	accountHistory: null,
+};
+
+Account.getInitialProps = async ({ query, store }) => {
+	await store.dispatch(AccountActions.getAccountInfo(query.id));
+	return {};
 };
 
 export default Account;

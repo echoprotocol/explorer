@@ -28,22 +28,6 @@ import Loader from '../components/Loader';
 
 class ExplorerApp extends App {
 
-	static async getInitialProps({ Component, ctx }) {
-		let pageProps = {};
-		if (ctx.isServer) {
-			const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
-			const isMobile = !!(new MobileDetect(userAgent)).mobile();
-
-			await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
-			await ctx.store.dispatch(serverConnect());
-			if (Component.getInitialProps) {
-				pageProps = await Component.getInitialProps(ctx);
-			}
-
-		}
-		return { pageProps };
-	}
-
 	componentDidMount() {
 		if (typeof window === 'undefined') { return; }
 		this.props.store.dispatch(GlobalActions.init());
@@ -155,6 +139,22 @@ ExplorerApp.propTypes = {
 
 ExplorerApp.defaultProps = {
 	router: {},
+};
+
+ExplorerApp.getInitialProps = async ({ Component, ctx }) => {
+	let pageProps = {};
+	if (ctx.isServer) {
+		const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
+		const isMobile = !!(new MobileDetect(userAgent)).mobile();
+
+		await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
+		await ctx.store.dispatch(serverConnect());
+		if (Component.getInitialProps) {
+			pageProps = await Component.getInitialProps(ctx);
+		}
+
+	}
+	return { pageProps };
 };
 
 const withReduxJob = withRedux(

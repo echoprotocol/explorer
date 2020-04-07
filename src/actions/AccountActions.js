@@ -2,7 +2,7 @@ import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import Inmmutable, { List, fromJS } from 'immutable';
 import BN from 'bignumber.js';
 
-import { TOKEN_TYPE } from '../constants/GlobalConstants';
+import { TITLE_TEMPLATES, TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
 
 import AccountReducer from '../reducers/AccountReducer';
@@ -100,6 +100,8 @@ class AccountActions extends BaseActionsClass {
 					},
 				]));
 
+				await dispatch(this.loadAccountHistory(account.id));
+				dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, account.name)));
 				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
 				const balances = await getBalances([account.id]);
 
@@ -112,20 +114,6 @@ class AccountActions extends BaseActionsClass {
 			} finally {
 				dispatch(this.setValue('loading', false));
 			}
-		};
-	}
-
-	/**
-	 * Update account balances
-	 * @param {Map} balances
-	 * @returns {function}
-	 */
-	updateAccountBalances(balances) {
-		return async (dispatch) => {
-			const objectIds = balances.reduce((arr, key, value) => [...arr, key, value], []);
-			await echo.api.getObjects(objectIds);
-
-			dispatch(this.setMultipleValue({ balances }));
 		};
 	}
 
