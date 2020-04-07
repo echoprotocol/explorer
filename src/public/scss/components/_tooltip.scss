@@ -1,75 +1,73 @@
 .rc-tooltip {
-    position: absolute;
-    z-index: 1070;
-    display: block;
-    visibility: visible;
-    line-height: 1.5;
-    font-size: 12px;
-    padding: 1px;
-    opacity: 0.9; 
+	position: absolute;
+	z-index: 1070;
+	display: block;
+	visibility: visible;
+	line-height: 1.5;
+	font-size: 12px;
+	padding: 1px;
+	opacity: 0.9;
 
-    &-hidden {
-        display: none;
-    }
+	&-hidden {
+		display: none;
+	}
 
-    &-content {
-        margin-left: 16px;
-        margin-bottom: 5px;
-    }
+	&-content {
+		margin-left: 16px;
+		margin-bottom: 5px;
+	}
 
-    &-inner {
-        padding: 15px 20px;
-        color: #333333;
-        text-align: left;
-        text-decoration: none;
-        background-color: #06060d;
-        min-height: 34px;
-        max-width: 200px;
-        span {
-            @include InterUI_Regular;
-            color: #8eaabd;
-            font-size: 11px;
-            line-height: 17px;
-        }
-    }
+	&-inner {
+		padding: 15px 20px;
+		color: #333333;
+		text-align: left;
+		text-decoration: none;
+		background-color: #06060d;
+		min-height: 34px;
+		max-width: 200px;
+		span {
+			@include inter-ui-regular;
+			color: #8eaabd;
+			font-size: 11px;
+			line-height: 17px;
+		}
+	}
 
-    &.rc-tooltip-placement-rightBottom {
+	&.rc-tooltip-placement-rightBottom {
+		.rc-tooltip-arrow {
+			position: absolute;
+			width: 0;
+			height: 0;
+			border-color: transparent;
+			border-style: solid;
+			bottom: -2px;
+			margin-left: 5px;
+			border-width: 25px 10px 0;
+			border-top-color: #06060d;
+			left: 0px;
+			right: auto;
+			transform: rotate(67deg);
+		}
+	}
 
-        .rc-tooltip-arrow {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            bottom: -2px;
-            margin-left: 5px;
-            border-width: 25px 10px 0;
-            border-top-color: #06060d;
-            left: 0px;
-            right: auto;
-            transform: rotate(67deg);
-        }
-    }
-    
-    &.rc-tooltip-placement-leftBottom {
-        .rc-tooltip-content {
-            margin-left: 0px;
-            margin-right: 16px;
-        }
-        .rc-tooltip-arrow {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            bottom: -2px;
-            margin-left: -6px;
-            border-width: 25px 10px 0;
-            border-top-color: #06060d;
-            left: auto;
-            right: 5px;
-            transform: rotate(-67deg);
-        }
-    }
-
+	&.rc-tooltip-placement-leftBottom {
+		.rc-tooltip-content {
+			margin-left: 0px;
+			margin-right: 16px;
+		}
+		.rc-tooltip-arrow {
+			position: absolute;
+			width: 0;
+			height: 0;
+			border-color: transparent;
+			border-style: solid;
+			bottom: -2px;
+			margin-left: -6px;
+			border-width: 25px 10px 0;
+			border-top-color: #06060d;
+			left: auto;
+			right: 5px;
+			transform: rotate(-67deg);
+		}
+	}
 }

@@ -67,7 +67,7 @@
 			}
 
 			.title {
-				@include InterUI_Bold;
+				@include inter-ui-bold;
 				font-size: 160px;
 				color: #ffffff;
 
@@ -86,7 +86,7 @@
 			}
 
 			.desc {
-				@include Hack_Regular;
+				@include hack-regular;
 				font-size: 20px;
 				color: #556270;
 				text-transform: uppercase;
@@ -105,7 +105,7 @@
 		.n-f-button {
 			cursor: pointer;
 			margin-top: 35px;
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 14px;
 			color: #000000;
 			text-transform: uppercase;
@@ -146,7 +146,7 @@
 
 				.title {
 					font-size: 24px;
-					@include InterUI_Medium;
+					@include inter-ui-medium;
 					line-height: 32px;
 
 					@include max-vw(499) {

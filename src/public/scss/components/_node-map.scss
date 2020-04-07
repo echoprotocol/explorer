@@ -21,7 +21,7 @@
 		}
 
 		h1 {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-weight: 700;
 			font-size: 23px;
 			line-height: 27px;
@@ -34,7 +34,7 @@
 		}
 
 		button {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-weight: 700;
 			font-size: 13px;
 			line-height: 18px;

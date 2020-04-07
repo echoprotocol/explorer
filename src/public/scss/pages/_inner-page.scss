@@ -20,7 +20,7 @@
 		}
 
 		.title {
-			@include InterUI_Bold;
+			@include inter-ui-bold;
 			font-size: 23px;
 			color: #18142a;
 
@@ -58,7 +58,7 @@
 		padding: 20px 47px 43px;
 
 		.page-helper-info {
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			background-color: #f3f2f5;
 			color: #171529;
 			font-size: 13px;
@@ -123,7 +123,7 @@
 	}
 
 	.section-description {
-		@include InterUI_Regular;
+		@include inter-ui-regular;
 		font-size: 15px;
 		color: #171529;
 		padding: 24px 0;
@@ -137,7 +137,7 @@
 		margin: 0 0 20px;
 
 		.action-description {
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			font-size: 13px;
 			color: #6e6d6f;
 			margin-left: 10px;

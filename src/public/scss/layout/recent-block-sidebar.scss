@@ -68,7 +68,7 @@
 		}
 
 		.version {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			color: $grey-mid;
 			font-size: 12px;
 			line-height: 18px;
@@ -78,7 +78,7 @@
 		}
 
 		.copyright {
-			@include Hack_Bold;
+			@include hack-bold;
 			text-transform: uppercase;
 			font-size: 9px;
 			color: $lightgrey;
@@ -140,7 +140,7 @@
 		width: 100%;
 	}
 	.title {
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		font-size: 12px;
 		letter-spacing: 0.02em;
 		line-height: 15px;
@@ -158,7 +158,7 @@
 	}
 
 	.value {
-		@include InterUI_Bold;
+		@include inter-ui-bold;
 		line-height: 45px;
 		color: $explorer-black;
 

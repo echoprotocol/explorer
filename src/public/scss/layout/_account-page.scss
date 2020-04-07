@@ -27,7 +27,7 @@
 			position: relative;
 			height: 100%;
 			cursor: pointer;
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			font-size: 13px;
 			display: flex;
 			align-items: center;
@@ -67,7 +67,7 @@
 			}
 
 			&--selected {
-				@include InterUI_Bold;
+				@include inter-ui-bold;
 				color: rgba(0, 0, 0, 1);
 				background-color: rgba(226, 224, 230, 1);
 			}
@@ -122,7 +122,7 @@
 .account-page-t-block {
 	margin-bottom: 30px;
 	> .title {
-		@include InterUI_Bold;
+		@include inter-ui-bold;
 		font-size: 23px;
 		color: #18142a;
 		margin-bottom: 33px;
@@ -198,7 +198,7 @@
 		}
 
 		.title {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			color: $grey;
 			font-size: 12px;
 			line-height: 1em;
@@ -211,7 +211,7 @@
 		}
 
 		.val {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 15px;
 			line-height: 1em;
 			display: flex;
@@ -244,7 +244,7 @@
 	}
 
 	.raw-link {
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		letter-spacing: 0.3px;
 		font-size: 12px;
 		color: $blue;
@@ -278,7 +278,7 @@
 		}
 
 		.title {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 12px;
 			color: $grey;
 
@@ -304,7 +304,7 @@
 		position: relative;
 		padding-bottom: 14px;
 		width: 31%;
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		font-size: 12px;
 		border-bottom: 1px solid #d8d9de;
 
@@ -364,7 +364,7 @@
 				right: 0;
 				background-color: #cadef0;
 				top: -2px;
-				@include Hack_Bold;
+				@include hack-bold;
 				padding: 3px;
 				font-size: 9px;
 				color: $blue;

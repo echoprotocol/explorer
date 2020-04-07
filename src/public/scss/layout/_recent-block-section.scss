@@ -7,7 +7,7 @@
 	}
 
 	.title-no-transactions {
-		@include InterUI_Regular();
+		@include inter-ui-regular();
 		position: absolute;
 		left: 14px;
 		font-size: 13px;
@@ -47,7 +47,7 @@
 	}
 
 	.recent-block-element {
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		background-color: #e7e7e9;
 		margin-bottom: 7px;
 
@@ -86,7 +86,7 @@
 			.title {
 				user-select: none;
 				background-color: transparent;
-				@include Hack_Bold;
+				@include hack-bold;
 				font-size: 9px;
 				text-transform: uppercase;
 				letter-spacing: 0.25em;

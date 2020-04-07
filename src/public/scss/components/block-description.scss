@@ -109,7 +109,7 @@
 		}
 
 		.title {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 12px;
 			color: $lightgrey;
 			margin-bottom: 14px;
@@ -117,7 +117,7 @@
 		}
 
 		.value {
-			@include InterUI_Medium;
+			@include inter-ui-medium;
 			font-size: 16px;
 			letter-spacing: 0.41px;
 			color: $explorer-black;

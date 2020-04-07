@@ -16,7 +16,7 @@
 		display: inline-block;
 		background-color: transparent;
 		border: none;
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		&:hover {
 			color: #095494;
 		}
@@ -51,7 +51,7 @@
 
 	background-color: #ebeaee;
 
-	@include Hack_Bold;
+	@include hack-bold;
 	font-size: 10px;
 	text-transform: uppercase;
 	letter-spacing: 0.25em;
@@ -74,7 +74,7 @@
 	display: table-row;
 	@include transition;
 
-	@include InterUI_Medium;
+	@include inter-ui-medium;
 	font-size: 12px;
 	line-height: 20px;
 	background-color: #f3f2f5;
@@ -211,7 +211,7 @@
 }
 
 .load-more {
-	@include InterUI_Regular;
+	@include inter-ui-regular;
 	font-size: 12px;
 	color: #828b95;
 	display: flex;
@@ -306,7 +306,7 @@
 	}
 
 	.text {
-		@include InterUI_Regular;
+		@include inter-ui-regular;
 		font-size: 12px;
 		color: #0f0739;
 		opacity: 0.5;

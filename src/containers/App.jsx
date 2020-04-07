@@ -73,8 +73,8 @@ class App extends React.Component {
 							<RecentBlockSidebar />
 						</div>
 					</div>
-					<Footer />
 					<Toast />
+					<Footer />
 					{
 						showInternetConnectionBar && <InternetPopup isConnected={subscribeConnect} />
 					}

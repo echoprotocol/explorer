@@ -7,7 +7,7 @@
 		cursor: pointer;
 		text-align: left;
 		height: 21px;
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		font-size: 12px;
 		color: #000000;
 		background-color: #e2e0e6;
@@ -93,13 +93,13 @@
 				width: 100%;
 				height: 100%;
 
-				@include InterUI_Regular;
+				@include inter-ui-regular;
 				font-size: 15px;
 				letter-spacing: 0.025em;
 				color: #18142a;
 
 				&::placeholder {
-					@include InterUI_Regular;
+					@include inter-ui-regular;
 					font-size: 15px;
 					letter-spacing: 0.025em;
 					color: rgba(#18142a, 0.4);
@@ -136,7 +136,7 @@
 
 			a {
 				display: block;
-				@include InterUI_Medium;
+				@include inter-ui-medium;
 				font-size: 12px;
 				color: $blue;
 				transition: all 0.2s ease-out;

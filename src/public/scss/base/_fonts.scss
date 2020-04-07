@@ -1,127 +1,166 @@
+$inter-path: "../fonts/inter/";
+$inter-ui-path: "../fonts/inter-ui/";
+$hack-path: "../fonts/hack/";
+
+// Import Hack
 @font-face {
-	font-family: "Hack";
-	src: url("../fonts/Hack/Hack-Regular.ttf");
-	src: url("../fonts/Hack/Hack-Regular.ttf") format("truetype");
+	font-family: "hack";
+	src: url("#{$hack-path}regular.ttf");
+	src: url("#{$hack-path}regular.ttf") format("truetype");
 	font-weight: 400;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "Hack";
-	src: url("../fonts/Hack/Hack-Italic.ttf");
-	src: url("../fonts/Hack/Hack-Italic.ttf") format("truetype");
-	font-weight: 400;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: "Hack";
-	src: url("../fonts/Hack/Hack-Bold.ttf");
-	src: url("../fonts/Hack/Hack-Bold.ttf") format("truetype");
+	font-family: "hack";
+	src: url("#{$hack-path}bold.ttf");
+	src: url("#{$hack-path}bold.ttf") format("truetype");
 	font-weight: 700;
 	font-style: normal;
 }
 
+// Import Inter UI
 @font-face {
-	font-family: "InterUI";
-	src: url("../fonts/InterUI/Inter-UI-Regular.ttf");
-	src: url("../fonts/InterUI/Inter-UI-Regular.ttf") format("truetype");
+	font-family: "inter-ui";
+	src: url("#{$inter-ui-path}regular.ttf");
+	src: url("#{$inter-ui-path}regular.ttf") format("truetype");
 	font-weight: 400;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "InterUI";
-	src: url("../fonts/InterUI/Inter-UI-Italic.ttf");
-	src: url("../fonts/InterUI/Inter-UI-Italic.ttf") format("truetype");
+	font-family: "inter-ui";
+	src: url("#{$inter-ui-path}regular-italic.ttf");
+	src: url("#{$inter-ui-path}regular-italic.ttf") format("truetype");
 	font-weight: 400;
 	font-style: italic;
 }
 
 @font-face {
-	font-family: "InterUI";
-	src: url("../fonts/InterUI/Inter-UI-Medium.ttf");
-	src: url("../fonts/InterUI/Inter-UI-Medium.ttf") format("truetype");
+	font-family: "inter-ui";
+	src: url("#{$inter-ui-path}medium.ttf");
+	src: url("#{$inter-ui-path}medium.ttf") format("truetype");
 	font-weight: 500;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "InterUI";
-	src: url("../fonts/InterUI/Inter-UI-MediumItalic.ttf");
-	src: url("../fonts/InterUI/Inter-UI-MediumItalic.ttf") format("truetype");
+	font-family: "inter-ui";
+	src: url("#{$inter-ui-path}medium-italic.ttf");
+	src: url("#{$inter-ui-path}medium-italic.ttf") format("truetype");
 	font-weight: 500;
 	font-style: italic;
 }
 
 @font-face {
-	font-family: "InterUI";
-	src: url("../fonts/InterUI/Inter-UI-Bold.ttf");
-	src: url("../fonts/InterUI/Inter-UI-Bold.ttf") format("truetype");
+	font-family: "inter-ui";
+	src: url("#{$inter-ui-path}bold.ttf");
+	src: url("#{$inter-ui-path}bold.ttf") format("truetype");
 	font-weight: 700;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "InterUI";
-	src: url("../fonts/InterUI/Inter-UI-Black.ttf");
-	src: url("../fonts/InterUI/Inter-UI-Black.ttf") format("truetype");
+	font-family: "inter-ui";
+	src: url("#{$inter-ui-path}black.ttf");
+	src: url("#{$inter-ui-path}black.ttf") format("truetype");
 	font-weight: 900;
 	font-style: normal;
 }
 
-@mixin Hack_Regular {
+// Import Inter
+
+@font-face {
+	font-family: "inter";
+	src: url("#{$inter-path}regular.ttf");
+	src: url("#{$inter-path}regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: "inter";
+	src: url("#{$inter-path}medium.ttf");
+	src: url("#{$inter-path}medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+@font-face {
+	font-family: "inter";
+	src: url("#{$inter-path}semibold.ttf");
+	src: url("#{$inter-path}semibold.ttf") format("truetype");
+	font-weight: 600;
+	font-style: normal;
+}
+
+// Mixins Hack
+@mixin hack-regular {
 	font: {
-		family: "Hack";
+		family: "hack";
 		weight: 400;
 		style: normal;
 	}
 }
 
-@mixin Hack_Regular-Italic {
+@mixin hack-bold {
 	font: {
-		family: "Hack";
-		weight: 400;
-		style: italic;
-	}
-}
-
-@mixin Hack_Bold {
-	font: {
-		family: "Hack";
+		family: "hack";
 		weight: 700;
 		style: normal;
 	}
 }
 
-@mixin InterUI_Regular {
+// Mixins Inter UI
+@mixin inter-ui-regular {
 	font: {
-		family: "InterUI";
+		family: "inter-ui";
 		weight: 400;
 		style: normal;
 	}
 }
 
-@mixin InterUI_Medium {
+@mixin inter-ui-medium {
 	font: {
-		family: "InterUI";
+		family: "inter-ui";
 		weight: 500;
 		style: normal;
 	}
 }
 
-@mixin InterUI_Bold {
+@mixin inter-ui-bold {
 	font: {
-		family: "InterUI";
+		family: "inter-ui";
 		weight: 700;
 		style: normal;
 	}
 }
 
-@mixin InterUI_Black {
+@mixin inter-ui-black {
 	font: {
-		family: "InterUI";
+		family: "inter-ui";
 		weight: 900;
+		style: normal;
+	}
+}
+
+// Mixins Inter
+@mixin inter-regular {
+	font: {
+		family: "inter";
+		weight: 400;
+		style: normal;
+	}
+}
+@mixin inter-medium {
+	font: {
+		family: "inter";
+		weight: 500;
+		style: normal;
+	}
+}
+@mixin inter-semibold {
+	font: {
+		family: "inter";
+		weight: 600;
 		style: normal;
 	}
 }

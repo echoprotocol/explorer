@@ -12,10 +12,10 @@
 		padding: 8px 30px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding: 20px;
 	}
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding: 15px;
 	}
 	&:before {
@@ -32,13 +32,13 @@
 	}
 	.input-wrapper {
 		min-width: 218px;
-		@include max-vw(768) {
+		@include max-vw($res-768) {
 			min-width: 270px;
 		}
 	}
 }
 .operations-filter-caption {
-	@include InterUI_Bold();
+	@include inter-ui-bold();
 	font-size: 12px;
 	line-height: 15px;
 	display: flex;
@@ -46,37 +46,37 @@
 	letter-spacing: 0.02em;
 	color: $explorer-black;
 	margin-right: 10px;
-	@include max-vw(500) {
+	@include max-vw($res-500) {
 		margin: 0 0 10px 0;
 	}
 }
 .operations-filter-wrap {
 	display: flex;
 	align-items: center;
-	@include max-vw(768) {
+	@include max-vw($res-768) {
 		flex-direction: column;
 		align-items: flex-end;
 		margin-left: auto;
 		margin-right: auto;
 	}
-	@include max-vw(500) {
+	@include max-vw($res-500) {
 		margin-left: 0;
 	}
 }
 .operations-filter-item {
 	display: flex;
 	align-items: center;
-	@include max-vw(500) {
+	@include max-vw($res-500) {
 		flex-direction: column;
 		align-items: flex-start;
 	}
 }
 .operations-filter-item + .operations-filter-item {
 	margin-left: 20px;
-	@include max-vw(768) {
+	@include max-vw($res-768) {
 		margin: 10px 0 0 0;
 	}
-	@include max-vw(500) {
+	@include max-vw($res-500) {
 		margin: 20px 0 0 0;
 	}
 }

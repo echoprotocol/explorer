@@ -21,7 +21,7 @@
 	}
 
 	.mobile-title {
-		@include Hack_Bold;
+		@include hack-bold;
 		font-size: 9px;
 		color: #fff;
 		text-transform: uppercase;
@@ -210,7 +210,7 @@
 
 	.title {
 		display: inline-flex;
-		@include Hack_Bold;
+		@include hack-bold;
 		margin-bottom: 28px;
 		color: $grey;
 		line-height: 15px;
@@ -258,7 +258,7 @@
 	}
 
 	.status-container {
-		@include InterUI_Bold;
+		@include inter-ui-bold;
 		color: $grey;
 		width: 100%;
 	}

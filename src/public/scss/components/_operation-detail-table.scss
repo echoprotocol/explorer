@@ -13,7 +13,7 @@
 		line-height: 15px;
 
 		&:nth-child(1) {
-			font-family: "Hack";
+			font-family: "hack";
 			font-weight: 700;
 			font-size: 9px;
 			text-transform: uppercase;
@@ -27,11 +27,9 @@
 		}
 
 		&:nth-child(2) {
-			font-family: "InterUI";
-			font-weight: 500;
+			@include inter-medium();
 			font-size: 13px;
 			font-style: normal;
-			letter-spacing: 0.33px;
 			color: #000;
 			padding-left: 28px;
 			width: 100%;
@@ -52,7 +50,7 @@
 
 	.mono {
 		word-break: break-all;
-		font-family: "Hack";
+		font-family: "hack";
 		font-style: normal;
 		font-weight: 400;
 		font-size: 12px;
@@ -73,7 +71,7 @@
 
 	.authority {
 		.title {
-			font-family: "Hack";
+			font-family: "hack";
 			font-weight: 700;
 			font-size: 9px;
 			text-transform: uppercase;
@@ -103,8 +101,7 @@
 
 		.keys {
 			word-break: break-all;
-			font-family: "InterUI";
-			font-weight: 500;
+			@include inter-medium();
 			font-size: 13px;
 			font-style: normal;
 			color: #000;

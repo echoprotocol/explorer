@@ -7,6 +7,7 @@ import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
 import Account from '../../components/Account';
 import AccountActions from '../../actions/AccountActions';
 import GlobalActions from '../../actions/GlobalActions';
+import { ACCOUNT_GRID } from '../../constants/TableConstants';
 
 const filteredObjects = createSelector(
 	(state) => state.account.get('balances'),
@@ -33,9 +34,9 @@ const balanceSelector = createImmutableSelector(
 
 export default withRouter(connect(
 	(state) => ({
+		filterAndPaginateData: state.grid.get(ACCOUNT_GRID),
 		loading: state.account.get('loading'),
 		loadingMoreHistory: state.account.get('loadingMoreHistory'),
-		isFullHistory: state.account.get('isFullHistory'),
 		balances: balanceSelector(state),
 		tokens: state.account.get('tokens'),
 		accountHistory: state.account.get('history'),
@@ -43,11 +44,6 @@ export default withRouter(connect(
 	}),
 	(dispatch, props) => ({
 		getAccountInfo: () => dispatch(AccountActions.getAccountInfo(props.match.params.id)),
-		updateAccountHistory: (accountId, newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
-			accountId,
-			newHistory,
-			oldHistory,
-		)),
 		loadAccountHistory: (accountId, lastOperationId) => dispatch(AccountActions.loadAccountHistory(
 			accountId,
 			lastOperationId,
@@ -55,6 +51,5 @@ export default withRouter(connect(
 		updateAccountBalances: (balances) => dispatch(AccountActions.updateAccountBalances(balances)),
 		clearAccountInfo: () => dispatch(AccountActions.clear()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
-	})
-	,
+	}),
 )(Account));

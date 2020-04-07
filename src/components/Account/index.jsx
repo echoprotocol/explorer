@@ -3,24 +3,27 @@ import PropTypes from 'prop-types';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
-import OperationsTable from '../OperationsTable';
+import OperationsTable from '../../containers/OperationsTable';
 import InnerHeader from '../InnerHeader';
 import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
+import { ACCOUNT_GRID } from '../../constants/TableConstants';
 
 class Account extends React.Component {
 
 	componentDidMount() {
 		this.props.getAccountInfo();
-
 		if (this.props.location.search) {
 			this.props.history.push(this.props.location.pathname);
 		}
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.account) {
+		if ((!prevProps.account && this.props.account) ||
+			(prevProps.account && prevProps.account.get('name') !== this.props.account.get('name'))
+		) {
 			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
+			this.onLoadMoreHistory();
 		}
 
 		if (prevProps.match.params.id !== this.props.match.params.id) {
@@ -35,11 +38,11 @@ class Account extends React.Component {
 		const { account: prevAccount } = prevProps;
 		const { account } = this.props;
 
-		const prevAccountHistory = prevAccount.get('history');
-		const accountHistory = account.get('history');
+		const prevCountOps = prevAccount.getIn(['statistics', 'total_ops']);
+		const currCountOps = account.getIn(['statistics', 'total_ops']);
 
-		if (prevAccountHistory.size !== accountHistory.size) {
-			this.props.updateAccountHistory(account.get('id'), account.get('history'), prevAccount.get('history'));
+		if (prevCountOps !== currCountOps) {
+			this.onLoadMoreHistory();
 		}
 
 		if (!prevAccount.get('balances').equals(account.get('balances'))) {
@@ -52,10 +55,9 @@ class Account extends React.Component {
 		this.props.clearAccountInfo();
 	}
 
-
 	onLoadMoreHistory() {
-		const { account, accountHistory } = this.props;
-		this.props.loadAccountHistory(account.get('id'), accountHistory.last().id.split('.')[2]);
+		const { account } = this.props;
+		this.props.loadAccountHistory(account.get('id'));
 	}
 
 	renderLoader(loading) {
@@ -64,8 +66,7 @@ class Account extends React.Component {
 
 	render() {
 		const {
-			loading, loadingMoreHistory, isFullHistory,
-			account, balances, tokens, accountHistory,
+			loading, loadingMoreHistory, account, balances, tokens, accountHistory,
 		} = this.props;
 
 		return (
@@ -95,17 +96,17 @@ class Account extends React.Component {
 				<div className="account-page-table">
 					{ account && !loading ?
 						<React.Fragment>
-							{ accountHistory.size ?
+							{account.getIn(['statistics', 'total_ops']) ? (
 								<OperationsTable
+									onLoadMoreHistory={() => this.onLoadMoreHistory()}
+									gridName={ACCOUNT_GRID}
 									label="Transactions"
 									operations={accountHistory}
 									history={this.props.history}
 									location={this.props.location}
 									loading={loadingMoreHistory}
-									loadMore={accountHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
-									hasMore={!isFullHistory}
 									timestamp
-								/> : null
+								/>) : null
 							}
 						</React.Fragment> : this.renderLoader(loading)
 					}
@@ -119,7 +120,6 @@ class Account extends React.Component {
 Account.propTypes = {
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
-	isFullHistory: PropTypes.bool,
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
@@ -129,7 +129,6 @@ Account.propTypes = {
 	match: PropTypes.object.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
-	updateAccountHistory: PropTypes.func.isRequired,
 	updateAccountBalances: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
@@ -138,7 +137,6 @@ Account.propTypes = {
 Account.defaultProps = {
 	loading: false,
 	loadingMoreHistory: false,
-	isFullHistory: false,
 	account: null,
 	balances: null,
 	tokens: null,

@@ -1,69 +1,68 @@
 .dropdown-tab {
-    .dropdown-toggle {
-        background-color: #F3F2F5;
-        border: 0;
-        border-top: 2px solid #498FDF;
-        padding: 0 15px;
-        height: 26px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        white-space: nowrap;
+	.dropdown-toggle {
+		background-color: #f3f2f5;
+		border: 0;
+		border-top: 2px solid #498fdf;
+		padding: 0 15px;
+		height: 26px;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		white-space: nowrap;
 
-        .carret {
-            width: 6px;
-            height: 6px;
-            background-image: url(../images/icons/arrow-curet.svg);
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            margin-left: 17px;
-        }
-    }
-    .doropdown-tab-current {
-        @include InterUI_Bold;
-        font-size: 13px;
-        color: rgba(0, 0, 0, 1);
-    }
-    .dropdown-menu {
-        min-width: 190px;
-    }
+		.carret {
+			width: 6px;
+			height: 6px;
+			background-image: url(../images/icons/arrow-curet.svg);
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+			margin-left: 17px;
+		}
+	}
+	.doropdown-tab-current {
+		@include inter-ui-bold;
+		font-size: 13px;
+		color: rgba(0, 0, 0, 1);
+	}
+	.dropdown-menu {
+		min-width: 190px;
+	}
 }
 
-
 .dropdown-menu {
-    @include InterUI_Regular;
-    display: none;
-    border: 1px solid #B0B7BD;
-    border-radius: 3px;
-    background-color: #F0EFF2;
-    padding: 7px 5px;
-    font-size: 13px;
-    margin-top: 2px;
+	@include inter-ui-regular;
+	display: none;
+	border: 1px solid #b0b7bd;
+	border-radius: 3px;
+	background-color: #f0eff2;
+	padding: 7px 5px;
+	font-size: 13px;
+	margin-top: 2px;
 
-    &.show {
-        display: flex;
-        .scrollbar-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-    }
+	&.show {
+		display: flex;
+		.scrollbar-container {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+		}
+	}
 
-    .dropdown-item {
-        padding: 10px 11px;
-        background-color: transparent;
-        transition: background-color .2s, color .2s;
-        color: #171529;
-        width: 100%;
+	.dropdown-item {
+		padding: 10px 11px;
+		background-color: transparent;
+		transition: background-color 0.2s, color 0.2s;
+		color: #171529;
+		width: 100%;
 
-        &.selected {
-            color: #ABA8AE;
-        }
+		&.selected {
+			color: #aba8ae;
+		}
 
-        &:hover {
-            background-color: #E5E3E9;
-        }
-    }
+		&:hover {
+			background-color: #e5e3e9;
+		}
+	}
 }

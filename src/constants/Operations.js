@@ -41,15 +41,6 @@ const Operations = {
 			asset: null,
 		},
 	},
-	contract_transfer: {
-		value: OPERATIONS_IDS.CONTRACT_TRANSFER,
-		name: 'Contract transfer',
-		options: {
-			from: 'from',
-			to: 'to',
-			value: 'amount.amount',
-		},
-	},
 	account_update: {
 		value: OPERATIONS_IDS.ACCOUNT_UPDATE,
 		name: 'Update account',
@@ -522,7 +513,7 @@ const Operations = {
 		},
 	},
 	erc20_send_deposit: {
-		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN,
 		name: 'Erc20 send deposit',
 		options: {
 			from: ['committee_member_id', 'name'],
@@ -543,7 +534,7 @@ const Operations = {
 		},
 	},
 	erc20_send_withdraw: {
-		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW,
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN,
 		name: 'Erc20 send withdraw',
 		options: {
 			from: ['committee_member_id', 'name'],
