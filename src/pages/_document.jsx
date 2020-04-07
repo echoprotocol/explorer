@@ -26,7 +26,10 @@ export default class extends Document {
 	render() {
 		return (
 			<html lang="en" {...this.helmetHtmlAttrComponents}>
-				<Head>{this.helmetHeadComponents}</Head>
+				<Head>
+					{this.helmetHeadComponents}
+					<link rel="icon" type="image/x-icon" href="../public/favicon.ico" />
+				</Head>
 				<body {...this.helmetBodyAttrComponents}>
 					<Main />
 					<NextScript />

@@ -128,7 +128,7 @@ export const serverConnect = () => async (dispatch) => {
 		const producers = global._creator_count;
 		dispatch(batchActions([
 			RoundReducer.actions.set({ field: 'producers', value: producers }),
-			RoundReducer.actions.set({ field: 'connectedServer', value: true }),
+			GlobalReducer.actions.set({ field: 'connectedServer', value: true }),
 		]));
 	} catch (err) {
 		dispatch(batchActions([

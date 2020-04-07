@@ -24,6 +24,7 @@ app.prepare().then(() => {
 				debug: config.ECHO_NODE.DEBUG,
 				apis: config.ECHO_NODE.APIS,
 			});
+			console.log('echo connected^ ', echo.isConnected);
 		} catch (error) {
 			console.log('Not connect to echo', error);
 		}

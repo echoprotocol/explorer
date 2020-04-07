@@ -107,14 +107,14 @@ class ExplorerApp extends App {
 		const error = store.getState().global.get('error');
 		const errorScreen = store.getState().global.get('errorScreen');
 		const errorPath = store.getState().global.get('errorPath');
-		const connected = store.getState().global.get('connected');
+		const clientConnected = store.getState().global.get('connected');
 		const connectedServer = store.getState().global.get('connectedServer');
 
 		if (error || errorScreen) {
 			return this.renderErrorScreen(error);
 		}
 
-		if ((typeof window === 'undefined' && !connectedServer) || (typeof window !== 'undefined' && !connected)) {
+		if ((typeof window === 'undefined' && !connectedServer) || (typeof window !== 'undefined' && !clientConnected && !connectedServer)) {
 			return <Loader global />;
 		}
 
