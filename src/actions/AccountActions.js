@@ -1,5 +1,5 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
-import { List, fromJS, Set } from 'immutable';
+import { List, fromJS } from 'immutable';
 import BN from 'bignumber.js';
 
 import { TOKEN_TYPE } from '../constants/GlobalConstants';
@@ -162,8 +162,8 @@ class AccountActions extends BaseActionsClass {
 						}
 					}
 				};
-				await Promise.all(new Set([queryData.filters.from, queryData.filters.to])
-					.toJS()
+
+				await Promise.all(Array.from(new Set([queryData.filters.from, queryData.filters.to]))
 					.map((filter) => addRelationSubjects(filter)));
 
 				const { items, total } = await getHistory({
@@ -171,7 +171,7 @@ class AccountActions extends BaseActionsClass {
 					relationSubjects,
 					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 					count: queryData.sizePerPage,
-					operations: Object.keys(OPERATIONS_IDS).slice(0, 40),
+					operations: Object.keys(OPERATIONS_IDS),
 				});
 				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
