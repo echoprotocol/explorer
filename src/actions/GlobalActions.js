@@ -4,6 +4,7 @@ import BaseActionsClass from './BaseActionsClass';
 import { clientConnect } from './SocketActions';
 import ModalActions from './ModalActions';
 import { BridgeService } from '../services/BridgeService';
+import GridActions from './GridActions';
 
 class GlobalActionsClass extends BaseActionsClass {
 
@@ -38,6 +39,7 @@ class GlobalActionsClass extends BaseActionsClass {
 		return (dispatch) => new Promise((resolve) => {
 			Promise.all([
 				dispatch(clientConnect()),
+				dispatch(GridActions.initData()),
 			]).then((data) => {
 				dispatch(this.afterInit()).then(() => {
 					resolve(data);

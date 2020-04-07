@@ -89,7 +89,7 @@
 			height: 100%;
 
 			.menu-item-content {
-				@include InterUI_Regular;
+				@include inter-ui-regular;
 				border-radius: 3px;
 				background-color: transparent;
 				padding: 1px 4px 2px;

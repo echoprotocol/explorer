@@ -4,9 +4,11 @@ import { withRouter } from 'next/router';
 import Account from '../../components/Account';
 import AccountActions from '../../actions/AccountActions';
 import GlobalActions from '../../actions/GlobalActions';
+import { ACCOUNT_GRID } from '../../constants/TableConstants';
 
 export default withRouter(connect(
 	(state) => ({
+		filterAndPaginateData: state.grid.get(ACCOUNT_GRID),
 		loading: state.account.get('loading'),
 		loadingMoreHistory: state.account.get('loadingMoreHistory'),
 		isFullHistory: state.account.get('isFullHistory'),
@@ -18,15 +20,7 @@ export default withRouter(connect(
 	}),
 	(dispatch) => ({
 		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
-		updateAccountHistory: (accountId, newHistory, oldHistory) => dispatch(AccountActions.updateAccountHistory(
-			accountId,
-			newHistory,
-			oldHistory,
-		)),
-		loadAccountHistory: (accountId, lastOperationId) => dispatch(AccountActions.loadAccountHistory(
-			accountId,
-			lastOperationId,
-		)),
+		loadAccountHistory: (accountId) => dispatch(AccountActions.loadAccountHistory(accountId)),
 		clearAccountInfo: () => dispatch(AccountActions.clear()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),

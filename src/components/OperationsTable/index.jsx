@@ -8,7 +8,7 @@ import Router from 'next/router';
 import URLHelper from '../../helpers/URLHelper';
 import TableLabel from '../TableLabel';
 import FilterBtn from '../FilterBtn';
-import LoadMoreBtn from '../LoadMoreBtn';
+import LoadMore from '../LoadMore';
 import Operations from '../../constants/Operations';
 import { SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
@@ -153,7 +153,7 @@ class OperationsTable extends React.Component {
 							)) : null }
 						</tbody>
 					</table>
-					{hasMore && <LoadMoreBtn loading={loading} loadMore={() => loadMore()} />}
+					{hasMore && <LoadMore loading={loading} loadMore={() => loadMore()} />}
 				</PerfectScrollbar>
 				<OperationsPagination />
 			</div>

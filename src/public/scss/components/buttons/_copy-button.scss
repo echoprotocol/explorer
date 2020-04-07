@@ -1,5 +1,5 @@
 .copy-button {
-	@include InterUI_Regular;
+	@include inter-ui-regular;
 	@include btn();
 	@include onFocus(12px, 2px, 2px, rgba(#498fdf, 0.53));
 	font-size: 12px;

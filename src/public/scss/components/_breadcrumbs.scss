@@ -3,7 +3,7 @@
 	align-items: center;
 	> .element {
 		@include link();
-		@include Hack_Bold;
+		@include hack-bold;
 		position: relative;
 		display: inline-block;
 		font-size: 9px;
@@ -59,7 +59,7 @@
 	}
 
 	> .title {
-		@include InterUI_Bold;
+		@include inter-ui-bold;
 		font-size: 23px;
 		color: #130d32;
 		line-height: 33px;

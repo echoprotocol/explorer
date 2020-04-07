@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import GridReducer from '../reducers/GridReducer';
 import BaseActionsClass from './BaseActionsClass';
+import LocalStorageService from '../services/LocalStorageService';
+import { DEFAULT_SIZE_PER_PAGE } from '../constants/TableConstants';
 
 export class GridActionsClass extends BaseActionsClass {
 
@@ -22,20 +24,22 @@ export class GridActionsClass extends BaseActionsClass {
 
 	/**
 	 * Get data
-	 * @param {String} gridName
-	 * @param {Function} func
 	 * @returns {function(*=): Promise<any>}
 	 */
-	getData(gridName, func) {
-		return (dispatch) => new Promise((resolve, reject) => {
-			dispatch(this._loadingMiddleware(gridName, func)).then((data) => {
-				dispatch(this.setValue([gridName, 'data'], data.result.items));
-				dispatch(this.setValue([gridName, 'totalDataSize'], data.result.count));
-				resolve(data);
-			}).catch((error) => {
-				reject(error);
+	initData() {
+		return (dispatch, getState) => {
+			const localData = [];
+			const gridNames = Object.keys(getState().grid.toJS());
+			gridNames.forEach((gridName) => {
+				let sizePerPage = DEFAULT_SIZE_PER_PAGE;
+				try {
+					sizePerPage = JSON.parse(LocalStorageService.getData(gridName)) || DEFAULT_SIZE_PER_PAGE;
+					// eslint-disable-next-line no-empty
+				} catch (err) {}
+				localData.push([gridName, sizePerPage]);
 			});
-		});
+			localData.forEach(([gridName, sizePerPage]) => dispatch(this.setValue([gridName, 'sizePerPage'], sizePerPage)));
+		};
 	}
 
 	/**
@@ -54,12 +58,11 @@ export class GridActionsClass extends BaseActionsClass {
 	 * Set page
 	 * @param {String} gridName
 	 * @param {Number} currentPage
-	 * @param {Number} offset
 	 * @return {function(*, *)}
 	 */
-	setPage(gridName, currentPage, offset) {
+	setPage(gridName, currentPage) {
 		return (dispatch) => {
-			dispatch(this.reducer.actions.setPage({ gridName, currentPage, offset }));
+			dispatch(this.reducer.actions.setPage({ gridName, currentPage }));
 		};
 	}
 
@@ -72,6 +75,8 @@ export class GridActionsClass extends BaseActionsClass {
 	setPageSize(gridName, value) {
 		return (dispatch) => {
 			dispatch(this.setValue([gridName, 'sizePerPage'], value));
+			dispatch(this.setPage(gridName, 1, 0));
+			LocalStorageService.setData(gridName, value);
 		};
 	}
 
@@ -170,32 +175,6 @@ export class GridActionsClass extends BaseActionsClass {
 				dispatch(this.setValue(field, ''));
 			}
 		};
-	}
-
-	/**
-	 * Wrapper for grid loading
-	 * @param {String} gridName
-	 * @param {Function} func Function for call
-	 * @returns {function(*=): Promise<any>}
-	 * @private
-	 */
-	_loadingMiddleware(gridName, func) {
-		return (dispatch) => new Promise((resolve, reject) => {
-			dispatch(this.clearTimeout(gridName));
-			const loadingTimeout = setTimeout(() => {
-				dispatch(this.setValue([gridName, 'loading'], true));
-			}, 500);
-			dispatch(this.setValue([gridName, 'loadingTimeout'], loadingTimeout));
-			func().then((data) => {
-				dispatch(this.setValue([gridName, 'loading'], false));
-				dispatch(this.clearTimeout(gridName));
-				resolve(data);
-			}).catch((error) => {
-				dispatch(this.setValue([gridName, 'loading'], false));
-				dispatch(this.clearTimeout(gridName));
-				reject(error);
-			});
-		});
 	}
 
 }

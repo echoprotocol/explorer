@@ -353,12 +353,12 @@
 
 		@include transition;
 
-		@include InterUI_Medium;
+		@include inter-ui-medium;
 		font-size: 15px;
 		color: rgba(104, 108, 134, 0.6);
 
 		&::placeholder {
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			font-size: 15px;
 			color: rgba(104, 108, 134, 0.6);
 			@include transition;
@@ -433,7 +433,7 @@
 			}
 
 			.section-name {
-				@include Hack_Bold;
+				@include hack-bold;
 				color: #828b95;
 				text-transform: uppercase;
 				font-size: 10px;
@@ -446,7 +446,7 @@
 
 			.value {
 				color: #18142a;
-				@include InterUI_Regular;
+				@include inter-ui-regular;
 				font-size: 15px;
 
 				.select {
@@ -459,7 +459,7 @@
 		}
 
 		.no-results {
-			@include InterUI_Regular;
+			@include inter-ui-regular;
 			font-size: 12px;
 			letter-spacing: 0.3px;
 			color: #18142a;

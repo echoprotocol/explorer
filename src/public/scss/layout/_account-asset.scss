@@ -29,7 +29,7 @@
 		}
 
 		> .title {
-			@include InterUI_Bold;
+			@include inter-ui-bold;
 			font-size: 23px;
 			color: #18142a;
 			margin-bottom: 52px;
@@ -62,7 +62,7 @@
 				}
 
 				> .title {
-					@include InterUI_Bold;
+					@include inter-ui-bold;
 					font-size: 16px;
 					color: #130d32;
 					margin-bottom: 30px;
@@ -114,7 +114,7 @@
 						}
 
 						.title {
-							@include Hack_Bold;
+							@include hack-bold;
 							color: #1f3c4d;
 							font-size: 10px;
 							text-transform: uppercase;
@@ -124,7 +124,7 @@
 						}
 
 						.val {
-							@include InterUI_Medium;
+							@include inter-ui-medium;
 							font-size: 16px;
 							color: #130d32;
 							display: flex;
