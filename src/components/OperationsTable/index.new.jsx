@@ -109,34 +109,12 @@ class OperationsTable extends React.Component {
 	}
 
 	filteredOperations() {
-		let { operations, filterAndPaginateData } = this.props;
-		filterAndPaginateData = filterAndPaginateData.toJS();
-
-		if (operations && (filterAndPaginateData.filters.from || filterAndPaginateData.filters.to)) {
-			const { filters: { from, to } } = filterAndPaginateData;
-			operations = operations.filter((operation) => {
-				let [isAllowFrom, isAllowTo] = [false, false];
-				if (!from && !to) {
-					return true;
-				}
-				if (from && operation.mainInfo.from) {
-					if (from === operation.mainInfo.from.name || from === operation.mainInfo.from.id) {
-						isAllowFrom = true;
-					}
-				} else {
-					isAllowFrom = true;
-				}
-				if (to && operation.mainInfo.subject) {
-					if (to === operation.mainInfo.subject.name || to === operation.mainInfo.subject.id) {
-						isAllowTo = true;
-					}
-				} else {
-					isAllowTo = true;
-				}
-				return isAllowFrom && isAllowTo;
-			});
-		}
-		return operations;
+		const { filters: { from, to } } = this.props.filterAndPaginateData.toJS();
+		return this.props.operations.filter((operation) => {
+			const isAllowFrom = from ? (from === operation.mainInfo.from.name || from === operation.mainInfo.from.id) : true;
+			const isAllowTo = to ? (to === operation.mainInfo.subject.name || to === operation.mainInfo.subject.id) : true;
+			return isAllowFrom && isAllowTo;
+		});
 	}
 
 	toggleOperationDetails(index) {
