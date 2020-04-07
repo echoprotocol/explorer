@@ -49,10 +49,12 @@ class BlockInformation extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
+		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
+				operations: nextProps.blockInformation.get('operations').slice(0, sizePerPage),
 			});
 		}
 
