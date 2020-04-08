@@ -1,33 +1,14 @@
-import Immutable from 'immutable';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import { CACHE_MAPS } from 'echojs-lib';
-import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
+import { withRouter } from 'next/router';
 
 import Contract from '../../components/Contract';
 import ContractActions from '../../actions/ContractActions';
 import GlobalActions from '../../actions/GlobalActions';
 import AccountActions from '../../actions/AccountActions';
 
-const filteredObjects = createSelector(
-	(state) => state.contract.get('balances'),
-	(state) => state.echoCache.get(CACHE_MAPS.OBJECTS_BY_ID),
-	(balances, objects) => balances.map((b) => objects.get(b.get('asset_id'))),
-);
-
-const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is);
-const balanceSelector = createImmutableSelector(
-	(state) => state.contract.get('balances'),
-	(state) => filteredObjects(state),
-	(balances, objects) => balances.map((b, i) => ({
-		id: i,
-		amount: b.get('amount'),
-		asset: objects.get(i),
-	})),
-);
-
 export default withRouter(connect(
 	(state) => ({
+		isMobile: state.global.get('isMobile'),
 		loading: state.contract.get('loading'),
 		isFullHistory: state.contract.get('isFullHistory'),
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
@@ -43,7 +24,7 @@ export default withRouter(connect(
 		creationFee: state.contract.get('creationFee'),
 		createdAt: state.contract.get('createdAt'),
 		type: state.contract.get('type'),
-		balances: balanceSelector(state),
+		balances: state.contract.get('balances'),
 		owner: state.contract.get('owner'),
 		token: state.contract.get('token'),
 		countTokenTransfer: state.contract.get('countTokenTransfer'),
@@ -60,17 +41,17 @@ export default withRouter(connect(
 
 		activeAccount: state.global.get('activeAccount'),
 	}),
-	(dispatch, props) => ({
-		getContractInfo: () => dispatch(ContractActions.getContractInfo(props.match.params.id)),
+	(dispatch) => ({
+		getContractInfo: (contractId) => dispatch(ContractActions.getContractInfo(contractId)),
 		clearContractInfo: () => dispatch(ContractActions.clear()),
-		loadContractHistory: (lastOperationId) => dispatch(ContractActions.loadContractHistory(
-			props.match.params.id,
+		loadContractHistory: (contractId, lastOperationId) => dispatch(ContractActions.loadContractHistory(
+			contractId,
 			lastOperationId,
 		)),
 		getActiveAccount: () => dispatch(AccountActions.getActiveAccount()),
-		setStarToContract: () => dispatch(ContractActions.setStarToContract(props.match.params.id)),
-		updateContractInfo: (recetOperationId) => dispatch(ContractActions.updateContractInfo(
-			props.match.params.id,
+		setStarToContract: (contractId) => dispatch(ContractActions.setStarToContract(contractId)),
+		updateContractInfo: (contractId, recetOperationId) => dispatch(ContractActions.updateContractInfo(
+			contractId,
 			recetOperationId,
 		)),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),

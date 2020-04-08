@@ -17,6 +17,16 @@ export const VERIFY_CONTRACT_PATH = '/contracts/:id/verify';
 export const MANAGE_CONTRACT_PATH = '/contracts/:id/manage';
 export const NODE_MAP = '/node-map';
 
+export const SSR_BLOCK_INFORMATION_PATH = '/blocks/[round]';
+export const SSR_ACCOUNTS_PATH = '/accounts/[id]/info';
+export const SSR_ASSET_PATH = '/assets/[id]/info';
+export const SSR_TRANSACTION_INFORMATION_PATH = '/blocks/[round]/[index]';
+export const SSR_CONTRACT_PATH = '/contracts/[id]/info/';
+export const SSR_UPLOAD_ABI_PATH = '/contracts/[id]/upload-abi';
+export const SSR_VERIFY_CONTRACT_PATH = '/contracts/[id]/verify';
+export const SSR_MANAGE_CONTRACT_PATH = '/contracts/[id]/manage';
+export const SSR_CONTRACT_DETAILS_PATH = '/contracts/[id]/info/[detail]';
+
 export const CONTRACT_DETAILS_NUMBERS_TAB = {
 	[CONTRACT_TRANSACTIONS]: 1,
 	[CONTRACT_BYTECODE]: 2,

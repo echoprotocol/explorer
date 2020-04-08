@@ -1,10 +1,10 @@
 import echo from 'echojs-lib';
+
 import GlobalActions from './GlobalActions';
 
 /**
- *  @method setLatestBlock
- *
- * 	Set latest block from blockchain to redux store
+ * @method getFullAssetInformation
+ * @param {string} assetId
  */
 // eslint-disable-next-line import/prefer-default-export
 export const getFullAssetInformation = (assetId) => async (dispatch) => {
@@ -16,9 +16,11 @@ export const getFullAssetInformation = (assetId) => async (dispatch) => {
 			return;
 		}
 
-		await echo.api.getObject(asset.issuer);
+		const issuer = await echo.api.getObject(asset.issuer);
 
-	} catch (_) {
+		// eslint-disable-next-line consistent-return
+		return { asset, issuer };
+	} catch (err) {
 		dispatch(GlobalActions.toggleErrorPath(true));
 	}
 };

@@ -1,8 +1,8 @@
 import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
-import { List, fromJS } from 'immutable';
+import Inmmutable, { List, fromJS } from 'immutable';
 import BN from 'bignumber.js';
 
-import { TOKEN_TYPE } from '../constants/GlobalConstants';
+import { TITLE_TEMPLATES, TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
 
 import AccountReducer from '../reducers/AccountReducer';
@@ -54,6 +54,7 @@ class AccountActions extends BaseActionsClass {
 		});
 
 		accountHistory = await Promise.all(accountHistory);
+
 		return accountHistory.filter((t) => t);
 	}
 
@@ -81,9 +82,27 @@ class AccountActions extends BaseActionsClass {
 
 				const objectIds = Object.entries(account.balances).reduce((arr, b) => [...arr, ...b], []);
 
-				await echo.api.getObjects(objectIds);
+				let objects = await echo.api.getObjects(objectIds);
 
-				dispatch(this.setMultipleValue({ id: account.id, balances: fromJS(account.balances) }));
+				objects = objects.reduce((result, item) => result.set(item.id, fromJS(item)), new Map());
+
+				const filteredObjects = fromJS(account.balances).reduce(
+					(map, s, a) => map.set(a, objects.get(a)).set(s, objects.get(s)),
+					Inmmutable.Map({}),
+				);
+
+				const balanceToSave = fromJS(account.balances).mapEntries(([assetId, statsId]) => ([
+					assetId,
+					{
+						asset: filteredObjects.get(assetId),
+						amount: filteredObjects.getIn([statsId, 'balance']),
+						id: filteredObjects.getIn([statsId, 'id']),
+					},
+				]));
+
+				await dispatch(this.loadAccountHistory(account.id));
+				dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, account.name)));
+				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
 				const balances = await getBalances([account.id]);
 
 				const tokens = balances.data.getBalances.filter((balanceItem) =>
@@ -95,20 +114,6 @@ class AccountActions extends BaseActionsClass {
 			} finally {
 				dispatch(this.setValue('loading', false));
 			}
-		};
-	}
-
-	/**
-	 * Update account balances
-	 * @param {Map} balances
-	 * @returns {function}
-	 */
-	updateAccountBalances(balances) {
-		return async (dispatch) => {
-			const objectIds = balances.reduce((arr, key, value) => [...arr, key, value], []);
-			await echo.api.getObjects(objectIds);
-
-			dispatch(this.setMultipleValue({ balances }));
 		};
 	}
 
@@ -142,7 +147,6 @@ class AccountActions extends BaseActionsClass {
 			try {
 				const queryData = getState().grid.get(ACCOUNT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
-
 				const subject = accountId;
 				const relationSubjects = [];
 

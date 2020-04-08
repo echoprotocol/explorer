@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Tooltip from 'rc-tooltip';
 import Media from 'react-media';
 
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
-
+import { OBJECTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
 
 class AccountInfo extends React.Component {
 
 	renderEcho() {
-		const { echo } = this.props;
+		const { echo, isMobile } = this.props;
 		if (!echo) return <div className="val"><span className="txt">None</span></div>;
 		const assetAmount = FormatHelper.formatAmount(echo.amount, echo.asset.get('precision'));
 		return (
 			<div className="val">
-				<Media query="(max-width: 760px)">
+				<Media query="(max-width: 760px)" defaultMatches={isMobile}>
 					{
 						(matches) => (matches ? (
 							<Tooltip
@@ -32,8 +32,8 @@ class AccountInfo extends React.Component {
 					}
 				</Media>
 				<span className="blue">
-					<Link to={URLHelper.createUrlById(ECHO_ASSET.ID)} className="blue">
-						&nbsp;{ECHO_ASSET.SYMBOL}
+					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(ECHO_ASSET.ID)}>
+						<a className="blue">&nbsp;{ECHO_ASSET.SYMBOL}</a>
 					</Link>
 				</span>
 			</div>
@@ -55,8 +55,8 @@ class AccountInfo extends React.Component {
 					{this.renderEcho()}
 				</div>
 				<div className="line">
-					<Link to={URLHelper.createObjectsUrl(id)} className="raw-link blue">
-						Raw account object
+					<Link href={OBJECTS_PATH} as={URLHelper.createObjectsUrl(id)}>
+						<a className="raw-link blue">Raw account object</a>
 					</Link>
 				</div>
 			</div>
@@ -66,6 +66,7 @@ class AccountInfo extends React.Component {
 }
 
 AccountInfo.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	echo: PropTypes.object,
 	name: PropTypes.string.isRequired,
 	id: PropTypes.string.isRequired,

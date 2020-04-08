@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Router, { withRouter } from 'next/router';
 import echo from 'echojs-lib';
 import Media from 'react-media';
 import Slider from 'react-slick';
@@ -8,8 +9,8 @@ import classnames from 'classnames';
 import { Dropdown } from 'react-bootstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
-import { withRouter } from 'react-router';
 import copy from 'copy-to-clipboard';
+import { Helmet } from 'react-helmet';
 
 import { CONTRACT_TABS, CHANGE_TEXT_TIME } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -20,6 +21,9 @@ import {
 	CONTRACT_DETAILS_NUMBERS_TAB,
 	CONTRACT_SOURCE_CODE,
 	CONTRACT_ABI,
+	SSR_CONTRACT_PATH,
+	SSR_MANAGE_CONTRACT_PATH,
+	SSR_CONTRACT_DETAILS_PATH,
 } from '../../constants/RouterConstants';
 
 import ContractBytecode from './ContractBytecode';
@@ -37,6 +41,7 @@ import { ContractIcon } from './ContractIcon';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
+import ContractActions from '../../actions/ContractActions';
 
 class Contract extends React.Component {
 
@@ -51,19 +56,14 @@ class Contract extends React.Component {
 		};
 	}
 
-
 	async componentDidMount() {
-		const { match: { params: { detail, id } } } = this.props;
+		const { router: { query: { detail, id } } } = this.props;
 		window.addEventListener('resize', this.listener);
 		await this.initContract();
 		const { verified } = this.props;
 
-		if (this.props.location.search) {
-			this.props.history.push(this.props.location.pathname);
-		}
-
 		if (!verified && detail === CONTRACT_SOURCE_CODE) {
-			this.props.history.push(URLHelper.createContractUrl(id));
+			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 		}
 
 		this.props.loadActiveAccount();
@@ -76,7 +76,7 @@ class Contract extends React.Component {
 
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.match.params.id !== this.props.match.params.id) {
+		if (prevProps.router.query.id && prevProps.router.query.id !== this.props.router.query.id) {
 			this.initContract();
 		}
 	}
@@ -91,12 +91,14 @@ class Contract extends React.Component {
 	}
 
 	async initContract() {
-		const { id } = this.props.match.params;
-
+		const { query: { id } } = this.props.router;
 		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
-		await this.props.getContractInfo();
-		echo.subscriber.removeContractSubscribe(this.subscriber);
-		echo.subscriber.setContractSubscribe([id], this.subscriber);
+
+		if (echo.isConnected) {
+			await this.props.getContractInfo(id);
+			echo.subscriber.removeContractSubscribe(this.subscriber);
+			echo.subscriber.setContractSubscribe([id], this.subscriber);
+		}
 	}
 
 
@@ -109,16 +111,15 @@ class Contract extends React.Component {
 	}
 
 	changeTab(id, index) {
-
-		this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_TABS[index].path));
+		Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id, CONTRACT_TABS[index].path));
 	}
+
 	goToSlide(e, slide) {
 		this.slider.current.slickGoTo(slide);
 	}
 
 	async manageContract() {
-		const { match: { params: { id } } } = this.props;
-		this.props.history.push(URLHelper.createManageContractUrl(id));
+		Router.push(SSR_MANAGE_CONTRACT_PATH, URLHelper.createManageContractUrl(this.props.router.query.id));
 	}
 
 	async subscribe(id) {
@@ -180,13 +181,29 @@ class Contract extends React.Component {
 		return elment[selected];
 	}
 
+	renderMeta() {
+		const {
+			icon, description, name, router: { query: { id } },
+		} = this.props;
+
+		return (
+			<Helmet
+				title={`Contract ${name || id} | Echo Explorer`}
+				meta={[
+					{ property: 'og:description', name: description || 'ECHO contract page' },
+					{ property: 'og:image', content: URLHelper.getUrlContractIcon(icon) },
+				]}
+			/>
+		);
+	}
+
 	render() {
 		const {
 			loading, isFullHistory, loadingMoreHistory,
-			bytecode, contractHistory, balances, match: { params: { id, detail } }, abi, sourceCode, icon,
+			bytecode, contractHistory, balances, router: { query: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
-			countTokenTransfer, activeAccount, error,
+			countTokenTransfer, activeAccount, error, isMobile,
 		} = this.props;
 
 		const tabList = [
@@ -194,6 +211,7 @@ class Contract extends React.Component {
 				tab: !loading ?
 					<ContractInfo
 						dataGeneral={new Map({
+							isMobile,
 							token,
 							countTokenTransfer,
 							error,
@@ -213,6 +231,7 @@ class Contract extends React.Component {
 							owner,
 						})}
 						dataAssets={new Map({
+							isMobile,
 							balances,
 						})}
 					/>
@@ -223,8 +242,7 @@ class Contract extends React.Component {
 				tab: !loading ?
 					<OperationsTable
 						operations={contractHistory}
-						history={this.props.history}
-						location={this.props.location}
+						router={this.props.router}
 						loading={loadingMoreHistory}
 						loadMore={contractHistory.size && !isFullHistory ? () => this.onLoadMoreHistory() : null}
 						hasMore={!isFullHistory}
@@ -287,11 +305,12 @@ class Contract extends React.Component {
 
 		return (
 			<div className="inner-information-container contract-page">
+				{this.renderMeta()}
 				<div className="react-tabs">
 					<div className="tab-head">
 						<div className="backwards action">
 							<div className="account-page-t-block">
-								<Media query="(max-width: 380px)">
+								<Media query="(max-width: 380px)" defaultMatches={isMobile}>
 									{(matches) =>
 										!matches &&
 										<div className="ava">
@@ -325,69 +344,54 @@ class Contract extends React.Component {
 								<Verify id={id} verified={verified} />
 							</div>
 						</div>
-						<Media query="(max-width: 400px)">
+						<Media query="(max-width: 400px)" defaultMatches={isMobile}>
 							{(matches) =>
 								(!matches ?
-									<div className="horizontal-tab-panel">
+									<div className={classnames('horizontal-tab-panel', { 'server-slick-track': typeof window === 'undefined' })}>
 										<Slider ref={this.slider} {...settings} >
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
-												<Link
-													className="menu-item-content"
-													onClick={() => this.goToSlide(0)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null}
-													to={URLHelper.createContractUrl(id)}
-												>
-													<span className="menu-item-content">Contract info</span>
+												<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(id)}>
+													<a href="" onClick={(e) => this.goToSlide(e, 0)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null} >
+														<span className="menu-item-content">Contract info</span>
+													</a>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
-												<Link
-													onClick={() => this.goToSlide(1)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}
-												>
-													<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
+													<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
+														<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
+													</a>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
-												<Link
-													onClick={() => this.goToSlide(2)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}
-												>
-													<span className="menu-item-content">Byte Сode</span>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}>
+													<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
+														<span className="menu-item-content">Byte Сode</span>
+													</a>
 												</Link>
 											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
-												<Link
-													onClick={() => this.goToSlide(4)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_ABI)}
-												>
-													<span className="menu-item-content">ABI</span>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)}>
+													<a href="" onClick={(e) => this.goToSlide(e, 4)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}>
+														<span className="menu-item-content">ABI</span>
+													</a>
 												</Link>
 											</div>
 											{
 												verified &&
-												<div
-													className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}
-												>
-													<Link
-														onClick={() => this.goToSlide(5)}
-														tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 ? -1 : null}
-														to={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}
-													>
-														<span className="menu-item-content">Source code</span>
+												<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}>
+													<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}>
+														<a href="" onClick={(e) => this.goToSlide(e, 5)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 ? -1 : null}>
+															<span className="menu-item-content">Source code</span>
+														</a>
 													</Link>
 												</div>
 											}
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
-												<Link
-													onClick={() => this.goToSlide(3)}
-													tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}
-													to={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}
-												>
-													<span className="menu-item-content">Balances</span>
+												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}>
+													<a href="" onClick={(e) => this.goToSlide(e, 3)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}>
+														<span className="menu-item-content">Balances</span>
+													</a>
 												</Link>
 											</div>
 										</Slider>
@@ -440,16 +444,15 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 	loading: PropTypes.bool,
 	isFullHistory: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	bytecode: PropTypes.string,
-	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	contractHistory: PropTypes.object.isRequired,
 	balances: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
 	getContractInfo: PropTypes.func.isRequired,
 	clearContractInfo: PropTypes.func.isRequired,
 	loadContractHistory: PropTypes.func.isRequired,
@@ -495,6 +498,11 @@ Contract.defaultProps = {
 	supportedAsset: '',
 	activeAccount: new Map(),
 	token: null,
+};
+
+Contract.getInitialProps = async ({ query, store }) => {
+	await store.dispatch(ContractActions.getContractInfo(query.id));
+	return {};
 };
 
 export default withRouter(Contract);

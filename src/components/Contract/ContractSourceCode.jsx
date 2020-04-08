@@ -1,10 +1,11 @@
 import React from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
+	ssr: false,
+});
 
 class ContractSourceCode extends React.Component {
 

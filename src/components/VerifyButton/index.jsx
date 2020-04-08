@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import Tooltip from 'rc-tooltip';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
+import Router, { withRouter } from 'next/router';
 
 import infoIcon from '../../public/images/icons/info.svg';
 import infoHoverIcon from '../../public/images/icons/info-hover.svg';
 import infoWhiteIcon from '../../public/images/icons/info-white.svg';
 import URLHelper from '../../helpers/URLHelper';
+import { SSR_VERIFY_CONTRACT_PATH } from '../../constants/RouterConstants';
 
 class Verify extends Component {
 
@@ -95,7 +96,7 @@ class Verify extends Component {
 						</button>
 					</Tooltip>
 				</div>
-				<button className="action-button" onClick={() => this.props.history.push(URLHelper.createVerifyContractUrl(id))}>
+				<button className="action-button" onClick={() => Router.push(SSR_VERIFY_CONTRACT_PATH, URLHelper.createVerifyContractUrl(id))}>
 					<span className="content">Verify</span>
 				</button>
 
@@ -108,7 +109,6 @@ class Verify extends Component {
 Verify.propTypes = {
 	verified: PropTypes.bool,
 	id: PropTypes.string.isRequired,
-	history: PropTypes.object.isRequired,
 };
 
 Verify.defaultProps = {

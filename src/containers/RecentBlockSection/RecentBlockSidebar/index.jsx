@@ -66,7 +66,7 @@ class RecentBlockSidebar extends React.Component {
 	}
 
 	render() {
-		const { latestBlock, averageTransactions } = this.props;
+		const { latestBlock, averageTransactions, isMobile } = this.props;
 		const { offsetTop } = this.state;
 
 		const averageTr = FormatHelper.roundNumber(averageTransactions.getIn(['transactions', 'value']), 1);
@@ -91,7 +91,7 @@ class RecentBlockSidebar extends React.Component {
 							</div>
 						</div>
 					</div>
-					<Media query="(max-width: 1279px)">
+					<Media query="(max-width: 1279px)" defaultMatches={isMobile}>
 						{
 							(matches) => !matches &&
 							<div className={classnames('info-container', { fixed: offsetTop > MAIN_HEADER_HEIGHT })}>
@@ -108,6 +108,7 @@ class RecentBlockSidebar extends React.Component {
 }
 
 RecentBlockSidebar.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	startTimestamp: PropTypes.number.isRequired,
 	averageTransactions: PropTypes.object.isRequired,
@@ -118,6 +119,7 @@ export default connect(
 		latestBlock: state.round.get('latestBlock'),
 		averageTransactions: state.round.get('averageTransactions'),
 		startTimestamp: state.block.get('startTimestamp'),
+		isMobile: state.global.get('isMobile'),
 	}),
 	() => ({}),
 )(RecentBlockSidebar);

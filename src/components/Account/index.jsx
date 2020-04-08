@@ -1,33 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import AccountInfo from './AccountInfo';
 import AccountBalances from './AccountBalances';
 import OperationsTable from '../../containers/OperationsTable';
 import InnerHeader from '../InnerHeader';
-import { ECHO_ASSET, TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
+import AccountActions from '../../actions/AccountActions';
+import URLHelper from '../../helpers/URLHelper';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
 
 class Account extends React.Component {
 
 	componentDidMount() {
-		this.props.getAccountInfo();
-		if (this.props.location.search) {
-			this.props.history.push(this.props.location.pathname);
+		const { router: { query: { id } } } = this.props;
+		if (!this.props.account || (id !== this.props.account.get('id') && id !== this.props.account.get('name'))) {
+			this.props.getAccountInfo(this.props.router.query.id);
 		}
 	}
 
-	componentDidUpdate(prevProps) {
-		if ((!prevProps.account && this.props.account) ||
-			(prevProps.account && prevProps.account.get('name') !== this.props.account.get('name'))
-		) {
-			this.props.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, this.props.account.get('name')));
-			this.onLoadMoreHistory();
-		}
-
-		if (prevProps.match.params.id !== this.props.match.params.id) {
-			this.props.getAccountInfo();
+	async componentDidUpdate(prevProps) {
+		if (prevProps.router.query.id !== this.props.router.query.id) {
+			await this.props.getAccountInfo(this.props.router.query.id);
 			return;
 		}
 
@@ -44,11 +40,6 @@ class Account extends React.Component {
 		if (prevCountOps !== currCountOps) {
 			this.onLoadMoreHistory();
 		}
-
-		if (!prevAccount.get('balances').equals(account.get('balances'))) {
-			this.props.updateAccountBalances(account.get('balances'));
-		}
-
 	}
 
 	componentWillUnmount() {
@@ -64,13 +55,27 @@ class Account extends React.Component {
 		return loading ? <Loader /> : null;
 	}
 
+	renderMeta() {
+		const { account } = this.props;
+		return !account ? null : (
+			<Helmet
+				title={`Account ${account.get('name')} | Echo Explorer`}
+				meta={[
+					{ property: 'og:description', name: 'ECHO account page' },
+					{ property: 'og:image', content: URLHelper.getUrlAccountIcon(account.get('name')) },
+				]}
+			/>
+		);
+	}
+
 	render() {
 		const {
-			loading, loadingMoreHistory, account, balances, tokens, accountHistory,
+			loading, loadingMoreHistory, account, balances, tokens, accountHistory, isMobile,
 		} = this.props;
 
 		return (
 			<div className="inner-information-container account-page">
+				{this.renderMeta()}
 				<div className="account-page-info">
 					{account && <InnerHeader title={`Account ${account.get('id')}`} />}
 					<div className="account-page-t-block">
@@ -79,6 +84,7 @@ class Account extends React.Component {
 								account ?
 									<React.Fragment>
 										<AccountInfo
+											isMobile={isMobile}
 											echo={balances.get(ECHO_ASSET.ID)}
 											name={account.get('name')}
 											id={account.get('id')}
@@ -101,9 +107,8 @@ class Account extends React.Component {
 									onLoadMoreHistory={() => this.onLoadMoreHistory()}
 									gridName={ACCOUNT_GRID}
 									label="Transactions"
+									router={this.props.router}
 									operations={accountHistory}
-									history={this.props.history}
-									location={this.props.location}
 									loading={loadingMoreHistory}
 									timestamp
 								/>) : null
@@ -118,20 +123,17 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
+	router: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
 	account: PropTypes.object,
 	balances: PropTypes.object,
 	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-	history: PropTypes.object,
 	accountHistory: PropTypes.object,
-	location: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
-	getAccountInfo: PropTypes.func.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
-	updateAccountBalances: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
-	setTitle: PropTypes.func.isRequired,
+	getAccountInfo: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {
@@ -140,8 +142,12 @@ Account.defaultProps = {
 	account: null,
 	balances: null,
 	tokens: null,
-	history: null,
 	accountHistory: null,
+};
+
+Account.getInitialProps = async ({ query, store }) => {
+	await store.dispatch(AccountActions.getAccountInfo(query.id));
+	return {};
 };
 
 export default Account;

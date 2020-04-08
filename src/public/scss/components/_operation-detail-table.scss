@@ -67,6 +67,10 @@
 
 	.avatar-wrap {
 		font-weight: 400;
+
+		&.link:hover {
+			cursor: pointer;
+		}
 	}
 
 	.authority {

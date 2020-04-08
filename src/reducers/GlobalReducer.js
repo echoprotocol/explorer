@@ -9,10 +9,12 @@ const DEFAULT_FIELDS = Map({
 	title: DEFAULT_TITLE,
 	historyLength: 0,
 	connected: false,
+	connectedServer: false,
 	error: '',
 	errorPath: false,
 	errorScreen: false,
 	activeAccount: new Map(),
+	isMobile: false,
 });
 
 export default createModule({

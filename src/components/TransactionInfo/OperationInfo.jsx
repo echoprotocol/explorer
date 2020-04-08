@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Media from 'react-media';
 import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
@@ -13,10 +13,16 @@ import directionIcon from '../../public/images/icons/direction-icon.svg';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 
-import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import {
+	BLOCK_INFORMATION_PATH,
+	SSR_ASSET_PATH,
+	SSR_BLOCK_INFORMATION_PATH,
+	SSR_CONTRACT_PATH, SSR_TRANSACTION_INFORMATION_PATH,
+} from '../../constants/RouterConstants';
 import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
 
 import Avatar from '../Avatar';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class OperationInfo extends React.Component {
 
@@ -58,14 +64,18 @@ class OperationInfo extends React.Component {
 				</div>
 				<div className="tt-col">
 					<div className="transfer-direction">
-						<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
-							{op.from.name && <Avatar accountName={op.from.name} />}
-							<span>{op.from.name || op.from.id}</span>
+						<Link href={SsrHrefHelper.getHrefByObjectId(op.from.id)} as={URLHelper.createUrlById(op.from.id)}>
+							<div className="avatar-wrap link">
+								{op.from.name && <Avatar accountName={op.from.name} />}
+								<span className="blue">{op.from.name || op.from.id}</span>
+							</div>
 						</Link>
 						{(op.subject.name || op.subject.id) && <img src={directionIcon} alt="" className="direction" />}
-						<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>
-							{op.subject.name && <Avatar accountName={op.subject.name} />}
-							<span>{op.subject.name || op.subject.id}</span>
+						<Link href={SsrHrefHelper.getHrefByObjectId(op.subject.id)} as={URLHelper.createUrlById(op.subject.id)}>
+							<div className="avatar-wrap link">
+								{op.subject.name && <Avatar accountName={op.subject.name} />}
+								<span className="blue">{op.subject.name || op.subject.id}</span>
+							</div>
 						</Link>
 					</div>
 				</div>
@@ -78,7 +88,7 @@ class OperationInfo extends React.Component {
 		const formattedLogs = logs.map((log, index) => (
 			<div className="mono" key={log.data}>
 				<div className="mono-bold">Log [{index}]:</div>
-				<div className="mono-bold">Contract: <Link to={URLHelper.createUrlById(log.contract)}>{log.contract}</Link></div>
+				<div className="mono-bold">Contract: <Link href={SSR_CONTRACT_PATH} as={URLHelper.createUrlById(log.contract)}><a>{log.contract}</a></Link></div>
 				<div className="mono-bold">Topics:</div>
 				{log.topics.map((topic, i) => (<div key={topic}>[{i}]:{topic}</div>))}
 				<div className="mono-bold">Data:</div>
@@ -137,10 +147,13 @@ class OperationInfo extends React.Component {
 				);
 			} else {
 				const isAccount = validators.isAccountId(value.link);
+
 				value = (
-					<Link className={classnames({ 'avatar-wrap': isAccount })} to={URLHelper.createUrlById(value.link)}>
-						{validators.isAccountId(value.link) && <Avatar accountName={value.value} />}
-						<span>{value.value}</span>
+					<Link href={SsrHrefHelper.getHrefByObjectId(value.link)} as={URLHelper.createUrlById(value.link)}>
+						<div className={classnames('link', { 'avatar-wrap': isAccount })}>
+							{validators.isAccountId(value.link) && <Avatar accountName={value.value} />}
+							<span className="blue">{value.value}</span>
+						</div>
 					</Link>
 				);
 			}
@@ -148,8 +161,8 @@ class OperationInfo extends React.Component {
 
 		if (key === 'block') {
 			value = (
-				<Link to={BLOCK_INFORMATION_PATH.replace(/:round/, value)} className="blue">
-					{FormatHelper.formatAmount(value, 0)}
+				<Link href={SSR_BLOCK_INFORMATION_PATH} as={BLOCK_INFORMATION_PATH.replace(/:round/, value)} >
+					<a className="blue">{FormatHelper.formatAmount(value, 0)}</a>
 				</Link>
 			);
 		}
@@ -164,8 +177,8 @@ class OperationInfo extends React.Component {
 
 		if (key === 'symbol') {
 			return (
-				<Link to={URLHelper.createUrlById(objId)}>
-					{value}
+				<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(objId)}>
+					<a>{value}</a>
 				</Link>
 			);
 		}
@@ -175,8 +188,8 @@ class OperationInfo extends React.Component {
 			return (
 				<React.Fragment>
 					{words[0]}&nbsp;
-					<Link to={URLHelper.createUrlById(objId)}>
-						{words[1]}
+					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(objId)}>
+						<a>{words[1]}</a>
 					</Link>
 				</React.Fragment>
 			);
@@ -261,7 +274,9 @@ class OperationInfo extends React.Component {
 				<div className="od-row">
 					<div className="od-col">OPERATION:</div>
 					<div className="od-col">
-						<Link to={operationUrl}>{`${window.location.origin}${operationUrl}`}</Link>
+						<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={operationUrl}>
+							<a>{`${window.location.origin}${operationUrl}`}</a>
+						</Link>
 					</div>
 				</div>
 			</React.Fragment>

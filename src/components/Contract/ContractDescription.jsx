@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { NONE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -7,6 +7,7 @@ import Avatar from '../Avatar';
 
 
 import URLHelper from '../../helpers/URLHelper';
+import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 
 class ContractDescription extends React.Component {
 
@@ -27,7 +28,9 @@ class ContractDescription extends React.Component {
 					<div className="plain-text">by</div>
 					<span className="no-wrap">
 						<Avatar accountName={data.getIn(['owner', 'name'])} />
-						<Link className="link" to={URLHelper.createAccountUrl(data.getIn(['owner', 'name']))} >{data.getIn(['owner', 'name'])}</Link>
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(data.getIn(['owner', 'name']))} >
+							<a className="link">{data.getIn(['owner', 'name'])}</a>
+						</Link>
 					</span>
 				</div>
 				{data.get('description') && (

@@ -1,6 +1,7 @@
 import React from 'react';
 import Media from 'react-media';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
 import Logotype from '../Logotype';
 import HeaderSearch from '../../components/SearchFields';
@@ -12,13 +13,13 @@ class Header extends React.Component {
 	render() {
 
 		const {
-			history, hints, getHints, loadingSearch, errorSearch,
+			hints, getHints, loadingSearch, errorSearch, isMobile,
 		} = this.props;
 		return (
 			<header>
-				<Logotype onClick={() => this.props.history.push(INDEX_PATH)} />
+				<Logotype onClick={() => Router.push(INDEX_PATH)} />
 				<NavTabs />
-				<Media query="(max-width: 767px)">
+				<Media query="(max-width: 767px)" defaultMatches={isMobile}>
 					{(matches) =>
 						(matches ? (
 							<HeaderSearch
@@ -27,7 +28,6 @@ class Header extends React.Component {
 								withHelp
 								getHints={getHints}
 								hints={hints}
-								history={history}
 								small
 								placeholder="Search"
 							/>
@@ -37,7 +37,6 @@ class Header extends React.Component {
 								errorSearch={errorSearch}
 								withHelp
 								hints={hints}
-								history={history}
 								getHints={getHints}
 								placeholder="Search by account / block / id"
 							/>
@@ -51,9 +50,9 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	errorSearch: PropTypes.string,
 	loadingSearch: PropTypes.bool,
-	history: PropTypes.object,
 	hints: PropTypes.array,
 	getHints: PropTypes.func,
 };
@@ -62,7 +61,6 @@ Header.defaultProps = {
 	hints: [],
 	loadingSearch: false,
 	errorSearch: '',
-	history: {},
 	getHints: () => {},
 };
 

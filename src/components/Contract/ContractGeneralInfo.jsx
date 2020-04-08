@@ -10,7 +10,7 @@ class ContractGeneralInfo extends React.Component {
 		const { data } = this.props;
 
 		return (
-			<Media query={`(max-width: ${MAX_WIDTH_SCREEN})`}>
+			<Media query={`(max-width: ${MAX_WIDTH_SCREEN})`} defaultMatches={data.get('isMobile')}>
 				{
 					(matches) => matches === this.props.matches && <ContractInfoBlock data={data} />
 				}
