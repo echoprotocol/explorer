@@ -27,6 +27,7 @@ import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import { getBlockInformation } from '../../actions/BlockActions';
+import GridActions from '../../actions/GridActions';
 
 
 class BlockInformation extends React.Component {
@@ -42,11 +43,11 @@ class BlockInformation extends React.Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
+		const { sizePerPage, currentPage } = nextProps.filterAndPaginateData.toJS();
 		if (!prevState.operations && nextProps.blockInformation.get('round')) {
 			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
 			return {
-				operations: newOperations.slice(0, sizePerPage),
+				operations: newOperations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage),
 			};
 		}
 		return null;
@@ -63,6 +64,7 @@ class BlockInformation extends React.Component {
 		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
 			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
+			this.props.setPaginationPage(1);
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
@@ -248,13 +250,15 @@ BlockInformation.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	setTotalDataSize: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
+	setPaginationPage: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
 };
 
 BlockInformation.defaultProps = {};
 
-BlockInformation.getInitialProps = async ({ query, store }) => {
-	await store.dispatch(getBlockInformation(query.round));
+BlockInformation.getInitialProps = async ({ query: { round, ...filters }, store }) => {
+	await store.dispatch(GridActions.initData(BLOCK_GRID, filters));
+	await store.dispatch(getBlockInformation(round));
 	return {};
 };
 

@@ -32,11 +32,12 @@ class TransactionsInfo extends React.Component {
 	}
 
 	returnFunction() {
-		if (!this.props.historyLength) {
-			Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, this.props.router.query.round));
-		} else {
-			Router.back();
-		}
+		Router.back();
+		// if (!this.props.historyLength) {
+		// 	Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, this.props.router.query.round));
+		// } else {
+		// 	Router.back();
+		// }
 	}
 
 	renderLoader(loading) {

@@ -33,7 +33,6 @@ class OperationsTable extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.onChangeFilter({ from: '', to: '' });
 		const { showedOperations } = this.state;
 		const queryProps = queryString.parse(this.props.router.asPath.split('?')[1]);
 
@@ -48,9 +47,21 @@ class OperationsTable extends React.Component {
 		this.setState({ showedOperations }); // eslint-disable-line react/no-did-mount-set-state
 	}
 
-	componentDidUpdate(prevProps) {
-		const { loading, router: { query } } = this.props;
-		const { loading: prevLoading, router: { query: prevQuery } } = prevProps;
+	async componentDidUpdate(prevProps) {
+		const { loading, router: { query, asPath } } = this.props;
+		const { loading: prevLoading, router: { query: prevQuery, asPath: asPrevPath } } = prevProps;
+
+		const { query: search } = queryString.parseUrl(asPath);
+		const { query: prevSearch } = queryString.parseUrl(asPrevPath);
+
+		if (prevSearch.p !== search.p) {
+			await this.onChangeCurrentPage(parseInt(search.p, 10));
+			return;
+		}
+		if (prevSearch.l !== search.l) {
+			await this.onChangeSizePerPage(parseInt(search.l, 10));
+			return;
+		}
 
 		if (!loading && loading !== prevLoading) {
 			if (!query.op || !this.tableRefs[query.op - 1]) {
@@ -104,7 +115,10 @@ class OperationsTable extends React.Component {
 	}
 
 	async onChangeSizePerPage(value) {
-		await this.props.onChangeSizePerPage(value);
+		await Promise.all([
+			this.props.onChangeSizePerPage(value),
+			this.props.onChangeCurrentPage(1),
+		]);
 		this.props.onLoadMoreHistory();
 	}
 
@@ -127,15 +141,16 @@ class OperationsTable extends React.Component {
 
 		if (!this.props.changeUrl && operations && operations.size) {
 			const { blockNumber, type } = operations.get(index);
-			let { trIndex, opIndex } = operations.get(index);
+			const { trIndex } = operations.get(index);
+			let { opIndex } = operations.get(index);
+
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
-				trIndex -= 1;
 				opIndex = -2;
 			}
 
-			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
-			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
+			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex);
+			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex);
 			Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
 
 			return;
@@ -178,12 +193,15 @@ class OperationsTable extends React.Component {
 	}
 
 	renderTable() {
-		const { isTransaction, label, loading } = this.props;
+		const {
+			isTransaction, label, loading, router,
+		} = this.props;
 		let { filterAndPaginateData } = this.props;
 		const { showedOperations, airRows, isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
 
 		const filteredOperations = this.filteredOperations();
+		const isFilteredData = filterAndPaginateData.filters.from || filterAndPaginateData.filters.to;
 
 		return (
 			<div className="operations-table">
@@ -204,7 +222,7 @@ class OperationsTable extends React.Component {
 							<tr className="air"><td /></tr>
 							{filteredOperations.map((op, i) => (
 								<OperationRow
-									totalDataSize={filterAndPaginateData.totalDataSize}
+									totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}
 									currentPage={filterAndPaginateData.currentPage}
 									key={i.toString()}
@@ -223,11 +241,10 @@ class OperationsTable extends React.Component {
 				</PerfectScrollbar>
 				{filterAndPaginateData.totalDataSize > DEFAULT_SIZE_PER_PAGE ? (
 					<OperationsPagination
-						totalDataSize={filterAndPaginateData.totalDataSize}
+						router={router}
+						totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
 						currentPage={filterAndPaginateData.currentPage}
 						sizePerPage={filterAndPaginateData.sizePerPage}
-						onChangeCurrentPage={(value) => this.onChangeCurrentPage(value)}
-						onChangeSizePerPage={(value) => this.onChangeSizePerPage(value)}
 					/>
 				) : null}
 			</div>

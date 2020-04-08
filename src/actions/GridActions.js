@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import GridReducer from '../reducers/GridReducer';
 import BaseActionsClass from './BaseActionsClass';
-import LocalStorageService from '../services/LocalStorageService';
 import { DEFAULT_SIZE_PER_PAGE } from '../constants/TableConstants';
 import TypesHelper from '../helpers/TypesHelper';
 
@@ -29,18 +28,18 @@ export class GridActionsClass extends BaseActionsClass {
 	 * @param {Object} params
 	 * @return {function(*, *)}
 	 */
-	initData(gridName, params) {
+	initData(gridName, params = { }) {
 		return (dispatch) => new Promise((resolve) => {
-			const sizePerPage = TypesHelper.isStringNumber(value) ? parseInt() : ;
+			const sizePerPage = TypesHelper.isStringNumber(params.l) ? parseInt(params.l, 10) : DEFAULT_SIZE_PER_PAGE;
+			const currentPage = TypesHelper.isStringNumber(params.p) ? parseInt(params.p, 10) : 1;
 			const transformParams = {
-				sizePerPage: params.l || DEFAULT_SIZE_PER_PAGE,
-				currentPage: params.p || 1,
+				sizePerPage,
+				currentPage,
 				filters: {
 					from: params.from || '',
 					to: params.to || '',
 				},
 			};
-			console.log('transformParams', transformParams);
 			dispatch(this.reducer.actions.initData({ gridName, params: transformParams }));
 			resolve();
 		});
@@ -79,8 +78,6 @@ export class GridActionsClass extends BaseActionsClass {
 	setPageSize(gridName, value) {
 		return (dispatch) => {
 			dispatch(this.setValue([gridName, 'sizePerPage'], value));
-			dispatch(this.setPage(gridName, 1, 0));
-			LocalStorageService.setData(gridName, value);
 		};
 	}
 
@@ -106,7 +103,6 @@ export class GridActionsClass extends BaseActionsClass {
 	setFilter(gridName, params) {
 		return (dispatch) => new Promise((resolve) => {
 			dispatch(this.reducer.actions.setFilter({ gridName, params }));
-			dispatch(this.setPage(gridName, 1, 0));
 			resolve();
 		});
 	}

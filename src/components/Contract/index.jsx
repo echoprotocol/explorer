@@ -43,6 +43,7 @@ import URLHelper from '../../helpers/URLHelper';
 import OperationsTable from '../../containers/OperationsTable';
 import { CONTRACT_GRID } from '../../constants/TableConstants';
 import ContractActions from '../../actions/ContractActions';
+import GridActions from '../../actions/GridActions';
 
 class Contract extends React.Component {
 
@@ -496,8 +497,9 @@ Contract.defaultProps = {
 	token: null,
 };
 
-Contract.getInitialProps = async ({ query, store }) => {
-	await store.dispatch(ContractActions.getContractInfo(query.id));
+Contract.getInitialProps = async ({ query: { id: contractId, ...filters }, store }) => {
+	await store.dispatch(GridActions.initData(CONTRACT_GRID, filters));
+	await store.dispatch(ContractActions.getContractInfo(contractId));
 	return {};
 };
 
