@@ -81,6 +81,9 @@ class Contract extends React.Component {
 		if (prevProps.router.query.id && prevProps.router.query.id !== this.props.router.query.id) {
 			this.initContract();
 		}
+		if (prevProps.connected !== this.props.connected) {
+			this.initContract();
+		}
 	}
 
 	componentWillUnmount() {
@@ -102,11 +105,10 @@ class Contract extends React.Component {
 		}
 	}
 
-
 	updateInfo() {
-		const { loading, router: { query: { id } } } = this.props;
+		const { loading, router } = this.props;
 		if (loading) { return; }
-		this.props.updateContractInfo(id);
+		this.props.updateContractInfo(router.query.id);
 	}
 
 	changeTab(id, index) {
@@ -443,6 +445,7 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
+	connected: PropTypes.bool.isRequired,
 	isMobile: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 	loading: PropTypes.bool,

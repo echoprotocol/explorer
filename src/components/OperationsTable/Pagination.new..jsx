@@ -20,9 +20,9 @@ const OperationsPagination = ({
 	const [inputCurrentPage, setCurrentPage] = useState(currentPage);
 	const [totalPages, setTotalPages] = useState(Math.ceil(totalDataSize / sizePerPage));
 
-	const nextPageLink = URLHelper.createOperationUrlByNewPage(pathname, query, currentPage + 1);
-	const prevPageLink = URLHelper.createOperationUrlByNewPage(pathname, query, currentPage - 1);
-	const lastPageLink = URLHelper.createOperationUrlByNewPage(pathname, query, totalPages);
+	const nextPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage + 1 });
+	const prevPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage - 1 });
+	const lastPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: totalPages });
 
 	const onChangeInputCurrentPage = (value) => setCurrentPage(value);
 
@@ -33,7 +33,7 @@ const OperationsPagination = ({
 		if (!TypesHelper.isStringNumber(value)) { return; }
 		const newNumberPage = parseInt(value, 10);
 		if (!(newNumberPage > 0 && newNumberPage < totalPages + 1)) { return; }
-		const linkToPage = URLHelper.createOperationUrlByNewPage(router.pathname, router.query, newNumberPage);
+		const linkToPage = URLHelper.createOperationUrlByFilter(router.pathname, router.query, { p: newNumberPage });
 		Router.push(router.route, linkToPage);
 	};
 
@@ -63,7 +63,7 @@ const OperationsPagination = ({
 			<div className="pg-nav-1">
 				<div className="pg-caption">Operations per page:</div>
 				{sizePerPages.slice(0, index + 1).map((size) => {
-					const link = URLHelper.createOperationUrlBySizePage(pathname, query, size);
+					const link = URLHelper.createOperationUrlByFilter(pathname, query, { l: size, p: 1 });
 					return (
 						<Link key={size} href={router.route} >
 							<a onClick={(e) => goToPage(e, link)} href={link} className={cn('pg-page-btn', { active: size === sizePerPage })}>{size}</a>

@@ -170,23 +170,16 @@ class URLHelper {
 	}
 
 	/**
-	 * @method createOperationUrlByNewPage
-	 * @param {s}
+	 * @method createOperationUrlByFilter
+	 * @param {string} pathname
+	 * @param {object} passQuery
+	 * @param {object} newProps
+	 * @return {string}
 	 */
-	static createOperationUrlByNewPage(pathname, passQuery, newPage) {
+	static createOperationUrlByFilter(pathname, passQuery, newProps) {
 		const { id, ...query } = passQuery;
 		const transformPathname = pathname.replace(/\[id\]/, id);
-		return `${transformPathname}?${queryString.stringify({ ...query, p: newPage })}`;
-	}
-
-	/**
-	 * @method createOperationUrlBySizePage
-	 *
-	 */
-	static createOperationUrlBySizePage(pathname, passQuery, newSize) {
-		const { id, ...query } = passQuery;
-		const transformPathname = pathname.replace(/\[id\]/, id);
-		return `${transformPathname}?${queryString.stringify({ ...query, l: newSize })}`;
+		return `${transformPathname}?${queryString.stringify({ ...query, ...newProps })}`;
 	}
 
 }

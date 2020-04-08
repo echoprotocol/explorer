@@ -161,9 +161,8 @@ class AccountActions extends BaseActionsClass {
 							if (account && accountId !== account.id) {
 								relationSubjects.push(account.id);
 							}
-						} catch (err) {
-							console.log('Error set filter', objectId, err);
-						}
+							// eslint-disable-next-line no-empty
+						} catch (err) {}
 					}
 				};
 

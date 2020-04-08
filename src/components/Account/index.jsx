@@ -28,15 +28,12 @@ class Account extends React.Component {
 			return;
 		}
 
-		if (!prevProps.account) {
+		if (!prevProps.account || !this.props.account) {
 			return;
 		}
 
-		const { account: prevAccount } = prevProps;
-		const { account } = this.props;
-
-		const prevCountOps = prevAccount.getIn(['statistics', 'total_ops']);
-		const currCountOps = account.getIn(['statistics', 'total_ops']);
+		const prevCountOps = prevProps.account.getIn(['statistics', 'total_ops']);
+		const currCountOps = this.props.account.getIn(['statistics', 'total_ops']);
 
 		if (prevCountOps !== currCountOps) {
 			this.onLoadMoreHistory();

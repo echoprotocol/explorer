@@ -8,6 +8,7 @@ import AccountActions from '../../actions/AccountActions';
 
 export default withRouter(connect(
 	(state) => ({
+		connected: state.global.get('connected'),
 		isMobile: state.global.get('isMobile'),
 		loading: state.contract.get('loading'),
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),

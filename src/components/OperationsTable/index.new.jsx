@@ -14,7 +14,7 @@ import OperationRow from './Row.new';
 import Thead from './Thead';
 import OperationsPagination from './Pagination.new.';
 import OperationsFilter from './Filter.new';
-import { DEBOUNCE_TIMEOUT, DEFAULT_SIZE_PER_PAGE } from '../../constants/TableConstants';
+import { DEBOUNCE_TIMEOUT } from '../../constants/TableConstants';
 import { SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 class OperationsTable extends React.Component {
@@ -54,12 +54,13 @@ class OperationsTable extends React.Component {
 		const { query: search } = queryString.parseUrl(asPath);
 		const { query: prevSearch } = queryString.parseUrl(asPrevPath);
 
-		if (prevSearch.p !== search.p) {
-			await this.onChangeCurrentPage(parseInt(search.p, 10));
+		if (search.l && prevSearch.l !== search.l) {
+			await this.onChangeSizePerPage(parseInt(search.l, 10));
 			return;
 		}
-		if (prevSearch.l !== search.l) {
-			await this.onChangeSizePerPage(parseInt(search.l, 10));
+
+		if (search.p && prevSearch.p !== search.p) {
+			await this.onChangeCurrentPage(parseInt(search.p, 10));
 			return;
 		}
 
@@ -239,14 +240,12 @@ class OperationsTable extends React.Component {
 					</table>
 					{loading && <LoadMore />}
 				</PerfectScrollbar>
-				{filterAndPaginateData.totalDataSize > DEFAULT_SIZE_PER_PAGE ? (
-					<OperationsPagination
-						router={router}
-						totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
-						currentPage={filterAndPaginateData.currentPage}
-						sizePerPage={filterAndPaginateData.sizePerPage}
-					/>
-				) : null}
+				<OperationsPagination
+					router={router}
+					totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
+					currentPage={filterAndPaginateData.currentPage}
+					sizePerPage={filterAndPaginateData.sizePerPage}
+				/>
 			</div>
 		);
 	}
