@@ -11,7 +11,7 @@ const Block1 = React.memo((props) => (
 	<React.Fragment>
 		<div className="preparing-head">
 			<NextBlockIcon />
-			<span className="preparing-caption accent">{props.preparingBlock - 1}</span>
+			<span className="preparing-caption accent">{props.latestBlock}</span>
 		</div>
 		<div className="preparing-line">
 			<span className="preparing-text">
@@ -25,13 +25,13 @@ const Block1 = React.memo((props) => (
 
 Block1.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
-	preparingBlock: PropTypes.number.isRequired,
+	latestBlock: PropTypes.number.isRequired,
 };
 
 export default connect(
 	(state) => ({
 		stepProgress: state.round.get('stepProgress'),
-		preparingBlock: state.round.get('preparingBlock'),
+		latestBlock: state.round.get('latestBlock'),
 	}),
 	() => ({}),
 )(Block1);
