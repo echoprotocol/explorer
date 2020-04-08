@@ -159,6 +159,14 @@
 		.avatar-image {
 			margin-right: 15px;
 		}
+		span {
+			display: block;
+			max-width: 200px;
+			@include text-overflow();
+			@include max-vw(1000) {
+				max-width: 120px;
+			}
+		}
 	}
 }
 
