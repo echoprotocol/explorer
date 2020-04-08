@@ -76,7 +76,7 @@
 
 		&.producer {
 			width: 113px;
-
+			white-space: nowrap;
 			@include max-vw(767) {
 				width: 100px;
 			}
@@ -124,8 +124,9 @@
 			min-height: 21px;
 			line-height: normal;
 			align-items: center;
-			@include text-overflow();
 			max-width: 100%;
+			display: block;
+			@include text-overflow();
 			@include max-vw(999) {
 				font-size: 14px;
 				line-height: 20px;
