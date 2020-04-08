@@ -32,9 +32,6 @@ export const getHistory = async ({
 		variables: {
 			subject, offset, count, operations, relationSubjects,
 		},
-	}).then(({ data }) => {
-		console.log('data', data);
-		return data.getSubjectOperations;
-	});
+	}).then(({ data }) => data.getSubjectOperations);
 };
 
