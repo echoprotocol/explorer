@@ -204,6 +204,7 @@ class OperationsTable extends React.Component {
 							<tr className="air"><td /></tr>
 							{filteredOperations.map((op, i) => (
 								<OperationRow
+									totalDataSize={filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}
 									currentPage={filterAndPaginateData.currentPage}
 									key={i.toString()}

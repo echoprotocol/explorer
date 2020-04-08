@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import AccountActions from '../../actions/AccountActions';
 import URLHelper from '../../helpers/URLHelper';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
+import GridActions from '../../actions/GridActions';
 
 class Account extends React.Component {
 
@@ -145,8 +146,9 @@ Account.defaultProps = {
 	accountHistory: null,
 };
 
-Account.getInitialProps = async ({ query, store }) => {
-	await store.dispatch(AccountActions.getAccountInfo(query.id));
+Account.getInitialProps = async ({ query: { id: accountId, ...filters }, store }) => {
+	await store.dispatch(GridActions.initData(ACCOUNT_GRID, filters));
+	await store.dispatch(AccountActions.getAccountInfo(accountId));
 	return {};
 };
 

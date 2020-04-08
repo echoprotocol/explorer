@@ -3,6 +3,7 @@ import GridReducer from '../reducers/GridReducer';
 import BaseActionsClass from './BaseActionsClass';
 import LocalStorageService from '../services/LocalStorageService';
 import { DEFAULT_SIZE_PER_PAGE } from '../constants/TableConstants';
+import TypesHelper from '../helpers/TypesHelper';
 
 export class GridActionsClass extends BaseActionsClass {
 
@@ -23,23 +24,26 @@ export class GridActionsClass extends BaseActionsClass {
 	}
 
 	/**
-	 * Get data
-	 * @returns {function(*=): Promise<any>}
+	 * @method initData
+	 * @param {String} gridName
+	 * @param {Object} params
+	 * @return {function(*, *)}
 	 */
-	initData() {
-		return (dispatch, getState) => {
-			const localData = [];
-			const gridNames = Object.keys(getState().grid.toJS());
-			gridNames.forEach((gridName) => {
-				let sizePerPage = DEFAULT_SIZE_PER_PAGE;
-				try {
-					sizePerPage = JSON.parse(LocalStorageService.getData(gridName)) || DEFAULT_SIZE_PER_PAGE;
-					// eslint-disable-next-line no-empty
-				} catch (err) {}
-				localData.push([gridName, sizePerPage]);
-			});
-			localData.forEach(([gridName, sizePerPage]) => dispatch(this.setValue([gridName, 'sizePerPage'], sizePerPage)));
-		};
+	initData(gridName, params) {
+		return (dispatch) => new Promise((resolve) => {
+			const sizePerPage = TypesHelper.isStringNumber(value) ? parseInt() : ;
+			const transformParams = {
+				sizePerPage: params.l || DEFAULT_SIZE_PER_PAGE,
+				currentPage: params.p || 1,
+				filters: {
+					from: params.from || '',
+					to: params.to || '',
+				},
+			};
+			console.log('transformParams', transformParams);
+			dispatch(this.reducer.actions.initData({ gridName, params: transformParams }));
+			resolve();
+		});
 	}
 
 	/**

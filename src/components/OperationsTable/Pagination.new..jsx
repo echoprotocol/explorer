@@ -41,6 +41,11 @@ const OperationsPagination = ({
 		setTotalPages(Math.ceil(totalDataSize / sizePerPage));
 	}, [totalDataSize, sizePerPage]);
 
+	const goToPage = (e, newPage) => {
+		e.preventDefault();
+		onChangeCurrentPage(newPage);
+	};
+
 	let index = SIZES_PER_PAGE.findIndex((size) => size > totalDataSize);
 
 	if (index === -1) {
@@ -71,7 +76,7 @@ const OperationsPagination = ({
 					onChange={(e) => onChangeInputCurrentPage(e.target.value)}
 					onKeyDown={(e) => onKeyPressInputCurrentPage(e, totalPages)}
 				/>
-				<div className="pg-caption">out of <a href="/">{totalPages}</a></div>
+				<div className="pg-caption">out of <a href="/" onClick={(e) => goToPage(e, totalPages)}>{totalPages}</a></div>
 			</div>
 			<div className="pg-nav-3">
 				<Button className="primary-btn" disabled={currentPage === 1} onClick={() => onChangeCurrentPage(currentPage - 1)}>

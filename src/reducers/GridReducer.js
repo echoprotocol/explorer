@@ -36,6 +36,12 @@ export default createModule({
 				return state;
 			},
 		},
+		initData: {
+			reducer: (state, { payload }) => {
+				state = state.set(payload.gridName, new Map(payload.params));
+				return state;
+			},
+		},
 		setSort: {
 			reducer: (state, { payload }) => {
 				state = state.setIn([payload.gridName, 'sort', 'field'], payload.field);

@@ -37,6 +37,7 @@ const OperationsRow = React.memo(({
 	tableRefs,
 	currentPage,
 	sizePerPage,
+	totalDataSize,
 }) => {
 
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
@@ -82,6 +83,7 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 	const offsetIndexOperation = (currentPage - 1) * sizePerPage;
+	const numberOperation = number !== '' ? totalDataSize - (offsetIndexOperation + index) : null;
 
 	return (
 		<React.Fragment>
@@ -92,7 +94,7 @@ const OperationsRow = React.memo(({
 			>
 				<td />
 				<td className="number">
-					<div className="td-in">{number !== '' ? `${number || offsetIndexOperation + index + 1}.` : null}</div>
+					<div className="td-in">{numberOperation}</div>
 				</td>
 				<td className="operation">
 					<div className="td-in">{detailInfo.type}</div>
@@ -166,6 +168,7 @@ const OperationsRow = React.memo(({
 OperationsRow.propTypes = {
 	currentPage: PropTypes.number,
 	sizePerPage: PropTypes.number.isRequired,
+	totalDataSize: PropTypes.number.isRequired,
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
