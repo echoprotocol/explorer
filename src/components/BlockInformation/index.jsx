@@ -45,7 +45,8 @@ class BlockInformation extends React.Component {
 		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (!prevState.operations && nextProps.blockInformation.get('round')) {
 			return {
-				operations: nextProps.blockInformation.get('operations').slice(0, sizePerPage),
+				operations: nextProps.blockInformation.get('operations') ?
+					nextProps.blockInformation.get('operations').slice(0, sizePerPage) : new List([]),
 			};
 		}
 		return null;
@@ -61,10 +62,11 @@ class BlockInformation extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
+			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
-				operations: nextProps.blockInformation.get('operations').slice(0, sizePerPage),
+				operations: newOperations.slice(0, sizePerPage),
 			});
 		}
 
