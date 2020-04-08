@@ -191,8 +191,6 @@ class ContractActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	updateContractInfo(contractId) {
-		console.log('updateContractInfo');
-
 		return async (dispatch) => {
 			try {
 				let balances = await echo.api.getContractBalances(contractId);
