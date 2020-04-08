@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import PreparingBlock from './PreparingBlock';
 import Block1 from './Block1';
 import Block2 from './Block2';
@@ -14,4 +16,13 @@ const PreparingSection = () => (
 	</div>
 );
 
-export default PreparingSection;
+PreparingSection.propTypes = {
+	latestBlock: PropTypes.number.isRequired,
+};
+
+export default connect(
+	(state) => ({
+		latestBlock: state.round.get('latestBlock'),
+	}),
+	() => ({}),
+)(PreparingSection);

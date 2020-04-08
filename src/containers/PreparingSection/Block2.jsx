@@ -1,7 +1,8 @@
 import React from 'react';
 import { LatestBlockIcon } from '../../components/Icons/HeaderIcons';
 
-const Block2 = React.memo(() => (
+
+const Block2 = React.memo((props) => (
 	<React.Fragment>
 		<div className="preparing-head">
 			<LatestBlockIcon />
