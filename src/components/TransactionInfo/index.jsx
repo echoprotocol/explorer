@@ -34,7 +34,11 @@ class TransactionsInfo extends React.Component {
 	}
 
 	returnFunction() {
-		Router.back();
+		if (!this.props.historyLength) {
+			Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, this.props.router.query.round));
+		} else {
+			Router.back();
+		}
 	}
 
 	renderLoader(loading) {
@@ -94,6 +98,7 @@ TransactionsInfo.propTypes = {
 	router: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	operations: PropTypes.object,
+	historyLength: PropTypes.number,
 	getTransaction: PropTypes.func.isRequired,
 	clearTransaction: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
@@ -103,6 +108,7 @@ TransactionsInfo.propTypes = {
 
 TransactionsInfo.defaultProps = {
 	operations: null,
+	historyLength: 0,
 	loading: false,
 };
 

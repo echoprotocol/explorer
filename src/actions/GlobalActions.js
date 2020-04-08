@@ -50,6 +50,16 @@ class GlobalActionsClass extends BaseActionsClass {
 	}
 
 	/**
+	 * @method incrementHistoryLength
+	 * @return {function(...[*]=)}
+	 */
+	incrementHistoryLength() {
+		return (dispatch, getState) => {
+			dispatch(this.setValue('historyLength', getState().global.get('historyLength') + 1));
+		};
+	}
+
+	/**
 	 * Set title browser tab
 	 * @param title
 	 * @returns {Function}
