@@ -18,6 +18,5 @@ export default withRouter(connect(
 		clearTransaction: () => dispatch(TransactionActions.clear()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		getBlockInfo: (round) => dispatch(getBlockInformation(round)),
-	})
-	,
+	}),
 )(TransactionInfo));
