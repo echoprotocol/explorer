@@ -14,7 +14,7 @@ import OperationRow from './Row.new';
 import Thead from './Thead';
 import OperationsPagination from './Pagination.new.';
 import OperationsFilter from './Filter.new';
-import { DEFAULT_SIZE_PER_PAGE } from '../../constants/TableConstants';
+import { DEBOUNCE_TIMEOUT, DEFAULT_SIZE_PER_PAGE } from '../../constants/TableConstants';
 import { SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 class OperationsTable extends React.Component {
@@ -81,7 +81,7 @@ class OperationsTable extends React.Component {
 		this.props.onChangeFilter(filters);
 		this.timeoutSearch = setTimeout(() => {
 			this.props.onLoadMoreHistory();
-		}, 450);
+		}, DEBOUNCE_TIMEOUT);
 
 	}
 
@@ -95,7 +95,7 @@ class OperationsTable extends React.Component {
 		this.props.onChangeFilter(filters);
 		this.timeoutSearch = setTimeout(() => {
 			this.props.onLoadMoreHistory();
-		}, 450);
+		}, DEBOUNCE_TIMEOUT);
 	}
 
 	async onChangeCurrentPage(value) {

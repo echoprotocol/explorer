@@ -10,7 +10,6 @@ export default withRouter(connect(
 	(state) => ({
 		isMobile: state.global.get('isMobile'),
 		loading: state.contract.get('loading'),
-		isFullHistory: state.contract.get('isFullHistory'),
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
 		contractHistory: state.contract.get('history'),
 		bytecode: state.contract.get('bytecode'),
@@ -44,16 +43,10 @@ export default withRouter(connect(
 	(dispatch) => ({
 		getContractInfo: (contractId) => dispatch(ContractActions.getContractInfo(contractId)),
 		clearContractInfo: () => dispatch(ContractActions.clear()),
-		loadContractHistory: (contractId, lastOperationId) => dispatch(ContractActions.loadContractHistory(
-			contractId,
-			lastOperationId,
-		)),
+		loadContractHistory: (contractId) => dispatch(ContractActions.loadContractHistory(contractId)),
 		getActiveAccount: () => dispatch(AccountActions.getActiveAccount()),
 		setStarToContract: (contractId) => dispatch(ContractActions.setStarToContract(contractId)),
-		updateContractInfo: (contractId, recetOperationId) => dispatch(ContractActions.updateContractInfo(
-			contractId,
-			recetOperationId,
-		)),
+		updateContractInfo: (contractId) => dispatch(ContractActions.updateContractInfo(contractId)),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		setActiveAccount: (account) => dispatch(AccountActions.setActiveAccount(account)),
 		loadActiveAccount: () => dispatch(AccountActions.loadActiveAccount()),

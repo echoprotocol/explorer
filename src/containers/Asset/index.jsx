@@ -8,8 +8,8 @@ export default withRouter(connect(
 	(state) => ({
 		isMobile: state.global.get('isMobile'),
 	}),
-	(dispatch, props) => ({
-		getAssetInfo: (id = props.match.params.id) => dispatch(getFullAssetInformation(id)),
+	(dispatch) => ({
+		getAssetInfo: (id) => dispatch(getFullAssetInformation(id)),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),
 )(Asset));

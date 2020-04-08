@@ -7,3 +7,4 @@ export const TRANSACTION_GRID = 'transaction_grid';
 export const CONTRACT_GRID = 'contract_grid';
 
 export const DEFAULT_TABLE_LENGTH = 50;
+export const DEBOUNCE_TIMEOUT = 450;
