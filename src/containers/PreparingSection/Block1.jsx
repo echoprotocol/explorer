@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { NextBlockIcon } from '../../components/Icons/HeaderIcons';
 import InfoTooltip from '../../components/InfoTooltip';
 import { rounderSteps } from '../../constants/RoundConstants';
@@ -11,7 +11,7 @@ const Block1 = React.memo((props) => (
 	<React.Fragment>
 		<div className="preparing-head">
 			<NextBlockIcon />
-			<span className="preparing-caption accent">{props.latestBlock}</span>
+			<span className="preparing-caption accent">{props.preparingBlock}</span>
 		</div>
 		<div className="preparing-line">
 			<span className="preparing-text">
@@ -25,13 +25,7 @@ const Block1 = React.memo((props) => (
 
 Block1.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
-	latestBlock: PropTypes.number.isRequired,
+	preparingBlock: PropTypes.number.isRequired,
 };
 
-export default connect(
-	(state) => ({
-		stepProgress: state.round.get('stepProgress'),
-		latestBlock: state.round.get('latestBlock'),
-	}),
-	() => ({}),
-)(Block1);
+export default Block1;
