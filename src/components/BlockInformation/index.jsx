@@ -44,9 +44,9 @@ class BlockInformation extends React.Component {
 	static getDerivedStateFromProps(nextProps, prevState) {
 		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (!prevState.operations && nextProps.blockInformation.get('round')) {
+			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
 			return {
-				operations: nextProps.blockInformation.get('operations') ?
-					nextProps.blockInformation.get('operations').slice(0, sizePerPage) : new List([]),
+				operations: newOperations.slice(0, sizePerPage),
 			};
 		}
 		return null;
