@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
 import { INDEX_PATH } from '../../constants/RouterConstants';
 import BaseError from './index';
@@ -8,7 +9,7 @@ class NotFoundScreen extends Component {
 
 	goToHome() {
 		this.props.resetErrorPath();
-		this.props.history.push(INDEX_PATH);
+		Router.push(INDEX_PATH);
 	}
 
 	render() {
@@ -25,8 +26,11 @@ class NotFoundScreen extends Component {
 }
 
 NotFoundScreen.propTypes = {
-	history: PropTypes.object.isRequired,
-	resetErrorPath: PropTypes.func.isRequired,
+	resetErrorPath: PropTypes.func,
+};
+
+NotFoundScreen.defaultProps = {
+	resetErrorPath: () => {},
 };
 
 export default NotFoundScreen;

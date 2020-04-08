@@ -1,14 +1,17 @@
 import React from 'react';
-import { Controlled as CodeMirror } from 'react-codemirror2';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
+
 import BackwardIcon from '../BackwardIcon';
 import URLHelper from '../../helpers/URLHelper';
-import { CONTRACT_ABI } from '../../constants/RouterConstants';
+import { CONTRACT_ABI, SSR_CONTRACT_DETAILS_PATH } from '../../constants/RouterConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import { ContractIcon } from '../Contract/ContractIcon';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
+	ssr: false,
+});
 
 class UploadABI extends React.Component {
 
@@ -19,18 +22,19 @@ class UploadABI extends React.Component {
 	}
 
 	async componentDidMount() {
-		await this.props.getContractInfo();
-		const { abi, verified, match: { params: { id } } } = this.props;
+		const { abi, verified, router: { query: { id } } } = this.props;
+		await this.props.getContractInfo(id);
+
 		this.props.setFormAbi(abi);
 
 		if (verified) {
-			this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+			Router.push(SSR_CONTRACT_DETAILS_PATH, URLHelper.createContractUrl(id, CONTRACT_ABI));
 		}
 	}
 
 	onBack(e, id) {
 		e.preventDefault();
-		this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+		Router.push(SSR_CONTRACT_DETAILS_PATH, URLHelper.createContractUrl(id, CONTRACT_ABI));
 	}
 
 	uploadFile(event) {
@@ -53,7 +57,7 @@ class UploadABI extends React.Component {
 			lineNumbers: true,
 		};
 		const {
-			match: { params: { id } }, abiInput, abi, icon,
+			router: { query: { id } }, abiInput, abi, icon,
 		} = this.props;
 
 		return (
@@ -114,7 +118,7 @@ class UploadABI extends React.Component {
 				<div className="buttons-wrap">
 					<button
 						className="decline-button"
-						onClick={() => this.props.history.push(URLHelper.createContractUrl(id, CONTRACT_ABI))}
+						onClick={() => Router.push(CONTRACT_ABI, URLHelper.createContractUrl(id, CONTRACT_ABI))}
 					>
 						Cancel
 					</button>
@@ -134,8 +138,7 @@ class UploadABI extends React.Component {
 
 UploadABI.propTypes = {
 	abiInput: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	abi: PropTypes.string.isRequired,
 	icon: PropTypes.string.isRequired,
 	verified: PropTypes.bool.isRequired,

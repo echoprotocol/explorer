@@ -1,5 +1,22 @@
 {
 	"extends": "airbnb",
+	"parser": "babel-eslint",
+	"parserOptions": {
+		"sourceType": "module",
+		"allowImportExportEverywhere": true
+	},
+	"globals": {
+		"LANDING_BRIDGE": true,
+		"INSTALL_NODE_LINK": true,
+		"GRAPHQL_URL_HTTP_LINK": true,
+		"GRAPHQL_URL_WS_LINK": true,
+		"SERVER_URL": true,
+		"SOLC_LIST_URL": true,
+		"SOLC_BIN_URL": true,
+		"APP_VERSION": true,
+		"MAP_API_TOKEN": true,
+		"ECHO_NODE": true
+	},
 	"env": {
 		"browser": true,
 		"jest": true
@@ -15,6 +32,7 @@
 			"error",
 			"always"
 		],
+		"import/no-extraneous-dependencies": "off",
 		"import/prefer-default-export": "off",
 		"react/forbid-prop-types": 0,
 		"react/jsx-filename-extension": 0,

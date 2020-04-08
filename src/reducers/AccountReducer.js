@@ -12,6 +12,7 @@ const DEFAULT_FIELDS = new Map({
 	balances: new Map({}),
 	tokens: new List([]),
 	history: new List([]),
+	echoAccountInfo: null,
 });
 
 export default createModule({

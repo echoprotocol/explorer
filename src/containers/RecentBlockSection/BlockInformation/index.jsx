@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import BlockInformation from '../../../components/BlockInformation';
 import { getBlockInformation, clearBlockInformation, toggleRewardDistribution } from '../../../actions/BlockActions';
@@ -12,11 +12,10 @@ export default withRouter(connect(
 		isDistributionRewardOpen: state.block.get('isDistributionRewardOpen'),
 		latestBlock: state.round.get('latestBlock'),
 	}),
-	(dispatch, props) => ({
-		getBlockInfo: (round = props.match.params.round) => dispatch(getBlockInformation(round)),
+	(dispatch) => ({
+		getBlockInfo: (round) => dispatch(getBlockInformation(round)),
 		clearBlockInfo: () => dispatch(clearBlockInformation()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		toggleRewardDistribution: () => dispatch(toggleRewardDistribution()),
-	})
-	,
+	}),
 )(BlockInformation));

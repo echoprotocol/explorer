@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Router from 'next/router';
+import Link from 'next/link';
 import classnames from 'classnames';
 import { List } from 'immutable';
 import BN from 'bignumber.js';
@@ -14,12 +15,17 @@ import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
-import { INDEX_PATH } from '../../constants/RouterConstants';
+import {
+	INDEX_PATH,
+	SSR_ACCOUNTS_PATH,
+	SSR_BLOCK_INFORMATION_PATH,
+} from '../../constants/RouterConstants';
 import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
 import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { getBlockInformation } from '../../actions/BlockActions';
 
 class BlockInformation extends React.Component {
 
@@ -34,7 +40,10 @@ class BlockInformation extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getBlockInfo();
+		const { router: { query: { round } }, blockInformation } = this.props;
+		if (blockInformation.get('blockNumber') !== round) {
+			this.props.getBlockInfo(round);
+		}
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -50,13 +59,13 @@ class BlockInformation extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.blockInformation) {
-			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.match.params.round));
+			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.router.query.round));
 		}
 		if (
-			this.props.match.params.round !== prevProps.match.params.round ||
+			this.props.router.query.round !== prevProps.router.query.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			this.props.getBlockInfo(this.props.match.params.round);
+			this.props.getBlockInfo(this.props.router.query.round);
 		}
 	}
 
@@ -67,12 +76,11 @@ class BlockInformation extends React.Component {
 	onBlockLink(blockNumber, e) {
 		e.preventDefault();
 		this.setState({ loader: true });
-
-		this.props.history.push(URLHelper.createBlockUrl(blockNumber));
+		Router.push(SSR_BLOCK_INFORMATION_PATH, URLHelper.createBlockUrl(blockNumber));
 	}
 
 	returnFunction() {
-		this.props.history.push(INDEX_PATH);
+		Router.push(INDEX_PATH);
 	}
 
 	loadMoreTransactions() {
@@ -102,7 +110,8 @@ class BlockInformation extends React.Component {
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',
-				path: INDEX_PATH,
+				as: INDEX_PATH,
+				href: INDEX_PATH,
 			},
 		];
 
@@ -144,8 +153,8 @@ class BlockInformation extends React.Component {
 					</div>
 					<div className="container producer">
 						<div className="title">Producer</div>
-						<Link to={URLHelper.createAccountUrl(producer.name)}>
-							<div className="value blue">{producer.name}</div>
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(producer.name)}>
+							<a className="link value blue">{producer.name}</a>
 						</Link>
 					</div>
 					<div className="container verifiers">
@@ -184,8 +193,7 @@ class BlockInformation extends React.Component {
 							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
 							fee
 							operations={slicedOperations}
-							history={this.props.history}
-							location={this.props.location}
+							router={this.props.router}
 							loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
 							hasMore={currentTransactionLength < operations.size}
 						/> : null
@@ -211,16 +219,21 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
+	router: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
-	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
+};
+
+BlockInformation.defaultProps = {};
+
+BlockInformation.getInitialProps = async ({ query, store }) => {
+	await store.dispatch(getBlockInformation(query.round));
+	return {};
 };
 
 export default BlockInformation;

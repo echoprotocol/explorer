@@ -1,10 +1,10 @@
 import { MODAL_ERROR, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
 import GlobalReducer from '../reducers/GlobalReducer';
 import BaseActionsClass from './BaseActionsClass';
-import { connect } from './SocketActions';
 import ModalActions from './ModalActions';
 import { BridgeService } from '../services/BridgeService';
 import GridActions from './GridActions';
+import { fullClientInit, partialClientConnect } from './SocketActions';
 
 class GlobalActionsClass extends BaseActionsClass {
 
@@ -36,7 +36,8 @@ class GlobalActionsClass extends BaseActionsClass {
 	 * @returns {function(*=): Promise<any>}
 	 */
 	init() {
-		return (dispatch) => new Promise((resolve) => {
+		return (dispatch, getState) => new Promise((resolve) => {
+			const connect = getState().global.get('connectedServer') ? partialClientConnect : fullClientInit;
 			Promise.all([
 				dispatch(connect()),
 				dispatch(GridActions.initData()),
@@ -48,12 +49,6 @@ class GlobalActionsClass extends BaseActionsClass {
 				resolve(error);
 			});
 		});
-	}
-
-	incrementHistoryLength() {
-		return (dispatch, getState) => {
-			dispatch(this.setValue('historyLength', getState().global.get('historyLength') + 1));
-		};
 	}
 
 	/**

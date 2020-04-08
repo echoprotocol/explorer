@@ -1,15 +1,17 @@
 import React from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
+import dynamic from 'next/dynamic';
 import { Select, Input, Dropdown } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-
+import Router from 'next/router';
 import BackwardIcon from '../BackwardIcon';
 import verifyIcon from '../../public/images/icons/verify-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
+import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.UnControlled), {
+	ssr: false,
+});
 
 class VerifyContract extends React.Component {
 
@@ -25,13 +27,14 @@ class VerifyContract extends React.Component {
 		this.checkboxEVM = React.createRef();
 		this.intervalId = 0;
 	}
+
 	componentDidMount() {
 		this.props.contractCompilerInit();
 
-		const { verified, match: { params: { id } } } = this.props;
+		const { verified, router: { query: { id } } } = this.props;
 
 		if (verified) {
-			this.props.history.push(URLHelper.createContractUrl(id));
+			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 		}
 	}
 
@@ -161,9 +164,9 @@ class VerifyContract extends React.Component {
 	goBack(e, id) {
 		e.preventDefault();
 		if (!this.props.historyLength) {
-			this.props.history.push(URLHelper.createContractUrl(id));
+			Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 		} else {
-			this.props.history.goBack();
+			Router.back();
 		}
 	}
 
@@ -208,7 +211,7 @@ class VerifyContract extends React.Component {
 
 	render() {
 		const {
-			match: { params: { id } }, form, contracts,
+			router: { query: { id } }, form, contracts,
 		} = this.props;
 		const { loader } = this.state;
 		const CODEMIRROR_OPTIONS = {
@@ -384,8 +387,7 @@ class VerifyContract extends React.Component {
 VerifyContract.propTypes = {
 	historyLength: PropTypes.number,
 	form: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	compilersList: PropTypes.object.isRequired,
 	contracts: PropTypes.object.isRequired,
 	verified: PropTypes.bool.isRequired,

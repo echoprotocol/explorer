@@ -132,6 +132,15 @@ class URLHelper {
 	}
 
 	/**
+	 * method getUrlAccountIcon
+	 * @param {string} accountName
+	 * @returns {string}
+	 */
+	static getUrlAccountIcon(accountName) {
+		return `${config.SERVER_URL}/api/accounts/${accountName}/avatar.png`;
+	}
+
+	/**
 	 *
 	 * @param icon
 	 * @returns {string}
