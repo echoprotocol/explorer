@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+
 import { validators } from 'echojs-lib';
 import BN from 'bignumber.js';
 import Tooltip from 'rc-tooltip';
 import Media from 'react-media';
+import { fromJS } from 'immutable';
 
 import Loader from '../Loader';
 
@@ -15,29 +17,60 @@ import {
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { getFullAssetInformation } from '../../actions/AssetActions';
+import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
+import GlobalActions from '../../actions/GlobalActions';
 
 class Asset extends React.Component {
 
+	constructor() {
+		super();
+		this.state = {
+			asset: null,
+			issuer: null,
+		};
+	}
+
+	static getDerivedStateFromProps(nextProps, state) {
+		if (nextProps.asset && nextProps.asset !== state.asset) {
+			return {
+				asset: fromJS(nextProps.asset),
+				issuer: fromJS(nextProps.issuer),
+			};
+		}
+		return null;
+	}
+
 	componentDidMount() {
-		this.props.getAssetInfo();
+		if (!this.state.asset) {
+			this.updateAssetData(this.props.router.query.id);
+		}
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.asset) {
-			this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, this.props.asset.get('symbol')));
+		if (prevProps.router.query.id !== this.props.router.query.id) {
+			this.updateAssetData(this.props.router.query.id);
 		}
+	}
 
-		if (this.props.match.params.id !== prevProps.match.params.id) {
-			this.props.getAssetInfo();
-		}
+	updateAssetData(id) {
+		this.props.getAssetInfo(id)
+			.then(({ asset, issuer }) => {
+				this.setState({
+					asset: fromJS(asset),
+					issuer: fromJS(issuer),
+				});
+				this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol));
+			});
 	}
 
 	renderLoader() {
 		return <Loader />;
 	}
 
-	renderAsset(asset, issuer) {
-
+	renderAsset() {
+		const { isMobile } = this.props;
+		const { asset, issuer } = this.state;
 		const issuerName = issuer.get('name');
 
 		const assetSymbol = asset.get('symbol');
@@ -79,7 +112,9 @@ class Asset extends React.Component {
 						<div className="list">
 							<div className="block">
 								<div className="title">Issuer</div>
-								<Link to={URLHelper.createAccountUrl(issuerName)} className="val blue">{issuerName}</Link>
+								<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(issuerName)}>
+									<a className="blue">{issuerName}</a>
+								</Link>
 							</div>
 							<div className="block">
 								<div className="title">Precision</div>
@@ -88,7 +123,7 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Current supply</div>
 								<div className="val">
-									<Media query="(max-width: 300px)">
+									<Media query="(max-width: 300px)" defaultMatches={isMobile}>
 										{(matches) =>
 											(matches ? (
 												<Tooltip
@@ -109,7 +144,7 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Max supply</div>
 								<div className="val">
-									<Media query="(max-width: 300px)">
+									<Media query="(max-width: 300px)" defaultMatches={isMobile}>
 										{(matches) =>
 											(matches ? (
 												<Tooltip
@@ -138,8 +173,8 @@ class Asset extends React.Component {
 										<div className="title">Echo exchange rate</div>
 										<div className="val">
 											<span className="txt">{exchangeRate}</span>
-											<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
-												<span className="blue">{ECHO_ASSET.SYMBOL}</span>
+											<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+												<a className="blue">{ECHO_ASSET.SYMBOL}</a>
 											</Link>
 											<span className="gray">&nbsp;/&nbsp;</span>
 											<span className="gray">{assetSymbol}</span>
@@ -149,7 +184,9 @@ class Asset extends React.Component {
 										<div className="title">Pool balance</div>
 										<div className="val">
 											<span className="txt">{poolBalance}</span>
-											<Link to={URLHelper.createAssetUrl(ECHO_ASSET.ID)} className="blue">{ECHO_ASSET.SYMBOL}</Link>
+											<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)} >
+												<a className="blue">{ECHO_ASSET.SYMBOL}</a>
+											</Link>
 										</div>
 									</div>
 									<div className="block">
@@ -168,10 +205,10 @@ class Asset extends React.Component {
 	}
 
 	render() {
-		const { asset, issuer } = this.props;
+		const { asset, issuer } = this.state;
 		return (
 			<div className="inner-information-container account-asset-page">
-				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset(asset, issuer)}
+				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset()}
 			</div>
 		);
 	}
@@ -179,16 +216,19 @@ class Asset extends React.Component {
 }
 
 Asset.propTypes = {
-	asset: PropTypes.object,
-	issuer: PropTypes.object,
+	router: PropTypes.object.isRequired,
+	isMobile: PropTypes.bool.isRequired,
 	getAssetInfo: PropTypes.func.isRequired,
-	match: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 
-Asset.defaultProps = {
-	asset: null,
-	issuer: null,
+Asset.defaultProps = {};
+
+Asset.getInitialProps = async ({ query, store }) => {
+	const { asset, issuer } = await store.dispatch(getFullAssetInformation(query.id));
+	const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);
+	await store.dispatch(GlobalActions.setTitle(title));
+	return { asset, issuer };
 };
 
 export default Asset;

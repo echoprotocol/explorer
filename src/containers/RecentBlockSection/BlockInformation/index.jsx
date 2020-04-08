@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import BlockInformation from '../../../components/BlockInformation';
 import { getBlockInformation, clearBlockInformation, toggleRewardDistribution } from '../../../actions/BlockActions';
@@ -15,9 +15,9 @@ export default withRouter(connect(
 		isDistributionRewardOpen: state.block.get('isDistributionRewardOpen'),
 		latestBlock: state.round.get('latestBlock'),
 	}),
-	(dispatch, props) => ({
+	(dispatch) => ({
 		setTotalDataSize: (count) => dispatch(GridActions.setTotalDataSize(BLOCK_GRID, count)),
-		getBlockInfo: (round = props.match.params.round) => dispatch(getBlockInformation(round)),
+		getBlockInfo: (round) => dispatch(getBlockInformation(round)),
 		clearBlockInfo: () => dispatch(clearBlockInformation()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		toggleRewardDistribution: () => dispatch(toggleRewardDistribution()),

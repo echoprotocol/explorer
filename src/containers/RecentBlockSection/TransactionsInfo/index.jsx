@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import TransactionInfo from '../../../components/TransactionInfo';
 import TransactionActions from '../../../actions/TransactionActions';
@@ -13,10 +13,10 @@ export default withRouter(connect(
 		blockInformation: state.block.get('blockInformation'),
 		loading: state.transaction.get('loading'),
 	}),
-	(dispatch, props) => ({
+	(dispatch) => ({
 		getTransaction: (round, index) => dispatch(TransactionActions.getTransaction(round, index)),
 		clearTransaction: () => dispatch(TransactionActions.clear()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
-		getBlockInfo: (round = props.match.params.round) => dispatch(getBlockInformation(round)),
+		getBlockInfo: (round) => dispatch(getBlockInformation(round)),
 	}),
 )(TransactionInfo));

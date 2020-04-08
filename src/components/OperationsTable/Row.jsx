@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Router from 'next/router';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
@@ -13,6 +14,7 @@ import ObjectInfo from '../TransactionInfo/ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -36,18 +38,21 @@ const OperationsRow = React.memo(({
 
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
+	const goToLink = (e, href, objectId) => {
+		e.preventDefault();
+		e.stopPropagation();
+		Router.push(SsrHrefHelper.getHrefByObjectId(objectId), href);
+	};
 
 	const renderSubject = (subject) => {
 		if (!subject) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
 		return (
-			<Link
-				className="td-in avatar-wrap"
-				to={URLHelper.createUrlById(subject)}
-				onClick={(e) => e.stopPropagation()}
-			>
-				{mainInfo.subject.name && <Avatar accountName={subject} />}
-				<span>{subject}</span>
+			<Link href={SsrHrefHelper.getHrefByObjectId(subject)}>
+				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
+					{mainInfo.subject.name && <Avatar accountName={subject} />}
+					<span>{subject}</span>
+				</a>
 			</Link>
 		);
 	};
@@ -95,13 +100,11 @@ const OperationsRow = React.memo(({
 				</td>
 				<td className="sender">
 					{ mainInfo.from.id ?
-						<Link
-							className="td-in avatar-wrap"
-							to={getSenderLink()}
-							onClick={(e) => e.stopPropagation()}
-						>
-							{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
-							<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
+							<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, getSenderLink(), mainInfo.from.id)}>
+								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
+								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+							</a>
 						</Link> : <div className="td-in">—</div>
 					}
 				</td>

@@ -35,7 +35,6 @@ class InfoTooltip extends React.Component {
 					<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
 				</span>
 			</Tooltip>
-
 		);
 	}
 

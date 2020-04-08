@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Media from 'react-media';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
+import Router, { withRouter } from 'next/router';
+import Link from 'next/link';
 import InfiniteScroll from 'react-infinite-scroller';
 import classnames from 'classnames';
 
@@ -15,7 +15,11 @@ import SmallSearchField from '../../../components/SmallSearchField';
 import FormatHelper from '../../../helpers/FormatHelper';
 import URLHelper from '../../../helpers/URLHelper';
 
-import { BLOCK_INFORMATION_PATH } from '../../../constants/RouterConstants';
+import {
+	BLOCK_INFORMATION_PATH,
+	SSR_BLOCK_INFORMATION_PATH,
+	SSR_ACCOUNTS_PATH,
+} from '../../../constants/RouterConstants';
 import BlockReducer from '../../../reducers/BlockReducer';
 import { NO_TRANSACTIONS, TITLE_TEMPLATES, ECHO_ASSET } from '../../../constants/GlobalConstants';
 
@@ -54,7 +58,7 @@ class RecentBlockTable extends React.Component {
 	onLink(e, path) {
 		e.preventDefault();
 		e.stopPropagation();
-		this.props.history.push(path);
+		Router.push(SSR_ACCOUNTS_PATH, path);
 	}
 
 	getBlocks() {
@@ -91,21 +95,22 @@ class RecentBlockTable extends React.Component {
 		});
 	}
 
-	goToBlock(e, block) {
+	goToBlock(e, round) {
+		const href = BLOCK_INFORMATION_PATH.replace(/:round/, round);
 		e.preventDefault();
 		window.scrollTo(0, 0);
-		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
+		Router.push(SSR_BLOCK_INFORMATION_PATH, href);
 	}
 
 	transitionToBlock() {
 		const { errorSearch, hints: [hint] } = this.props;
 		if (errorSearch) return;
-		this.props.history.push(hint.to);
+		Router.push(SSR_BLOCK_INFORMATION_PATH, hint.to);
 	}
 
 	render() {
 		const {
-			hasMore, loading, loadingSearch, errorSearch, latestBlock,
+			hasMore, loading, loadingSearch, errorSearch, latestBlock, isMobile,
 		} = this.props;
 		const blocks = this.getBlocks();
 		const AreEmptyTransactions = !hasMore && !blocks.length;
@@ -127,50 +132,55 @@ class RecentBlockTable extends React.Component {
 						/>
 					</InnerHeader>
 
-					<Media query="(max-width: 767px)">
+					<Media query="(max-width: 767px)" defaultMatches={isMobile}>
 						{(matches) =>
 							(matches ? (
 								<div className="recent-block-mobile-view">
 									{
 										blocks.map((data) => (
-											<Link onClick={(e) => this.goToBlock(e, data.round)} to="" key={data.round} className="recent-block-element fade-anim">
-												<div className="container">
-													<div className="title">Block #</div>
-													<div className="value">
-														<Link
-															onClick={(e) => this.goToBlock(e, data.round)}
-															to=""
-														>
-															{data.blockNumber}
-														</Link>
+											<Link href={SSR_BLOCK_INFORMATION_PATH} key={data.round}>
+												<div
+													role="button"
+													tabIndex={0}
+													onKeyPress={() => { }}
+													className="recent-block-element fade-anim"
+													onClick={(e) => this.goToBlock(e, data.round)}
+												>
+													<div className="container">
+														<div className="title">Block #</div>
+														<div className="value">
+															<Link href="">
+																<a href="" onClick={(e) => this.goToBlock(e, data.round)}>{data.blockNumber}</a>
+															</Link>
+														</div>
 													</div>
-												</div>
-												<div className="container">
-													<div className="title">Block time</div>
-													<div className="value">{data.time}</div>
-												</div>
-												<div className="container">
-													<div className="title">Producer</div>
-													<div className="value">
-														<Link
-															to={URLHelper.createAccountUrlByName(data.producer)}
-															className="blue"
-														>
-															{data.producer}
-														</Link>
+													<div className="container">
+														<div className="title">Block time</div>
+														<div className="value">{data.time}</div>
 													</div>
-												</div>
-												<div className="container">
-													<div className="title">Reward</div>
-													<div className="value">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
-												</div>
-												<div className="container">
-													<div className="title">Size</div>
-													<div className="value">{data.weight} <span className="gray">{data.weightSize}</span></div>
-												</div>
-												<div className="container">
-													<div className="title">Transactions</div>
-													<div className="value">{data.transactions}</div>
+													<div className="container">
+														<div className="title">Producer</div>
+														<div className="value">
+															<Link
+																href={SSR_ACCOUNTS_PATH}
+																as={URLHelper.createAccountUrlByName(data.producer)}
+															>
+																<a className="blue">{data.producer}</a>
+															</Link>
+														</div>
+													</div>
+													<div className="container">
+														<div className="title">Reward</div>
+														<div className="value">{data.reward} <span className="gray">{data.rewardCurrency}</span></div>
+													</div>
+													<div className="container">
+														<div className="title">Size</div>
+														<div className="value">{data.weight} <span className="gray">{data.weightSize}</span></div>
+													</div>
+													<div className="container">
+														<div className="title">Transactions</div>
+														<div className="value">{data.transactions}</div>
+													</div>
 												</div>
 											</Link>
 										))
@@ -200,30 +210,33 @@ class RecentBlockTable extends React.Component {
 										{
 											blocks.map((data) => (
 												<React.Fragment key={data.round}>
-													<Link
-														onClick={(e) => this.goToBlock(e, data.round)}
-														to={BLOCK_INFORMATION_PATH.replace(/:round/, data.round)}
-														key={data.round}
-														className="div-table-row fade-anim"
-													>
-														<div className="div-table-cell">
-															<span>
-																{data.blockNumber}
-															</span>
+													<Link href={SSR_BLOCK_INFORMATION_PATH} key={data.round}>
+														<div
+															role="button"
+															tabIndex={0}
+															onKeyPress={() => { }}
+															className="div-table-row fade-anim"
+															onClick={(e) => this.goToBlock(e, data.round, BLOCK_INFORMATION_PATH)}
+														>
+															<div className="div-table-cell">
+																<span>
+																	{data.blockNumber}
+																</span>
+															</div>
+															<div className="div-table-cell">{data.time}</div>
+															<div className="div-table-cell producer">
+																<button
+																	className="blue"
+																	onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
+																>
+																	<Avatar accountName={data.producer} />
+																	{data.producer}
+																</button>
+															</div>
+															<div className="div-table-cell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
+															<div className="div-table-cell">{data.weight} <span className="gray">{data.weightSize}</span></div>
+															<div className="div-table-cell">{data.transactions}</div>
 														</div>
-														<div className="div-table-cell">{data.time}</div>
-														<div className="div-table-cell producer">
-															<button
-																className="blue"
-																onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
-															>
-																<Avatar accountName={data.producer} />
-																{data.producer}
-															</button>
-														</div>
-														<div className="div-table-cell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>
-														<div className="div-table-cell">{data.weight} <span className="gray">{data.weightSize}</span></div>
-														<div className="div-table-cell">{data.transactions}</div>
 													</Link>
 												</React.Fragment>
 											))
@@ -245,19 +258,21 @@ class RecentBlockTable extends React.Component {
 }
 
 RecentBlockTable.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	hints: PropTypes.array.isRequired,
 	errorSearch: PropTypes.string.isRequired,
 	loading: PropTypes.bool.isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	loadingSearch: PropTypes.bool.isRequired,
 	blocks: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 	loadBlocks: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	resetDisplayedBlocks: PropTypes.func.isRequired,
 	getHints: PropTypes.func.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 };
+
+RecentBlockTable.defaultProps = {};
 
 export default withRouter(connect(
 	(state) => ({
@@ -268,6 +283,8 @@ export default withRouter(connect(
 		loadingSearch: state.search.getIn(['blockSearch', 'loading']),
 		blocks: state.block.get('blocks'),
 		latestBlock: state.round.get('latestBlock'),
+		isMobile: state.global.get('isMobile'),
+		connected: state.global.get('connected'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(SearchActions.blockSearchHint(str)),
