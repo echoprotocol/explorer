@@ -271,7 +271,10 @@ class OperationInfo extends React.Component {
 	render() {
 		return (
 			<div className="fold-operation-info">
-				<div className="fold-title">Operation info</div>
+				<div className="fold-header">
+					<span className="fold-title">Operation info</span>
+					<button className="view-json">View Raw JSON Object</button>
+				</div>
 				<div className="operation-detail-table">
 					{this.renderInfo()}
 				</div>

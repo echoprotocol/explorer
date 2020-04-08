@@ -1,41 +1,33 @@
 .operation-detail-table {
-	display: table;
+	padding: 0 30px;
 	width: 100%;
 
 	.od-row {
-		display: table-row;
+		display: flex;
+		align-items: flex-start;
+		padding: 20px 0;
+		&:not(:last-child) {
+			border-bottom: 1px solid $lightgrey-darker;
+		}
 	}
 
 	.od-col {
-		padding: 10px 0;
-		display: table-cell;
-		word-break: break-all;
 		line-height: 15px;
 
 		&:nth-child(1) {
-			font-family: "Hack";
-			font-weight: 700;
-			font-size: 9px;
-			text-transform: uppercase;
-			letter-spacing: 2.25px;
-			font-style: normal;
-			color: rgba(#263c4b, 0.8);
-			text-align: right;
+			@include inter-ui-medium;
+			font-size: 11px;
+			color: $lightgrey;
+			text-transform: capitalize;
 			white-space: nowrap;
-			min-width: 125px;
-			line-height: 15px;
+			min-width: 210px;
 		}
 
 		&:nth-child(2) {
-			font-size: 13px;
-			font-style: normal;
-			letter-spacing: 0.33px;
-			color: #000;
-			padding-left: 28px;
-			width: 100%;
-			vertical-align: bottom;
 			@include inter-ui-medium();
-
+			font-size: 12px;
+			width: 100%;
+			color: $explorer-black;
 			.val {
 				display: flex;
 				max-width: 100%;
