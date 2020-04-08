@@ -179,7 +179,6 @@ class ContractActions extends BaseActionsClass {
 				transactions = await this.formatContractHistory(transactions);
 				dispatch(this.setValue('history', new List(transactions)));
 			} catch (e) {
-				console.log('edsadasdsa', e);
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loadingMoreHistory', false));
