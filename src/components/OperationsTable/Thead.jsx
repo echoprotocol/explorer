@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 
-const OperationsThead = memo(({ isTransaction }) => (
+const OperationsThead = memo(() => (
 	<thead>
 		<tr>
 			<td className="number"><div className="td-in">#</div></td>
@@ -14,12 +13,5 @@ const OperationsThead = memo(({ isTransaction }) => (
 	</thead>
 ));
 
-
-OperationsThead.propTypes = {
-	isTransaction: PropTypes.bool,
-};
-OperationsThead.defaultProps = {
-	isTransaction: false,
-};
 
 export default OperationsThead;

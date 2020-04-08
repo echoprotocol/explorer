@@ -9,7 +9,6 @@ import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
 import OperationInfo from '../TransactionInfo/OperationInfo';
-import ObjectInfo from '../TransactionInfo/ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -28,7 +27,6 @@ const OperationsRow = React.memo(({
 	},
 	index,
 	active,
-	isTransaction,
 	toggleOperationDetails,
 	tableRefs,
 }) => {
@@ -134,7 +132,6 @@ const OperationsRow = React.memo(({
 							opIndex={opIndex}
 							objId={objectId}
 						/>
-						{/* <ObjectInfo details={detailInfo} object={objectInfo} /> */}
 					</td>
 				</tr>
 			}
@@ -149,11 +146,6 @@ OperationsRow.propTypes = {
 	active: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
-	isTransaction: PropTypes.bool,
-};
-
-OperationsRow.defaultProps = {
-	isTransaction: false,
 };
 
 export default OperationsRow;
