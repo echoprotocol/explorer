@@ -47,6 +47,7 @@ class BlockInformation extends React.Component {
 		if (!prevState.operations && nextProps.blockInformation.get('round')) {
 			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
 			return {
+				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
 				operations: newOperations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage),
 			};
 		}

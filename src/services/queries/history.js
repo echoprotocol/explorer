@@ -13,6 +13,8 @@ export const getHistory = async ({
 					body
 					result
 					virtual
+					trx_in_block
+    				op_in_trx
 					block {
 						round
 					}

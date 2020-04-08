@@ -130,8 +130,8 @@ class AccountActions extends BaseActionsClass {
 				op: [operationId, data.body],
 				result: [0, data.result],
 				block_num: data.transaction ? data.transaction.block.round : data.block.round,
-				trx_in_block: data.trx_in_block || 1,
-				op_in_trx: data.op_in_trx || -1,
+				trx_in_block: data.trx_in_block,
+				op_in_trx: data.op_in_trx,
 				virtual_op: 0,
 			});
 		});
