@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
 
@@ -183,9 +185,7 @@ class SearchField extends React.Component {
 
 		return (
 			<div
-				className={classnames('input-search-block', {
-					small, active: (isActiveSmall || inputValue), white,
-				})}
+				className={classnames('input-search-block', { small, active: (isActiveSmall || inputValue), white })}
 				ref={this.setWrapperRef}
 			>
 				<div className={classnames('input-container', { focus })}>
