@@ -179,6 +179,18 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 	}
 };
 
+export const getFrozenData = () => async (dispatch) => {
+	const previousMonth = new Date();
+	previousMonth.setMonth(previousMonth.getMonth() - 1);
+	const from = previousMonth.toISOString();
+	const interval = 24 * 60 * 60;
+	const balances = await getCurrentFrozenFunds(from, interval);
+	const { currentFrozenData, frozenData } = balances.data.getFrozenBalancesData;
+	const historyFrozenData = frozenData.map((el) => el.frozenSums);
+	dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: currentFrozenData }));
+	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
+};
+
 export const clearBlockInformation = () => (dispatch) => {
 	dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map({}) }));
 };
@@ -426,6 +438,7 @@ export const initBlocks = () => async (dispatch) => {
 	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
 	const time = moment().unix() - moment.utc(obj.time).unix();
+	dispatch(getFrozenData());
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
 		value: time,
@@ -511,12 +524,6 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 
 };
 
-export const getFrozenData = () => async (dispatch) => {
-	const from = '2020-01-04T11:48:27.075Z';
-	const interval = 24 * 60 * 60;
-	const balances = await getCurrentFrozenFunds(from, interval);
-	const { currentFrozenData, frozenData } = balances.data.getFrozenBalancesData;
-	const historyFrozenData = frozenData.map((el) => el.frozenSums);
-	dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: currentFrozenData }));
-	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
+export const updateFrozenData = (newBlock) => async (dispatch) => {
+	dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: newBlock.frozen_balances_data }));
 };

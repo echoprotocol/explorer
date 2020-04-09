@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import SidebarElement from './SidebarElement';
@@ -6,6 +6,7 @@ import TotalSupply from './TotalSupply';
 import BlockchainRates from './BlockchainRates';
 import FrozenFunds from './FrozenFunds';
 import Footer from '../../containers/Footer';
+import { subscribeNewBlock } from '../../services/subscriptions/block';
 
 
 const Sidebar = React.memo((props) => {
@@ -15,6 +16,34 @@ const Sidebar = React.memo((props) => {
 		currentFrozenData,
 		frozenData,
 	} = props;
+	const [blockSubscriber, setBlockSubscriber] = useState(null);
+	useEffect(() => {
+		const subscribe = async () => {
+			const newBlock = await subscribeNewBlock();
+			const nextUpdate = () => console.log(1134653);
+			// const nextUpdate = ({ data: { newBlock: block } }) => props.updateFrozenBalances(block);
+			// console.log(333)
+			// console.log(newBlock)
+			// props.getFrozenBalances();
+
+
+			setBlockSubscriber(newBlock.subscribe({
+				next: nextUpdate.bind(this),
+				error: (err) => { console.log('Handle block error: ', err.message || err); },
+			}));
+		};
+
+		if (!blockSubscriber) {
+			subscribe();
+		}
+
+		return () => {
+			if (blockSubscriber) {
+				setBlockSubscriber(null);
+				blockSubscriber.unsubscribe();
+			}
+		};
+	});
 	console.log(currentFrozenData, frozenData)
 	return (
 		<div className={cn('sidebar', { pinned })}>
@@ -40,6 +69,8 @@ Sidebar.propTypes = {
 	withFooter: PropTypes.bool,
 	currentFrozenData: PropTypes.object.isRequired,
 	frozenData: PropTypes.array.isRequired,
+	getFrozenBalances: PropTypes.func.isRequired,
+	updateFrozenBalances: PropTypes.func.isRequired,
 };
 Sidebar.defaultProps = {
 	pinned: false,
