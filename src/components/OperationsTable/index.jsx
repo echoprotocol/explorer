@@ -127,7 +127,7 @@ class OperationsTable extends React.Component {
 	}
 
 	async onChangeFilters(filters = { from: '', to: '' }) {
-		this.props.onChangeFilter(filters);
+		await this.props.onChangeFilter(filters);
 		this.props.onLoadMoreHistory();
 	}
 
