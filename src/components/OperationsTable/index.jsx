@@ -242,6 +242,8 @@ class OperationsTable extends React.Component {
 				</PerfectScrollbar>
 				{!isTransaction && (
 					<OperationsPagination
+						from={filterAndPaginateData.filters.from}
+						to={filterAndPaginateData.filters.to}
 						router={router}
 						totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
 						currentPage={filterAndPaginateData.currentPage}

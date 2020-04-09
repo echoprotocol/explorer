@@ -14,15 +14,15 @@ import URLHelper from '../../helpers/URLHelper';
 
 
 const OperationsPagination = ({
-	currentPage, totalDataSize, sizePerPage, router,
+	currentPage, totalDataSize, sizePerPage, router, from, to,
 }) => {
 	const { url: pathname, query } = queryString.parseUrl(router.asPath);
 	const [inputCurrentPage, setCurrentPage] = useState(currentPage);
 	const [totalPages, setTotalPages] = useState(Math.ceil(totalDataSize / sizePerPage));
 
-	const nextPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage + 1 });
-	const prevPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage - 1 });
-	const lastPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: totalPages });
+	const nextPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage + 1, from, to });
+	const prevPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage - 1, from, to });
+	const lastPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: totalPages, from, to });
 
 	const onChangeInputCurrentPage = (value) => setCurrentPage(value);
 
@@ -33,7 +33,7 @@ const OperationsPagination = ({
 		if (!TypesHelper.isStringNumber(value)) { return; }
 		const newNumberPage = parseInt(value, 10);
 		if (!(newNumberPage > 0 && newNumberPage < totalPages + 1)) { return; }
-		const linkToPage = URLHelper.createOperationUrlByFilter(router.pathname, router.query, { p: newNumberPage });
+		const linkToPage = URLHelper.createOperationUrlByFilter(router.pathname, router.query, { p: newNumberPage, from, to });
 		Router.push(router.route, linkToPage);
 	};
 
@@ -46,7 +46,6 @@ const OperationsPagination = ({
 	}, [totalDataSize, sizePerPage]);
 
 	const sizePerPages = Array.from(new Set([...SIZES_PER_PAGE, sizePerPage].sort((a, b) => a - b)));
-	let index = sizePerPages.findIndex((size) => size > totalDataSize);
 
 	const goToPage = (e, link, isDisable) => {
 		e.preventDefault();
@@ -54,16 +53,14 @@ const OperationsPagination = ({
 		Router.push(router.route, link);
 	};
 
-	if (index === -1) {
-		index = sizePerPages.length - 1;
-	}
-
 	return (
 		<div className="operations-pagination">
 			<div className="pg-nav-1">
 				<div className="pg-caption">Operations per page:</div>
-				{sizePerPages.slice(0, index + 1).map((size) => {
-					const link = URLHelper.createOperationUrlByFilter(pathname, query, { l: size, p: 1 });
+				{sizePerPages.map((size) => {
+					const link = URLHelper.createOperationUrlByFilter(pathname, query, {
+						l: size, p: 1, from, to,
+					});
 					return (
 						<Link key={size} href={router.route} >
 							<a onClick={(e) => goToPage(e, link)} href={link} className={cn('pg-page-btn', { active: size === sizePerPage })}>{size}</a>
@@ -118,12 +115,17 @@ const OperationsPagination = ({
 };
 
 OperationsPagination.propTypes = {
+	from: PropTypes.string,
+	to: PropTypes.string,
 	router: PropTypes.object.isRequired,
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,
 };
 
-OperationsPagination.defaultProps = {};
+OperationsPagination.defaultProps = {
+	from: '',
+	to: '',
+};
 
 export default OperationsPagination;
