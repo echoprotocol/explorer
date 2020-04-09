@@ -1,15 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Router from 'next/router';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import URLHelper from '../../helpers/URLHelper';
 
-import Avatar from '../Avatar';
 import Thead from './Thead';
 
+import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
+import Avatar from '../Avatar';
 
 class DistributionTable extends React.PureComponent {
+
+	onClick(e, producer) {
+		e.preventDefault();
+		e.stopPropagation();
+		Router.push(SSR_ACCOUNTS_PATH, URLHelper.createAccountUrlByName(producer));
+	}
 
 	renderRow({
 		type, delegate, producer, producedByCommittee,
@@ -26,26 +34,22 @@ class DistributionTable extends React.PureComponent {
 					</td>
 
 					<td className="origin">
-						<Link
-							className="td-in"
-							to={URLHelper.createAccountUrlByName(producer)}
-							onClick={(e) => e.stopPropagation()}
-						>
-							<Avatar accountName={producer} />
-							<span>{producer}</span>
+						<Link href={SSR_ACCOUNTS_PATH}>
+							<a href="" className="td-in" onClick={(e) => this.onClick(e, producer)}>
+								<Avatar accountName={producer} />
+								<span>{producer}</span>
+							</a>
 						</Link>
 					</td>
 					<td className="delegate">
 						<React.Fragment>
 							{
 								delegate ? (
-									<Link
-										className="td-in"
-										to={URLHelper.createAccountUrlByName(delegate)}
-										onClick={(e) => e.stopPropagation()}
-									>
-										<Avatar accountName={producer} />
-										<span>{delegate}</span>
+									<Link href={SSR_ACCOUNTS_PATH}>
+										<a href="" className="td-in" onClick={(e) => this.onClick(e, delegate)}>
+											<Avatar accountName={producer} />
+											<span>{delegate}</span>
+										</a>
 									</Link>
 								) : (
 									<div className="td-in">—</div>

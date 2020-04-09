@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 
 import Sidebar from '../../components/Sidebar';

@@ -319,6 +319,7 @@
 	}
 
 	.value {
+		@include text-overflow();
 		@include inter-ui-medium;
 		font-size: 13px;
 		color: #000;

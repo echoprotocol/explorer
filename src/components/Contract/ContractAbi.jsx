@@ -1,12 +1,15 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import { Controlled as CodeMirror } from 'react-codemirror2';
 import copy from 'copy-to-clipboard';
-import { withRouter } from 'react-router';
-import URLHelper from '../../helpers/URLHelper';
+import Router, { withRouter } from 'next/router';
 
-require('codemirror/mode/xml/xml.js');
-require('codemirror/mode/javascript/javascript.js');
+import URLHelper from '../../helpers/URLHelper';
+import { SSR_UPLOAD_ABI_PATH } from '../../constants/RouterConstants';
+
+const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
+	ssr: false,
+});
 
 class ContractAbi extends React.Component {
 
@@ -22,7 +25,7 @@ class ContractAbi extends React.Component {
 						role="presentation"
 						className="action-button"
 						htmlFor="upload-abi"
-						onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+						onClick={() => Router.push(SSR_UPLOAD_ABI_PATH, URLHelper.createUploadAbiUrl(id))}
 					>
 						Upload ABI
 					</label>
@@ -56,7 +59,7 @@ class ContractAbi extends React.Component {
 								role="presentation"
 								className="action-button"
 								htmlFor="upload-abi"
-								onClick={() => this.props.history.push(URLHelper.createUploadAbiUrl(id))}
+								onClick={() => Router.push(SSR_UPLOAD_ABI_PATH, URLHelper.createUploadAbiUrl(id))}
 							>
 								Upload new ABI
 							</label>
@@ -94,7 +97,6 @@ ContractAbi.propTypes = {
 	id: PropTypes.string.isRequired,
 	abi: PropTypes.string.isRequired,
 	verified: PropTypes.bool.isRequired,
-	history: PropTypes.object.isRequired,
 };
 
 ContractAbi.defaultProps = {};

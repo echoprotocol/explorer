@@ -3,9 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
-
 
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
@@ -21,6 +21,7 @@ class SearchField extends React.Component {
 			isActiveSmall: false,
 			inputValue: '',
 			to: '',
+			href: '',
 		};
 		this.timeoutSearch = null;
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -43,7 +44,8 @@ class SearchField extends React.Component {
 	}
 
 	onChangeDropdown(data) {
-		this.setState({ to: data.value });
+		const option = data.options.find(({ value }) => value === data.value);
+		this.setState({ to: data.value, href: option.href });
 	}
 
 	onChange(e) {
@@ -77,7 +79,7 @@ class SearchField extends React.Component {
 
 		if (!loadingSearch && KEY_CODE_ENTER === code && inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
-				this.props.history.push(this.state.to);
+				Router.push(this.state.href, this.state.to);
 				this.setState({ focus: false, isChange: false });
 				this.inputEl.blur();
 			}
@@ -154,10 +156,13 @@ class SearchField extends React.Component {
 			}, i) => ({
 				key: i,
 				value: to,
+				href: SsrHrefHelper.getHrefByTypeSection(section),
 				content: (
-					<Link key={to} to={to} className="element" onClick={() => this.blurInput()} >
-						<div className="section-name">{section}</div>
-						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+					<Link key={to} href={SsrHrefHelper.getHrefByTypeSection(section)} as={to} >
+						<div className="element">
+							<div className="section-name">{section}</div>
+							<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+						</div>
 					</Link>
 				),
 			}));
@@ -231,7 +236,6 @@ SearchField.propTypes = {
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
 	hints: PropTypes.array,
-	history: PropTypes.object,
 	getHints: PropTypes.func,
 };
 

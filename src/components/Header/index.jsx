@@ -1,6 +1,7 @@
 import React from 'react';
 import Media from 'react-media';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
 import Logotype from '../Logotype';
 import SearchField from '../../components/SearchFields';
@@ -9,20 +10,20 @@ import { INDEX_PATH } from '../../constants/RouterConstants';
 
 
 const Header = React.memo(({
-	history, hints, getHints, loadingSearch, errorSearch, pathName,
+	hints, getHints, loadingSearch, errorSearch, isMobile,
 }) => (
 	<header>
-		<Logotype onClick={() => history.push(INDEX_PATH)} />
-		<NavTabs pathName={pathName} />
+		<Logotype onClick={() => Router.push(INDEX_PATH)} />
+		<NavTabs />
 		<Media query="(max-width: 768px)">
 			{(matches) =>
 				(<SearchField
 					loadingSearch={loadingSearch}
 					errorSearch={errorSearch}
 					withHelp
+					isMobile={isMobile}
 					getHints={getHints}
 					hints={hints}
-					history={history}
 					small={matches}
 					placeholder="Search by account / block / transaction"
 				/>)}
@@ -31,10 +32,9 @@ const Header = React.memo(({
 ));
 
 Header.propTypes = {
-	pathName: PropTypes.string.isRequired,
-	errorSearch: PropTypes.string,
+	isMobile: PropTypes.bool.isRequired,
 	loadingSearch: PropTypes.bool,
-	history: PropTypes.object,
+	errorSearch: PropTypes.string,
 	hints: PropTypes.array,
 	getHints: PropTypes.func,
 };
@@ -43,7 +43,6 @@ Header.defaultProps = {
 	hints: [],
 	loadingSearch: false,
 	errorSearch: '',
-	history: {},
 	getHints: () => {},
 };
 

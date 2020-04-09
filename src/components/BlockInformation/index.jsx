@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Router from 'next/router';
+import Link from 'next/link';
 import classnames from 'classnames';
 import { List } from 'immutable';
 import BN from 'bignumber.js';
 
-import OperationsTable from '../OperationsTable';
+import OperationsTable from '../../containers/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
 import ViewListPopover from '../ViewListPopover';
 import TableLabel from '../TableLabel';
@@ -13,12 +14,20 @@ import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
 
-import { INDEX_PATH } from '../../constants/RouterConstants';
-import { DEFAULT_TABLE_LENGTH } from '../../constants/TableConstants';
+import {
+	INDEX_PATH,
+	SSR_ACCOUNTS_PATH,
+	SSR_BLOCK_INFORMATION_PATH,
+} from '../../constants/RouterConstants';
+import { BLOCK_GRID } from '../../constants/TableConstants';
+
 import { TITLE_TEMPLATES, ECHO_ASSET } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { getBlockInformation } from '../../actions/BlockActions';
+import GridActions from '../../actions/GridActions';
+
 
 class BlockInformation extends React.Component {
 
@@ -26,21 +35,39 @@ class BlockInformation extends React.Component {
 		super(props);
 
 		this.state = {
-			currentTransactionLength: DEFAULT_TABLE_LENGTH,
+			operations: null,
 			currentBlockNumber: '',
 			loader: false,
 		};
 	}
 
-	componentDidMount() {
-		this.props.getBlockInfo();
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { sizePerPage, currentPage } = nextProps.filterAndPaginateData.toJS();
+		if (!prevState.operations && nextProps.blockInformation.get('round')) {
+			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
+			return {
+				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
+				operations: newOperations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage),
+			};
+		}
+		return null;
 	}
 
-	shouldComponentUpdate(nextProps) {
+	componentDidMount() {
+		const { router: { query: { round } }, blockInformation } = this.props;
+		if (blockInformation.get('blockNumber') !== round) {
+			this.props.getBlockInfo(round);
+		}
+	}
+
+	async shouldComponentUpdate(nextProps) {
+		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
+			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
+				operations: newOperations.slice(0, sizePerPage),
 			});
 		}
 
@@ -49,13 +76,13 @@ class BlockInformation extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.blockInformation) {
-			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.match.params.round));
+			this.props.setTitle(TITLE_TEMPLATES.BLOCK.replace(/round/, this.props.router.query.round));
 		}
 		if (
-			this.props.match.params.round !== prevProps.match.params.round ||
+			this.props.router.query.round !== prevProps.router.query.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			this.props.getBlockInfo(this.props.match.params.round);
+			this.props.getBlockInfo(this.props.router.query.round);
 		}
 	}
 
@@ -66,18 +93,24 @@ class BlockInformation extends React.Component {
 	onBlockLink(blockNumber, e) {
 		e.preventDefault();
 		this.setState({ loader: true });
-
-		this.props.history.push(URLHelper.createBlockUrl(blockNumber));
+		Router.push(SSR_BLOCK_INFORMATION_PATH, URLHelper.createBlockUrl(blockNumber));
 	}
 
 	returnFunction() {
-		this.props.history.push(INDEX_PATH);
+		Router.push(INDEX_PATH);
 	}
 
 	loadMoreTransactions() {
-		this.setState({
-			currentTransactionLength: this.state.currentTransactionLength + DEFAULT_TABLE_LENGTH,
+		let operations = this.props.blockInformation.get('operations') || new List([]);
+		const { filters: { from, to }, currentPage, sizePerPage } = this.props.filterAndPaginateData.toJS();
+		operations = operations.filter((operation) => {
+			const isAllowFrom = from ? (from === operation.mainInfo.from.name || from === operation.mainInfo.from.id) : true;
+			const isAllowTo = to ? (to === operation.mainInfo.subject.name || to === operation.mainInfo.subject.id) : true;
+			return isAllowFrom && isAllowTo;
 		});
+		this.props.setTotalDataSize(operations.size);
+		operations = operations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage);
+		this.setState({ operations });
 	}
 
 	renderLoader() {
@@ -86,22 +119,21 @@ class BlockInformation extends React.Component {
 
 	renderBlockInformation(blockInformation, latestBlock) {
 		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
-		const { currentTransactionLength } = this.state;
+		const { operations } = this.state;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
-		const operations = blockInformation.get('operations') || new List([]);
 		const transactionCount = blockInformation.get('transactionCount') || 0;
 		const rewardDistribution = blockInformation.get('rewardDistribution');
-		const slicedOperations = operations.slice(0, currentTransactionLength);
 
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',
-				path: INDEX_PATH,
+				as: INDEX_PATH,
+				href: INDEX_PATH,
 			},
 		];
 
@@ -142,8 +174,8 @@ class BlockInformation extends React.Component {
 					</div>
 					<div className="container producer">
 						<div className="title">Producer</div>
-						<Link to={URLHelper.createAccountUrl(producer.name)}>
-							<div className="value blue">{producer.name}</div>
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(producer.name)}>
+							<a className="link value blue">{producer.name}</a>
 						</Link>
 					</div>
 					<div className="container verifiers">
@@ -177,15 +209,14 @@ class BlockInformation extends React.Component {
 					)
 				}
 				<div className="blocks-table-wrap">
-					{ (slicedOperations && slicedOperations.size) ?
+					{ transactionCount ?
 						<OperationsTable
+							gridName={BLOCK_GRID}
+							onLoadMoreHistory={() => this.loadMoreTransactions()}
 							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
 							fee
-							operations={slicedOperations}
-							history={this.props.history}
-							location={this.props.location}
-							loadMore={currentTransactionLength < operations.size ? () => this.loadMoreTransactions() : null}
-							hasMore={currentTransactionLength < operations.size}
+							operations={operations}
+							router={this.props.router}
 						/> : null
 					}
 				</div>
@@ -195,7 +226,6 @@ class BlockInformation extends React.Component {
 
 	render() {
 		const { blockInformation, latestBlock } = this.props;
-
 		return (
 			<div className="inner-container">
 				{ !blockInformation.get('blockNumber') || this.state.loader ?
@@ -208,16 +238,24 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
+	filterAndPaginateData: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
-	match: PropTypes.object.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
-	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	setTotalDataSize: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
+};
+
+BlockInformation.defaultProps = {};
+
+BlockInformation.getInitialProps = async ({ query: { round, ...filters }, store }) => {
+	await store.dispatch(GridActions.initData(BLOCK_GRID, filters));
+	await store.dispatch(getBlockInformation(round));
+	return {};
 };
 
 export default BlockInformation;

@@ -92,4 +92,16 @@
 		overflow: hidden;
 		color: $grey-mid;
 	}
+	.producer,
+	.from,
+	.to {
+		span {
+			display: block;
+			max-width: 120px;
+			@include text-overflow();
+			@include max-vw($res-1280) {
+				max-width: 300px;
+			}
+		}
+	}
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import Router, { withRouter } from 'next/router';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
@@ -48,7 +48,7 @@ class MainPage extends React.Component {
 
 	goToBlock(e, block) {
 		e.preventDefault();
-		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
+		Router.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
 	}
 
 	render() {
@@ -69,7 +69,6 @@ class MainPage extends React.Component {
 
 MainPage.propTypes = {
 	blocks: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
 
