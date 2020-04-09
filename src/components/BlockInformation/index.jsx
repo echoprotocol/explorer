@@ -65,7 +65,6 @@ class BlockInformation extends React.Component {
 		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
 			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
-			await this.props.onChangeFilter();
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
@@ -252,7 +251,6 @@ BlockInformation.propTypes = {
 	setTotalDataSize: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
-	onChangeFilter: PropTypes.func.isRequired,
 };
 
 BlockInformation.defaultProps = {};
