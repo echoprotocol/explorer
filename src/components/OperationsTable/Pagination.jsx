@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import cn from 'classnames';
+import PropTypes from 'prop-types';
 import Router from 'next/router';
 import Link from 'next/link';
 import queryString from 'query-string';
@@ -85,7 +85,11 @@ const OperationsPagination = ({
 			</div>
 			<div className="pg-nav-3">
 				<Link href={router.route} >
-					<a href={prevPageLink} onClick={(e) => goToPage(e, prevPageLink, currentPage === 1)} className="pg-arrow primary-btn">
+					<a
+						href={prevPageLink}
+						onClick={(e) => goToPage(e, prevPageLink, currentPage === 1)}
+						className={cn('pg-arrow', 'primary-btn', { disabled: currentPage === 1 })}
+					>
 						<svg width="4" height="5" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M4 2.5L0 5V0l4 2.5z" />
 						</svg>
@@ -95,7 +99,11 @@ const OperationsPagination = ({
 					</a>
 				</Link>
 				<Link href={router.route}>
-					<a href={nextPageLink} onClick={(e) => goToPage(e, nextPageLink, totalPages === currentPage)} className="pg-arrow primary-btn">
+					<a
+						href={nextPageLink}
+						onClick={(e) => goToPage(e, nextPageLink, totalPages === currentPage)}
+						className={cn('pg-arrow', 'primary-btn', { disabled: totalPages === currentPage })}
+					>
 						<div className="pg-arrow-caption">
 							Next
 						</div>

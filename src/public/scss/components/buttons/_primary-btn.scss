@@ -17,7 +17,7 @@
 		fill: $explorer-black;
 		transition: fill $speed;
 	}
-	&:disabled {
+	&:disabled, &.disabled {
 		background-color: $lightgrey-darker;
 		border: 1px solid $lightgrey-darker;
 		color: $lightgrey;
