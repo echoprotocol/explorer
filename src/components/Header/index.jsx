@@ -10,7 +10,7 @@ import { INDEX_PATH } from '../../constants/RouterConstants';
 
 
 const Header = React.memo(({
-	hints, getHints, loadingSearch, errorSearch, isMobile,
+	hints, getHints, loadingSearch, errorSearch,
 }) => (
 	<header>
 		<Logotype onClick={() => Router.push(INDEX_PATH)} />
@@ -21,7 +21,6 @@ const Header = React.memo(({
 					loadingSearch={loadingSearch}
 					errorSearch={errorSearch}
 					withHelp
-					isMobile={isMobile}
 					getHints={getHints}
 					hints={hints}
 					small={matches}
@@ -32,7 +31,6 @@ const Header = React.memo(({
 ));
 
 Header.propTypes = {
-	isMobile: PropTypes.bool.isRequired,
 	loadingSearch: PropTypes.bool,
 	errorSearch: PropTypes.string,
 	hints: PropTypes.array,

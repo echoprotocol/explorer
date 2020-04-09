@@ -149,7 +149,7 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, hints, errorSearch,
+			placeholder, white, withHelp, hints, errorSearch,
 		} = this.props;
 
 		const options = hints
@@ -185,14 +185,14 @@ class SearchField extends React.Component {
 
 		return (
 			<div
-				className={classnames('input-search-block', { small, active: (isActiveSmall || inputValue), white })}
+				className={classnames('input-search-block', { active: (isActiveSmall || inputValue), white })}
 				ref={this.setWrapperRef}
 			>
 				<div className={classnames('input-container', { focus })}>
 					<a
 						href=""
 						className="icon"
-						onClick={(e) => { e.preventDefault(); ((small) ? (this.isSmallShow()) : false); }}
+						onClick={(e) => { e.preventDefault(); this.isSmallShow(); }}
 					>
 						<svg>
 							<path fill="#686C86" d="M14.72 13.12l-3.54-3.54a6.12 6.12 0 10-1.6 1.6l3.53 3.55a1.14 1.14 0 001.6-1.6zm-12.45-7a3.85 3.85 0 117.7 0 3.85 3.85 0 01-7.7 0z" />
@@ -229,7 +229,7 @@ class SearchField extends React.Component {
 }
 
 SearchField.propTypes = {
-	small: PropTypes.bool,
+	// small: PropTypes.bool,
 	loadingSearch: PropTypes.bool,
 	errorSearch: PropTypes.string,
 	placeholder: PropTypes.string,
@@ -247,7 +247,6 @@ SearchField.defaultProps = {
 	white: false,
 	withHelp: false,
 	hints: [],
-	history: {},
 	getHints: () => {},
 };
 
