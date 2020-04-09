@@ -10,6 +10,7 @@ import Header from '../../components/Header';
 
 const HeaderContainer = React.memo(({
 	history, hints, getHints, loadingSearch, errorSearch, pathName,
+	latestBlock, blocks,
 }) => (
 	<div className="top-section">
 		<div className="wrap">
@@ -21,7 +22,10 @@ const HeaderContainer = React.memo(({
 				getHints={getHints}
 				pathName={pathName}
 			/>
-			<PreparingSection />
+			<PreparingSection
+					blocks={blocks}
+					latestBlock={latestBlock}
+			/>
 		</div>
 	</div>
 ));
@@ -34,6 +38,8 @@ HeaderContainer.propTypes = {
 	loadingSearch: PropTypes.bool.isRequired,
 	errorSearch: PropTypes.string.isRequired,
 	getHints: PropTypes.func.isRequired,
+	blocks: PropTypes.object.isRequired,
+	latestBlock: PropTypes.number.isRequired,
 };
 
 export default withRouter(connect(
@@ -42,6 +48,8 @@ export default withRouter(connect(
 		hints: state.search.getIn(['headerSearch', 'hints']),
 		errorSearch: state.search.getIn(['headerSearch', 'error']),
 		loadingSearch: state.search.getIn(['headerSearch', 'loading']),
+		blocks: state.block.get('blocks'),
+		latestBlock: state.round.get('latestBlock'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(searchActions.headerSearchHint(str)),

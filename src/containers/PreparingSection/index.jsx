@@ -36,10 +36,4 @@ PreparingSection.propTypes = {
 	latestBlock: PropTypes.number.isRequired,
 };
 
-export default connect(
-	(state) => ({
-		blocks: state.block.get('blocks'),
-		latestBlock: state.round.get('latestBlock'),
-	}),
-	() => ({}),
-)(PreparingSection);
+export default PreparingSection;
