@@ -84,7 +84,7 @@ const OperationsPagination = ({
 				<div className="pg-caption">out of <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}>{totalPages}</a></div>
 			</div>
 			<div className="pg-nav-3">
-				{currentPage === 1 ? (
+				{!totalPages || currentPage === 1 ? (
 					<Button className="primary-btn" disabled>
 						<PrevButton />
 					</Button>
@@ -93,7 +93,7 @@ const OperationsPagination = ({
 						<PrevButton />
 					</a>
 				)}
-				{totalPages === currentPage ? (
+				{!totalPages || totalPages === currentPage ? (
 					<Button className="primary-btn" disabled>
 						<NextButton />
 					</Button>
