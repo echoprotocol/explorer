@@ -12,6 +12,7 @@ import OperationInfo from '../TransactionInfo/OperationInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import { transformOperationDataByType } from '../../helpers/TransformDataHelper';
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -22,9 +23,10 @@ const OperationsRow = React.memo(({
 		trIndex: transactionNum,
 		opIndex,
 		number,
-		blockTimestamp,
+		type,
 		...detailInfo
 	},
+	operation,
 	index,
 	active,
 	toggleOperationDetails,
@@ -69,9 +71,10 @@ const OperationsRow = React.memo(({
 		);
 	};
 
-	const objectId = objectInfo ? objectInfo.get('id') : null;
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
+
+	const operationsInfoData = type && transformOperationDataByType(type, operation);
 
 	return (
 		<React.Fragment>
@@ -84,7 +87,7 @@ const OperationsRow = React.memo(({
 					<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
 				</td>
 				<td className="operation">
-					<div className="td-in">{detailInfo.type}</div>
+					<div className="td-in">{type}</div>
 				</td>
 				<td className="sender">
 					{ mainInfo.from.id ?
@@ -125,12 +128,7 @@ const OperationsRow = React.memo(({
 				<tr className="fold">
 					<td colSpan="6">
 						<OperationInfo
-							details={detailInfo}
-							index={index}
-							block={block}
-							transaction={transactionNum}
-							opIndex={opIndex}
-							objId={objectId}
+							data={operationsInfoData.operationInfo}
 						/>
 					</td>
 				</tr>

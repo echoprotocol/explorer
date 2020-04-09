@@ -42,6 +42,7 @@ class AccountInfo extends React.Component {
 
 	render() {
 		const { id, name } = this.props;
+		console.log(id);
 		return (
 			<div className="left-card">
 				<div className="line">

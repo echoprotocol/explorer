@@ -33,7 +33,6 @@ const getChartWidth = (queries) => {
 	const keys = Object.keys(queries);
 
 	const query = keys.filter((key) => queries[key]).slice(-1)[0];
-	console.log(query);
 
 	switch (query) {
 		case 'hd':
