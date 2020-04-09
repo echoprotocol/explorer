@@ -73,7 +73,7 @@ class OperationsTable extends React.Component {
 		}
 
 		if (prevSearch.from !== search.from || prevSearch.to !== search.to) {
-			await this.onChangeFilters({ from: search.from, to: search.to});
+			await this.onChangeFilters({ from: search.from, to: search.to });
 			return;
 		}
 
