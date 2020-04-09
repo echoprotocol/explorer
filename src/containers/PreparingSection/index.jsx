@@ -10,10 +10,13 @@ import Block4 from './Block4';
 
 const calculateTimestamp = (latestBlock, blocks) => {
 	const lastTimestamp = blocks.getIn([latestBlock, 'timestamp']);
+	if (!lastTimestamp) {
+		return 0;
+	}
 	const GMT = new Date().getTimezoneOffset();
 	const diff = (Date.now() - Date.parse(lastTimestamp)) + (GMT * 60 * 1000);
 	return Math.floor(diff / 1000);
-}
+};
 
 const PreparingSection = (props) => {
 	const { latestBlock, blocks } = props;
