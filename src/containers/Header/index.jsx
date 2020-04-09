@@ -23,8 +23,8 @@ const HeaderContainer = React.memo(({
 				pathName={pathName}
 			/>
 			<PreparingSection
-					blocks={blocks}
-					latestBlock={latestBlock}
+				blocks={blocks}
+				latestBlock={latestBlock}
 			/>
 		</div>
 	</div>
