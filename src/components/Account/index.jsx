@@ -11,6 +11,7 @@ import Loader from '../../components/Loader';
 import AccountActions from '../../actions/AccountActions';
 import URLHelper from '../../helpers/URLHelper';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
+import GridActions from '../../actions/GridActions';
 
 class Account extends React.Component {
 
@@ -23,19 +24,17 @@ class Account extends React.Component {
 
 	async componentDidUpdate(prevProps) {
 		if (prevProps.router.query.id !== this.props.router.query.id) {
+			await this.props.onChangeFilter();
 			await this.props.getAccountInfo(this.props.router.query.id);
 			return;
 		}
 
-		if (!prevProps.account) {
+		if (!prevProps.account || !this.props.account) {
 			return;
 		}
 
-		const { account: prevAccount } = prevProps;
-		const { account } = this.props;
-
-		const prevCountOps = prevAccount.getIn(['statistics', 'total_ops']);
-		const currCountOps = account.getIn(['statistics', 'total_ops']);
+		const prevCountOps = prevProps.account.getIn(['statistics', 'total_ops']);
+		const currCountOps = this.props.account.getIn(['statistics', 'total_ops']);
 
 		if (prevCountOps !== currCountOps) {
 			this.onLoadMoreHistory();
@@ -134,6 +133,7 @@ Account.propTypes = {
 	clearAccountInfo: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
+	onChangeFilter: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {
@@ -145,8 +145,9 @@ Account.defaultProps = {
 	accountHistory: null,
 };
 
-Account.getInitialProps = async ({ query, store }) => {
-	await store.dispatch(AccountActions.getAccountInfo(query.id));
+Account.getInitialProps = async ({ query: { id: accountId, ...filters }, store }) => {
+	await store.dispatch(GridActions.initData(ACCOUNT_GRID, filters));
+	await store.dispatch(AccountActions.getAccountInfo(accountId));
 	return {};
 };
 

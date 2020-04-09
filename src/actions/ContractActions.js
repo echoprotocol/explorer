@@ -41,7 +41,7 @@ import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 import { loadScript } from '../api/ContractApi';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
 
-import { ACCOUNT_GRID, CONTRACT_GRID } from '../constants/TableConstants';
+import { CONTRACT_GRID } from '../constants/TableConstants';
 import { getHistory as getContractHistory } from '../services/queries/history';
 import GridActions from './GridActions';
 import config from '../config/chain';
@@ -61,8 +61,8 @@ class ContractActions extends BaseActionsClass {
 				op: [operationId, data.body],
 				result: [0, data.result],
 				block_num: data.transaction ? data.transaction.block.round : data.block.round,
-				trx_in_block: data.trx_in_block || 1,
-				op_in_trx: data.op_in_trx || -1,
+				trx_in_block: data.trx_in_block,
+				op_in_trx: data.op_in_trx,
 				virtual_op: 0,
 			});
 		});
@@ -160,9 +160,8 @@ class ContractActions extends BaseActionsClass {
 						if (account && contractId !== account.id) {
 							relationSubjects.push(account.id);
 						}
-					} catch (err) {
-						console.log('Error set filter', objectId, err);
-					}
+						// eslint-disable-next-line no-empty
+					} catch (err) {}
 				};
 				await Promise.all(Array.from(new Set([queryData.filters.from, queryData.filters.to]))
 					.map((filter) => addRelationSubjects(filter)));
@@ -174,7 +173,7 @@ class ContractActions extends BaseActionsClass {
 					count: queryData.sizePerPage,
 					operations: Object.keys(OPERATIONS_IDS),
 				});
-				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
+				dispatch(GridActions.setTotalDataSize(CONTRACT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatContractHistory(transactions);
 				dispatch(this.setValue('history', new List(transactions)));
@@ -197,7 +196,7 @@ class ContractActions extends BaseActionsClass {
 				let balances = await echo.api.getContractBalances(contractId);
 				await echo.api.getObjects(balances.map((b) => b.asset_id));
 				balances = fromJS(balances);
-				dispatch(this.loadContractHistory(contractId));
+				await dispatch(this.loadContractHistory(contractId));
 				dispatch(batchActions([
 					this.reducer.actions.set({ field: 'balances', value: balances }),
 				]));

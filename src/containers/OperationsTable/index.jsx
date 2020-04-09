@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import OperationsTable from '../../components/OperationsTable/index.new';
+import OperationsTable from '../../components/OperationsTable';
 import GridActions from '../../actions/GridActions';
 
 export default connect(

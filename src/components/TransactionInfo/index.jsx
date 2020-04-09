@@ -4,17 +4,19 @@ import Router from 'next/router';
 
 import { INDEX_PATH, BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { TRANSACTION_GRID } from '../../constants/TableConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import BackwardsLink from '../BackwardLink';
 import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
-import OperationsTable from '../OperationsTable';
+import OperationsTable from '../../containers/OperationsTable';
 
 import GlobalActions from '../../actions/GlobalActions';
 import { getBlockInformation } from '../../actions/BlockActions';
 import TransactionActions from '../../actions/TransactionActions';
+import GridActions from '../../actions/GridActions';
 
 class TransactionsInfo extends React.Component {
 
@@ -75,6 +77,8 @@ class TransactionsInfo extends React.Component {
 					<React.Fragment>
 						<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
 						<OperationsTable
+							onLoadMoreHistory={() => { }}
+							gridName={TRANSACTION_GRID}
 							label={FormatHelper.getFormaOperationsTitle(operations.size)}
 							isTransaction
 							operations={operations}
@@ -109,15 +113,14 @@ TransactionsInfo.defaultProps = {
 };
 
 TransactionsInfo.getInitialProps = async ({ store, query }) => {
-	const { round, index } = query;
+	const { round, index, ...filters } = query;
 	const title = TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round);
-	if (!store.getState().block.getIn(['blockInformation', 'blockNumber'])) {
-		await Promise.all([
-			store.dispatch(GlobalActions.setTitle(title)),
-			store.dispatch(getBlockInformation(round)),
-			store.dispatch(TransactionActions.getTransaction(round, index)),
-		]);
-	}
+	await store.dispatch(GridActions.initData(TRANSACTION_GRID, filters));
+	await Promise.all([
+		store.dispatch(GlobalActions.setTitle(title)),
+		store.dispatch(getBlockInformation(round)),
+		store.dispatch(TransactionActions.getTransaction(round, index)),
+	]);
 	return {};
 };
 

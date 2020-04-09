@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import GridReducer from '../reducers/GridReducer';
 import BaseActionsClass from './BaseActionsClass';
-import LocalStorageService from '../services/LocalStorageService';
 import { DEFAULT_SIZE_PER_PAGE } from '../constants/TableConstants';
+import TypesHelper from '../helpers/TypesHelper';
 
 export class GridActionsClass extends BaseActionsClass {
 
@@ -23,23 +23,26 @@ export class GridActionsClass extends BaseActionsClass {
 	}
 
 	/**
-	 * Get data
-	 * @returns {function(*=): Promise<any>}
+	 * @method initData
+	 * @param {String} gridName
+	 * @param {Object} params
+	 * @return {function(*, *)}
 	 */
-	initData() {
-		return (dispatch, getState) => {
-			const localData = [];
-			const gridNames = Object.keys(getState().grid.toJS());
-			gridNames.forEach((gridName) => {
-				let sizePerPage = DEFAULT_SIZE_PER_PAGE;
-				try {
-					sizePerPage = JSON.parse(LocalStorageService.getData(gridName)) || DEFAULT_SIZE_PER_PAGE;
-					// eslint-disable-next-line no-empty
-				} catch (err) {}
-				localData.push([gridName, sizePerPage]);
-			});
-			localData.forEach(([gridName, sizePerPage]) => dispatch(this.setValue([gridName, 'sizePerPage'], sizePerPage)));
-		};
+	initData(gridName, params = { }) {
+		return (dispatch) => new Promise((resolve) => {
+			const sizePerPage = TypesHelper.isStringNumber(params.l) ? parseInt(params.l, 10) : DEFAULT_SIZE_PER_PAGE;
+			const currentPage = TypesHelper.isStringNumber(params.p) ? parseInt(params.p, 10) : 1;
+			const transformParams = {
+				sizePerPage,
+				currentPage,
+				filters: {
+					from: params.from || '',
+					to: params.to || '',
+				},
+			};
+			dispatch(this.reducer.actions.initData({ gridName, params: transformParams }));
+			resolve();
+		});
 	}
 
 	/**
@@ -75,8 +78,6 @@ export class GridActionsClass extends BaseActionsClass {
 	setPageSize(gridName, value) {
 		return (dispatch) => {
 			dispatch(this.setValue([gridName, 'sizePerPage'], value));
-			dispatch(this.setPage(gridName, 1, 0));
-			LocalStorageService.setData(gridName, value);
 		};
 	}
 
@@ -102,7 +103,6 @@ export class GridActionsClass extends BaseActionsClass {
 	setFilter(gridName, params) {
 		return (dispatch) => new Promise((resolve) => {
 			dispatch(this.reducer.actions.setFilter({ gridName, params }));
-			dispatch(this.setPage(gridName, 1, 0));
 			resolve();
 		});
 	}

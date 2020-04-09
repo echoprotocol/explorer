@@ -130,8 +130,8 @@ class AccountActions extends BaseActionsClass {
 				op: [operationId, data.body],
 				result: [0, data.result],
 				block_num: data.transaction ? data.transaction.block.round : data.block.round,
-				trx_in_block: data.trx_in_block || 0,
-				op_in_trx: data.op_in_trx || 0,
+				trx_in_block: data.trx_in_block,
+				op_in_trx: data.op_in_trx,
 				virtual_op: 0,
 			});
 		});
@@ -161,9 +161,8 @@ class AccountActions extends BaseActionsClass {
 							if (account && accountId !== account.id) {
 								relationSubjects.push(account.id);
 							}
-						} catch (err) {
-							console.log('Error set filter', objectId, err);
-						}
+							// eslint-disable-next-line no-empty
+						} catch (err) {}
 					}
 				};
 

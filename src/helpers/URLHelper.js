@@ -1,4 +1,5 @@
 import { validators } from 'echojs-lib';
+import queryString from 'query-string';
 
 import {
 	ACCOUNTS_PATH,
@@ -166,6 +167,19 @@ class URLHelper {
 	 */
 	static createTransactionUrl(round, index) {
 		return TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, index);
+	}
+
+	/**
+	 * @method createOperationUrlByFilter
+	 * @param {string} pathname
+	 * @param {object} passQuery
+	 * @param {object} newProps
+	 * @return {string}
+	 */
+	static createOperationUrlByFilter(pathname, passQuery, newProps) {
+		const { id, ...query } = passQuery;
+		const transformPathname = pathname.replace(/\[id\]/, id);
+		return `${transformPathname}?${queryString.stringify({ ...query, ...newProps })}`;
 	}
 
 }

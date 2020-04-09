@@ -16,7 +16,8 @@ export default withRouter(connect(
 		latestBlock: state.round.get('latestBlock'),
 	}),
 	(dispatch) => ({
-		setTotalDataSize: (count) => dispatch(GridActions.setTotalDataSize(BLOCK_GRID, count)),
+		onChangeFilter: (filters) => dispatch(GridActions.initData(BLOCK_GRID, filters)),
+		setTotalDataSize: (value) => dispatch(GridActions.setTotalDataSize(BLOCK_GRID, value)),
 		getBlockInfo: (round) => dispatch(getBlockInformation(round)),
 		clearBlockInfo: () => dispatch(clearBlockInformation()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),

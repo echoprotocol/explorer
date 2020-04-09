@@ -4,6 +4,7 @@ import { withRouter } from 'next/router';
 import Account from '../../components/Account';
 import AccountActions from '../../actions/AccountActions';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
+import GridActions from '../../actions/GridActions';
 
 export default withRouter(connect(
 	(state) => ({
@@ -17,6 +18,7 @@ export default withRouter(connect(
 		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
+		onChangeFilter: (filters) => dispatch(GridActions.initData(ACCOUNT_GRID, filters)),
 		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
 		loadAccountHistory: (accountId) => dispatch(AccountActions.loadAccountHistory(accountId)),
 		clearAccountInfo: () => dispatch(AccountActions.clear()),

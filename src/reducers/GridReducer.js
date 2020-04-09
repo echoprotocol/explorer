@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import {
 	DEFAULT_SIZE_PER_PAGE,
-	ACCOUNT_GRID, CONTRACT_GRID, BLOCK_GRID,
+	ACCOUNT_GRID, CONTRACT_GRID, BLOCK_GRID, TRANSACTION_GRID,
 } from '../constants/TableConstants';
 import TransformModules from '../utils/TransformModules';
 
@@ -22,6 +22,7 @@ const DEFAULT_STATE = Map({
 	[ACCOUNT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[CONTRACT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[BLOCK_GRID]: _.cloneDeep(DEFAULT_FIELDS),
+	[TRANSACTION_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 });
 
 export default createModule({
@@ -33,6 +34,12 @@ export default createModule({
 			reducer: (state, { payload }) => {
 				state = state.setIn([payload.gridName, 'totalDataSize'], payload.totalDataSize);
 
+				return state;
+			},
+		},
+		initData: {
+			reducer: (state, { payload }) => {
+				state = state.set(payload.gridName, new Map(payload.params));
 				return state;
 			},
 		},

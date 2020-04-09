@@ -43,6 +43,7 @@ import URLHelper from '../../helpers/URLHelper';
 import OperationsTable from '../../containers/OperationsTable';
 import { CONTRACT_GRID } from '../../constants/TableConstants';
 import ContractActions from '../../actions/ContractActions';
+import GridActions from '../../actions/GridActions';
 
 class Contract extends React.Component {
 
@@ -80,6 +81,9 @@ class Contract extends React.Component {
 		if (prevProps.router.query.id && prevProps.router.query.id !== this.props.router.query.id) {
 			this.initContract();
 		}
+		if (prevProps.connected !== this.props.connected) {
+			this.initContract();
+		}
 	}
 
 	componentWillUnmount() {
@@ -93,6 +97,7 @@ class Contract extends React.Component {
 
 	async initContract() {
 		const { query: { id } } = this.props.router;
+		await this.props.onChangeFilter();
 		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
 		if (echo.isConnected) {
 			await this.props.getContractInfo(id);
@@ -101,11 +106,10 @@ class Contract extends React.Component {
 		}
 	}
 
-
 	updateInfo() {
-		const { loading, router: { query: { id } } } = this.props;
+		const { loading, router } = this.props;
 		if (loading) { return; }
-		this.props.updateContractInfo(id);
+		this.props.updateContractInfo(router.query.id);
 	}
 
 	changeTab(id, index) {
@@ -442,6 +446,7 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
+	connected: PropTypes.bool.isRequired,
 	isMobile: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 	loading: PropTypes.bool,
@@ -483,6 +488,7 @@ Contract.propTypes = {
 	activeAccount: PropTypes.object,
 	owner: PropTypes.object.isRequired,
 	updateContractHistory: PropTypes.func.isRequired,
+	onChangeFilter: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {
@@ -496,8 +502,9 @@ Contract.defaultProps = {
 	token: null,
 };
 
-Contract.getInitialProps = async ({ query, store }) => {
-	await store.dispatch(ContractActions.getContractInfo(query.id));
+Contract.getInitialProps = async ({ query: { id: contractId, ...filters }, store }) => {
+	await store.dispatch(GridActions.initData(CONTRACT_GRID, filters));
+	await store.dispatch(ContractActions.getContractInfo(contractId));
 	return {};
 };
 

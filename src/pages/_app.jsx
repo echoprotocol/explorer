@@ -1,5 +1,5 @@
 import App from 'next/app';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 import classnames from 'classnames';
 
 import PropTypes from 'prop-types';
@@ -29,7 +29,9 @@ import Loader from '../components/Loader';
 class ExplorerApp extends App {
 
 	componentDidMount() {
-		if (typeof window === 'undefined') { return; }
+		Router.events.on('routeChangeStart', () => {
+			this.props.store.dispatch(GlobalActions.incrementHistoryLength());
+		});
 		this.props.store.dispatch(GlobalActions.init());
 	}
 

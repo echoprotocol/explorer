@@ -5,9 +5,12 @@ import Contract from '../../components/Contract';
 import ContractActions from '../../actions/ContractActions';
 import GlobalActions from '../../actions/GlobalActions';
 import AccountActions from '../../actions/AccountActions';
+import GridActions from '../../actions/GridActions';
+import { CONTRACT_GRID } from '../../constants/TableConstants';
 
 export default withRouter(connect(
 	(state) => ({
+		connected: state.global.get('connected'),
 		isMobile: state.global.get('isMobile'),
 		loading: state.contract.get('loading'),
 		loadingMoreHistory: state.contract.get('loadingMoreHistory'),
@@ -41,6 +44,7 @@ export default withRouter(connect(
 		activeAccount: state.global.get('activeAccount'),
 	}),
 	(dispatch) => ({
+		onChangeFilter: (filters) => dispatch(GridActions.initData(CONTRACT_GRID, filters)),
 		getContractInfo: (contractId) => dispatch(ContractActions.getContractInfo(contractId)),
 		clearContractInfo: () => dispatch(ContractActions.clear()),
 		loadContractHistory: (contractId) => dispatch(ContractActions.loadContractHistory(contractId)),

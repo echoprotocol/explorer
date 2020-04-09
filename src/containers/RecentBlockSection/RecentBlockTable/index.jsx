@@ -230,7 +230,10 @@ class RecentBlockTable extends React.Component {
 																	onClick={(e) => this.onLink(e, URLHelper.createAccountUrlByName(data.producer))}
 																>
 																	<Avatar accountName={data.producer} />
-																	{data.producer}
+																	<span>
+
+																		{data.producer}
+																	</span>
 																</button>
 															</div>
 															<div className="div-table-cell">{FormatHelper.formatAmount(data.reward, ECHO_ASSET.PRECISION)} <span className="gray">{data.rewardCurrency}</span></div>

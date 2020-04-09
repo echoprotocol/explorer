@@ -34,6 +34,9 @@ const OperationsRow = React.memo(({
 	isTransaction,
 	toggleOperationDetails,
 	tableRefs,
+	currentPage,
+	sizePerPage,
+	totalDataSize,
 }) => {
 
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
@@ -79,6 +82,15 @@ const OperationsRow = React.memo(({
 	const objectId = objectInfo ? objectInfo.get('id') : null;
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
+	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
+	let numberOperation = null;
+	if (number !== '') {
+		numberOperation = isTransaction ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
+	}
+
+	if (numberOperation < 1) {
+		return null;
+	}
 	return (
 		<React.Fragment>
 			<tr
@@ -88,7 +100,7 @@ const OperationsRow = React.memo(({
 			>
 				<td />
 				<td className="number">
-					<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
+					<div className="td-in">{numberOperation}</div>
 				</td>
 				<td className="operation">
 					<div className="td-in">{detailInfo.type}</div>
@@ -160,6 +172,9 @@ const OperationsRow = React.memo(({
 });
 
 OperationsRow.propTypes = {
+	currentPage: PropTypes.number.isRequired,
+	sizePerPage: PropTypes.number.isRequired,
+	totalDataSize: PropTypes.number.isRequired,
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
