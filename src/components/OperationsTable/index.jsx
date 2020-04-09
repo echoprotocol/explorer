@@ -38,6 +38,7 @@ class OperationsTable extends React.Component {
 		const { showedOperations } = this.state;
 		const queryProps = queryString.parse(this.props.router.asPath.split('?')[1]);
 
+		// eslint-disable-next-line react/no-did-mount-set-state
 		this.setState({
 			from: this.props.filterAndPaginateData.get('filters').from,
 			to: this.props.filterAndPaginateData.get('filters').to,
