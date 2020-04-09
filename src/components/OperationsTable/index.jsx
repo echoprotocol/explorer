@@ -223,11 +223,15 @@ class OperationsTable extends React.Component {
 		const { showedOperations, airRows, isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
 
-		const filteredOperations = this.filteredOperations();
-		const isFilteredData = filterAndPaginateData.filters.from || filterAndPaginateData.filters.to;
+		let filteredOperations = this.filteredOperations();
+		let isFilteredData = filterAndPaginateData.filters.from || filterAndPaginateData.filters.to;
 
-		const startOffset = (filterAndPaginateData.currentPage - 1) * filterAndPaginateData.sizePerPage;
-		const endOffset = filterAndPaginateData.currentPage * filterAndPaginateData.sizePerPage;
+		if (filteredOperations.size > filterAndPaginateData.sizePerPage) {
+			isFilteredData = false;
+			const startOffset = (filterAndPaginateData.currentPage - 1) * filterAndPaginateData.sizePerPage;
+			const endOffset = filterAndPaginateData.currentPage * filterAndPaginateData.sizePerPage;
+			filteredOperations = filteredOperations.slice(startOffset, endOffset);
+		}
 
 		return (
 			<div className="operations-table">
@@ -246,7 +250,7 @@ class OperationsTable extends React.Component {
 						<Thead isTransaction={isTransaction} />
 						<tbody>
 							<tr className="air"><td /></tr>
-							{filteredOperations.slice(startOffset, endOffset).map((op, i) => (
+							{filteredOperations.map((op, i) => (
 								<OperationRow
 									totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}
