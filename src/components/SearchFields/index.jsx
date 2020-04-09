@@ -241,7 +241,6 @@ SearchField.propTypes = {
 
 SearchField.defaultProps = {
 	loadingSearch: false,
-	small: false,
 	errorSearch: '',
 	placeholder: '',
 	white: false,
