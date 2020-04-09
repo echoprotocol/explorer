@@ -226,6 +226,9 @@ class OperationsTable extends React.Component {
 		const filteredOperations = this.filteredOperations();
 		const isFilteredData = filterAndPaginateData.filters.from || filterAndPaginateData.filters.to;
 
+		const startOffset = (filterAndPaginateData.currentPage - 1) * filterAndPaginateData.sizePerPage;
+		const endOffset = filterAndPaginateData.currentPage * filterAndPaginateData.sizePerPage;
+
 		return (
 			<div className="operations-table">
 				<TableLabel label={label}>
@@ -243,7 +246,7 @@ class OperationsTable extends React.Component {
 						<Thead isTransaction={isTransaction} />
 						<tbody>
 							<tr className="air"><td /></tr>
-							{filteredOperations.map((op, i) => (
+							{filteredOperations.slice(startOffset, endOffset).map((op, i) => (
 								<OperationRow
 									totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}

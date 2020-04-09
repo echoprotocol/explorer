@@ -151,6 +151,7 @@ class AccountActions extends BaseActionsClass {
 				const relationSubjects = [];
 
 				let count = queryData.sizePerPage;
+				let offset = (queryData.currentPage - 1) * queryData.sizePerPage;
 
 				const addRelationSubjects = async (objectId) => {
 					if (!objectId) { return; }
@@ -165,6 +166,7 @@ class AccountActions extends BaseActionsClass {
 							}
 							if (accountId === account.id) {
 								count = SIZES_PER_PAGE[SIZES_PER_PAGE.length - 1];
+								offset = 0;
 							}
 							// eslint-disable-next-line no-empty
 						} catch (err) {}
@@ -177,7 +179,7 @@ class AccountActions extends BaseActionsClass {
 				const { items, total } = await getHistory({
 					subject,
 					relationSubjects,
-					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+					offset,
 					count,
 					operations: Object.keys(OPERATIONS_IDS),
 				});
