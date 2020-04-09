@@ -97,6 +97,7 @@ class Contract extends React.Component {
 
 	async initContract() {
 		const { query: { id } } = this.props.router;
+		await this.props.onChangeFilter();
 		this.props.setTitle(TITLE_TEMPLATES.CONTRACT.replace(/id/, id));
 		if (echo.isConnected) {
 			await this.props.getContractInfo(id);
@@ -487,6 +488,7 @@ Contract.propTypes = {
 	activeAccount: PropTypes.object,
 	owner: PropTypes.object.isRequired,
 	updateContractHistory: PropTypes.func.isRequired,
+	onChangeFilter: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {
