@@ -72,6 +72,11 @@ class OperationsTable extends React.Component {
 			return;
 		}
 
+		if (prevSearch.from !== search.from || prevSearch.to !== search.to) {
+			await this.onChangeFilters({ from: search.from, to: search.to});
+			return;
+		}
+
 		if (!loading && loading !== prevLoading) {
 			if (!query.op || !this.tableRefs[query.op - 1]) {
 				return;
@@ -92,7 +97,7 @@ class OperationsTable extends React.Component {
 
 	async onChangeFilter(e) {
 		const { name, value } = e.target;
-		const { filterAndPaginateData } = this.props;
+		const { filterAndPaginateData, router } = this.props;
 		const { filters } = filterAndPaginateData.toJS();
 		filters[name] = value;
 		if (this.timeoutSearch) {
@@ -100,8 +105,9 @@ class OperationsTable extends React.Component {
 		}
 		this.setState({ [name]: value });
 		this.timeoutSearch = setTimeout(() => {
-			this.props.onChangeFilter(filters);
-			this.props.onLoadMoreHistory();
+			const { url: pathname, query } = queryString.parseUrl(router.asPath);
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from, to: filters.to });
+			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 
 	}
@@ -118,6 +124,11 @@ class OperationsTable extends React.Component {
 			this.props.onChangeFilter(filters);
 			this.props.onLoadMoreHistory();
 		}, DEBOUNCE_TIMEOUT);
+	}
+
+	async onChangeFilters(filters = { from: '', to: '' }) {
+		this.props.onChangeFilter(filters);
+		this.props.onLoadMoreHistory();
 	}
 
 	async onChangeCurrentPage(value) {
