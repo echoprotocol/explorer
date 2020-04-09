@@ -20,7 +20,7 @@ const calculateTimestamp = (latestBlock, blocks) => {
 
 const PreparingSection = (props) => {
 	const { latestBlock, blocks } = props;
-	const diff = calculateTimestamp(latestBlock, blocks)
+	const diff = calculateTimestamp(latestBlock, blocks);
 	return (
 		<div className="preparing-wrap">
 			<PreparingBlock><Block1 /></PreparingBlock>
