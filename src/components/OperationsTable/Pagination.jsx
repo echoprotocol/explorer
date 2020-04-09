@@ -50,9 +50,8 @@ const OperationsPagination = ({
 
 	const sizePerPages = Array.from(new Set([...SIZES_PER_PAGE, sizePerPage].sort((a, b) => a - b)));
 
-	const goToPage = (e, link, isDisable) => {
+	const goToPage = (e, link) => {
 		e.preventDefault();
-		if (isDisable) { return; }
 		Router.push(router.route, link);
 	};
 
