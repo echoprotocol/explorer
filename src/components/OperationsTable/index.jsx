@@ -63,18 +63,11 @@ class OperationsTable extends React.Component {
 		const { query: search } = queryString.parseUrl(asPath);
 		const { query: prevSearch } = queryString.parseUrl(asPrevPath);
 
-		if (search.l && prevSearch.l !== search.l) {
-			await this.onChangeSizePerPage(parseInt(search.l, 10));
-			return;
-		}
 
-		if (search.p && prevSearch.p !== search.p) {
-			await this.onChangeCurrentPage(parseInt(search.p, 10));
-			return;
-		}
-
-		if (prevSearch.from !== search.from || prevSearch.to !== search.to) {
-			await this.onChangeFilters({ from: search.from, to: search.to });
+		if (prevSearch.l !== search.l || prevSearch.p !== search.p ||
+			prevSearch.from !== search.from || prevSearch.to !== search.to
+		) {
+			await this.onChangeOperationFilters(search);
 			return;
 		}
 
@@ -127,21 +120,8 @@ class OperationsTable extends React.Component {
 		}, DEBOUNCE_TIMEOUT);
 	}
 
-	async onChangeFilters(filters = { from: '', to: '' }) {
-		await this.props.onChangeFilter(filters);
-		this.props.onLoadMoreHistory();
-	}
-
-	async onChangeCurrentPage(value) {
-		await this.props.onChangeCurrentPage(value);
-		this.props.onLoadMoreHistory();
-	}
-
-	async onChangeSizePerPage(value) {
-		await Promise.all([
-			this.props.onChangeSizePerPage(value),
-			this.props.onChangeCurrentPage(1),
-		]);
+	async onChangeOperationFilters(filters) {
+		await this.props.initData(filters);
 		this.props.onLoadMoreHistory();
 	}
 
@@ -292,8 +272,7 @@ class OperationsTable extends React.Component {
 
 OperationsTable.propTypes = {
 	filterAndPaginateData: PropTypes.object.isRequired,
-	onChangeCurrentPage: PropTypes.func,
-	onChangeSizePerPage: PropTypes.func,
+	initData: PropTypes.func.isRequired,
 	onChangeFilter: PropTypes.func,
 	onLoadMoreHistory: PropTypes.func,
 
@@ -312,8 +291,6 @@ OperationsTable.defaultProps = {
 	loading: false,
 	isTransaction: false,
 
-	onChangeCurrentPage: () => {},
-	onChangeSizePerPage: () => {},
 	onChangeFilter: () => {},
 	onLoadMoreHistory: () => {},
 };

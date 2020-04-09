@@ -8,8 +8,7 @@ export default connect(
 		filterAndPaginateData: state.grid.get(props.gridName),
 	}),
 	(dispatch, props) => ({
+		initData: (params) => dispatch(GridActions.initData(props.gridName, params)),
 		onChangeFilter: (params) => dispatch(GridActions.setFilter(props.gridName, params)),
-		onChangeCurrentPage: (value) => dispatch(GridActions.setPage(props.gridName, value)),
-		onChangeSizePerPage: (value) => dispatch(GridActions.setPageSize(props.gridName, value)),
 	}),
 )(OperationsTable);
