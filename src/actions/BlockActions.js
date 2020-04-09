@@ -25,6 +25,7 @@ import GlobalActions from './GlobalActions';
 import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
+import { getCurrentFrozenFunds } from '../services/queries/balance';
 
 /**
  *
@@ -508,4 +509,14 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		return false;
 	}
 
+};
+
+export const getFrozenData = () => async (dispatch) => {
+	const from = '2020-01-04T11:48:27.075Z';
+	const interval = 24 * 60 * 60;
+	const balances = await getCurrentFrozenFunds(from, interval);
+	const { currentFrozenData, frozenData } = balances.data.getFrozenBalancesData;
+	const historyFrozenData = frozenData.map((el) => el.frozenSums);
+	dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: currentFrozenData }));
+	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
 };
