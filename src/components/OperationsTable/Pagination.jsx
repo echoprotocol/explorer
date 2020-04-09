@@ -23,9 +23,16 @@ const OperationsPagination = ({
 	const [inputCurrentPage, setCurrentPage] = useState(currentPage);
 	const [totalPages, setTotalPages] = useState(Math.ceil(totalDataSize / sizePerPage));
 
-	const nextPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage + 1, from, to });
-	const prevPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage - 1, from, to });
-	const lastPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: totalPages, from, to });
+	const nextPageLink = URLHelper.createOperationUrlByFilter(pathname, query, {
+		p: currentPage + 1, from, to, l: sizePerPage,
+	});
+
+	const prevPageLink = URLHelper.createOperationUrlByFilter(pathname, query, {
+		p: currentPage - 1, from, to, l: sizePerPage,
+	});
+	const lastPageLink = URLHelper.createOperationUrlByFilter(pathname, query, {
+		p: totalPages, from, to, l: sizePerPage,
+	});
 
 	const onChangeInputCurrentPage = (value) => setCurrentPage(value);
 
@@ -36,7 +43,9 @@ const OperationsPagination = ({
 		if (!TypesHelper.isStringNumber(value)) { return; }
 		const newNumberPage = parseInt(value, 10);
 		if (!(newNumberPage > 0 && newNumberPage < totalPages + 1)) { return; }
-		const linkToPage = URLHelper.createOperationUrlByFilter(router.pathname, router.query, { p: newNumberPage, from, to });
+		const linkToPage = URLHelper.createOperationUrlByFilter(router.pathname, router.query, {
+			p: newNumberPage, from, to, l: sizePerPage,
+		});
 		Router.push(router.route, linkToPage);
 	};
 

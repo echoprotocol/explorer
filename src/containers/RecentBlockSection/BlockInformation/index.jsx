@@ -16,6 +16,8 @@ export default withRouter(connect(
 		latestBlock: state.round.get('latestBlock'),
 	}),
 	(dispatch) => ({
+		onSetFilter: (params) => dispatch(GridActions.setFilter(BLOCK_GRID, params)),
+		onSetPage: (newPage) => dispatch(GridActions.setPage(BLOCK_GRID, newPage)),
 		onChangeFilter: (filters) => dispatch(GridActions.initData(BLOCK_GRID, filters)),
 		setTotalDataSize: (value) => dispatch(GridActions.setTotalDataSize(BLOCK_GRID, value)),
 		getBlockInfo: (round) => dispatch(getBlockInformation(round)),

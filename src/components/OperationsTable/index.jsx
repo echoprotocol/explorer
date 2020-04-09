@@ -40,6 +40,7 @@ class OperationsTable extends React.Component {
 
 		// eslint-disable-next-line react/no-did-mount-set-state
 		this.setState({
+			isFilterOpen: !!this.props.filterAndPaginateData.get('filters').from || !!this.props.filterAndPaginateData.get('filters').to,
 			from: this.props.filterAndPaginateData.get('filters').from,
 			to: this.props.filterAndPaginateData.get('filters').to,
 		});
