@@ -23,6 +23,8 @@ class OperationsTable extends React.Component {
 		super(props);
 
 		this.state = {
+			from: '',
+			to: '',
 			showedOperations: [],
 			airRows: [],
 			isFilterOpen: false,
@@ -35,6 +37,11 @@ class OperationsTable extends React.Component {
 	componentDidMount() {
 		const { showedOperations } = this.state;
 		const queryProps = queryString.parse(this.props.router.asPath.split('?')[1]);
+
+		this.setState({
+			from: this.props.filterAndPaginateData.get('filters').from,
+			to: this.props.filterAndPaginateData.get('filters').to,
+		});
 
 		if (!queryProps.op) {
 			return;
@@ -90,8 +97,9 @@ class OperationsTable extends React.Component {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.props.onChangeFilter(filters);
+		this.setState({ [name]: value });
 		this.timeoutSearch = setTimeout(() => {
+			this.props.onChangeFilter(filters);
 			this.props.onLoadMoreHistory();
 		}, DEBOUNCE_TIMEOUT);
 
@@ -104,8 +112,9 @@ class OperationsTable extends React.Component {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.props.onChangeFilter(filters);
+		this.setState({ [name]: '' });
 		this.timeoutSearch = setTimeout(() => {
+			this.props.onChangeFilter(filters);
 			this.props.onLoadMoreHistory();
 		}, DEBOUNCE_TIMEOUT);
 	}
@@ -194,6 +203,7 @@ class OperationsTable extends React.Component {
 	}
 
 	renderTable() {
+		const { from, to } = this.state;
 		const {
 			isTransaction, label, loading, router,
 		} = this.props;
@@ -210,8 +220,8 @@ class OperationsTable extends React.Component {
 					<FilterBtn onClick={this.toggleFilter} />
 				</TableLabel>
 				<OperationsFilter
-					from={filterAndPaginateData.filters.from}
-					to={filterAndPaginateData.filters.to}
+					from={from}
+					to={to}
 					open={isFilterOpen}
 					onChangeFilter={(e) => this.onChangeFilter(e)}
 					onClearFilter={(name) => this.onClearFilter(name)}

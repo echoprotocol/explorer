@@ -11,6 +11,9 @@ import Input from '../Input';
 import { KEY_CODE_ENTER } from '../../constants/GlobalConstants';
 import TypesHelper from '../../helpers/TypesHelper';
 import URLHelper from '../../helpers/URLHelper';
+import Button from '../Button';
+import { NextButton } from '../Button/NextButton';
+import { PrevButton } from '../Button/PrevButton';
 
 
 const OperationsPagination = ({
@@ -81,34 +84,24 @@ const OperationsPagination = ({
 				<div className="pg-caption">out of <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}>{totalPages}</a></div>
 			</div>
 			<div className="pg-nav-3">
-				<Link href={router.route} >
-					<a
-						href={prevPageLink}
-						onClick={(e) => goToPage(e, prevPageLink, currentPage === 1)}
-						className={cn('pg-arrow', 'primary-btn', { disabled: currentPage === 1 })}
-					>
-						<svg width="4" height="5" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M4 2.5L0 5V0l4 2.5z" />
-						</svg>
-						<div className="pg-arrow-caption">
-							Previous
-						</div>
+				{currentPage === 1 ? (
+					<Button className="primary-btn" disabled>
+						<PrevButton />
+					</Button>
+				) : (
+					<a href={prevPageLink} onClick={(e) => goToPage(e, prevPageLink)} className={cn('pg-arrow', 'primary-btn')}>
+						<PrevButton />
 					</a>
-				</Link>
-				<Link href={router.route}>
-					<a
-						href={nextPageLink}
-						onClick={(e) => goToPage(e, nextPageLink, totalPages === currentPage)}
-						className={cn('pg-arrow', 'primary-btn', { disabled: totalPages === currentPage })}
-					>
-						<div className="pg-arrow-caption">
-							Next
-						</div>
-						<svg width="4" height="5" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M4 2.5L0 5V0l4 2.5z" />
-						</svg>
+				)}
+				{totalPages === currentPage ? (
+					<Button className="primary-btn" disabled>
+						<NextButton />
+					</Button>
+				) : (
+					<a href={nextPageLink} onClick={(e) => goToPage(e, nextPageLink)} className={cn('pg-arrow', 'primary-btn')}>
+						<NextButton />
 					</a>
-				</Link>
+				)}
 			</div>
 		</div>
 	);

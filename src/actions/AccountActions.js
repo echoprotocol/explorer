@@ -15,7 +15,7 @@ import TransactionActions from './TransactionActions';
 import { BridgeService } from '../services/BridgeService';
 import { getBalances } from '../services/queries/balance';
 import { getHistory } from '../services/queries/history';
-import { ACCOUNT_GRID } from '../constants/TableConstants';
+import { ACCOUNT_GRID, SIZES_PER_PAGE } from '../constants/TableConstants';
 import GridActions from './GridActions';
 
 class AccountActions extends BaseActionsClass {
@@ -150,6 +150,8 @@ class AccountActions extends BaseActionsClass {
 				const subject = accountId;
 				const relationSubjects = [];
 
+				let count = queryData.sizePerPage;
+
 				const addRelationSubjects = async (objectId) => {
 					if (!objectId) { return; }
 					if (validators.isContractId(objectId)) {
@@ -160,6 +162,9 @@ class AccountActions extends BaseActionsClass {
 							account = await echo.api.getAccountByName(objectId);
 							if (account && accountId !== account.id) {
 								relationSubjects.push(account.id);
+							}
+							if (accountId === account.id) {
+								count = SIZES_PER_PAGE[SIZES_PER_PAGE.length - 1];
 							}
 							// eslint-disable-next-line no-empty
 						} catch (err) {}
@@ -173,7 +178,7 @@ class AccountActions extends BaseActionsClass {
 					subject,
 					relationSubjects,
 					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
-					count: queryData.sizePerPage,
+					count,
 					operations: Object.keys(OPERATIONS_IDS),
 				});
 				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
