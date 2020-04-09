@@ -663,16 +663,6 @@ const Operations = {
 			asset: null,
 		},
 	},
-	evm_address_register: {
-		value: OPERATIONS_IDS.EVM_ADDRESS_REGISTER,
-		name: 'Evm address register',
-		options: {
-			from: 'owner',
-			subject: ['evm_address'],
-			value: 'amount',
-			asset: null,
-		},
-	},
 };
 
 export const accountOperations = [
