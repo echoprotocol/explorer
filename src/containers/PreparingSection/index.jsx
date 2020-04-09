@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PreparingBlock from './PreparingBlock';
 import Block1 from './Block1';
@@ -23,10 +22,4 @@ PreparingSection.propTypes = {
 	preparingBlock: PropTypes.number.isRequired,
 };
 
-export default connect(
-	(state) => ({
-		stepProgress: state.round.get('stepProgress'),
-		preparingBlock: state.round.get('preparingBlock'),
-	}),
-	() => ({}),
-)(PreparingSection);
+export default PreparingSection;
