@@ -7,18 +7,17 @@ import Block2 from './Block2';
 import Block3 from './Block3';
 import Block4 from './Block4';
 
-const PreparingSection = (props) => {
-	// const [time, setTime] = useState(0);
-	const { latestBlock, blocks } = props;
-	const lastTimestamp = Date.parse(blocks.getIn([latestBlock, 'timestamp']));
+
+const calculateTimestamp = (latestBlock, blocks) => {
+	const lastTimestamp = blocks.getIn([latestBlock, 'timestamp']);
 	const GMT = new Date().getTimezoneOffset();
-	const diff = (Date.now() - lastTimestamp) + (GMT * 60 * 1000);
-	let a = diff;
-	setInterval(() => {
-		console.log(111)
-		a += 1000;
-		console.log(a)
-	}, 1000);
+	const diff = (Date.now() - Date.parse(lastTimestamp)) + (GMT * 60 * 1000);
+	return Math.floor(diff / 1000);
+}
+
+const PreparingSection = (props) => {
+	const { latestBlock, blocks } = props;
+	const diff = calculateTimestamp(latestBlock, blocks)
 	return (
 		<div className="preparing-wrap">
 			<PreparingBlock><Block1 /></PreparingBlock>
