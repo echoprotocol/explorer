@@ -31,8 +31,6 @@ class StatisticsActionsClass extends BaseActionsClass {
 			dispatch(this.updateDelegationRate(getDelegationPercent));
 			dispatch(this.updateDecentralizationRate(getDecentralizationRate));
 			dispatch(this.updateOperationCount(getOperationCountHistory));
-
-			dispatch(this.updateDecentralizationRate(getDecentralizationRate));
 		};
 	}
 	/**
