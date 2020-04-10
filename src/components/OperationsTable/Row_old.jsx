@@ -8,7 +8,7 @@ import { validators } from 'echojs-lib';
 import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
-import OperationInfo from '../TransactionInfo/OperationInfo';
+import OperationInfo from '../TransactionInfo/OperationInfo_old';
 import ObjectInfo from '../TransactionInfo/ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';

@@ -11,14 +11,12 @@ import AuthorityRow from './AuthorityRow';
 
 const OperationInfoRow = ({
 	title, description, account, id, tooltip, authority,
-}) => {
-	console.log(authority);
-	return (
-		<div className="od-row">
-			<div className="od-col">{title}</div>
-			<div className="od-col">
-				{(description && !tooltip) && <span className="description"><span className="description-main">{description}</span></span>}
-				{(description && tooltip) &&
+}) => (
+	<div className="od-row">
+		<div className="od-col">{title}</div>
+		<div className="od-col">
+			{(description && !tooltip) && <span className="description"><span className="description-main">{description}</span></span>}
+			{(description && tooltip) &&
 				<span className="description">
 					<span className="description-main">
 						{description}
@@ -33,29 +31,23 @@ const OperationInfoRow = ({
 						<span className="description-secondary__value">1</span>
 					</span>
 				</span>}
-				{account &&
+			{account &&
 				<Link className="avatar-wrap" to={URLHelper.createUrlById(account.id)}>
 					<Avatar accountName={account.name} />
 					<span>{account.name}</span>
 				</Link>
-				}
-				{id &&
+			}
+			{id &&
 				<Link className="avatar-wrap" to={URLHelper.createUrlById(id)}>
 					{URLHelper.createUrlById(id)}
 				</Link>
-				}
-				{authority.length !== 0 &&
-				authority.map((item, idx) => {
-					if (idx === 0) {
-						return <AuthorityRow value={item.value} weight="1" withButton />;
-					}
-					return <AuthorityRow value={item.value} weight="1" />;
-				})
-				}
-			</div>
+			}
+			{authority.length !== 0 &&
+				authority.map((item) => <AuthorityRow value={item.value} weight="1" />)
+			}
 		</div>
-	);
-};
+	</div>
+);
 
 OperationInfoRow.propTypes = {
 	title: PropTypes.string.isRequired,
