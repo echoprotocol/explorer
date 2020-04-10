@@ -18,7 +18,7 @@ const LatestBlocksTable = memo(({ blocks, goToBlock }) => (
 					{ blocks.map((data) => (
 						<React.Fragment key={data.round}>
 							<Row
-								timestamp={data.timestamp}
+								date={data.date}
 								number={data.blockNumber}
 								age={data.time}
 								producer={data.producer}
@@ -33,7 +33,7 @@ const LatestBlocksTable = memo(({ blocks, goToBlock }) => (
 
 			</table>
 		</PerfectScrollbar>
-		{/*<ArrowBtn>View all Blocks</ArrowBtn>*/}
+		{/* <ArrowBtn>View all Blocks</ArrowBtn> */}
 	</div>
 ));
 

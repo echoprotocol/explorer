@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import moment from 'moment';
 import cn from 'classnames';
 
 import Avatar from '../../../components/Avatar';
@@ -9,7 +8,7 @@ import URLHelper from '../../../helpers/URLHelper';
 import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
-	number, age, producer, size, txs, onClick, timestamp,
+	number, age, producer, size, txs, onClick, date,
 }) => (
 	<React.Fragment>
 		<tr onClick={onClick} className={cn('view')}>
@@ -17,7 +16,7 @@ const OperationsRow = React.memo(({
 			<td className="number"><div className="td-in">{number}</div></td>
 			<td className="age">
 				<div className="td-in">
-					<span className="age-hint">{moment.utc(timestamp).local().format('DD MMM')},</span>
+					<span className="age-hint">{date},</span>
 					<span className="age-value">{age}</span>
 				</div>
 			</td>
@@ -42,7 +41,7 @@ OperationsRow.propTypes = {
 	producer: PropTypes.string.isRequired,
 	size: PropTypes.object.isRequired,
 	txs: PropTypes.number.isRequired,
-	timestamp: PropTypes.number.isRequired,
+	date: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
 };
 
