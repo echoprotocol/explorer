@@ -9,7 +9,11 @@ import Block4 from './Block4';
 const PreparingSection = (props) => (
 	<div className="preparing-wrap">
 		<PreparingBlock>
-			<Block1 stepProgress={props.stepProgress} preparingBlock={props.preparingBlock}	/>
+			<Block1
+				stepProgress={props.stepProgress}
+				preparingBlock={props.preparingBlock}
+				latestBlock={props.latestBlock}
+			/>
 		</PreparingBlock>
 		<PreparingBlock><Block2 /></PreparingBlock>
 		<PreparingBlock><Block3 /></PreparingBlock>
@@ -20,6 +24,7 @@ const PreparingSection = (props) => (
 PreparingSection.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
+	latestBlock: PropTypes.number.isRequired,
 };
 
 export default PreparingSection;
