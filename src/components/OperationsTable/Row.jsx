@@ -79,7 +79,8 @@ const OperationsRow = React.memo(({
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
 	// const operationsInfoData = type && transformOperationDataByType(type, operation);
-	const operationsInfoData = transformOperationDataByType('Account whitelist', operation);
+	const operationsInfoData = transformOperationDataByType('Issue asset', operation);
+
 	return (
 		<React.Fragment>
 			<tr

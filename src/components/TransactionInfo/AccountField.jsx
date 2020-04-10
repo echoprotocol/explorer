@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AuthorityRow = ({ value, weight, withButton }) => (
+const AccountField = ({ value, weight, withButton }) => (
 	<div className="account-field">
 		<div className="account-field__info">
 			<a href="" className="link">
@@ -20,14 +20,14 @@ const AuthorityRow = ({ value, weight, withButton }) => (
 	</div>
 );
 
-AuthorityRow.propTypes = {
+AccountField.propTypes = {
 	value: PropTypes.string.isRequired,
 	weight: PropTypes.string.isRequired,
 	withButton: PropTypes.bool,
 };
 
-AuthorityRow.defaultProps = {
+AccountField.defaultProps = {
 	withButton: false,
 };
 
-export default AuthorityRow;
+export default AccountField;

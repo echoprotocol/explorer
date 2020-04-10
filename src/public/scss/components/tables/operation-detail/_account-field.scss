@@ -1,0 +1,43 @@
+.account-field {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 15px;
+	background-color: $lightest-grey-bg;
+	border-radius: 4px;
+	&:not(:last-child) {
+		margin-bottom: 8px;
+	}
+}
+.account-field__info {
+	display: flex;
+	flex-direction: column;
+	margin-right: 20px;
+}
+.account-field__info-description {
+	margin-top: 8px;
+	color: $lightgrey;
+	span:nth-child(2) {
+		color: $grey;
+	}
+}
+.account-field__button {
+	@include inter-ui-regular;
+	background-color: transparent;
+	border: 1px solid $grey-mid;
+	padding: 0 10px;
+	height: 30px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: opacity $speed;
+	white-space: nowrap;
+	&:hover {
+		opacity: 0.7;
+	}
+	&:focus:not(:active) {
+		border: 1px solid $grey;
+	}
+	&:active {
+		opacity: 0.7;
+	}
+}
