@@ -89,7 +89,9 @@ const OperationsPagination = ({
 					onChange={(e) => onChangeInputCurrentPage(e.target.value)}
 					onKeyDown={(e) => onKeyPressInputCurrentPage(e, totalPages)}
 				/>
-				<div className="pg-caption">out of <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}>{totalPages}</a></div>
+				<div className="pg-caption">out of
+					{!totalPages ? <span> {totalPages}</span> : <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}> {totalPages}</a>}
+				</div>
 			</div>
 			<div className="pg-nav-3">
 				{!totalPages || currentPage === 1 ? (
