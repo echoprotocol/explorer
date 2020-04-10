@@ -15,13 +15,16 @@ const PreparingSection = (props) => (
 				latestBlock={props.latestBlock}
 			/>
 		</PreparingBlock>
-		<PreparingBlock><Block2 /></PreparingBlock>
+		<PreparingBlock>
+			<Block2 blocks={props.blocks} latestBlock={props.latestBlock} />
+		</PreparingBlock>
 		<PreparingBlock><Block3 /></PreparingBlock>
 		<PreparingBlock><Block4 /></PreparingBlock>
 	</div>
 );
 
 PreparingSection.propTypes = {
+	blocks: PropTypes.object.isRequired,
 	stepProgress: PropTypes.string.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
 	latestBlock: PropTypes.number.isRequired,
