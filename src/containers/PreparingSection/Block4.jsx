@@ -30,7 +30,7 @@ const Block4 = React.memo((props) => (
 	<React.Fragment>
 		<div className="preparing-head">
 			<OperationsBlockIcon />
-			<span className="preparing-caption accent">{FormatHelper.formatAmount(props.operationCount.get('total'))}</span>
+			<span className="preparing-caption accent">{FormatHelper.formatAmount(props.operationCount)}</span>
 			<Media queries={{
 				hd: '(max-width: 1280px)',
 				lg: '(max-width: 1000px)',
@@ -43,7 +43,7 @@ const Block4 = React.memo((props) => (
 						<LineChart
 							width={getChartWidth({ hd: matches.hd, lg: matches.lg, md: matches.md })}
 							height={20}
-							data={props.operationCount.get('data')}
+							data={props.operationCountRates}
 						>
 							<Line
 								dot={false}
@@ -64,7 +64,8 @@ const Block4 = React.memo((props) => (
 ));
 
 Block4.propTypes = {
-	operationCount: PropTypes.object.isRequired,
+	operationCountRates: PropTypes.array.isRequired,
+	operationCount: PropTypes.number.isRequired,
 };
 
 export default Block4;

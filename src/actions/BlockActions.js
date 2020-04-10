@@ -27,8 +27,6 @@ import TransactionActions from './TransactionActions';
 import GlobalReducer from '../reducers/GlobalReducer';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
-import { getDelegationRates } from '../services/queries/block';
-import { getOperationCountHistory } from '../services/queries/operation';
 
 /**
  *
@@ -199,41 +197,6 @@ export const toggleRewardDistribution = () => (dispatch, getState) => {
  */
 export const setLatestBlock = (latestBlock) => (dispatch) => {
 	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: latestBlock }));
-};
-
-/**
- *  @method updateOperationStatisticData
- *  @param {String} lastBlockTimestamp
- *
- * 	Set operation statistic from echodb to redux store
- */
-export const updateOperationStatisticData = (lastBlockTimestamp) => async (dispatch) => {
-	const result = {
-		total: 0,
-		ratesMap: [],
-	};
-
-	const momentTo = moment(lastBlockTimestamp);
-	const momentFrom = moment(momentTo).subtract(1, 'months');
-	const momentInterval = moment.duration(1, 'days');
-
-	try {
-		const operationObject = await getOperationCountHistory(
-			momentFrom.toISOString(),
-			momentTo.toISOString(),
-			momentInterval.as('seconds'),
-		);
-		result.total = operationObject.total;
-		result.ratesMap = operationObject.ratesMap;
-	} catch (error) {
-		//
-	}
-
-	const data = result.ratesMap.map(({ rate }) => ({ rate }));
-
-	const operationMap = Map({ total: result.total, data });
-
-	dispatch(RoundReducer.actions.set({ field: 'operationAverageCount', value: operationMap }));
 };
 
 /**
@@ -547,14 +510,4 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		return false;
 	}
 
-};
-
-export const getDelegationRate = () => async (dispatch) => {
-	const from = moment().subtract(1, 'month').toISOString();
-	const interval = moment.duration(1, 'day').as('second');
-	const delegationRates = await getDelegationRates(from, interval);
-	const { delegatePercent, ratesMap } = delegationRates.data.getDelegationPercent;
-	const historyRates = ratesMap.map((el) => ({ rate: el.rate }));
-	dispatch(BlockReducer.actions.set({ field: 'delegationRate', value: Number(delegatePercent.toFixed(2)) }));
-	dispatch(BlockReducer.actions.set({ field: 'delegationRates', value: historyRates }));
 };

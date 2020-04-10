@@ -14,10 +14,6 @@ const DEFAULT_FIELDS = Map({
 	latestBlock: 0,
 	blockTime: 0,
 	blockReward: 0,
-	operationAverageCount: Map({
-		total: 0,
-		data: [],
-	}),
 	averageTransactions: Map({
 		transactions: new Map({
 			value: 0,
