@@ -1,32 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
+import BackwardsLink from '../../components/BackwardLink';
 
 const InnerHeader = React.memo(({
-	children, title, className, withTopPanel,
+	children, title, className, returnFunction,
 }) => (
-	<div className={`inner-header ${className}`}>
-		<div className="inner-header__title h2">{title}</div>
-		{withTopPanel ?
-			<div className="inner-header__top-panel">
-				{children}
-			</div> :
-			<React.Fragment>{ children }</React.Fragment>
-		}
+	<div className={cn('inner-header', className)}>
+		{children &&
+		<div className="inner-header-line">
+			{ children }
+		</div>}
+		<div className="inner-header-line">
+			{returnFunction && <BackwardsLink returnFunction={returnFunction} />}
+			<div className="inner-header-title">
+				{title}
+			</div>
+		</div>
 	</div>
 ));
 
 
 InnerHeader.propTypes = {
-	children: PropTypes.node,
-	title: PropTypes.string,
+	title: PropTypes.string.isRequired,
 	className: PropTypes.string,
-	withTopPanel: PropTypes.bool,
+	children: PropTypes.node,
+	returnFunction: PropTypes.func,
 };
 
 InnerHeader.defaultProps = {
 	children: null,
-	title: '',
 	className: '',
-	withTopPanel: false,
+	returnFunction: null,
 };
 export default InnerHeader;

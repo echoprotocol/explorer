@@ -15,11 +15,11 @@
 		left: 0;
 		top: 0;
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			padding-left: 50px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			padding-left: 25px;
 			padding-top: 25px;
 		}
@@ -51,7 +51,7 @@
 				width: 280px;
 			}
 
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				display: none;
 			}
 		}
@@ -62,7 +62,7 @@
 			align-items: center;
 			margin-top: -90px;
 
-			@include max-vw(999) {
+			@include max-vw($res-1000) {
 				margin-top: 0;
 			}
 
@@ -75,11 +75,11 @@
 					font-size: 150px;
 				}
 
-				@include max-vw(999) {
+				@include max-vw($res-1000) {
 					font-size: 140px;
 				}
 
-				@include max-vw(499) {
+				@include max-vw($res-500) {
 					font-size: 65px;
 					margin-bottom: 10px;
 				}
@@ -96,7 +96,7 @@
 					font-size: 18px;
 				}
 
-				@include max-vw(999) {
+				@include max-vw($res-1000) {
 					font-size: 15px;
 				}
 			}
@@ -125,7 +125,7 @@
 				opacity: 0.7;
 			}
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				font-size: 13px;
 			}
 		}
@@ -149,7 +149,7 @@
 					@include inter-ui-medium;
 					line-height: 32px;
 
-					@include max-vw(499) {
+					@include max-vw($res-500) {
 						font-size: 20px;
 						padding-right: 15px;
 						padding-left: 15px;

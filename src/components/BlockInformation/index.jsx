@@ -8,7 +8,6 @@ import BN from 'bignumber.js';
 
 import OperationsTable from '../../containers/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
-import BackwardsLink from '../../components/BackwardLink';
 import ViewListPopover from '../ViewListPopover';
 import TableLabel from '../TableLabel';
 import InnerHeader from '../InnerHeader';
@@ -142,8 +141,7 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<InnerHeader title={`Block ${formattedBlockNumber}`} withTopPanel>
-					<BackwardsLink returnFunction={() => this.returnFunction()} />
+				<InnerHeader returnFunction={() => this.returnFunction()} title={`Block ${formattedBlockNumber}`}>
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
 						returnFunction={() => this.returnFunction()}
@@ -229,10 +227,9 @@ class BlockInformation extends React.Component {
 	render() {
 		const { blockInformation, latestBlock } = this.props;
 		return (
-			<div className="inner-information-container">
-				{
-					!blockInformation.get('blockNumber') || this.state.loader ?
-						this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
+			<div className="inner-container">
+				{ !blockInformation.get('blockNumber') || this.state.loader ?
+					this.renderLoader() : this.renderBlockInformation(blockInformation, latestBlock)
 				}
 			</div>
 		);

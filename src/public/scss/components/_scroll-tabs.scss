@@ -1,6 +1,9 @@
 .horizontal-tab-panel {
 	position: relative;
 
+	&.server-slick-track .slick-track {
+		width: 800px !important;
+	}
 	.menu-wrapper--inner {
 		@include min-vw(1000) {
 			transform: translate3d(0, 0, 0) !important;
@@ -24,7 +27,7 @@
 	.slick-slider {
 		max-width: 798px;
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			width: auto;
 		}
 	}

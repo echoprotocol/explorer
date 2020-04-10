@@ -19,13 +19,12 @@
 }
 
 .table-label {
-	padding-left: 30px;
 	font-size: 16px;
 	line-height: 27px;
-	font-weight: 700;
 	color: #130d32;
 	padding: 0 0 0 30px;
-
+	letter-spacing: 0.02em;
+	@include inter-semibold();
 	@include max-vw(1534) {
 		padding: 0 0 0 20px;
 	}
@@ -35,7 +34,7 @@
 	@include max-vw(767) {
 		padding: 0 0 0 20px;
 	}
-	@include max-vw(499) {
+	@include max-vw(500) {
 		padding: 0 0 0 15px;
 	}
 }

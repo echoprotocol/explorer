@@ -1,2 +1,2 @@
-export { default } from '../containers/RecentBlockSection/RecentBlockTable';
+export { default } from '../containers/MainPage';
 

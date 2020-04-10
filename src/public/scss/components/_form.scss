@@ -85,7 +85,7 @@
 		.row {
 			display: flex;
 
-			@include max-vw(767) {
+			@include max-vw($res-768) {
 				flex-direction: column;
 			}
 
@@ -103,11 +103,11 @@
 				max-width: 467px;
 				margin-left: auto;
 
-				@include max-vw(999) {
+				@include max-vw($res-1000) {
 					max-width: 317px;
 				}
 
-				@include max-vw(767) {
+				@include max-vw($res-768) {
 					max-width: none;
 				}
 			}

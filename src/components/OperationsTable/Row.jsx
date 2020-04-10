@@ -148,6 +148,7 @@ const OperationsRow = React.memo(({
 				}
 				<td />
 			</tr>
+
 			{ active &&
 				<tr className="fold">
 					<td />

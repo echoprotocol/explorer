@@ -1,7 +1,6 @@
 import App from 'next/app';
 import Router, { withRouter } from 'next/router';
 import classnames from 'classnames';
-
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
@@ -10,19 +9,16 @@ import MobileDetect from 'mobile-detect';
 import { Helmet } from 'react-helmet';
 import React from 'react';
 import configureStore from '../store';
-
 import '../public/loader';
 import Header from '../containers/Header';
 import Modal from '../containers/Modals';
-
-import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
+import { CONTRACT_DETAILS_NUMBERS_TAB, ROUTES_WITH_COLUMN_DIRECTION } from '../constants/RouterConstants';
 import Footer from '../containers/Footer';
-import RecentBlockSidebar from '../containers/RecentBlockSection/RecentBlockSidebar';
+import Sidebar from '../containers/Sidebar';
 import GlobalActions from '../actions/GlobalActions';
 import { disconnect, serverConnect } from '../actions/SocketActions';
 import ErrorScreen from '../components/Error/ErrorScreen';
 import NotFoundScreen from '../components/Error/NotFoundScreen';
-import Toast from '../components/Toast';
 import InternetPopup from '../containers/InternetPopup';
 import Loader from '../components/Loader';
 
@@ -34,17 +30,14 @@ class ExplorerApp extends App {
 		});
 		this.props.store.dispatch(GlobalActions.init());
 	}
-
 	componentWillUnmount() {
 		this.props.store.dispatch(disconnect());
 	}
-
 	renderModals() {
 		return (
 			<Modal />
 		);
 	}
-
 	renderMeta() {
 		const title = this.props.store.getState().global.get('title');
 		return (
@@ -68,24 +61,20 @@ class ExplorerApp extends App {
 			/>
 		);
 	}
-
 	renderErrorScreen(error) {
 		return (
 			<ErrorScreen error={error} />
 		);
 	}
-
 	renderNotFound() {
 		const resetErrorPath = () => this.props.store.dispatch(GlobalActions.toggleErrorPath(false));
 		return (
 			<NotFoundScreen resetErrorPath={() => resetErrorPath()} />
 		);
 	}
-
 	render() {
 		const {
 			router: { pathname },
-			isShowModal,
 			Component, pageProps, store,
 		} = this.props;
 		const parsedLocation = pathname.split('/')[1];
@@ -95,70 +84,64 @@ class ExplorerApp extends App {
 		const errorPath = store.getState().global.get('errorPath');
 		const clientConnected = store.getState().global.get('connected');
 		const connectedServer = store.getState().global.get('connectedServer');
-
 		if (error || errorScreen) {
 			return this.renderErrorScreen(error);
 		}
-
 		if ((typeof window === 'undefined' && !connectedServer) || (typeof window !== 'undefined' && !clientConnected && !connectedServer)) {
 			return <Loader global />;
 		}
-
 		if (errorPath) {
 			return this.renderNotFound();
 		}
-
 		return (
 			<Provider store={store}>
-				<div>
+				<React.Fragment>
 					{this.renderMeta()}
 					{this.renderModals()}
-					<div className={classnames('wrapper', { 'wrapper-min': isShowModal })}>
-						<Header />
-						<div className="recent-block-section">
-							<div
-								className={classnames('wrap', { full })}
-							>
-								<Component {...pageProps} />
-								<RecentBlockSidebar />
+					<Header />
+					{ ROUTES_WITH_COLUMN_DIRECTION.includes(pathname) ?
+						<React.Fragment>
+							<div className="wrap">
+								<Sidebar />
 							</div>
-						</div>
-						<Footer />
-						<Toast />
-						<InternetPopup />
-					</div>
-				</div>
+							<Component {...pageProps} />
+							<Footer />
+						</React.Fragment> :
+						<React.Fragment>
+							<div className={classnames('wrap', 'flex', { full })}>
+								<Component {...pageProps} />
+								<Sidebar pinned withFooter />
+							</div>
+							<Footer />
+						</React.Fragment>
+					}
+					<InternetPopup />
+				</React.Fragment>
 			</Provider>
 		);
 	}
 
 }
-
 ExplorerApp.propTypes = {
 	router: PropTypes.object,
 	store: PropTypes.object.isRequired,
 };
-
 ExplorerApp.defaultProps = {
 	router: {},
 };
-
 ExplorerApp.getInitialProps = async ({ Component, ctx }) => {
 	let pageProps = {};
 	if (ctx.isServer) {
 		const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
 		const isMobile = !!(new MobileDetect(userAgent)).mobile();
-
 		await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
 		await ctx.store.dispatch(serverConnect());
 		if (Component.getInitialProps) {
 			pageProps = await Component.getInitialProps(ctx);
 		}
-
 	}
 	return { pageProps };
 };
-
 const withReduxJob = withRedux(
 	(initialState) => configureStore(initialState),
 	{
@@ -166,5 +149,4 @@ const withReduxJob = withRedux(
 		deserializeState: (state = serialize({})) => deserialize(state),
 	},
 );
-
 export default withRouter(withReduxJob(ExplorerApp));

@@ -11,12 +11,12 @@
 		border-bottom: 1px solid rgba(#707070, 0.2);
 		padding: 20px 10px 10px 0px;
 
-		@include max-vw(767) {
+		@include max-vw($res-768) {
 			flex-direction: column;
 			align-items: start;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			padding: 3px 10px 29px 11px;
 		}
 
@@ -28,7 +28,7 @@
 			color: #130d32;
 			letter-spacing: 0.55px;
 
-			@include max-vw(499) {
+			@include max-vw($res-500) {
 				margin-bottom: 35px;
 			}
 		}

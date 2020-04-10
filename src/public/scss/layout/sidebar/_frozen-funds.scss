@@ -1,0 +1,78 @@
+.pinned {
+	.frozen-funds-wrap {
+		margin-bottom: 20px;
+	}
+	.frozen-funds-block-info {
+		justify-content: space-between;
+	}
+}
+.sidebar:not(.pinned) {
+	.frozen-funds-wrap {
+		display: flex;
+		min-height: 40px;
+		margin-bottom: 3px;
+	}
+}
+.frozen-funds-wrap {
+	@include max-vw($res-500) {
+		flex-direction: column;
+		height: auto;
+	}
+	& + .sidebar-element-link {
+		margin-top: 5px;
+		@include max-vw($res-1280) {
+			margin-top: 15px;
+		}
+	}
+	.users-amount {
+		margin-right: 10px;
+		@include max-vw($res-1600) {
+			margin-right: 8px;
+		}
+		@include max-vw($res-500) {
+			margin-right: 5px;
+		}
+	}
+	.comitee-amount,
+	.users-amount {
+		display: flex;
+		align-items: center;
+		font-size: 11px;
+		line-height: 13px;
+		letter-spacing: 0.02em;
+		color: $explorer-black;
+		white-space: nowrap;
+		@include inter-medium();
+	}
+	.users-amount-value,
+	.comitee-amount-value {
+		margin-right: 4px;
+		max-width: 92px;
+		@include text-overflow();
+		@include max-vw($res-1400) {
+			max-width: 80px;
+		}
+		@include max-vw($res-1280) {
+			max-width: 400px;
+		}
+		@include max-vw($res-500) {
+			max-width: 80px;
+		}
+	}
+	.users-amount-coin,
+	.comitee-amount-coin {
+		color: $blue;
+	}
+	.sidebar-element-block {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+}
+
+.frozen-funds-block-info {
+	margin-top: 3px;
+	display: flex;
+	align-items: center;
+	height: 20px;
+}

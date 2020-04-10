@@ -1,5 +1,5 @@
 body {
-	letter-spacing: 0.025em;
+	letter-spacing: 0.02em;
 	color: $explorer-black;
 	font-family: "inter";
 }
@@ -85,12 +85,12 @@ a {
 	color: #d37e4a;
 }
 
-@media (max-width: 499px) and (-webkit-min-device-pixel-ratio: 0) {
+@media (max-width: 500px) and (-webkit-min-device-pixel-ratio: 0) {
 	.no-wrap {
 		white-space: nowrap;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		select,
 		textarea,
 		input {
@@ -108,22 +108,6 @@ a {
 	background-position: center;
 	background-repeat: no-repeat;
 	animation: spin 1s infinite;
-
-	@keyframes spin {
-		0% {
-			-webkit-transform: rotate(0deg);
-			-ms-transform: rotate(0deg);
-			-o-transform: rotate(0deg);
-			transform: rotate(0deg);
-		}
-
-		100% {
-			-webkit-transform: rotate(360deg);
-			-ms-transform: rotate(360deg);
-			-o-transform: rotate(360deg);
-			transform: rotate(360deg);
-		}
-	}
 }
 
 .progress-render {
@@ -147,11 +131,11 @@ a {
 		padding-left: 30px;
 	}
 
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding-left: 20px;
 	}
 
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		padding-left: 15px;
 	}
 }

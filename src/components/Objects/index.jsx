@@ -78,7 +78,7 @@ class Objects extends React.Component {
 			base0F: '#cc6633',
 		};
 		return (
-			<div className="inner-information-container object-view">
+			<div className="inner-container object-view">
 				<InnerHeader title={`Object ${QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1])}`} />
 				{error ?
 					<div className="json-tree-container">

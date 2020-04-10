@@ -1,6 +1,7 @@
 @import "helpers/variables";
 @import "helpers/animations";
 @import "helpers/mixins";
+@import "helpers/typography";
 @import "helpers/table-helper";
 
 @import "base/normalize";
@@ -15,10 +16,15 @@
 @import "vendors/input-semantic-ui";
 @import "vendors/perfect-scrollbar";
 
-@import "layout/header";
+@import "layout/header/header";
+@import "layout/header/nav-tabs";
+@import "layout/header/preparing-section";
 @import "layout/footer";
-@import "layout/preparing-section";
-@import "layout/recent-block-section";
+@import "layout/sidebar/sidebar";
+@import "layout/sidebar/sidebar-element";
+@import "layout/sidebar/total-supply";
+@import "layout/sidebar/blockchain-rates";
+@import "layout/sidebar/frozen-funds";
 @import "layout/inner-block-information";
 @import "layout/transactions-info-table";
 @import "layout/object-view-section";
@@ -26,7 +32,6 @@
 @import "layout/account-asset";
 @import "layout/modals";
 @import "layout/transaction-component";
-@import "layout/recent-block-sidebar";
 
 @import "pages/main-page";
 @import "pages/contract-page";
@@ -36,17 +41,19 @@
 @import "pages/404";
 @import "pages/verify-contract-page";
 
-@import "components/table";
 @import "components/input-search-block";
 @import "components/input/input-wrapper";
 @import "components/input/clear-btn";
 @import "components/tooltip";
+@import "components/tooltip-icon";
 @import "components/form";
+@import "components/loaders";
 @import "components/breadcrumbs";
 @import "components/internet-popup";
 @import "components/block-navigation";
 @import "components/buttons/btn";
 @import "components/buttons/primary-btn";
+@import "components/buttons/arrow-btn";
 @import "components/buttons/action-button";
 @import "components/buttons/text-button";
 @import "components/buttons/copy-button";
@@ -59,7 +66,7 @@
 @import "components/select-input";
 @import "components/checkbox";
 @import "components/avatar";
-@import "components/operation-detail-table";
+
 @import "components/token-transfer-table";
 @import "components/node-map";
 @import "components/view-list-container";
@@ -67,6 +74,8 @@
 @import "components/inner-header";
 @import "components/block-description";
 
+@import "components/tables/main-page-table";
+@import "components/tables/operation-detail-table";
 @import "components/tables/operations-table/operations-table";
 @import "components/tables/operations-table/operations-filter";
 @import "components/tables/operations-table/operations-pagination";

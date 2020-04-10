@@ -7,23 +7,6 @@
 	@include table-air();
 	@include table-avatar();
 	@include table-vertical-scroll();
-	.load-more-container {
-		position: absolute;
-		right: 0;
-		left: 0;
-		bottom: 0;
-		top: 36px;
-		height: auto;
-		background-color: rgba(255, 255, 255, 0.3);
-		z-index: 1;
-		padding: 0;
-		align-items: center;
-		margin: 0;
-	}
-	table {
-		margin-bottom: 40px;
-		position: relative;
-	}
 	thead {
 		border-top: 1px solid $grey-mid;
 	}
@@ -148,6 +131,7 @@
 		}
 	}
 	.time {
+		width: 130px;
 		.td-in {
 			color: $blue;
 			white-space: nowrap;
