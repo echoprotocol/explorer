@@ -20,11 +20,11 @@ const HeaderContainer = React.memo(({
 				hints={hints}
 				getHints={getHints}
 			/>
-				<PreparingSection
-					stepProgress={stepProgress}
-					preparingBlock={preparingBlock}
-					latestBlock={latestBlock}
-				/>
+			<PreparingSection
+				stepProgress={stepProgress}
+				preparingBlock={preparingBlock}
+				latestBlock={latestBlock}
+			/>
 		</div>
 	</div>
 ));

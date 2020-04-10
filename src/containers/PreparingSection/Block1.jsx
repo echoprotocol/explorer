@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NextBlockIcon } from '../../components/Icons/HeaderIcons';
 import InfoTooltip from '../../components/InfoTooltip';
-import PropTypes from 'prop-types';
 import { rounderSteps } from '../../constants/RoundConstants';
 
 const getStatus = (nodeStatus) => nodeStatus && rounderSteps[nodeStatus].title;
@@ -26,6 +26,6 @@ Block1.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
 	latestBlock: PropTypes.number.isRequired,
-}
+};
 
 export default Block1;

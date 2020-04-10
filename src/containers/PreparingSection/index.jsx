@@ -22,8 +22,9 @@ const PreparingSection = (props) => (
 );
 
 PreparingSection.propTypes = {
-			stepProgress: PropTypes.string.isRequired,
-		preparingBlock: PropTypes.number.isRequired,
-		latestBlock: PropTypes.number.isRequired,
-}
+	stepProgress: PropTypes.string.isRequired,
+	preparingBlock: PropTypes.number.isRequired,
+	latestBlock: PropTypes.number.isRequired,
+};
+
 export default PreparingSection;
