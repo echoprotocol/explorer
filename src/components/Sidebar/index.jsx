@@ -20,12 +20,7 @@ const Sidebar = React.memo((props) => {
 	useEffect(() => {
 		const subscribe = async () => {
 			const newBlock = await subscribeNewBlock();
-			const nextUpdate = () => console.log(1134653);
-			// const nextUpdate = ({ data: { newBlock: block } }) => props.updateFrozenBalances(block);
-			// console.log(333)
-			// console.log(newBlock)
-			// props.getFrozenBalances();
-
+			const nextUpdate = ({ data: { newBlock: block } }) => props.updateFrozenBalances(block);
 
 			setBlockSubscriber(newBlock.subscribe({
 				next: nextUpdate.bind(this),
@@ -44,7 +39,6 @@ const Sidebar = React.memo((props) => {
 			}
 		};
 	});
-	console.log(currentFrozenData, frozenData)
 	return (
 		<div className={cn('sidebar', { pinned })}>
 			<SidebarElement title="Total supply">
@@ -69,7 +63,6 @@ Sidebar.propTypes = {
 	withFooter: PropTypes.bool,
 	currentFrozenData: PropTypes.object.isRequired,
 	frozenData: PropTypes.array.isRequired,
-	getFrozenBalances: PropTypes.func.isRequired,
 	updateFrozenBalances: PropTypes.func.isRequired,
 };
 Sidebar.defaultProps = {
