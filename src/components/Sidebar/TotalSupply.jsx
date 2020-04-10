@@ -1,10 +1,13 @@
 import React from 'react';
+import Link from 'next/link';
 
 import { ECHO } from '../../constants/TotalSupplyConstants';
 
 import { TotalSupplyIcon } from '../Icons/TotalSupplyIcon';
 import { subscribeAssetUpdate } from '../../services/subscriptions/asset';
 import FormatHelper from '../../helpers/FormatHelper';
+import { SSR_ASSET_PATH } from '../../constants/RouterConstants';
+import URLHelper from '../../helpers/URLHelper';
 
 class TotalSupply extends React.Component {
 
@@ -76,7 +79,11 @@ class TotalSupply extends React.Component {
 					<div className="total-supply-value">
 						{assets && assets[ECHO.ID] ? FormatHelper.formatAmount(assets[ECHO.ID].dynamic.current_supply) : '-'}
 					</div>
-					<div className="total-supply-coin">{ECHO.SYMBOL}</div>
+					<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
+						<a href="" className="total-supply-coin">
+							{ECHO.SYMBOL}
+						</a>
+					</Link>
 				</div>
 				{/* <a className="sidebar-element-link" href="" onClick={(e) => this.onToggleAssets(e)}> */}
 				{/*	View all Assets */}
