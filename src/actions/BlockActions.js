@@ -202,29 +202,6 @@ export const setLatestBlock = (latestBlock) => (dispatch) => {
 };
 
 /**
- *  @method updateBlockAverageData
- *  @param {Number} round
- *
- * 	Set block statistic from echodb to redux store
- */
-export const updateBlockAverageData = (round) => async (dispatch) => {
-	let averageBlockTime = 0;
-	try {
-		console.log('round', round);
-		const block = await getBlock(round);
-		console.log('block', block);
-
-		averageBlockTime = block.average_block_time;
-	} catch (error) {
-		console.log(error)
-		//
-	}
-
-	dispatch(RoundReducer.actions.set({ field: 'averageBlockTime', value: averageBlockTime }));
-};
-
-
-/**
  *  @method updateAverageTransactions
  *
  * 	Update latest block time, average transactions/operations and average block time
