@@ -25,9 +25,10 @@ import GlobalActions from './GlobalActions';
 import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
-import { getDelegationRates } from '../services/queries/block';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
+import { getDelegationRates } from '../services/queries/block';
+import { getOperationCountHistory } from '../services/queries/operation';
 
 /**
  *
@@ -198,6 +199,41 @@ export const toggleRewardDistribution = () => (dispatch, getState) => {
  */
 export const setLatestBlock = (latestBlock) => (dispatch) => {
 	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: latestBlock }));
+};
+
+/**
+ *  @method updateOperationStatisticData
+ *  @param {String} lastBlockTimestamp
+ *
+ * 	Set operation statistic from echodb to redux store
+ */
+export const updateOperationStatisticData = (lastBlockTimestamp) => async (dispatch) => {
+	const result = {
+		total: 0,
+		ratesMap: [],
+	};
+
+	const momentTo = moment(lastBlockTimestamp);
+	const momentFrom = moment(momentTo).subtract(1, 'months');
+	const momentInterval = moment.duration(1, 'days');
+
+	try {
+		const operationObject = await getOperationCountHistory(
+			momentFrom.toISOString(),
+			momentTo.toISOString(),
+			momentInterval.as('seconds'),
+		);
+		result.total = operationObject.total;
+		result.ratesMap = operationObject.ratesMap;
+	} catch (error) {
+		//
+	}
+
+	const data = result.ratesMap.map(({ rate }) => ({ rate }));
+
+	const operationMap = Map({ total: result.total, data });
+
+	dispatch(RoundReducer.actions.set({ field: 'operationAverageCount', value: operationMap }));
 };
 
 /**

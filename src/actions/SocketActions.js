@@ -20,7 +20,14 @@ import {
 } from '../constants/RoundConstants';
 import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
-import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList, getDelegationRate } from './BlockActions';
+import {
+	initBlocks,
+	setLatestBlock,
+	updateAverageTransactions,
+	updateBlockList,
+	getDelegationRate,
+	updateOperationStatisticData,
+} from './BlockActions';
 import { INDEX_PATH } from '../constants/RouterConstants';
 import StatisticsActions from './StatisticsActions';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
@@ -101,6 +108,7 @@ const blockRelease = () => async (dispatch) => {
 	await dispatch(updateBlockList(global.head_block_number));
 	await dispatch(getDelegationRate());
 	await dispatch(StatisticsActions.getAssetInformationByIds(MONITORING_ASSETS));
+	await dispatch(updateOperationStatisticData(global.time));
 	dispatch(updateAverageTransactions());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
