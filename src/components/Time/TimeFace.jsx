@@ -20,7 +20,7 @@ const TimeFace = React.memo(({ time }) => {
 	const s = momentTime.get('second');
 
 	const fullH = getFullHour(momentTime);
-	const fullS = s === 0 ? undefined : `${s}s`;
+	const fullS = s === 0 && !m && !fullH ? undefined : `${s}s`;
 	const fullM = m === 0 && !s && !fullH ? undefined : `${m}m`;
 
 	const ftiltredTime = [fullH, fullM, fullS].filter((v) => v);
