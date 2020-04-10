@@ -47,3 +47,5 @@ class Timer extends Component {
 Timer.propTypes = {
 	diff: PropTypes.number.isRequired,
 };
+
+export default Timer;
