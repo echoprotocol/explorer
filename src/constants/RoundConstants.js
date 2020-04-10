@@ -26,7 +26,7 @@ export const rounderSteps = {
 	},
 	[BLOCK_APPLIED_CALLBACK]: {
 		status: BLOCK_APPLIED_CALLBACK,
-		title: 'Produced',
+		title: 'Waiting for txs',
 	},
 };
 
