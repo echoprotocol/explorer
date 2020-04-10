@@ -5,6 +5,7 @@ import cn from 'classnames';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	operation, from, to, amount,
@@ -14,7 +15,7 @@ const OperationsRow = React.memo(({
 			<td />
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
-				<Link href={URLHelper.createAccountUrlByName(from)}>
+				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(from)}>
 					<a className="td-in avatar-wrap">
 						<Avatar accountName={from} />
 						<span>{from}</span>
@@ -22,7 +23,7 @@ const OperationsRow = React.memo(({
 				</Link>
 			</td>
 			<td className="to">
-				<Link href={URLHelper.createAccountUrlByName(to)}>
+				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(to)}>
 					<a className="td-in avatar-wrap">
 						<Avatar accountName={to} />
 						<span>{to}</span>

@@ -6,6 +6,7 @@ import cn from 'classnames';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	number, age, producer, size, txs, onClick,
@@ -21,7 +22,7 @@ const OperationsRow = React.memo(({
 				</div>
 			</td>
 			<td className="producer">
-				<Link href={URLHelper.createAccountUrlByName(producer)}>
+				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(producer)}>
 					<a className="td-in avatar-wrap">
 						<Avatar accountName={producer} />
 						<span>{producer}</span>
