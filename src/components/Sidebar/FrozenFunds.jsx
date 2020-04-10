@@ -56,7 +56,7 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 				</div>
 			</div>
 		</div>
-		<a href="" className="sidebar-element-link">View all Frozen funds</a>
+		{/* <a href="" className="sidebar-element-link">View all Frozen funds</a> */}
 
 	</React.Fragment>
 );
