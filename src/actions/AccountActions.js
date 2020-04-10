@@ -148,30 +148,32 @@ class AccountActions extends BaseActionsClass {
 				const queryData = getState().grid.get(ACCOUNT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
 				const subject = accountId;
-				const relationSubjects = [];
 
-				const addRelationSubjects = async (objectId) => {
-					if (!objectId) { return; }
+				const getObjectId = async (objectId) => {
+					if (!objectId) { return null; }
 					if (validators.isContractId(objectId)) {
-						relationSubjects.push(objectId);
-					} else {
-						let account = null;
-						try {
-							account = await echo.api.getAccountByName(objectId);
-							if (account && accountId !== account.id) {
-								relationSubjects.push(account.id);
-							}
-							// eslint-disable-next-line no-empty
-						} catch (err) {}
+						return objectId;
 					}
+					let account = null;
+					try {
+						account = await echo.api.getAccountByName(objectId);
+						if (account) {
+							account = account.id;
+						}
+						// eslint-disable-next-line no-empty
+					} catch (err) {}
+					return account;
 				};
 
-				await Promise.all(Array.from(new Set([queryData.filters.from, queryData.filters.to]))
-					.map((filter) => addRelationSubjects(filter)));
+				const [fromFilter, toFilter] = await Promise.all([
+					getObjectId(queryData.filters.from),
+					getObjectId(queryData.filters.to),
+				]);
 
 				const { items, total } = await getHistory({
 					subject,
-					relationSubjects,
+					fromFilter: fromFilter || undefined,
+					toFilter: toFilter || undefined,
 					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 					count: queryData.sizePerPage,
 					operations: Object.keys(OPERATIONS_IDS),

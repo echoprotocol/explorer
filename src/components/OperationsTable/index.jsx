@@ -23,6 +23,8 @@ class OperationsTable extends React.Component {
 		super(props);
 
 		this.state = {
+			from: '',
+			to: '',
 			showedOperations: [],
 			airRows: [],
 			isFilterOpen: false,
@@ -35,6 +37,13 @@ class OperationsTable extends React.Component {
 	componentDidMount() {
 		const { showedOperations } = this.state;
 		const queryProps = queryString.parse(this.props.router.asPath.split('?')[1]);
+
+		// eslint-disable-next-line react/no-did-mount-set-state
+		this.setState({
+			isFilterOpen: !!this.props.filterAndPaginateData.get('filters').from || !!this.props.filterAndPaginateData.get('filters').to,
+			from: this.props.filterAndPaginateData.get('filters').from,
+			to: this.props.filterAndPaginateData.get('filters').to,
+		});
 
 		if (!queryProps.op) {
 			return;
@@ -54,13 +63,11 @@ class OperationsTable extends React.Component {
 		const { query: search } = queryString.parseUrl(asPath);
 		const { query: prevSearch } = queryString.parseUrl(asPrevPath);
 
-		if (search.l && prevSearch.l !== search.l) {
-			await this.onChangeSizePerPage(parseInt(search.l, 10));
-			return;
-		}
 
-		if (search.p && prevSearch.p !== search.p) {
-			await this.onChangeCurrentPage(parseInt(search.p, 10));
+		if (prevSearch.l !== search.l || prevSearch.p !== search.p ||
+			prevSearch.from !== search.from || prevSearch.to !== search.to
+		) {
+			await this.onChangeOperationFilters(search);
 			return;
 		}
 
@@ -84,52 +91,39 @@ class OperationsTable extends React.Component {
 
 	async onChangeFilter(e) {
 		const { name, value } = e.target;
-		const { filterAndPaginateData } = this.props;
+		const { filterAndPaginateData, router } = this.props;
 		const { filters } = filterAndPaginateData.toJS();
 		filters[name] = value;
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.props.onChangeFilter(filters);
+		this.setState({ [name]: value });
 		this.timeoutSearch = setTimeout(() => {
-			this.props.onLoadMoreHistory();
+			const { url: pathname, query } = queryString.parseUrl(router.asPath);
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from, to: filters.to, p: 1 });
+			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 
 	}
 
 	onClearFilter(name) {
-		const { filterAndPaginateData } = this.props;
+		const { filterAndPaginateData, router } = this.props;
 		const { filters } = filterAndPaginateData.toJS();
 		filters[name] = '';
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.props.onChangeFilter(filters);
+		this.setState({ [name]: '' });
 		this.timeoutSearch = setTimeout(() => {
-			this.props.onLoadMoreHistory();
+			const { url: pathname, query } = queryString.parseUrl(router.asPath);
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from, to: filters.to, p: 1 });
+			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 	}
 
-	async onChangeCurrentPage(value) {
-		await this.props.onChangeCurrentPage(value);
+	async onChangeOperationFilters(filters) {
+		await this.props.initData(filters);
 		this.props.onLoadMoreHistory();
-	}
-
-	async onChangeSizePerPage(value) {
-		await Promise.all([
-			this.props.onChangeSizePerPage(value),
-			this.props.onChangeCurrentPage(1),
-		]);
-		this.props.onLoadMoreHistory();
-	}
-
-	filteredOperations() {
-		const { filters: { from, to } } = this.props.filterAndPaginateData.toJS();
-		return this.props.operations.filter((operation) => {
-			const isAllowFrom = from ? (from === operation.mainInfo.from.name || from === operation.mainInfo.from.id) : true;
-			const isAllowTo = to ? (to === operation.mainInfo.subject.name || to === operation.mainInfo.subject.id) : true;
-			return isAllowFrom && isAllowTo;
-		});
 	}
 
 	toggleOperationDetails(index) {
@@ -194,6 +188,7 @@ class OperationsTable extends React.Component {
 	}
 
 	renderTable() {
+		const { from, to } = this.state;
 		const {
 			isTransaction, label, loading, router,
 		} = this.props;
@@ -201,17 +196,14 @@ class OperationsTable extends React.Component {
 		const { showedOperations, airRows, isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
 
-		const filteredOperations = this.filteredOperations();
-		const isFilteredData = filterAndPaginateData.filters.from || filterAndPaginateData.filters.to;
-
 		return (
 			<div className="operations-table">
 				<TableLabel label={label}>
 					<FilterBtn onClick={this.toggleFilter} />
 				</TableLabel>
 				<OperationsFilter
-					from={filterAndPaginateData.filters.from}
-					to={filterAndPaginateData.filters.to}
+					from={from}
+					to={to}
 					open={isFilterOpen}
 					onChangeFilter={(e) => this.onChangeFilter(e)}
 					onClearFilter={(name) => this.onClearFilter(name)}
@@ -221,9 +213,9 @@ class OperationsTable extends React.Component {
 						<Thead isTransaction={isTransaction} />
 						<tbody>
 							<tr className="air"><td /></tr>
-							{filteredOperations.map((op, i) => (
+							{this.props.operations.map((op, i) => (
 								<OperationRow
-									totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
+									totalDataSize={filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}
 									currentPage={filterAndPaginateData.currentPage}
 									key={i.toString()}
@@ -242,8 +234,10 @@ class OperationsTable extends React.Component {
 				</PerfectScrollbar>
 				{!isTransaction && (
 					<OperationsPagination
+						from={filterAndPaginateData.filters.from}
+						to={filterAndPaginateData.filters.to}
 						router={router}
-						totalDataSize={isFilteredData ? filteredOperations.size : filterAndPaginateData.totalDataSize}
+						totalDataSize={filterAndPaginateData.totalDataSize}
 						currentPage={filterAndPaginateData.currentPage}
 						sizePerPage={filterAndPaginateData.sizePerPage}
 					/>
@@ -260,9 +254,7 @@ class OperationsTable extends React.Component {
 
 OperationsTable.propTypes = {
 	filterAndPaginateData: PropTypes.object.isRequired,
-	onChangeCurrentPage: PropTypes.func,
-	onChangeSizePerPage: PropTypes.func,
-	onChangeFilter: PropTypes.func,
+	initData: PropTypes.func.isRequired,
 	onLoadMoreHistory: PropTypes.func,
 
 	operations: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
@@ -280,9 +272,6 @@ OperationsTable.defaultProps = {
 	loading: false,
 	isTransaction: false,
 
-	onChangeCurrentPage: () => {},
-	onChangeSizePerPage: () => {},
-	onChangeFilter: () => {},
 	onLoadMoreHistory: () => {},
 };
 

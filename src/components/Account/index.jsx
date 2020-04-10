@@ -24,7 +24,8 @@ class Account extends React.Component {
 
 	async componentDidUpdate(prevProps) {
 		if (prevProps.router.query.id !== this.props.router.query.id) {
-			await this.props.onChangeFilter();
+			await this.props.onSetFilter({ from: '', to: '' });
+			await this.props.onSetPage(1);
 			await this.props.getAccountInfo(this.props.router.query.id);
 			return;
 		}
@@ -133,7 +134,8 @@ Account.propTypes = {
 	clearAccountInfo: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
-	onChangeFilter: PropTypes.func.isRequired,
+	onSetFilter: PropTypes.func.isRequired,
+	onSetPage: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {

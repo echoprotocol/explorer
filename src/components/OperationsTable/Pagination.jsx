@@ -11,18 +11,28 @@ import Input from '../Input';
 import { KEY_CODE_ENTER } from '../../constants/GlobalConstants';
 import TypesHelper from '../../helpers/TypesHelper';
 import URLHelper from '../../helpers/URLHelper';
+import Button from '../Button';
+import { NextButton } from '../Button/NextButton';
+import { PrevButton } from '../Button/PrevButton';
 
 
 const OperationsPagination = ({
-	currentPage, totalDataSize, sizePerPage, router,
+	currentPage, totalDataSize, sizePerPage, router, from, to,
 }) => {
 	const { url: pathname, query } = queryString.parseUrl(router.asPath);
 	const [inputCurrentPage, setCurrentPage] = useState(currentPage);
 	const [totalPages, setTotalPages] = useState(Math.ceil(totalDataSize / sizePerPage));
 
-	const nextPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage + 1 });
-	const prevPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: currentPage - 1 });
-	const lastPageLink = URLHelper.createOperationUrlByFilter(pathname, query, { p: totalPages });
+	const nextPageLink = URLHelper.createOperationUrlByFilter(pathname, query, {
+		p: currentPage + 1, from, to, l: sizePerPage,
+	});
+
+	const prevPageLink = URLHelper.createOperationUrlByFilter(pathname, query, {
+		p: currentPage - 1, from, to, l: sizePerPage,
+	});
+	const lastPageLink = URLHelper.createOperationUrlByFilter(pathname, query, {
+		p: totalPages, from, to, l: sizePerPage,
+	});
 
 	const onChangeInputCurrentPage = (value) => setCurrentPage(value);
 
@@ -33,7 +43,9 @@ const OperationsPagination = ({
 		if (!TypesHelper.isStringNumber(value)) { return; }
 		const newNumberPage = parseInt(value, 10);
 		if (!(newNumberPage > 0 && newNumberPage < totalPages + 1)) { return; }
-		const linkToPage = URLHelper.createOperationUrlByFilter(router.pathname, router.query, { p: newNumberPage });
+		const linkToPage = URLHelper.createOperationUrlByFilter(router.pathname, router.query, {
+			p: newNumberPage, from, to, l: sizePerPage,
+		});
 		Router.push(router.route, linkToPage);
 	};
 
@@ -46,24 +58,20 @@ const OperationsPagination = ({
 	}, [totalDataSize, sizePerPage]);
 
 	const sizePerPages = Array.from(new Set([...SIZES_PER_PAGE, sizePerPage].sort((a, b) => a - b)));
-	let index = sizePerPages.findIndex((size) => size > totalDataSize);
 
-	const goToPage = (e, link, isDisable) => {
+	const goToPage = (e, link) => {
 		e.preventDefault();
-		if (isDisable) { return; }
 		Router.push(router.route, link);
 	};
-
-	if (index === -1) {
-		index = sizePerPages.length - 1;
-	}
 
 	return (
 		<div className="operations-pagination">
 			<div className="pg-nav-1">
 				<div className="pg-caption">Operations per page:</div>
-				{sizePerPages.slice(0, index + 1).map((size) => {
-					const link = URLHelper.createOperationUrlByFilter(pathname, query, { l: size, p: 1 });
+				{sizePerPages.map((size) => {
+					const link = URLHelper.createOperationUrlByFilter(pathname, query, {
+						l: size, p: 1, from, to,
+					});
 					return (
 						<Link key={size} href={router.route} >
 							<a onClick={(e) => goToPage(e, link)} href={link} className={cn('pg-page-btn', { active: size === sizePerPage })}>{size}</a>
@@ -81,49 +89,46 @@ const OperationsPagination = ({
 					onChange={(e) => onChangeInputCurrentPage(e.target.value)}
 					onKeyDown={(e) => onKeyPressInputCurrentPage(e, totalPages)}
 				/>
-				<div className="pg-caption">out of <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}>{totalPages}</a></div>
+				<div className="pg-caption">out of
+					{!totalPages ? <span> {totalPages}</span> : <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}> {totalPages}</a>}
+				</div>
 			</div>
 			<div className="pg-nav-3">
-				<Link href={router.route} >
-					<a
-						href={prevPageLink}
-						onClick={(e) => goToPage(e, prevPageLink, currentPage === 1)}
-						className={cn('pg-arrow', 'primary-btn', { disabled: currentPage === 1 })}
-					>
-						<svg width="4" height="5" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M4 2.5L0 5V0l4 2.5z" />
-						</svg>
-						<div className="pg-arrow-caption">
-							Previous
-						</div>
+				{!totalPages || currentPage === 1 ? (
+					<Button className="primary-btn" disabled>
+						<PrevButton />
+					</Button>
+				) : (
+					<a href={prevPageLink} onClick={(e) => goToPage(e, prevPageLink)} className={cn('pg-arrow', 'primary-btn')}>
+						<PrevButton />
 					</a>
-				</Link>
-				<Link href={router.route}>
-					<a
-						href={nextPageLink}
-						onClick={(e) => goToPage(e, nextPageLink, totalPages === currentPage)}
-						className={cn('pg-arrow', 'primary-btn', { disabled: totalPages === currentPage })}
-					>
-						<div className="pg-arrow-caption">
-							Next
-						</div>
-						<svg width="4" height="5" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M4 2.5L0 5V0l4 2.5z" />
-						</svg>
+				)}
+				{!totalPages || totalPages === currentPage ? (
+					<Button className="primary-btn" disabled>
+						<NextButton />
+					</Button>
+				) : (
+					<a href={nextPageLink} onClick={(e) => goToPage(e, nextPageLink)} className={cn('pg-arrow', 'primary-btn')}>
+						<NextButton />
 					</a>
-				</Link>
+				)}
 			</div>
 		</div>
 	);
 };
 
 OperationsPagination.propTypes = {
+	from: PropTypes.string,
+	to: PropTypes.string,
 	router: PropTypes.object.isRequired,
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,
 };
 
-OperationsPagination.defaultProps = {};
+OperationsPagination.defaultProps = {
+	from: '',
+	to: '',
+};
 
 export default OperationsPagination;

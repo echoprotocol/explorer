@@ -151,24 +151,29 @@ class ContractActions extends BaseActionsClass {
 				const queryData = getState().grid.get(CONTRACT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
 				const subject = contractId;
-				const relationSubjects = [];
-				const addRelationSubjects = async (objectId) => {
+				const getObjectId = async (objectId) => {
 					if (!objectId) { return; }
 					let account = null;
 					try {
 						account = await echo.api.getAccountByName(objectId);
-						if (account && contractId !== account.id) {
-							relationSubjects.push(account.id);
+						if (account) {
+							account = account.id;
 						}
 						// eslint-disable-next-line no-empty
 					} catch (err) {}
+					// eslint-disable-next-line consistent-return
+					return account;
 				};
-				await Promise.all(Array.from(new Set([queryData.filters.from, queryData.filters.to]))
-					.map((filter) => addRelationSubjects(filter)));
+
+				const [fromFilter, toFilter] = await Promise.all([
+					getObjectId(queryData.filters.from),
+					getObjectId(queryData.filters.to),
+				]);
 
 				const { items, total } = await getContractHistory({
 					subject,
-					relationSubjects,
+					fromFilter: fromFilter || undefined,
+					toFilter: toFilter || undefined,
 					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 					count: queryData.sizePerPage,
 					operations: Object.keys(OPERATIONS_IDS),
