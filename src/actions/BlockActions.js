@@ -25,9 +25,10 @@ import GlobalActions from './GlobalActions';
 import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
-import { getDelegationRates } from '../services/queries/block';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
+
+import { getDelegationRates, getBlock } from '../services/queries/block';
 
 /**
  *
@@ -199,6 +200,29 @@ export const toggleRewardDistribution = () => (dispatch, getState) => {
 export const setLatestBlock = (latestBlock) => (dispatch) => {
 	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: latestBlock }));
 };
+
+/**
+ *  @method updateBlockAverageData
+ *  @param {Number} round
+ *
+ * 	Set block statistic from echodb to redux store
+ */
+export const updateBlockAverageData = (round) => async (dispatch) => {
+	let averageBlockTime = 0;
+	try {
+		console.log('round', round);
+		const block = await getBlock(round);
+		console.log('block', block);
+
+		averageBlockTime = block.average_block_time;
+	} catch (error) {
+		console.log(error)
+		//
+	}
+
+	dispatch(RoundReducer.actions.set({ field: 'averageBlockTime', value: averageBlockTime }));
+};
+
 
 /**
  *  @method updateAverageTransactions
