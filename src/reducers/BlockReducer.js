@@ -13,8 +13,6 @@ const DEFAULT_FIELDS = Map({
 	startTimestamp: 0,
 	hasMore: true,
 	isDistributionRewardOpen: false,
-	delegationRate: 0,
-	delegationRates: [],
 });
 
 export default createModule({

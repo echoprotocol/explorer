@@ -10,7 +10,7 @@ import TotalSupply from '../../containers/Sidebar/TotalSupply';
 
 
 const Sidebar = React.memo(({
-	pinned, withFooter, delegationRate, delegationRates,
+	pinned, withFooter, delegationRate, delegationRates, decentralizationRate, decentralizationRates,
 }) => (
 	<div className={cn('sidebar', { pinned })}>
 		<SidebarElement title="Total supply">
@@ -21,6 +21,8 @@ const Sidebar = React.memo(({
 				pinned={pinned}
 				delegationRate={delegationRate}
 				delegationRates={delegationRates}
+				decentralizationRate={decentralizationRate}
+				decentralizationRates={decentralizationRates}
 			/>
 		</SidebarElement>
 		<SidebarElement title="Frozen Funds">
@@ -34,8 +36,9 @@ Sidebar.propTypes = {
 	pinned: PropTypes.bool,
 	withFooter: PropTypes.bool,
 	delegationRate: PropTypes.number.isRequired,
+	decentralizationRate: PropTypes.number.isRequired,
 	delegationRates: PropTypes.array.isRequired,
-
+	decentralizationRates: PropTypes.array.isRequired,
 };
 Sidebar.defaultProps = {
 	pinned: false,

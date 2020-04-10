@@ -19,9 +19,12 @@ class TotalSupply extends React.Component {
 	}
 
 	static getDerivedStateFromProps(nextProps) {
-		return {
-			assets: nextProps.assets.toJS(),
-		};
+		if (nextProps.assets) {
+			return {
+				assets: nextProps.assets.toJS(),
+			};
+		}
+		return nextProps;
 	}
 
 	onToggleAssets(e) {
@@ -39,7 +42,7 @@ class TotalSupply extends React.Component {
 				<div className="total-supply">
 					<TotalSupplyIcon />
 					<div className="total-supply-value">
-						{assets && assets[ECHO.ID] ? FormatHelper.formatAmount(assets[ECHO.ID].dynamic.current_supply) : '-'}
+						{assets && assets[ECHO.ID] ? FormatHelper.formatAmount(assets[ECHO.ID].dynamic.current_supply) : '0'}
 					</div>
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
 						<a href="" className="total-supply-coin">
