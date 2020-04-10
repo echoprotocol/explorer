@@ -13,6 +13,11 @@ const DEFAULT_FIELDS = Map({
 	startTimestamp: 0,
 	hasMore: true,
 	isDistributionRewardOpen: false,
+	currentFrozenData: {
+		committee_freeze_sum: 0,
+		accounts_freeze_sum: 0,
+	},
+	frozenData: [],
 });
 
 export default createModule({
