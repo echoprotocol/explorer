@@ -85,4 +85,3 @@ const Block4 = React.memo(() => (
 ));
 
 export default Block4;
-

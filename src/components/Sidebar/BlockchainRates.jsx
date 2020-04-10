@@ -28,7 +28,7 @@ const data = [
 	},
 ];
 
-const BlockchainRates = ({ pinned }) => (
+const BlockchainRates = ({ pinned, delegationRate, delegationRates }) => (
 	<div className="blockchain-rates-wrap">
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
@@ -36,17 +36,17 @@ const BlockchainRates = ({ pinned }) => (
 				<InfoTooltip overlay="Delegation rate information" />
 			</div>
 			<div className="blockchain-rates-block-info">
-				<div className="blockchain-rates-block-percent">35%</div>
+				<div className="blockchain-rates-block-percent">{delegationRate}%</div>
 				<LineChart
 					width={pinned ? SIDEBAR_CHART_WIDTH + 20 : SIDEBAR_CHART_WIDTH}
 					height={SIDEBAR_CHART_HEIGHT}
-					data={data}
+					data={delegationRates}
 				>
 					<Line
 						dot={false}
 						isAnimationActive={false}
 						type="monotone"
-						dataKey="uv"
+						dataKey="rate"
 						stroke="#2995D8"
 					/>
 				</LineChart>
@@ -80,6 +80,8 @@ const BlockchainRates = ({ pinned }) => (
 
 BlockchainRates.propTypes = {
 	pinned: PropTypes.bool.isRequired,
+	delegationRate: PropTypes.number.isRequired,
+	delegationRates: PropTypes.array.isRequired,
 };
 
 
