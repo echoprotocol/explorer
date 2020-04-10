@@ -17,6 +17,7 @@ import {
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	NETWORK_CONNECTED_ERROR,
 	NULL_ACCOUNT,
+	ECHO_ASSET,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -182,14 +183,14 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 };
 
 export const getFrozenData = (updatedFrozenData) => async (dispatch) => {
-	const previousMonth = new Date();
-	previousMonth.setMonth(previousMonth.getMonth() - 1);
-	const from = previousMonth.toISOString();
-	const interval = 24 * 60 * 60;
+	const from = moment().subtract(1, 'month').toISOString();
+	const interval = moment.duration(1, 'day').as('second');
 	const balances = await getCurrentFrozenFunds(from, interval);
 	const { currentFrozenData, frozenData } = balances.data.getFrozenBalancesData;
 	const historyFrozenData = frozenData.map((el) => el.frozenSums);
 	if (!updatedFrozenData) {
+		currentFrozenData.accounts_freeze_sum /= (10 ** ECHO_ASSET.PRECISION);
+		currentFrozenData.committee_freeze_sum /= (10 ** ECHO_ASSET.PRECISION);
 		dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: currentFrozenData }));
 	}
 	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
@@ -442,7 +443,7 @@ export const initBlocks = () => async (dispatch) => {
 	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
 
 	const time = moment().unix() - moment.utc(obj.time).unix();
-	dispatch(getFrozenData());
+	await dispatch(getFrozenData());
 	dispatch(BlockReducer.actions.set({
 		field: 'startTimestamp',
 		value: time,
@@ -529,6 +530,8 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 };
 
 export const updateFrozenData = (newBlock) => async (dispatch) => {
+	newBlock.frozen_balances_data.accounts_freeze_sum /= (10 ** ECHO_ASSET.PRECISION);
+	newBlock.frozen_balances_data.committee_freeze_sum /= (10 ** ECHO_ASSET.PRECISION);
 	dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: newBlock.frozen_balances_data }));
 	await dispatch(getFrozenData(newBlock.frozen_balances_data));
 };
