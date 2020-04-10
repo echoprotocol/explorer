@@ -16,6 +16,12 @@ export const getStatistics = async (from, interval) => {
           rate
         }
       } 
+      getOperationCountHistory(from: $from, interval: $interval) {
+        total,
+        ratesMap {
+          rate
+        }
+      }
     }
   `;
 	return client.getClient().query({ query, variables: { from, interval } });

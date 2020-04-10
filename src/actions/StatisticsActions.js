@@ -1,5 +1,6 @@
 import echo from 'echojs-lib';
 import moment from 'moment';
+import BN from 'bignumber.js';
 
 import GlobalActions from './GlobalActions';
 import BaseActionsClass from './BaseActionsClass';
@@ -25,10 +26,11 @@ class StatisticsActionsClass extends BaseActionsClass {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
 
-			const { data: { getDelegationPercent, getDecentralizationRate } } = await getStatistics(from, interval);
+			const { data: { getDelegationPercent, getDecentralizationRate, getOperationCountHistory } } = await getStatistics(from, interval);
 			dispatch(this.updateTotalSupply(MONITORING_ASSETS));
 			dispatch(this.updateDelegationRate(getDelegationPercent));
 			dispatch(this.updateDecentralizationRate(getDecentralizationRate));
+			dispatch(this.updateOperationCount(getOperationCountHistory));
 		};
 	}
 	/**
@@ -60,7 +62,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 	updateDelegationRate({ delegatePercent, ratesMap }) {
 		return (dispatch) => {
 			dispatch(this.setMultipleValue({
-				delegationRate: Number(delegatePercent.toFixed(2)),
+				delegationRate: new BN(delegatePercent).integerValue(BN.ROUND_CEIL).toNumber(),
 				delegationRates: ratesMap.map((el) => ({ rate: el.rate })),
 			}));
 		};
@@ -75,8 +77,23 @@ class StatisticsActionsClass extends BaseActionsClass {
 	updateDecentralizationRate({ decentralizationRatePercent, ratesMap }) {
 		return (dispatch) => {
 			dispatch(this.setMultipleValue({
-				decentralizationRate: Number(decentralizationRatePercent.toFixed(2)),
+				decentralizationRate: new BN(decentralizationRatePercent).integerValue(BN.ROUND_CEIL).toNumber(),
 				decentralizationRates: ratesMap.map((el) => ({ rate: el.rate })),
+			}));
+		};
+	}
+
+	/**
+	 *
+	 * @param updateOperationCount
+	 * @param ratesMap
+	 * @return {Promise<function(...[*]=)>}
+	 */
+	updateOperationCount({ total, ratesMap }) {
+		return (dispatch) => {
+			dispatch(this.setMultipleValue({
+				operationCount: total,
+				operationCountRates: ratesMap.map(({ rate }) => ({ rate })),
 			}));
 		};
 	}

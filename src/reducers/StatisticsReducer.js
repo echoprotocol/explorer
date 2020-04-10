@@ -10,6 +10,8 @@ const DEFAULT_FIELDS = new Map({
 	delegationRates: [],
 	decentralizationRate: 0,
 	decentralizationRates: [],
+	operationCountRates: [],
+	operationCount: 0,
 });
 
 export default createModule({
