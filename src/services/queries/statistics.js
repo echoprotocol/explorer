@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 import client from '../GraphqlService';
 
-export const getStatistics = async (from, interval) => {
+export const getStatistics = async (from, interval, round) => {
 	const query = gql`
-    query getStatistics($from: String, $interval: Int){
+    query getStatistics($from: String, $interval: Int, $round: Int!){
       getDelegationPercent(from: $from, interval: $interval){
         delegatePercent,
         ratesMap {
@@ -22,7 +22,11 @@ export const getStatistics = async (from, interval) => {
           rate
         }
       }
+      getBlock(round: $round) {
+        average_block_time,
+        round
+			}
     }
   `;
-	return client.getClient().query({ query, variables: { from, interval } });
+	return client.getClient().query({ query, variables: { from, interval, round } });
 };

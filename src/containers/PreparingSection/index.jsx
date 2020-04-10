@@ -18,7 +18,11 @@ const PreparingSection = (props) => (
 		<PreparingBlock>
 			<Block2 blocks={props.blocks} latestBlock={props.latestBlock} />
 		</PreparingBlock>
-		<PreparingBlock><Block3 /></PreparingBlock>
+		<PreparingBlock>
+			<Block3
+				averageBlockTime={props.averageBlockTime}
+			/>
+		</PreparingBlock>
 		<PreparingBlock>
 			<Block4
 				operationCountRates={props.operationCountRates}
@@ -33,6 +37,7 @@ PreparingSection.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
 	latestBlock: PropTypes.number.isRequired,
+	averageBlockTime: PropTypes.number.isRequired,
 	operationCountRates: PropTypes.array.isRequired,
 	operationCount: PropTypes.number.isRequired,
 };

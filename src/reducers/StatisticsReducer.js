@@ -12,6 +12,7 @@ const DEFAULT_FIELDS = new Map({
 	decentralizationRates: [],
 	operationCountRates: [],
 	operationCount: 0,
+	averageBlockTime: 0,
 });
 
 export default createModule({

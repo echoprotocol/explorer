@@ -21,16 +21,27 @@ class StatisticsActionsClass extends BaseActionsClass {
 	/**
 	 * updateStatistics
 	 */
-	updateStatistics() {
+	updateStatistics(round) {
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
-
-			const { data: { getDelegationPercent, getDecentralizationRate, getOperationCountHistory } } = await getStatistics(from, interval);
-			dispatch(this.updateTotalSupply(MONITORING_ASSETS));
-			dispatch(this.updateDelegationRate(getDelegationPercent));
-			dispatch(this.updateDecentralizationRate(getDecentralizationRate));
-			dispatch(this.updateOperationCount(getOperationCountHistory));
+			try {
+				const {
+					data: {
+						getDelegationPercent,
+						getDecentralizationRate,
+						getOperationCountHistory,
+						getBlock,
+					},
+				} = await getStatistics(from, interval, round);
+				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
+				dispatch(this.updateDelegationRate(getDelegationPercent));
+				dispatch(this.updateDecentralizationRate(getDecentralizationRate));
+				dispatch(this.updateOperationCount(getOperationCountHistory));
+				dispatch(this.updateAverageBlocktime(getBlock));
+			} catch (error) {
+				//
+			}
 		};
 	}
 	/**
@@ -94,6 +105,20 @@ class StatisticsActionsClass extends BaseActionsClass {
 			dispatch(this.setMultipleValue({
 				operationCount: total,
 				operationCountRates: ratesMap.map(({ rate }) => ({ rate })),
+			}));
+		};
+	}
+
+	/**
+	 *
+	 * @param updateAverageBlocktime
+	 * @param average_block_time
+	 * @return {Promise<function(...[*]=)>}
+	 */
+	updateAverageBlocktime({ average_block_time: averageBlockTime }) {
+		return (dispatch) => {
+			dispatch(this.setMultipleValue({
+				averageBlockTime,
 			}));
 		};
 	}
