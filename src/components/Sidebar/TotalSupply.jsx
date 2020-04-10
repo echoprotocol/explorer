@@ -1,7 +1,7 @@
 import React from 'react';
 import { TotalSupplyIcon } from '../../components/Icons/TotalSupplyIcon';
 
-const TotalSupply = () => (
+const TotalSupply = React.memo(() => (
 	<React.Fragment>
 		<div className="total-supply">
 			<TotalSupplyIcon />
@@ -12,6 +12,6 @@ const TotalSupply = () => (
 		</div>
 		<a href="" className="sidebar-element-link">View all Assets</a>
 	</React.Fragment>
-);
+));
 
 export default TotalSupply;

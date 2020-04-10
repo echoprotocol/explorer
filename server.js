@@ -1,61 +1,33 @@
-const express = require('express');
+const echo = require('echojs-lib').default;
 const config = require('config');
-const axios = require('axios');
+const { createServer } = require('http');
+const { parse } = require('url');
+const next = require('next');
 
-const app = express();
-const fs = require('fs');
+const dev = process.env.NODE_ENV !== 'production';
+const PORT = process.env.PORT || 3000;
 
-const accountRegex = RegExp(/\/accounts\/.*\/info/);
-const contractRegex = RegExp(/\/contracts\/.*\/info/);
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
-const TIMEOUT_FETCH = 3000;
-
-const filePath = `${__dirname}/dist/index.html`;
-let fileIndex = null;
-
-app.use(express.static(`${__dirname}/dist/`, { index: false }));
-
-app.get('*', async (req, res) => {
-	let result = fileIndex;
-	let title = '';
-	let description = '';
-	let image = '';
-
-	const { url } = req;
-
-	if (accountRegex.test(url)) {
-		const accountName = url.split('/')[2];
-		title = `Account ${accountName} | Echo Explorer`;
-		description = 'ECHO account page';
-		image = `${config.SERVER_URL}/api/accounts/${accountName}/avatar.png`;
-
-	} else if (contractRegex.test(url)) {
-		const contractId = url.split('/')[2];
+app.prepare().then(() => {
+	createServer((req, res) => {
+		const parsedUrl = parse(req.url, true);
+		handle(req, res, parsedUrl);
+	}).listen(PORT, async (err) => {
+		if (err) throw err;
 		try {
-			const contract = await axios.get(`${config.SERVER_URL}/api/contracts/${contractId}`, { timeout: TIMEOUT_FETCH });
-
-			if (contract) {
-				title = `Contract ${contract.name || contractId} | Echo Explorer`;
-				description = contract.description || 'ECHO contract page';
-				image = `${config.SERVER_URL}${contract.icon}`;
-			}
-		} catch (err) {
-			console.warn('Error: ', err.code);
+			await echo.connect(config.ECHO_NODE.API_URL, {
+				connectionTimeout: config.ECHO_NODE.CONNECTION_TIMEOUT,
+				maxRetries: config.ECHO_NODE.MAX_RETRIES,
+				pingDelay: config.ECHO_NODE.PING_DELAY,
+				debug: config.ECHO_NODE.DEBUG,
+				apis: config.ECHO_NODE.APIS,
+			});
+			console.log('echo connected: ', echo.isConnected);
+		} catch (error) {
+			console.log('Not connect to echo', error);
 		}
-	}
-
-	if (title) {
-		const metaTags = `\n<meta property="og:title" content=${title} />
-						<meta property="og:description" content=${description} />
-						<meta property="og:image" content=${image} />\n`;
-		const indexInsert = result.indexOf('</head>');
-		result = result.slice(0, indexInsert) + metaTags + result.slice(indexInsert);
-	}
-
-	res.send(result);
-});
-
-fs.readFile(filePath, 'utf8', async (error, data) => {
-	fileIndex = data;
-	app.listen(3000);
+		console.log('Server listen: ', PORT);
+	});
 });

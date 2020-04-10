@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import cn from 'classnames';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	operation, from, to, amount,
@@ -14,23 +15,19 @@ const OperationsRow = React.memo(({
 			<td />
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
-				<Link
-					className="td-in avatar-wrap"
-					to={URLHelper.createAccountUrlByName(from)}
-					onClick={(e) => e.stopPropagation()}
-				>
-					<Avatar accountName={from} />
-					<span>{from}</span>
+				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(from)}>
+					<a className="td-in avatar-wrap">
+						<Avatar accountName={from} />
+						<span>{from}</span>
+					</a>
 				</Link>
 			</td>
 			<td className="to">
-				<Link
-					className="td-in avatar-wrap"
-					to={URLHelper.createAccountUrlByName(to)}
-					onClick={(e) => e.stopPropagation()}
-				>
-					<Avatar accountName={to} />
-					<span>{to}</span>
+				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(to)}>
+					<a className="td-in avatar-wrap">
+						<Avatar accountName={to} />
+						<span>{to}</span>
+					</a>
 				</Link>
 			</td>
 			<td className="amount">

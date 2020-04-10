@@ -4,6 +4,11 @@ body {
 	font-family: "inter";
 }
 
+.wrapper-min {
+	max-height: 100vh;
+	overflow-y: hidden;
+}
+
 main.inner {
 	display: inline-block;
 	min-width: 100%;
@@ -42,6 +47,16 @@ textarea {
 
 textarea {
 	outline: none;
+}
+
+.wrapper {
+	overflow: hidden;
+}
+
+.h2 {
+	font-size: 22px;
+	@include inter-ui-bold;
+	letter-spacing: 1px;
 }
 
 .hidden {

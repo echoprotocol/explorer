@@ -26,6 +26,8 @@ import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
 import { getDelegationRates } from '../services/queries/block';
+import GridActions from './GridActions';
+import { BLOCK_GRID } from '../constants/TableConstants';
 
 /**
  *
@@ -171,7 +173,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
-
+		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, resultTransactions.length));
 		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));

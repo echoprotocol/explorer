@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import Router, { withRouter } from 'next/router';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
 import BlockReducer from '../../reducers/BlockReducer';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import GlobalActions from '../../actions/GlobalActions';
-import { BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import LatestBlocksTable from './LatestBlocksTable';
 import LatestOperationsTable from './LatestOperationsTable';
 
@@ -48,7 +48,11 @@ class MainPage extends React.Component {
 
 	goToBlock(e, block) {
 		e.preventDefault();
+<<<<<<< HEAD
 		this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, block));
+=======
+		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
+>>>>>>> 7baa34fa72ce06e417ea034cc4ef61c2ef8910fe
 	}
 
 	render() {
@@ -69,7 +73,10 @@ class MainPage extends React.Component {
 
 MainPage.propTypes = {
 	blocks: PropTypes.object.isRequired,
+<<<<<<< HEAD
 	history: PropTypes.object.isRequired,
+=======
+>>>>>>> 7baa34fa72ce06e417ea034cc4ef61c2ef8910fe
 	setTitle: PropTypes.func.isRequired,
 };
 
