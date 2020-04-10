@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import SidebarElement from './SidebarElement';
-import TotalSupply from './TotalSupply';
+
 import BlockchainRates from './BlockchainRates';
 import FrozenFunds from './FrozenFunds';
 import Footer from '../../containers/Footer';
+import TotalSupply from '../../containers/Sidebar/TotalSupply';
 
 
 const Sidebar = React.memo(({ pinned, withFooter }) => (

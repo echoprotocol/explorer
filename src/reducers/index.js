@@ -11,6 +11,7 @@ import accountReducer from './AccountReducer';
 import contractReducer from './ContractReducer';
 import internetPopupReducer from './InternetPopupReducer';
 import networkReducer from './NetworkReducer';
+import statisticsReducer from './StatisticsReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -26,4 +27,5 @@ export default {
 	contract: contractReducer.reducer,
 	internetPopup: internetPopupReducer.reducer,
 	network: networkReducer.reducer,
+	statistics: statisticsReducer.reducer,
 };
