@@ -25,19 +25,23 @@ class StatisticsActionsClass extends BaseActionsClass {
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
-			const {
-				data: {
-					getDelegationPercent,
-					getDecentralizationRate,
-					getOperationCountHistory,
-					getBlock,
-				},
-			} = await getStatistics(from, interval, round);
-			dispatch(this.updateTotalSupply(MONITORING_ASSETS));
-			dispatch(this.updateDelegationRate(getDelegationPercent));
-			dispatch(this.updateDecentralizationRate(getDecentralizationRate));
-			dispatch(this.updateOperationCount(getOperationCountHistory));
-			dispatch(this.updateAverageBlocktime(getBlock));
+			try {
+				const {
+					data: {
+						getDelegationPercent,
+						getDecentralizationRate,
+						getOperationCountHistory,
+						getBlock,
+					},
+				} = await getStatistics(from, interval, round);
+				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
+				dispatch(this.updateDelegationRate(getDelegationPercent));
+				dispatch(this.updateDecentralizationRate(getDecentralizationRate));
+				dispatch(this.updateOperationCount(getOperationCountHistory));
+				dispatch(this.updateAverageBlocktime(getBlock));
+			} catch (error) {
+				//
+			}
 		};
 	}
 	/**
