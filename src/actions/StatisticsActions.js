@@ -32,7 +32,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 		};
 	}
 	/**
-	 * @method getAssetInformationByIds
+	 * @method updateTotalSupply
 	 * @param {string[]} assetIds
 	 */
 	updateTotalSupply(assetIds) {
