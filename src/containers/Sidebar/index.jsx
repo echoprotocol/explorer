@@ -10,6 +10,9 @@ const SidebarContainer = React.memo(({ ...props }) => (
 
 
 export default withRouter(connect(
-	() => ({}),
+	(state) => ({
+		delegationRate: state.block.get('delegationRate'),
+		delegationRates: state.block.get('delegationRates'),
+	}),
 	() => ({}),
 )(SidebarContainer));

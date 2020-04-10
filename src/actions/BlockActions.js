@@ -25,6 +25,7 @@ import GlobalActions from './GlobalActions';
 import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
+import { getDelegationRates } from '../services/queries/block';
 
 /**
  *
@@ -508,4 +509,16 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		return false;
 	}
 
+};
+
+export const getDelegationRate = () => async (dispatch) => {
+	const previousMonth = new Date();
+	previousMonth.setMonth(previousMonth.getMonth() - 1);
+	const from = previousMonth.toISOString();
+	const interval = 24 * 60 * 60;
+	const delegationRates = await getDelegationRates(from, interval);
+	const { delegatePercent, ratesMap } = delegationRates.data.getDelegationPercent;
+	const historyRates = ratesMap.map((el) => ({ rate: el.rate }));
+	dispatch(BlockReducer.actions.set({ field: 'delegationRate', value: Number(delegatePercent.toFixed(2)) }));
+	dispatch(BlockReducer.actions.set({ field: 'delegationRates', value: historyRates }));
 };

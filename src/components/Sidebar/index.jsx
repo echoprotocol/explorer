@@ -8,13 +8,19 @@ import FrozenFunds from './FrozenFunds';
 import Footer from '../../containers/Footer';
 
 
-const Sidebar = React.memo(({ pinned, withFooter }) => (
+const Sidebar = React.memo(({
+	pinned, withFooter, delegationRate, delegationRates,
+}) => (
 	<div className={cn('sidebar', { pinned })}>
 		<SidebarElement title="Total supply">
 			<TotalSupply />
 		</SidebarElement>
 		<SidebarElement title="Blockchain rates">
-			<BlockchainRates pinned={pinned} />
+			<BlockchainRates
+				pinned={pinned}
+				delegationRate={delegationRate}
+				delegationRates={delegationRates}
+			/>
 		</SidebarElement>
 		<SidebarElement title="Frozen Funds">
 			<FrozenFunds />
@@ -26,6 +32,9 @@ const Sidebar = React.memo(({ pinned, withFooter }) => (
 Sidebar.propTypes = {
 	pinned: PropTypes.bool,
 	withFooter: PropTypes.bool,
+	delegationRate: PropTypes.number.isRequired,
+	delegationRates: PropTypes.array.isRequired,
+
 };
 Sidebar.defaultProps = {
 	pinned: false,
