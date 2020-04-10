@@ -10,7 +10,7 @@ import AuthorityRow from './AuthorityRow';
 
 
 const OperationInfoRow = ({
-	title, description, account, id, tooltip, authority,
+	title, description, account, link, tooltip, authority,
 }) => {
 	console.log(authority);
 	return (
@@ -39,17 +39,17 @@ const OperationInfoRow = ({
 					<span>{account.name}</span>
 				</Link>
 				}
-				{id &&
-				<Link className="avatar-wrap" to={URLHelper.createUrlById(id)}>
-					{URLHelper.createUrlById(id)}
+				{link &&
+				<Link className="avatar-wrap" to={link}>
+					{link}
 				</Link>
 				}
 				{authority.length !== 0 &&
 				authority.map((item, idx) => {
 					if (idx === 0) {
-						return <AuthorityRow value={item.value} weight="1" withButton />;
+						return <AuthorityRow value={item.value} weight="1" withButton key={item.value} />;
 					}
-					return <AuthorityRow value={item.value} weight="1" />;
+					return <AuthorityRow value={item.value} weight="1" key={item.value} />;
 				})
 				}
 			</div>

@@ -42,13 +42,14 @@ class AccountInfo extends React.Component {
 
 	render() {
 		const { id, name } = this.props;
-		console.log(id);
 		return (
 			<div className="left-card">
 				<div className="line">
 					<div className="title">Account name</div>
 					<div className="divider" />
-					<div className="val">{name}</div>
+					<div className="val name">
+						{name}
+					</div>
 				</div>
 				<div className="line">
 					<div className="title">ECHO Balance</div>

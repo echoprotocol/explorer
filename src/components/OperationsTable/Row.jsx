@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
@@ -8,11 +9,14 @@ import { validators } from 'echojs-lib';
 import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
+import AdditionalInfo from '../TransactionInfo/AdditionalInfo';
 import OperationInfo from '../TransactionInfo/OperationInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import { transformOperationDataByType } from '../../helpers/TransformDataHelper';
+
+// import 'react-tabs/style/react-tabs.css';
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -74,8 +78,8 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	const operationsInfoData = type && transformOperationDataByType(type, operation);
-
+	// const operationsInfoData = type && transformOperationDataByType(type, operation);
+	const operationsInfoData = transformOperationDataByType('Account whitelist', operation);
 	return (
 		<React.Fragment>
 			<tr
@@ -127,9 +131,26 @@ const OperationsRow = React.memo(({
 			{ active &&
 				<tr className="fold">
 					<td colSpan="6">
-						<OperationInfo
-							data={operationsInfoData.operationInfo}
-						/>
+						<Tabs>
+							<TabList className="operation-detail-header">
+								<div className="operation-detail-tabs">
+									{	operationsInfoData.operationInfo &&
+										<Tab className="operation-detail-tab">Operation Info</Tab>
+									}
+								</div>
+								<button className="yellow-button">View Raw JSON Object</button>
+							</TabList>
+							<div className="operation-detail-table">
+								<TabPanel>
+									{ operationsInfoData.operationInfo &&
+										<OperationInfo data={operationsInfoData.operationInfo} />
+									}
+									{ operationsInfoData.additionalInfo &&
+										<AdditionalInfo data={operationsInfoData.additionalInfo} />
+									}
+								</TabPanel>
+							</div>
+						</Tabs>
 					</td>
 				</tr>
 			}

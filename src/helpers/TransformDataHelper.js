@@ -2,14 +2,81 @@ import { OPERATION_TYPES } from '../constants/OperationTypeConstants';
 
 export const transformOperationDataByType = (type, data) => {
 	switch (type) {
+		case OPERATION_TYPES.TRANSFER:
+			return {
+				operationInfo: {
+					type: 'Transfer',
+					from: data.from,
+					to: data.to,
+					amount: data.amount,
+					fee: data.fee,
+					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					directLink: 'https://explorer.echo.org/blocks/70/1?op=1',
+				},
+			};
+		case OPERATION_TYPES.TRANSFER_TO_ADDRESS:
+			return {
+				operationInfo: {
+					type: 'Transfer to address',
+					from: {
+						value: 'init1',
+						link: '1.2.3',
+					},
+					to_address: 'https://explorer.echo.org/blocks/70/1?op=1',
+					to_account: {
+						value: 'account',
+						link: '1.2.3',
+					},
+					amount: {
+						amount: 23,
+						precision: 8,
+						symbol: 'ECHO',
+					},
+					fee: {
+						amount: 23,
+						precision: 8,
+						symbol: 'ECHO',
+					},
+					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					directLink: 'https://explorer.echo.org/blocks/70/1?op=1',
+				},
+			};
+		case OPERATION_TYPES.OVERRIDE_TRANSFER:
+			return {
+				operationInfo: {
+					type: 'Override transfer',
+					sender: {
+						value: 'init1',
+						link: '1.2.3',
+					},
+					from: {
+						value: 'init1',
+						link: '1.2.3',
+					},
+					to: {
+						value: 'init1',
+						link: '1.2.3',
+					},
+					amount: {
+						amount: 23,
+						precision: 8,
+						symbol: 'ECHO',
+					},
+					fee: {
+						amount: 23,
+						precision: 8,
+						symbol: 'ECHO',
+					},
+				},
+			};
 		case OPERATION_TYPES.ACCOUNT_CREATE:
 			return {
 				operationInfo: {
 					type: 'Create account',
 					registrar: data.registrar,
 					account_name: {
-						name: 'account',
-						id: '1.2.3',
+						value: 'account',
+						link: '1.2.3',
 					},
 					new_account_id: '1.2.3',
 					authority: [{
@@ -21,8 +88,8 @@ export const transformOperationDataByType = (type, data) => {
 					}],
 					echorand_key: 'anyStringValue',
 					delegating_account: {
-						name: 'account',
-						id: '1.2.3',
+						value: 'account',
+						link: '1.2.3',
 					},
 					delegate_share: {
 						amount: 23,
@@ -30,6 +97,51 @@ export const transformOperationDataByType = (type, data) => {
 						symbol: 'ECHO',
 					},
 					fee: data.fee,
+				},
+			};
+		case OPERATION_TYPES.ACCOUNT_UPDATE:
+			return {
+				operationInfo: {
+					type: 'Update account',
+					delegate_share: {
+						amount: 23,
+						precision: 8,
+						symbol: 'ECHO',
+					},
+					account_updated: {
+						value: 'account',
+						link: '1.2.3',
+					},
+					echorand_key: 'anyStringValue',
+					fee: {
+						amount: 23,
+						precision: 8,
+						symbol: 'ECHO',
+					},
+				},
+			};
+		case OPERATION_TYPES.ACCOUNT_WHITELIST:
+			return {
+				operationInfo: {
+					type: 'Account whitelist',
+					sender: {
+						value: 'account',
+						link: '1.2.3',
+					},
+					listed_account: {
+						value: 'account',
+						link: '1.2.3',
+					},
+					new_status: 'statusString',
+					fee: {
+						amount: 23,
+						precision: 8,
+						symbol: 'ECHO',
+					},
+				},
+				additionalInfo: {
+					account_white_list: 'anyStringValue',
+					account_black_list: 'anyStringValue',
 				},
 			};
 		default:
