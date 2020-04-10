@@ -28,8 +28,6 @@ import GlobalReducer from '../reducers/GlobalReducer';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
 
-import { getDelegationRates, getBlock } from '../services/queries/block';
-
 /**
  *
  * @param {Object} targetBlock
