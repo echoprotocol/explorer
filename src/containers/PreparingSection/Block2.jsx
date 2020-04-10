@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { LatestBlockIcon } from '../../components/Icons/HeaderIcons';
-import Timer from './Timer';
+import Timer from '../../components/Time/Timer';
 
 const calculateTimestamp = (latestBlock, blocks) => {
 	const lastTimestamp = blocks.getIn([latestBlock, 'timestamp']);
