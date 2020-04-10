@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import SidebarElement from './SidebarElement';
-import TotalSupply from './TotalSupply';
+
 import BlockchainRates from './BlockchainRates';
 import FrozenFunds from './FrozenFunds';
 import Footer from '../../containers/Footer';
 import { subscribeNewBlock } from '../../services/subscriptions/block';
+import TotalSupply from '../../containers/Sidebar/TotalSupply';
 
 const Sidebar = React.memo((props) => {
 	const {
@@ -14,6 +15,8 @@ const Sidebar = React.memo((props) => {
 		withFooter,
 		currentFrozenData,
 		frozenData,
+		delegationRate,
+		delegationRates,
 	} = props;
 	const [blockSubscriber, setBlockSubscriber] = useState(null);
 	useEffect(() => {
@@ -44,7 +47,11 @@ const Sidebar = React.memo((props) => {
 				<TotalSupply />
 			</SidebarElement>
 			<SidebarElement title="Blockchain rates">
-				<BlockchainRates pinned={pinned} />
+				<BlockchainRates
+					pinned={pinned}
+					delegationRate={delegationRate}
+					delegationRates={delegationRates}
+				/>
 			</SidebarElement>
 			<SidebarElement title="Frozen Funds">
 				<FrozenFunds
@@ -63,6 +70,9 @@ Sidebar.propTypes = {
 	currentFrozenData: PropTypes.object.isRequired,
 	frozenData: PropTypes.array.isRequired,
 	updateFrozenBalances: PropTypes.func.isRequired,
+	delegationRate: PropTypes.number.isRequired,
+	delegationRates: PropTypes.array.isRequired,
+
 };
 Sidebar.defaultProps = {
 	pinned: false,

@@ -14,6 +14,8 @@ export default withRouter(connect(
 	(state) => ({
 		currentFrozenData: state.block.get('currentFrozenData'),
 		frozenData: state.block.get('frozenData'),
+		delegationRate: state.block.get('delegationRate'),
+		delegationRates: state.block.get('delegationRates'),
 	}),
 	(dispatch) => ({
 		updateFrozenBalances: (data) => dispatch(updateFrozenData(data)),

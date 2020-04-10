@@ -18,6 +18,8 @@ const DEFAULT_FIELDS = Map({
 		accounts_freeze_sum: 0,
 	},
 	frozenData: [],
+	delegationRate: 0,
+	delegationRates: [],
 });
 
 export default createModule({
