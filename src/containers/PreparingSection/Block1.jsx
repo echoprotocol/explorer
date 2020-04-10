@@ -15,7 +15,7 @@ const Block1 = React.memo((props) => (
 		</div>
 		<div className="preparing-line">
 			<span className="preparing-text">
-				Next block: { getStatus(props.stepProgress) }
+				Next block {props.preparingBlock}: { getStatus(props.stepProgress) }
 				<InfoTooltip iconFilled={false} overlay="Next block info" />
 			</span>
 			<a href="https://docs.echo.org/" target="_blank" rel="noopener noreferrer">Echo rand info</a>
