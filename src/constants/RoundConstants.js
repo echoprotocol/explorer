@@ -15,6 +15,7 @@ export const rounderSteps = {
 	},
 	[BLOCK_PRODUCED]: {
 		status: BLOCK_PRODUCED,
+		title: 'Producing block',
 	},
 	[GC_STARTED]: {
 		status: GC_STARTED,
@@ -26,7 +27,7 @@ export const rounderSteps = {
 	},
 	[BLOCK_APPLIED_CALLBACK]: {
 		status: BLOCK_APPLIED_CALLBACK,
-		title: 'Produced',
+		title: 'Waiting for txs',
 	},
 };
 
