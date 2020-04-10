@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+
 import cn from 'classnames';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	number, age, producer, size, txs, onClick,
@@ -20,13 +22,11 @@ const OperationsRow = React.memo(({
 				</div>
 			</td>
 			<td className="producer">
-				<Link
-					className="td-in avatar-wrap"
-					to={URLHelper.createAccountUrlByName(producer)}
-					onClick={(e) => e.stopPropagation()}
-				>
-					<Avatar accountName={producer} />
-					<span>{producer}</span>
+				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(producer)}>
+					<a className="td-in avatar-wrap">
+						<Avatar accountName={producer} />
+						<span>{producer}</span>
+					</a>
 				</Link>
 			</td>
 			<td className="size"><div className="td-in">{size.weight} {size.weightSize}</div></td>

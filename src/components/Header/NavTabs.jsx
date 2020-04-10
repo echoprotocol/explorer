@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import { withRouter } from 'react-router';
+import Router, { withRouter } from 'next/router';
 
 import { INDEX_PATH, NODE_MAP } from '../../constants/RouterConstants';
 
-const NavTabs = React.memo(({ pathName, history }) => (
+const NavTabs = React.memo(({ router: { pathname } }) => (
 	<div className="nav-tabs">
 		<button
-			className={cn({ active: pathName === INDEX_PATH })}
-			onClick={() => history.push(INDEX_PATH)}
+			className={cn({ active: pathname === INDEX_PATH })}
+			onClick={() => Router.push(INDEX_PATH)}
 		>
 			Blocks
 		</button>
 		<button
-			className={cn({ active: pathName === NODE_MAP })}
-			onClick={() => history.push(NODE_MAP)}
+			className={cn({ active: pathname === NODE_MAP })}
+			onClick={() => Router.push(NODE_MAP)}
 		>
 			Nodes map
 		</button>
@@ -23,12 +23,9 @@ const NavTabs = React.memo(({ pathName, history }) => (
 ));
 
 NavTabs.propTypes = {
-	pathName: PropTypes.string.isRequired,
-	history: PropTypes.object,
+	router: PropTypes.object.isRequired,
 };
 
-NavTabs.defaultProps = {
-	history: {},
-};
+NavTabs.defaultProps = {};
 
 export default withRouter(NavTabs);

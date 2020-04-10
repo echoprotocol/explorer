@@ -24,6 +24,8 @@ import BaseActionsClass from './BaseActionsClass';
 import GlobalActions from './GlobalActions';
 
 import { getContractInfo } from '../services/queries/contract';
+import GridActions from './GridActions';
+import { TRANSACTION_GRID } from '../constants/TableConstants';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -560,7 +562,6 @@ class TransactionActionsClass extends BaseActionsClass {
 		if ([
 			OPERATIONS_IDS.CONTRACT_CREATE,
 			OPERATIONS_IDS.CONTRACT_CALL,
-			OPERATIONS_IDS.CONTRACT_TRANSFER,
 		].includes(type)) {
 			if (internal) {
 				options['token transfers'] = internal;
@@ -669,6 +670,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				});
 
 				operations = await Promise.all(operations);
+				dispatch(GridActions.setTotalDataSize(TRANSACTION_GRID, operations.length));
 				dispatch(this.setValue('operations', new List(operations)));
 			} catch (err) {
 				dispatch(this.setValue('error', FormatHelper.formatError(err)));

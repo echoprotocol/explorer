@@ -1,25 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
-import { INDEX_PATH, BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { INDEX_PATH, BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { TRANSACTION_GRID } from '../../constants/TableConstants';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import BreadCrumbs from '../../components/InformationBreadCrumbs';
 import BackwardsLink from '../BackwardLink';
 import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
+import OperationsTable from '../../containers/OperationsTable';
 
-import OperationsTable from '../OperationsTable';
+import GlobalActions from '../../actions/GlobalActions';
+import { getBlockInformation } from '../../actions/BlockActions';
+import TransactionActions from '../../actions/TransactionActions';
+import GridActions from '../../actions/GridActions';
 
 class TransactionsInfo extends React.Component {
 
 	componentDidMount() {
-		const { round, index } = this.props.match.params;
-
-		this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
-		this.props.getBlockInfo(round);
-		this.props.getTransaction();
+		const { router: { query: { round, index } }, blockInformation, operations } = this.props;
+		if (!blockInformation.get('blockNumber') || !operations.size) {
+			this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
+			this.props.getBlockInfo(round);
+			this.props.getTransaction(round, index);
+		}
 	}
 
 	componentWillUnmount() {
@@ -28,9 +35,9 @@ class TransactionsInfo extends React.Component {
 
 	returnFunction() {
 		if (!this.props.historyLength) {
-			this.props.history.push(BLOCK_INFORMATION_PATH.replace(/:round/, this.props.match.params.round));
+			Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, this.props.router.query.round));
 		} else {
-			this.props.history.goBack();
+			Router.back();
 		}
 	}
 
@@ -39,20 +46,22 @@ class TransactionsInfo extends React.Component {
 	}
 
 	render() {
-		const { round, index } = this.props.match.params;
+		const { query: { round, index } } = this.props.router;
 
 		const {
-			operations, blockInformation, loading, history, location,
+			operations, blockInformation, loading, router,
 		} = this.props;
 
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',
-				path: INDEX_PATH,
+				href: INDEX_PATH,
+				as: INDEX_PATH,
 			},
 			{
 				title: `Block ${FormatHelper.formatAmount(round, 0)}`,
-				path: BLOCK_INFORMATION_PATH.replace(/:round/, round),
+				href: SSR_BLOCK_INFORMATION_PATH,
+				as: BLOCK_INFORMATION_PATH.replace(/:round/, round),
 			},
 		];
 
@@ -68,11 +77,12 @@ class TransactionsInfo extends React.Component {
 					<React.Fragment>
 						<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
 						<OperationsTable
+							onLoadMoreHistory={() => { }}
+							gridName={TRANSACTION_GRID}
 							label={FormatHelper.getFormaOperationsTitle(operations.size)}
 							isTransaction
 							operations={operations}
-							history={history}
-							location={location}
+							router={router}
 							loading={loading}
 							changeUrl
 						/>
@@ -85,10 +95,8 @@ class TransactionsInfo extends React.Component {
 }
 
 TransactionsInfo.propTypes = {
+	router: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
-	match: PropTypes.object.isRequired,
-	history: PropTypes.object.isRequired,
-	location: PropTypes.object.isRequired,
 	operations: PropTypes.object,
 	historyLength: PropTypes.number,
 	getTransaction: PropTypes.func.isRequired,
@@ -102,6 +110,18 @@ TransactionsInfo.defaultProps = {
 	operations: null,
 	historyLength: 0,
 	loading: false,
+};
+
+TransactionsInfo.getInitialProps = async ({ store, query }) => {
+	const { round, index, ...filters } = query;
+	const title = TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round);
+	await store.dispatch(GridActions.initData(TRANSACTION_GRID, filters));
+	await Promise.all([
+		store.dispatch(GlobalActions.setTitle(title)),
+		store.dispatch(getBlockInformation(round)),
+		store.dispatch(TransactionActions.getTransaction(round, index)),
+	]);
+	return {};
 };
 
 export default TransactionsInfo;

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import UploadABI from '../../components/UploadABI';
 import ContractActions from '../../actions/ContractActions';
@@ -14,9 +14,9 @@ export default withRouter(connect(
 		icon: state.contract.get('icon'),
 		verified: state.contract.get('verified'),
 	}),
-	(dispatch, props) => ({
+	(dispatch) => ({
 		approve: (id, abi) => dispatch(ContractActions.abiApprove(id, abi)),
 		setFormAbi: (value) => dispatch(FormActions.setFormValue(FORM_ABI, 'abi', value)),
-		getContractInfo: () => dispatch(ContractActions.getContractInfo(props.match.params.id)),
+		getContractInfo: (id) => dispatch(ContractActions.getContractInfo(id)),
 	}),
 )(UploadABI));

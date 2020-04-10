@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -9,7 +9,7 @@ import PreparingSection from '../PreparingSection';
 import Header from '../../components/Header';
 
 const HeaderContainer = React.memo(({
-	history, hints, getHints, loadingSearch, errorSearch, pathName,
+	hints, getHints, loadingSearch, errorSearch,
 	stepProgress, preparingBlock, latestBlock,
 }) => (
 	<div className="top-section">
@@ -18,9 +18,7 @@ const HeaderContainer = React.memo(({
 				errorSearch={errorSearch}
 				loadingSearch={loadingSearch}
 				hints={hints}
-				history={history}
 				getHints={getHints}
-				pathName={pathName}
 			/>
 			<PreparingSection
 				stepProgress={stepProgress}
@@ -33,8 +31,6 @@ const HeaderContainer = React.memo(({
 
 
 HeaderContainer.propTypes = {
-	pathName: PropTypes.string.isRequired,
-	history: PropTypes.object.isRequired,
 	hints: PropTypes.array.isRequired,
 	loadingSearch: PropTypes.bool.isRequired,
 	errorSearch: PropTypes.string.isRequired,

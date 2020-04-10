@@ -16,6 +16,7 @@
 .footer-version {
 	color: $grey-mid;
 	margin-left: 12px;
+	@include inter-ui-medium;
 }
 
 .footer-info {

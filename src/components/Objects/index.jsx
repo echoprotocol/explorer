@@ -2,46 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import JSONTree from 'react-json-tree';
 import { isString } from 'lodash';
-import queryString from 'query-string';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import copy from 'copy-to-clipboard';
 import InnerHeader from '../InnerHeader';
 import URLHelper from '../../helpers/URLHelper';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
+import { getObjectInfo } from '../../actions/ObjectsActions';
+import QueryStringHelper from '../../helpers/QueryStringHelper';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class Objects extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.copy = this.copy.bind(this);
-		this.state = {
-			id: this.getId(this.props),
-		};
 	}
 
 	componentDidMount() {
-		this.checkObject();
-	}
-
-	componentWillReceiveProps(nextProps) {
-
-		const newId = this.getId(nextProps);
-
-		if (newId !== this.state.id) {
-
-			this.setState({
-				id: newId,
-			}, () => {
-				this.checkObject();
-			});
-
+		if (!this.props.data) {
+			const id = QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1]);
+			this.checkObject(id);
 		}
+
 	}
 
-	componentDidUpdate() {
-		if (this.state.id) {
-			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, this.state.id));
+	componentDidUpdate(prevProps) {
+		const id = QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1]);
+
+		if (id) {
+			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, id));
+		}
+
+		if (prevProps.router.asPath !== this.props.router.asPath) {
+			this.checkObject(id);
 		}
 	}
 
@@ -49,25 +43,7 @@ class Objects extends React.Component {
 		this.props.setError(null);
 	}
 
-	getId(props) {
-
-		const parsed = queryString.parse(props.location.search);
-		const regExp = /^\d+\.\d+\.\d+$/;
-
-		if (parsed.opId) {
-			return parsed.opId.trim();
-		}
-
-		if (!parsed.id || parsed.id.trim().search(regExp) === -1) {
-			return null;
-		}
-
-		return parsed.id.trim();
-	}
-
-	checkObject() {
-		const { id } = this.state;
-
+	checkObject(id) {
 		if (!id) {
 			this.props.setError('Object id is Invalid');
 		} else {
@@ -101,10 +77,9 @@ class Objects extends React.Component {
 			base0E: '#ae81ff',
 			base0F: '#cc6633',
 		};
-
 		return (
 			<div className="inner-container object-view">
-				<InnerHeader title={`Object ${this.state.id}`} />
+				<InnerHeader title={`Object ${QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1])}`} />
 				{error ?
 					<div className="json-tree-container">
 						{error}
@@ -119,14 +94,12 @@ class Objects extends React.Component {
 								const idRegExp = /^"\d+\.\d+\.\d+"$/;
 
 								if ((raw && isString(raw) && (raw.search(idRegExp) !== -1))) {
-
-									const url = URLHelper.createUrlById(raw.substr(1, raw.length - 1 - 1));
-
+									const id = raw.substr(1, raw.length - 1 - 1);
+									const as = URLHelper.createUrlById(id);
+									const href = SsrHrefHelper.getHrefByObjectId(id);
 									return (
-										<Link
-											to={url}
-										>
-											{raw}
+										<Link href={href} as={as}>
+											<a>{raw}</a>
 										</Link>
 									);
 								}
@@ -147,18 +120,27 @@ class Objects extends React.Component {
 }
 
 Objects.propTypes = {
+	router: PropTypes.object.isRequired,
 	data: PropTypes.any,
-	getObjectInfo: PropTypes.func,
 	setError: PropTypes.func,
 	error: PropTypes.string,
 	setTitle: PropTypes.func.isRequired,
+	getObjectInfo: PropTypes.func.isRequired,
 };
 
 Objects.defaultProps = {
 	data: null,
-	getObjectInfo: null,
 	setError: null,
 	error: null,
+};
+
+Objects.getInitialProps = async ({ query, store, asPath }) => {
+	let { id } = query;
+	if (!id) {
+		id = QueryStringHelper.getObjectId(asPath.split('?')[1]);
+	}
+	await store.dispatch(getObjectInfo(id));
+	return { query: { id } };
 };
 
 export default Objects;
