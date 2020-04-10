@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Media from 'react-media';
 
 const Logotype = ({ onClick }) => (
 	<a href="" className="logotype" onClick={(e) => { e.preventDefault(); onClick(); }}>

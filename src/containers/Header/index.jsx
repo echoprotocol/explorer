@@ -34,7 +34,6 @@ HeaderContainer.propTypes = {
 
 export default withRouter(connect(
 	(state) => ({
-		pathName: state.router.location.pathname,
 		hints: state.search.getIn(['headerSearch', 'hints']),
 		errorSearch: state.search.getIn(['headerSearch', 'error']),
 		loadingSearch: state.search.getIn(['headerSearch', 'loading']),
