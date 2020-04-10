@@ -15,6 +15,7 @@ export const rounderSteps = {
 	},
 	[BLOCK_PRODUCED]: {
 		status: BLOCK_PRODUCED,
+		title: 'Producing block',
 	},
 	[GC_STARTED]: {
 		status: GC_STARTED,
