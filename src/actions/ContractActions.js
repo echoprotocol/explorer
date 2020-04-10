@@ -176,7 +176,7 @@ class ContractActions extends BaseActionsClass {
 					toFilter: toFilter || undefined,
 					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 					count: queryData.sizePerPage,
-					operations: Object.keys(OPERATIONS_IDS).slice(0, 64),
+					operations: Object.keys(OPERATIONS_IDS),
 				});
 				dispatch(GridActions.setTotalDataSize(CONTRACT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
