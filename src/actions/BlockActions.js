@@ -514,10 +514,8 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 };
 
 export const getDelegationRate = () => async (dispatch) => {
-	const previousMonth = new Date();
-	previousMonth.setMonth(previousMonth.getMonth() - 1);
-	const from = previousMonth.toISOString();
-	const interval = 24 * 60 * 60;
+	const from = moment().subtract(1, 'month').toISOString();
+	const interval = moment.duration(1, 'day').as('second');
 	const delegationRates = await getDelegationRates(from, interval);
 	const { delegatePercent, ratesMap } = delegationRates.data.getDelegationPercent;
 	const historyRates = ratesMap.map((el) => ({ rate: el.rate }));
