@@ -2,11 +2,11 @@ import gql from 'graphql-tag';
 import client from '../GraphqlService';
 
 export const getHistory = async ({
-	subject, offset, count, operations, relationSubjects,
+	subject, offset, count, operations, toFilter, fromFilter,
 }) => {
 	const query = gql`
-		query getSubjectOperations($subject: AccountOrContractOrAssetId!, $relationSubjects: [AccountOrContractOrAssetOrProposalId!], $offset: Int, $count: Int, $operations: [OperationIdEnum!]) {
-			getSubjectOperations(subject: $subject, relationSubjects: $relationSubjects, offset: $offset, count: $count, operations: $operations) {
+		query getSubjectOperations($subject: AccountOrContractOrAssetId!, $fromFilter: AccountOrContractOrAssetOrProposalId, $toFilter: AccountOrContractOrAssetOrProposalId, $offset: Int, $count: Int, $operations: [OperationIdEnum!]) {
+			getSubjectOperations(subject: $subject, fromFilter: $fromFilter, toFilter: $toFilter, offset: $offset, count: $count, operations: $operations) {
 			 	total
 				items {
 					id
@@ -32,7 +32,7 @@ export const getHistory = async ({
 	return client.getClient().query({
 		query,
 		variables: {
-			subject, offset, count, operations, relationSubjects,
+			subject, offset, count, operations, toFilter, fromFilter,
 		},
 	}).then(({ data }) => data.getSubjectOperations);
 };
