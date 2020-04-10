@@ -272,7 +272,6 @@ OperationsTable.defaultProps = {
 	loading: false,
 	isTransaction: false,
 
-	onChangeFilter: () => {},
 	onLoadMoreHistory: () => {},
 };
 
