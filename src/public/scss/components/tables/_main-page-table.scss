@@ -92,4 +92,11 @@
 		overflow: hidden;
 		color: $grey-mid;
 	}
+
+	.avatar-wrap {
+		span {
+			@include text-overflow;
+			max-width: 85px;
+		}
+	}
 }

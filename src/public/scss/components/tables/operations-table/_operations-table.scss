@@ -12,18 +12,6 @@
 		border-top: 1px solid $grey-mid;
 	}
 
-	.dd {
-		.td-in {
-			text-align: right;
-		}
-		img {
-			display: block;
-			transform: rotate(60deg);
-			transition: transform $speed;
-			margin: 0 0 0 auto;
-		}
-	}
-
 	.view {
 		cursor: pointer;
 		z-index: 1;
@@ -36,22 +24,30 @@
 				display: table-row;
 
 				td:first-child {
-					background-color: #f3f3f5;
+					background-color: #fff;
 				}
 			}
-
-			.dd {
-				img {
-					transform: rotate(0);
-				}
+			.toggle-icon {
+				transform: translateY(-50%);
 			}
 		}
 	}
+
+	.toggle-icon {
+		position: absolute;
+		right: 17px;
+		top: 50%;
+		transform: translateY(-50%) rotate(180deg);
+		transition: transform $speed;
+	}
+
 	.fold-operation-info {
+		padding: 20px 0;
 		&:not(:last-child) {
 			margin-bottom: 20px;
 		}
 	}
+
 	.fold {
 		display: none;
 		animation: fade-in $speed;
@@ -64,27 +60,41 @@
 			}
 		}
 
-		.fold-title {
-			padding-left: 17px;
-			font-size: 13px;
-			letter-spacing: 0.33px;
-			color: #120e30;
-			display: block;
+		.fold-header {
+			padding: 0 30px;
+			padding-bottom: 6px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
 			width: 100%;
 			border-bottom: 1px solid rgba(#3f465a, 0.15);
-			padding-bottom: 10px;
-			@include inter-ui-bold();
+		}
 
-			& + .operation-detail-table {
-				margin-top: 8px;
+		.fold-title {
+			position: relative;
+			font-size: 12px;
+			@include inter-ui-medium;
+			&:after {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: calc(100% + 10px);
+				width: 100%;
+				height: 1px;
+				background-color: $blue;
+			}
+		}
 
-				@include max-vw($res-1000) {
-					margin-top: 19px;
-				}
-
-				@include max-vw($res-768) {
-					margin-top: 13px;
-				}
+		.view-json {
+			font-size: 11px;
+			@include inter-ui-medium;
+			padding: 5px 10px;
+			border: 1px solid transparent;
+			color: $bronze;
+			border-radius: 2px;
+			cursor: pointer;
+			&:focus {
+				border: 1px solid $blue;
 			}
 		}
 	}
@@ -109,6 +119,7 @@
 
 		.currency {
 			overflow: initial;
+			color: $grey-mid;
 		}
 	}
 
@@ -173,11 +184,6 @@
 		.fee {
 			max-width: 140px;
 			width: 140px;
-		}
-
-		.dd {
-			max-width: 30px;
-			width: 30px;
 		}
 	}
 	@include max-vw($res-1400) {

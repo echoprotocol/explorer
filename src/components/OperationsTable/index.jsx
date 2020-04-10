@@ -125,7 +125,7 @@ class OperationsTable extends React.Component {
 		const {
 			operations, hasMore, loading, isTransaction, label, loadMore,
 		} = this.props;
-		const { showedOperations, airRows, isFilterOpen } = this.state;
+		const { showedOperations, isFilterOpen } = this.state;
 
 		return (
 			<div className="operations-table">
@@ -145,7 +145,6 @@ class OperationsTable extends React.Component {
 									operation={op}
 									index={i}
 									active={showedOperations.includes(i)}
-									air={airRows.includes(i)}
 									tableRefs={this.tableRefs}
 									toggleOperationDetails={(index) => this.toggleOperationDetails(index)}
 								/>
