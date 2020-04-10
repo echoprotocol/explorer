@@ -22,6 +22,8 @@ import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstan
 
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
 import { INDEX_PATH } from '../constants/RouterConstants';
+import StatisticsActions from './StatisticsActions';
+import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
 
 /**
  * set connected parameter to true
@@ -97,6 +99,7 @@ const blockRelease = () => async (dispatch) => {
 	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
 	await dispatch(updateBlockList(global.head_block_number));
+	await dispatch(StatisticsActions.getAssetInformationByIds(MONITORING_ASSETS));
 	dispatch(updateAverageTransactions());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
@@ -111,7 +114,7 @@ const blockRelease = () => async (dispatch) => {
 export const serverConnect = () => async (dispatch) => {
 	try {
 		if (!echo.isConnected) {
-			dispatch(RoundReducer.actions.set({ field: 'connectedServer', value: false }));
+			dispatch(GlobalReducer.actions.set({ field: 'connectedServer', value: false }));
 			return;
 		}
 
@@ -122,6 +125,7 @@ export const serverConnect = () => async (dispatch) => {
 			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
 		]));
 
+		await dispatch(StatisticsActions.getAssetInformationByIds(MONITORING_ASSETS));
 		await dispatch(initBlocks());
 
 		const global = globalParams.echorand_config;
@@ -162,7 +166,7 @@ export const fullClientInit = () => async (dispatch) => {
 		]));
 
 		await dispatch(initBlocks());
-
+		await dispatch(StatisticsActions.getAssetInformationByIds(MONITORING_ASSETS));
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
