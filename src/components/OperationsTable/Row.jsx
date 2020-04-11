@@ -9,8 +9,8 @@ import { validators } from 'echojs-lib';
 import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
-import AdditionalInfo from '../TransactionInfo/AdditionalInfo';
 import OperationInfo from '../TransactionInfo/OperationInfo';
+import ProposalOperations from '../TransactionInfo/ProposalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -79,7 +79,7 @@ const OperationsRow = React.memo(({
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
 	// const operationsInfoData = type && transformOperationDataByType(type, operation);
-	const operationsInfoData = transformOperationDataByType('Issue asset', operation);
+	const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
 
 	return (
 		<React.Fragment>
@@ -138,18 +138,20 @@ const OperationsRow = React.memo(({
 									{	operationsInfoData.operationInfo &&
 										<Tab className="operation-detail-tab">Operation Info</Tab>
 									}
+									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
 								</div>
 								<button className="yellow-button">View Raw JSON Object</button>
 							</TabList>
 							<div className="operation-detail-table">
+								{ operationsInfoData.operationInfo &&
 								<TabPanel>
-									{ operationsInfoData.operationInfo &&
-										<OperationInfo data={operationsInfoData.operationInfo} />
-									}
-									{ operationsInfoData.additionalInfo &&
-										<AdditionalInfo data={operationsInfoData.additionalInfo} />
-									}
-								</TabPanel>
+									<OperationInfo data={operationsInfoData.operationInfo} />
+								</TabPanel>}
+								{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+								<TabPanel>
+									<ProposalOperations operations={operationsInfoData.proposalOperations} />
+								</TabPanel>}
 							</div>
 						</Tabs>
 					</td>
