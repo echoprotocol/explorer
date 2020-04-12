@@ -17,6 +17,7 @@ import { getBalances } from '../services/queries/balance';
 import { getHistory } from '../services/queries/history';
 import { ACCOUNT_GRID } from '../constants/TableConstants';
 import GridActions from './GridActions';
+import { getTotalAccountHistory } from '../services/queries/account';
 
 class AccountActions extends BaseActionsClass {
 
@@ -100,6 +101,7 @@ class AccountActions extends BaseActionsClass {
 					},
 				]));
 
+				const { total: totalAccountHistory } = await getTotalAccountHistory(account.id);
 				await dispatch(this.loadAccountHistory(account.id));
 				dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, account.name)));
 				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
@@ -108,7 +110,7 @@ class AccountActions extends BaseActionsClass {
 				const tokens = balances.data.getBalances.filter((balanceItem) =>
 					balanceItem.type === TOKEN_TYPE && !(new BN(balanceItem.amount)).isEqualTo(0));
 
-				dispatch(this.setMultipleValue({ tokens }));
+				dispatch(this.setMultipleValue({ tokens, totalAccountHistory }));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -223,6 +225,13 @@ class AccountActions extends BaseActionsClass {
 	setActiveAccount(account) {
 		return (dispatch) => {
 			dispatch(GlobalActions.setValue('activeAccount', fromJS(account)));
+		};
+	}
+
+	incTotalAccountHistory() {
+		return (dispatch, getState) => {
+			const totalAccountHistory = getState().account.get('totalAccountHistory');
+			dispatch(this.setValue('totalAccountHistory', totalAccountHistory + 1));
 		};
 	}
 

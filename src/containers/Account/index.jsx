@@ -15,6 +15,7 @@ export default withRouter(connect(
 		tokens: state.account.get('tokens'),
 		accountHistory: state.account.get('history'),
 		account: state.account.get('echoAccountInfo'),
+		totalAccountHistory: state.account.get('totalAccountHistory'),
 		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
@@ -22,6 +23,7 @@ export default withRouter(connect(
 		onSetPage: (newPage) => dispatch(GridActions.setPage(ACCOUNT_GRID, newPage)),
 		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
 		loadAccountHistory: (accountId) => dispatch(AccountActions.loadAccountHistory(accountId)),
+		incTotalAccountHistory: () => dispatch(AccountActions.incTotalAccountHistory()),
 		clearAccountInfo: () => dispatch(AccountActions.clear()),
 	}),
 )(Account));

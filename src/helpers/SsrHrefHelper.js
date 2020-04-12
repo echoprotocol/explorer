@@ -45,8 +45,10 @@ class SsrHrefHelper {
 				return SSR_BLOCK_INFORMATION_PATH;
 			case TYPE_SEARCH_SECTION.ASSET:
 				return SSR_ASSET_PATH;
-			default:
+			case TYPE_SEARCH_SECTION.CONTRACT:
 				return SSR_CONTRACT_PATH;
+			default:
+				return OBJECTS_PATH;
 		}
 	}
 

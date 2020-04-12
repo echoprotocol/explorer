@@ -58,7 +58,7 @@ class SearchActions extends BaseActionsClass {
 	 */
 	async searchObjectById(str) {
 		if (!validators.isObjectId(str)) return [];
-		let section = 'Id';
+		let section = TYPE_SEARCH_SECTION.OBJECT_ID;
 		let isAccount = false;
 		let isAsset = false;
 		let prefix = '';
@@ -66,12 +66,12 @@ class SearchActions extends BaseActionsClass {
 
 		if (validators.isAccountId(str)) {
 			isAccount = true;
-			section = 'Account';
+			section = TYPE_SEARCH_SECTION.ACCOUNT;
 		} else if (validators.isAssetId(str)) {
 			isAsset = true;
-			section = 'Asset';
+			section = TYPE_SEARCH_SECTION.ASSET;
 		} else if (validators.isContractId(str)) {
-			section = 'Contract';
+			section = TYPE_SEARCH_SECTION.CONTRACT;
 		}
 
 		const object = await echo.api.getObject(str);
@@ -89,7 +89,7 @@ class SearchActions extends BaseActionsClass {
 			}
 
 			if (token) {
-				section = 'ERC20 token';
+				section = TYPE_SEARCH_SECTION.ERC_20;
 				prefix = `${token.symbol} `;
 				str = `(${object.id})`;
 			}
@@ -183,11 +183,11 @@ class SearchActions extends BaseActionsClass {
 				console.warn('Error getting token by id from graphql');
 			}
 
-			let section = 'Contract';
+			let section = TYPE_SEARCH_SECTION.CONTRACT;
 			let prefix = `${CONTRACT_OBJECT_PREFIX}.`;
 
 			if (token) {
-				section = 'ERC20 token';
+				section = TYPE_SEARCH_SECTION.ERC_20;
 				prefix = `${token.symbol} ${CONTRACT_OBJECT_PREFIX}.`;
 			}
 

@@ -8,6 +8,7 @@ export const DEFAULT_ERROR_SEARCH = 'Search not found';
 export const ERROR_BLOCK_SEARCH = 'There is no block with such number';
 
 export const TYPE_SEARCH_SECTION = {
+	OBJECT_ID: 'Id',
 	ACCOUNT: 'Account',
 	BLOCK: 'Block',
 	ASSET: 'Asset',
