@@ -190,7 +190,7 @@ class OperationsTable extends React.Component {
 	renderTable() {
 		const { from, to } = this.state;
 		const {
-			isTransaction, label, loading, router,
+			isTransaction, label, loading, router, isMobile,
 		} = this.props;
 		let { filterAndPaginateData } = this.props;
 		const { showedOperations, airRows, isFilterOpen } = this.state;
@@ -215,6 +215,7 @@ class OperationsTable extends React.Component {
 							<tr className="air"><td /></tr>
 							{this.props.operations.map((op, i) => (
 								<OperationRow
+									isMobile={isMobile}
 									totalDataSize={filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}
 									currentPage={filterAndPaginateData.currentPage}
@@ -253,6 +254,7 @@ class OperationsTable extends React.Component {
 }
 
 OperationsTable.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
 	onLoadMoreHistory: PropTypes.func,
