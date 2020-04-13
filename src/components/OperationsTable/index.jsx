@@ -46,7 +46,11 @@ class OperationsTable extends React.Component {
 			to: this.props.filterAndPaginateData.get('filters').to,
 		});
 
-		if (queryProps.op && !TypesHelper.isStringNumber(queryProps.op)) {
+		if (!queryProps.op) {
+			return;
+		}
+
+		if (!TypesHelper.isStringNumber(queryProps.op)) {
 			Router.push(NOT_FOUND_PATH);
 		}
 
