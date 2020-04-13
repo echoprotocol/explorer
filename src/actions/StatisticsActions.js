@@ -24,12 +24,8 @@ class StatisticsActionsClass extends BaseActionsClass {
 	 * updateStatistics
 	 */
 	updateStatistics(block) {
-		let blockRound;
-		if (typeof block === 'number') {
-			blockRound = block;
-		} else {
-			blockRound = block.round;
-		}
+		const getBlock = {};
+		const blockRound = block.round;
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
@@ -39,7 +35,6 @@ class StatisticsActionsClass extends BaseActionsClass {
 						getDelegationPercent,
 						getDecentralizationRate,
 						getOperationCountHistory,
-						getBlock,
 						getFrozenBalancesData,
 					},
 				} = await getStatistics(from, interval, blockRound);

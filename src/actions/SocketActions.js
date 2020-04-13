@@ -23,6 +23,7 @@ import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstan
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
 import { INDEX_PATH } from '../constants/RouterConstants';
 import StatisticsActions from './StatisticsActions';
+import { getBlockFromGraphQl } from '../services/queries/block';
 
 /**
  * set connected parameter to true
@@ -124,7 +125,8 @@ export const serverConnect = () => async (dispatch) => {
 			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
 		]));
 
-		await dispatch(StatisticsActions.updateStatistics(dynamicGlobalParams.head_block_number));
+		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
+		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
 		await dispatch(initBlocks());
 
 		const global = globalParams.echorand_config;
@@ -166,7 +168,8 @@ export const fullClientInit = () => async (dispatch) => {
 		]));
 
 		await dispatch(initBlocks());
-		await dispatch(StatisticsActions.updateStatistics(dynamicGlobalParams.head_block_number));
+		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
+		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
