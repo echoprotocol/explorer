@@ -15,8 +15,26 @@ export const getStatistics = async (from, interval) => {
         ratesMap {
           rate
         }
-      } 
-    }
+      }
+      getOperationCountHistory(from: $from, interval: $interval) {
+        total,
+        ratesMap {
+          rate
+        }
+      }
+  		getFrozenBalancesData(from: $from, interval: $interval){
+   			frozenData {
+      		frozenSums {
+        		accounts_freeze_sum,
+     				committee_freeze_sum
+      		}
+    		}
+    		currentFrozenData {
+    			accounts_freeze_sum,
+      		committee_freeze_sum
+    		}
+			}
+		}
   `;
 	return client.getClient().query({ query, variables: { from, interval } });
 };

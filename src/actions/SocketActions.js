@@ -23,6 +23,7 @@ import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstan
 import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
 import { INDEX_PATH } from '../constants/RouterConstants';
 import StatisticsActions from './StatisticsActions';
+import { getBlockFromGraphQl } from '../services/queries/block';
 
 /**
  * set connected parameter to true
@@ -98,7 +99,6 @@ const blockRelease = () => async (dispatch) => {
 	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
 	await dispatch(updateBlockList(global.head_block_number));
-	await dispatch(StatisticsActions.updateStatistics());
 	dispatch(updateAverageTransactions());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
@@ -117,6 +117,7 @@ export const serverConnect = () => async (dispatch) => {
 			return;
 		}
 
+		const dynamicGlobalParams = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
@@ -124,7 +125,8 @@ export const serverConnect = () => async (dispatch) => {
 			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
 		]));
 
-		await dispatch(StatisticsActions.updateStatistics());
+		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
+		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
 		await dispatch(initBlocks());
 
 		const global = globalParams.echorand_config;
@@ -157,6 +159,7 @@ export const fullClientInit = () => async (dispatch) => {
 			apis: config.ECHO_NODE.APIS,
 		});
 
+		const dynamicGlobalParams = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
@@ -165,7 +168,8 @@ export const fullClientInit = () => async (dispatch) => {
 		]));
 
 		await dispatch(initBlocks());
-		await dispatch(StatisticsActions.updateStatistics());
+		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
+		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
