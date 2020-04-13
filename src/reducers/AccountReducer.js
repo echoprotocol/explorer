@@ -13,6 +13,7 @@ const DEFAULT_FIELDS = new Map({
 	tokens: new List([]),
 	history: new List([]),
 	echoAccountInfo: null,
+	totalAccountHistory: 0,
 });
 
 export default createModule({

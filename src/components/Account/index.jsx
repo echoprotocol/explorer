@@ -12,43 +12,65 @@ import AccountActions from '../../actions/AccountActions';
 import URLHelper from '../../helpers/URLHelper';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
 import GridActions from '../../actions/GridActions';
+import { subscribeAccountHistoryUpdate } from '../../services/subscriptions/account';
 
 class Account extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.updateHistorySubscriber = null;
+	}
 
 	componentDidMount() {
 		const { router: { query: { id } } } = this.props;
 		if (!this.props.account || (id !== this.props.account.get('id') && id !== this.props.account.get('name'))) {
 			this.props.getAccountInfo(this.props.router.query.id);
 		}
+		if (this.props.account) {
+			this.subscribeHistoryUpdate(this.props.account.get('id'));
+		}
 	}
 
 	async componentDidUpdate(prevProps) {
+		if ((!prevProps.account && this.props.account) ||
+			(prevProps.account && this.props.account && this.props.account.get('name') !== prevProps.account.get('name'))) {
+			await this.unsubscribeHistoryUpdate();
+			this.subscribeHistoryUpdate(this.props.account.get('id'));
+		}
 		if (prevProps.router.query.id !== this.props.router.query.id) {
 			await this.props.onSetFilter({ from: '', to: '' });
 			await this.props.onSetPage(1);
 			await this.props.getAccountInfo(this.props.router.query.id);
-			return;
-		}
-
-		if (!prevProps.account || !this.props.account) {
-			return;
-		}
-
-		const prevCountOps = prevProps.account.getIn(['statistics', 'total_ops']);
-		const currCountOps = this.props.account.getIn(['statistics', 'total_ops']);
-
-		if (prevCountOps !== currCountOps) {
-			this.onLoadMoreHistory();
 		}
 	}
 
 	componentWillUnmount() {
+		const { account } = this.props;
+		this.unsubscribeHistoryUpdate(account.get('id'));
 		this.props.clearAccountInfo();
 	}
 
 	onLoadMoreHistory() {
 		const { account } = this.props;
 		this.props.loadAccountHistory(account.get('id'));
+	}
+
+	async subscribeHistoryUpdate(id) {
+		const updateHistory = await subscribeAccountHistoryUpdate([id]);
+		const nextUpdate = () => {
+			this.onLoadMoreHistory();
+			this.props.incTotalAccountHistory();
+		};
+		this.updateHistorySubscriber = updateHistory.subscribe({
+			next: nextUpdate.bind(this),
+			error: (err) => { console.log('Update account history error: ', err.message || err); },
+		});
+	}
+
+	async unsubscribeHistoryUpdate() {
+		if (!this.updateHistorySubscriber) { return; }
+		await this.updateHistorySubscriber.unsubscribe();
+		this.updateHistorySubscriber = null;
 	}
 
 	renderLoader(loading) {
@@ -70,7 +92,7 @@ class Account extends React.Component {
 
 	render() {
 		const {
-			loading, loadingMoreHistory, account, balances, tokens, accountHistory, isMobile,
+			loading, loadingMoreHistory, account, balances, tokens, accountHistory, isMobile, totalAccountHistory,
 		} = this.props;
 
 		return (
@@ -102,7 +124,7 @@ class Account extends React.Component {
 				<div className="account-page-table">
 					{ account && !loading ?
 						<React.Fragment>
-							{account.getIn(['statistics', 'total_ops']) ? (
+							{totalAccountHistory ? (
 								<OperationsTable
 									onLoadMoreHistory={() => this.onLoadMoreHistory()}
 									gridName={ACCOUNT_GRID}
@@ -131,11 +153,13 @@ Account.propTypes = {
 	balances: PropTypes.object,
 	tokens: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 	accountHistory: PropTypes.object,
+	totalAccountHistory: PropTypes.number.isRequired,
 	clearAccountInfo: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
 	onSetFilter: PropTypes.func.isRequired,
 	onSetPage: PropTypes.func.isRequired,
+	incTotalAccountHistory: PropTypes.func.isRequired,
 };
 
 Account.defaultProps = {
