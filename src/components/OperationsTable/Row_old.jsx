@@ -8,11 +8,11 @@ import { validators } from 'echojs-lib';
 import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
-import OperationInfo from '../TransactionInfo/OperationInfo';
+import OperationInfo from '../TransactionInfo/OperationInfo_old';
+import ObjectInfo from '../TransactionInfo/ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import { transformOperationDataByType } from '../../helpers/TransformDataHelper';
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -23,12 +23,13 @@ const OperationsRow = React.memo(({
 		trIndex: transactionNum,
 		opIndex,
 		number,
-		type,
+		blockTimestamp,
 		...detailInfo
 	},
-	operation,
 	index,
 	active,
+	air,
+	isTransaction,
 	toggleOperationDetails,
 	tableRefs,
 }) => {
@@ -50,7 +51,6 @@ const OperationsRow = React.memo(({
 			</Link>
 		);
 	};
-
 	const renderAmount = () => {
 		if (!mainInfo.value.amount) return <div className="td-in">—</div>;
 		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
@@ -71,11 +71,9 @@ const OperationsRow = React.memo(({
 		);
 	};
 
+	const objectId = objectInfo ? objectInfo.get('id') : null;
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
-
-	const operationsInfoData = type && transformOperationDataByType(type, operation);
-
 	return (
 		<React.Fragment>
 			<tr
@@ -83,11 +81,17 @@ const OperationsRow = React.memo(({
 				onClick={() => toggleOperationDetails(index)}
 				ref={tableRefs[index]}
 			>
+				<td />
 				<td className="number">
 					<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
 				</td>
 				<td className="operation">
-					<div className="td-in">{type}</div>
+					<div className="td-in">{detailInfo.type}</div>
+				</td>
+				<td className="time">
+					<div className="td-in">
+						<span>{FormatHelper.timestampToOperationRowTime(blockTimestamp)}</span>
+					</div>
 				</td>
 				<td className="sender">
 					{ mainInfo.from.id ?
@@ -118,21 +122,36 @@ const OperationsRow = React.memo(({
 									</span>
 								</Tooltip>
 								<span className="currency">{detailInfo.fee.symbol}</span>
+
 							</React.Fragment> : '-'}
 					</div>
-					<img src={ddIcon} alt="" className="toggle-icon" />
 				</td>
+				{ isTransaction &&
+					<td className="dd">
+						<div className="td-in"><img src={ddIcon} alt="" /></div>
+					</td>
+				}
+				<td />
 			</tr>
 
 			{ active &&
 				<tr className="fold">
-					<td colSpan="6">
+					<td />
+					<td colSpan="8">
 						<OperationInfo
-							data={operationsInfoData.operationInfo}
+							details={detailInfo}
+							index={index}
+							block={block}
+							transaction={transactionNum}
+							opIndex={opIndex}
+							objId={objectId}
 						/>
+						<ObjectInfo details={detailInfo} object={objectInfo} />
 					</td>
+					<td />
 				</tr>
 			}
+			{ air && <tr className="air"><td /></tr> }
 		</React.Fragment>
 	);
 
@@ -142,8 +161,14 @@ OperationsRow.propTypes = {
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
+	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
+	isTransaction: PropTypes.bool,
+};
+
+OperationsRow.defaultProps = {
+	isTransaction: false,
 };
 
 export default OperationsRow;

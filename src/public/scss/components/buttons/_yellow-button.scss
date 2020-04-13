@@ -1,0 +1,12 @@
+.yellow-button {
+	font-size: 11px;
+	@include inter-ui-medium;
+	padding: 5px 10px;
+	border: 1px solid transparent;
+	color: $bronze;
+	border-radius: 2px;
+	cursor: pointer;
+	&:focus {
+		border: 1px solid $blue;
+	}
+}
