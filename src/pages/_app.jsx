@@ -30,8 +30,7 @@ class ExplorerApp extends App {
 
 	componentDidMount() {
 		Router.events.on('routeChangeStart', () => {
-			const { route: prevRoute } = this.props.store.getState().global.get('history');
-			if (prevRoute !== this.props.router.route && this.props.router.route !== SSR_TRANSACTION_INFORMATION_PATH) {
+			if (this.props.router.route !== SSR_TRANSACTION_INFORMATION_PATH) {
 				this.props.store.dispatch(GlobalActions.updateHistoryPath(this.props.router.asPath, this.props.router.route));
 			}
 			this.props.store.dispatch(GlobalActions.incrementHistoryLength());

@@ -48,7 +48,7 @@ class BlockInformation extends React.Component {
 			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
 			return {
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
-				operations: newOperations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage),
+				operations: newOperations.reverse().slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage),
 			};
 		}
 		return null;
@@ -70,7 +70,7 @@ class BlockInformation extends React.Component {
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
-				operations: newOperations.slice(0, sizePerPage),
+				operations: newOperations.reverse().slice(0, sizePerPage),
 			});
 		}
 
