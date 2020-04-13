@@ -37,6 +37,7 @@ const OperationsRow = React.memo(({
 	currentPage,
 	sizePerPage,
 	totalDataSize,
+	isMobile,
 }) => {
 
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
@@ -153,6 +154,7 @@ const OperationsRow = React.memo(({
 					<td />
 					<td colSpan="8">
 						<OperationInfo
+							isMobile={isMobile}
 							details={detailInfo}
 							index={index}
 							block={block}
@@ -172,6 +174,7 @@ const OperationsRow = React.memo(({
 });
 
 OperationsRow.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,

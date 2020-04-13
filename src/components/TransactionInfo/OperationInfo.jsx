@@ -118,14 +118,14 @@ class OperationInfo extends React.Component {
 	}
 
 	renderOperationRowValue(key, value, index) {
-		const { objId } = this.props;
+		const { objId, isMobile } = this.props;
 		const valueAmount = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
 		const [amount, amountName] = valueAmount.split(' ');
 
 		if (typeof value === 'object' && key !== 'logs') {
 			if (!value.link) {
 				value = (
-					<Media query="(max-width: 300px)">
+					<Media query="(max-width: 300px)" defaultMatches={isMobile}>
 						{(matches) =>
 							(matches ? (
 								<Tooltip
@@ -184,12 +184,11 @@ class OperationInfo extends React.Component {
 		}
 
 		if (key === 'asset_to_issue') {
-			const words = value.split(' ');
 			return (
 				<React.Fragment>
-					{words[0]}&nbsp;
+					{amount}&nbsp;
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(objId)}>
-						<a>{words[1]}</a>
+						<a>{amountName}</a>
 					</Link>
 				</React.Fragment>
 			);
@@ -306,6 +305,7 @@ OperationInfo.propTypes = {
 	transaction: PropTypes.number.isRequired,
 	opIndex: PropTypes.number.isRequired,
 	objId: PropTypes.string,
+	isMobile: PropTypes.bool.isRequired,
 };
 
 export default OperationInfo;
