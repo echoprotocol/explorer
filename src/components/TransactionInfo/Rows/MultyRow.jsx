@@ -9,7 +9,7 @@ const MultyRow = ({
 		<div className="od-col">
 			<div className="multy-field">
 				{fields.map((item) => (
-					<span className="multy-field-item">
+					<span className="multy-field-item" key={item.key}>
 						<span className="multy-field-item__name">
 							{item.key}:&nbsp;
 						</span>

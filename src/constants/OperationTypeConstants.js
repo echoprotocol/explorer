@@ -22,4 +22,18 @@ export const OPERATION_TYPES = {
 	COMMITTEE_MEMBER_CREATE: 'Create committee member',
 	COMMITTEE_MEMBER_UPDATE: 'Update committee member',
 	COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS: 'Global parameters update',
+	COMMITTEE_MEMBER_ACTIVATE: 'Activate committee member',
+	COMMITTEE_MEMBER_DEACTIVATE: 'Deactivate committee member',
+	COMMITTEE_FROZEN_BALANCE_DEPOSIT: 'Committee frozen balance deposit',
+	COMMITTEE_FROZEN_BALANCE_WITHDRAW: 'Committee frozen balance withdraw',
+	VESTING_BALANCE_CREATE: 'Create vesting balance',
+	VESTING_BALANCE_WITHDRAW: 'Withdraw vesting balance',
+	BALANCE_CLAIM: 'Claim balance',
+	BALANCE_FREEZE: 'Balance freeze',
+	BALANCE_UNFREEZE: 'Balance unfreeze',
+	CONTRACT_CREATE: 'Contract create',
+	CONTRACT_CALL: 'Contract call',
+	CONTRACT_INTERNAL_CREATE: 'Contract internal create',
+	CONTRACT_INTERNAL_CALL: 'Contract internal call',
+
 };

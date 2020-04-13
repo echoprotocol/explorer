@@ -6,6 +6,8 @@ import FormatHelper from '../../helpers/FormatHelper';
 import PrimaryRow from './Rows/PrimaryRow';
 import LinkRow from './Rows/LinkRow';
 import ProducersRow from './Rows/ProducersRow';
+import MultyRow from './Rows/MultyRow';
+import TransfersRow from './Rows/TransfersRow';
 
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
@@ -37,6 +39,14 @@ const AdditionalInfo = ({ data }) => (
 			{data.result_transaction && <LinkRow title="Result transaction" link={data.result_transaction} />}
 			{data.current_global_parametres && <LinkRow title="Current global parameters" link={data.current_global_parametres} />}
 			{data.current_account_committee_status && <PrimaryRow title="Current account committee status" description={data.current_account_committee_status} />}
+			{data.current_account_frozen_balance && <PrimaryRow
+				title="Current account frozen balance"
+				description={FormatHelper.formatAmount(data.current_account_frozen_balance.amount, data.current_account_frozen_balance.precision, data.current_account_frozen_balance.symbol)}
+			/> }
+			{data.current_vesting_balance_state && <MultyRow title="Current vesting balance state" fields={data.current_vesting_balance_state} />}
+			{data.erc20_token_info && <MultyRow title="ERC20 Token Info" fields={data.erc20_token_info} />}
+			{data.erc20_token_transfers && <TransfersRow title="ERC20 Token Transfers" transfers={data.erc20_token_transfers} />}
+			{data.asset_transfers && <TransfersRow title="Asset transfers" transfers={data.asset_transfers} />}
 		</div>
 	</div>
 );

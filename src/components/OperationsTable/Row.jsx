@@ -79,7 +79,7 @@ const OperationsRow = React.memo(({
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
 	// const operationsInfoData = type && transformOperationDataByType(type, operation);
-	const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
+	const operationsInfoData = transformOperationDataByType('Contract create', operation);
 
 	return (
 		<React.Fragment>

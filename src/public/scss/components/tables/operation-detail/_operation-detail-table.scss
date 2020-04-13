@@ -20,14 +20,14 @@
 			line-height: 140%;
 			color: $lightgrey;
 			white-space: nowrap;
-			min-width: 210px;
+			width: 210px;
 		}
 
 		&:nth-child(2) {
 			@include inter-ui-medium();
 			font-size: 12px;
 			line-height: 15px;
-			width: 100%;
+			width: calc(100% - 210px);
 			color: $explorer-black;
 		}
 	}
