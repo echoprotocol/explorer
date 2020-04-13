@@ -14,15 +14,19 @@
 				min-width: 150px;
 			}
 		}
+		&.align-center {
+			align-items: center;
+		}
 	}
 
 	.od-col {
-		line-height: 15px;
-
+		line-height: 140%;
+		@include inter-ui-medium;
+		&.logs {
+			@include hack-regular;
+		}
 		&:nth-child(1) {
-			@include inter-ui-medium;
 			font-size: 11px;
-			line-height: 140%;
 			color: $lightgrey;
 			white-space: nowrap;
 			min-width: 210px;
@@ -31,10 +35,11 @@
 
 		&:nth-child(2) {
 			flex-grow: 1;
-			@include inter-ui-medium();
 			font-size: 12px;
-			line-height: 15px;
 			color: $explorer-black;
+			&.logs {
+				font-size: 11px;
+			}
 		}
 	}
 

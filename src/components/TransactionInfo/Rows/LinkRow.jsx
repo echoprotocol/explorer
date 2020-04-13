@@ -8,9 +8,9 @@ import Avatar from '../../Avatar';
 
 
 const LinkRow = ({
-	title, account, link, isLinkOut,
+	title, account, link, isLinkOut, className,
 }) => (
-	<div className="od-row">
+	<div className={`od-row ${className}`}>
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			{account &&
@@ -36,12 +36,14 @@ LinkRow.propTypes = {
 	account: PropTypes.object,
 	link: PropTypes.string,
 	isLinkOut: PropTypes.bool,
+	className: PropTypes.string,
 };
 
 LinkRow.defaultProps = {
 	account: null,
 	link: '',
 	isLinkOut: false,
+	className: '',
 };
 
 export default LinkRow;

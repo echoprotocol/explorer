@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import FormatHelper from '../../helpers/FormatHelper';
-
 import PrimaryRow from './Rows/PrimaryRow';
 import LinkRow from './Rows/LinkRow';
 import AuthorityRow from './Rows/AuthorityRow';
@@ -15,6 +13,7 @@ import PolicyRow from './Rows/PolicyRow';
 import CopyRow from './Rows/CopyRow';
 
 import URLHelper from '../../helpers/URLHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 
 class OperationInfo extends React.Component {
 

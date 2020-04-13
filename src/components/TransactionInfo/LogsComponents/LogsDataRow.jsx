@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Switch from '../../../components/Switch/';
 
+import Switch from '../../Switch';
+import TransformedLogsItem from './TransformedLogItem';
 
 const LogsDataRow = ({ data }) => {
 	const [isDataTransformed, setDataTransformed] = useState(false);
@@ -14,20 +15,20 @@ const LogsDataRow = ({ data }) => {
 	};
 
 	const renderTransformedData = () => (
-		<div className="transformed-log-item">
-			<div className="transformed-log-item__name">pay_gem:</div>
-			<div className="transformed-log-item__value">0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2</div>
+		<div className="logs-multy-row">
+			<TransformedLogsItem name="pay_gem" value="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" />
+			<TransformedLogsItem name="id" value="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" isLink />
 		</div>
 	);
 
 	return (
 		<div className="od-row sm">
 			<div className="od-col">Data:</div>
-			<div className="od-col">
-				<div className="logs-row">
-					{isDataTransformed && <span>Transformed data</span>}
+			<div className="od-col logs">
+				<div className="logs-data-row">
+					{isDataTransformed && renderTransformedData()}
 					{!isDataTransformed && <span className="logs-text">{data}</span>}
-					<Switch isActive={isDataTransformed} leftName="Dec" rightName="Hex" onLeftToggle={toggleToTransformedData} onRightToggle={toggleToDefaultData} />
+					<Switch isLeftActive={isDataTransformed} leftName="Dec" rightName="Hex" onLeftToggle={toggleToTransformedData} onRightToggle={toggleToDefaultData} />
 				</div>
 			</div>
 		</div>

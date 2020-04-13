@@ -12,6 +12,7 @@ import Avatar from '../Avatar';
 import OperationInfo from '../TransactionInfo/OperationInfo';
 import ProposalOperations from '../TransactionInfo/ProposalOperations';
 import LogsInfo from '../TransactionInfo/LogsInfo';
+import InternalOperations from '../TransactionInfo/InternalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -142,7 +143,9 @@ const OperationsRow = React.memo(({
 									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
 									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
 									{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
-									<Tab className="operation-detail-tab">Event Logs ({operationsInfoData.logs.length})</Tab>}
+									<Tab className="operation-detail-tab">Event logs ({operationsInfoData.logs.length})</Tab>}
+									{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
+									<Tab className="operation-detail-tab">Internal operations ({operationsInfoData.internalOperations.length})</Tab> }
 								</div>
 								<button className="yellow-button">View Raw JSON Object</button>
 							</TabList>
@@ -159,6 +162,11 @@ const OperationsRow = React.memo(({
 								<TabPanel>
 									<LogsInfo logs={operationsInfoData.logs} />
 								</TabPanel>}
+								{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
+								<TabPanel>
+									<InternalOperations operations={operationsInfoData.internalOperations} />
+								</TabPanel>
+								}
 							</div>
 						</Tabs>
 					</td>

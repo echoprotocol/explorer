@@ -4,8 +4,8 @@ import CopyBtn from '../../../components/Buttons/CopyBtn';
 
 import { sliceText } from '../../../helpers/FunctionHelper';
 
-const CopyRow = ({ title, value }) => (
-	<div className="od-row">
+const CopyRow = ({ title, value, className }) => (
+	<div className={`od-row ${className}`}>
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			<div className="copy-field">
@@ -19,6 +19,11 @@ const CopyRow = ({ title, value }) => (
 CopyRow.propTypes = {
 	title: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
+	className: PropTypes.string,
+};
+
+CopyRow.defaultProps = {
+	className: '',
 };
 
 export default CopyRow;

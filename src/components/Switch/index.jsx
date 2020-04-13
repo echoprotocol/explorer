@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 const Switch = ({
-	isActive, leftName, rightName, onLeftToggle, onRightToggle,
+	isLeftActive, leftName, rightName, onLeftToggle, onRightToggle,
 }) => {
-	const [isSwitchActive, setSwitchActive] = useState(isActive);
+	const [isSwitchLeft, setSwitchActive] = useState(isLeftActive);
 
 	return (
 		<span className="switch">
 			<button
-				className={cn('switch-item', { active: isSwitchActive })}
+				className={cn('switch-item', { active: isSwitchLeft })}
 				onClick={() => {
 					onLeftToggle();
 					setSwitchActive(true);
@@ -18,7 +18,7 @@ const Switch = ({
 			>{leftName}
 			</button>
 			<button
-				className={cn('switch-item', { active: !isSwitchActive })}
+				className={cn('switch-item', { active: !isSwitchLeft })}
 				onClick={() => {
 					onRightToggle();
 					setSwitchActive(false);
@@ -31,7 +31,7 @@ const Switch = ({
 };
 
 Switch.propTypes = {
-	isActive: PropTypes.bool.isRequired,
+	isLeftActive: PropTypes.bool.isRequired,
 	leftName: PropTypes.string.isRequired,
 	rightName: PropTypes.string.isRequired,
 	onLeftToggle: PropTypes.func,
