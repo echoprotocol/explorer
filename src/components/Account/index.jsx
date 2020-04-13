@@ -38,7 +38,6 @@ class Account extends React.Component {
 			this.subscribeHistoryUpdate(this.props.account.get('id'));
 		}
 		if (prevProps.router.query.id !== this.props.router.query.id) {
-			await this.props.onSetFilter({ from: '', to: '' });
 			await this.props.onSetPage(1);
 			await this.props.getAccountInfo(this.props.router.query.id);
 		}
