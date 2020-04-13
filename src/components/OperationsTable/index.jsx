@@ -15,7 +15,8 @@ import Thead from './Thead';
 import OperationsPagination from './Pagination';
 import OperationsFilter from './Filter';
 import { DEBOUNCE_TIMEOUT } from '../../constants/TableConstants';
-import { SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { NOT_FOUND_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
+import TypesHelper from '../../helpers/TypesHelper';
 
 class OperationsTable extends React.Component {
 
@@ -48,6 +49,11 @@ class OperationsTable extends React.Component {
 		if (!queryProps.op) {
 			return;
 		}
+
+		if (!TypesHelper.isStringNumber(queryProps.op)) {
+			Router.push(NOT_FOUND_PATH);
+		}
+
 		const op = parseInt(queryProps.op, 10);
 		if (!this.tableRefs[op - 1]) {
 			return;
@@ -62,7 +68,6 @@ class OperationsTable extends React.Component {
 
 		const { query: search } = queryString.parseUrl(asPath);
 		const { query: prevSearch } = queryString.parseUrl(asPrevPath);
-
 
 		if (prevSearch.l !== search.l || prevSearch.p !== search.p ||
 			prevSearch.from !== search.from || prevSearch.to !== search.to
