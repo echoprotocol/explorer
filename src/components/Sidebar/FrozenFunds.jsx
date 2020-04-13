@@ -2,6 +2,7 @@ import React from 'react';
 import { LineChart, Line } from 'recharts';
 import PropTypes from 'prop-types';
 import { SIDEBAR_CHART_WIDTH, SIDEBAR_CHART_HEIGHT } from '../../constants/UiConstants';
+import FormatHelper from '../../helpers/FormatHelper';
 
 const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 	<React.Fragment>
@@ -11,7 +12,7 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 				<div className="frozen-funds-block-info">
 					<div className="comitee-amount">
 						<div className="comitee-amount-value">
-							{currentFrozenData.committee_freeze_sum}
+							{FormatHelper.formatAmount(currentFrozenData.committee_freeze_sum)}
 						</div>
 						<div className="comitee-amount-coin">ECHO</div>
 					</div>
@@ -35,7 +36,7 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 				<div className="frozen-funds-block-info">
 					<div className="users-amount">
 						<div className="users-amount-value">
-							{currentFrozenData.accounts_freeze_sum}
+							{FormatHelper.formatAmount(currentFrozenData.accounts_freeze_sum)}
 						</div>
 						<div className="users-amount-coin">ECHO</div>
 					</div>

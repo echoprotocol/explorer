@@ -4,7 +4,6 @@ import moment from 'moment';
 import { Map, List } from 'immutable';
 import echo, { serializers } from 'echojs-lib';
 
-import { getCurrentFrozenFunds } from '../services/queries/balance';
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
 
@@ -180,22 +179,6 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));
 	}
-};
-
-export const getFrozenData = (updatedFrozenData) => async (dispatch) => {
-	const from = moment().subtract(1, 'month').toISOString();
-	const interval = moment.duration(1, 'day').as('second');
-	const balances = await getCurrentFrozenFunds(from, interval);
-	const { currentFrozenData, frozenData } = balances.data.getFrozenBalancesData;
-	const historyFrozenData = frozenData.map((el) => el.frozenSums);
-	if (!updatedFrozenData) {
-		currentFrozenData.accounts_freeze_sum = new BN(currentFrozenData.accounts_freeze_sum)
-			.div(10 ** ECHO_ASSET.PRECISION).toString(10);
-		currentFrozenData.committee_freeze_sum = new BN(currentFrozenData.committee_freeze_sum)
-			.div(10 ** ECHO_ASSET.PRECISION).toString(10);
-		dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: currentFrozenData }));
-	}
-	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
 };
 
 export const clearBlockInformation = () => (dispatch) => {
@@ -531,10 +514,12 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 };
 
 export const updateFrozenData = (newBlock) => async (dispatch) => {
+	const { frozenData } = newBlock;
+	const historyFrozenData = frozenData.map((el) => el.frozenSums);
 	newBlock.currentFrozenData.accounts_freeze_sum = new BN(newBlock.currentFrozenData.accounts_freeze_sum)
 		.div(10 ** ECHO_ASSET.PRECISION).toString(10);
 	newBlock.currentFrozenData.committee_freeze_sum = new BN(newBlock.currentFrozenData.committee_freeze_sum)
 		.div(10 ** ECHO_ASSET.PRECISION).toString(10);
 	dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: newBlock.currentFrozenData }));
-	await dispatch(getFrozenData(newBlock.currentFrozenData));
+	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
 };
