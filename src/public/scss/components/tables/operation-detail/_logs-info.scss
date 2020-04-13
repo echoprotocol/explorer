@@ -1,0 +1,27 @@
+.logs-item {
+	display: flex;
+}
+
+.logs-item__id {
+	padding: 31px 0;
+	@include inter-ui-medium;
+	font-size: 12px;
+	color: $explorer-black;
+	width: 35px;
+}
+
+.logs-item-info {
+	padding-top: 10px;
+	width: 100%;
+}
+
+.logs-row {
+	display: flex;
+}
+.logs-text {
+	@include hack-regular;
+	font-size: 11px;
+	margin-right: 12px;
+	padding-right: 30px;
+	word-break: break-word;
+}

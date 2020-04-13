@@ -9,6 +9,11 @@
 		&:not(:last-child) {
 			border-bottom: 1px solid $lightgrey-darker;
 		}
+		&.sm {
+			.od-col:nth-child(1) {
+				min-width: 150px;
+			}
+		}
 	}
 
 	.od-col {
@@ -20,14 +25,15 @@
 			line-height: 140%;
 			color: $lightgrey;
 			white-space: nowrap;
-			width: 210px;
+			min-width: 210px;
+			margin-right: 20px;
 		}
 
 		&:nth-child(2) {
+			flex-grow: 1;
 			@include inter-ui-medium();
 			font-size: 12px;
 			line-height: 15px;
-			width: calc(100% - 210px);
 			color: $explorer-black;
 		}
 	}
