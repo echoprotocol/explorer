@@ -5,10 +5,11 @@ import BN from 'bignumber.js';
 import GlobalActions from './GlobalActions';
 import BaseActionsClass from './BaseActionsClass';
 import StatisticsReducer from '../reducers/StatisticsReducer';
+import BlockReducer from '../reducers/BlockReducer';
 
 import { getStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
-import { updateFrozenData } from './BlockActions';
+import { ECHO_ASSET } from '../constants/GlobalConstants';
 
 class StatisticsActionsClass extends BaseActionsClass {
 
@@ -50,7 +51,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 				dispatch(this.updateDecentralizationRate(getDecentralizationRate));
 				dispatch(this.updateOperationCount(getOperationCountHistory));
 				dispatch(this.updateAverageBlocktime(getBlock));
-				dispatch(updateFrozenData(getFrozenBalancesData));
+				dispatch(this.updateFrozenData(getFrozenBalancesData));
 			} catch (error) {
 				//
 			}
@@ -135,7 +136,19 @@ class StatisticsActionsClass extends BaseActionsClass {
 		};
 	}
 
-}
+	updateFrozenData(newBlock) {
+		return (dispatch) => {
+			const { frozenData } = newBlock;
+			const historyFrozenData = frozenData.map((el) => el.frozenSums);
+			newBlock.currentFrozenData.accounts_freeze_sum = new BN(newBlock.currentFrozenData.accounts_freeze_sum)
+				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
+			newBlock.currentFrozenData.committee_freeze_sum = new BN(newBlock.currentFrozenData.committee_freeze_sum)
+				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
+			dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: newBlock.currentFrozenData }));
+			dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
+		};
+	}
 
+}
 const StatisticsActions = new StatisticsActionsClass();
 export default StatisticsActions;

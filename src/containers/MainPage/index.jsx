@@ -59,7 +59,9 @@ class MainPage extends React.Component {
 						goToBlock={(e, block) => this.goToBlock(e, block)}
 						blocks={this.getBlocks()}
 					/>
-					<LatestOperationsTable />
+					<LatestOperationsTable
+						blocks={this.getBlocks()}
+					/>
 				</div>
 			</div>
 		);

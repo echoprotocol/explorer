@@ -3,6 +3,8 @@ import { LineChart, Line } from 'recharts';
 import PropTypes from 'prop-types';
 import { SIDEBAR_CHART_WIDTH, SIDEBAR_CHART_HEIGHT } from '../../constants/UiConstants';
 import FormatHelper from '../../helpers/FormatHelper';
+import URLHelper from '../../helpers/URLHelper';
+import { ECHO_ASSET } from '../../constants/GlobalConstants';
 
 const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 	<React.Fragment>
@@ -14,7 +16,11 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 						<div className="comitee-amount-value">
 							{FormatHelper.formatAmount(currentFrozenData.committee_freeze_sum)}
 						</div>
-						<div className="comitee-amount-coin">ECHO</div>
+						<div className="comitee-amount-coin">
+							<a href={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+								ECHO
+							</a>
+						</div>
 					</div>
 					<LineChart
 						width={SIDEBAR_CHART_WIDTH}
@@ -38,7 +44,11 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 						<div className="users-amount-value">
 							{FormatHelper.formatAmount(currentFrozenData.accounts_freeze_sum)}
 						</div>
-						<div className="users-amount-coin">ECHO</div>
+						<div className="users-amount-coin">
+							<a href={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+								ECHO
+							</a>
+						</div>
 					</div>
 					<LineChart
 						width={SIDEBAR_CHART_WIDTH}

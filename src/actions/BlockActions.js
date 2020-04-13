@@ -16,7 +16,6 @@ import {
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	NETWORK_CONNECTED_ERROR,
 	NULL_ACCOUNT,
-	ECHO_ASSET,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -511,15 +510,4 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		return false;
 	}
 
-};
-
-export const updateFrozenData = (newBlock) => async (dispatch) => {
-	const { frozenData } = newBlock;
-	const historyFrozenData = frozenData.map((el) => el.frozenSums);
-	newBlock.currentFrozenData.accounts_freeze_sum = new BN(newBlock.currentFrozenData.accounts_freeze_sum)
-		.div(10 ** ECHO_ASSET.PRECISION).toString(10);
-	newBlock.currentFrozenData.committee_freeze_sum = new BN(newBlock.currentFrozenData.committee_freeze_sum)
-		.div(10 ** ECHO_ASSET.PRECISION).toString(10);
-	dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: newBlock.currentFrozenData }));
-	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
 };
