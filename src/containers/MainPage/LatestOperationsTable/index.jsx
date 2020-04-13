@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import ArrowBtn from '../../../components/Buttons/ArrowBtn';
@@ -8,7 +7,7 @@ import TableLabel from '../../../components/TableLabel';
 import Thead from './Thead';
 import Row from './Row';
 
-const LatestOperationsTable = memo(({ blocks }) => (
+const LatestOperationsTable = memo(() => (
 	<div className="main-page-table">
 		<TableLabel label="Latest Operations" />
 		<PerfectScrollbar>
@@ -29,7 +28,4 @@ const LatestOperationsTable = memo(({ blocks }) => (
 	</div>
 ));
 
-LatestOperationsTable.propTypes = {
-	blocks: PropTypes.array.isRequired,
-};
 export default LatestOperationsTable;
