@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
+import moment from 'moment';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
@@ -11,6 +12,7 @@ import GlobalActions from '../../actions/GlobalActions';
 import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import LatestBlocksTable from './LatestBlocksTable';
 import LatestOperationsTable from './LatestOperationsTable';
+
 
 class MainPage extends React.Component {
 
@@ -27,6 +29,7 @@ class MainPage extends React.Component {
 				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
 				time: value.get('time'),
+				date: moment.utc(value.get('timestamp')).local().format('DD MMM'),
 				producer: value.get('producer'),
 				producerId: value.get('producerId'),
 				reward: value.get('reward'),
