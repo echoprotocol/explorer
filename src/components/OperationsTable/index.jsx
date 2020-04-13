@@ -147,7 +147,7 @@ class OperationsTable extends React.Component {
 
 		if (!this.props.changeUrl && operations && operations.size) {
 			const { blockNumber, type } = operations.get(index);
-			let { trIndex, opIndex } = operations.get(index);
+			const { trIndex, opIndex } = operations.get(index);
 
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
