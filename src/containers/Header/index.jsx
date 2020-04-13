@@ -10,7 +10,7 @@ import Header from '../../components/Header';
 
 const HeaderContainer = React.memo(({
 	hints, getHints, loadingSearch, errorSearch,
-	latestBlock, blocks, stepProgress, preparingBlock,
+	latestBlock, blocks, stepProgress,
 	operationCountRates, operationCount, averageBlockTime,
 }) => (
 	<div className="top-section">
@@ -24,7 +24,6 @@ const HeaderContainer = React.memo(({
 			<PreparingSection
 				blocks={blocks}
 				stepProgress={stepProgress}
-				preparingBlock={preparingBlock}
 				latestBlock={latestBlock}
 				averageBlockTime={averageBlockTime}
 				operationCountRates={operationCountRates}
@@ -42,7 +41,6 @@ HeaderContainer.propTypes = {
 	getHints: PropTypes.func.isRequired,
 	blocks: PropTypes.object.isRequired,
 	stepProgress: PropTypes.string.isRequired,
-	preparingBlock: PropTypes.number.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	averageBlockTime: PropTypes.number.isRequired,
 	operationCountRates: PropTypes.array.isRequired,
@@ -56,7 +54,6 @@ export default withRouter(connect(
 		loadingSearch: state.search.getIn(['headerSearch', 'loading']),
 		blocks: state.block.get('blocks'),
 		stepProgress: state.round.get('stepProgress'),
-		preparingBlock: state.round.get('preparingBlock'),
 		latestBlock: state.round.get('latestBlock'),
 		averageBlockTime: state.statistics.get('averageBlockTime'),
 		operationCountRates: state.statistics.get('operationCountRates'),
