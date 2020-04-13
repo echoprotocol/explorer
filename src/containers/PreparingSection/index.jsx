@@ -11,7 +11,6 @@ const PreparingSection = (props) => (
 		<PreparingBlock>
 			<Block1
 				stepProgress={props.stepProgress}
-				preparingBlock={props.preparingBlock}
 				latestBlock={props.latestBlock}
 			/>
 		</PreparingBlock>
@@ -35,7 +34,6 @@ const PreparingSection = (props) => (
 PreparingSection.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	stepProgress: PropTypes.string.isRequired,
-	preparingBlock: PropTypes.number.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	averageBlockTime: PropTypes.number.isRequired,
 	operationCountRates: PropTypes.array.isRequired,
