@@ -156,7 +156,6 @@ Account.propTypes = {
 	clearAccountInfo: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
-	onSetFilter: PropTypes.func.isRequired,
 	onSetPage: PropTypes.func.isRequired,
 	incTotalAccountHistory: PropTypes.func.isRequired,
 };
