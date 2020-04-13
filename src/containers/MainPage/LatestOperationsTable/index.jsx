@@ -28,4 +28,5 @@ const LatestOperationsTable = memo(() => (
 	</div>
 ));
 
+
 export default LatestOperationsTable;
