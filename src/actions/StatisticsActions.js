@@ -8,6 +8,7 @@ import StatisticsReducer from '../reducers/StatisticsReducer';
 
 import { getStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
+import { ECHO_ASSET } from '../constants/GlobalConstants';
 
 class StatisticsActionsClass extends BaseActionsClass {
 
@@ -21,7 +22,8 @@ class StatisticsActionsClass extends BaseActionsClass {
 	/**
 	 * updateStatistics
 	 */
-	updateStatistics(round) {
+	updateStatistics(block) {
+		const getBlock = {};
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
@@ -31,14 +33,18 @@ class StatisticsActionsClass extends BaseActionsClass {
 						getDelegationPercent,
 						getDecentralizationRate,
 						getOperationCountHistory,
-						getBlock,
+						getFrozenBalancesData,
 					},
-				} = await getStatistics(from, interval, round);
+				} = await getStatistics(from, interval);
+				getBlock.average_block_time = block.average_block_time;
+				getDecentralizationRate.decentralizationRatePercent = block.decentralization_rate;
+				getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
 				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
 				dispatch(this.updateDelegationRate(getDelegationPercent));
 				dispatch(this.updateDecentralizationRate(getDecentralizationRate));
 				dispatch(this.updateOperationCount(getOperationCountHistory));
 				dispatch(this.updateAverageBlocktime(getBlock));
+				dispatch(this.updateFrozenData(getFrozenBalancesData));
 			} catch (error) {
 				//
 			}
@@ -123,8 +129,21 @@ class StatisticsActionsClass extends BaseActionsClass {
 		};
 	}
 
-}
+	updateFrozenData(newBlock) {
+		return (dispatch) => {
+			const { frozenData } = newBlock;
+			const historyFrozenData = frozenData.map((el) => el.frozenSums);
+			newBlock.currentFrozenData.accounts_freeze_sum = new BN(newBlock.currentFrozenData.accounts_freeze_sum)
+				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
+			newBlock.currentFrozenData.committee_freeze_sum = new BN(newBlock.currentFrozenData.committee_freeze_sum)
+				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
+			dispatch(this.setMultipleValue({
+				currentFrozenData: newBlock.currentFrozenData,
+				frozenData: historyFrozenData,
+			}));
+		};
+	}
 
+}
 const StatisticsActions = new StatisticsActionsClass();
 export default StatisticsActions;
-
