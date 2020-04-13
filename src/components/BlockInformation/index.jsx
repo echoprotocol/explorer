@@ -52,7 +52,9 @@ class BlockInformation extends React.Component {
 	componentDidMount() {
 		const { router: { query: { round } }, blockInformation } = this.props;
 		if (blockInformation.get('blockNumber') !== round) {
-			this.props.getBlockInfo(round);
+			this.onResetFilter().then(() => {
+				this.props.getBlockInfo(round);
+			});
 		}
 	}
 
@@ -75,12 +77,21 @@ class BlockInformation extends React.Component {
 			this.props.router.query.round !== prevProps.router.query.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			this.props.getBlockInfo(this.props.router.query.round);
+			this.onResetFilter().then(() => {
+				this.props.getBlockInfo(this.props.router.query.round);
+			});
 		}
 	}
 
 	componentWillUnmount() {
 		this.props.clearBlockInfo();
+	}
+
+	async onResetFilter() {
+		return Promise.all([
+			this.props.onSetFilter({ from: '', to: '' }),
+			this.props.onSetPage(1),
+		]);
 	}
 
 	onBlockLink(blockNumber, e) {
@@ -233,6 +244,8 @@ BlockInformation.propTypes = {
 	loadBlockHistory: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
+	onSetFilter: PropTypes.func.isRequired,
+	onSetPage: PropTypes.func.isRequired,
 };
 
 BlockInformation.defaultProps = {};

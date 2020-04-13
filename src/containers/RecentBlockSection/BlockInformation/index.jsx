@@ -10,6 +10,7 @@ import {
 } from '../../../actions/BlockActions';
 import GlobalActions from '../../../actions/GlobalActions';
 import { BLOCK_GRID } from '../../../constants/TableConstants';
+import GridActions from '../../../actions/GridActions';
 
 export default withRouter(connect(
 	(state) => ({
@@ -21,6 +22,8 @@ export default withRouter(connect(
 		latestBlock: state.round.get('latestBlock'),
 	}),
 	(dispatch) => ({
+		onSetFilter: (params) => dispatch(GridActions.setFilter(BLOCK_GRID, params)),
+		onSetPage: (newPage) => dispatch(GridActions.setPage(BLOCK_GRID, newPage)),
 		getBlockInfo: (round) => dispatch(getBlockInformation(round)),
 		clearBlockInfo: () => dispatch(clearBlockInformation()),
 		loadBlockHistory: () => dispatch(loadBlockHistory()),
