@@ -15,7 +15,7 @@ export const getStatistics = async (from, interval, round) => {
         ratesMap {
           rate
         }
-      } 
+      }
       getOperationCountHistory(from: $from, interval: $interval) {
         total,
         ratesMap {
@@ -25,8 +25,20 @@ export const getStatistics = async (from, interval, round) => {
       getBlock(round: $round) {
         average_block_time,
         round
+      }
+  		getFrozenBalancesData(from: $from, interval: $interval){
+   			frozenData {
+      		frozenSums {
+        		accounts_freeze_sum,
+     				committee_freeze_sum
+      		}
+    		}
+    		currentFrozenData {
+    			accounts_freeze_sum,
+      		committee_freeze_sum
+    		}
 			}
-    }
+		}
   `;
 	return client.getClient().query({ query, variables: { from, interval, round } });
 };

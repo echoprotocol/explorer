@@ -3,7 +3,7 @@ import { withRouter } from 'next/router';
 import { connect } from 'react-redux';
 
 import Sidebar from '../../components/Sidebar';
-import { updateFrozenData } from '../../actions/BlockActions';
+import StatisticsActions from '../../actions/StatisticsActions';
 
 const SidebarContainer = React.memo(({ ...props }) => (
 	<Sidebar {...props} />
@@ -20,6 +20,6 @@ export default withRouter(connect(
 		decentralizationRates: state.statistics.get('decentralizationRates'),
 	}),
 	(dispatch) => ({
-		updateFrozenBalances: (data) => dispatch(updateFrozenData(data)),
+		updateStatistics: (data) => dispatch(StatisticsActions.updateStatistics(data)),
 	}),
 )(SidebarContainer));

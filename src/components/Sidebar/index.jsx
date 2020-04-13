@@ -24,7 +24,7 @@ const Sidebar = React.memo((props) => {
 	useEffect(() => {
 		const subscribe = async () => {
 			const newBlock = await subscribeNewBlock();
-			const nextUpdate = ({ data: { newBlock: block } }) => props.updateFrozenBalances(block);
+			const nextUpdate = ({ data: { newBlock: block } }) => props.updateStatistics(block);
 
 			setBlockSubscriber(newBlock.subscribe({
 				next: nextUpdate.bind(this),
@@ -73,7 +73,7 @@ Sidebar.propTypes = {
 	withFooter: PropTypes.bool,
 	currentFrozenData: PropTypes.object.isRequired,
 	frozenData: PropTypes.array.isRequired,
-	updateFrozenBalances: PropTypes.func.isRequired,
+	updateStatistics: PropTypes.func.isRequired,
 	delegationRate: PropTypes.number.isRequired,
 	decentralizationRate: PropTypes.number.isRequired,
 	delegationRates: PropTypes.array.isRequired,

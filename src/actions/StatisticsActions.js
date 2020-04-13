@@ -8,6 +8,7 @@ import StatisticsReducer from '../reducers/StatisticsReducer';
 
 import { getStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
+import { updateFrozenData } from './BlockActions';
 
 class StatisticsActionsClass extends BaseActionsClass {
 
@@ -21,7 +22,13 @@ class StatisticsActionsClass extends BaseActionsClass {
 	/**
 	 * updateStatistics
 	 */
-	updateStatistics(round) {
+	updateStatistics(block) {
+		let blockRound;
+		if (typeof block === 'number') {
+			blockRound = block;
+		} else {
+			blockRound = block.round;
+		}
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
@@ -32,13 +39,18 @@ class StatisticsActionsClass extends BaseActionsClass {
 						getDecentralizationRate,
 						getOperationCountHistory,
 						getBlock,
+						getFrozenBalancesData,
 					},
-				} = await getStatistics(from, interval, round);
+				} = await getStatistics(from, interval, blockRound);
+				if (block.average_block_time) getBlock.average_block_time = block.average_block_time;
+				if (block.decentralization_rate) getDecentralizationRate.decentralizationRatePercent = block.decentralization_rate;
+				if (block.frozen_balances_data) getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
 				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
 				dispatch(this.updateDelegationRate(getDelegationPercent));
 				dispatch(this.updateDecentralizationRate(getDecentralizationRate));
 				dispatch(this.updateOperationCount(getOperationCountHistory));
 				dispatch(this.updateAverageBlocktime(getBlock));
+				dispatch(updateFrozenData(getFrozenBalancesData));
 			} catch (error) {
 				//
 			}
@@ -127,4 +139,3 @@ class StatisticsActionsClass extends BaseActionsClass {
 
 const StatisticsActions = new StatisticsActionsClass();
 export default StatisticsActions;
-
