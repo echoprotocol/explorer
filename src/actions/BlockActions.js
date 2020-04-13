@@ -190,8 +190,10 @@ export const getFrozenData = (updatedFrozenData) => async (dispatch) => {
 	const { currentFrozenData, frozenData } = balances.data.getFrozenBalancesData;
 	const historyFrozenData = frozenData.map((el) => el.frozenSums);
 	if (!updatedFrozenData) {
-		currentFrozenData.accounts_freeze_sum /= (10 ** ECHO_ASSET.PRECISION);
-		currentFrozenData.committee_freeze_sum /= (10 ** ECHO_ASSET.PRECISION);
+		currentFrozenData.accounts_freeze_sum = new BN(currentFrozenData.accounts_freeze_sum)
+			.div(10 ** ECHO_ASSET.PRECISION).toString(10);
+		currentFrozenData.committee_freeze_sum = new BN(currentFrozenData.committee_freeze_sum)
+			.div(10 ** ECHO_ASSET.PRECISION).toString(10);
 		dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: currentFrozenData }));
 	}
 	dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
