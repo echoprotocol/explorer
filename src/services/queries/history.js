@@ -37,3 +37,29 @@ export const getHistory = async ({
 	}).then(({ data }) => data.getSubjectOperations);
 };
 
+export const getLatestOperationsFromGQL = async () => {
+	const query = gql`
+	query getHistory{
+		getHistory(count: 11, offset: 0){
+			items {
+				id
+				body
+				result
+				virtual
+				trx_in_block
+				op_in_trx
+				block {
+					round
+				}
+				transaction {
+					ref_block_num
+						block {
+							round
+						}
+					}
+				}
+			}
+		}
+	`;
+	return client.getClient().query({ query });
+};
