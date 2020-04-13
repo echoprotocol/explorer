@@ -16,7 +16,7 @@ const Block1 = React.memo((props) => (
 			<span className="preparing-text">
 				Next block&nbsp;
 				<span style={{ color: '#e9eaef' }}>
-					{props.preparingBlock}
+					{props.latestBlock + 1}
 				</span>
 				:&nbsp;{getStatus(props.stepProgress)}
 				<InfoTooltip iconFilled={false} overlay="Next block info" />
@@ -28,7 +28,6 @@ const Block1 = React.memo((props) => (
 
 Block1.propTypes = {
 	stepProgress: PropTypes.string.isRequired,
-	preparingBlock: PropTypes.number.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 };
 
