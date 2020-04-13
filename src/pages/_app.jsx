@@ -15,7 +15,7 @@ import '../public/loader';
 import Header from '../containers/Header';
 import Modal from '../containers/Modals';
 
-import { CONTRACT_DETAILS_NUMBERS_TAB } from '../constants/RouterConstants';
+import { CONTRACT_DETAILS_NUMBERS_TAB, SSR_TRANSACTION_INFORMATION_PATH } from '../constants/RouterConstants';
 import Footer from '../containers/Footer';
 import RecentBlockSidebar from '../containers/RecentBlockSection/RecentBlockSidebar';
 import GlobalActions from '../actions/GlobalActions';
@@ -30,6 +30,10 @@ class ExplorerApp extends App {
 
 	componentDidMount() {
 		Router.events.on('routeChangeStart', () => {
+			const { route: prevRoute } = this.props.store.getState().global.get('history');
+			if (prevRoute !== this.props.router.route && this.props.router.route !== SSR_TRANSACTION_INFORMATION_PATH) {
+				this.props.store.dispatch(GlobalActions.updateHistoryPath(this.props.router.asPath, this.props.router.route));
+			}
 			this.props.store.dispatch(GlobalActions.incrementHistoryLength());
 		});
 		this.props.store.dispatch(GlobalActions.init());

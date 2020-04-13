@@ -57,8 +57,8 @@ class OperationsTable extends React.Component {
 	}
 
 	async componentDidUpdate(prevProps) {
-		const { loading, router: { query, asPath } } = this.props;
-		const { loading: prevLoading, router: { query: prevQuery, asPath: asPrevPath } } = prevProps;
+		const { loading, router: { asPath } } = this.props;
+		const { loading: prevLoading, router: { asPath: asPrevPath } } = prevProps;
 
 		const { query: search } = queryString.parseUrl(asPath);
 		const { query: prevSearch } = queryString.parseUrl(asPrevPath);
@@ -72,14 +72,20 @@ class OperationsTable extends React.Component {
 		}
 
 		if (!loading && loading !== prevLoading) {
-			if (!query.op || !this.tableRefs[query.op - 1]) {
+			if (!search.op || !this.tableRefs[search.op - 1]) {
 				return;
 			}
-			this.tableRefs[query.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			this.tableRefs[search.op - 1].current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
 
-		if (!prevQuery.op && prevQuery.op) {
+		if (!search.op && prevSearch.op) {
 			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
+		} else if (search.op && !prevSearch.op) {
+			const { showedOperations } = this.state;
+			const op = parseInt(search.op, 10);
+			showedOperations.push(op - 1);
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ showedOperations });
 		}
 	}
 
@@ -141,7 +147,7 @@ class OperationsTable extends React.Component {
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
 				trIndex = 0;
-				opIndex = -2;
+				opIndex = -1;
 			}
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);

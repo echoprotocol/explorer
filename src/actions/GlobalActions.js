@@ -60,6 +60,18 @@ class GlobalActionsClass extends BaseActionsClass {
 	}
 
 	/**
+	 * @method updateHistoryPath
+	 * @param {string} newPath
+	 * @param {string} newRoute
+	 * @return {function(...[*]=)}
+	 */
+	updateHistoryPath(newPath, newRoute) {
+		return (dispatch) => {
+			dispatch(this.setValue('history', { path: newPath, route: newRoute }));
+		};
+	}
+
+	/**
 	 * Set title browser tab
 	 * @param title
 	 * @returns {Function}

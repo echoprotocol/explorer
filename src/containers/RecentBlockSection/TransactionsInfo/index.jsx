@@ -9,7 +9,7 @@ import { getBlockInformation } from '../../../actions/BlockActions';
 export default withRouter(connect(
 	(state) => ({
 		operations: state.transaction.get('operations'),
-		historyLength: state.global.get('historyLength'),
+		history: state.global.get('history'),
 		blockInformation: state.block.get('blockInformation'),
 		loading: state.transaction.get('loading'),
 	}),
