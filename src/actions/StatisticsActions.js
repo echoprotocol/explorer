@@ -5,7 +5,6 @@ import BN from 'bignumber.js';
 import GlobalActions from './GlobalActions';
 import BaseActionsClass from './BaseActionsClass';
 import StatisticsReducer from '../reducers/StatisticsReducer';
-import BlockReducer from '../reducers/BlockReducer';
 
 import { getStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
@@ -25,7 +24,6 @@ class StatisticsActionsClass extends BaseActionsClass {
 	 */
 	updateStatistics(block) {
 		const getBlock = {};
-		const blockRound = block.round;
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
@@ -37,10 +35,10 @@ class StatisticsActionsClass extends BaseActionsClass {
 						getOperationCountHistory,
 						getFrozenBalancesData,
 					},
-				} = await getStatistics(from, interval, blockRound);
-				if (block.average_block_time) getBlock.average_block_time = block.average_block_time;
-				if (block.decentralization_rate) getDecentralizationRate.decentralizationRatePercent = block.decentralization_rate;
-				if (block.frozen_balances_data) getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
+				} = await getStatistics(from, interval);
+				getBlock.average_block_time = block.average_block_time;
+				getDecentralizationRate.decentralizationRatePercent = block.decentralization_rate;
+				getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
 				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
 				dispatch(this.updateDelegationRate(getDelegationPercent));
 				dispatch(this.updateDecentralizationRate(getDecentralizationRate));
@@ -139,8 +137,10 @@ class StatisticsActionsClass extends BaseActionsClass {
 				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
 			newBlock.currentFrozenData.committee_freeze_sum = new BN(newBlock.currentFrozenData.committee_freeze_sum)
 				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
-			dispatch(BlockReducer.actions.set({ field: 'currentFrozenData', value: newBlock.currentFrozenData }));
-			dispatch(BlockReducer.actions.set({ field: 'frozenData', value: historyFrozenData }));
+			dispatch(this.setMultipleValue({
+				currentFrozenData: newBlock.currentFrozenData,
+				frozenData: historyFrozenData,
+			}));
 		};
 	}
 

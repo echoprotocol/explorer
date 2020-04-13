@@ -13,6 +13,11 @@ const DEFAULT_FIELDS = new Map({
 	operationCountRates: [],
 	operationCount: 0,
 	averageBlockTime: 0,
+	currentFrozenData: {
+		committee_freeze_sum: 0,
+		accounts_freeze_sum: 0,
+	},
+	frozenData: [],
 });
 
 export default createModule({
