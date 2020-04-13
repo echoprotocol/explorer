@@ -211,7 +211,10 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 					))));
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
-
+		await Promise.all([
+			dispatch(GridActions.setPage(BLOCK_GRID, 1)),
+			dispatch(GridActions.setFilter(BLOCK_GRID, { from: '', to: '' })),
+		]);
 		value.transactionCount = resultTransactions.length;
 		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), [])).reverse();
 		value.round = planeBlock.round;

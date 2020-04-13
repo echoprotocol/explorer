@@ -58,8 +58,6 @@ class BlockInformation extends React.Component {
 
 	async shouldComponentUpdate(nextProps) {
 		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
-			this.props.onSetFilter({ from: '', to: '' });
-			this.props.onSetPage(1);
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
@@ -235,8 +233,6 @@ BlockInformation.propTypes = {
 	loadBlockHistory: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
-	onSetFilter: PropTypes.func.isRequired,
-	onSetPage: PropTypes.func.isRequired,
 };
 
 BlockInformation.defaultProps = {};

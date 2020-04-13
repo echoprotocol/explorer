@@ -177,8 +177,11 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createOperationUrlByFilter(pathname, passQuery, newProps) {
-		const { id, ...query } = passQuery;
-		const transformPathname = pathname.replace(/\[id\]/, id);
+		const { id, round, ...query } = passQuery;
+		let transformPathname = pathname.replace(/\[id\]/, id);
+		if (round) {
+			transformPathname = pathname.replace(/\[round\]/, round);
+		}
 		return `${transformPathname}?${queryString.stringify({ ...query, ...newProps })}`;
 	}
 

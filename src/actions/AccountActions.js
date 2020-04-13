@@ -102,7 +102,10 @@ class AccountActions extends BaseActionsClass {
 				]));
 
 				const { total: totalAccountHistory } = await getTotalAccountHistory(account.id);
-				dispatch(GridActions.setFilter(ACCOUNT_GRID, { from: '', to: '' }));
+				await Promise.all([
+					dispatch(GridActions.setFilter(ACCOUNT_GRID, { from: '', to: '' })),
+					dispatch(GridActions.setPage(ACCOUNT_GRID, 1)),
+				]);
 				await dispatch(this.loadAccountHistory(account.id));
 				dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, account.name)));
 				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
