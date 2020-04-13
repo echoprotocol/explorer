@@ -47,6 +47,8 @@ class SsrHrefHelper {
 				return SSR_ASSET_PATH;
 			case TYPE_SEARCH_SECTION.CONTRACT:
 				return SSR_CONTRACT_PATH;
+			case TYPE_SEARCH_SECTION.ERC_20:
+				return SSR_CONTRACT_PATH;
 			default:
 				return OBJECTS_PATH;
 		}
