@@ -152,7 +152,7 @@ class BlockInformation extends React.Component {
 							disabled={blockNumber <= 1}
 							onClick={(e) => this.onBlockLink(blockNumber - 1, e)}
 						>
-							Older block
+							Previous block
 						</button>
 						<button
 							className={classnames('next', { active: latestBlock !== blockNumber })}
