@@ -106,7 +106,7 @@ class OperationsTable extends React.Component {
 		this.setState({ [name]: value });
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
-			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from, to: filters.to, p: 1 });
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from.trim(), to: filters.to.trim(), p: 1 });
 			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 

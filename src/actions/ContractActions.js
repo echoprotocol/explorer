@@ -155,7 +155,7 @@ class ContractActions extends BaseActionsClass {
 					if (!objectId) { return; }
 					let account = null;
 					try {
-						account = await echo.api.getAccountByName(objectId);
+						account = await echo.api.getAccountByName(objectId.trim());
 						if (account) {
 							account = account.id;
 						}

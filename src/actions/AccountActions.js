@@ -158,7 +158,7 @@ class AccountActions extends BaseActionsClass {
 					}
 					let account = null;
 					try {
-						account = await echo.api.getAccountByName(objectId);
+						account = await echo.api.getAccountByName(objectId.trim());
 						if (account) {
 							account = account.id;
 						}
