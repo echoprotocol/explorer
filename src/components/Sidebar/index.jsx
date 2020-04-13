@@ -17,6 +17,8 @@ const Sidebar = React.memo((props) => {
 		frozenData,
 		delegationRate,
 		delegationRates,
+		decentralizationRate,
+		decentralizationRates,
 	} = props;
 	const [blockSubscriber, setBlockSubscriber] = useState(null);
 	useEffect(() => {
@@ -51,6 +53,8 @@ const Sidebar = React.memo((props) => {
 					pinned={pinned}
 					delegationRate={delegationRate}
 					delegationRates={delegationRates}
+					decentralizationRate={decentralizationRate}
+					decentralizationRates={decentralizationRates}
 				/>
 			</SidebarElement>
 			<SidebarElement title="Frozen Funds">
@@ -71,8 +75,9 @@ Sidebar.propTypes = {
 	frozenData: PropTypes.array.isRequired,
 	updateFrozenBalances: PropTypes.func.isRequired,
 	delegationRate: PropTypes.number.isRequired,
+	decentralizationRate: PropTypes.number.isRequired,
 	delegationRates: PropTypes.array.isRequired,
-
+	decentralizationRates: PropTypes.array.isRequired,
 };
 Sidebar.defaultProps = {
 	pinned: false,

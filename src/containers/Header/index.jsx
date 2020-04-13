@@ -10,7 +10,8 @@ import Header from '../../components/Header';
 
 const HeaderContainer = React.memo(({
 	hints, getHints, loadingSearch, errorSearch,
-	stepProgress, preparingBlock, latestBlock,
+	latestBlock, blocks, stepProgress, preparingBlock,
+	operationCountRates, operationCount, averageBlockTime,
 }) => (
 	<div className="top-section">
 		<div className="wrap">
@@ -21,9 +22,13 @@ const HeaderContainer = React.memo(({
 				getHints={getHints}
 			/>
 			<PreparingSection
+				blocks={blocks}
 				stepProgress={stepProgress}
 				preparingBlock={preparingBlock}
 				latestBlock={latestBlock}
+				averageBlockTime={averageBlockTime}
+				operationCountRates={operationCountRates}
+				operationCount={operationCount}
 			/>
 		</div>
 	</div>
@@ -35,9 +40,13 @@ HeaderContainer.propTypes = {
 	loadingSearch: PropTypes.bool.isRequired,
 	errorSearch: PropTypes.string.isRequired,
 	getHints: PropTypes.func.isRequired,
+	blocks: PropTypes.object.isRequired,
 	stepProgress: PropTypes.string.isRequired,
 	preparingBlock: PropTypes.number.isRequired,
 	latestBlock: PropTypes.number.isRequired,
+	averageBlockTime: PropTypes.number.isRequired,
+	operationCountRates: PropTypes.array.isRequired,
+	operationCount: PropTypes.number.isRequired,
 };
 
 export default withRouter(connect(
@@ -45,9 +54,13 @@ export default withRouter(connect(
 		hints: state.search.getIn(['headerSearch', 'hints']),
 		errorSearch: state.search.getIn(['headerSearch', 'error']),
 		loadingSearch: state.search.getIn(['headerSearch', 'loading']),
+		blocks: state.block.get('blocks'),
 		stepProgress: state.round.get('stepProgress'),
 		preparingBlock: state.round.get('preparingBlock'),
 		latestBlock: state.round.get('latestBlock'),
+		averageBlockTime: state.statistics.get('averageBlockTime'),
+		operationCountRates: state.statistics.get('operationCountRates'),
+		operationCount: state.statistics.get('operationCount'),
 	}),
 	(dispatch) => ({
 		getHints: (str) => dispatch(searchActions.headerSearchHint(str)),

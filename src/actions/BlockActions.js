@@ -27,7 +27,6 @@ import GlobalActions from './GlobalActions';
 import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
-import { getDelegationRates } from '../services/queries/block';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
 
