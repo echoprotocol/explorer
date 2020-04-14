@@ -15,6 +15,7 @@ import ObjectInfo from '../TransactionInfo/ObjectInfo';
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -38,6 +39,12 @@ const OperationsRow = React.memo(({
 	sizePerPage,
 	totalDataSize,
 }) => {
+
+	const goToBlock = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
+	};
 
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
@@ -105,7 +112,8 @@ const OperationsRow = React.memo(({
 				<td className="operation">
 					<div className="td-in">{detailInfo.type}</div>
 				</td>
-				<td className="time">
+				{/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
+				<td className="time" onClick={(e) => goToBlock(e)}>
 					<div className="td-in">
 						<span>{FormatHelper.timestampToOperationRowTime(blockTimestamp)}</span>
 					</div>
