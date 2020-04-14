@@ -7,10 +7,10 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+
 import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
-import loadingIcon from '../../public/images/icons/loader.png';
-import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class SearchField extends React.Component {
 
@@ -76,9 +76,10 @@ class SearchField extends React.Component {
 
 	onKeyPress(e) {
 		const { loadingSearch } = this.props;
+		const { inputValue } = this.state;
 		const code = e.keyCode || e.which;
 
-		if (!loadingSearch && KEY_CODE_ENTER === code && this.state.inputValue && this.state.to) {
+		if (!loadingSearch && KEY_CODE_ENTER === code && inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
 				Router.push(this.state.href, this.state.to);
 				this.setState({ focus: false, isChange: false });
@@ -130,33 +131,25 @@ class SearchField extends React.Component {
 		this.props.getHints();
 	}
 
-	renderIcon() {
-		const { goToBlock, loadingSearch } = this.props;
-
-		if (!goToBlock) {
-			return (
-				loadingSearch ?
-					<span className="search-loading" /> :
-					<button tabIndex="0" className="close-icn" onClick={() => this.clearInput()} />
-			);
-		}
+	renderIcon(active) {
+		const { loadingSearch } = this.props;
 
 		return (
 			loadingSearch ?
-				<img src={loadingIcon} alt="" /> :
-				<button tabIndex="0" className="g-t-btn" onClick={(e) => this.onClick(e)} />
-
+				<span className="search-loading" /> :
+				<button tabIndex={active ? 0 : -1} className="close-icn" onClick={() => this.clearInput()} />
 		);
+
 	}
 
 	render() {
 
 		const {
-			focus, isChange, isActiveSmall,
+			focus, isChange, isActiveSmall, inputValue,
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, goToBlock, hints, errorSearch,
+			placeholder, white, withHelp, hints, errorSearch,
 		} = this.props;
 
 		const options = hints
@@ -192,33 +185,23 @@ class SearchField extends React.Component {
 
 		return (
 			<div
-				className={classnames('input-search-block', {
-					small, 'is-active-small': (isActiveSmall || this.state.inputValue), white, 'go-to-block': goToBlock,
-				})}
+				className={classnames('input-search-block', { active: (isActiveSmall || inputValue), white })}
 				ref={this.setWrapperRef}
 			>
 				<div className={classnames('input-container', { focus })}>
-					{
-						(!goToBlock) && (
-							<a
-								href=""
-								className="icon"
-								onClick={(e) => { e.preventDefault(); ((small) ? (this.isSmallShow()) : false); }}
-							>
-								<svg>
-									<path
-										fillRule="evenodd"
-										fill="rgb(104, 108, 134)"
-										d="M14.716,13.122 L11.179,9.575 C13.082,6.782 12.362,2.974 9.571,1.069 C6.780,-0.835 2.974,-0.114 1.072,2.679 C-0.831,5.473 -0.111,9.281 2.680,11.185 C4.759,12.603 7.492,12.603 9.571,11.185 L13.113,14.726 C13.590,15.135 14.308,15.079 14.716,14.602 C15.080,14.176 15.080,13.548 14.716,13.122 ZM2.272,6.122 C2.272,3.995 3.995,2.271 6.120,2.271 C8.246,2.271 9.969,3.995 9.969,6.122 C9.969,8.249 8.246,9.973 6.120,9.973 C3.996,9.970 2.275,8.248 2.272,6.122 Z"
-									/>
-								</svg>
-							</a>
-						)
-					}
+					<a
+						href=""
+						className="icon"
+						onClick={(e) => { e.preventDefault(); this.isSmallShow(); }}
+					>
+						<svg>
+							<path fill="#686C86" d="M14.72 13.12l-3.54-3.54a6.12 6.12 0 10-1.6 1.6l3.53 3.55a1.14 1.14 0 001.6-1.6zm-12.45-7a3.85 3.85 0 117.7 0 3.85 3.85 0 01-7.7 0z" />
+						</svg>
+					</a>
 					<div className="input-field">
 						<DebounceInput
 							type="text"
-							value={this.state.inputValue}
+							value={inputValue}
 							placeholder={placeholder}
 							onFocus={() => this.onFocus()}
 							onChange={(e) => this.onChange(e)}
@@ -226,24 +209,19 @@ class SearchField extends React.Component {
 							debounceTimeout={DEBOUNCE_TIMEOUT}
 							inputRef={(node) => { this.inputEl = node; }}
 						/>
-						{ this.renderIcon() }
-
+						{ this.renderIcon(isActiveSmall || inputValue) }
 					</div>
 				</div>
 
-				{
-					(withHelp) && (
-						(isChange || focus) && (
-							<div className="search-block-result">
-								<Dropdown
-									options={options}
-									open
-									onChange={(even, data) => this.onChangeDropdown(data)}
-								/>
-							</div>
-						)
-					)
-				}
+				{ (withHelp) && ((isChange || focus) && (
+					<div className="search-block-result">
+						<Dropdown
+							options={options}
+							open
+							onChange={(even, data) => this.onChangeDropdown(data)}
+						/>
+					</div>
+				))}
 			</div>
 		);
 	}
@@ -251,26 +229,23 @@ class SearchField extends React.Component {
 }
 
 SearchField.propTypes = {
-	small: PropTypes.bool,
+	// small: PropTypes.bool,
 	loadingSearch: PropTypes.bool,
 	errorSearch: PropTypes.string,
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
-	goToBlock: PropTypes.bool,
 	hints: PropTypes.array,
 	getHints: PropTypes.func,
 };
 
 SearchField.defaultProps = {
 	loadingSearch: false,
-	small: false,
 	errorSearch: '',
 	placeholder: '',
 	white: false,
 	withHelp: false,
 	hints: [],
-	goToBlock: null,
 	getHints: () => {},
 };
 

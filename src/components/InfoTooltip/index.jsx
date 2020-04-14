@@ -1,51 +1,30 @@
 import React from 'react';
 import Tooltip from 'rc-tooltip';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
+import TooltipIcon from './TooltipIcon';
 
-import infoIcon from '../../public/images/icons/info-icn.svg';
-import infoHoverIcon from '../../public/images/icons/info-hover.svg';
+const InfoTooltip = React.memo(({ placement, iconFilled, ...props }) => (
+	<Tooltip
+		trigger={['hover']}
+		placement={placement}
+		{...props}
+	>
+		<span className={cn('tooltip-icon', { filled: iconFilled })}>
+			<TooltipIcon filled={iconFilled} />
+		</span>
+	</Tooltip>
+));
 
-class InfoTooltip extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			hovered: false,
-		};
-	}
-
-	changeHover(value) {
-		this.setState({ hovered: value });
-	}
-
-	render() {
-
-		const { hovered } = this.state;
-		const { tooltipText	} = this.props;
-
-		return (
-			<Tooltip
-				placement="rightBottom"
-				trigger={['hover']}
-				overlay={<span>{tooltipText}</span>}
-				onMouseEnter={() => this.changeHover(true)}
-				onMouseLeave={() => this.changeHover(false)}
-			>
-				<span className="tooltip">
-					<img src={hovered ? infoHoverIcon : infoIcon} alt="" />
-				</span>
-			</Tooltip>
-		);
-	}
-
-}
 
 InfoTooltip.propTypes = {
-	tooltipText: PropTypes.string,
+	placement: PropTypes.string,
+	iconFilled: PropTypes.bool,
 };
 
 InfoTooltip.defaultProps = {
-	tooltipText: '',
+	placement: 'rightBottom',
+	iconFilled: true,
 };
 
 export default InfoTooltip;

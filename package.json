@@ -88,6 +88,7 @@
 		"react-slick": "^0.25.0",
 		"react-tabs": "^3.0.0",
 		"react-toastify": "^4.4.0",
+		"recharts": "^1.8.5",
 		"redux": "^3.7.2",
 		"redux-batched-actions": "^0.4.1",
 		"redux-devtools-extension": "^2.13.8",

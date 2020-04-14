@@ -1,0 +1,38 @@
+.sidebar:not(.pinned) {
+	.blockchain-rates-wrap {
+		display: flex;
+		.sidebar-element-block-title {
+			display: flex;
+			align-items: center;
+			margin-right: 5px;
+		}
+		@include max-vw($res-500) {
+			flex-direction: column;
+		}
+	}
+}
+.pinned {
+	.blockchain-rates-block-info {
+		margin-top: 15px;
+		justify-content: space-between;
+	}
+}
+.blockchain-rates-block-info {
+	margin-top: 22px;
+	display: flex;
+	align-items: center;
+	@include max-vw($res-500) {
+		margin-top: 15px;
+	}
+}
+.blockchain-rates-block-percent {
+	color: $explorer-black;
+	font-size: 16px;
+	line-height: 27px;
+	letter-spacing: 0.02em;
+	margin-right: 10px;
+	@include inter-semibold();
+	@include max-vw($res-1600) {
+		margin-right: 8px;
+	}
+}

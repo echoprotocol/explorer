@@ -1,32 +1,25 @@
-.inner-information-container {
-	width: 1012px;
-	padding-right: 30px;
-	padding-top: 50px;
-	min-height: calc(100vh - 282px);
-	padding-left: 0;
-	background-color: #f3f2f5;
+.inner-container {
 	position: relative;
-	padding-bottom: 37px;
-	flex-shrink: 0;
-
-	@include max-vw(1534) {
-		padding-right: 30px;
-		width: 867px;
-		flex-shrink: 0;
+	padding-top: 27px;
+	padding-bottom: 30px;
+	padding-right: 30px;
+	width: 1012px;
+	background-color: #f3f2f5;
+	min-height: calc(100vh - 182px - 12px);
+	@include max-vw($res-1600) {
+		width: 960px;
 	}
-
-	@include max-vw(1279) {
+	@include max-vw($res-1400) {
+		width: calc(100vw - 342px - 90px);
+	}
+	@include max-vw($res-1280) {
 		width: 100%;
 		padding-right: 0;
-		min-height: calc(100vh - 363px);
+		//min-height: 100vh - (header + footer)
+		min-height: calc(100vh - 263px - 90px);
 	}
 
-	@include max-vw(767) {
-		padding-top: 56px;
-		min-height: calc(100vh - 487px);
-	}
-
-	@include max-vw(499) {
+	@include max-vw($res-500) {
 		& > .checkbox {
 			margin-bottom: 20px;
 		}
@@ -35,133 +28,40 @@
 	.checkbox {
 		margin-bottom: 20px;
 		padding-left: 30px;
-		@include max-vw(1279) {
+		@include max-vw($res-1280) {
 			padding-left: 0;
 		}
 	}
-
+	&:after,
 	&:before {
-		content: "";
-		width: 100%;
-		height: 100%;
-		background-color: #f3f2f5;
 		position: absolute;
-		top: 0;
-		display: block;
+		content: "";
+	}
+	&:before {
+		height: calc(100% - 12px);
+		top: 12px;
 		left: -1000vw;
 		width: 1000vw;
+		background-color: #f3f2f5;
+		z-index: -1;
+		@include max-vw($res-1280) {
+			width: auto;
+			left: -10px;
+			right: -10px;
+		}
 	}
-
-	@include max-vw(1279) {
-		&:after {
-			content: "";
-			width: 100%;
-			height: 100%;
-			background-color: #f3f2f5;
-			position: absolute;
+	&:after {
+		top: 0;
+		height: 12px;
+		left: 0;
+		right: 0;
+		background-color: #fff;
+		@include max-vw($res-1280) {
 			top: 0;
-			display: block;
-			right: -1000vw;
-			width: 1000vw;
-		}
-	}
-}
-
-.recent-block-mobile-view {
-	.recent-block-element {
-		position: relative;
-
-		cursor: pointer;
-		transition: all 0.2s ease-out;
-
-		&.fade-anim {
-			animation: addd 0.4s ease-out;
-
-			@keyframes addd {
-				from {
-					opacity: 0;
-				}
-
-				to {
-					opacity: 1;
-				}
-			}
-		}
-
-		&:hover {
-			background-color: #e0dfe2;
-		}
-
-		&:active {
-			background-color: #dad9dc;
-
-			.container {
-				opacity: 0.8;
-			}
-		}
-
-		@include max-vw(499) {
-			justify-content: flex-start;
-		}
-
-		&.is-subtransfer {
-			padding: 45px 0px 0px 15px;
-			margin-left: auto;
-
-			.subtransfer-type {
-				position: absolute;
-				@include inter-ui-regular;
-				font-size: 10px;
-				color: #3f3b55;
-				background-color: #e0e0e3;
-				border-radius: 2px;
-				top: 10px;
-				left: 14px;
-				white-space: nowrap;
-				padding: 0 3px;
-				line-height: 17px;
-			}
-
-			.container {
-				&.amount {
-					width: 138px;
-
-					@include max-vw(499) {
-						width: 120px;
-					}
-				}
-			}
-
-			&_last {
-				&:after {
-					height: 10px;
-				}
-			}
-		}
-
-		.container {
-			width: 130px;
-			transition: all 0.2s ease-out;
-
-			&.fail {
-				.value {
-					color: #ff0042;
-				}
-			}
-
-			@include max-vw(499) {
-				width: 140px;
-			}
-
-			&:first-child {
-				min-width: 10px;
-			}
-
-			.value {
-				.blue {
-					font-size: 12px;
-				}
-			}
+			height: 12px;
+			left: -10px;
+			right: -10px;
+			background-color: #fff;
 		}
 	}
 }

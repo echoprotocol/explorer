@@ -4,58 +4,24 @@
 	margin: 0 auto;
 	padding: 0;
 
-	@include max-vw(1534) {
+	@include max-vw(1600) {
 		width: 100%;
 		padding: 0 30px;
 	}
-	@include max-vw(1279) {
+	@include max-vw($res-1280) {
 		padding: 0 10px;
 	}
 }
 
 .wrap.full {
 	justify-content: center;
-
-	.recent-block-sidebar {
-		width: 430px;
-
-		@include max-vw(1534) {
-			width: 310px;
-		}
-
-		@include max-vw(1279) {
-			width: 900px;
-			margin: auto;
-		}
-
-		@include max-vw(999) {
-			width: 668px;
-		}
-
-		@include max-vw(767) {
-			width: 450px;
-		}
-
-		@include max-vw(499) {
-			width: 300px;
-		}
-	}
 }
 
-.wrap.sm {
-	@include max-vw(1534) {
-		width: 100%;
-		padding: 0 50px;
-	}
-	@include max-vw(1279) {
-		padding: 0 40px;
-	}
-
-	@include max-vw(767) {
-		padding: 0 30px;
-	}
-
-	@include max-vw(499) {
-		padding: 0 25px;
+.wrap.flex {
+	display: flex;
+	@include min-vw($res-1400) {
+		& + .footer {
+			display: none;
+		}
 	}
 }

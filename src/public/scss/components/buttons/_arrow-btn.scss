@@ -1,0 +1,32 @@
+.arrow-btn {
+	@include btn();
+	@include inter-medium();
+	@include onFocus(4px, 2px, 1px, rgba($blue, 0.4));
+
+	font-size: 12px;
+	line-height: 15px;
+	color: $grey;
+	border: 0;
+	background-color: $lightgrey-darker;
+	border-radius: 4px;
+	transition: color $speed;
+	svg {
+		margin-left: 10px;
+	}
+	path {
+		fill: $grey;
+		transition: fill $speed;
+	}
+	&:active {
+		color: rgba($grey, 0.7);
+		path {
+			fill: rgba($grey, 0.7);
+		}
+	}
+	&:disabled {
+		color: rgba($grey, 0.4);
+		path {
+			fill: rgba($grey, 0.4);
+		}
+	}
+}

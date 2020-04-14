@@ -1,5 +1,5 @@
 @mixin max-vw($width) {
-	@media (max-width: $width + "px") {
+	@media (max-width: $width - 1 + "px") {
 		@content;
 	}
 }

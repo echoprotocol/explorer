@@ -17,22 +17,6 @@
 		margin-bottom: 5px;
 	}
 
-	&-inner {
-		padding: 15px 20px;
-		color: #333333;
-		text-align: left;
-		text-decoration: none;
-		background-color: #06060d;
-		min-height: 34px;
-		max-width: 200px;
-		span {
-			@include inter-ui-regular;
-			color: #8eaabd;
-			font-size: 11px;
-			line-height: 17px;
-		}
-	}
-
 	&.rc-tooltip-placement-rightBottom {
 		.rc-tooltip-arrow {
 			position: absolute;
@@ -69,5 +53,27 @@
 			right: 5px;
 			transform: rotate(-67deg);
 		}
+	}
+}
+.rc-tooltip-inner {
+	padding: 15px 20px;
+	color: #333333;
+	text-align: left;
+	text-decoration: none;
+	background-color: #06060d;
+	min-height: 34px;
+	max-width: 200px;
+	color: #8eaabd;
+	font-size: 11px;
+	line-height: 17px;
+	@include inter-regular;
+	p + p {
+		margin-top: 10px;
+	}
+}
+
+.verify-contract-tooltip {
+	.rc-tooltip-inner {
+		max-width: none;
 	}
 }

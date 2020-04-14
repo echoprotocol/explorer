@@ -14,6 +14,7 @@ const DEFAULT_FIELDS = Map({
 	hasMore: true,
 	isDistributionRewardOpen: false,
 	filteredOperations: new List([]),
+	latestOperations: [],
 });
 
 export default createModule({

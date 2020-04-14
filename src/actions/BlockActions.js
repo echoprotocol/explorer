@@ -27,7 +27,10 @@ import TransactionActions from './TransactionActions';
 import GlobalReducer from '../reducers/GlobalReducer';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
+
 import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
+import { getLatestOperationsFromGQL } from '../services/queries/history';
+import AccountActions from './AccountActions';
 
 /**
  *
@@ -555,4 +558,12 @@ export const resetDisplayedBlocks = () => async (dispatch, getState) => {
 		return false;
 	}
 
+};
+
+export const getLatestOperations = () => async (dispatch) => {
+	const latestOperations = await getLatestOperationsFromGQL();
+	const operations = latestOperations.data.getHistory.items;
+	const transactions = AccountActions.formatHistoryFromEchoDB(operations);
+	const formattedOperations = await AccountActions.formatAccountHistory(null, transactions);
+	dispatch(BlockReducer.actions.set({ field: 'latestOperations', value: formattedOperations }));
 };

@@ -47,7 +47,7 @@
 			transition: transform 0.3s ease;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			margin-left: 20px;
 		}
 	}
@@ -73,12 +73,12 @@
 			}
 		}
 
-		@include max-vw(999) {
+		@include max-vw($res-1000) {
 			right: auto;
 			left: -30px;
 		}
 
-		@include max-vw(499) {
+		@include max-vw($res-500) {
 			left: 16px;
 		}
 

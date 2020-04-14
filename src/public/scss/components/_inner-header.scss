@@ -1,58 +1,25 @@
 .inner-header {
 	position: relative;
-	padding-left: 30px;
 	margin-bottom: 30px;
 	display: flex;
-	align-items: center;
-	@include max-vw(1534) {
-		padding-left: 20px;
-	}
-	@include max-vw(1279) {
-		padding-left: 30px;
-	}
-	@include max-vw(767) {
-		padding-left: 20px;
-	}
-	@include max-vw(499) {
-		padding-left: 15px;
-	}
+	flex-direction: column;
+
 	.breadcrumbs-container {
 		margin-right: auto;
+		padding-left: 30px;
 	}
 }
 
-.inner-header__top-panel {
+.inner-header-line {
 	position: relative;
 	display: flex;
-	position: absolute;
-	left: 0;
-	bottom: calc(100% + 15px);
+	align-items: center;
 	width: 100%;
-	padding-left: 30px;
-	@include max-vw(1534) {
-		bottom: calc(100% + 10px);
-		padding-left: 20px;
-	}
-	@include max-vw(1279) {
-		padding-left: 30px;
-		padding-right: 30px;
-	}
-	@include max-vw(767) {
-		padding-left: 20px;
-	}
-	@include max-vw(499) {
-		padding-left: 15px;
-	}
-	.backwards-link {
-		left: -6px;
-		top: calc(100% + 13px);
-		@include max-vw(1534) {
-			position: relative;
-			top: 0;
-		}
+	& + .inner-header-line {
+		margin-top: 20px;
 	}
 }
 
-.inner-header__title {
-	margin-right: auto;
+.inner-header-title {
+	@include h2();
 }

@@ -44,7 +44,7 @@ class AccountActions extends BaseActionsClass {
 			return TransactionActions.getOperation(
 				operation,
 				t.block_num,
-				block.timestamp,
+				block ? block.timestamp : null,
 				t.trx_in_block,
 				t.op_in_trx,
 				result,

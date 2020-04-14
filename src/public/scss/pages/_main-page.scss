@@ -1,5 +1,37 @@
 .main-page {
-	.inner-header {
-		margin-bottom: 19px;
+	position: relative;
+	background-color: $lightest-grey-bg;
+	padding: 50px 0;
+	margin: auto;
+	min-height: calc(100vh - 182px - 205px - 90px);
+
+	&:before,
+	&:after {
+		position: absolute;
+		width: 12px;
+		content: "";
+		top: 0;
+		bottom: 0;
+		background-color: #fff;
+	}
+	&:before {
+		left: 0;
+	}
+	&:after {
+		right: 0;
+	}
+	@include max-vw($res-1280) {
+		min-height: 0;
+		&:before,
+		&:after {
+			display: none;
+		}
+	}
+	.wrap {
+		display: flex;
+		justify-content: space-between;
+		@include max-vw($res-1280) {
+			flex-direction: column;
+		}
 	}
 }

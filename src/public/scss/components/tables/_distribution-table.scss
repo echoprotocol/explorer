@@ -1,26 +1,16 @@
-// DISTRIBUTION TABLE AT BLOCK PAGE
-
 .distribution-table {
 	margin-bottom: 55px;
 	animation: fade-in $speed;
 	table {
-		min-width: 748px;
 		width: 100%;
-		border-collapse: collapse;
-		z-index: 1;
-		a {
-			@include link();
-		}
 	}
+
+	@include table();
 	@include table-y-rythm();
 	@include table-head();
 	@include table-air();
-	tbody {
-		tr {
-			font-size: 12px;
-			color: $grey;
-		}
-	}
+	@include table-vertical-scroll();
+
 	.td-in {
 		@include text-overflow();
 	}
