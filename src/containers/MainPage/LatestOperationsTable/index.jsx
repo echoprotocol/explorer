@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 
-import ArrowBtn from '../../../components/Buttons/ArrowBtn';
+// import ArrowBtn from '../../../components/Buttons/ArrowBtn';
 import TableLabel from '../../../components/TableLabel';
 
 import Thead from './Thead';
@@ -30,7 +30,7 @@ const LatestOperationsTable = memo(({ operations }) => (
 				</tbody>
 			</table>
 		</PerfectScrollbar>
-		<ArrowBtn>View all Operations</ArrowBtn>
+		{/* <ArrowBtn>View all Operations</ArrowBtn> */}
 	</div>
 ));
 
