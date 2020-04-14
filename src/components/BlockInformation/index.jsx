@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Router from 'next/router';
 import Link from 'next/link';
 import classnames from 'classnames';
-import { List } from 'immutable';
 import BN from 'bignumber.js';
 
 import OperationsTable from '../../containers/OperationsTable';
@@ -36,19 +35,15 @@ class BlockInformation extends React.Component {
 		super(props);
 
 		this.state = {
-			operations: null,
 			currentBlockNumber: '',
 			loader: false,
 		};
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		const { sizePerPage, currentPage } = nextProps.filterAndPaginateData.toJS();
 		if (!prevState.operations && nextProps.blockInformation.get('round')) {
-			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
 			return {
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
-				operations: newOperations.reverse().slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage),
 			};
 		}
 		return null;
@@ -57,20 +52,17 @@ class BlockInformation extends React.Component {
 	componentDidMount() {
 		const { router: { query: { round } }, blockInformation } = this.props;
 		if (blockInformation.get('blockNumber') !== round) {
-			this.props.getBlockInfo(round);
+			this.onResetFilter().then(() => {
+				this.props.getBlockInfo(round);
+			});
 		}
 	}
 
 	async shouldComponentUpdate(nextProps) {
-		const { sizePerPage } = nextProps.filterAndPaginateData.toJS();
 		if (this.state.currentBlockNumber !== nextProps.blockInformation.get('blockNumber')) {
-			const newOperations = nextProps.blockInformation.get('operations') ? nextProps.blockInformation.get('operations') : new List([]);
-			this.props.onSetFilter({ from: '', to: '' });
-			this.props.onSetPage(1);
 			this.setState({
 				loader: false,
 				currentBlockNumber: nextProps.blockInformation.get('blockNumber'),
-				operations: newOperations.reverse().slice(0, sizePerPage),
 			});
 		}
 
@@ -85,12 +77,21 @@ class BlockInformation extends React.Component {
 			this.props.router.query.round !== prevProps.router.query.round ||
 			(this.props.latestBlock > prevProps.latestBlock && (new BN(this.props.latestBlock).eq(new BN(this.state.currentBlockNumber).plus(1))))
 		) {
-			this.props.getBlockInfo(this.props.router.query.round);
+			this.onResetFilter().then(() => {
+				this.props.getBlockInfo(this.props.router.query.round);
+			});
 		}
 	}
 
 	componentWillUnmount() {
 		this.props.clearBlockInfo();
+	}
+
+	async onResetFilter() {
+		return Promise.all([
+			this.props.onSetFilter({ from: '', to: '' }),
+			this.props.onSetPage(1),
+		]);
 	}
 
 	onBlockLink(blockNumber, e) {
@@ -99,21 +100,12 @@ class BlockInformation extends React.Component {
 		Router.push(SSR_BLOCK_INFORMATION_PATH, URLHelper.createBlockUrl(blockNumber));
 	}
 
-	returnFunction() {
-		Router.push(INDEX_PATH);
+	onLoadMoreHistory() {
+		this.props.loadBlockHistory();
 	}
 
-	loadMoreTransactions() {
-		let operations = this.props.blockInformation.get('operations') || new List([]);
-		const { filters: { from, to }, currentPage, sizePerPage } = this.props.filterAndPaginateData.toJS();
-		operations = operations.filter((operation) => {
-			const isAllowFrom = from ? (from === operation.mainInfo.from.name || from === operation.mainInfo.from.id) : true;
-			const isAllowTo = to ? (to === operation.mainInfo.subject.name || to === operation.mainInfo.subject.id) : true;
-			return isAllowFrom && isAllowTo;
-		});
-		this.props.setTotalDataSize(operations.size);
-		operations = operations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage);
-		this.setState({ operations });
+	returnFunction() {
+		Router.push(INDEX_PATH);
 	}
 
 	renderLoader() {
@@ -121,8 +113,7 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInformation(blockInformation, latestBlock) {
-		const { toggleRewardDistribution, isDistributionRewardOpen } = this.props;
-		const { operations } = this.state;
+		const { toggleRewardDistribution, isDistributionRewardOpen, filteredOperations } = this.props;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = blockInformation.get('time');
@@ -216,10 +207,10 @@ class BlockInformation extends React.Component {
 					{ transactionCount ?
 						<OperationsTable
 							gridName={BLOCK_GRID}
-							onLoadMoreHistory={() => this.loadMoreTransactions()}
+							onLoadMoreHistory={() => this.onLoadMoreHistory()}
 							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
 							fee
-							operations={operations}
+							operations={filteredOperations}
 							router={this.props.router}
 						/> : null
 					}
@@ -243,14 +234,14 @@ class BlockInformation extends React.Component {
 }
 
 BlockInformation.propTypes = {
-	filterAndPaginateData: PropTypes.object.isRequired,
+	filteredOperations: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
-	setTotalDataSize: PropTypes.func.isRequired,
+	loadBlockHistory: PropTypes.func.isRequired,
 	toggleRewardDistribution: PropTypes.func.isRequired,
 	isDistributionRewardOpen: PropTypes.bool.isRequired,
 	onSetFilter: PropTypes.func.isRequired,

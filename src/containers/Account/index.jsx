@@ -19,6 +19,7 @@ export default withRouter(connect(
 		isMobile: state.global.get('isMobile'),
 	}),
 	(dispatch) => ({
+		setFilter: (filters) => dispatch(GridActions.setFilter(ACCOUNT_GRID, filters)),
 		onSetPage: (newPage) => dispatch(GridActions.setPage(ACCOUNT_GRID, newPage)),
 		getAccountInfo: (id) => dispatch(AccountActions.getAccountInfo(id)),
 		loadAccountHistory: (accountId) => dispatch(AccountActions.loadAccountHistory(accountId)),

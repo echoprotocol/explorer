@@ -24,7 +24,9 @@ class Account extends React.Component {
 	componentDidMount() {
 		const { router: { query: { id } } } = this.props;
 		if (!this.props.account || (id !== this.props.account.get('id') && id !== this.props.account.get('name'))) {
-			this.props.getAccountInfo(this.props.router.query.id);
+			this.onResetFilter().then(async () => {
+				await this.props.getAccountInfo(this.props.router.query.id);
+			});
 		}
 		if (this.props.account) {
 			this.subscribeHistoryUpdate(this.props.account.get('id'));
@@ -38,8 +40,9 @@ class Account extends React.Component {
 			this.subscribeHistoryUpdate(this.props.account.get('id'));
 		}
 		if (prevProps.router.query.id !== this.props.router.query.id) {
-			await this.props.onSetPage(1);
-			await this.props.getAccountInfo(this.props.router.query.id);
+			this.onResetFilter().then(async () => {
+				await this.props.getAccountInfo(this.props.router.query.id);
+			});
 		}
 	}
 
@@ -47,6 +50,13 @@ class Account extends React.Component {
 		const { account } = this.props;
 		this.unsubscribeHistoryUpdate(account.get('id'));
 		this.props.clearAccountInfo();
+	}
+
+	async onResetFilter() {
+		return Promise.all([
+			this.props.setFilter({ from: '', to: '' }),
+			this.props.onSetPage(1),
+		]);
 	}
 
 	onLoadMoreHistory() {
@@ -156,6 +166,7 @@ Account.propTypes = {
 	clearAccountInfo: PropTypes.func.isRequired,
 	loadAccountHistory: PropTypes.func.isRequired,
 	getAccountInfo: PropTypes.func.isRequired,
+	setFilter: PropTypes.func.isRequired,
 	onSetPage: PropTypes.func.isRequired,
 	incTotalAccountHistory: PropTypes.func.isRequired,
 };

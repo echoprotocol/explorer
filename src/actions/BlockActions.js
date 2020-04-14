@@ -2,7 +2,7 @@
 import BN from 'bignumber.js';
 import moment from 'moment';
 import { Map, List } from 'immutable';
-import echo, { serializers } from 'echojs-lib';
+import echo, { serializers, validators } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
@@ -27,6 +27,7 @@ import TransactionActions from './TransactionActions';
 import GlobalReducer from '../reducers/GlobalReducer';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
+import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
 
 /**
  *
@@ -87,6 +88,50 @@ const getRewardDistribution = async (targetBlock, nextBlock) => {
 	const result = [producer, ...verifiers];
 
 	return Promise.all(result);
+};
+
+/**
+ * method loadBlockHistory
+ * @return {function(...[*]=)}
+ */
+export const loadBlockHistory = () => async (dispatch, getState) => {
+	try {
+		const queryData = getState().grid.get(BLOCK_GRID).toJS();
+		const { currentPage, sizePerPage } = queryData;
+		let operations = getState().block.getIn(['blockInformation', 'operations']) || new List([]);
+		const getObjectId = async (objectId) => {
+			if (!objectId) { return null; }
+			if (isSidechainEthDeposit(objectId) || validators.isContractId(objectId)) {
+				return objectId;
+			}
+			let account = null;
+			try {
+				account = await echo.api.getAccountByName(objectId.trim());
+				if (account) {
+					account = account.id;
+				}
+				// eslint-disable-next-line no-empty
+			} catch (err) {}
+			return account;
+		};
+		const [fromFilter, toFilter] = await Promise.all([
+			getObjectId(queryData.filters.from),
+			getObjectId(queryData.filters.to),
+		]);
+		operations = operations.filter((operation) => {
+			const isAllowFrom = fromFilter ? (fromFilter === operation.mainInfo.from.name || fromFilter === operation.mainInfo.from.id) : true;
+			const isAllowTo = toFilter ? (toFilter === operation.mainInfo.subject.name || toFilter === operation.mainInfo.subject.id) : true;
+			return isAllowFrom && isAllowTo;
+		});
+
+		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, operations.size));
+		operations = operations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage);
+		dispatch(BlockReducer.actions.set({ field: 'filteredOperations', value: operations }));
+	} catch (error) {
+		console.log('error', error);
+		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
+		dispatch(GlobalActions.toggleErrorPath(true));
+	}
 };
 
 /**
@@ -166,14 +211,14 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 					))));
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
-
 		value.transactionCount = resultTransactions.length;
-		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
+		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), [])).reverse();
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, resultTransactions.length));
-		dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
+		await dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
+		dispatch(loadBlockHistory());
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));

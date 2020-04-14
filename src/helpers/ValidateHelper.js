@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { validators } from 'echojs-lib';
+import { validators, constants } from 'echojs-lib';
 import { objectIdRegEx } from '../constants/TypeConstants';
 
 import {
@@ -176,4 +176,15 @@ export const checkAccessVersion = (version, minAccessVersion) => {
 	const [major, minor, patch] = [...version.split('.')].map((part) => parseInt(part, 10));
 	const [minMajor, minMinor, minPatch] = [...minAccessVersion.split('.')].map((part) => parseInt(part, 10));
 	return !(minMajor > major || minMinor > minor || minPatch > patch);
+};
+
+
+/**
+ * @method isSidechainEthDeposit
+ * @param {string} value
+ * @return {boolean}
+ */
+export const isSidechainEthDeposit = (value) => {
+	const regex = new RegExp(`^1\\.${constants.PROTOCOL_OBJECT_TYPE_ID.SIDECHAIN_ETH_DEPOSIT}\\.(0|[1-9]\\d*)$`);
+	return regex.test(value);
 };
