@@ -50,9 +50,15 @@ const OperationsRow = React.memo(({
 
 OperationsRow.propTypes = {
 	operation: PropTypes.string.isRequired,
-	from: PropTypes.string.isRequired,
-	to: PropTypes.string.isRequired,
+	from: PropTypes.string,
+	to: PropTypes.string,
 	amount: PropTypes.object.isRequired,
 };
+
+OperationsRow.defaultProps = {
+	from: '',
+	to: '',
+};
+
 
 export default OperationsRow;
