@@ -123,8 +123,7 @@
 	}
 	.operation {
 		white-space: nowrap;
-		width: 100px;
-		max-width: 100px;
+
 		.td-in {
 			vertical-align: middle;
 			@include text-overflow();
@@ -147,16 +146,16 @@
 	.sender,
 	.reciever {
 		span {
-			max-width: 85px;
-			width: 85px;
+			max-width: 80px;
+			width: 80px;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			display: block;
 
 			@include max-vw($res-1600) {
-				max-width: 80px;
-				width: 80px;
+				max-width: 70px;
+				width: 70px;
 			}
 			@include max-vw($res-1280) {
 				max-width: 150px;
@@ -167,41 +166,34 @@
 				width: 130px;
 			}
 			@include max-vw($res-1000) {
-				max-width: 80px;
-				width: 80px;
+				max-width: 70px;
+				width: 70px;
 			}
 		}
 	}
-
+	.operation {
+		max-width: 180px;
+		width: 180px;
+	}
 	@include max-vw($res-1600) {
 		width: 100%;
 		margin-left: 0;
 		.operation {
-			max-width: 130px;
-			width: 130px;
+			max-width: 170px;
+			width: 170px;
 		}
 		.amount {
-			max-width: 140px;
-			width: 140px;
+			max-width: 123px;
+			width: 123px;
 		}
 		.fee {
-			max-width: 140px;
-			width: 140px;
+			max-width: 120px;
+			width: 120px;
 		}
 
 		.dd {
 			max-width: 30px;
 			width: 30px;
-		}
-	}
-	@include max-vw($res-1400) {
-		.amount {
-			max-width: 130px;
-			width: 130px;
-		}
-		.fee {
-			max-width: 130px;
-			width: 130px;
 		}
 	}
 	@include max-vw($res-1280) {
@@ -215,27 +207,45 @@
 		}
 	}
 	@include max-vw(1190) {
+		.operation {
+			max-width: 140px;
+			width: 140px;
+		}
 		.amount {
-			max-width: 150px;
-			width: 150px;
+			max-width: 140px;
+			width: 140px;
 		}
 		.fee {
-			max-width: 150px;
-			width: 150px;
+			max-width: 140px;
+			width: 140px;
 		}
 	}
 	@include max-vw($res-1000) {
 		.operation {
-			max-width: 100px;
-			width: 100px;
+			max-width: 110px;
+			width: 110px;
 		}
 		.amount {
-			max-width: 120px;
-			width: 120px;
+			max-width: 125px;
+			width: 125px;
 		}
 		.fee {
-			max-width: 120px;
-			width: 120px;
+			max-width: 110px;
+			width: 110px;
+		}
+	}
+	@include max-vw($res-768) {
+		.operation {
+			max-width: none;
+			width: auto;
+		}
+		.amount {
+			max-width: none;
+			width: auto;
+		}
+		.fee {
+			max-width: none;
+			width: auto;
 		}
 	}
 }
