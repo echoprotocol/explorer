@@ -83,8 +83,8 @@
 .pg-nav-3 {
 	margin-left: 20px;
 	display: flex;
-	.pg-arrow:not(:last-child) {
-		margin-right: 7px;
+	.btn:not(:last-child) {
+		margin-right: 8px;
 	}
 	@include max-vw($res-1000) {
 		margin-left: auto;
