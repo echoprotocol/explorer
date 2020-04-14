@@ -29,6 +29,7 @@ const OperationsRow = React.memo(({
 		blockTimestamp,
 		...detailInfo
 	},
+	isASCOps,
 	index,
 	active,
 	air,
@@ -93,7 +94,7 @@ const OperationsRow = React.memo(({
 	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
 	let numberOperation = null;
 	if (number !== '') {
-		numberOperation = isTransaction ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
+		numberOperation = isASCOps ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
 	}
 
 	if (numberOperation < 1) {
@@ -183,6 +184,7 @@ const OperationsRow = React.memo(({
 });
 
 OperationsRow.propTypes = {
+	isASCOps: PropTypes.bool.isRequired,
 	isMobile: PropTypes.bool.isRequired,
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,

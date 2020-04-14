@@ -204,6 +204,7 @@ class BlockInformation extends React.Component {
 				<div className="blocks-table-wrap">
 					{ transactionCount ?
 						<OperationsTable
+							isASCOps
 							gridName={BLOCK_GRID}
 							onLoadMoreHistory={() => this.onLoadMoreHistory()}
 							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
