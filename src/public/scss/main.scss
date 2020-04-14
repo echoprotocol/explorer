@@ -67,6 +67,7 @@
 @import "components/select-input";
 @import "components/checkbox";
 @import "components/avatar";
+@import "components/switch";
 
 @import "components/token-transfer-table";
 @import "components/node-map";
@@ -81,6 +82,11 @@
 @import "components/tables/operation-detail/settings-field";
 @import "components/tables/operation-detail/multy-field";
 @import "components/tables/operation-detail/producers-field";
+@import "components/tables/operation-detail/policy-field";
+@import "components/tables/operation-detail/copy-field";
+@import "components/tables/operation-detail/transfers-field";
+@import "components/tables/operation-detail/logs-info";
+@import "components/tables/operation-detail/internal-operations";
 @import "components/tables/operations-table/operations-table";
 @import "components/tables/operations-table/operations-filter";
 @import "components/tables/operations-table/operations-pagination";

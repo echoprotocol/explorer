@@ -9,26 +9,40 @@
 		&:not(:last-child) {
 			border-bottom: 1px solid $lightgrey-darker;
 		}
+		&.sm {
+			.od-col:nth-child(1) {
+				min-width: 150px;
+			}
+		}
+		&.align-center {
+			align-items: center;
+		}
 	}
 
 	.od-col {
 		line-height: 15px;
-
+		@include inter-ui-medium;
+		&.logs {
+			@include hack-regular;
+		}
+		&.flex {
+			display: flex;
+		}
 		&:nth-child(1) {
-			@include inter-ui-medium;
 			font-size: 11px;
-			line-height: 140%;
 			color: $lightgrey;
 			white-space: nowrap;
 			min-width: 210px;
+			margin-right: 20px;
 		}
 
 		&:nth-child(2) {
-			@include inter-ui-medium();
+			flex-grow: 1;
 			font-size: 12px;
-			line-height: 15px;
-			width: 100%;
 			color: $explorer-black;
+			&.logs {
+				font-size: 11px;
+			}
 		}
 	}
 
@@ -73,10 +87,9 @@
 		color: $grey;
 	}
 	.describe-operation__details {
-		font-size: 11px;
-		line-height: auto;
+		font-size: 12px;
+		line-height: 17px;
 		color: $lightgrey;
-		@include inter-ui-medium;
 	}
 
 	.proposal-operation-header {

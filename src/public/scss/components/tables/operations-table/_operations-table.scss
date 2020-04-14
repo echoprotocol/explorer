@@ -47,11 +47,6 @@
 		position: relative;
 		z-index: 1;
 		@include table-row-highlight();
-		td {
-			&:nth-child(2) {
-				padding: 12px 30px;
-			}
-		}
 	}
 
 	.amount,
@@ -169,20 +164,6 @@
 		.fee {
 			max-width: 150px;
 			width: 150px;
-		}
-	}
-	@include max-vw($res-1000) {
-		.operation {
-			max-width: 100px;
-			width: 100px;
-		}
-		.amount {
-			max-width: 120px;
-			width: 120px;
-		}
-		.fee {
-			max-width: 120px;
-			width: 120px;
 		}
 	}
 }

@@ -11,6 +11,8 @@ import ddIcon from '../../public/images/icons/curret-sm.svg';
 import Avatar from '../Avatar';
 import OperationInfo from '../TransactionInfo/OperationInfo';
 import ProposalOperations from '../TransactionInfo/ProposalOperations';
+import LogsInfo from '../TransactionInfo/LogsInfo';
+import InternalOperations from '../TransactionInfo/InternalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -76,8 +78,8 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	// const operationsInfoData = type && transformOperationDataByType(type, operation);
-	const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
+	const operationsInfoData = type && transformOperationDataByType(type, operation);
+	// const operationsInfoData = transformOperationDataByType('Deposit eth', operation);
 
 	return (
 		<React.Fragment>
@@ -138,6 +140,10 @@ const OperationsRow = React.memo(({
 									}
 									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
 									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
+									{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
+									<Tab className="operation-detail-tab">Event logs ({operationsInfoData.logs.length})</Tab>}
+									{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
+									<Tab className="operation-detail-tab">Internal operations ({operationsInfoData.internalOperations.length})</Tab> }
 								</div>
 								<button className="yellow-button">View Raw JSON Object</button>
 							</TabList>
@@ -150,6 +156,15 @@ const OperationsRow = React.memo(({
 								<TabPanel>
 									<ProposalOperations operations={operationsInfoData.proposalOperations} />
 								</TabPanel>}
+								{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
+								<TabPanel>
+									<LogsInfo logs={operationsInfoData.logs} />
+								</TabPanel>}
+								{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
+								<TabPanel>
+									<InternalOperations operations={operationsInfoData.internalOperations} />
+								</TabPanel>
+								}
 							</div>
 						</Tabs>
 					</td>

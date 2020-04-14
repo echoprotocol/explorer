@@ -8,21 +8,22 @@ import Avatar from '../../Avatar';
 
 
 const LinkRow = ({
-	title, account, link, isLinkOut,
+	title, account, link, isLinkOut, className,
 }) => (
-	<div className="od-row">
+	<div className={`od-row ${className}`}>
 		<div className="od-col">{title}:</div>
-		<div className="od-col">
+		<div className="od-col flex">
 			{account &&
 				<Link className="avatar-wrap" to={URLHelper.createUrlById(account.link)}>
 					<Avatar accountName={account.value} />
 					<span>{account.value}</span>
 				</Link>
 			}
+			{/* Change to Link route when addrress will known */}
 			{link && !isLinkOut &&
-				<Link to={link}>
+				<a href={link} className="link">
 					{link}
-				</Link>
+				</a>
 			}
 			{link && isLinkOut &&
 				<a href={link} className="link" target="_blank" rel="noopener noreferrer">{link}</a>
@@ -36,12 +37,14 @@ LinkRow.propTypes = {
 	account: PropTypes.object,
 	link: PropTypes.string,
 	isLinkOut: PropTypes.bool,
+	className: PropTypes.string,
 };
 
 LinkRow.defaultProps = {
 	account: null,
 	link: '',
 	isLinkOut: false,
+	className: '',
 };
 
 export default LinkRow;
