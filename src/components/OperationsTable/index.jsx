@@ -147,12 +147,13 @@ class OperationsTable extends React.Component {
 
 		if (!this.props.changeUrl && operations && operations.size) {
 			const { blockNumber, type } = operations.get(index);
-			let { trIndex, opIndex } = operations.get(index);
+			const { trIndex, opIndex } = operations.get(index);
 
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
-				trIndex = 0;
-				opIndex = -1;
+				const transactionUrl = URLHelper.createTransactionUrl(blockNumber, 1);
+				Router.push(SSR_TRANSACTION_INFORMATION_PATH, transactionUrl);
+				return;
 			}
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
