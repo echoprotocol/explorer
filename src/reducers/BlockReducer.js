@@ -10,8 +10,6 @@ const DEFAULT_FIELDS = Map({
 	blocks: new OrderedMap({}),
 	blocksCount: PAGE_BLOCKS_COUNT,
 	loading: false,
-	startTimestamp: 0,
-	hasMore: true,
 	isDistributionRewardOpen: false,
 	latestOperations: [],
 });

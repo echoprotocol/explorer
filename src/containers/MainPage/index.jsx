@@ -90,7 +90,6 @@ MainPage.propTypes = {
 
 export default withRouter(connect(
 	(state) => ({
-		hasMore: state.block.get('hasMore'),
 		loading: state.block.get('loading'),
 		blocks: state.block.get('blocks'),
 		latestBlock: state.round.get('latestBlock'),

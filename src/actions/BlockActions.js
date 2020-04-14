@@ -8,10 +8,7 @@ import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
 
 import {
-	MAX_AVERAGE_TRS_BLOCKS,
-	START_AVERAGE_TRS_BLOCKS,
 	PAGE_BLOCKS_COUNT,
-	PAGE_ADD_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	NETWORK_CONNECTED_ERROR,
@@ -202,105 +199,6 @@ export const setLatestBlock = (latestBlock) => (dispatch) => {
 };
 
 /**
- *  @method updateAverageTransactions
- *
- * 	Update latest block time, average transactions/operations and average block time
- *
- * 	@param {Number?} lastBlock
- * 	@param {Number?} startBlock
- */
-export const updateAverageTransactions = (lastBlock, startBlock) => async (dispatch, getState) => {
-	let transactions = getState().round.get('averageTransactions');
-	const averageTransactions = transactions.get('transactions');
-	const averageOperations = transactions.get('operations');
-
-	const latestBlock = lastBlock || getState().round.get('latestBlock');
-
-	let startedBlock = startBlock || transactions.get('block') + 1;
-
-	if ((getState().round.get('latestBlock') - transactions.get('block')) > MAX_BLOCK_REQUESTS) {
-		startedBlock = getState().round.get('latestBlock') - MAX_BLOCK_REQUESTS;
-	}
-
-	try {
-		let blocks = getState().block.get('blocks');
-
-		const blocksToRemove = blocks.keySeq()
-			.filter((key) => key < startedBlock || key > latestBlock);
-		blocks = blocks.deleteAll(blocksToRemove);
-
-		let trLengths = averageTransactions.get('lengthsList');
-		let opLengths = averageOperations.get('lengthsList');
-		let unixTimestamps = transactions.get('unixTimestamps');
-
-		blocks = blocks
-			.filter((block) => moment(block.get('timestamp')).unix() - moment(new Date(null)).unix() > 0).toJS();
-
-		const sumResults = Object.values(blocks).reduce(({ sum, sumOps }, block) => {
-			trLengths = trLengths.push(block.transactions);
-			const opLength = block.transactionsInfo.reduce((sumOper, tr) => sumOper.plus(tr.operations.length), new BN(0));
-			opLengths = opLengths.push(opLength);
-
-			const unixTimeStamp = moment(block.timestamp).unix();
-
-			if (Math.sign(unixTimeStamp) > 0) {
-				unixTimestamps = unixTimestamps.push(unixTimeStamp);
-			}
-
-			return ({
-				sum: sum.plus(block.transactions),
-				sumOps: sumOps.plus(opLength),
-			});
-		}, { sum: new BN(averageTransactions.get('sum')), sumOps: new BN(averageOperations.get('sum')) });
-
-		if (trLengths.size > MAX_AVERAGE_TRS_BLOCKS) {
-			sumResults.sum = sumResults.sum.minus(trLengths.get(0));
-			trLengths = trLengths.shift();
-
-			sumResults.sumOps = sumResults.sumOps.minus(opLengths.get(0));
-			opLengths = opLengths.shift();
-
-			unixTimestamps = unixTimestamps.shift();
-		}
-
-		let sumUnix = 0;
-
-		for (let i = 0; i < unixTimestamps.size; i += 1) {
-			if (!unixTimestamps.get(i + 1)) {
-				break;
-			}
-
-			sumUnix += (unixTimestamps.get(i + 1) - unixTimestamps.get(i));
-		}
-
-		const averageTime = new BN(sumUnix).div(trLengths.size);
-
-		if (Math.sign(averageTime.toNumber()) > 0) {
-			transactions = transactions.set('averageTime', parseFloat(averageTime.toFixed(3)));
-		}
-
-		transactions = transactions
-			.setIn(['transactions', 'value'], sumResults.sum.div(trLengths.size).toString())
-			.setIn(['transactions', 'sum'], sumResults.sum.toString())
-			.setIn(['transactions', 'lengthsList'], trLengths)
-			.setIn(['operations', 'value'], sumResults.sumOps.div(trLengths.size).toString())
-			.setIn(['operations', 'sum'], sumResults.sumOps.toString())
-			.setIn(['operations', 'lengthsList'], opLengths)
-			.set('count', trLengths.size)
-			.set('block', latestBlock)
-			.set('unixTimestamps', unixTimestamps);
-
-
-		dispatch(RoundReducer.actions.set({
-			field: 'averageTransactions',
-			value: transactions,
-		}));
-	} catch (err) {
-		dispatch(RoundReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }));
-	}
-};
-
-/**
  *  @method updateBlockList
  *
  * 	Update list of blocks on the recent blocks page
@@ -392,13 +290,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 		}
 	});
 
-	if (blocks) {
-		const lastBlockStorage = blocks.reduce((acc, val) => Math.max(acc, moment.utc(val.get('timestamp')).unix()), moment.utc(blocks.first().get('timestamp')).unix());
-		const time = moment().unix() - lastBlockStorage;
-		dispatch(BlockReducer.actions.set({ field: 'startTimestamp', value: time }));
-	}
-
-
 	const blocksToRemove = blocks.size - maxBlocks;
 
 	if (Math.sign(blocksToRemove) > 0) {
@@ -424,94 +315,6 @@ export const initBlocks = () => async (dispatch) => {
 
 	const startBlockList = obj.head_block_number - PAGE_BLOCKS_COUNT;
 	await dispatch(updateBlockList(obj.head_block_number, startBlockList));
-
-	const startBlockAverage = obj.head_block_number - START_AVERAGE_TRS_BLOCKS;
-	await dispatch(updateAverageTransactions(obj.head_block_number, startBlockAverage));
-
-	const time = moment().unix() - moment.utc(obj.time).unix();
-	dispatch(BlockReducer.actions.set({
-		field: 'startTimestamp',
-		value: time,
-	}));
-};
-/**
- *  @method setMaxDisplayedBlocks
- *
- * 	Set maximum number of displayed blocks
- */
-export const setMaxDisplayedBlocks = () => async (dispatch, getState) => {
-	try {
-		const hasMore = getState().block.get('hasMore');
-
-		if (
-			!echo._ws._connected
-			|| !echo.subscriber.subscriptions.echorand
-			|| !echo.subscriber.subscriptions.block
-			|| !hasMore
-		) {
-			return false;
-		}
-
-		const maxBlocks = getState().block.get('blocksCount');
-
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
-		dispatch(BlockReducer.actions.set({ field: 'blocksCount', value: maxBlocks + PAGE_ADD_BLOCKS_COUNT }));
-
-		const [...keys] = getState().block.get('blocks').keys();
-
-		const latestBlock = Math.min(...keys);
-		let startedBlock = latestBlock - PAGE_ADD_BLOCKS_COUNT;
-
-		if (startedBlock <= 0) {
-			startedBlock = 1;
-			dispatch(BlockReducer.actions.set({ field: 'hasMore', value: false }));
-		}
-
-		if (startedBlock === latestBlock) {
-			return true;
-		}
-
-		await dispatch(updateBlockList(latestBlock, startedBlock, true));
-
-		return true;
-
-	} catch (_) {
-		return false;
-	} finally {
-		dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
-	}
-
-};
-
-/**
- *  @method resetDisplayedBlocks
- *
- * 	Reset number of displayed blocks
- */
-export const resetDisplayedBlocks = () => async (dispatch, getState) => {
-	try {
-		if (!echo._ws._connected || !echo.subscriber.subscriptions.echorand || !echo.subscriber.subscriptions.block) {
-			return false;
-		}
-
-		dispatch(BlockReducer.actions.set({
-			field: 'blocksCount',
-			value: PAGE_BLOCKS_COUNT,
-		}));
-
-		let blocks = getState().block.get('blocks');
-		let [...keys] = blocks.keys();
-		keys = keys.sort((a, b) => b - a)
-			.slice(PAGE_BLOCKS_COUNT);
-		blocks = blocks.deleteAll(keys);
-		dispatch(BlockReducer.actions.set({ field: 'blocks', value: blocks }));
-
-		return true;
-
-	} catch (_) {
-		return false;
-	}
-
 };
 
 export const getLatestOperations = () => async (dispatch) => {
