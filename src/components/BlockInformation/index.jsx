@@ -198,7 +198,7 @@ class BlockInformation extends React.Component {
 						isDistributionRewardOpen &&
 						<DistributionTable rewards={rewardDistribution} />
 					) : (
-						<TableLabel label="Certificate list will be available after next block will be produced" />
+						<div className="distribution-table__empty-message">Certificate list will be available after next block will be produced</div>
 					)
 				}
 				<div className="blocks-table-wrap">
