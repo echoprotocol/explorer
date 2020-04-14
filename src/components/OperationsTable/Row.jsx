@@ -112,6 +112,7 @@ const OperationsRow = React.memo(({
 				<td className="operation">
 					<div className="td-in">{detailInfo.type}</div>
 				</td>
+				{/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
 				<td className="time" onClick={(e) => goToBlock(e)}>
 					<div className="td-in">
 						<span>{FormatHelper.timestampToOperationRowTime(blockTimestamp)}</span>
