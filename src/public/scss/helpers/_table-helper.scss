@@ -119,7 +119,10 @@
 		color: $lightgrey;
 		position: relative;
 		line-height: 15px;
-		@include inter-medium();
+		font-size: 12px;
+		.td-in {
+			@include inter-semibold();
+		}
 	}
 }
 
