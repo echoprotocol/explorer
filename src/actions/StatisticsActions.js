@@ -9,6 +9,7 @@ import StatisticsReducer from '../reducers/StatisticsReducer';
 import { getStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
 import { ECHO_ASSET } from '../constants/GlobalConstants';
+import { getLatestOperations } from './BlockActions';
 
 class StatisticsActionsClass extends BaseActionsClass {
 
@@ -39,6 +40,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 				getBlock.average_block_time = block.average_block_time;
 				getDecentralizationRate.decentralizationRatePercent = block.decentralization_rate;
 				getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
+				await dispatch(getLatestOperations());
 				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
 				dispatch(this.updateDelegationRate(getDelegationPercent));
 				dispatch(this.updateDecentralizationRate(getDecentralizationRate));

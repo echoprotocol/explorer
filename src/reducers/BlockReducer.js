@@ -11,6 +11,7 @@ const DEFAULT_FIELDS = Map({
 	blocksCount: PAGE_BLOCKS_COUNT,
 	loading: false,
 	isDistributionRewardOpen: false,
+	latestOperations: [],
 });
 
 export default createModule({

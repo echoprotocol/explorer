@@ -20,7 +20,12 @@ import {
 } from '../constants/RoundConstants';
 import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
-import { initBlocks, setLatestBlock, updateBlockList } from './BlockActions';
+import {
+	initBlocks,
+	setLatestBlock,
+	updateBlockList,
+	getLatestOperations,
+} from './BlockActions';
 import { INDEX_PATH } from '../constants/RouterConstants';
 import StatisticsActions from './StatisticsActions';
 import { getBlockFromGraphQl } from '../services/queries/block';
@@ -126,6 +131,7 @@ export const serverConnect = () => async (dispatch) => {
 
 		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
 		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		await dispatch(getLatestOperations());
 		await dispatch(initBlocks());
 
 		const global = globalParams.echorand_config;
@@ -169,6 +175,7 @@ export const fullClientInit = () => async (dispatch) => {
 		await dispatch(initBlocks());
 		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
 		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		await dispatch(getLatestOperations());
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));

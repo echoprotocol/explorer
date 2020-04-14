@@ -24,6 +24,8 @@ import TransactionActions from './TransactionActions';
 import GlobalReducer from '../reducers/GlobalReducer';
 import GridActions from './GridActions';
 import { BLOCK_GRID } from '../constants/TableConstants';
+import { getLatestOperationsFromGQL } from '../services/queries/history';
+import AccountActions from './AccountActions';
 
 /**
  *
@@ -313,4 +315,12 @@ export const initBlocks = () => async (dispatch) => {
 
 	const startBlockList = obj.head_block_number - PAGE_BLOCKS_COUNT;
 	await dispatch(updateBlockList(obj.head_block_number, startBlockList));
+};
+
+export const getLatestOperations = () => async (dispatch) => {
+	const latestOperations = await getLatestOperationsFromGQL();
+	const operations = latestOperations.data.getHistory.items;
+	const transactions = AccountActions.formatHistoryFromEchoDB(operations);
+	const formattedOperations = await AccountActions.formatAccountHistory(null, transactions);
+	dispatch(BlockReducer.actions.set({ field: 'latestOperations', value: formattedOperations }));
 };
