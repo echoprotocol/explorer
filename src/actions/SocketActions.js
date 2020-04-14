@@ -105,7 +105,6 @@ const blockRelease = () => async (dispatch) => {
 	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
 	await dispatch(updateBlockList(global.head_block_number));
-	await dispatch(getLatestOperations());
 	dispatch(updateAverageTransactions());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
@@ -134,6 +133,7 @@ export const serverConnect = () => async (dispatch) => {
 
 		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
 		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		await dispatch(getLatestOperations());
 		await dispatch(initBlocks());
 
 		const global = globalParams.echorand_config;
@@ -177,6 +177,7 @@ export const fullClientInit = () => async (dispatch) => {
 		await dispatch(initBlocks());
 		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
 		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		await dispatch(getLatestOperations());
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
