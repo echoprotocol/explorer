@@ -10,6 +10,7 @@
 		padding-right: 20px;
 	}
 	@include max-vw($res-768) {
+		margin-top: 0;
 		padding-left: 20px;
 		border-top: 0;
 	}
