@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-escape */
-import utf8 from 'utf8';
 
 export const validateEmail = (email) => {
 	const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,15})?$/;

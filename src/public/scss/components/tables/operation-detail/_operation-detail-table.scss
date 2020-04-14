@@ -20,10 +20,13 @@
 	}
 
 	.od-col {
-		line-height: 140%;
+		line-height: 15px;
 		@include inter-ui-medium;
 		&.logs {
 			@include hack-regular;
+		}
+		&.flex {
+			display: flex;
 		}
 		&:nth-child(1) {
 			font-size: 11px;
@@ -84,10 +87,9 @@
 		color: $grey;
 	}
 	.describe-operation__details {
-		font-size: 11px;
-		line-height: auto;
+		font-size: 12px;
+		line-height: 17px;
 		color: $lightgrey;
-		@include inter-ui-medium;
 	}
 
 	.proposal-operation-header {

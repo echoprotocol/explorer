@@ -80,8 +80,8 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	// const operationsInfoData = type && transformOperationDataByType(type, operation);
-	const operationsInfoData = transformOperationDataByType('Contract create', operation);
+	const operationsInfoData = type && transformOperationDataByType(type, operation);
+	// const operationsInfoData = transformOperationDataByType('Deposit eth', operation);
 
 	return (
 		<React.Fragment>

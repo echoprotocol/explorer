@@ -44,9 +44,21 @@ const AdditionalInfo = ({ data }) => (
 				description={FormatHelper.formatAmount(data.current_account_frozen_balance.amount, data.current_account_frozen_balance.precision, data.current_account_frozen_balance.symbol)}
 			/> }
 			{data.current_vesting_balance_state && <MultyRow title="Current vesting balance state" fields={data.current_vesting_balance_state} />}
+			{data.original_operation && <LinkRow title="Original operation" link={data.original_operation} />}
+			{data.called_contract_type && <PrimaryRow title="Called contract type" description={data.called_contract_type} />}
 			{data.erc20_token_info && <MultyRow title="ERC20 Token Info" fields={data.erc20_token_info} />}
 			{data.erc20_token_transfers && <TransfersRow title="ERC20 Token Transfers" transfers={data.erc20_token_transfers} />}
 			{data.asset_transfers && <TransfersRow title="Asset transfers" transfers={data.asset_transfers} />}
+			{data.current_contract_owner && <LinkRow title="Current contract owner" account={{ value: data.current_contract_owner.value, link: data.current_contract_owner.link }} />}
+			{data.current_contract_whitelist && <PrimaryRow title="Current contract whitelist" description={data.current_contract_whitelist.join(', ')} />}
+			{data.current_contract_blacklist && <PrimaryRow title="Current contract blacklist" description={data.current_contract_blacklist.join(', ')} />}
+			{data.current_contract_fee_pool_balance &&
+			<PrimaryRow
+				title="Current contract fee pool balance"
+				description={FormatHelper.formatAmount(data.current_contract_fee_pool_balance.amount, data.current_contract_fee_pool_balance.precision, data.current_contract_fee_pool_balance.symbol)}
+			/>}
+			{data.number_of_confirmations && <PrimaryRow title="Number of confirmations" description={`${data.number_of_confirmations.value} out of ${data.number_of_confirmations.total}`} />}
+			{data.received_deposit_address && <LinkRow title="Received deposit address" link={data.received_deposit_address} />}
 		</div>
 	</div>
 );

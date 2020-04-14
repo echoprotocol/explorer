@@ -14,7 +14,7 @@ const TransfersRow = ({ title, transfers }) => (
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			{transfers.map((transfer) => (
-				<span className="transfers-field">
+				<span className="transfers-field" key={transfer.from.link} >
 					<div className="transfers-field__amount">
 						<span className="transfers-field__amount-value">{FormatHelper.formatAmount(transfer.amount.amount, transfer.amount.precision)}&nbsp;</span>
 						<span className="transfers-field__amount-currency">{transfer.amount.symbol}</span>
@@ -29,7 +29,7 @@ const TransfersRow = ({ title, transfers }) => (
 						<div className="transfers-field__accounts-divider">
 							<img src={arrow} alt="divider" />
 						</div>
-						<div className="transfers-field__account-to">
+						<div className="transfers-field__accounts-to">
 							<Link className="avatar-wrap" to={URLHelper.createUrlById(transfer.to.link)}>
 								{transfer.to.value && <Avatar accountName={transfer.to.value} />}
 								<span>{transfer.to.value ? transfer.to.value : transfer.to.link}</span>

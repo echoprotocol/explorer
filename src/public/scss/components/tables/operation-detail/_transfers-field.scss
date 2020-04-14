@@ -6,6 +6,9 @@
 	&:first-child {
 		padding-top: 0;
 	}
+	&:last-child {
+		padding-bottom: 0;
+	}
 	&:not(:last-child) {
 		border-bottom: 1px solid $lightest-grey-bg;
 	}
@@ -30,8 +33,10 @@
 	display: flex;
 	align-items: center;
 }
-
+.transfers-field__accounts-from,
+.transfers-field__accounts-to {
+	display: flex;
+}
 .transfers-field__accounts-divider {
-	transform: translateY(-1px);
 	margin: 0 12px;
 }

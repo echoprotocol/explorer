@@ -35,5 +35,11 @@ export const OPERATION_TYPES = {
 	CONTRACT_CALL: 'Contract call',
 	CONTRACT_INTERNAL_CREATE: 'Contract internal create',
 	CONTRACT_INTERNAL_CALL: 'Contract internal call',
-
+	CONTRACT_SELFDESTRUCT: 'Contract selfdestruct',
+	CONTRACT_UPDATE: 'Contract update',
+	CONTRACT_FUND_POOL: 'Contract fund pool',
+	CONTRACT_WHITELIST: 'Contract whitelist',
+	SIDECHAIN_ETH_CREATE_ADDRESS: 'Create eth address',
+	SIDECHAIN_ETH_APPROVE_ADDRESS: 'Approve eth address',
+	SIDECHAIN_ETH_DEPOSIT: 'Deposit eth',
 };

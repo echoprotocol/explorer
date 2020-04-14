@@ -10,7 +10,7 @@ import FormatHelper from '../../helpers/FormatHelper';
 const InternalOperations = ({ operations }) => (
 	<React.Fragment>
 		{operations.map(({ operationInfo }, id) => (
-			<div className="internal-operation">
+			<div className="internal-operation" key={operationInfo.type}>
 				<div className="internal-operation__title">{id + 1}.&nbsp;{operationInfo.type}</div>
 				<div className="internal-operation__rows">
 					{operationInfo.contract_id && <LinkRow title="Contract id" link={operationInfo.contract_id} className="sm" />}

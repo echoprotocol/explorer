@@ -34,8 +34,14 @@ class OperationInfo extends React.Component {
 					{data.issuer && <LinkRow title="Issuer" account={{ value: data.issuer.value, link: data.issuer.link }} />}
 					{data.sender && <LinkRow title="Sender" account={{ value: data.sender.value, link: data.sender.link }} />}
 					{data.balance_object_id && <LinkRow title="Balance object ID" link={data.balance_object_id} />}
+					{data.destructed_contract && <LinkRow title="Destructed contract" link={data.destructed_contract} />}
 					{data.receiver && <LinkRow title="Receiver" account={{ value: data.receiver.value, link: data.receiver.link }} />}
+					{data.recipient && <LinkRow title="Recipient" account={{ value: data.recipient.value, link: data.recipient.link }} />}
 					{data.owner && <LinkRow title="Owner" account={{ value: data.owner.value, link: data.owner.link }} />}
+					{data.contract && <LinkRow title="Contract" link={data.contract} />}
+					{data.added_to_whitelist && <LinkRow title="Added to whitelist" account={{ value: data.added_to_whitelist.value, link: data.added_to_whitelist.link }} />}
+					{data.removed_from_whitelist && <ProducersRow title="Removed from whitelist" accounts={data.removed_from_whitelist} />}
+					{data.new_owner && <LinkRow title="New owner" account={{ value: data.new_owner.value, link: data.new_owner.link }} />}
 					{data.from && <LinkRow title="From" account={{ value: data.from.value, link: data.from.link }} />}
 					{data.to && <LinkRow title="To" account={{ value: data.to.value, link: data.to.link }} />}
 					{data.listed_account && <LinkRow title="Listed account" account={{ value: data.listed_account.value, link: data.listed_account.link }} />}
@@ -46,6 +52,8 @@ class OperationInfo extends React.Component {
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
 					{data.btc_address && <LinkRow title="BTC address" link={data.btc_address} isLinkOut />}
 					{data.new_btc_address && <LinkRow title="New BTC address" link={data.new_btc_address} isLinkOut />}
+					{data.caller_contract && <LinkRow title="Caller contract" account={{ value: data.caller_contract.value, link: data.caller_contract.link }} />}
+					{data.new_contract && <LinkRow title="New contract" link={data.new_contract} />}
 					{data.to_account && <LinkRow title="To account" account={{ value: data.to_account.value, link: data.to_account.link }} />}
 					{data.registrar && <LinkRow title="Registrar" account={{ value: data.registrar.value, link: data.registrar.link }} />	}
 					{data.account_name && <LinkRow title="Account Name" account={{ value: data.account_name.value, link: data.account_name.link }} />}
@@ -53,6 +61,7 @@ class OperationInfo extends React.Component {
 					{data.new_account_id && <LinkRow title="New Account ID" link={URLHelper.createUrlById(data.new_account_id)} />}
 					{data.contract_type && <PrimaryRow title="Contract type" description={data.contract_type} />}
 					{data.deployed_contract_bytecode && <CopyRow title="Deployed contact bytecode" value={data.deployed_contract_bytecode} />}
+					{data.call_bytecode && <CopyRow title="Call bytecode" value={data.call_bytecode} />}
 					{data.deploy_arguments && <PrimaryRow title="Deploy arguments" description={`{${data.deploy_arguments.join('; ')}}`} />}
 					{data.expiration_time && <PrimaryRow title="Expiration time" description={moment(data.expiration_time).format('DD MMM, Y, HH:mm:ss')} />}
 					{data.preview_period && <PrimaryRow title="Preview period" description={data.preview_period} />}
@@ -76,6 +85,7 @@ class OperationInfo extends React.Component {
 					/>}
 					{data.duration && <PrimaryRow title="Duration" description={data.duration} />}
 					{data.amount && <PrimaryRow title="Amount" description={FormatHelper.formatAmount(data.amount.amount, data.amount.precision, data.amount.symbol)} />}
+					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{data.balance_owner_key && <AuthorityRow title="Balance owner key" authority={data.balance_owner_key} />}
 					{data.deposit_amount && <PrimaryRow title="Deposit amount" description={data.deposit_amount} />}
