@@ -15,12 +15,16 @@ const OperationsRow = React.memo(({
 			<td />
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
-				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(from)}>
-					<a className="td-in avatar-wrap">
-						<Avatar accountName={from} />
-						<span>{from}</span>
-					</a>
-				</Link>
+				{
+					from ?
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(from)}>
+							<a className="td-in avatar-wrap">
+								<Avatar accountName={from} />
+								<span>{from}</span>
+							</a>
+						</Link>
+						:
+						<span>-</span>}
 			</td>
 			<td className="to">
 				{
