@@ -128,3 +128,13 @@ a {
 .blue {
 	color: $blue;
 }
+
+.link {
+	color: $blue;
+	&:not(:disabled):hover {
+		color: #095494;
+	}
+	&:focus {
+		color: #095494;
+	}
+}
