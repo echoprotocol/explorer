@@ -9,7 +9,7 @@ import { DebounceInput } from 'react-debounce-input';
 
 import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
-import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
+import { KEY_CODES } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
 
 class SearchField extends React.Component {
@@ -45,9 +45,21 @@ class SearchField extends React.Component {
 		this.setState({ focus: true });
 	}
 
-	onChangeDropdown(data) {
+	onChangeDropdown(e, data) {
+		const code = e.keyCode || e.which;
+
 		const option = data.options.find(({ value }) => value === data.value);
-		this.setState({ to: data.value, href: option.href });
+
+		if ([KEY_CODES.ARROW_UP, KEY_CODES.ARROW_DOWN].includes(code)) {
+			this.setState({ to: data.value, href: option.href });
+		} else {
+			this.setState({
+				focus: false,
+				isChange: false,
+				to: data.value,
+				href: option.href,
+			});
+		}
 	}
 
 	onChange(e) {
@@ -79,7 +91,7 @@ class SearchField extends React.Component {
 		const { inputValue } = this.state;
 		const code = e.keyCode || e.which;
 
-		if (!loadingSearch && KEY_CODE_ENTER === code && inputValue && this.state.to) {
+		if (!loadingSearch && KEY_CODES.ENTER_CODE === code && inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
 				Router.push(this.state.href, this.state.to);
 				this.setState({ focus: false, isChange: false });
@@ -87,7 +99,7 @@ class SearchField extends React.Component {
 			}
 		}
 
-		if (KEY_CODE_ESC === code) {
+		if (KEY_CODES.ESC_CODE === code) {
 			this.inputEl.blur();
 			this.setState({ focus: false, isChange: false });
 		}
@@ -218,7 +230,7 @@ class SearchField extends React.Component {
 						<Dropdown
 							options={options}
 							open
-							onChange={(even, data) => this.onChangeDropdown(data)}
+							onChange={(event, data) => this.onChangeDropdown(event, data)}
 						/>
 					</div>
 				))}

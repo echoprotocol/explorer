@@ -6,6 +6,8 @@ export const KEY_CODES = {
 	ESC_CODE: 27,
 	MINUS_CODE: 189,
 	FIVE_NUMBER_CODE: 53,
+	ARROW_UP: 38,
+	ARROW_DOWN: 40,
 };
 
 export const DEFAULT_TITLE = 'Echo Explorer';
