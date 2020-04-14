@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
@@ -9,15 +8,11 @@ import { validators } from 'echojs-lib';
 import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
-import OperationInfo from '../TransactionInfo/OperationInfo';
-import ProposalOperations from '../TransactionInfo/ProposalOperations';
-import LogsInfo from '../TransactionInfo/LogsInfo';
-import InternalOperations from '../TransactionInfo/InternalOperations';
+import OperationInfo from '../TransactionInfo/OperationInfo_old';
+import ObjectInfo from '../TransactionInfo/ObjectInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import { transformOperationDataByType } from '../../helpers/TransformDataHelper';
-
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -28,12 +23,13 @@ const OperationsRow = React.memo(({
 		trIndex: transactionNum,
 		opIndex,
 		number,
-		type,
+		blockTimestamp,
 		...detailInfo
 	},
-	operation,
 	index,
 	active,
+	air,
+	isTransaction,
 	toggleOperationDetails,
 	tableRefs,
 }) => {
@@ -55,7 +51,6 @@ const OperationsRow = React.memo(({
 			</Link>
 		);
 	};
-
 	const renderAmount = () => {
 		if (!mainInfo.value.amount) return <div className="td-in">—</div>;
 		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
@@ -76,12 +71,9 @@ const OperationsRow = React.memo(({
 		);
 	};
 
+	const objectId = objectInfo ? objectInfo.get('id') : null;
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
-
-	const operationsInfoData = type && transformOperationDataByType(type, operation);
-	// const operationsInfoData = transformOperationDataByType('Deposit eth', operation);
-
 	return (
 		<React.Fragment>
 			<tr
@@ -89,11 +81,17 @@ const OperationsRow = React.memo(({
 				onClick={() => toggleOperationDetails(index)}
 				ref={tableRefs[index]}
 			>
+				<td />
 				<td className="number">
 					<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
 				</td>
 				<td className="operation">
-					<div className="td-in">{type}</div>
+					<div className="td-in">{detailInfo.type}</div>
+				</td>
+				<td className="time">
+					<div className="td-in">
+						<span>{FormatHelper.timestampToOperationRowTime(blockTimestamp)}</span>
+					</div>
 				</td>
 				<td className="sender">
 					{ mainInfo.from.id ?
@@ -124,53 +122,36 @@ const OperationsRow = React.memo(({
 									</span>
 								</Tooltip>
 								<span className="currency">{detailInfo.fee.symbol}</span>
+
 							</React.Fragment> : '-'}
 					</div>
-					<img src={ddIcon} alt="" className="toggle-icon" />
 				</td>
+				{ isTransaction &&
+					<td className="dd">
+						<div className="td-in"><img src={ddIcon} alt="" /></div>
+					</td>
+				}
+				<td />
 			</tr>
 
 			{ active &&
 				<tr className="fold">
-					<td colSpan="6">
-						<Tabs>
-							<TabList className="operation-detail-header">
-								<div className="operation-detail-tabs">
-									{	operationsInfoData.operationInfo &&
-										<Tab className="operation-detail-tab">Operation Info</Tab>
-									}
-									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
-									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
-									{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
-									<Tab className="operation-detail-tab">Event logs ({operationsInfoData.logs.length})</Tab>}
-									{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
-									<Tab className="operation-detail-tab">Internal operations ({operationsInfoData.internalOperations.length})</Tab> }
-								</div>
-								<button className="yellow-button">View Raw JSON Object</button>
-							</TabList>
-							<div className="operation-detail-table">
-								{ operationsInfoData.operationInfo &&
-								<TabPanel>
-									<OperationInfo data={operationsInfoData.operationInfo} />
-								</TabPanel>}
-								{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
-								<TabPanel>
-									<ProposalOperations operations={operationsInfoData.proposalOperations} />
-								</TabPanel>}
-								{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
-								<TabPanel>
-									<LogsInfo logs={operationsInfoData.logs} />
-								</TabPanel>}
-								{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
-								<TabPanel>
-									<InternalOperations operations={operationsInfoData.internalOperations} />
-								</TabPanel>
-								}
-							</div>
-						</Tabs>
+					<td />
+					<td colSpan="8">
+						<OperationInfo
+							details={detailInfo}
+							index={index}
+							block={block}
+							transaction={transactionNum}
+							opIndex={opIndex}
+							objId={objectId}
+						/>
+						<ObjectInfo details={detailInfo} object={objectInfo} />
 					</td>
+					<td />
 				</tr>
 			}
+			{ air && <tr className="air"><td /></tr> }
 		</React.Fragment>
 	);
 
@@ -180,8 +161,14 @@ OperationsRow.propTypes = {
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
+	air: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
+	isTransaction: PropTypes.bool,
+};
+
+OperationsRow.defaultProps = {
+	isTransaction: false,
 };
 
 export default OperationsRow;
