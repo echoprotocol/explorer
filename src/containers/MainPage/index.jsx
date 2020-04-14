@@ -49,6 +49,16 @@ class MainPage extends React.Component {
 		});
 	}
 
+	getOperations() {
+		const { latestOperations } = this.props;
+		const blockResult = [];
+		if (latestOperations) {
+			blockResult.push(...latestOperations);
+		}
+
+		return blockResult;
+	}
+
 	goToBlock(e, block) {
 		e.preventDefault();
 		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
@@ -62,7 +72,9 @@ class MainPage extends React.Component {
 						goToBlock={(e, block) => this.goToBlock(e, block)}
 						blocks={this.getBlocks()}
 					/>
-					<LatestOperationsTable />
+					<LatestOperationsTable
+						operations={this.getOperations()}
+					/>
 				</div>
 			</div>
 		);
@@ -73,6 +85,7 @@ class MainPage extends React.Component {
 MainPage.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	latestOperations: PropTypes.array.isRequired,
 };
 
 export default withRouter(connect(
@@ -81,6 +94,7 @@ export default withRouter(connect(
 		loading: state.block.get('loading'),
 		blocks: state.block.get('blocks'),
 		latestBlock: state.round.get('latestBlock'),
+		latestOperations: state.block.get('latestOperations'),
 	}),
 	(dispatch) => ({
 		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),

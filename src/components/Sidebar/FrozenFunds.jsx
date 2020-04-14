@@ -1,10 +1,12 @@
 import React from 'react';
 import { LineChart, Line } from 'recharts';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { SIDEBAR_CHART_WIDTH, SIDEBAR_CHART_HEIGHT } from '../../constants/UiConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
+import { SSR_ASSET_PATH } from '../../constants/RouterConstants';
 
 const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 	<React.Fragment>
@@ -17,9 +19,11 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 							{FormatHelper.formatAmount(currentFrozenData.committee_freeze_sum)}
 						</div>
 						<div className="comitee-amount-coin">
-							<a href={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
-								ECHO
-							</a>
+							<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+								<a href="" className="total-supply-coin">
+									{ECHO_ASSET.SYMBOL}
+								</a>
+							</Link>
 						</div>
 					</div>
 					<LineChart
@@ -45,9 +49,11 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 							{FormatHelper.formatAmount(currentFrozenData.accounts_freeze_sum)}
 						</div>
 						<div className="users-amount-coin">
-							<a href={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
-								ECHO
-							</a>
+							<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+								<a href="" className="total-supply-coin">
+									{ECHO_ASSET.SYMBOL}
+								</a>
+							</Link>
 						</div>
 					</div>
 					<LineChart
