@@ -134,6 +134,7 @@ class Account extends React.Component {
 						<React.Fragment>
 							{totalAccountHistory ? (
 								<OperationsTable
+									isASCOps={false}
 									onLoadMoreHistory={() => this.onLoadMoreHistory()}
 									gridName={ACCOUNT_GRID}
 									label="Transactions"

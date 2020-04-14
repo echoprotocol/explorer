@@ -78,6 +78,7 @@ class TransactionsInfo extends React.Component {
 					<React.Fragment>
 						<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
 						<OperationsTable
+							isASCOps
 							onLoadMoreHistory={() => { }}
 							gridName={TRANSACTION_GRID}
 							label={FormatHelper.getFormaOperationsTitle(operations.size)}

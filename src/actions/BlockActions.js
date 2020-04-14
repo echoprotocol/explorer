@@ -212,7 +212,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 		value.transactionCount = resultTransactions.length;
-		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), [])).reverse();
+		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
 		value.round = planeBlock.round;
 		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
