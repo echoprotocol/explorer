@@ -48,7 +48,7 @@ class OperationInfo extends React.Component {
 					{data.registrar && <LinkRow title="Registrar" account={{ value: data.registrar.value, link: data.registrar.link }} />	}
 					{data.account_name && <LinkRow title="Account Name" account={{ value: data.account_name.value, link: data.account_name.link }} />}
 					{data.proposal_id && <LinkRow title="Proposal ID" link={data.proposal_id} />}
-					{data.new_account_id && <LinkRow title="New Account ID" link={URLHelper.createUrlById(data.new_account_id)} />}
+					{data.new_account_id && <LinkRow title="New Account ID" link={`${window.location.origin}${URLHelper.createAccountUrl(data.new_account_id)}`} value={data.new_account_id} />}
 					{data.expiration_time && <PrimaryRow title="Expiration time" description={moment(data.expiration_time).format('DD MMM, Y, HH:mm:ss')} />}
 					{data.preview_period && <PrimaryRow title="Preview period" description={data.preview_period} />}
 					{data.asset_name && <PrimaryRow title="Asset Name" description={data.asset_name} />}

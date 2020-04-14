@@ -6,119 +6,63 @@ export const transformOperationDataByType = (type, data) => {
 		case OPERATION_TYPES.TRANSFER:
 			return {
 				operationInfo: {
-					type: 'Transfer',
+					type,
 					from: data.from,
 					to: data.to,
 					amount: data.amount,
 					fee: data.fee,
 					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
-					directLink: 'https://explorer.echo.org/blocks/70/1?op=1',
 				},
 			};
 		case OPERATION_TYPES.TRANSFER_TO_ADDRESS:
 			return {
 				operationInfo: {
-					type: 'Transfer to address',
-					from: {
-						value: 'init1',
-						link: '1.2.3',
-					},
-					to_address: 'https://explorer.echo.org/blocks/70/1?op=1',
-					to_account: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					from: data.from,
+					amount: data.amount,
+					fee: data.fee,
+					to_address: data.to_address,
+					to_account: data.to_account,
 					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
-					directLink: 'https://explorer.echo.org/blocks/70/1?op=1',
 				},
 			};
 		case OPERATION_TYPES.OVERRIDE_TRANSFER:
+			// TODO CHECK operation
 			return {
 				operationInfo: {
-					type: 'Override transfer',
-					sender: {
-						value: 'init1',
-						link: '1.2.3',
-					},
-					from: {
-						value: 'init1',
-						link: '1.2.3',
-					},
-					to: {
-						value: 'init1',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.issuer,
+					from: data.from,
+					amount: data.amount,
+					fee: data.fee,
+					to: data.to,
 				},
 			};
 		case OPERATION_TYPES.ACCOUNT_CREATE:
 			return {
 				operationInfo: {
-					type: 'Create account',
+					type,
 					registrar: data.registrar,
 					account_name: {
-						value: 'account',
-						link: '1.2.3',
+						value: data.mainInfo.subject.name,
+						link: data.mainInfo.subject.id,
 					},
-					new_account_id: '1.2.3',
-					authority: [{
-						value: 'ECHOd9f8LmNjn32GUMXZwNZDsfBqa6qcBGvGk86kKTuvzkMjdW9saCrTtrPwGpuB',
-						weight: '1',
-					}, {
-						value: 'vic.tor',
-						weight: '1',
-					}],
-					echorand_key: 'anyStringValue',
-					delegating_account: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					delegate_share: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					new_account_id: data.mainInfo.subject.id,
+					authority: data.authority,
+					echorand_key: data.echorand_key,
+					delegating_account: data.delegating_account,
+					delegate_share: data.delegate_share,
 					fee: data.fee,
 				},
 			};
 		case OPERATION_TYPES.ACCOUNT_UPDATE:
 			return {
 				operationInfo: {
-					type: 'Update account',
-					delegate_share: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					account_updated: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					echorand_key: 'anyStringValue',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					delegate_share: data.delegate_share,
+					account_updated: data.delegating_account,
+					echorand_key: data.echorand_key,
+					fee: data.fee,
 				},
 			};
 		case OPERATION_TYPES.ACCOUNT_WHITELIST:

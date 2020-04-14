@@ -1,5 +1,7 @@
+import Operations from './Operations';
+
 export const OPERATION_TYPES = {
-	TRANSFER: 'Transfer',
+	TRANSFER: Operations.transfer.name,
 	TRANSFER_TO_ADDRESS: 'Transfer to address',
 	OVERRIDE_TRANSFER: 'Override transfer',
 	ACCOUNT_CREATE: 'Create account',

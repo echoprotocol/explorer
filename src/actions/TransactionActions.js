@@ -281,7 +281,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		const [type, operation] = data;
 		const [, resId] = operationResult;
 
-		const { name, options } = Object.values(Operations).find((i) => i.value === type);
+		const { name, options, value: opId } = Object.values(Operations).find((i) => i.value === type);
 		const result = {
 			type,
 			from: {
@@ -348,7 +348,13 @@ class TransactionActionsClass extends BaseActionsClass {
 						response = request;
 						break;
 				}
-				result.subject = { id: response.id, name: request };
+				if (opId === OPERATIONS_IDS.TRANSFER_TO_ADDRESS) {
+					const toAccountId = await echo.api.getAccountByAddress(request);
+					const toAccount = await echo.api.getAccounts([toAccountId]);
+					result.subject = { id: toAccountId, name: toAccount[0].name, address: request };
+				} else {
+					result.subject = { id: response.id, name: request };
+				}
 			} else {
 				result.subject = { id: operation[options.subject[0]] };
 			}
@@ -500,6 +506,8 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
 
+		console.log('operationResult', options);
+
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
 			switch (typeof value) {
@@ -527,6 +535,12 @@ class TransactionActionsClass extends BaseActionsClass {
 						delete value.asset_id;
 						value.precision = asset.precision;
 						value.symbol = asset.symbol;
+					} else if (_.has(value, 'delegating_account')) {
+						const [account] = await echo.api.getAccounts([value.delegating_account]);
+						value = { value: account.name, link: value.delegating_account, amount: value.delegate_share };
+						key = 'delegate_data';
+					} else if (_.has(value, 'weight_threshold')) {
+						break;
 					} else {
 						return {};
 					}
@@ -620,6 +634,25 @@ class TransactionActionsClass extends BaseActionsClass {
 				break;
 		}
 
+		if (operation.value === OPERATIONS_IDS.TRANSFER_TO_ADDRESS) {
+			options.to_address = subject.address;
+			options.to_account = { link: subject.id, value: subject.name };
+		}
+
+
+		if (options.delegate_data) {
+			const { value, link, amount } = options.delegate_data;
+			options.delegating_account = { value, link };
+			options.delegate_share = { amount, symbol: ECHO_ASSET.SYMBOL, precision: ECHO_ASSET.PRECISION };
+			delete options.delegate_data;
+		}
+
+		if (operation.active) {
+			options.weight_threshold = options.active.weight_threshold;
+			options.authority = options.active.key_auths.map((data) => ({ value: data[0], weight: data[1] }));
+			delete options.active;
+		}
+
 		return {
 			mainInfo: {
 				from,
@@ -637,6 +670,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			number,
 			blockTimestamp,
 			opIndex,
+			opId: operation.value,
 		};
 
 	}

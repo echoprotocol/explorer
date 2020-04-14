@@ -21,8 +21,8 @@ const OperationsRow = React.memo(({
 		id,
 		mainInfo,
 		objectInfo,
-		blockNumber: block,
-		trIndex: transactionNum,
+		blockNumber,
+		trIndex,
 		opIndex,
 		number,
 		type,
@@ -34,7 +34,6 @@ const OperationsRow = React.memo(({
 	toggleOperationDetails,
 	tableRefs,
 }) => {
-
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 
@@ -76,8 +75,14 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	// const operationsInfoData = type && transformOperationDataByType(type, operation);
-	const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
+	const typeToFormat = type && operation.opId < 20 ? operation.type : 'Update asset feed producers';
+
+
+	const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
+	const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
+	console.log('operation', operation);
+	const operationsInfoData = transformOperationDataByType(typeToFormat, operation);
+	operationsInfoData.operationInfo.directLink = `${window.location.origin}${operationUrl}`;
 
 	return (
 		<React.Fragment>
@@ -133,23 +138,27 @@ const OperationsRow = React.memo(({
 						<Tabs>
 							<TabList className="operation-detail-header">
 								<div className="operation-detail-tabs">
-									{	operationsInfoData.operationInfo &&
-										<Tab className="operation-detail-tab">Operation Info</Tab>
+									{operationsInfoData.operationInfo && <Tab className="operation-detail-tab">Operation Info</Tab>}
+									{
+										operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+										<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab>
 									}
-									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
-									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
 								</div>
 								<button className="yellow-button">View Raw JSON Object</button>
 							</TabList>
 							<div className="operation-detail-table">
-								{ operationsInfoData.operationInfo &&
-								<TabPanel>
-									<OperationInfo data={operationsInfoData.operationInfo} />
-								</TabPanel>}
-								{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
-								<TabPanel>
-									<ProposalOperations operations={operationsInfoData.proposalOperations} />
-								</TabPanel>}
+								{
+									operationsInfoData.operationInfo &&
+									<TabPanel>
+										<OperationInfo data={operationsInfoData.operationInfo} />
+									</TabPanel>
+								}
+								{
+									operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+									<TabPanel>
+										<ProposalOperations operations={operationsInfoData.proposalOperations} />
+									</TabPanel>
+								}
 							</div>
 						</Tabs>
 					</td>

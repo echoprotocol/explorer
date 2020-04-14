@@ -8,7 +8,7 @@ import Avatar from '../../Avatar';
 
 
 const LinkRow = ({
-	title, account, link, isLinkOut,
+	title, account, link, isLinkOut, value,
 }) => (
 	<div className="od-row">
 		<div className="od-col">{title}:</div>
@@ -21,7 +21,7 @@ const LinkRow = ({
 			}
 			{link && !isLinkOut &&
 				<Link to={link}>
-					{link}
+					{value || link}
 				</Link>
 			}
 			{link && isLinkOut &&
@@ -35,12 +35,14 @@ LinkRow.propTypes = {
 	title: PropTypes.string.isRequired,
 	account: PropTypes.object,
 	link: PropTypes.string,
+	value: PropTypes.string,
 	isLinkOut: PropTypes.bool,
 };
 
 LinkRow.defaultProps = {
 	account: null,
 	link: '',
+	value: '',
 	isLinkOut: false,
 };
 
