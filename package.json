@@ -7,11 +7,7 @@
 	},
 	"description": "Explorer for Echo platform",
 	"homepage": "https://github.com/echoprotocol/explorer",
-<<<<<<< HEAD
-	"version": "1.7.1",
-=======
 	"version": "1.8.0",
->>>>>>> e35175d1cb6fddbf5c4ff8d8caab7993bb1bf75d
 	"license": "MIT",
 	"main": "index.js",
 	"scripts": {
