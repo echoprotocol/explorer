@@ -42,24 +42,6 @@
 				max-width: 75px;
 			}
 		}
-
-		.tooltip {
-			position: absolute;
-			margin-left: 5px;
-			margin-top: 1px;
-			height: 16px;
-			width: 9px;
-		}
-	}
-
-	.produced {
-		.tooltip {
-			position: absolute;
-			margin-left: 5px;
-			margin-top: 1px;
-			height: 16px;
-			width: 9px;
-		}
 	}
 
 	.avatar-image {
@@ -72,6 +54,11 @@
 		}
 		.produced {
 			color: $lightgrey;
+		}
+	}
+	thead {
+		.td-in {
+			display: flex;
 		}
 	}
 }
