@@ -9,13 +9,6 @@ const DEFAULT_FIELDS = Map({
 		error: '',
 		loading: false,
 	}),
-	blockSearch: Map({
-		hints: [],
-		error: '',
-		loading: false,
-
-		connectionError: '',
-	}),
 });
 
 export default createModule({

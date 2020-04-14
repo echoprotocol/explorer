@@ -5,7 +5,6 @@ import SearchReducer from '../reducers/SearchReducer';
 import {
 	SEARCH_LIMIT,
 	DEFAULT_ERROR_SEARCH,
-	ERROR_BLOCK_SEARCH,
 	TYPE_SEARCH_SECTION,
 } from '../constants/SearchConstants';
 import {
@@ -333,45 +332,6 @@ class SearchActions extends BaseActionsClass {
 			} finally {
 				dispatch(this.setValue(['headerSearch', 'hints'], hints, false));
 				dispatch(this.setValue(['headerSearch', 'loading'], false, false));
-			}
-		};
-	}
-
-	/**
-	 * get block search hints
-	 * @param {String} str
-	 * @returns {Function}
-	 */
-	blockSearchHint(str) {
-		return async (dispatch) => {
-			dispatch(this.initSearch('blockSearch'));
-			const hints = [];
-
-			try {
-				if (!str) {
-					return;
-				}
-
-				if (TypesHelper.isStringNumber(str) || TypesHelper.isCommaNumberRepresentation(str)) {
-					str = FormatHelper.removeCommas(str);
-					str = FormatHelper.removeDots(str);
-					const block = await echo.api.getBlock(str);
-
-					if (block) {
-						const blockHint = {
-							section: TYPE_SEARCH_SECTION.BLOCK,
-							value: str,
-							to: URLHelper.createBlockUrl(str),
-						};
-						hints.push(blockHint);
-					}
-				}
-				if (!hints.length) throw new Error(ERROR_BLOCK_SEARCH);
-			} catch (error) {
-				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
-			} finally {
-				dispatch(this.setValue(['blockSearch', 'hints'], hints, false));
-				dispatch(this.setValue(['blockSearch', 'loading'], false, false));
 			}
 		};
 	}
