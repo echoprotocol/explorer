@@ -228,7 +228,7 @@
 		}
 
 		.divider {
-			width: 100%;
+			flex-grow: 1;
 			height: 1px;
 			align-self: flex-end;
 			margin: 0 5px;
@@ -238,6 +238,14 @@
 			transform: translateY(-3px);
 			@include max-vw($res-500) {
 				display: none;
+			}
+		}
+
+		.name {
+			@include text-overflow;
+			max-width: calc(100% - 90px);
+			@include max-vw($res-500) {
+				max-width: calc(100%);
 			}
 		}
 	}
