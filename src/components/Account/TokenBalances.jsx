@@ -32,9 +32,9 @@ class TokenBalances extends React.Component {
 				<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
 					{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
 				</span>
-				<span className="blue">
+				<span className="name">
 					<Link href={SSR_CONTRACT_PATH} as={URLHelper.createUrlById(id)}>
-						<a className="blue">{symbol}</a>
+						<a className="link">{symbol}</a>
 					</Link>
 				</span>
 			</div>
