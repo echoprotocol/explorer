@@ -143,6 +143,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 				const asset = await echo.api.getObject(assetId || subject.id);
 				const issuer = await echo.api.getObject(asset.issuer);
+				const accumulatedFees = asset.dynamic.accumulated_fees;
+				const quoteAmount = asset.options.core_exchange_rate.quote.amount;
 
 				object = object
 					.set('id', asset.id)
@@ -153,6 +155,11 @@ class TransactionActionsClass extends BaseActionsClass {
 						new BN(asset.options.core_exchange_rate.quote.amount)
 							.div(asset.options.core_exchange_rate.base.amount)
 							.toString(),
+					)
+					.set(
+						'accumulated_fees',
+						accumulatedFees === 0 ? 0 : FormatHelper
+							.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision)
 					)
 					.set('issuer', issuer && issuer.name)
 					.set('precision', asset.precision)

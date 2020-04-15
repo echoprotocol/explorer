@@ -7,11 +7,44 @@ const privateKe2 = PrivateKey.fromWif('5JrLH1GG4ZBK3z7KsJgnwyHvGVHvGv4eUZWqiEgZu
 const url = config.API_URL;
 const assetId = '1.3.8';
 
+// fee_paying_account: accountId,
+// 	expiration_time: new Date(),
+// 	proposed_ops: [[OPERATIONS_IDS.TRANSFER, {
+// 	fee: { asset_id: ECHO_ASSET_ID, amount: 123 },
+// 	from: accountId,
+// 	to: '1.2.10',
+// 	amount: 'not a instance of "asset"',
+// }]],
+
 echo.connect(url, { connectionTimeout: 30000 }).then(async () => {
 	const tx = echo.createTransaction();
 	const options = {
+		fee_paying_account: accountId,
+		expiration_time: new Date() + 60*30*3,
+		proposed_ops: [
+			[constants.OPERATIONS_IDS.TRANSFER, {
+				from: accountId,
+				to: '1.2.37',
+				amount: {
+					asset_id: assetId,
+					amount: 0,
+				},
+			}],
+		],
+		extensions: [],
+	};
+	tx.addOperation(constants.OPERATIONS_IDS.PROPOSAL_CREATE, options);
+	tx.addSigner(privateKey);
+	await tx.sign();
+	await tx.broadcast();
+	console.log('it is okay');
+}).catch((e) => console.log(JSON.stringify(e, null, 10)));
+
+
+/*
+
 		issuer: accountId,
-		symbol: 'PASSET',
+		symbol: 'HASSET',
 		precision: 1,
 		bitasset_opts: {
 			feed_lifetime_sec: 1,
@@ -21,7 +54,7 @@ echo.connect(url, { connectionTimeout: 30000 }).then(async () => {
 		common_options: {
 			max_supply: '1000000000000000',
 			issuer_permissions: 1,
-			flags: 2,
+			flags: 0,
 			core_exchange_rate: {
 				base: {
 					amount: 1000,
@@ -35,17 +68,6 @@ echo.connect(url, { connectionTimeout: 30000 }).then(async () => {
 			whitelist_authorities: [],
 			blacklist_authorities: [],
 			description: '',
-			extensions: [],
-		},
-	};
-	tx.addOperation(constants.OPERATIONS_IDS.ASSET_CREATE, options);
-	tx.addSigner(privateKey);
-	await tx.sign();
-	await tx.broadcast();
-	console.log('it is okay');
-}).catch((e) => console.log(JSON.stringify(e, null, 10)));
-
-/*
 
 * */
 

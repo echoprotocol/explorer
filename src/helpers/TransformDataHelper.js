@@ -1,4 +1,4 @@
-import { ACCOUNT_BLACK_WHITE, OPERATION_TYPES } from '../constants/OperationTypeConstants';
+import { ACCOUNT_BLACK_WHITE, OPERATION_TYPES, OPS_DESCRIPTIONS } from '../constants/OperationTypeConstants';
 import getAdditionalInfoByOpType, { getAssetFlags } from './AdditionalInfoHelper';
 // import getAdditionalInfoByOpType from './AdditionalInfoHelper';
 
@@ -259,77 +259,46 @@ export const transformOperationDataByType = async (type, data) => {
 					asset_amount: data.asset_to_issue,
 					receiver: data.issue_to_account,
 					fee: data.fee,
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					description: OPS_DESCRIPTIONS.ASSET_ISSUE,
 					additionalInfo: {
-						current_asset_total_supply: '12,000,000,000. 00000000',
+						current_asset_total_supply: data.objectInfo.get('totalSupply'),
 					},
 				},
 			};
-		case OPERATION_TYPES.ASSET_REVERSE:
+		case OPERATION_TYPES.ASSET_RESERVE:
 			return {
 				operationInfo: {
-					type: 'Reverse asset',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.payer,
+					amount: data.amount_to_reserve,
+					fee: data.fee,
+					description: OPS_DESCRIPTIONS.ASSET_RESERVE,
 					additionalInfo: {
-						current_asset_total_supply: '12,000,000,000. 00000000',
+						current_asset_total_supply: data.objectInfo.get('totalSupply'),
 					},
 				},
 			};
 		case OPERATION_TYPES.ASSET_FUND_FEE_POOL:
 			return {
 				operationInfo: {
-					type: 'Fund asset fee pool',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.from_account,
+					asset_amount: data.mainInfo.value,
+					fee: data.fee,
 					additionalInfo: {
-						current_asset_fee_pool: '12,000,000,000. 00000000',
+						current_asset_fee_pool: data.objectInfo.get('totalSupply'),
 					},
 				},
 			};
 		case OPERATION_TYPES.ASSET_PUBLISH_FEED:
 			return {
 				operationInfo: {
-					type: 'Publish feed',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					asset_name: 'ECHO',
-					feeded_asset_price: {
-						amount: 17,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.publisher,
+					asset_name: data.asset_id,
+					feeded_asset_price: data.asset_id,
+					fee: data.fee,
+					description: OPS_DESCRIPTIONS.ASSET_PUBLISH_FEED,
 					additionalInfo: {
 						current_asset_price: {
 							amount: 3000,
@@ -342,28 +311,14 @@ export const transformOperationDataByType = async (type, data) => {
 		case OPERATION_TYPES.ASSET_CLAIM_FEES:
 			return {
 				operationInfo: {
-					type: 'Claim fee',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					asset_name: 'ECHO',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.issuer,
+					asset_amount: data.amount_to_claim,
+					fee: data.fee,
+					description: OPS_DESCRIPTIONS.ASSET_CLAIM_FEES,
 					additionalInfo: {
-						feeded_asset_fee_pool: {
-							amount: 430,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						current_asset_unclaimed_fee: {
-							amount: 3430,
-							precision: 8,
-							symbol: 'ECHO',
-						},
+						feeded_asset_fee_pool: data.objectInfo.get('totalSupply'),
+						current_asset_unclaimed_fee: data.objectInfo.get('accumulated_fees'),
 					},
 				},
 			};
@@ -371,18 +326,11 @@ export const transformOperationDataByType = async (type, data) => {
 			return {
 				operationInfo: {
 					type: 'Create proposal',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					expiration_time: new Date(),
+					sender: data.fee_paying_account,
+					expiration_time: data.expiration_time,
 					preview_period: '23h',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					fee: data.fee,
+					description: OPS_DESCRIPTIONS.PROPOSAL_CREATE,
 					additionalInfo: {
 						count_approvals: {
 							value: 2,
