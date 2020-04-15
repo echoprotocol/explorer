@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
+import { SSR_ASSET_PATH } from '../../constants/RouterConstants';
 
 class AssetBalances extends React.Component {
 
@@ -30,8 +31,8 @@ class AssetBalances extends React.Component {
 					{FormatHelper.formatAmount(amount, asset.get('precision'))}
 				</span>
 				<span className="blue">
-					<Link to={URLHelper.createUrlById(asset.get('id'))} className="blue">
-						{asset.get('symbol')}
+					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(asset.get('id'))}>
+						<a className="blue">{asset.get('symbol')}</a>
 					</Link>
 				</span>
 			</div>

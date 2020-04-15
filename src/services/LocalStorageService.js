@@ -2,7 +2,7 @@ class LocalStorageService {
 
 	/**
 	 *
-	 * @param {String} key
+	 * @param {string} key
 	 * @returns {any}
 	 */
 	static getData(key) {
@@ -11,8 +11,8 @@ class LocalStorageService {
 
 	/**
 	 *
-	 * @param {String} key
-	 * @param {String} data
+	 * @param {string} key
+	 * @param {string} data
 	 */
 	static setData(key, data) {
 		localStorage.setItem(key, JSON.stringify(data));

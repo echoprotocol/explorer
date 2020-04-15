@@ -1,18 +1,17 @@
 .input-search-block {
 	position: relative;
-	@include transition;
 	width: 460px;
 	height: 42px;
 
+	@include transition;
 	@include max-vw($res-1000) {
 		width: 388px;
 	}
-	&.small {
-		width: 40px;
 
+	@include max-vw($res-768) {
+		width: 40px;
 		.input-container {
 			border-color: transparent;
-
 			.icon {
 				opacity: 0.4;
 
@@ -29,13 +28,14 @@
 		.input-field {
 			width: 0;
 		}
+		&:not(:active) {
+			.input-container {
+				border: 1px solid transparent;
+			}
+		}
 
 		&.active {
-			width: 277px;
-
-			@include max-vw($res-768) {
-				width: auto;
-			}
+			width: auto;
 
 			.input-container {
 				border-color: #31354f;
@@ -52,6 +52,13 @@
 			.input-field {
 				width: 100%;
 			}
+		}
+	}
+	@include max-vw($res-500) {
+		position: absolute;
+		right: 10px;
+		&.active {
+			left: 10px;
 		}
 	}
 	.input-container {

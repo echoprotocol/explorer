@@ -1,5 +1,4 @@
 {
-  "API_URL": "wss://testnet.echo-dev.io/ws",
   "SOLC_LIST_URL": "https://echoprotocol.github.io/solc-bin/bin/list.json",
   "SOLC_BIN_URL": "https://echoprotocol.github.io/solc-bin/bin/",
   "LANDING_BRIDGE": "http://649-bridge-landing.pixelplexlabs.com",
@@ -9,5 +8,16 @@
   },
   "SERVER_URL": "http://localhost:26563",
   "MAP_API_TOKEN": "pk.eyJ1IjoibWF4c2hldiIsImEiOiJjazJsbnByY2cwODlpM2NwZWZhZndhZjhhIn0.RF3XIqcQtY2nTT8sKYL8wA",
-  "INSTALL_NODE_LINK": "https://docs.echo.org/how-to/install-full-node"
+  "INSTALL_NODE_LINK": "https://docs.echo.org/how-to/install-full-node",
+  "ECHO_NODE": {
+    "API_URL": "wss://testnet.echo-dev.io/ws",
+    "CONNECTION_TIMEOUT": 5000,
+    "MAX_RETRIES": 1e10,
+    "PING_TIMEOUT": 6000,
+    "PING_DELAY": 5000,
+    "DEBUG": false,
+    "APIS": [
+      "database", "network_broadcast", "history", "registration", "asset", "login", "network_node", "echorand"
+    ]
+  }
 }

@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import GridReducer from '../reducers/GridReducer';
 import BaseActionsClass from './BaseActionsClass';
+import { DEFAULT_SIZE_PER_PAGE } from '../constants/TableConstants';
+import TypesHelper from '../helpers/TypesHelper';
 
 export class GridActionsClass extends BaseActionsClass {
 
@@ -21,20 +23,26 @@ export class GridActionsClass extends BaseActionsClass {
 	}
 
 	/**
-	 * Get data
+	 * @method initData
 	 * @param {String} gridName
-	 * @param {Function} func
-	 * @returns {function(*=): Promise<any>}
+	 * @param {Object} params
+	 * @return {function(*, *)}
 	 */
-	getData(gridName, func) {
-		return (dispatch) => new Promise((resolve, reject) => {
-			dispatch(this._loadingMiddleware(gridName, func)).then((data) => {
-				dispatch(this.setValue([gridName, 'data'], data.result.items));
-				dispatch(this.setValue([gridName, 'totalDataSize'], data.result.count));
-				resolve(data);
-			}).catch((error) => {
-				reject(error);
-			});
+	initData(gridName, params = { }) {
+		return (dispatch) => new Promise((resolve) => {
+			const sizePerPage = TypesHelper.isStringNumber(params.l) ? parseInt(params.l, 10) : DEFAULT_SIZE_PER_PAGE;
+			const currentPage = TypesHelper.isStringNumber(params.p) ? parseInt(params.p, 10) : 1;
+			const transformParams = {
+				totalDataSize: 0,
+				sizePerPage,
+				currentPage,
+				filters: {
+					from: params.from || '',
+					to: params.to || '',
+				},
+			};
+			dispatch(this.reducer.actions.initData({ gridName, params: transformParams }));
+			resolve();
 		});
 	}
 
@@ -54,12 +62,11 @@ export class GridActionsClass extends BaseActionsClass {
 	 * Set page
 	 * @param {String} gridName
 	 * @param {Number} currentPage
-	 * @param {Number} offset
 	 * @return {function(*, *)}
 	 */
-	setPage(gridName, currentPage, offset) {
+	setPage(gridName, currentPage) {
 		return (dispatch) => {
-			dispatch(this.reducer.actions.setPage({ gridName, currentPage, offset }));
+			dispatch(this.reducer.actions.setPage({ gridName, currentPage }));
 		};
 	}
 
@@ -97,7 +104,6 @@ export class GridActionsClass extends BaseActionsClass {
 	setFilter(gridName, params) {
 		return (dispatch) => new Promise((resolve) => {
 			dispatch(this.reducer.actions.setFilter({ gridName, params }));
-			dispatch(this.setPage(gridName, 1, 0));
 			resolve();
 		});
 	}
@@ -170,32 +176,6 @@ export class GridActionsClass extends BaseActionsClass {
 				dispatch(this.setValue(field, ''));
 			}
 		};
-	}
-
-	/**
-	 * Wrapper for grid loading
-	 * @param {String} gridName
-	 * @param {Function} func Function for call
-	 * @returns {function(*=): Promise<any>}
-	 * @private
-	 */
-	_loadingMiddleware(gridName, func) {
-		return (dispatch) => new Promise((resolve, reject) => {
-			dispatch(this.clearTimeout(gridName));
-			const loadingTimeout = setTimeout(() => {
-				dispatch(this.setValue([gridName, 'loading'], true));
-			}, 500);
-			dispatch(this.setValue([gridName, 'loadingTimeout'], loadingTimeout));
-			func().then((data) => {
-				dispatch(this.setValue([gridName, 'loading'], false));
-				dispatch(this.clearTimeout(gridName));
-				resolve(data);
-			}).catch((error) => {
-				dispatch(this.setValue([gridName, 'loading'], false));
-				dispatch(this.clearTimeout(gridName));
-				reject(error);
-			});
-		});
 	}
 
 }

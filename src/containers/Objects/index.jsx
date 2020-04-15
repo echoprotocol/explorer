@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 import Objects from '../../components/Objects';
 
 import { getObjectInfo, setError } from '../../actions/ObjectsActions';

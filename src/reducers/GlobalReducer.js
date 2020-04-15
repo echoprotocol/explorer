@@ -8,11 +8,17 @@ import { DEFAULT_TITLE } from '../constants/GlobalConstants';
 const DEFAULT_FIELDS = Map({
 	title: DEFAULT_TITLE,
 	historyLength: 0,
+	history: {
+		path: '',
+		route: '',
+	},
 	connected: false,
+	connectedServer: false,
 	error: '',
 	errorPath: false,
 	errorScreen: false,
 	activeAccount: new Map(),
+	isMobile: false,
 });
 
 export default createModule({

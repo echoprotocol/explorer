@@ -1,6 +1,9 @@
 .horizontal-tab-panel {
 	position: relative;
 
+	&.server-slick-track .slick-track {
+		width: 800px !important;
+	}
 	.menu-wrapper--inner {
 		@include min-vw(1000) {
 			transform: translate3d(0, 0, 0) !important;

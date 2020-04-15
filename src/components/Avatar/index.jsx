@@ -1,9 +1,13 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import { svgAvatar } from 'echojs-ping';
 import classnames from 'classnames';
 
 import avatar from '../../public/images/default-avatar.svg';
+
+const SvgAvatar = dynamic(() => import('./svgAvatar'), {
+	ssr: false,
+});
 
 class Avatar extends React.Component {
 
@@ -49,6 +53,9 @@ class Avatar extends React.Component {
 	}
 
 	updateAvatarSize() {
+		if (!this.imageRef.current) {
+			return;
+		}
 		const avatarSize = this.imageRef.current.offsetHeight;
 		if (avatarSize !== this.state.avatarSize) {
 			this.setState({ avatarSize });
@@ -58,11 +65,13 @@ class Avatar extends React.Component {
 	render() {
 		const { round } = this.props;
 		const { avatarSize, accountName } = this.state;
+
+
 		return (
 			<div ref={this.imageRef} className={classnames('avatar-image', { round })}>
 				{
 					!accountName ? <img src={avatar} alt="avatar" /> : (
-						<div dangerouslySetInnerHTML={{ __html: svgAvatar(accountName, avatarSize) }} />
+						<SvgAvatar accountName={accountName} avatarSize={avatarSize} />
 					)
 				}
 			</div>

@@ -7,7 +7,6 @@
 	@include table-air();
 	@include table-avatar();
 	@include table-vertical-scroll();
-
 	thead {
 		border-top: 1px solid $grey-mid;
 	}
@@ -47,7 +46,6 @@
 			margin-bottom: 20px;
 		}
 	}
-
 	.fold {
 		display: none;
 		animation: fade-in $speed;
@@ -95,7 +93,9 @@
 		.value {
 			@include text-overflow;
 			margin-right: 4px;
-			max-width: 140px;
+			min-width: 80px;
+			width: 80px;
+			max-width: 80px;
 			display: block;
 			word-break: break-all;
 		}
@@ -107,14 +107,22 @@
 		.currency {
 			overflow: initial;
 			color: $grey-mid;
+			@include text-overflow();
+			max-width: 40px;
+			width: 40px;
+			min-width: 40px;
 		}
 	}
 
 	.number {
-		width: 20px;
+		width: 30px;
+		min-width: 30px;
+		max-width: 30px;
 	}
 	.operation {
 		white-space: nowrap;
+		width: 100px;
+		max-width: 100px;
 		.td-in {
 			vertical-align: middle;
 			@include text-overflow();
@@ -123,12 +131,13 @@
 	.time {
 		width: 130px;
 		.td-in {
-			max-width: 130px;
 			color: $blue;
 			white-space: nowrap;
 			span {
 				display: inline-block;
 				max-width: 100%;
+				min-width: 100px;
+
 				@include text-overflow();
 			}
 		}
@@ -137,6 +146,7 @@
 	.reciever {
 		span {
 			max-width: 85px;
+			width: 85px;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -144,15 +154,19 @@
 
 			@include max-vw($res-1600) {
 				max-width: 80px;
+				width: 80px;
 			}
 			@include max-vw($res-1280) {
 				max-width: 150px;
+				width: 150px;
 			}
 			@include max-vw(1190) {
 				max-width: 130px;
+				width: 130px;
 			}
 			@include max-vw($res-1000) {
 				max-width: 80px;
+				width: 80px;
 			}
 		}
 	}

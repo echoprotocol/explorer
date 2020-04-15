@@ -1,42 +1,28 @@
 import { createModule } from 'redux-modules';
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 import _ from 'lodash';
 
 import {
-	COUNT_PAGE,
-	USERS_GRID,
+	DEFAULT_SIZE_PER_PAGE,
+	ACCOUNT_GRID, CONTRACT_GRID, BLOCK_GRID, TRANSACTION_GRID,
 } from '../constants/TableConstants';
 import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = Map({
-	data: List([]),
 	totalDataSize: 0,
-	sizePerPage: COUNT_PAGE,
+	sizePerPage: DEFAULT_SIZE_PER_PAGE,
 	currentPage: 1,
-	offset: 0,
-	sort: Map({
-		field: '',
-		destination: '',
-	}),
-	filters: {},
-	loading: false,
+	filters: {
+		from: '',
+		to: '',
+	},
 });
 
-const DEFAULT_GRID_FIELDS = {
-	[USERS_GRID]: Map({
-		sort: Map({
-			field: 'date',
-			destination: 'desc',
-		}),
-		filters: {
-			type: '',
-			user: '',
-		},
-	}),
-};
-
 const DEFAULT_STATE = Map({
-	[USERS_GRID]: _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_GRID_FIELDS[USERS_GRID]),
+	[ACCOUNT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
+	[CONTRACT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
+	[BLOCK_GRID]: _.cloneDeep(DEFAULT_FIELDS),
+	[TRANSACTION_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 });
 
 export default createModule({
@@ -51,6 +37,12 @@ export default createModule({
 				return state;
 			},
 		},
+		initData: {
+			reducer: (state, { payload }) => {
+				state = state.set(payload.gridName, new Map(payload.params));
+				return state;
+			},
+		},
 		setSort: {
 			reducer: (state, { payload }) => {
 				state = state.setIn([payload.gridName, 'sort', 'field'], payload.field);
@@ -62,7 +54,6 @@ export default createModule({
 		setPage: {
 			reducer: (state, { payload }) => {
 				state = state.setIn([payload.gridName, 'currentPage'], payload.currentPage);
-				state = state.setIn([payload.gridName, 'offset'], payload.offset);
 
 				return state;
 			},
@@ -76,7 +67,7 @@ export default createModule({
 		},
 		clearByField: {
 			reducer: (state, { payload }) => {
-				state = state.set(payload.gridName, _.cloneDeep(DEFAULT_FIELDS).merge(DEFAULT_GRID_FIELDS[payload.gridName]));
+				state = state.set(payload.gridName, _.cloneDeep(DEFAULT_FIELDS));
 				return state;
 			},
 		},

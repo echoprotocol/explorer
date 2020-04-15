@@ -3,11 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Dropdown } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Router from 'next/router';
 import { DebounceInput } from 'react-debounce-input';
 
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
-import { KEY_CODE_ENTER, KEY_CODE_ESC } from '../../constants/GlobalConstants';
+import { KEY_CODES } from '../../constants/GlobalConstants';
 import { DEBOUNCE_TIMEOUT, DEFAULT_ERROR_SEARCH } from '../../constants/SearchConstants';
 
 class SearchField extends React.Component {
@@ -21,6 +23,7 @@ class SearchField extends React.Component {
 			isActiveSmall: false,
 			inputValue: '',
 			to: '',
+			href: '',
 		};
 		this.timeoutSearch = null;
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -42,8 +45,21 @@ class SearchField extends React.Component {
 		this.setState({ focus: true });
 	}
 
-	onChangeDropdown(data) {
-		this.setState({ to: data.value });
+	onChangeDropdown(e, data) {
+		const code = e.keyCode || e.which;
+
+		const option = data.options.find(({ value }) => value === data.value);
+
+		if ([KEY_CODES.ARROW_UP, KEY_CODES.ARROW_DOWN].includes(code)) {
+			this.setState({ to: data.value, href: option.href });
+		} else {
+			this.setState({
+				focus: false,
+				isChange: false,
+				to: data.value,
+				href: option.href,
+			});
+		}
 	}
 
 	onChange(e) {
@@ -75,15 +91,15 @@ class SearchField extends React.Component {
 		const { inputValue } = this.state;
 		const code = e.keyCode || e.which;
 
-		if (!loadingSearch && KEY_CODE_ENTER === code && inputValue && this.state.to) {
+		if (!loadingSearch && KEY_CODES.ENTER_CODE === code && inputValue && this.state.to) {
 			if (this.props.hints.length !== 0) {
-				this.props.history.push(this.state.to);
+				Router.push(this.state.href, this.state.to);
 				this.setState({ focus: false, isChange: false });
 				this.inputEl.blur();
 			}
 		}
 
-		if (KEY_CODE_ESC === code) {
+		if (KEY_CODES.ESC_CODE === code) {
 			this.inputEl.blur();
 			this.setState({ focus: false, isChange: false });
 		}
@@ -145,7 +161,7 @@ class SearchField extends React.Component {
 		} = this.state;
 
 		const {
-			small, placeholder, white, withHelp, hints, errorSearch,
+			placeholder, white, withHelp, hints, errorSearch,
 		} = this.props;
 
 		const options = hints
@@ -154,10 +170,13 @@ class SearchField extends React.Component {
 			}, i) => ({
 				key: i,
 				value: to,
+				href: SsrHrefHelper.getHrefByTypeSection(section),
 				content: (
-					<Link key={to} to={to} className="element" onClick={() => this.blurInput()} >
-						<div className="section-name">{section}</div>
-						<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+					<Link key={to} href={SsrHrefHelper.getHrefByTypeSection(section)} as={to} >
+						<div className="element">
+							<div className="section-name">{section}</div>
+							<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>
+						</div>
 					</Link>
 				),
 			}));
@@ -178,16 +197,14 @@ class SearchField extends React.Component {
 
 		return (
 			<div
-				className={classnames('input-search-block', {
-					small, active: (isActiveSmall || inputValue), white,
-				})}
+				className={classnames('input-search-block', { active: (isActiveSmall || inputValue), white })}
 				ref={this.setWrapperRef}
 			>
 				<div className={classnames('input-container', { focus })}>
 					<a
 						href=""
 						className="icon"
-						onClick={(e) => { e.preventDefault(); ((small) ? (this.isSmallShow()) : false); }}
+						onClick={(e) => { e.preventDefault(); this.isSmallShow(); }}
 					>
 						<svg>
 							<path fill="#686C86" d="M14.72 13.12l-3.54-3.54a6.12 6.12 0 10-1.6 1.6l3.53 3.55a1.14 1.14 0 001.6-1.6zm-12.45-7a3.85 3.85 0 117.7 0 3.85 3.85 0 01-7.7 0z" />
@@ -213,7 +230,7 @@ class SearchField extends React.Component {
 						<Dropdown
 							options={options}
 							open
-							onChange={(even, data) => this.onChangeDropdown(data)}
+							onChange={(event, data) => this.onChangeDropdown(event, data)}
 						/>
 					</div>
 				))}
@@ -224,26 +241,23 @@ class SearchField extends React.Component {
 }
 
 SearchField.propTypes = {
-	small: PropTypes.bool,
+	// small: PropTypes.bool,
 	loadingSearch: PropTypes.bool,
 	errorSearch: PropTypes.string,
 	placeholder: PropTypes.string,
 	white: PropTypes.bool,
 	withHelp: PropTypes.bool,
 	hints: PropTypes.array,
-	history: PropTypes.object,
 	getHints: PropTypes.func,
 };
 
 SearchField.defaultProps = {
 	loadingSearch: false,
-	small: false,
 	errorSearch: '',
 	placeholder: '',
 	white: false,
 	withHelp: false,
 	hints: [],
-	history: {},
 	getHints: () => {},
 };
 

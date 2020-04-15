@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-
+import Link from 'next/link';
 
 class BreadCrumbs extends React.Component {
 
@@ -13,10 +12,10 @@ class BreadCrumbs extends React.Component {
 					{this.props.breadcrumbs && this.props.breadcrumbs.map((breadcrumb) => (
 						<Link
 							key={breadcrumb.title}
-							to={breadcrumb.path}
-							className="element"
+							href={breadcrumb.href}
+							as={breadcrumb.as}
 						>
-							{breadcrumb.title}
+							<a className="element">{breadcrumb.title}</a>
 						</Link>
 					))}
 				</div>

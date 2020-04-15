@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'next/router';
 
 import VerifyContract from '../../components/VerifyContract';
 import { FORM_CONTRACT_VERIFY } from '../../constants/FormConstants';
 import FormActions from '../../actions/FormActions';
 import ContractActions from '../../actions/ContractActions';
-
 
 export default withRouter(connect(
 	(state) => ({

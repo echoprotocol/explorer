@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router';
 import PropTypes from 'prop-types';
 
 import BaseError from './index';
@@ -6,7 +7,7 @@ import BaseError from './index';
 class ErrorScreen extends React.Component {
 
 	reload() {
-		window.location.reload();
+		Router.reload();
 	}
 
 	render() {

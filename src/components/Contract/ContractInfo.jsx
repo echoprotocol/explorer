@@ -16,7 +16,7 @@ class ContractInfo extends React.Component {
 					<div className="column-left">
 						<ContractDescription data={dataDescription} />
 						<ContractGeneralInfo data={dataGeneral} matches />
-						<Media query="(max-width: 768px)">
+						<Media query="(max-width: 768px)" defaultMatches={dataGeneral.get('isMobile')}>
 							{(matches) =>
 								(
 									!matches && <ContractAssets data={dataAssets} />
@@ -26,7 +26,7 @@ class ContractInfo extends React.Component {
 
 					</div>
 					<div className="column-right">
-						<Media query="(max-width: 768px)">
+						<Media query="(max-width: 768px)" defaultMatches={dataGeneral.get('isMobile')}>
 							{(matches) =>
 								(
 									matches ?

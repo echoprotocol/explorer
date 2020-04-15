@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import copy from 'copy-to-clipboard';
 
 import Avatar from '../Avatar';
@@ -15,6 +15,8 @@ import {
 import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
+import { OBJECTS_PATH, SSR_ACCOUNTS_PATH, SSR_ASSET_PATH, SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
 class ObjectInfo extends React.Component {
 
@@ -43,7 +45,9 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createUrlById(object.get('id'))}>{object.get('id')}</Link>
+							<Link href={OBJECTS_PATH} as={URLHelper.createUrlById(object.get('id'))}>
+								<a>{object.get('id')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
@@ -69,13 +73,17 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createUrlById(object.get('id'))}>{object.get('id')}</Link>
+							<Link href={SsrHrefHelper.getHrefByObjectId(object.get('id'))} as={URLHelper.createUrlById(object.get('id'))}>
+								<a>{object.get('id')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">Committee member account:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createAccountUrl(object.get('account'))}>{object.get('account')}</Link>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(object.get('account'))}>
+								<a>{object.get('account')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
@@ -101,13 +109,17 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createUrlById(object.get('id'))}>{object.get('id')}</Link>
+							<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(object.get('id'))}>
+								<a>{object.get('id')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">Name:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createUrlById(object.get('id'))}>{object.get('name')}</Link>
+							<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(object.get('name'))}>
+								<a>{object.get('name')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
@@ -121,7 +133,9 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">Issuer account:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createAccountUrl(object.get('issuer'))}>{object.get('issuer')}</Link>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(object.get('issuer'))}>
+								<a>{object.get('issuer')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
@@ -151,13 +165,17 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createUrlById(object.get('id'))}>{object.get('id')}</Link>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(object.get('id'))}>
+								<a>{object.get('id')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">Name:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createAccountUrl(object.get('name'))}>{object.get('name')}</Link>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(object.get('name'))}>
+								<a>{object.get('name')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
@@ -179,9 +197,11 @@ class ObjectInfo extends React.Component {
 												{
 													object.get('activeAccounts').map((name) => (
 														<li key={name}>
-															<Link className="avatar-wrap" to={URLHelper.createAccountUrl(name)}>
-																<Avatar accountName={name} />
-																<span>{name}</span>
+															<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(name)}>
+																<a className="avatar-wrap">
+																	<Avatar accountName={name} />
+																	<span>{name}</span>
+																</a>
 															</Link>
 														</li>
 													))
@@ -202,13 +222,17 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">Registrar:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createAccountUrl(object.get('registrar'))}>{object.get('registrar')}</Link>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(object.get('registrar'))}>
+								<a>{object.get('registrar')}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">
 						<div className="od-col">Delegating Account:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createAccountUrl(object.get('delegating'))}>{object.get('delegating')}</Link>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(object.get('delegating'))}>
+								<a>{object.get('delegating')}</a>
+							</Link>
 						</div>
 					</div>
 				</div>
@@ -229,7 +253,9 @@ class ObjectInfo extends React.Component {
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
-							<Link to={URLHelper.createUrlById(contractId)}>{contractId}</Link>
+							<Link href={SSR_CONTRACT_PATH} as={URLHelper.createUrlById(contractId)}>
+								<a>{contractId}</a>
+							</Link>
 						</div>
 					</div>
 					<div className="od-row">

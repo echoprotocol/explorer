@@ -92,11 +92,22 @@
 		overflow: hidden;
 		color: $grey-mid;
 	}
-
 	.avatar-wrap {
 		span {
 			@include text-overflow;
 			max-width: 85px;
+		}
+	}
+	.producer,
+	.from,
+	.to {
+		span {
+			display: block;
+			max-width: 120px;
+			@include text-overflow();
+			@include max-vw($res-1280) {
+				max-width: 300px;
+			}
 		}
 	}
 }

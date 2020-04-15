@@ -1,5 +1,5 @@
 import { createModule } from 'redux-modules';
-import { Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import _ from 'lodash';
 import TransformModules from '../utils/TransformModules';
 import { PAGE_BLOCKS_COUNT } from '../constants/GlobalConstants';
@@ -10,9 +10,9 @@ const DEFAULT_FIELDS = Map({
 	blocks: new OrderedMap({}),
 	blocksCount: PAGE_BLOCKS_COUNT,
 	loading: false,
-	startTimestamp: 0,
-	hasMore: true,
 	isDistributionRewardOpen: false,
+	filteredOperations: new List([]),
+	latestOperations: [],
 });
 
 export default createModule({

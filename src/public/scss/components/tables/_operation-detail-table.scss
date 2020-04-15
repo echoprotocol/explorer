@@ -1,102 +1,162 @@
 .operation-detail-table {
-	padding: 0 30px;
+	display: table;
 	width: 100%;
 
 	.od-row {
-		display: flex;
-		align-items: flex-start;
-		padding: 20px 0;
-		&:not(:last-child) {
-			border-bottom: 1px solid $lightgrey-darker;
-		}
+		display: table-row;
 	}
 
 	.od-col {
+		padding: 10px 0;
+		display: table-cell;
+		word-break: break-all;
 		line-height: 15px;
 
 		&:nth-child(1) {
-			@include inter-ui-medium;
-			font-size: 11px;
-			line-height: 140%;
-			color: $lightgrey;
-			text-transform: capitalize;
+			font-family: "hack";
+			font-weight: 700;
+			font-size: 9px;
+			text-transform: uppercase;
+			letter-spacing: 2.25px;
+			font-style: normal;
+			color: rgba(#263c4b, 0.8);
+			text-align: right;
 			white-space: nowrap;
-			min-width: 210px;
+			min-width: 125px;
+			line-height: 15px;
 		}
 
 		&:nth-child(2) {
-			@include inter-ui-medium();
-			font-size: 12px;
-			line-height: 15px;
+			font-size: 13px;
+			font-style: normal;
+			color: #000;
+			padding-left: 28px;
 			width: 100%;
-			color: $explorer-black;
-		}
-	}
-	.description {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		&:not(:only-child) {
-			margin-bottom: 15px;
-		}
-	}
-	.description-secondary {
-		display: flex;
-		align-items: center;
-		@include inter-ui-medium;
-		font-size: 11px;
-		.tooltip-icon {
-			margin-left: 0;
-			margin-right: 5px;
-		}
-	}
-	.description-secondary__name {
-		color: $lightgrey;
-	}
-	.description-secondary__value {
-		color: $grey;
-	}
+			vertical-align: bottom;
+			@include inter-ui-medium();
 
-	.account-field {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 12px 15px;
-		background-color: $lightest-grey-bg;
-		border-radius: 4px;
-		&:not(:last-child) {
-			margin-bottom: 8px;
-		}
-	}
-	.account-field__info {
-		display: flex;
-		flex-direction: column;
-	}
-	.account-field__info-description {
-		margin-top: 8px;
-		color: $lightgrey;
-		span:nth-child(2) {
-			color: $grey;
+			.val {
+				display: flex;
+				max-width: 100%;
+				.txt {
+					@include text-overflow();
+				}
+				.txt2 {
+					width: calc(100% - 38vw);
+				}
+			}
 		}
 	}
 
-	.account-field__button {
-		@include inter-ui-regular;
-		background-color: transparent;
-		border: 1px solid $grey-mid;
-		padding: 0 10px;
-		height: 30px;
-		border-radius: 4px;
-		cursor: pointer;
-		transition: opacity $speed;
-		&:hover {
-			opacity: 0.7;
+	.mono {
+		word-break: break-all;
+		font-family: "hack";
+		font-style: normal;
+		font-weight: 400;
+		font-size: 12px;
+		line-height: 20px;
+
+		&-bold {
+			font-weight: 700;
 		}
-		&:focus:not(:active) {
-			border: 1px solid $grey;
+	}
+
+	.text-button {
+		margin-top: 10px;
+	}
+
+	.avatar-wrap {
+		font-weight: 400;
+
+		&.link:hover {
+			cursor: pointer;
 		}
-		&:active {
-			opacity: 0.7;
+	}
+
+	.authority {
+		.title {
+			font-family: "hack";
+			font-weight: 700;
+			font-size: 9px;
+			text-transform: uppercase;
+			letter-spacing: 0.16em;
+			font-style: normal;
+			color: rgba(#263c4b, 0.8);
+			margin-bottom: 12px;
+		}
+
+		ul {
+			list-style-type: none;
+		}
+
+		.accounts {
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 10px;
+
+			li {
+				margin-bottom: 10px;
+
+				&:not(:last-child) {
+					margin-right: 20px;
+				}
+			}
+		}
+
+		.keys {
+			word-break: break-all;
+			font-size: 13px;
+			font-style: normal;
+			color: #000;
+			line-height: 20px;
+			@include inter-ui-medium();
+
+			li {
+				&:not(:last-child) {
+					margin-bottom: 8px;
+				}
+			}
+		}
+	}
+}
+
+@include max-vw($res-768) {
+	.operation-detail-table {
+		display: block;
+
+		.od-row {
+			display: flex;
+			flex-direction: column;
+
+			&.bytecode {
+				.od-col {
+					&:nth-child(1) {
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+
+						.copy-bytecode {
+							margin: 0;
+						}
+					}
+				}
+			}
+
+			&:not(:last-child) {
+				border-bottom: 1px solid #e9e8eb;
+			}
+		}
+
+		.od-col {
+			&:nth-child(1) {
+				padding-left: 0;
+				text-align: left;
+				padding-bottom: 0;
+			}
+
+			&:nth-child(2) {
+				padding-left: 0;
+			}
 		}
 	}
 }

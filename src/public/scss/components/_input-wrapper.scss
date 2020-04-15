@@ -1,39 +1,39 @@
 .ui.input {
-  width: 100%;
+	width: 100%;
 
-  input {
-    height: 35px;
-    min-height: auto;
-    border: 1px solid #aeb7be;
-    border-radius: 2px;
+	input {
+		height: 35px;
+		min-height: auto;
+		border: 1px solid #aeb7be;
+		border-radius: 2px;
 
-    font-size: 13px;
-    color: #18142a;
-    @include InterUI_Regular;
+		font-size: 13px;
+		color: #18142a;
+		@include inter-ui-regular;
 
-    &:placeholder {
-      font-size: 13px;
-      color: rgba(24, 20, 42, 0.4);
-      @include InterUI_Regular;
-    }
-  }
+		&:placeholder {
+			font-size: 13px;
+			color: rgba(24, 20, 42, 0.4);
+			@include inter-ui-regular;
+		}
+	}
 }
 
-.input-wrapper  {
-  width: 100%;
-  position: relative;
+.input-wrapper {
+	width: 100%;
+	position: relative;
 
-  .error-field {
-    color: #fb0707;
-    font-size: 10px;
-    @include InterUI_Regular;
-    color: #fb0707;
-    font-size: 10px;
-    display: inline-block;
-    position: absolute;
-    bottom: -5px;
-    background: #fff;
-    padding: 0px 5px;
-    left: 6px;
-  }
+	.error-field {
+		color: #fb0707;
+		font-size: 10px;
+		@include inter-ui-regular;
+		color: #fb0707;
+		font-size: 10px;
+		display: inline-block;
+		position: absolute;
+		bottom: -5px;
+		background: #fff;
+		padding: 0px 5px;
+		left: 6px;
+	}
 }
