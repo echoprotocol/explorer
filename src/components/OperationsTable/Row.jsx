@@ -13,6 +13,7 @@ import OperationInfo from '../TransactionInfo/OperationInfo';
 import ProposalOperations from '../TransactionInfo/ProposalOperations';
 import LogsInfo from '../TransactionInfo/LogsInfo';
 import InternalOperations from '../TransactionInfo/InternalOperations';
+import InfoTooltip from '../InfoTooltip';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -51,6 +52,10 @@ const OperationsRow = React.memo(({
 			>
 				{mainInfo.subject.name && <Avatar accountName={subject} />}
 				<span>{subject}</span>
+				<InfoTooltip
+					overlay="Tooltip"
+					type="receiver"
+				/>
 			</Link>
 		);
 	};
@@ -103,6 +108,10 @@ const OperationsRow = React.memo(({
 						>
 							{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 							<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+							<InfoTooltip
+								overlay="Tooltip"
+								type="sender"
+							/>
 						</Link> : <div className="td-in">—</div>
 					}
 				</td>

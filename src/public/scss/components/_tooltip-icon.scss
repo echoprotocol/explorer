@@ -11,4 +11,10 @@
 			fill: $grey-mid;
 		}
 	}
+	&.sender,
+	&.receiver {
+		path {
+			fill: $lightgrey;
+		}
+	}
 }
