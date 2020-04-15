@@ -115,31 +115,13 @@
 	}
 
 	.number {
-		width: 30px;
-		min-width: 30px;
-		max-width: 30px;
+		width: 20px;
 	}
 	.operation {
 		white-space: nowrap;
-		width: 100px;
-		max-width: 100px;
 		.td-in {
 			vertical-align: middle;
 			@include text-overflow();
-		}
-	}
-	.time {
-		width: 130px;
-		.td-in {
-			color: $blue;
-			white-space: nowrap;
-			span {
-				display: inline-block;
-				max-width: 100%;
-				min-width: 100px;
-
-				@include text-overflow();
-			}
 		}
 	}
 	.sender,

@@ -9,6 +9,19 @@ header {
 	display: inline-block;
 	height: 41px;
 }
+.logotype-max {
+	@include max-vw($res-768) {
+		display: none;
+	}
+}
+
+.logotype-min {
+	display: none;
+	@include max-vw($res-768) {
+		display: block;
+	}
+}
+
 .top-section {
 	padding: 20px 0 10px;
 	background-color: $explorer-dark;

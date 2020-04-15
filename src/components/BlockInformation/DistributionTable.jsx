@@ -26,7 +26,6 @@ class DistributionTable extends React.PureComponent {
 		return (
 			<React.Fragment key={index}>
 				<tr className="view">
-					<td />
 					<td className="role">
 						<div className="td-in">
 							<span className="type">{type}</span>
@@ -62,7 +61,6 @@ class DistributionTable extends React.PureComponent {
 							<span className="currency">{producedByCommittee ? 'Yes' : 'No'}</span>
 						</div>
 					</td>
-					<td />
 				</tr>
 			</React.Fragment>
 		);
