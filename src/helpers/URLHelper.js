@@ -111,7 +111,7 @@ class URLHelper {
 	 *
 	 * @param {String} id
 	 */
-	static createUrlById(id) {
+	static createUrlById(id, addInfo) {
 
 		let url;
 
@@ -123,6 +123,8 @@ class URLHelper {
 			url = URLHelper.createContractUrl(id);
 		} else if (validators.isAssetId(id)) {
 			url = URLHelper.createAssetUrl(id);
+		} else if (validators.isAssetName(id)) {
+			url = URLHelper.createAssetUrl(addInfo);
 		} else {
 			url = URLHelper.createObjectsUrl(id);
 		}

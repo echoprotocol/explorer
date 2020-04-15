@@ -14,10 +14,10 @@ import ProposalOperations from '../TransactionInfo/ProposalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import { transformOperationDataByType } from '../../helpers/TransformDataHelper';
 
 const OperationsRow = React.memo(({
 	operation: {
+		operationsInfoData,
 		id,
 		mainInfo,
 		objectInfo,
@@ -28,7 +28,6 @@ const OperationsRow = React.memo(({
 		type,
 		...detailInfo
 	},
-	operation,
 	index,
 	active,
 	toggleOperationDetails,
@@ -43,7 +42,7 @@ const OperationsRow = React.memo(({
 		return (
 			<Link
 				className="td-in avatar-wrap"
-				to={URLHelper.createUrlById(subject)}
+				to={URLHelper.createUrlById(subject, mainInfo.subject.id)}
 				onClick={(e) => e.stopPropagation()}
 			>
 				{mainInfo.subject.name && <Avatar accountName={subject} />}
@@ -75,14 +74,7 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	const typeToFormat = type && operation.opId < 20 ? operation.type : 'Update asset feed producers';
-
-
-	const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
-	const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
-	console.log('operation', operation);
-	const operationsInfoData = transformOperationDataByType(typeToFormat, operation);
-	operationsInfoData.operationInfo.directLink = `${window.location.origin}${operationUrl}`;
+	console.log('operationsInfoData', operationsInfoData);
 
 	return (
 		<React.Fragment>

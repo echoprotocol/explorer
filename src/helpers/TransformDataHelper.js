@@ -1,7 +1,9 @@
-import { OPERATION_TYPES } from '../constants/OperationTypeConstants';
+import { ACCOUNT_BLACK_WHITE, OPERATION_TYPES } from '../constants/OperationTypeConstants';
+import getAdditionalInfoByOpType, { getAssetFlags } from './AdditionalInfoHelper';
+// import getAdditionalInfoByOpType from './AdditionalInfoHelper';
 
 // It shold be connected to real data
-export const transformOperationDataByType = (type, data) => {
+export const transformOperationDataByType = async (type, data) => {
 	switch (type) {
 		case OPERATION_TYPES.TRANSFER:
 			return {
@@ -27,7 +29,6 @@ export const transformOperationDataByType = (type, data) => {
 				},
 			};
 		case OPERATION_TYPES.OVERRIDE_TRANSFER:
-			// TODO CHECK operation
 			return {
 				operationInfo: {
 					type,
@@ -48,7 +49,11 @@ export const transformOperationDataByType = (type, data) => {
 						link: data.mainInfo.subject.id,
 					},
 					new_account_id: data.mainInfo.subject.id,
-					authority: data.authority,
+					authority: [...data.active.key_auths, ...data.active.account_auths].map(([value, weight]) => ({
+						value,
+						weight,
+					})),
+					weight_threshold: data.active.weight_threshold,
 					echorand_key: data.echorand_key,
 					delegating_account: data.delegating_account,
 					delegate_share: data.delegate_share,
@@ -65,126 +70,118 @@ export const transformOperationDataByType = (type, data) => {
 					fee: data.fee,
 				},
 			};
-		case OPERATION_TYPES.ACCOUNT_WHITELIST:
+		case OPERATION_TYPES.ACCOUNT_WHITELIST: {
+			const additionalInfo = await getAdditionalInfoByOpType(type, data.authorizing_account.link);
 			return {
 				operationInfo: {
-					type: 'Account whitelist',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					listed_account: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					new_status: 'statusString',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					additionalInfo: {
-						account_white_list: 'anyStringValue',
-						account_black_list: 'anyStringValue',
-					},
+					type,
+					fee: data.fee,
+					sender: data.authorizing_account,
+					listed_account: data.account_to_list,
+					new_status: ACCOUNT_BLACK_WHITE[data.new_listing],
+					additionalInfo,
 				},
 			};
+		}
 		case OPERATION_TYPES.ACCOUNT_ADDRESS_CREATE:
 			return {
 				operationInfo: {
-					type: 'Account address create',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					label: 'anyStringValue',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.owner,
+					address: data.address,
+					label: data.label,
+					fee: data.fee,
 				},
 			};
 		case OPERATION_TYPES.ASSET_CREATE:
+			// TODO check bitasset
+			// Global settle
+			// Disable force settle
+			const settings = await getAssetFlags(data.objectInfo.toJS());
+			const additionalInfo = await getAdditionalInfoByOpType(type, data.mainInfo.result);
 			return {
 				operationInfo: {
-					type: 'Create asset',
-					issuer: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					asset_name: 'Asset name',
-					precision: '8',
-					max_suply: '12,000,000,000. 00000000',
-					asset_description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.',
-					rate: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					is_bit_asset: true,
+					type,
+					issuer: data.issuer,
+					asset_name: data.symbol,
+					precision: data.precision.precision,
+					max_suply: data.objectInfo.get('maxSupply'),
+					description: data.objectInfo.get('description'),
+					fee: data.fee,
+					rate: data.rate,
+					is_bit_asset: data.objectInfo.get('bitasset_opts') ? 'Yes' : 'No',
 					settings: [{
 						key: 'Whitelist',
-						value: 'disabled',
+						value: settings.isWhiteList,
 					}, {
 						key: 'Override authority',
-						value: 'on',
+						value: settings.isOvveride,
 					}, {
-						key: 'Override authority',
-						value: 'off',
+						key: 'Transfer restricted',
+						value: settings.isTransfer,
+					}, {
+						key: 'Commitee fed asset authority',
+						value: settings.isCommette,
 					}],
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
+					additionalInfo: {
+						settings: [{
+							key: 'Whitelist',
+							value: additionalInfo.isWhiteList,
+						}, {
+							key: 'Override authority',
+							value: additionalInfo.isOvveride,
+						}, {
+							key: 'Transfer restricted',
+							value: additionalInfo.isTransfer,
+						}, {
+							key: 'Commitee fed asset authority',
+							value: additionalInfo.isCommette,
+						}],
 					},
+					// description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+				},
+			};
+		case OPERATION_TYPES.ASSET_UPDATE: {
+			const settings = await getAssetFlags(data.objectInfo.toJS());
+			console.log('ASSET_UPDATE data', data);
+			console.log('ASSET_UPDATE data', data.objectInfo.toJS());
+			return {
+				operationInfo: {
+					type,
+					issuer: data.issuer,
+					new_issuer: data.new_issuer,
+					asset_name: data.asset_to_update.value,
+					max_suply: data.objectInfo.get('maxSupply'),
+					asset_description: data.objectInfo.get('description'),
+					rate: data.rate,
+					settings: [{
+						key: 'Whitelist',
+						value: settings.isWhiteList,
+					}, {
+						key: 'Override authority',
+						value: settings.isOvveride,
+					}, {
+						key: 'Transfer restricted',
+						value: settings.isTransfer,
+					}, {
+						key: 'Commitee fed asset authority',
+						value: settings.isCommette,
+					}],
+					// bit_asset_options: [{
+					// 	key: 'Feed lifetime',
+					// 	value: '12w, 23d, 34:34:56',
+					// }, {
+					// 	key: 'Minimum feeds',
+					// 	value: '3',
+					// }, {
+					// 	key: 'Short backing asset:',
+					// 	value: 'off',
+					// }],
+					fee: data.fee,
 					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
 				},
 			};
-		case OPERATION_TYPES.ASSET_UPDATE:
-			return {
-				operationInfo: {
-					type: 'Update asset',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					asset_name: 'Asset name',
-					max_suply: '12,000,000,000. 00000000',
-					asset_description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.',
-					rate: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					settings: [{
-						key: 'Whitelist',
-						value: 'disabled',
-					}, {
-						key: 'Override authority',
-						value: 'on',
-					}, {
-						key: 'Override authority',
-						value: 'off',
-					}],
-					bit_asset_options: [{
-						key: 'Feed lifetime',
-						value: '12w, 23d, 34:34:56',
-					}, {
-						key: 'Minimum feeds',
-						value: '3',
-					}, {
-						key: 'Short backing asset:',
-						value: 'off',
-					}],
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
-				},
-			};
+		}
 		case OPERATION_TYPES.ASSET_UPDATE_BITASSET:
 			return {
 				operationInfo: {
@@ -201,21 +198,17 @@ export const transformOperationDataByType = (type, data) => {
 						precision: 8,
 						symbol: 'ECHO',
 					},
-					bit_asset_options: [{
-						key: 'Feed lifetime',
-						value: '12w, 23d, 34:34:56',
-					}, {
-						key: 'Minimum feeds',
-						value: '3',
-					}, {
-						key: 'Short backing asset:',
-						value: 'off',
-					}],
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					// bit_asset_options: [{
+					// 	key: 'Feed lifetime',
+					// 	value: '12w, 23d, 34:34:56',
+					// }, {
+					// 	key: 'Minimum feeds',
+					// 	value: '3',
+					// }, {
+					// 	key: 'Short backing asset:',
+					// 	value: 'off',
+					// }],
+					fee: data.fee,
 					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
 				},
 			};
@@ -261,25 +254,11 @@ export const transformOperationDataByType = (type, data) => {
 		case OPERATION_TYPES.ASSET_ISSUE:
 			return {
 				operationInfo: {
-					type: 'Issue asset',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					receiver: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.issuer,
+					asset_amount: data.asset_to_issue,
+					receiver: data.issue_to_account,
+					fee: data.fee,
 					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
 					additionalInfo: {
 						current_asset_total_supply: '12,000,000,000. 00000000',

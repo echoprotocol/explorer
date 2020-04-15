@@ -32,6 +32,7 @@ class OperationInfo extends React.Component {
 					{data.type && proposalIdx && <div className="proposal-operation-header">{proposalIdx}.&nbsp;{data.type}</div>}
 					{data.type && !proposalIdx && <PrimaryRow title="Type" description={data.type} /> }
 					{data.issuer && <LinkRow title="Issuer" account={{ value: data.issuer.value, link: data.issuer.link }} />}
+					{data.new_issuer && <LinkRow title="New issuer" account={{ value: data.new_issuer.value, link: data.new_issuer.link }} />}
 					{data.sender && <LinkRow title="Sender" account={{ value: data.sender.value, link: data.sender.link }} />}
 					{data.receiver && <LinkRow title="Receiver" account={{ value: data.receiver.value, link: data.receiver.link }} />}
 					{data.from && <LinkRow title="From" account={{ value: data.from.value, link: data.from.link }} />}
@@ -56,7 +57,7 @@ class OperationInfo extends React.Component {
 					{data.max_suply && <PrimaryRow title="Max Suply" description={data.max_suply} />}
 					{data.asset_description && <PrimaryRow title="Asset Description" description={data.asset_description} isText />}
 					{data.rate && <PrimaryRow title="Rate" description={FormatHelper.formatAmount(data.rate.amount, data.rate.precision, data.rate.symbol)} />}
-					{data.is_bit_asset && <PrimaryRow title="Is bitAsset" description={data.is_bit_asset ? 'Yes' : 'No'} />}
+					{data.is_bit_asset && <PrimaryRow title="Is bitAsset" description={data.is_bit_asset} />}
 					{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
 					{data.authority && <AuthorityRow title="Authority" tooltip="Public keys and accounts" authority={data.authority} />}
 					{data.approvals_to_add && <AuthorityRow title="Approvals to add" authority={data.approvals_to_add} />}
@@ -70,9 +71,11 @@ class OperationInfo extends React.Component {
 						description={FormatHelper.formatAmount(data.delegate_share.amount, data.delegate_share.precision, data.delegate_share.symbol)}
 					/>}
 					{data.amount && <PrimaryRow title="Amount" description={FormatHelper.formatAmount(data.amount.amount, data.amount.precision, data.amount.symbol)} />}
+					{data.asset_amount && <PrimaryRow title="Asset amount" description={FormatHelper.formatAmount(data.asset_amount.amount, data.asset_amount.precision, data.asset_amount.symbol)} />}
 					{data.deposit_amount && <PrimaryRow title="Deposit amount" description={data.deposit_amount} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
+					{data.address && <PrimaryRow title="Address" description={data.address} />}
 					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}
 					{data.new_feed_producers && <ProducersRow title="New feed producers" accounts={data.new_feed_producers} /> }
 					{data.feeded_asset_price &&
@@ -82,7 +85,6 @@ class OperationInfo extends React.Component {
 					/>}
 					{data.changed_parameters && <PrimaryRow title="Changed parameters" description={data.changed_parameters.join(', ')} />}
 					{data.fee && <PrimaryRow title="Fee" description={FormatHelper.formatAmount(data.fee.amount, data.fee.precision, data.fee.symbol)} />}
-					{data.directLink && <LinkRow title="Operation direct link" link={data.directLink} />}
 				</div>
 				{data.additionalInfo && <AdditionalInfo data={data.additionalInfo} />}
 			</div>

@@ -24,6 +24,7 @@ import BaseActionsClass from './BaseActionsClass';
 import GlobalActions from './GlobalActions';
 
 import { getContractInfo } from '../services/queries/contract';
+import { transformOperationDataByType } from '../helpers/TransformDataHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -156,6 +157,9 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('issuer', issuer && issuer.name)
 					.set('precision', asset.precision)
 					.set('totalSupply', asset.dynamic.current_supply)
+					.set('issuer_permissions', asset.options.issuer_permissions)
+					.set('flags', asset.options.flags)
+					.set('description', asset.options.description)
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
 				const committee = await echo.api.getObject(subject.id);
@@ -499,15 +503,15 @@ class TransactionActionsClass extends BaseActionsClass {
 		delete options.extensions;
 		delete options.gasPrice;
 		delete options.eth_accuracy;
+		console.log('hoho', { ...options });
+		console.log('operationResult', operationResult);
 
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
-
 		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
 
-		console.log('operationResult', options);
-
+		console.log('options', options);
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
 			switch (typeof value) {
@@ -539,6 +543,10 @@ class TransactionActionsClass extends BaseActionsClass {
 						const [account] = await echo.api.getAccounts([value.delegating_account]);
 						value = { value: account.name, link: value.delegating_account, amount: value.delegate_share };
 						key = 'delegate_data';
+					} else if (_.has(value, 'core_exchange_rate')) {
+						const asset = await echo.api.getObject(value.core_exchange_rate.base.asset_id);
+						key = 'rate';
+						value = { precision: asset.precision, symbol: asset.symbol, amount: value.core_exchange_rate.base.amount };
 					} else if (_.has(value, 'weight_threshold')) {
 						break;
 					} else {
@@ -559,6 +567,9 @@ class TransactionActionsClass extends BaseActionsClass {
 				case 'callee':
 					key = 'contract id';
 					link = value;
+					break;
+				case 'new_listing':
+					value = value.amount;
 					break;
 				default:
 					break;
@@ -629,6 +640,13 @@ class TransactionActionsClass extends BaseActionsClass {
 			case OPERATIONS_IDS.ACCOUNT_CREATE:
 				result = options.Name;
 				break;
+			case OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE: {
+				const [, addressId] = operationResult;
+				const [{ address }] = await echo.api.getObjects([addressId]);
+				[, result] = operationResult;
+				options.address = address;
+				break;
+			}
 			default:
 				[, result] = operationResult;
 				break;
@@ -647,13 +665,14 @@ class TransactionActionsClass extends BaseActionsClass {
 			delete options.delegate_data;
 		}
 
-		if (operation.active) {
-			options.weight_threshold = options.active.weight_threshold;
-			options.authority = options.active.key_auths.map((data) => ({ value: data[0], weight: data[1] }));
-			delete options.active;
-		}
+		// if (operation.active) {
+		// 	options.active =
+		// 	options.weight_threshold = options.active.weight_threshold;
+		// 	options.authority = options.active.key_auths.;
+		// 	delete options.active;
+		// }
 
-		return {
+		const op = {
 			mainInfo: {
 				from,
 				subject,
@@ -670,9 +689,11 @@ class TransactionActionsClass extends BaseActionsClass {
 			number,
 			blockTimestamp,
 			opIndex,
-			opId: operation.value,
 		};
-
+		const typeToFormat = operation.value < 20 ? operation.name : 'Update asset feed producers';
+		console.log('typeToFormat', typeToFormat);
+		op.operationsInfoData = (await transformOperationDataByType(typeToFormat, op));
+		return op;
 	}
 
 	getTransaction(blockNumber, index) {
