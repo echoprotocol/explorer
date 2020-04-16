@@ -527,21 +527,6 @@
 					width: 100%;
 				}
 
-				&.is-owner {
-					&:after {
-						content: "OWNER";
-						position: absolute;
-						right: 0;
-						background-color: #cadef0;
-						top: -2px;
-						@include hack-bold;
-						padding: 3px;
-						font-size: 9px;
-						color: #2a90e6;
-						letter-spacing: 0.25em;
-					}
-				}
-
 				.txt {
 					margin-right: 5px;
 				}

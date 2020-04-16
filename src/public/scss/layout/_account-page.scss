@@ -337,49 +337,18 @@
 		}
 
 		.txt {
-			margin-right: 5px;
-			max-width: 100%;
-			display: inline-block;
 			@include text-overflow();
+			max-width: calc(50%);
+			margin-right: 5px;
+			display: inline-block;
 		}
 
-		.blue {
-			a {
-				text-overflow: ellipsis;
-				overflow: hidden;
-				max-width: 70px;
-				vertical-align: bottom;
-
-				@include max-vw($res-1000) {
-					max-width: 180px;
-				}
-
-				@include max-vw($res-768) {
-					max-width: 90px;
-				}
-
-				@include max-vw($res-500) {
-					overflow: unset;
-				}
-			}
-		}
-
-		&.is-owner {
-			&:after {
-				content: "OWNER";
-				position: absolute;
-				right: 0;
-				background-color: #cadef0;
-				top: -2px;
-				@include hack-bold;
-				padding: 3px;
-				font-size: 9px;
-				color: $blue;
-				letter-spacing: 0.25em;
-			}
-
-			.txt {
-				max-width: calc(100% - 113px);
+		.name {
+			max-width: calc(50%);
+			.link {
+				display: block;
+				@include text-overflow();
+				max-width: calc(100%);
 			}
 		}
 	}
