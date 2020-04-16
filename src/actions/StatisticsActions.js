@@ -8,7 +8,6 @@ import StatisticsReducer from '../reducers/StatisticsReducer';
 
 import { getStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
-import { ECHO_ASSET } from '../constants/GlobalConstants';
 import { getLatestOperations } from './BlockActions';
 
 class StatisticsActionsClass extends BaseActionsClass {
