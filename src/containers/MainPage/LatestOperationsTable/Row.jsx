@@ -6,12 +6,13 @@ import cn from 'classnames';
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
 import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
+import FormatHelper from '../../../helpers/FormatHelper';
 
 const OperationsRow = React.memo(({
-	operation, from, to, amount,
+	operation, from, to, amount, onClick,
 }) => (
 	<React.Fragment>
-		<tr className={cn('view')}>
+		<tr onClick={onClick} className={cn('view')}>
 			<td />
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
@@ -39,7 +40,7 @@ const OperationsRow = React.memo(({
 			</td>
 			<td className="amount">
 				<div className="td-in">
-					<span className="value">{amount.value}</span>
+					<span className="value">{FormatHelper.formatAmount(amount.value, amount.precision)}</span>
 					<span className="type">{amount.coin}</span>
 				</div>
 			</td>
@@ -53,6 +54,7 @@ OperationsRow.propTypes = {
 	from: PropTypes.string,
 	to: PropTypes.string,
 	amount: PropTypes.object.isRequired,
+	onClick: PropTypes.func.isRequired,
 };
 
 OperationsRow.defaultProps = {

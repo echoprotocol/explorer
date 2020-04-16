@@ -8,9 +8,10 @@ import FormatHelper from '../../helpers/FormatHelper';
 import BlockReducer from '../../reducers/BlockReducer';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import GlobalActions from '../../actions/GlobalActions';
-import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import LatestBlocksTable from './LatestBlocksTable';
 import LatestOperationsTable from './LatestOperationsTable';
+import URLHelper from '../../helpers/URLHelper';
 
 
 class MainPage extends React.Component {
@@ -63,6 +64,13 @@ class MainPage extends React.Component {
 		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
 	}
 
+	goToTransaction(e, block, transaction, op) {
+		e.preventDefault();
+		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
+		const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, op + 1);
+		Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
+	}
+
 	render() {
 		return (
 			<div className="main-page">
@@ -72,6 +80,7 @@ class MainPage extends React.Component {
 						blocks={this.getBlocks()}
 					/>
 					<LatestOperationsTable
+						goToTransaction={(e, block, trx, op) => this.goToTransaction(e, block, trx, op)}
 						operations={this.getOperations()}
 					/>
 				</div>
