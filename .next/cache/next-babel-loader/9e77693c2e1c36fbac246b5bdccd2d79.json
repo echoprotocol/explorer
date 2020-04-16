@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { connect } from 'react-redux';\nimport TotalSupply from '../../components/Sidebar/TotalSupply';\nexport default connect(state => ({\n  assets: state.statistics.get('assets')\n}), () => ({}))(TotalSupply);","map":null,"metadata":{},"sourceType":"module"}

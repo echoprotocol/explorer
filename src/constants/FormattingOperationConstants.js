@@ -86,3 +86,8 @@ export const ASSET_ISSUER_PERMISSION_FLAGS = {
 	TRANSFER_RESTRICTED: 4,
 	COMMITTEE_FED_ASSET: 8,
 };
+
+export const ECHO_COMMITTEE_ACCOUNT = {
+	NAME: 'committee-account',
+	ID: '1.2.1',
+};

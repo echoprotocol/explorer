@@ -1,7 +1,7 @@
 import { OPERATIONS_IDS } from 'echojs-lib';
 
 import {
-	ACCOUNT_BLACK_WHITE,
+	ACCOUNT_BLACK_WHITE, ECHO_COMMITTEE_ACCOUNT,
 	OPS_DESCRIPTIONS,
 	OPS_TYPES,
 } from '../constants/FormattingOperationConstants';
@@ -121,7 +121,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					asset_description: data.objectInfo.get('description'),
 					fee: data.fee,
 					rate: data.objectInfo.get('rate'),
-					is_bit_asset: data.objectInfo.get('isBitAsset') ? 'Yes' : 'No',
+					is_bit_asset: data.objectInfo.get('bitassetOps') ? 'Yes' : 'No',
 					settings: [{
 						key: 'Whitelist',
 						value: settings.isWhiteList,
@@ -185,64 +185,45 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.ASSET_UPDATE_BITASSET:
-			// TODO check
-			console.log('data', data);
+			const { bitAssetOps } = data.objectInfo.toJS();
 			return {
 				operationInfo: {
 					type,
 					sender: data.issuer,
-					asset_name: data.asset_to_update,
+					asset_name: data.asset_to_update.value,
 					max_suply: data.objectInfo.get('maxSupply'),
-					asset_description: data.objectInfo.get('description'),
 					rate: data.objectInfo.get('rate'),
-					// bit_asset_options: [{
-					// 	key: 'Feed lifetime',
-					// 	value: '12w, 23d, 34:34:56',
-					// }, {
-					// 	key: 'Minimum feeds',
-					// 	value: '3',
-					// }, {
-					// 	key: 'Short backing asset:',
-					// 	value: 'off',
-					// }],
-					fee: data.fee,
-					description,
-				},
-			};
-		case OPERATIONS_IDS.ASSET_UPDATE_FEED_PRODUCERS:
-			// TODO check
-			return {
-				operationInfo: {
-					type,
-					sender: data.issuer,
-					asset_name: 'Asset name',
-					asset_description: data.objectInfo.get('description'),
-					new_feed_producers: [{
-						value: 'account',
-						link: '1.2.3',
+					bit_asset_options: [{
+						key: 'Feed lifetime',
+						value: bitAssetOps.feed_lifetime_sec,
 					}, {
-						value: 'pink-n-floyd01230',
-						link: '1.2.4',
+						key: 'Minimum feeds',
+						value: bitAssetOps.minimum_feeds,
 					}, {
-						value: 'ViolletyLetty',
-						link: '1.2.5',
+						key: 'Short backing asset:',
+						value: bitAssetOps.short_backing_asset,
 					}],
 					fee: data.fee,
 					description,
+				},
+			};
+		case OPERATIONS_IDS.ASSET_UPDATE_FEED_PRODUCERS: {
+			const additionalInfo = await getAdditionalInfoByOpId(opNumber, data.asset_to_update.link);
+			return {
+				operationInfo: {
+					type,
+					sender: data.issuer,
+					asset_name: data.asset_to_update.value,
+					asset_description: data.objectInfo.get('description'),
+					new_feed_producers: data.new_feed_producers,
+					fee: data.fee,
+					description,
 					additionalInfo: {
-						current_asset_feed_producers: [{
-							value: 'account',
-							link: '1.2.3',
-						}, {
-							value: 'pink-n-floyd01230',
-							link: '1.2.4',
-						}, {
-							value: 'ViolletyLetty',
-							link: '1.2.5',
-						}],
+						current_asset_feed_producers: additionalInfo.assetFeedProducers,
 					},
 				},
 			};
+		}
 		case OPERATIONS_IDS.ASSET_ISSUE:
 			return {
 				operationInfo: {
@@ -285,11 +266,12 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		case OPERATIONS_IDS.ASSET_PUBLISH_FEED:
 			// TODO check
+			console.log('data', data);
 			return {
 				operationInfo: {
 					type,
 					sender: data.publisher,
-					asset_name: data.asset_id,
+					asset_name: data.asset_id.value,
 					feeded_asset_price: data.asset_id,
 					fee: data.fee,
 					description,
@@ -312,82 +294,29 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					},
 				},
 			};
-		case OPERATIONS_IDS.PROPOSAL_CREATE:
+		case OPERATIONS_IDS.PROPOSAL_CREATE: {
+			console.log('data.objectInfo', data.proposed_ops);
+			const proposalOperations = await Promise.all(data.proposed_ops.map(([idOp, op]) => transformOperationDataByType(idOp, op)));
 			return {
 				operationInfo: {
 					type,
 					sender: data.fee_paying_account,
 					expiration_time: data.expiration_time,
-					preview_period: data.review_period_seconds,
+					preview_period: data.review_period_seconds.amount,
 					fee: data.fee,
 					description,
 					additionalInfo: {
-						count_approvals: {
-							value: 2,
-							total: 4,
-						},
-						proposal_status: 'rejected',
+						// count_approvals: { // ADD after succce proposal
+						// 	value: 2,
+						// 	total: 4,
+						// },
+						proposal_status: data.objectInfo ? 'resolve' : 'rejected',
 						result_transaction: 'https://explorer.echo.org/blocks/70/1?op=1',
 					},
 				},
-				proposalOperations: [{
-					operationInfo: {
-						type: 'Reverse asset',
-						sender: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						amount: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						fee: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						additionalInfo: {
-							current_asset_total_supply: '12,000,000,000. 00000000',
-						},
-					},
-				}, {
-					operationInfo: {
-						type: 'Create account',
-						registrar: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						account_name: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						new_account_id: '1.2.3',
-						authority: [{
-							value: 'ECHOd9f8LmNjn32GUMXZwNZDsfBqa6qcBGvGk86kKTuvzkMjdW9saCrTtrPwGpuB',
-							weight: '1',
-						}, {
-							value: 'vic.tor',
-							weight: '1',
-						}],
-						echorand_key: 'anyStringValue',
-						delegating_account: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						delegate_share: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						fee: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-					},
-				}],
+				proposalOperations,
 			};
+		}
 		case OPERATIONS_IDS.PROPOSAL_UPDATE:
 			return {
 				operationInfo: {
@@ -580,10 +509,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: {
-						value: 'account',
-						link: '1.2.3',
+						value: ECHO_COMMITTEE_ACCOUNT.NAME,
+						link: ECHO_COMMITTEE_ACCOUNT.ID,
 					},
-					changed_parameters: ['param1', 'param2', 'param3'],
+					// changed_parameters: ['param1', 'param2', 'param3'],
 					fee: data.fee,
 					description,
 					additionalInfo: {

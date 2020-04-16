@@ -116,6 +116,8 @@ class TransactionActionsClass extends BaseActionsClass {
 	async setOperationObject(operation, options, from, subject) {
 		let object = new Map({});
 
+		console.log('setOperationObject', operation.name);
+
 		try {
 			if (accountOperations.includes(operation.name)) {
 				let account = await echo.api.getObject(from.id);
@@ -162,7 +164,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set(
 						'accumulated_fees',
 						accumulatedFees === 0 ? 0 : FormatHelper
-							.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision)
+							.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision),
 					)
 					.set('rate', rate)
 					.set('issuer', issuer && issuer.name)
@@ -171,7 +173,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('issuer_permissions', asset.options.issuer_permissions)
 					.set('flags', asset.options.flags)
 					.set('description', asset.options.description)
-					.set('isBitAsset', !!asset.bitasset)
+					.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
 				const committee = await echo.api.getObject(subject.id);
@@ -561,6 +563,12 @@ class TransactionActionsClass extends BaseActionsClass {
 						value = { precision: asset.precision, symbol: asset.symbol, amount: value.core_exchange_rate.base.amount };
 					} else if (_.has(value, 'weight_threshold')) {
 						break;
+					} else if (key === 'new_feed_producers') {
+						const accounts = await echo.api.getAccounts(value);
+						value = accounts.map(({ name, id }) => ({ value: name, link: id }));
+					} else if (key === 'proposed_ops') {
+						value = value.map(({ op }) => op);
+						break;
 					} else {
 						return {};
 					}
@@ -568,6 +576,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				case 'boolean':
 					value = value ? 'Yes' : 'No';
 					break;
+
 				default:
 					break;
 			}
@@ -676,13 +685,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			delete options.delegate_data;
 		}
 
-		// if (operation.active) {
-		// 	options.active =
-		// 	options.weight_threshold = options.active.weight_threshold;
-		// 	options.authority = options.active.key_auths.;
-		// 	delete options.active;
-		// }
-
 		const op = {
 			mainInfo: {
 				from,
@@ -720,6 +722,8 @@ class TransactionActionsClass extends BaseActionsClass {
 
 				// console.log(JSON.stringify(block.transactions, null, 15));
 				const transaction = block.transactions[index - 1];
+
+				console.log(JSON.stringify(block.transactions, null, 10));
 
 				await this.fetchTransactionsObjects(transaction.operations);
 

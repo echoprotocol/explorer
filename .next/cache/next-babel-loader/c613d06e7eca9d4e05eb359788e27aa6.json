@@ -1,0 +1,1 @@
+{"ast":null,"code":"import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';\nimport config from '../../config/chain';\nconst Map = ReactMapboxGl({\n  accessToken: config.MAP_API_TOKEN\n});\nexport default Map;\nexport { Map, Layer, Feature, Popup };","map":null,"metadata":{},"sourceType":"module"}

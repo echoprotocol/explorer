@@ -1,0 +1,1 @@
+{"ast":null,"code":"var __jsx = React.createElement;\nimport React from 'react';\n\nconst PreparingBlock = ({\n  children\n}) => __jsx(\"div\", {\n  className: \"preparing-block\"\n}, children);\n\nexport default PreparingBlock;","map":null,"metadata":{},"sourceType":"module"}

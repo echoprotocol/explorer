@@ -34,6 +34,14 @@ async function getAssetCreateInfo(assetId) {
 	return getAssetFlags(asset.options);
 }
 
+async function getAssetUpdateFeedProducersInfo(assetId) {
+	const asset = await echo.api.getObject(assetId);
+	const producersIds = asset.bitasset.feeds.map(([producerId]) => producerId);
+	const producers = await echo.api.getAccounts(producersIds);
+	const assetFeedProducers = producers.map(({ name, id }) => ({ value: name, link: id }));
+	return { assetFeedProducers };
+}
+
 async function getAdditionalInfoByOpId(opId, data) {
 	try {
 		switch (opId) {
@@ -41,6 +49,8 @@ async function getAdditionalInfoByOpId(opId, data) {
 				return await getAccountWhiteListInfo(data);
 			case OPERATIONS_IDS.ASSET_CREATE:
 				return await getAssetCreateInfo(data);
+			case OPERATIONS_IDS.ASSET_UPDATE_FEED_PRODUCERS:
+				return await getAssetUpdateFeedProducersInfo(data);
 			default:
 				return null;
 		}

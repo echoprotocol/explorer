@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var ECHO = {\n  ID: '1.3.0',\n  SYMBOL: 'ECHO'\n};\nexport var MONITORING_ASSETS = [ECHO.ID];","map":null,"metadata":{},"sourceType":"module"}

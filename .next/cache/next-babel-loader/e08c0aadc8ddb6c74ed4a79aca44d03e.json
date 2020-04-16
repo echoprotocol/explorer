@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { Controlled, UnControlled } from 'react-codemirror2';\n\nrequire('codemirror/mode/xml/xml.js');\n\nrequire('codemirror/mode/javascript/javascript.js');\n\nexport { Controlled, UnControlled };","map":null,"metadata":{},"sourceType":"module"}

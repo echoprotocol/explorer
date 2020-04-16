@@ -1,0 +1,1 @@
+{"ast":null,"code":"import Asset from '../../../containers/Asset';\nexport default Asset;","map":null,"metadata":{},"sourceType":"module"}

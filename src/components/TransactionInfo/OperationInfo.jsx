@@ -20,7 +20,7 @@ class OperationInfo extends React.Component {
 
 	render() {
 		const { data, proposalIdx } = this.props;
-
+		// TODO add asset
 		return (
 			<div className="operation-info">
 				{data.description &&

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var commaNumberRepresentationRegEx = /^([1-9]{1}[0-9]{0,2}((,|\\.)[0-9]{3})*)$/;\nexport var stringNumberRegEx = /^(0|[1-9]\\d*)$/;\nexport var startWithLetterRegEx = /^([a-zA-Z]{1}.*)$/;\nexport var objectIdRegEx = /^[0-9a-fA-F]+$/;","map":null,"metadata":{},"sourceType":"module"}
