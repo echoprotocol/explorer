@@ -2,17 +2,15 @@ import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 import * as wrapper from 'solc/wrapper';
+import Router from 'next/router';
 
 import {
 	CONTRACT_FIELDS,
-	DEFAULT_OPERATION_HISTORY_ID,
-	DEFAULT_ROWS_COUNT,
 	MIN_ACCESS_VERSION_BUILD,
 } from '../constants/GlobalConstants';
-import { OPERATION_HISTORY_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 import { MODAL_ERROR, MODAL_SUCCESS } from '../constants/ModalConstants';
 import { FORM_CONTRACT_VERIFY, FORM_MANAGE_CONTRACT } from '../constants/FormConstants';
-import { CONTRACT_ABI } from '../constants/RouterConstants';
+import { CONTRACT_ABI, SSR_CONTRACT_DETAILS_PATH, SSR_CONTRACT_PATH } from '../constants/RouterConstants';
 
 import FormatHelper from '../helpers/FormatHelper';
 import URLHelper from '../helpers/URLHelper';
@@ -41,10 +39,34 @@ import { BridgeService } from '../services/BridgeService';
 import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
-import browserHistory from '../history';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
 
+import { CONTRACT_GRID } from '../constants/TableConstants';
+import { getHistory as getContractHistory } from '../services/queries/history';
+import GridActions from './GridActions';
+import config from '../config/chain';
+
 class ContractActions extends BaseActionsClass {
+
+	/**
+	 * @method formatHistoryFromEchoDB
+	 * @param history
+	 * @return {*}
+	 */
+	formatHistoryFromEchoDB(history) {
+		return history.map((data) => {
+			const operationId = parseInt(data.id, 10);
+			return ({
+				id: operationId,
+				op: [operationId, data.body],
+				result: [0, data.result],
+				block_num: data.transaction ? data.transaction.block.round : data.block.round,
+				trx_in_block: data.trx_in_block,
+				op_in_trx: data.op_in_trx,
+				virtual_op: 0,
+			});
+		});
+	}
 
 	/**
 	 * Format contract history
@@ -55,16 +77,8 @@ class ContractActions extends BaseActionsClass {
 		await TransactionActions.fetchTransactionsObjects(transactions);
 
 		let history = transactions.map(async (t) => {
-			let { op: operation, result } = t;
-
+			const { op: operation, result } = t;
 			const block = await echo.api.getBlock(t.block_num);
-
-			if (OPERATIONS_IDS.CONTRACT_TRANSFER === t.op[0]) {
-
-				operation = block.transactions[t.trx_in_block].operations[t.op_in_trx];
-				result = block.transactions[t.trx_in_block].operation_results[t.op_in_trx];
-			}
-
 			return TransactionActions.getOperation(operation, t.block_num, block.timestamp, t.trx_in_block, t.op_in_trx, result);
 		});
 
@@ -98,34 +112,26 @@ class ContractActions extends BaseActionsClass {
 				await dispatch(this.getContractInfoFromExplorer(id));
 				await dispatch(this.getContractInfoFromGraphql(id));
 
-				const balances = await echo.api.getContractBalances(id);
-				await echo.api.getObjects(balances.map((b) => b.asset_id));
+				let balances = await echo.api.getContractBalances(id);
+				const assets = await echo.api.getObjects(balances.map((b) => b.asset_id));
 
 				let { owner } = await echo.api.getObject(id);
 				owner = new Map(await echo.api.getObject(owner));
 
-
+				balances = balances.map((balance, index) => {
+					const asset = assets.find(({ id: assetId }) => assetId === balance.asset_id);
+					return ({
+						id: index,
+						amount: balance.amount,
+						asset: new Map(asset),
+					});
+				});
 				dispatch(this.setMultipleValue({
 					bytecode: contract[1].code,
-					balances: fromJS(balances),
+					balances: new List(balances),
 					owner,
 				}));
-
-				let history = await echo.api.getContractHistory(
-					id,
-					DEFAULT_OPERATION_HISTORY_ID,
-					DEFAULT_ROWS_COUNT + 1,
-					DEFAULT_OPERATION_HISTORY_ID,
-				);
-
-				const isFullHistory = history.length <= DEFAULT_ROWS_COUNT;
-				if (history.length > DEFAULT_ROWS_COUNT) {
-					history = history.slice(0, history.length - 1);
-				}
-
-				history = await this.formatContractHistory(history);
-
-				dispatch(this.setMultipleValue({ history: new List(history), isFullHistory }));
+				await dispatch(this.loadContractHistory(id));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -136,38 +142,46 @@ class ContractActions extends BaseActionsClass {
 
 	/**
 	 * Load contract history
-	 * @param {string} id
-	 * @param {number} lastOperationId
+	 * @param {string} contractId
 	 * @returns {function}
 	 */
-	loadContractHistory(id, lastOperationId) {
+	loadContractHistory(contractId) {
 		return async (dispatch, getState) => {
-			const lastOperationIdState = getState().contract.get('lastOperationId');
-
-			if (lastOperationIdState === lastOperationId) {
-				return;
-			}
-
 			try {
-				dispatch(this.setValue('lastOperationId', lastOperationId));
+				const queryData = getState().grid.get(CONTRACT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
+				const subject = contractId;
+				const getObjectId = async (objectId) => {
+					if (!objectId) { return; }
+					let account = null;
+					try {
+						account = await echo.api.getAccountByName(objectId.trim());
+						if (account) {
+							account = account.id;
+						}
+						// eslint-disable-next-line no-empty
+					} catch (err) {}
+					// eslint-disable-next-line consistent-return
+					return account;
+				};
 
-				let history = await echo.api.getContractHistory(
-					id,
-					DEFAULT_OPERATION_HISTORY_ID,
-					DEFAULT_ROWS_COUNT + 1,
-					`${OPERATION_HISTORY_OBJECT_PREFIX}.${lastOperationId - 1}`,
-				);
+				const [fromFilter, toFilter] = await Promise.all([
+					getObjectId(queryData.filters.from),
+					getObjectId(queryData.filters.to),
+				]);
 
-				history = await this.formatContractHistory(history.slice(0, DEFAULT_ROWS_COUNT));
-
-				dispatch(batchActions([
-					this.reducer.actions.concat({ field: 'history', value: new List(history) }),
-					this.reducer.actions.set({
-						field: 'isFullHistory',
-						value: history.length < DEFAULT_ROWS_COUNT,
-					}),
-				]));
+				const { items, total } = await getContractHistory({
+					subject,
+					fromFilter: fromFilter || undefined,
+					toFilter: toFilter || undefined,
+					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+					count: queryData.sizePerPage,
+					operations: Object.keys(OPERATIONS_IDS),
+				});
+				dispatch(GridActions.setTotalDataSize(CONTRACT_GRID, total));
+				let transactions = this.formatHistoryFromEchoDB(items);
+				transactions = await this.formatContractHistory(transactions);
+				dispatch(this.setValue('history', new List(transactions)));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -178,41 +192,17 @@ class ContractActions extends BaseActionsClass {
 
 	/**
 	 * Update contract info
-	 * @param {string} id
-	 * @param {number} recentOperationId
+	 * @param {string} contractId
 	 * @returns {function}
 	 */
-	updateContractInfo(id, recentOperationId = DEFAULT_OPERATION_HISTORY_ID) {
-		const getHistory = async (history = []) => {
-
-			const chunk = await echo.api.getContractHistory(
-				id,
-				history.length ? [history.length - 1].id : recentOperationId,
-				DEFAULT_ROWS_COUNT + 1,
-				DEFAULT_OPERATION_HISTORY_ID,
-			);
-
-			history = history.concat(chunk);
-
-			if (chunk.length > DEFAULT_ROWS_COUNT) {
-				return getHistory(history);
-			}
-
-			return history;
-		};
-
+	updateContractInfo(contractId) {
 		return async (dispatch) => {
 			try {
-				let balances = await echo.api.getContractBalances(id);
+				let balances = await echo.api.getContractBalances(contractId);
 				await echo.api.getObjects(balances.map((b) => b.asset_id));
 				balances = fromJS(balances);
-
-				let history = await getHistory();
-				history = await this.formatContractHistory(history);
-				history = new List(history);
-
+				await dispatch(this.loadContractHistory(contractId));
 				dispatch(batchActions([
-					this.reducer.actions.update({ field: 'history', value: history }),
 					this.reducer.actions.set({ field: 'balances', value: balances }),
 				]));
 			} catch (e) {
@@ -233,7 +223,7 @@ class ContractActions extends BaseActionsClass {
 				'currentCompiler',
 				lastVersion && lastVersion.longVersion,
 			));
-			await loadScript(`${__SOLC_BIN_URL__}${solcLatestRelease}`); // eslint-disable-line no-undef
+			await loadScript(`${config.SOLC_BIN_URL}${solcLatestRelease}`); // eslint-disable-line no-undef
 		};
 	}
 
@@ -252,7 +242,7 @@ class ContractActions extends BaseActionsClass {
 				dispatch(this.setValue('downloadedCompilers', downloadedVersions.add(version)));
 
 				// eslint-disable-next-line no-undef
-				const response = await fetch(`${__SOLC_BIN_URL__}${compilerBuild.get('path')}`);
+				const response = await fetch(`${config.SOLC_BIN_URL}${compilerBuild.get('path')}`);
 				const total = Number.parseInt(response.headers.get('content-length'), 10);
 				const reader = response.body.getReader();
 				let bytesReceived = 0;
@@ -541,7 +531,7 @@ class ContractActions extends BaseActionsClass {
 
 				dispatch(this.setValue('abi', FormatHelper.formatAbi(response.abi)));
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'ABI successfully uploaded' }));
-				browserHistory.push(URLHelper.createContractUrl(id, CONTRACT_ABI));
+				Router.push(SSR_CONTRACT_DETAILS_PATH, URLHelper.createContractUrl(id, CONTRACT_ABI));
 			} catch (err) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));
 			}
@@ -662,7 +652,7 @@ class ContractActions extends BaseActionsClass {
 					sourceCode: response.source_code,
 				}));
 				dispatch(ModalActions.openModal(MODAL_SUCCESS, { title: 'Contract verified' }));
-				browserHistory.push(URLHelper.createContractUrl(id));
+				Router.push(SSR_CONTRACT_PATH, URLHelper.createContractUrl(id));
 
 			} catch (err) {
 				dispatch(ModalActions.openModal(MODAL_ERROR, { title: FormatHelper.formatServerError(err) }));

@@ -40,7 +40,7 @@ class ContractAssets extends React.Component {
 						))
 					}
 					{/* if max-width: 768px show 2 assets in preview, else show 4 */}
-					<Media query={`(max-width: ${MAX_WIDTH_SCREEN})`}>
+					<Media query={`(max-width: ${MAX_WIDTH_SCREEN})`} defaultMatches={data.get('isMobile')}>
 						{(matches) =>
 							!matches && balances.slice(2, 2).map(({ amount, asset, id }) => this.renderAsset(
 								id,

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Router from 'next/router';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
@@ -15,6 +16,8 @@ import ProposalOperations from '../TransactionInfo/ProposalOperations';
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import { transformOperationDataByType } from '../../helpers/TransformDataHelper';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+// import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -26,29 +29,44 @@ const OperationsRow = React.memo(({
 		opIndex,
 		number,
 		type,
+		blockTimestamp,
 		...detailInfo
 	},
 	operation,
 	index,
+	isTransaction,
 	active,
 	toggleOperationDetails,
 	tableRefs,
+	currentPage,
+	sizePerPage,
+	totalDataSize,
+	isMobile,
 }) => {
+
+	// const goToBlock = (e) => {
+	// 	e.preventDefault();
+	// 	e.stopPropagation();
+	// 	Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
+	// };
 
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
+	const goToLink = (e, href, objectId) => {
+		e.preventDefault();
+		e.stopPropagation();
+		Router.push(SsrHrefHelper.getHrefByObjectId(objectId), href);
+	};
 
 	const renderSubject = (subject) => {
 		if (!subject) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
 		return (
-			<Link
-				className="td-in avatar-wrap"
-				to={URLHelper.createUrlById(subject)}
-				onClick={(e) => e.stopPropagation()}
-			>
-				{mainInfo.subject.name && <Avatar accountName={subject} />}
-				<span>{subject}</span>
+			<Link href={SsrHrefHelper.getHrefByObjectId(subject)}>
+				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
+					{mainInfo.subject.name && <Avatar accountName={subject} />}
+					<span>{subject}</span>
+				</a>
 			</Link>
 		);
 	};
@@ -73,12 +91,22 @@ const OperationsRow = React.memo(({
 		);
 	};
 
+	const objectId = objectInfo ? objectInfo.get('id') : null;
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	// const operationsInfoData = type && transformOperationDataByType(type, operation);
-	const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
+	const operationsInfoData = type && transformOperationDataByType(type, operation);
+	// const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
 
+	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
+	let numberOperation = null;
+	if (number !== '') {
+		numberOperation = isTransaction ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
+	}
+
+	if (numberOperation < 1) {
+		return null;
+	}
 	return (
 		<React.Fragment>
 			<tr
@@ -87,20 +115,19 @@ const OperationsRow = React.memo(({
 				ref={tableRefs[index]}
 			>
 				<td className="number">
-					<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
+					<div className="td-in">{numberOperation}</div>
 				</td>
 				<td className="operation">
 					<div className="td-in">{type}</div>
 				</td>
+				{/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
 				<td className="sender">
 					{ mainInfo.from.id ?
-						<Link
-							className="td-in avatar-wrap"
-							to={getSenderLink()}
-							onClick={(e) => e.stopPropagation()}
-						>
-							{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
-							<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
+							<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, getSenderLink(), mainInfo.from.id)}>
+								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
+								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+							</a>
 						</Link> : <div className="td-in">—</div>
 					}
 				</td>
@@ -161,11 +188,21 @@ const OperationsRow = React.memo(({
 });
 
 OperationsRow.propTypes = {
+	isMobile: PropTypes.bool.isRequired,
+	currentPage: PropTypes.number.isRequired,
+	sizePerPage: PropTypes.number.isRequired,
+	totalDataSize: PropTypes.number.isRequired,
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
+	isTransaction: PropTypes.bool,
 };
+
+OperationsRow.defaultProps = {
+	isTransaction: false,
+};
+
 
 export default OperationsRow;

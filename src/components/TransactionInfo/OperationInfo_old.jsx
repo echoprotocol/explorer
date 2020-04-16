@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link } from 'next/link';
 import Media from 'react-media';
 import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
