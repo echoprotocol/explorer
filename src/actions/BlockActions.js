@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle,camelcase,no-shadow */
 import BN from 'bignumber.js';
-import moment from 'moment';
 import { Map, List } from 'immutable';
 import echo, { serializers, validators } from 'echojs-lib';
 
@@ -214,7 +213,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.transactionCount = resultTransactions.length;
 		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
 		value.round = planeBlock.round;
-		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
+		value.timestamp = planeBlock.timestamp;
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, resultTransactions.length));
 		await dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
@@ -323,7 +322,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
 				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
