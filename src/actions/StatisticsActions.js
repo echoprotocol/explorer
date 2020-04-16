@@ -135,10 +135,6 @@ class StatisticsActionsClass extends BaseActionsClass {
 		return (dispatch) => {
 			const { frozenData } = newBlock;
 			const historyFrozenData = frozenData.map((el) => el.frozenSums);
-			newBlock.currentFrozenData.accounts_freeze_sum = new BN(newBlock.currentFrozenData.accounts_freeze_sum)
-				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
-			newBlock.currentFrozenData.committee_freeze_sum = new BN(newBlock.currentFrozenData.committee_freeze_sum)
-				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
 			dispatch(this.setMultipleValue({
 				currentFrozenData: newBlock.currentFrozenData,
 				frozenData: historyFrozenData,
