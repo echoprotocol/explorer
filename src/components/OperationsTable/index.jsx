@@ -267,7 +267,7 @@ class OperationsTable extends React.Component {
 }
 
 OperationsTable.propTypes = {
-	isASCOps: PropTypes.number.isRequired,
+	isASCOps: PropTypes.bool.isRequired,
 	isMobile: PropTypes.bool.isRequired,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
