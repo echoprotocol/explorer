@@ -48,6 +48,7 @@ class Account extends React.Component {
 
 	componentWillUnmount() {
 		const { account } = this.props;
+		if (!account || (account && !account.get)) { return; }
 		this.unsubscribeHistoryUpdate(account.get('id'));
 		this.props.clearAccountInfo();
 	}
@@ -106,6 +107,7 @@ class Account extends React.Component {
 
 		return (
 			<div className="inner-container">
+				{this.renderMeta()}
 				<div className="account-page-info">
 					{account && <InnerHeader title={`Account ${account.get('id')}`} />}
 					<div className="account-page-t-block">
