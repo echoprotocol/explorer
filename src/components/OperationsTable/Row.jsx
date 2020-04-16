@@ -109,9 +109,9 @@ const OperationsRow = React.memo(({
 			>
 				<td />
 				<td className="number">
-					<div className="td-in">{numberOperation}</div>
+					<div className="td-in">{numberOperation}.</div>
 				</td>
-				<td className="operation">
+				<td className="type">
 					<div className="td-in">{detailInfo.type}</div>
 				</td>
 				{/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}

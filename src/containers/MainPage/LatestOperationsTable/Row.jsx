@@ -44,7 +44,6 @@ const OperationsRow = React.memo(({
 					<span className="type">{amount.coin}</span>
 				</div>
 			</td>
-			<td />
 		</tr>
 	</React.Fragment>
 ));
