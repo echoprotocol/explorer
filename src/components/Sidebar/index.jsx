@@ -45,10 +45,10 @@ const Sidebar = React.memo((props) => {
 	});
 	return (
 		<div className={cn('sidebar', { pinned })}>
-			<SidebarElement title="Total supply">
+			<SidebarElement title="Total supply" className="total-supply">
 				<TotalSupply />
 			</SidebarElement>
-			<SidebarElement title="Blockchain rates">
+			<SidebarElement title="Blockchain rates" className="blockchain-rates">
 				<BlockchainRates
 					pinned={pinned}
 					delegationRate={delegationRate}
@@ -57,7 +57,7 @@ const Sidebar = React.memo((props) => {
 					decentralizationRates={decentralizationRates}
 				/>
 			</SidebarElement>
-			<SidebarElement title="Frozen Funds">
+			<SidebarElement title="Frozen Funds" className="frozen-funds">
 				<FrozenFunds
 					currentFrozenData={currentFrozenData}
 					frozenData={frozenData}
