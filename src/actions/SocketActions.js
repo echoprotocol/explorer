@@ -220,7 +220,6 @@ export const partialClientConnect = () => async (dispatch) => {
 				apis: config.ECHO_NODE.APIS,
 			});
 		}
-
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 

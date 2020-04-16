@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
-import moment from 'moment';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
@@ -28,8 +27,8 @@ class MainPage extends React.Component {
 			blocksResult.push({
 				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
-				time: value.get('time'),
-				date: moment.utc(value.get('timestamp')).local().format('DD MMM'),
+				time: FormatHelper.getBlockTimeByTimestamp(value.get('timestamp')),
+				date: FormatHelper.getBlockDateByTimestamp(value.get('timestamp')),
 				producer: value.get('producer'),
 				producerId: value.get('producerId'),
 				reward: value.get('reward'),

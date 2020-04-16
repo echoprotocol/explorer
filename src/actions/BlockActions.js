@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle,camelcase,no-shadow */
 import BN from 'bignumber.js';
-import moment from 'moment';
 import { Map, List } from 'immutable';
 import echo, { serializers, validators } from 'echojs-lib';
 
@@ -323,7 +322,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
 				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)

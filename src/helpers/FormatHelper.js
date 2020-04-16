@@ -220,6 +220,24 @@ class FormatHelper {
 		return new BN(stringValue).toNumber();
 	}
 
+	/**
+	 * @method getBlockTimeByTimestamp
+	 * @param timestamp
+	 * @return {string}
+	 */
+	static getBlockTimeByTimestamp(timestamp) {
+		return moment.utc(timestamp).local().format('hh:mm:ss A');
+	}
+
+	/**
+	 * @method getBlockDateByTimestamp
+	 * @param timestamp
+	 * @return {string}
+	 */
+	static getBlockDateByTimestamp(timestamp) {
+		return moment.utc(timestamp).local().format('DD MMM');
+	}
+
 }
 
 export default FormatHelper;
