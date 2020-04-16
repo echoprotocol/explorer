@@ -6,7 +6,9 @@
 	letter-spacing: 0.02em;
 	color: $explorer-black;
 	@include inter-semibold();
-
+	@include max-vw($res-1280) {
+		align-items: flex-start;
+	}
 	svg {
 		min-width: 16px;
 	}
@@ -14,20 +16,8 @@
 
 .total-supply-value {
 	@include text-overflow();
-	max-width: 277px;
+	max-width: calc(100% - 80px);
 	margin: 0 5px 0 10px;
-	@include max-vw($res-1600) {
-		max-width: 200px;
-	}
-	@include max-vw($res-1400) {
-		max-width: 138px;
-	}
-	@include max-vw($res-1280) {
-		max-width: 400px;
-	}
-	@include max-vw($res-768) {
-		max-width: 55vw;
-	}
 }
 .total-supply-coin {
 	color: $blue;

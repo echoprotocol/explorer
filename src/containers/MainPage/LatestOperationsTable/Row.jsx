@@ -13,7 +13,6 @@ const OperationsRow = React.memo(({
 }) => (
 	<React.Fragment>
 		<tr onClick={onClick} className={cn('view')}>
-			<td />
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
 				{

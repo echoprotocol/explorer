@@ -9,6 +9,11 @@
 		@include max-vw($res-500) {
 			flex-direction: column;
 		}
+		.sidebar-element-block {
+			@include max-vw($res-1280) {
+				width: 50%;
+			}
+		}
 	}
 }
 .pinned {
