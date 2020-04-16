@@ -17,6 +17,7 @@ import OperationsFilter from './Filter';
 import { DEBOUNCE_TIMEOUT } from '../../constants/TableConstants';
 import { NOT_FOUND_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import TypesHelper from '../../helpers/TypesHelper';
+import Loader from '../Loader';
 
 class OperationsTable extends React.Component {
 
@@ -111,7 +112,9 @@ class OperationsTable extends React.Component {
 		this.setState({ [name]: value });
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
-			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from.trim(), to: filters.to.trim(), p: 1 });
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
+				from: filters.from.trim(), to: filters.to.trim(), p: 1,
+			});
 			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 
@@ -127,13 +130,16 @@ class OperationsTable extends React.Component {
 		this.setState({ [name]: '' });
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
-			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from, to: filters.to, p: 1 });
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
+				from: filters.from, to: filters.to, p: 1,
+			});
 			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 	}
 
 	async onChangeOperationFilters(filters) {
-		await this.props.initData(filters);
+		const { totalDataSize } = this.props.filterAndPaginateData.toJS();
+		await this.props.initData({ ...filters, totalDataSize });
 		this.props.onLoadMoreHistory();
 	}
 
@@ -244,7 +250,7 @@ class OperationsTable extends React.Component {
 							))}
 						</tbody>
 					</table>
-					{loading && <LoadMore />}
+					{loading && <Loader />}
 				</PerfectScrollbar>
 				{!isTransaction && (
 					<OperationsPagination
