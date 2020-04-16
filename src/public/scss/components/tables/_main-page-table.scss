@@ -27,6 +27,9 @@
 			margin-bottom: 0;
 		}
 	}
+	thead {
+		color: $grey;
+	}
 
 	.view {
 		cursor: pointer;
@@ -78,12 +81,6 @@
 			margin-left: 0;
 		}
 	}
-	.age {
-		width: 200px;
-		max-width: 200px;
-		min-width: 200px;
-		white-space: nowrap;
-	}
 	.age-hint {
 		max-width: 0;
 		transition: max-width $speed, padding $speed;
@@ -103,5 +100,32 @@
 				max-width: 300px;
 			}
 		}
+	}
+
+	// Cell sizes Latest block table
+	.number {
+		width: 90px;
+	}
+	.age {
+		width: 22%;
+		white-space: nowrap;
+	}
+	.producer {
+		width: 33%;
+	}
+	.size {
+		width: 21%;
+	}
+
+	// Cell sizes latest operations table
+	.operation {
+		width: 27%;
+		min-width: 140px;
+	}
+	.from {
+		width: 26%;
+	}
+	.to {
+		width: 28%;
 	}
 }

@@ -12,7 +12,6 @@ const OperationsRow = React.memo(({
 }) => (
 	<React.Fragment>
 		<tr className={cn('view')}>
-			<td />
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
 				{
@@ -43,7 +42,6 @@ const OperationsRow = React.memo(({
 					<span className="type">{amount.coin}</span>
 				</div>
 			</td>
-			<td />
 		</tr>
 	</React.Fragment>
 ));

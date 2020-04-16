@@ -12,8 +12,7 @@ const OperationsRow = React.memo(({
 }) => (
 	<React.Fragment>
 		<tr onClick={onClick} className={cn('view')}>
-			<td />
-			<td className="number"><div className="td-in">{number}</div></td>
+			<td className="number"><div className="td-in">{number}.</div></td>
 			<td className="age">
 				<div className="td-in">
 					<span className="age-hint">{date},</span>
@@ -30,7 +29,6 @@ const OperationsRow = React.memo(({
 			</td>
 			<td className="size"><div className="td-in">{size.weight} {size.weightSize}</div></td>
 			<td className="txs"><div className="td-in">{txs}</div></td>
-			<td />
 		</tr>
 	</React.Fragment>
 ));
