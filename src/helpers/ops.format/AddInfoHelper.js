@@ -1,13 +1,13 @@
 import echo from 'echojs-lib';
 import { OPERATIONS_IDS } from 'echojs-lib';
 
-import { ASSET_ISSUER_PERMISSION_FLAGS } from '../constants/FormattingOperationConstants';
+import { ASSET_ISSUER_PERMISSION_FLAGS } from '../../constants/OpsFormatConstants';
 
 async function getAccountWhiteListInfo(accountId) {
 	const [account] = await echo.api.getAccounts([accountId]);
 	return {
-		whitelisting_accounts: account.whitelisted_accounts,
-		blacklisting_accounts: account.blacklisted_accounts,
+		whitelisting_accounts: account.whitelisted_accounts.map((id) => ({ link: id, value: id })),
+		blacklisting_accounts: account.blacklisted_accounts.map((id) => ({ link: id, value: id })),
 	};
 }
 

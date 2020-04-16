@@ -6,13 +6,14 @@ import FormatHelper from '../../helpers/FormatHelper';
 import PrimaryRow from './Rows/PrimaryRow';
 import LinkRow from './Rows/LinkRow';
 import ProducersRow from './Rows/ProducersRow';
+import SettingsRow from './Rows/SettingsRow';
 
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
 		<div className="additional-info__title">Additional info</div>
 		<div className="operation-details-rows">
-			{data.account_white_list && <PrimaryRow title="Account white list" description={data.account_white_list} />}
-			{data.account_black_list && <PrimaryRow title="Account black list" description={data.account_black_list} />}
+			{data.whitelisting_accounts && data.whitelisting_accounts.map((account) => <LinkRow title="Account white list" account={account} />)}
+			{data.blacklisting_accounts && data.blacklisting_accounts.map((account) => <LinkRow title="Account black list" account={account} />)}
 			{data.current_asset_feed_producers && <ProducersRow title="Current asset feed producers" accounts={data.current_asset_feed_producers} /> }
 			{data.current_asset_total_supply && <PrimaryRow title="Current asset total supply" description={data.current_asset_total_supply} /> }
 			{data.current_asset_fee_pool && <PrimaryRow title="Current asset total supply" description={data.current_asset_fee_pool} />}

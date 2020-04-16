@@ -187,6 +187,15 @@ class URLHelper {
 		return `${transformPathname}?${queryString.stringify({ ...query, ...newProps })}`;
 	}
 
+	/**
+	 * @method getUrlWithOrigin
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static getUrlWithOrigin(url) {
+		return typeof window !== 'undefined' ? `${window.location.origin}${url}` : url;
+	}
+
 }
 
 export default URLHelper;

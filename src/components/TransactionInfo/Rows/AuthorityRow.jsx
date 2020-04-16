@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { validators } from 'echojs-lib';
+import Link from 'next/link';
+
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 import InfoTooltip from '../../../components/InfoTooltip';
+import URLHelper from '../../../helpers/URLHelper';
 
 const AuthorityRow = ({
-	title, authority, tooltip,
+	title, authority, tooltip, weightThreshold,
 }) => (
 	<div className="od-row">
 		<div className="od-col">{title}:</div>
@@ -21,23 +26,26 @@ const AuthorityRow = ({
 							placement="topLeft"
 						/>
 						<span className="description-secondary__name">Treshold:&nbsp;</span>
-						<span className="description-secondary__value">1</span>
+						<span className="description-secondary__value">{weightThreshold}</span>
 					</span>
 				</span>}
-			{authority.length !== 0 &&
-				authority.map((item) => (
-					<div className="authority-field" key={item.value}>
-						<div className="authority-field__info">
-							<a href="" className="link">
-								{item.value}
-							</a>
-							<span className="authority-field__info-description">
-								<span>Weight:&nbsp;</span>
-								<span>{item.weight}</span>
-							</span>
-						</div>
+			{authority.map((item) => (
+				<div className="authority-field" key={item.value}>
+					<div className="authority-field__info">
+						{!validators.isAccountId(item.link) ? (
+							<span>{item.value}</span>
+						) : (
+							<Link href={SSR_ACCOUNTS_PATH} className="link" as={URLHelper.createAccountUrl(item.value)}>
+								<a href="">{item.value}</a>
+							</Link>
+						)}
+						<span className="authority-field__info-description">
+							<span>Weight:&nbsp;</span>
+							<span>{item.weight}</span>
+						</span>
 					</div>
-				))
+				</div>
+			))
 			}
 		</div>
 	</div>
@@ -47,11 +55,13 @@ AuthorityRow.propTypes = {
 	title: PropTypes.string.isRequired,
 	authority: PropTypes.array,
 	tooltip: PropTypes.string,
+	weightThreshold: PropTypes.number,
 };
 
 AuthorityRow.defaultProps = {
 	authority: [],
 	tooltip: '',
+	weightThreshold: 1,
 };
 
 export default AuthorityRow;

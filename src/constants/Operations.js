@@ -66,7 +66,7 @@ const Operations = {
 		name: 'Account address create',
 		options: {
 			from: 'owner',
-			subject: ['label'],
+			subject: null,
 			value: null,
 			asset: null,
 		},

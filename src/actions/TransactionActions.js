@@ -24,7 +24,7 @@ import BaseActionsClass from './BaseActionsClass';
 import GlobalActions from './GlobalActions';
 
 import { getContractInfo } from '../services/queries/contract';
-import { transformOperationDataByType } from '../helpers/TransformDataHelper';
+import { transformOperationDataByType } from '../helpers/ops.format/OpsInfoMapper';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 
@@ -118,8 +118,6 @@ class TransactionActionsClass extends BaseActionsClass {
 	async setOperationObject(operation, options, from, subject) {
 		let object = new Map({});
 
-		console.log('setOperationObject', operation.name);
-
 		try {
 			if (accountOperations.includes(operation.name)) {
 				let account = await echo.api.getObject(from.id);
@@ -136,6 +134,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('id', account.id)
 					.set('name', account.name)
 					.set('echorandKey', account.echorand_key)
+					.set('active', account.active)
 					.set('activeAccounts', activeAccounts)
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
@@ -156,7 +155,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.div(asset.options.core_exchange_rate.base.amount)
 					.toString();
 				const rate = (new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
-					.div(new BN(quoteAmount).div(`1e${asset.precision}`));
+					.div(new BN(quoteAmount).div(`1e${asset.precision}`)).toString();
 
 				object = object
 					.set('id', asset.id)
@@ -381,6 +380,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		}
 
 		if (options.value) {
+			console.log('result', result);
 			result.value = {
 				...result.value,
 				amount: _.get(operation, options.value),
@@ -519,20 +519,18 @@ class TransactionActionsClass extends BaseActionsClass {
 		delete options.extensions;
 		delete options.gasPrice;
 		delete options.eth_accuracy;
-		console.log('hoho', { ...options });
-		console.log('operationResult', operationResult);
 
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
 		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
 
-		console.log('options', options);
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
 			switch (typeof value) {
 				case 'number':
 					value = {
+						asset_id: ECHO_ASSET.ID,
 						precision: ECHO_ASSET.PRECISION,
 						symbol: ECHO_ASSET.SYMBOL,
 						amount: value,
@@ -552,7 +550,6 @@ class TransactionActionsClass extends BaseActionsClass {
 				case 'object':
 					if (_.has(value, 'amount') && value.asset_id) {
 						const asset = await echo.api.getObject(value.asset_id);
-						delete value.asset_id;
 						value.precision = asset.precision;
 						value.symbol = asset.symbol;
 					} else if (_.has(value, 'delegating_account')) {
@@ -560,11 +557,17 @@ class TransactionActionsClass extends BaseActionsClass {
 						value = { value: account.name, link: value.delegating_account, amount: value.delegate_share };
 						key = 'delegate_data';
 					} else if (_.has(value, 'core_exchange_rate')) {
-						const asset = await echo.api.getObject(value.core_exchange_rate.base.asset_id);
+						const { base, quote } = value.core_exchange_rate;
+						const [baseAsset, quoteAsset] = await Promise.all(echo.api.getAccounts(base.asset_id, quote.asset_id));
+						const rate = (new BN(baseAsset.amount).div(`1e${baseAsset.precision}`))
+							.div(new BN(quote.amount).div(`1e${quoteAsset.precision}`)).toString();
 						key = 'rate';
-						value = { precision: asset.precision, symbol: asset.symbol, amount: value.core_exchange_rate.base.amount };
-					} else if (_.has(value, 'weight_threshold')) {
-						break;
+						value = {
+							asset_id: baseAsset.id,
+							precision: baseAsset.precision,
+							symbol: baseAsset.symbol,
+							amount: rate,
+						};
 					} else if (key === 'new_feed_producers') {
 						const accounts = await echo.api.getAccounts(value);
 						value = accounts.map(({ name, id }) => ({ value: name, link: id }));
@@ -682,7 +685,9 @@ class TransactionActionsClass extends BaseActionsClass {
 		if (options.delegate_data) {
 			const { value, link, amount } = options.delegate_data;
 			options.delegating_account = { value, link };
-			options.delegate_share = { amount, symbol: ECHO_ASSET.SYMBOL, precision: ECHO_ASSET.PRECISION };
+			options.delegate_share = {
+				amount, symbol: ECHO_ASSET.SYMBOL, precision: ECHO_ASSET.PRECISION, asset_id: ECHO_ASSET.ID,
+			};
 			delete options.delegate_data;
 		}
 
@@ -705,7 +710,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			opIndex,
 		};
 		const opNumberToFormat = operation.value < 20 ? operation.value : 0;
-		console.log('opNumberToFormat', opNumberToFormat);
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		return op;
 	}
@@ -721,10 +725,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					return;
 				}
 
-				// console.log(JSON.stringify(block.transactions, null, 15));
 				const transaction = block.transactions[index - 1];
-
-				console.log(JSON.stringify(block.transactions, null, 10));
 
 				await this.fetchTransactionsObjects(transaction.operations);
 

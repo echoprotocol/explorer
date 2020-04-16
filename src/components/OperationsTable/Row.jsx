@@ -42,7 +42,7 @@ const OperationsRow = React.memo(({
 	sizePerPage,
 	totalDataSize,
 }) => {
-	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
+	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 	const goToLink = (e, href, objectId) => {
 		e.preventDefault();
@@ -52,7 +52,9 @@ const OperationsRow = React.memo(({
 
 	const renderSubject = (subject) => {
 		if (!subject) return <div className="td-in">—</div>;
+		if (validators.isAssetName(subject)) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
+
 		return (
 			<Link href={SsrHrefHelper.getHrefByObjectId(subject)}>
 				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
@@ -111,7 +113,7 @@ const OperationsRow = React.memo(({
 				<td className="sender">
 					{ mainInfo.from.id ?
 						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
-							<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, getSenderLink(), mainInfo.from.id)}>
+							<a href={URLHelper.getUrlWithOrigin(senderLink)} className="td-in avatar-wrap" onClick={(e) => goToLink(e, senderLink, mainInfo.from.id)}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
 							</a>
