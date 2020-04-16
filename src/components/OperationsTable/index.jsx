@@ -142,7 +142,6 @@ class OperationsTable extends React.Component {
 	}
 
 	updateScroll() {
-		console.log('updte');
 		if (this.scrollBarRef) {
 			this.scrollBarRef.updateScroll();
 		}
