@@ -56,6 +56,13 @@
 			margin-top: 27px;
 		}
 	}
+
+	.recharts-wrapper {
+		width: auto !important;
+		.recharts-surface {
+			max-width: 100% !important;
+		}
+	}
 }
 
 .sidebar:not(.pinned) {
@@ -97,6 +104,26 @@
 		@include max-vw($res-500) {
 			&:not(:first-child) {
 				margin-top: 20px;
+			}
+		}
+	}
+	.sidebar-element {
+		&.total-supply {
+			width: 27.5%;
+			@include max-vw($res-1280) {
+				width: 100%;
+			}
+		}
+		&.blockchain-rates {
+			width: 34.5%;
+			@include max-vw($res-1280) {
+				width: 100%;
+			}
+		}
+		&.frozen-funds {
+			width: 36.5%;
+			@include max-vw($res-1280) {
+				width: 100%;
 			}
 		}
 	}
