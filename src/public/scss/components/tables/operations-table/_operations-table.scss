@@ -74,15 +74,6 @@
 			position: relative;
 			font-size: 12px;
 			@include inter-ui-medium;
-			&:after {
-				content: "";
-				position: absolute;
-				left: 0;
-				top: calc(100% + 10px);
-				width: 100%;
-				height: 1px;
-				background-color: $blue;
-			}
 		}
 	}
 
@@ -127,31 +118,5 @@
 			white-space: nowrap;
 			display: block;
 		}
-	}
-
-	.number {
-		max-width: 48px;
-	}
-	.type {
-		width: 16%;
-		min-width: 140px;
-		.td-in {
-			@include text-overflow;
-			max-width: 160px;
-		}
-	}
-	.sender {
-		width: 19%;
-		max-width: 19%;
-	}
-	.reciever {
-		width: 17%;
-		max-width: 17%;
-	}
-	.amount {
-		width: 20%;
-	}
-	.fee {
-		width: auto;
 	}
 }

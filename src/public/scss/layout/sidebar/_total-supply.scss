@@ -6,7 +6,9 @@
 	letter-spacing: 0.02em;
 	color: $explorer-black;
 	@include inter-semibold();
-
+	@include max-vw($res-1280) {
+		align-items: flex-start;
+	}
 	svg {
 		min-width: 16px;
 	}

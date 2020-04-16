@@ -58,9 +58,9 @@ class TotalSupply extends React.Component {
 						</a>
 					</Link>
 				</div>
-				{/* <a className="sidebar-element-link" href="" onClick={(e) => this.onToggleAssets(e)}> */}
-				{/*	View all Assets */}
-				{/* </a> */}
+				{/* <a className="sidebar-element-link" href="" onClick={(e) => this.onToggleAssets(e)}>
+					View all Assets
+				</a> */}
 			</React.Fragment>
 		);
 	}
