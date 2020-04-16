@@ -249,7 +249,7 @@ class OperationsTable extends React.Component {
 							))}
 						</tbody>
 					</table>
-					{!loading && <Loader />}
+					{loading && <Loader />}
 				</PerfectScrollbar>
 				{!isTransaction && (
 					<OperationsPagination
