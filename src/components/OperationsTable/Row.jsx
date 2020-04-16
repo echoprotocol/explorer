@@ -113,9 +113,9 @@ const OperationsRow = React.memo(({
 				ref={tableRefs[index]}
 			>
 				<td className="number">
-					<div className="td-in">{numberOperation}</div>
+					<div className="td-in">{numberOperation}.</div>
 				</td>
-				<td className="operation">
+				<td className="type">
 					<div className="td-in">{type}</div>
 				</td>
 				<td className="sender">
