@@ -144,23 +144,28 @@ class TransactionActionsClass extends BaseActionsClass {
 				const asset = await echo.api.getObject(assetId || subject.id);
 				const issuer = await echo.api.getObject(asset.issuer);
 				const accumulatedFees = asset.dynamic.accumulated_fees;
+
+				const baseAmount = asset.options.core_exchange_rate.base.amount;
 				const quoteAmount = asset.options.core_exchange_rate.quote.amount;
+
+				const price = new BN(asset.options.core_exchange_rate.quote.amount)
+					.div(asset.options.core_exchange_rate.base.amount)
+					.toString();
+				const rate = (new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
+					.div(new BN(quoteAmount).div(`1e${asset.precision}`));
+
 
 				object = object
 					.set('id', asset.id)
 					.set('name', asset.symbol)
 					.set('type', 'No')
-					.set(
-						'price',
-						new BN(asset.options.core_exchange_rate.quote.amount)
-							.div(asset.options.core_exchange_rate.base.amount)
-							.toString(),
-					)
+					.set('price', price)
 					.set(
 						'accumulated_fees',
 						accumulatedFees === 0 ? 0 : FormatHelper
 							.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision)
 					)
+					.set('rate', rate)
 					.set('issuer', issuer && issuer.name)
 					.set('precision', asset.precision)
 					.set('totalSupply', asset.dynamic.current_supply)
@@ -361,8 +366,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 				if (opId === OPERATIONS_IDS.TRANSFER_TO_ADDRESS) {
 					const toAccountId = await echo.api.getAccountByAddress(request);
-					const toAccount = await echo.api.getAccounts([toAccountId]);
-					result.subject = { id: toAccountId, name: toAccount[0].name, address: request };
+					const [toAccount] = await echo.api.getAccounts([toAccountId]);
+					result.subject = { id: toAccountId, name: toAccount.name, address: request };
 				} else {
 					result.subject = { id: response.id, name: request };
 				}
@@ -664,7 +669,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			options.to_account = { link: subject.id, value: subject.name };
 		}
 
-
 		if (options.delegate_data) {
 			const { value, link, amount } = options.delegate_data;
 			options.delegating_account = { value, link };
@@ -697,9 +701,9 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const typeToFormat = operation.value < 20 ? operation.name : 'Update asset feed producers';
-		console.log('typeToFormat', typeToFormat);
-		op.operationsInfoData = (await transformOperationDataByType(typeToFormat, op));
+		const opNumberToFormat = operation.value < 20 ? operation.value : 0;
+		console.log('opNumberToFormat', opNumberToFormat);
+		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		return op;
 	}
 
@@ -714,6 +718,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					return;
 				}
 
+				// console.log(JSON.stringify(block.transactions, null, 15));
 				const transaction = block.transactions[index - 1];
 
 				await this.fetchTransactionsObjects(transaction.operations);

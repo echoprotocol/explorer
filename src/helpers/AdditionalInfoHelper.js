@@ -1,6 +1,7 @@
 import echo from 'echojs-lib';
+import { OPERATIONS_IDS } from 'echojs-lib';
 
-import { ASSET_ISSUER_PERMISSION_FLAGS, OPERATION_TYPES } from '../constants/OperationTypeConstants';
+import { ASSET_ISSUER_PERMISSION_FLAGS } from '../constants/FormattingOperationConstants';
 
 async function getAccountWhiteListInfo(accountId) {
 	const [account] = await echo.api.getAccounts([accountId]);
@@ -33,12 +34,12 @@ async function getAssetCreateInfo(assetId) {
 	return getAssetFlags(asset.options);
 }
 
-async function getAdditionalInfoByOpType(type, data) {
+async function getAdditionalInfoByOpId(opId, data) {
 	try {
-		switch (type) {
-			case OPERATION_TYPES.ACCOUNT_WHITELIST:
+		switch (opId) {
+			case OPERATIONS_IDS.ACCOUNT_WHITELIST:
 				return await getAccountWhiteListInfo(data);
-			case OPERATION_TYPES.ASSET_CREATE:
+			case OPERATIONS_IDS.ASSET_CREATE:
 				return await getAssetCreateInfo(data);
 			default:
 				return null;
@@ -49,4 +50,4 @@ async function getAdditionalInfoByOpType(type, data) {
 	}
 }
 
-export default getAdditionalInfoByOpType;
+export default getAdditionalInfoByOpId;

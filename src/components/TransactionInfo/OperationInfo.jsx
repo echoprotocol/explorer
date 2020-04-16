@@ -14,6 +14,7 @@ import AdditionalInfo from './AdditionalInfo';
 
 
 import URLHelper from '../../helpers/URLHelper';
+import { ECHO_ASSET } from '../../constants/GlobalConstants';
 
 class OperationInfo extends React.Component {
 
@@ -38,7 +39,7 @@ class OperationInfo extends React.Component {
 					{data.from && <LinkRow title="From" account={{ value: data.from.value, link: data.from.link }} />}
 					{data.to && <LinkRow title="To" account={{ value: data.to.value, link: data.to.link }} />}
 					{data.listed_account && <LinkRow title="Listed account" account={{ value: data.listed_account.value, link: data.listed_account.link }} />}
-					{data.to_address && <LinkRow title="To address" link={data.to_address} />}
+					{data.to_address && <PrimaryRow title="To address" description={data.to_address} />}
 					{data.url && <LinkRow title="URL" link={data.url} />}
 					{data.new_url && <LinkRow title="New URL" link={data.new_url} />}
 					{data.eth_address && <LinkRow title="ETH address" link={data.eth_address} isLinkOut />}
@@ -49,14 +50,14 @@ class OperationInfo extends React.Component {
 					{data.registrar && <LinkRow title="Registrar" account={{ value: data.registrar.value, link: data.registrar.link }} />	}
 					{data.account_name && <LinkRow title="Account Name" account={{ value: data.account_name.value, link: data.account_name.link }} />}
 					{data.proposal_id && <LinkRow title="Proposal ID" link={data.proposal_id} />}
-					{data.new_account_id && <LinkRow title="New Account ID" link={`${window.location.origin}${URLHelper.createAccountUrl(data.new_account_id)}`} value={data.new_account_id} />}
+					{data.new_account_id && <LinkRow title="New Account ID" link={URLHelper.createUrlById(data.new_account_id)} value={data.new_account_id} />}
 					{data.expiration_time && <PrimaryRow title="Expiration time" description={moment(data.expiration_time).format('DD MMM, Y, HH:mm:ss')} />}
 					{data.preview_period && <PrimaryRow title="Preview period" description={data.preview_period} />}
 					{data.asset_name && <PrimaryRow title="Asset Name" description={data.asset_name} />}
 					{data.precision && <PrimaryRow title="Precision" description={data.precision} />}
 					{data.max_suply && <PrimaryRow title="Max Suply" description={data.max_suply} />}
 					{data.asset_description && <PrimaryRow title="Asset Description" description={data.asset_description} isText />}
-					{data.rate && <PrimaryRow title="Rate" description={FormatHelper.formatAmount(data.rate.amount, data.rate.precision, data.rate.symbol)} />}
+					{data.rate && <PrimaryRow title="Rate" description={`${data.rate} ${ECHO_ASSET.SYMBOL}`} />}
 					{data.is_bit_asset && <PrimaryRow title="Is bitAsset" description={data.is_bit_asset} />}
 					{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
 					{data.authority && <AuthorityRow title="Authority" tooltip="Public keys and accounts" authority={data.authority} />}

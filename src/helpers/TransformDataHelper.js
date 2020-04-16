@@ -1,11 +1,22 @@
-import { ACCOUNT_BLACK_WHITE, OPERATION_TYPES, OPS_DESCRIPTIONS } from '../constants/OperationTypeConstants';
-import getAdditionalInfoByOpType, { getAssetFlags } from './AdditionalInfoHelper';
+import { OPERATIONS_IDS } from 'echojs-lib';
+
+import {
+	ACCOUNT_BLACK_WHITE,
+	OPS_DESCRIPTIONS,
+	OPS_TYPES,
+} from '../constants/FormattingOperationConstants';
+import getAdditionalInfoByOpId, { getAssetFlags } from './AdditionalInfoHelper';
+import BN from 'bignumber.js';
+import { ECHO_ASSET } from '../constants/GlobalConstants';
 // import getAdditionalInfoByOpType from './AdditionalInfoHelper';
 
 // It shold be connected to real data
-export const transformOperationDataByType = async (type, data) => {
-	switch (type) {
-		case OPERATION_TYPES.TRANSFER:
+export const transformOperationDataByType = async (opNumber, data) => {
+	const type = OPS_TYPES[opNumber];
+	const description = OPS_DESCRIPTIONS[opNumber];
+
+	switch (opNumber) {
+		case OPERATIONS_IDS.TRANSFER:
 			return {
 				operationInfo: {
 					type,
@@ -13,10 +24,10 @@ export const transformOperationDataByType = async (type, data) => {
 					to: data.to,
 					amount: data.amount,
 					fee: data.fee,
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					description,
 				},
 			};
-		case OPERATION_TYPES.TRANSFER_TO_ADDRESS:
+		case OPERATIONS_IDS.TRANSFER_TO_ADDRESS:
 			return {
 				operationInfo: {
 					type,
@@ -25,10 +36,10 @@ export const transformOperationDataByType = async (type, data) => {
 					fee: data.fee,
 					to_address: data.to_address,
 					to_account: data.to_account,
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					description,
 				},
 			};
-		case OPERATION_TYPES.OVERRIDE_TRANSFER:
+		case OPERATIONS_IDS.OVERRIDE_TRANSFER:
 			return {
 				operationInfo: {
 					type,
@@ -37,9 +48,10 @@ export const transformOperationDataByType = async (type, data) => {
 					amount: data.amount,
 					fee: data.fee,
 					to: data.to,
+					description,
 				},
 			};
-		case OPERATION_TYPES.ACCOUNT_CREATE:
+		case OPERATIONS_IDS.ACCOUNT_CREATE:
 			return {
 				operationInfo: {
 					type,
@@ -58,20 +70,22 @@ export const transformOperationDataByType = async (type, data) => {
 					delegating_account: data.delegating_account,
 					delegate_share: data.delegate_share,
 					fee: data.fee,
+					description,
 				},
 			};
-		case OPERATION_TYPES.ACCOUNT_UPDATE:
+		case OPERATIONS_IDS.ACCOUNT_UPDATE:
 			return {
 				operationInfo: {
 					type,
 					delegate_share: data.delegate_share,
 					account_updated: data.delegating_account,
-					echorand_key: data.echorand_key,
+					echorand_key: data.objectInfo.get('echorandKey'),
 					fee: data.fee,
+					description,
 				},
 			};
-		case OPERATION_TYPES.ACCOUNT_WHITELIST: {
-			const additionalInfo = await getAdditionalInfoByOpType(type, data.authorizing_account.link);
+		case OPERATIONS_IDS.ACCOUNT_WHITELIST: {
+			const additionalInfo = await getAdditionalInfoByOpId(opNumber, data.authorizing_account.link);
 			return {
 				operationInfo: {
 					type,
@@ -83,7 +97,7 @@ export const transformOperationDataByType = async (type, data) => {
 				},
 			};
 		}
-		case OPERATION_TYPES.ACCOUNT_ADDRESS_CREATE:
+		case OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE:
 			return {
 				operationInfo: {
 					type,
@@ -91,14 +105,16 @@ export const transformOperationDataByType = async (type, data) => {
 					address: data.address,
 					label: data.label,
 					fee: data.fee,
+					description,
 				},
 			};
-		case OPERATION_TYPES.ASSET_CREATE:
+		case OPERATIONS_IDS.ASSET_CREATE: {
 			// TODO check bitasset
 			// Global settle
 			// Disable force settle
 			const settings = await getAssetFlags(data.objectInfo.toJS());
-			const additionalInfo = await getAdditionalInfoByOpType(type, data.mainInfo.result);
+			const additionalInfo = await getAdditionalInfoByOpId(opNumber, data.mainInfo.result);
+
 			return {
 				operationInfo: {
 					type,
@@ -106,10 +122,10 @@ export const transformOperationDataByType = async (type, data) => {
 					asset_name: data.symbol,
 					precision: data.precision.precision,
 					max_suply: data.objectInfo.get('maxSupply'),
-					description: data.objectInfo.get('description'),
+					asset_description: data.objectInfo.get('description'),
 					fee: data.fee,
-					rate: data.rate,
-					is_bit_asset: data.objectInfo.get('bitasset_opts') ? 'Yes' : 'No',
+					rate: data.objectInfo.get('rate'),
+					is_bit_asset: data.bitasset_opts ? 'Yes' : 'No',
 					settings: [{
 						key: 'Whitelist',
 						value: settings.isWhiteList,
@@ -138,10 +154,11 @@ export const transformOperationDataByType = async (type, data) => {
 							value: additionalInfo.isCommette,
 						}],
 					},
-					// description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					description,
 				},
 			};
-		case OPERATION_TYPES.ASSET_UPDATE: {
+		}
+		case OPERATIONS_IDS.ASSET_UPDATE: {
 			const settings = await getAssetFlags(data.objectInfo.toJS());
 			console.log('ASSET_UPDATE data', data);
 			console.log('ASSET_UPDATE data', data.objectInfo.toJS());
@@ -153,7 +170,7 @@ export const transformOperationDataByType = async (type, data) => {
 					asset_name: data.asset_to_update.value,
 					max_suply: data.objectInfo.get('maxSupply'),
 					asset_description: data.objectInfo.get('description'),
-					rate: data.rate,
+					rate: data.objectInfo.get('rate'),
 					settings: [{
 						key: 'Whitelist',
 						value: settings.isWhiteList,
@@ -178,26 +195,19 @@ export const transformOperationDataByType = async (type, data) => {
 					// 	value: 'off',
 					// }],
 					fee: data.fee,
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					description,
 				},
 			};
 		}
-		case OPERATION_TYPES.ASSET_UPDATE_BITASSET:
+		case OPERATIONS_IDS.ASSET_UPDATE_BITASSET:
 			return {
 				operationInfo: {
-					type: 'bitAsset update',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
-					asset_name: 'Asset name',
-					max_suply: '12,000,000,000. 00000000',
-					asset_description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.',
-					rate: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.issuer,
+					asset_name: data.asset_to_update,
+					max_suply: data.objectInfo.get('maxSupply'),
+					asset_description: data.objectInfo.get('description'),
+					rate: data.objectInfo.get('rate'),
 					// bit_asset_options: [{
 					// 	key: 'Feed lifetime',
 					// 	value: '12w, 23d, 34:34:56',
@@ -209,18 +219,16 @@ export const transformOperationDataByType = async (type, data) => {
 					// 	value: 'off',
 					// }],
 					fee: data.fee,
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					description,
 				},
 			};
-		case OPERATION_TYPES.ASSET_UPDATE_FEED_PRODUCERS:
+		case OPERATIONS_IDS.ASSET_UPDATE_FEED_PRODUCERS:
 			return {
 				operationInfo: {
-					type: 'Update asset feeders',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
+					type,
+					sender: data.issuer,
 					asset_name: 'Asset name',
+					asset_description: data.objectInfo.get('description'),
 					new_feed_producers: [{
 						value: 'account',
 						link: '1.2.3',
@@ -231,12 +239,8 @@ export const transformOperationDataByType = async (type, data) => {
 						value: 'ViolletyLetty',
 						link: '1.2.5',
 					}],
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					fee: data.fee,
+					description,
 					additionalInfo: {
 						current_asset_feed_producers: [{
 							value: 'account',
@@ -251,7 +255,7 @@ export const transformOperationDataByType = async (type, data) => {
 					},
 				},
 			};
-		case OPERATION_TYPES.ASSET_ISSUE:
+		case OPERATIONS_IDS.ASSET_ISSUE:
 			return {
 				operationInfo: {
 					type,
@@ -259,38 +263,39 @@ export const transformOperationDataByType = async (type, data) => {
 					asset_amount: data.asset_to_issue,
 					receiver: data.issue_to_account,
 					fee: data.fee,
-					description: OPS_DESCRIPTIONS.ASSET_ISSUE,
+					description,
 					additionalInfo: {
 						current_asset_total_supply: data.objectInfo.get('totalSupply'),
 					},
 				},
 			};
-		case OPERATION_TYPES.ASSET_RESERVE:
+		case OPERATIONS_IDS.ASSET_RESERVE:
 			return {
 				operationInfo: {
 					type,
 					sender: data.payer,
-					amount: data.amount_to_reserve,
+					asset_amount: data.amount_to_reserve,
 					fee: data.fee,
-					description: OPS_DESCRIPTIONS.ASSET_RESERVE,
+					description,
 					additionalInfo: {
 						current_asset_total_supply: data.objectInfo.get('totalSupply'),
 					},
 				},
 			};
-		case OPERATION_TYPES.ASSET_FUND_FEE_POOL:
+		case OPERATIONS_IDS.ASSET_FUND_FEE_POOL:
 			return {
 				operationInfo: {
 					type,
 					sender: data.from_account,
 					asset_amount: data.mainInfo.value,
 					fee: data.fee,
+					description,
 					additionalInfo: {
 						current_asset_fee_pool: data.objectInfo.get('totalSupply'),
 					},
 				},
 			};
-		case OPERATION_TYPES.ASSET_PUBLISH_FEED:
+		case OPERATIONS_IDS.ASSET_PUBLISH_FEED:
 			return {
 				operationInfo: {
 					type,
@@ -298,17 +303,13 @@ export const transformOperationDataByType = async (type, data) => {
 					asset_name: data.asset_id,
 					feeded_asset_price: data.asset_id,
 					fee: data.fee,
-					description: OPS_DESCRIPTIONS.ASSET_PUBLISH_FEED,
+					description,
 					additionalInfo: {
-						current_asset_price: {
-							amount: 3000,
-							precision: 8,
-							symbol: 'ECHO',
-						},
+						current_asset_price: data.objectInfo.get('price'),
 					},
 				},
 			};
-		case OPERATION_TYPES.ASSET_CLAIM_FEES:
+		case OPERATIONS_IDS.ASSET_CLAIM_FEES:
 			return {
 				operationInfo: {
 					type,
@@ -322,7 +323,7 @@ export const transformOperationDataByType = async (type, data) => {
 					},
 				},
 			};
-		case OPERATION_TYPES.PROPOSAL_CREATE:
+		case OPERATIONS_IDS.PROPOSAL_CREATE:
 			return {
 				operationInfo: {
 					type: 'Create proposal',
@@ -398,7 +399,7 @@ export const transformOperationDataByType = async (type, data) => {
 					},
 				}],
 			};
-		case OPERATION_TYPES.PROPOSAL_UPDATE:
+		case OPERATIONS_IDS.PROPOSAL_UPDATE:
 			return {
 				operationInfo: {
 					type: 'Update proposal',
@@ -483,7 +484,7 @@ export const transformOperationDataByType = async (type, data) => {
 					},
 				}],
 			};
-		case OPERATION_TYPES.PROPOSAL_DELETE:
+		case OPERATIONS_IDS.PROPOSAL_DELETE:
 			return {
 				operationInfo: {
 					type: 'Reject proposal',
@@ -560,7 +561,7 @@ export const transformOperationDataByType = async (type, data) => {
 					},
 				}],
 			};
-		case OPERATION_TYPES.COMMITTEE_MEMBER_CREATE:
+		case OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE:
 			return {
 				operationInfo: {
 					type: 'Create committee member',
@@ -583,7 +584,7 @@ export const transformOperationDataByType = async (type, data) => {
 					},
 				},
 			};
-		case OPERATION_TYPES.COMMITTEE_MEMBER_UPDATE:
+		case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE:
 			return {
 				operationInfo: {
 					type: 'Update committee member',
@@ -605,7 +606,7 @@ export const transformOperationDataByType = async (type, data) => {
 					},
 				},
 			};
-		case OPERATION_TYPES.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS:
+		case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS:
 			return {
 				operationInfo: {
 					type: 'Global parameters update',
