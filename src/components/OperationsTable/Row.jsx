@@ -41,7 +41,6 @@ const OperationsRow = React.memo(({
 	currentPage,
 	sizePerPage,
 	totalDataSize,
-	isMobile,
 }) => {
 
 	// const goToBlock = (e) => {
@@ -91,7 +90,6 @@ const OperationsRow = React.memo(({
 		);
 	};
 
-	const objectId = objectInfo ? objectInfo.get('id') : null;
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
@@ -120,7 +118,6 @@ const OperationsRow = React.memo(({
 				<td className="operation">
 					<div className="td-in">{type}</div>
 				</td>
-				{/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
 				<td className="sender">
 					{ mainInfo.from.id ?
 						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
@@ -188,7 +185,6 @@ const OperationsRow = React.memo(({
 });
 
 OperationsRow.propTypes = {
-	isMobile: PropTypes.bool.isRequired,
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,
