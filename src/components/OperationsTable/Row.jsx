@@ -97,10 +97,9 @@ const OperationsRow = React.memo(({
 		numberOperation = isASCOps ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
 	}
 
-	if (numberOperation < 0) {
+	if (numberOperation < 1) {
 		return null;
 	}
-
 	return (
 		<React.Fragment>
 			<tr
