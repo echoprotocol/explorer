@@ -228,10 +228,15 @@
 				@include text-overflow();
 				max-width: 120px;
 			}
+			&.name {
+				display: inline-block;
+				@include text-overflow();
+				max-width: calc(50%);
+			}
 		}
 
 		.divider {
-			width: 100%;
+			flex-grow: 1;
 			height: 1px;
 			align-self: flex-end;
 			margin: 0 5px;

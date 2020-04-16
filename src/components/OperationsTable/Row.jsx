@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
@@ -9,6 +10,7 @@ import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
 import OperationInfo from '../TransactionInfo/OperationInfo';
+import ProposalOperations from '../TransactionInfo/ProposalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -74,7 +76,8 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	const operationsInfoData = type && transformOperationDataByType(type, operation);
+	// const operationsInfoData = type && transformOperationDataByType(type, operation);
+	const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
 
 	return (
 		<React.Fragment>
@@ -127,9 +130,28 @@ const OperationsRow = React.memo(({
 			{ active &&
 				<tr className="fold">
 					<td colSpan="6">
-						<OperationInfo
-							data={operationsInfoData.operationInfo}
-						/>
+						<Tabs>
+							<TabList className="operation-detail-header">
+								<div className="operation-detail-tabs">
+									{	operationsInfoData.operationInfo &&
+										<Tab className="operation-detail-tab">Operation Info</Tab>
+									}
+									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
+								</div>
+								<button className="yellow-button">View Raw JSON Object</button>
+							</TabList>
+							<div className="operation-detail-table">
+								{ operationsInfoData.operationInfo &&
+								<TabPanel>
+									<OperationInfo data={operationsInfoData.operationInfo} />
+								</TabPanel>}
+								{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+								<TabPanel>
+									<ProposalOperations operations={operationsInfoData.proposalOperations} />
+								</TabPanel>}
+							</div>
+						</Tabs>
 					</td>
 				</tr>
 			}
