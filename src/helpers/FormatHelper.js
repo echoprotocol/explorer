@@ -64,7 +64,7 @@ class FormatHelper {
 
 	static formatByteSize(bytes) {
 		if (bytes < 1024) return 'bytes';
-		else if (bytes < 1048576) return 'kB';
+		else if (bytes < 1048576) return 'KB';
 		else if (bytes < 1073741824) return 'MB';
 		return 'GB';
 	}
