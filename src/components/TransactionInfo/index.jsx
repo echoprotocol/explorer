@@ -66,7 +66,7 @@ class TransactionsInfo extends React.Component {
 			},
 		];
 
-		const timeBlockCreated = FormatHelper.timestampToBlockCreationTime(blockInformation.get('time'));
+		const timeBlockCreated = FormatHelper.timestampToBlockCreationTime(blockInformation.get('timestamp'));
 
 		return (
 			<div className="inner-container">

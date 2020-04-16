@@ -115,7 +115,7 @@ class BlockInformation extends React.Component {
 		const { toggleRewardDistribution, isDistributionRewardOpen, filteredOperations } = this.props;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
-		const time = blockInformation.get('time');
+		const time = FormatHelper.timestampToBlockInformationTime(blockInformation.get('timestamp'));
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');

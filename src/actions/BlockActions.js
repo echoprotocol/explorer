@@ -213,7 +213,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.transactionCount = resultTransactions.length;
 		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
 		value.round = planeBlock.round;
-		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
+		value.timestamp = planeBlock.timestamp;
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, resultTransactions.length));
 		await dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
