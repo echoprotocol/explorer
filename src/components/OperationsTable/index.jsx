@@ -33,6 +33,7 @@ class OperationsTable extends React.Component {
 		this.timeoutSearch = null;
 		this.toggleFilter = this.toggleFilter.bind(this);
 		this.tableRefs = [];
+		this.updateScroll = this.updateScroll.bind(this);
 	}
 
 	componentDidMount() {
@@ -92,12 +93,15 @@ class OperationsTable extends React.Component {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ showedOperations });
 		}
+
+		window.addEventListener('resize', this.updateScroll);
 	}
 
 	componentWillUnmount() {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
+		window.removeEventListener('resize', this.updateScroll);
 	}
 
 	async onChangeFilter(e) {
@@ -140,6 +144,13 @@ class OperationsTable extends React.Component {
 		const { totalDataSize } = this.props.filterAndPaginateData.toJS();
 		await this.props.initData({ ...filters, totalDataSize });
 		this.props.onLoadMoreHistory();
+	}
+
+	updateScroll() {
+		console.log('updte');
+		if (this.scrollBarRef) {
+			this.scrollBarRef.updateScroll();
+		}
 	}
 
 	toggleOperationDetails(index) {
@@ -225,7 +236,7 @@ class OperationsTable extends React.Component {
 					onChangeFilter={(e) => this.onChangeFilter(e)}
 					onClearFilter={(name) => this.onClearFilter(name)}
 				/>
-				<PerfectScrollbar>
+				<PerfectScrollbar ref={(ref) => { this.scrollBarRef = ref; }}>
 					<table>
 						<Thead isTransaction={isTransaction} />
 						<tbody>
