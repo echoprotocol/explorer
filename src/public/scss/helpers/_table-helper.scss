@@ -137,3 +137,23 @@
 		}
 	}
 }
+
+@mixin table-loader() {
+	.f-h-loader {
+		position: absolute;
+		right: 0;
+		top: 6px;
+		bottom: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: rgba(#fff, 0.7);
+		.spin {
+			margin-bottom: 0;
+		}
+		.text {
+			display: none;
+		}
+	}
+}
