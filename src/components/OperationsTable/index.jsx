@@ -7,7 +7,6 @@ import Router from 'next/router';
 import URLHelper from '../../helpers/URLHelper';
 import TableLabel from '../TableLabel';
 import FilterBtn from '../FilterBtn';
-import LoadMore from '../LoadMore';
 import Operations from '../../constants/Operations';
 
 import OperationRow from './Row';
@@ -250,7 +249,7 @@ class OperationsTable extends React.Component {
 							))}
 						</tbody>
 					</table>
-					{loading && <Loader />}
+					{!loading && <Loader />}
 				</PerfectScrollbar>
 				{!isTransaction && (
 					<OperationsPagination
