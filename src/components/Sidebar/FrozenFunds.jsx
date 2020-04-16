@@ -13,7 +13,7 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 	<React.Fragment>
 		<div className="frozen-funds-wrap">
 			<div className="sidebar-element-block">
-				<div className="sidebar-element-block-title">Comitee amount</div>
+				<div className="sidebar-element-block-title">Committee amount</div>
 				<div className="frozen-funds-block-info">
 					<div className="comitee-amount">
 						<Tooltip
