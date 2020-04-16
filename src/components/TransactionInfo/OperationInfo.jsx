@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import FormatHelper from '../../helpers/FormatHelper';
+import URLHelper from '../../helpers/URLHelper';
 
 import PrimaryRow from './Rows/PrimaryRow';
 import LinkRow from './Rows/LinkRow';
@@ -12,9 +13,10 @@ import MultyRow from './Rows/MultyRow';
 import ProducersRow from './Rows/ProducersRow';
 import AdditionalInfo from './AdditionalInfo';
 
+// import Avatar from '../Avatar';
+// import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+// import OperationInfoRow from './OperationInfoRow';
 
-import URLHelper from '../../helpers/URLHelper';
-import { ECHO_ASSET } from '../../constants/GlobalConstants';
 
 class OperationInfo extends React.Component {
 

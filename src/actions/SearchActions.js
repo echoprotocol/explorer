@@ -2,7 +2,11 @@ import echo, { validators } from 'echojs-lib';
 
 import SearchReducer from '../reducers/SearchReducer';
 
-import { SEARCH_LIMIT, DEFAULT_ERROR_SEARCH, ERROR_BLOCK_SEARCH } from '../constants/SearchConstants';
+import {
+	SEARCH_LIMIT,
+	DEFAULT_ERROR_SEARCH,
+	TYPE_SEARCH_SECTION,
+} from '../constants/SearchConstants';
 import {
 	ACCOUNT_OBJECT_PREFIX,
 	ASSET_OBJECT_PREFIX,
@@ -53,7 +57,7 @@ class SearchActions extends BaseActionsClass {
 	 */
 	async searchObjectById(str) {
 		if (!validators.isObjectId(str)) return [];
-		let section = 'Id';
+		let section = TYPE_SEARCH_SECTION.OBJECT_ID;
 		let isAccount = false;
 		let isAsset = false;
 		let prefix = '';
@@ -61,12 +65,12 @@ class SearchActions extends BaseActionsClass {
 
 		if (validators.isAccountId(str)) {
 			isAccount = true;
-			section = 'Account';
+			section = TYPE_SEARCH_SECTION.ACCOUNT;
 		} else if (validators.isAssetId(str)) {
 			isAsset = true;
-			section = 'Asset';
+			section = TYPE_SEARCH_SECTION.ASSET;
 		} else if (validators.isContractId(str)) {
-			section = 'Contract';
+			section = TYPE_SEARCH_SECTION.CONTRACT;
 		}
 
 		const object = await echo.api.getObject(str);
@@ -84,7 +88,7 @@ class SearchActions extends BaseActionsClass {
 			}
 
 			if (token) {
-				section = 'ERC20 token';
+				section = TYPE_SEARCH_SECTION.ERC_20;
 				prefix = `${token.symbol} `;
 				str = `(${object.id})`;
 			}
@@ -133,7 +137,7 @@ class SearchActions extends BaseActionsClass {
 
 		if (block) {
 			const blockHint = {
-				section: 'Block',
+				section: TYPE_SEARCH_SECTION.BLOCK,
 				value: str,
 				to: URLHelper.createBlockUrl(str),
 			};
@@ -147,7 +151,7 @@ class SearchActions extends BaseActionsClass {
 
 		if (account) {
 			const accountHint = {
-				section: 'Account',
+				section: TYPE_SEARCH_SECTION.ACCOUNT,
 				prefix: `${account.name} (${ACCOUNT_OBJECT_PREFIX}.`,
 				postfix: ')',
 				value: str,
@@ -158,7 +162,7 @@ class SearchActions extends BaseActionsClass {
 
 		if (asset) {
 			const assetHint = {
-				section: 'Asset',
+				section: TYPE_SEARCH_SECTION.ASSET,
 				prefix: `${asset.symbol} (${ASSET_OBJECT_PREFIX}.`,
 				value: str,
 				postfix: ')',
@@ -178,11 +182,11 @@ class SearchActions extends BaseActionsClass {
 				console.warn('Error getting token by id from graphql');
 			}
 
-			let section = 'Contract';
+			let section = TYPE_SEARCH_SECTION.CONTRACT;
 			let prefix = `${CONTRACT_OBJECT_PREFIX}.`;
 
 			if (token) {
-				section = 'ERC20 token';
+				section = TYPE_SEARCH_SECTION.ERC_20;
 				prefix = `${token.symbol} ${CONTRACT_OBJECT_PREFIX}.`;
 			}
 
@@ -228,7 +232,7 @@ class SearchActions extends BaseActionsClass {
 
 		let contractHints = contractFromGraphql.items.map(({ contract, symbol }) => ({
 			id: contract.id,
-			section: 'ERC20 Token',
+			section: TYPE_SEARCH_SECTION.ERC_20,
 			value: symbol,
 			postfix: ` (${contract.id})`,
 			to: URLHelper.createContractUrl(contract.id),
@@ -244,7 +248,7 @@ class SearchActions extends BaseActionsClass {
 				const item = {
 					prefix: name.slice(0, index),
 					postfix: `${name.slice(index + str.length)} (${id})`,
-					section: 'Contract',
+					section: TYPE_SEARCH_SECTION.CONTRACT,
 					value: name.slice(index, str.length),
 					to: URLHelper.createContractUrl(id),
 				};
@@ -263,7 +267,7 @@ class SearchActions extends BaseActionsClass {
 			.map(([name, id]) => {
 				const { index } = regExp.exec(name);
 				return {
-					section: 'Account',
+					section: TYPE_SEARCH_SECTION.ACCOUNT,
 					prefix: name.slice(0, index),
 					postfix: `${name.slice(index + str.length)} (${id})`,
 					value: name.slice(index, index + str.length),
@@ -281,7 +285,7 @@ class SearchActions extends BaseActionsClass {
 		}
 
 		const assetHints = assets.items.map(({ id }) => ({
-			section: 'Asset',
+			section: TYPE_SEARCH_SECTION.ASSET,
 			value: str.toUpperCase(),
 			postfix: ` (${id})`,
 			to: URLHelper.createAssetUrl(id),
@@ -328,45 +332,6 @@ class SearchActions extends BaseActionsClass {
 			} finally {
 				dispatch(this.setValue(['headerSearch', 'hints'], hints, false));
 				dispatch(this.setValue(['headerSearch', 'loading'], false, false));
-			}
-		};
-	}
-
-	/**
-	 * get block search hints
-	 * @param {String} str
-	 * @returns {Function}
-	 */
-	blockSearchHint(str) {
-		return async (dispatch) => {
-			dispatch(this.initSearch('blockSearch'));
-			const hints = [];
-
-			try {
-				if (!str) {
-					return;
-				}
-
-				if (TypesHelper.isStringNumber(str) || TypesHelper.isCommaNumberRepresentation(str)) {
-					str = FormatHelper.removeCommas(str);
-					str = FormatHelper.removeDots(str);
-					const block = await echo.api.getBlock(str);
-
-					if (block) {
-						const blockHint = {
-							section: 'Block',
-							value: str,
-							to: URLHelper.createBlockUrl(str),
-						};
-						hints.push(blockHint);
-					}
-				}
-				if (!hints.length) throw new Error(ERROR_BLOCK_SEARCH);
-			} catch (error) {
-				dispatch(this.setValue(['blockSearch', 'error'], FormatHelper.formatError(error), false));
-			} finally {
-				dispatch(this.setValue(['blockSearch', 'hints'], hints, false));
-				dispatch(this.setValue(['blockSearch', 'loading'], false, false));
 			}
 		};
 	}

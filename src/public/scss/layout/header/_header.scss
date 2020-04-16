@@ -3,33 +3,23 @@ header {
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 30px;
-
-	.input-search-block {
-		@include max-vw($res-500) {
-			position: absolute;
-			right: 10px;
-			&.active {
-				left: 10px;
-			}
-		}
-
-		&.small {
-			.input-container {
-				.icon {
-					opacity: 1;
-
-					&:hover {
-						cursor: pointer;
-					}
-				}
-			}
-		}
-	}
 }
 
 .logotype {
 	display: inline-block;
 	height: 41px;
+}
+.logotype-max {
+	@include max-vw($res-768) {
+		display: none;
+	}
+}
+
+.logotype-min {
+	display: none;
+	@include max-vw($res-768) {
+		display: block;
+	}
 }
 
 .top-section {

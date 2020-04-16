@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Router from 'next/router';
+
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
@@ -14,6 +16,8 @@ import ProposalOperations from '../TransactionInfo/ProposalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
+import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+// import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	operation: {
@@ -26,27 +30,35 @@ const OperationsRow = React.memo(({
 		opIndex,
 		number,
 		type,
+		blockTimestamp,
 		...detailInfo
 	},
 	index,
+	isTransaction,
 	active,
 	toggleOperationDetails,
 	tableRefs,
+	currentPage,
+	sizePerPage,
+	totalDataSize,
 }) => {
 	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
+	const goToLink = (e, href, objectId) => {
+		e.preventDefault();
+		e.stopPropagation();
+		Router.push(SsrHrefHelper.getHrefByObjectId(objectId), href);
+	};
 
 	const renderSubject = (subject) => {
 		if (!subject) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
 		return (
-			<Link
-				className="td-in avatar-wrap"
-				to={URLHelper.createUrlById(subject, mainInfo.subject.id)}
-				onClick={(e) => e.stopPropagation()}
-			>
-				{mainInfo.subject.name && <Avatar accountName={subject} />}
-				<span>{subject}</span>
+			<Link href={SsrHrefHelper.getHrefByObjectId(subject)}>
+				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
+					{mainInfo.subject.name && <Avatar accountName={subject} />}
+					<span>{subject}</span>
+				</a>
 			</Link>
 		);
 	};
@@ -74,8 +86,15 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	console.log('operationsInfoData', operationsInfoData);
+	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
+	let numberOperation = null;
+	if (number !== '') {
+		numberOperation = isTransaction ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
+	}
 
+	if (numberOperation < 1) {
+		return null;
+	}
 	return (
 		<React.Fragment>
 			<tr
@@ -84,20 +103,18 @@ const OperationsRow = React.memo(({
 				ref={tableRefs[index]}
 			>
 				<td className="number">
-					<div className="td-in">{number !== '' ? `${number || index + 1}.` : null}</div>
+					<div className="td-in">{numberOperation}.</div>
 				</td>
-				<td className="operation">
+				<td className="type">
 					<div className="td-in">{type}</div>
 				</td>
 				<td className="sender">
 					{ mainInfo.from.id ?
-						<Link
-							className="td-in avatar-wrap"
-							to={getSenderLink()}
-							onClick={(e) => e.stopPropagation()}
-						>
-							{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
-							<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
+							<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, getSenderLink(), mainInfo.from.id)}>
+								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
+								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+							</a>
 						</Link> : <div className="td-in">—</div>
 					}
 				</td>
@@ -130,27 +147,23 @@ const OperationsRow = React.memo(({
 						<Tabs>
 							<TabList className="operation-detail-header">
 								<div className="operation-detail-tabs">
-									{operationsInfoData.operationInfo && <Tab className="operation-detail-tab">Operation Info</Tab>}
-									{
-										operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
-										<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab>
+									{	operationsInfoData.operationInfo &&
+										<Tab className="operation-detail-tab">Operation Info</Tab>
 									}
+									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
 								</div>
 								<button className="yellow-button">View Raw JSON Object</button>
 							</TabList>
 							<div className="operation-detail-table">
-								{
-									operationsInfoData.operationInfo &&
-									<TabPanel>
-										<OperationInfo data={operationsInfoData.operationInfo} />
-									</TabPanel>
-								}
-								{
-									operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
-									<TabPanel>
-										<ProposalOperations operations={operationsInfoData.proposalOperations} />
-									</TabPanel>
-								}
+								{ operationsInfoData.operationInfo &&
+								<TabPanel>
+									<OperationInfo data={operationsInfoData.operationInfo} />
+								</TabPanel>}
+								{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+								<TabPanel>
+									<ProposalOperations operations={operationsInfoData.proposalOperations} />
+								</TabPanel>}
 							</div>
 						</Tabs>
 					</td>
@@ -162,11 +175,20 @@ const OperationsRow = React.memo(({
 });
 
 OperationsRow.propTypes = {
+	currentPage: PropTypes.number.isRequired,
+	sizePerPage: PropTypes.number.isRequired,
+	totalDataSize: PropTypes.number.isRequired,
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
+	isTransaction: PropTypes.bool,
 };
+
+OperationsRow.defaultProps = {
+	isTransaction: false,
+};
+
 
 export default OperationsRow;

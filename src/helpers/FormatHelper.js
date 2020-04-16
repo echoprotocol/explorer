@@ -199,7 +199,7 @@ class FormatHelper {
 	 * @returns {string}
 	 */
 	static timestampToOperationRowTime(timestamp) {
-		return moment.utc(timestamp).local().format('DD.MM.YYYY HH:mm');
+		return moment.utc(timestamp).local().format('DD.MM.YYYY hh:mm A');
 	}
 
 	/**

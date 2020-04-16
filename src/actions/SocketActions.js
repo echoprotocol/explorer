@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import echo from 'echojs-lib';
 import { batchActions } from 'redux-batched-actions';
+import Router from 'next/router';
 
 import config from '../config/chain';
 
@@ -19,7 +20,15 @@ import {
 } from '../constants/RoundConstants';
 import { DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES } from '../constants/GlobalConstants';
 
-import { initBlocks, setLatestBlock, updateAverageTransactions, updateBlockList } from './BlockActions';
+import {
+	initBlocks,
+	setLatestBlock,
+	updateBlockList,
+	getLatestOperations,
+} from './BlockActions';
+import { INDEX_PATH } from '../constants/RouterConstants';
+import StatisticsActions from './StatisticsActions';
+import { getBlockFromGraphQl } from '../services/queries/block';
 
 /**
  * set connected parameter to true
@@ -95,27 +104,67 @@ const blockRelease = () => async (dispatch) => {
 	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
 	await dispatch(updateBlockList(global.head_block_number));
-	dispatch(updateAverageTransactions());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
 };
 
 /**
- *  @method connect
+ * @method serverConnect
+ *
+ * Server WS init preload data
+ */
+
+export const serverConnect = () => async (dispatch) => {
+	try {
+		if (!echo.isConnected) {
+			dispatch(GlobalReducer.actions.set({ field: 'connectedServer', value: false }));
+			return;
+		}
+
+		const dynamicGlobalParams = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
+		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
+		const blockReward = globalParams.block_producer_reward_ratio;
+
+		await dispatch(batchActions([
+			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
+		]));
+
+		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
+		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		await dispatch(getLatestOperations());
+		await dispatch(initBlocks());
+
+		const global = globalParams.echorand_config;
+		const producers = global._creator_count;
+		dispatch(batchActions([
+			RoundReducer.actions.set({ field: 'producers', value: producers }),
+			GlobalReducer.actions.set({ field: 'connectedServer', value: true }),
+		]));
+	} catch (err) {
+		dispatch(batchActions([
+			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
+			GlobalReducer.actions.set({ field: 'connected', value: false }),
+		]));
+	}
+
+};
+
+/**
+ *  @method fullClientInit
  *
  * 	WS connect to blockchain and set subscribe callbacks
  */
-export const connect = () => async (dispatch) => {
+export const fullClientInit = () => async (dispatch) => {
 	try {
-		await echo.connect(config.API_URL, {
-			connectionTimeout: 5000,
-			maxRetries: 1e10,
-			pingTimeout: 6000,
-			pingDelay: 5000,
-			debug: false,
-			apis: ['database', 'network_broadcast', 'history', 'registration', 'asset', 'login', 'network_node', 'echorand'],
+		await echo.connect(config.ECHO_NODE.API_URL, {
+			connectionTimeout: config.ECHO_NODE.CONNECTION_TIMEOUT,
+			maxRetries: config.ECHO_NODE.MAX_RETRIES,
+			pingDelay: config.ECHO_NODE.PING_DELAY,
+			debug: config.ECHO_NODE.DEBUG,
+			apis: config.ECHO_NODE.APIS,
 		});
 
+		const dynamicGlobalParams = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
 		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
@@ -124,7 +173,9 @@ export const connect = () => async (dispatch) => {
 		]));
 
 		await dispatch(initBlocks());
-
+		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
+		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		await dispatch(getLatestOperations());
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
@@ -141,6 +192,44 @@ export const connect = () => async (dispatch) => {
 			GlobalReducer.actions.set({ field: 'connected', value: true }),
 			RoundReducer.actions.set({ field: 'producers', value: producers }),
 		]));
+		Router.push(INDEX_PATH);
+	} catch (err) {
+		dispatch(batchActions([
+			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),
+			GlobalReducer.actions.set({ field: 'connected', value: false }),
+		]));
+
+		throw err;
+	}
+};
+
+
+/**
+ *  @method partialClientConnect
+ *
+ * 	WS connect to blockchain and set subscribe callbacks
+ */
+export const partialClientConnect = () => async (dispatch) => {
+	try {
+		if (!echo.isConnected) {
+			await echo.connect(config.ECHO_NODE.API_URL, {
+				connectionTimeout: config.ECHO_NODE.CONNECTION_TIMEOUT,
+				maxRetries: config.ECHO_NODE.MAX_RETRIES,
+				pingDelay: config.ECHO_NODE.PING_DELAY,
+				debug: config.ECHO_NODE.DEBUG,
+				apis: config.ECHO_NODE.APIS,
+			});
+		}
+
+		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
+		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
+
+		echo.subscriber.setStatusSubscribe('connect', () => dispatch(onConnectSubscriber()));
+		echo.subscriber.setStatusSubscribe('disconnect', () => dispatch(onDisconnectSubscriber()));
+
+		dispatch(blockRelease());
+
+		dispatch(GlobalReducer.actions.set({ field: 'connected', value: true }));
 	} catch (err) {
 		dispatch(batchActions([
 			GlobalReducer.actions.set({ field: 'error', value: FormatHelper.formatError(err) }),

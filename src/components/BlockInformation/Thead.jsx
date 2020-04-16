@@ -4,7 +4,6 @@ import InfoTooltip from '../InfoTooltip';
 const DistributionThead = memo(() => (
 	<thead>
 		<tr>
-			<td />
 			<td className="role">
 				<div className="td-in">Role</div>
 			</td>
@@ -30,7 +29,6 @@ const DistributionThead = memo(() => (
 					/>
 				</div>
 			</td>
-			<td />
 		</tr>
 	</thead>
 ));

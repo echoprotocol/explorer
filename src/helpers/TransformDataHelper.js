@@ -6,9 +6,6 @@ import {
 	OPS_TYPES,
 } from '../constants/FormattingOperationConstants';
 import getAdditionalInfoByOpId, { getAssetFlags } from './AdditionalInfoHelper';
-import BN from 'bignumber.js';
-import { ECHO_ASSET } from '../constants/GlobalConstants';
-// import getAdditionalInfoByOpType from './AdditionalInfoHelper';
 
 // It shold be connected to real data
 export const transformOperationDataByType = async (opNumber, data) => {
@@ -37,7 +34,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					to_address: data.to_address,
 					to_account: data.to_account,
 					description,
-		},
+				},
 			};
 		case OPERATIONS_IDS.OVERRIDE_TRANSFER:
 			return {
@@ -317,7 +314,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				proposalOperations,
 			};
 		}
-		case OPERATIONS_IDS.PROPOSAL_UPDATE:
+		case OPERATIONS_IDS.PROPOSAL_UPDATE: {
+			const proposalOperations = await Promise.all(data.proposed_ops.map(([idOp, op]) => transformOperationDataByType(idOp, op)));
 			return {
 				operationInfo: {
 					type,
@@ -338,65 +336,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						proposal_status: 'approved',
 					},
 				},
-				proposalOperations: [{
-					operationInfo: {
-						type: 'Reverse asset',
-						sender: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						amount: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						fee: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						additionalInfo: {
-							current_asset_total_supply: '12,000,000,000. 00000000',
-						},
-					},
-				}, {
-					operationInfo: {
-						type: 'Create account',
-						registrar: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						account_name: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						new_account_id: '1.2.3',
-						authority: [{
-							value: 'ECHOd9f8LmNjn32GUMXZwNZDsfBqa6qcBGvGk86kKTuvzkMjdW9saCrTtrPwGpuB',
-							weight: '1',
-						}, {
-							value: 'vic.tor',
-							weight: '1',
-						}],
-						echorand_key: 'anyStringValue',
-						delegating_account: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						delegate_share: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						fee: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-					},
-				}],
+				proposalOperations,
 			};
-		case OPERATIONS_IDS.PROPOSAL_DELETE:
+		}
+		case OPERATIONS_IDS.PROPOSAL_DELETE: {
+			const proposalOperations = await Promise.all(data.proposed_ops.map(([idOp, op]) => transformOperationDataByType(idOp, op)));
 			return {
 				operationInfo: {
 					type,
@@ -409,64 +353,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						proposal_status: 'approved',
 					},
 				},
-				proposalOperations: [{
-					operationInfo: {
-						type: 'Reverse asset',
-						sender: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						amount: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						fee: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						additionalInfo: {
-							current_asset_total_supply: '12,000,000,000. 00000000',
-						},
-					},
-				}, {
-					operationInfo: {
-						type: 'Create account',
-						registrar: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						account_name: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						new_account_id: '1.2.3',
-						authority: [{
-							value: 'ECHOd9f8LmNjn32GUMXZwNZDsfBqa6qcBGvGk86kKTuvzkMjdW9saCrTtrPwGpuB',
-							weight: '1',
-						}, {
-							value: 'vic.tor',
-							weight: '1',
-						}],
-						echorand_key: 'anyStringValue',
-						delegating_account: {
-							value: 'account',
-							link: '1.2.3',
-						},
-						delegate_share: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						fee: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-					},
-				}],
+				proposalOperations,
 			};
+		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE:
 			return {
 				operationInfo: {
