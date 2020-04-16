@@ -1,0 +1,24 @@
+.multy-field {
+	display: flex;
+	flex-direction: column;
+}
+
+.multy-field-item {
+	display: inline-flex;
+	align-items: center;
+	margin-right: auto;
+	@include inter-ui-medium;
+	font-size: 11px;
+	line-height: 140%;
+	padding: 12px 0;
+	&:first-child {
+		padding-top: 0;
+	}
+	&:not(:last-child) {
+		border-bottom: 1px solid $lightest-grey-bg;
+	}
+}
+
+.multy-field-item__value {
+	color: $grey;
+}

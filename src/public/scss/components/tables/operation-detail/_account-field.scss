@@ -1,0 +1,23 @@
+.authority-field {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 15px;
+	background-color: $lightest-grey-bg;
+	border-radius: 4px;
+	&:not(:last-child) {
+		margin-bottom: 8px;
+	}
+}
+.authority-field__info {
+	display: flex;
+	flex-direction: column;
+	margin-right: 20px;
+}
+.authority-field__info-description {
+	margin-top: 8px;
+	color: $lightgrey;
+	span:nth-child(2) {
+		color: $grey;
+	}
+}

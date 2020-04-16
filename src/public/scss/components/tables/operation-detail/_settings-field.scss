@@ -1,0 +1,29 @@
+.settings-field {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: -5px;
+}
+
+.settings-item {
+	margin-bottom: 5px;
+	padding: 6px 9px 6px 21px;
+	background-color: $lightest-grey-bg;
+	border-radius: 4px;
+	background-repeat: no-repeat;
+	background-position: center left 6px;
+	font-size: 11px;
+	&.disabled {
+		color: $lightgrey;
+		background-image: url(../images/icons/settings-disabled.svg);
+	}
+	&.on {
+		background-image: url(../images/icons/settings-on.svg);
+	}
+	&.off {
+		color: $lightgrey;
+		background-image: url(../images/icons/settings-off.svg);
+	}
+	&:not(:last-child) {
+		margin-right: 5px;
+	}
+}

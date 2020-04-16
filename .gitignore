@@ -6,3 +6,4 @@ config/local.json
 .next
 ./src/.next
 .vscode
+.next

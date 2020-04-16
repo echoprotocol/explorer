@@ -76,7 +76,11 @@
 @import "components/block-description";
 
 @import "components/tables/main-page-table";
-@import "components/tables/operation-detail-table";
+@import "components/tables/operation-detail/operation-detail-table";
+@import "components/tables/operation-detail/account-field";
+@import "components/tables/operation-detail/settings-field";
+@import "components/tables/operation-detail/multy-field";
+@import "components/tables/operation-detail/producers-field";
 @import "components/tables/operations-table/operations-table";
 @import "components/tables/operations-table/operations-filter";
 @import "components/tables/operations-table/operations-pagination";

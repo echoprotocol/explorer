@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
 import { validators } from 'echojs-lib';
@@ -10,6 +11,7 @@ import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 import Avatar from '../Avatar';
 import OperationInfo from '../TransactionInfo/OperationInfo';
+import ProposalOperations from '../TransactionInfo/ProposalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -39,7 +41,6 @@ const OperationsRow = React.memo(({
 	currentPage,
 	sizePerPage,
 	totalDataSize,
-	isMobile,
 }) => {
 
 	// const goToBlock = (e) => {
@@ -89,11 +90,11 @@ const OperationsRow = React.memo(({
 		);
 	};
 
-	const objectId = objectInfo ? objectInfo.get('id') : null;
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
 	const operationsInfoData = type && transformOperationDataByType(type, operation);
+	// const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
 
 	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
 	let numberOperation = null;
@@ -117,7 +118,6 @@ const OperationsRow = React.memo(({
 				<td className="type">
 					<div className="td-in">{type}</div>
 				</td>
-				{/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions,jsx-a11y/click-events-have-key-events */}
 				<td className="sender">
 					{ mainInfo.from.id ?
 						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
@@ -154,16 +154,28 @@ const OperationsRow = React.memo(({
 			{ active &&
 				<tr className="fold">
 					<td colSpan="6">
-						<OperationInfo
-							data={operationsInfoData.operationInfo}
-							isMobile={isMobile}
-							details={detailInfo}
-							index={index}
-							block={block}
-							transaction={transactionNum}
-							opIndex={opIndex}
-							objId={objectId}
-						/>
+						<Tabs>
+							<TabList className="operation-detail-header">
+								<div className="operation-detail-tabs">
+									{	operationsInfoData.operationInfo &&
+										<Tab className="operation-detail-tab">Operation Info</Tab>
+									}
+									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
+								</div>
+								<button className="yellow-button">View Raw JSON Object</button>
+							</TabList>
+							<div className="operation-detail-table">
+								{ operationsInfoData.operationInfo &&
+								<TabPanel>
+									<OperationInfo data={operationsInfoData.operationInfo} />
+								</TabPanel>}
+								{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
+								<TabPanel>
+									<ProposalOperations operations={operationsInfoData.proposalOperations} />
+								</TabPanel>}
+							</div>
+						</Tabs>
 					</td>
 				</tr>
 			}
@@ -173,7 +185,6 @@ const OperationsRow = React.memo(({
 });
 
 OperationsRow.propTypes = {
-	isMobile: PropTypes.bool.isRequired,
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,

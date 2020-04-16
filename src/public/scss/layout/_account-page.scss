@@ -225,6 +225,11 @@
 				@include text-overflow();
 				max-width: 120px;
 			}
+			&.name {
+				display: inline-block;
+				@include text-overflow();
+				max-width: calc(50%);
+			}
 		}
 
 		.divider {
