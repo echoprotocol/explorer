@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var FORM_LOGIN = 'login';\nexport var FORM_CONTRACT_VERIFY = 'contract_verify';\nexport var FORM_MANAGE_CONTRACT = 'manage';\nexport var FORM_ABI = 'abi';","map":null,"metadata":{},"sourceType":"module"}

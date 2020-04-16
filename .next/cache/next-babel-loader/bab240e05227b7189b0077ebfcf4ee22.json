@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var CONTRACT_PREFIX = 'contracts';\nexport var LIKE_PREFIX = 'like';\nexport var VERIFY_PREFIX = 'verify';\nexport var API_PREFIX = 'api';\nexport var ABI_PREFIX = 'abi';\nexport var SEARCH_PREFIX = 'search';\nexport var NETWORK_PREFIX = 'network';\nexport var PEERS_PREFIX = 'peers';","map":null,"metadata":{},"sourceType":"module"}

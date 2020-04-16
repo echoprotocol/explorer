@@ -1,1 +1,0 @@
-{"ast":null,"code":"import BlockInformation from '../../containers/RecentBlockSection/BlockInformation';\nexport default BlockInformation;","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { connect } from 'react-redux';\nimport InternetPopup from '../../components/InternetPopup';\nexport default connect(function (state) {\n  return {\n    isConnected: state.internetPopup.get('connect'),\n    isShow: state.internetPopup.get('show')\n  };\n})(InternetPopup);","map":null,"metadata":{},"sourceType":"module"}

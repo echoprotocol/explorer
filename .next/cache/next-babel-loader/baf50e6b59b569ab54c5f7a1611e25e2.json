@@ -1,1 +1,0 @@
-{"ast":null,"code":"import ManageContract from '../../../containers/ManageContract';\nexport default ManageContract;","map":null,"metadata":{},"sourceType":"module"}

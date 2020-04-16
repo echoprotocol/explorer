@@ -37,7 +37,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					to_address: data.to_address,
 					to_account: data.to_account,
 					description,
-				},
+		},
 			};
 		case OPERATIONS_IDS.OVERRIDE_TRANSFER:
 			return {
