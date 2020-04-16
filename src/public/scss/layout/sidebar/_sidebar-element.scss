@@ -115,13 +115,13 @@
 			}
 		}
 		&.blockchain-rates {
-			width: 34.5%;
+			width: 34%;
 			@include max-vw($res-1280) {
 				width: 100%;
 			}
 		}
 		&.frozen-funds {
-			width: 36.5%;
+			width: 36.7%;
 			@include max-vw($res-1280) {
 				width: 100%;
 			}
@@ -171,6 +171,7 @@
 }
 
 .sidebar-element-wrap {
+	width: 100%;
 	margin-top: auto;
 	@include max-vw($res-1280) {
 		margin-top: 0;
