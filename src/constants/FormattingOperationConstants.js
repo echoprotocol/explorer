@@ -20,12 +20,14 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.ASSET_FUND_FEE_POOL]: Operations.asset_fund_fee_pool.name,
 	[OPERATIONS_IDS.ASSET_PUBLISH_FEED]: Operations.asset_publish_feed.name,
 	[OPERATIONS_IDS.ASSET_CLAIM_FEES]: Operations.asset_claim_fees.name,
+
 	[OPERATIONS_IDS.PROPOSAL_CREATE]: Operations.proposal_create.name,
-	[OPERATIONS_IDS.PROPOSAL_UPDATE]: 'Update proposal',
-	[OPERATIONS_IDS.PROPOSAL_DELETE]: 'Delete proposal',
-	[OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE]: 'Create committee member',
-	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE]: 'Update committee member',
-	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS]: 'Global parameters update',
+	[OPERATIONS_IDS.PROPOSAL_UPDATE]: Operations.proposal_update.name,
+	[OPERATIONS_IDS.PROPOSAL_DELETE]: Operations.proposal_delete.name,
+
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE]: Operations.committee_member_create.name,
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE]: Operations.committee_member_update.name,
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS]: Operations.committee_member_update_global_parameters.name,
 };
 
 export const OPS_DESCRIPTIONS = {
@@ -55,7 +57,20 @@ export const OPS_DESCRIPTIONS = {
 	[OPERATIONS_IDS.ASSET_CLAIM_FEES]: 'Used to transfer accumulated fees back to the issuer\'s balance',
 	[OPERATIONS_IDS.PROPOSAL_CREATE]: `The proposal_create_operation creates a transaction proposal, for use in multi-sig scenarios.
 			Creates a transaction proposal. The operations which compose the transaction are listed in order in proposed_ops, and expiration_time specifies the time by which the proposal must be accepted or it will fail permanently. The expiration_time cannot be farther in the future than the maximum expiration time set in the global properties object.`,
-
+	[OPERATIONS_IDS.PROPOSAL_UPDATE]: 'The proposal_update_operation updates an existing transaction proposal.\n' +
+	'This operation allows accounts to add or revoke approval of a proposed transaction. Signatures sufficient to satisfy the authority of each account in approvals are required on the transaction containing this operation.\n' +
+	'If an account with a multi-signature authority is listed in approvals_to_add or approvals_to_remove, either all required signatures to satisfy that account\'s authority must be provided in the transaction containing this operation, or a secondary proposal must be created which contains this operation.\n' +
+	'NOTE: If the proposal requires only an account\'s active authority, the account must not update adding its owner authority\'s approval. This is considered an error. An owner approval may only be added if the proposal requires the owner\'s authority.\n' +
+	'If an account\'s owner and active authority are both required, only the owner authority may approve. An attempt to add or remove active authority approval to such a proposal will fail.',
+	[OPERATIONS_IDS.PROPOSAL_DELETE]: 'The proposal_delete_operation deletes an existing transaction proposal.\n' +
+	'This operation allows the early veto of a proposed transaction. It may be used by any account which is a required authority on the proposed transaction, when that account\'s holder feels the proposal is ill-advised and he decides he will never approve of it and wishes to put an end to all discussion of the issue. Because he is a required authority, he could simply refuse to add his approval, but this would leave the topic open for debate until the proposal expires. Using this operation, he can prevent any further breath from being wasted on such an absurd proposal.',
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE]: 'Create a committee_member object, as a bid to hold a committee_member seat on the network.\n' +
+	'Accounts which wish to become committee_members may use this operation to create a committee_member object which stakeholders may vote on to approve its position as a committee_member.',
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE]: 'Update a committee_member object.\n' +
+	'Currently the only field which can be updated is the url field.',
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS]: 'Used by committee_members to update the global parameters of the blockchain.\n' +
+	'This operation allows the committee_members to update the global parameters on the blockchain. These control various tunable aspects of the chain, including block and maintenance intervals, maximum data sizes, the fees charged by the network, etc.\n' +
+	'This operation may only be used in a proposed transaction, and a proposed transaction which contains this operation must have a review period specified in the current global parameters before it may be accepted.',
 };
 
 export const ACCOUNT_BLACK_WHITE = {

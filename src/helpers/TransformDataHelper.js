@@ -109,12 +109,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		case OPERATIONS_IDS.ASSET_CREATE: {
-			// TODO check bitasset
-			// Global settle
-			// Disable force settle
 			const settings = await getAssetFlags(data.objectInfo.toJS());
 			const additionalInfo = await getAdditionalInfoByOpId(opNumber, data.mainInfo.result);
-
 			return {
 				operationInfo: {
 					type,
@@ -125,7 +121,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					asset_description: data.objectInfo.get('description'),
 					fee: data.fee,
 					rate: data.objectInfo.get('rate'),
-					is_bit_asset: data.bitasset_opts ? 'Yes' : 'No',
+					is_bit_asset: data.objectInfo.get('isBitAsset') ? 'Yes' : 'No',
 					settings: [{
 						key: 'Whitelist',
 						value: settings.isWhiteList,
@@ -159,13 +155,12 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.ASSET_UPDATE: {
+			// TODO check issuer and new_issuer
 			const settings = await getAssetFlags(data.objectInfo.toJS());
-			console.log('ASSET_UPDATE data', data);
-			console.log('ASSET_UPDATE data', data.objectInfo.toJS());
 			return {
 				operationInfo: {
 					type,
-					issuer: data.issuer,
+					sender: data.issuer,
 					new_issuer: data.new_issuer,
 					asset_name: data.asset_to_update.value,
 					max_suply: data.objectInfo.get('maxSupply'),
@@ -184,22 +179,14 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						key: 'Commitee fed asset authority',
 						value: settings.isCommette,
 					}],
-					// bit_asset_options: [{
-					// 	key: 'Feed lifetime',
-					// 	value: '12w, 23d, 34:34:56',
-					// }, {
-					// 	key: 'Minimum feeds',
-					// 	value: '3',
-					// }, {
-					// 	key: 'Short backing asset:',
-					// 	value: 'off',
-					// }],
 					fee: data.fee,
 					description,
 				},
 			};
 		}
 		case OPERATIONS_IDS.ASSET_UPDATE_BITASSET:
+			// TODO check
+			console.log('data', data);
 			return {
 				operationInfo: {
 					type,
@@ -223,6 +210,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		case OPERATIONS_IDS.ASSET_UPDATE_FEED_PRODUCERS:
+			// TODO check
 			return {
 				operationInfo: {
 					type,
@@ -260,7 +248,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: data.issuer,
-					asset_amount: data.asset_to_issue,
+					amount: data.asset_to_issue,
 					receiver: data.issue_to_account,
 					fee: data.fee,
 					description,
@@ -274,7 +262,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: data.payer,
-					asset_amount: data.amount_to_reserve,
+					amount: data.amount_to_reserve,
 					fee: data.fee,
 					description,
 					additionalInfo: {
@@ -287,7 +275,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: data.from_account,
-					asset_amount: data.mainInfo.value,
+					amount: data.mainInfo.value,
 					fee: data.fee,
 					description,
 					additionalInfo: {
@@ -296,6 +284,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		case OPERATIONS_IDS.ASSET_PUBLISH_FEED:
+			// TODO check
 			return {
 				operationInfo: {
 					type,
@@ -314,9 +303,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: data.issuer,
-					asset_amount: data.amount_to_claim,
+					amount: data.amount_to_claim,
 					fee: data.fee,
-					description: OPS_DESCRIPTIONS.ASSET_CLAIM_FEES,
+					description,
 					additionalInfo: {
 						feeded_asset_fee_pool: data.objectInfo.get('totalSupply'),
 						current_asset_unclaimed_fee: data.objectInfo.get('accumulated_fees'),
@@ -326,12 +315,12 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.PROPOSAL_CREATE:
 			return {
 				operationInfo: {
-					type: 'Create proposal',
+					type,
 					sender: data.fee_paying_account,
 					expiration_time: data.expiration_time,
-					preview_period: '23h',
+					preview_period: data.review_period_seconds,
 					fee: data.fee,
-					description: OPS_DESCRIPTIONS.PROPOSAL_CREATE,
+					description,
 					additionalInfo: {
 						count_approvals: {
 							value: 2,
@@ -402,11 +391,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.PROPOSAL_UPDATE:
 			return {
 				operationInfo: {
-					type: 'Update proposal',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
+					type,
+					sender: data.fee_paying_account,
 					proposal_id: 'https://explorer.echo.org/blocks/70/1?op=1',
 					approvals_to_add: [{
 						value: 'ECHOd9f8LmNjn32GUMXZwNZDsfBqa6qcBGvGk86kKTuvzkMjdW9saCrTtrPwGpuB',
@@ -416,11 +402,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						value: 'vic.tor',
 						weight: '1',
 					}],
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					fee: data.fee,
+					description,
 					additionalInfo: {
 						count_signatures: '2',
 						proposal_status: 'approved',
@@ -487,17 +470,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.PROPOSAL_DELETE:
 			return {
 				operationInfo: {
-					type: 'Reject proposal',
-					sender: {
-						value: 'account',
-						link: '1.2.3',
-					},
+					type,
+					sender: data.fee_paying_account,
 					proposal_id: 'https://explorer.echo.org/blocks/70/1?op=1',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					fee: data.fee,
+					description,
 					additionalInfo: {
 						count_signatures: '2',
 						proposal_status: 'approved',
@@ -564,7 +541,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE:
 			return {
 				operationInfo: {
-					type: 'Create committee member',
+					type,
 					sender: {
 						value: 'account',
 						link: '1.2.3',
@@ -573,12 +550,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					eth_address: 'https://etherscan.io/',
 					btc_address: 'https://www.blockchain.com/explorer',
 					deposit_amount: '12,000,000,000. 00000000',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					fee: data.fee,
+					description,
 					additionalInfo: {
 						current_account_committee_status: 'Not a member of the committee',
 					},
@@ -587,7 +560,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE:
 			return {
 				operationInfo: {
-					type: 'Update committee member',
+					type,
 					sender: {
 						value: 'account',
 						link: '1.2.3',
@@ -595,12 +568,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					new_url: 'https://explorer.echo.org/blocks/70/1?op=1',
 					new_eth_address: 'https://etherscan.io/',
 					new_btc_address: 'https://www.blockchain.com/explorer',
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					description: 'Description of operation goes here. Praesent dapibus, neque id cursus faucibus, tortor neque egestas auguae, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tin cidunt quis, accumsan porttitor, facilisis luctus, metus.',
+					fee: data.fee,
+					description,
 					additionalInfo: {
 						current_account_committee_status: 'Not a member of the committee',
 					},
@@ -609,17 +578,14 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS:
 			return {
 				operationInfo: {
-					type: 'Global parameters update',
+					type,
 					sender: {
 						value: 'account',
 						link: '1.2.3',
 					},
 					changed_parameters: ['param1', 'param2', 'param3'],
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					fee: data.fee,
+					description,
 					additionalInfo: {
 						current_global_parametres: 'https://explorer.echo.org/blocks/70/1?op=1',
 					},

@@ -154,7 +154,6 @@ class TransactionActionsClass extends BaseActionsClass {
 				const rate = (new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
 					.div(new BN(quoteAmount).div(`1e${asset.precision}`));
 
-
 				object = object
 					.set('id', asset.id)
 					.set('name', asset.symbol)
@@ -172,6 +171,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('issuer_permissions', asset.options.issuer_permissions)
 					.set('flags', asset.options.flags)
 					.set('description', asset.options.description)
+					.set('isBitAsset', !!asset.bitasset)
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
 				const committee = await echo.api.getObject(subject.id);

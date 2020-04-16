@@ -72,7 +72,6 @@ class OperationInfo extends React.Component {
 						description={FormatHelper.formatAmount(data.delegate_share.amount, data.delegate_share.precision, data.delegate_share.symbol)}
 					/>}
 					{data.amount && <PrimaryRow title="Amount" description={FormatHelper.formatAmount(data.amount.amount, data.amount.precision, data.amount.symbol)} />}
-					{data.asset_amount && <PrimaryRow title="Asset amount" description={FormatHelper.formatAmount(data.asset_amount.amount, data.asset_amount.precision, data.asset_amount.symbol)} />}
 					{data.deposit_amount && <PrimaryRow title="Deposit amount" description={data.deposit_amount} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
