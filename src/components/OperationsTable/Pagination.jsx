@@ -80,7 +80,7 @@ const OperationsPagination = ({
 				})}
 			</div>
 			<div className="pg-nav-2">
-				<div className="pg-caption">Page:</div>
+				<label htmlFor="pg-input" className="pg-caption">Page:</label>
 				<Input
 					name="pg-input"
 					className="pg-input"

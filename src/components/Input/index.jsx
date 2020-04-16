@@ -17,6 +17,7 @@ const Input = ({
 			<input
 				className={cn('input', { focus: isFocused, clerable: hundleClear, filled: value })}
 				name={name}
+				id={name}
 				onFocus={() => setFocus(true)}
 				onBlur={() => setFocus(false)}
 				value={value}
