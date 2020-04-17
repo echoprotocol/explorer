@@ -17,11 +17,11 @@ const OperationsRow = React.memo(({
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
 				{
-					from.name ?
+					(from.name || from.id) ?
 						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(from.id)}>
 							<a className="td-in avatar-wrap">
 								{validators.isAccountId(from.id) && <Avatar accountName={from.name} />}
-								<span>{from.name}</span>
+								<span>{from.name ? from.name : from.id}</span>
 							</a>
 						</Link>
 						:
@@ -29,11 +29,11 @@ const OperationsRow = React.memo(({
 			</td>
 			<td className="to">
 				{
-					to.name ?
+					(to.name || to.id) ?
 						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(to.id)}>
 							<a className="td-in avatar-wrap">
 								{validators.isAccountId(to.id) && <Avatar accountName={to.name} />}
-								<span>{to.name}</span>
+								<span>{to.name ? to.name : to.id}</span>
 							</a>
 						</Link> :
 						<span>-</span>}
