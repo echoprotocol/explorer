@@ -48,6 +48,7 @@ class Account extends React.Component {
 
 	componentWillUnmount() {
 		const { account } = this.props;
+		if (!account || (account && !account.get)) { return; }
 		this.unsubscribeHistoryUpdate(account.get('id'));
 		this.props.clearAccountInfo();
 	}

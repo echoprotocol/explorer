@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
+
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import classnames from 'classnames';
 import Tooltip from 'rc-tooltip';
@@ -15,24 +16,23 @@ import ProposalOperations from '../TransactionInfo/ProposalOperations';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
-import { transformOperationDataByType } from '../../helpers/TransformDataHelper';
 import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 // import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
 	operation: {
+		operationsInfoData,
 		id,
 		mainInfo,
 		objectInfo,
-		blockNumber: block,
-		trIndex: transactionNum,
+		blockNumber,
+		trIndex,
 		opIndex,
 		number,
 		type,
 		blockTimestamp,
 		...detailInfo
 	},
-	operation,
 	index,
 	isTransaction,
 	active,
@@ -42,14 +42,8 @@ const OperationsRow = React.memo(({
 	sizePerPage,
 	totalDataSize,
 }) => {
-
-	// const goToBlock = (e) => {
-	// 	e.preventDefault();
-	// 	e.stopPropagation();
-	// 	Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
-	// };
-
-	const getSenderLink = () => (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
+	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
+	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 	const goToLink = (e, href, objectId) => {
 		e.preventDefault();
@@ -59,7 +53,9 @@ const OperationsRow = React.memo(({
 
 	const renderSubject = (subject) => {
 		if (!subject) return <div className="td-in">—</div>;
+		if (validators.isString(subject) && validators.isAssetName(subject)) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
+
 		return (
 			<Link href={SsrHrefHelper.getHrefByObjectId(subject)}>
 				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
@@ -93,9 +89,6 @@ const OperationsRow = React.memo(({
 	tableRefs[index] = React.createRef();
 	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
 
-	const operationsInfoData = type && transformOperationDataByType(type, operation);
-	// const operationsInfoData = transformOperationDataByType('Update asset feed producers', operation);
-
 	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
 	let numberOperation = null;
 	if (number !== '') {
@@ -121,7 +114,7 @@ const OperationsRow = React.memo(({
 				<td className="sender">
 					{ mainInfo.from.id ?
 						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
-							<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, getSenderLink(), mainInfo.from.id)}>
+							<a href={URLHelper.getUrlWithOrigin(senderLink)} className="td-in avatar-wrap" onClick={(e) => goToLink(e, senderLink, mainInfo.from.id)}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
 							</a>
@@ -163,7 +156,9 @@ const OperationsRow = React.memo(({
 									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
 									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
 								</div>
-								<button className="yellow-button">View Raw JSON Object</button>
+								<button className="yellow-button">
+									<a className="yellow" href={operationObjectsUrl} onClick={(e) => goToLink(e, operationObjectsUrl)} >View Raw JSON Object</a>
+								</button>
 							</TabList>
 							<div className="operation-detail-table">
 								{ operationsInfoData.operationInfo &&

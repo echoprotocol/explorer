@@ -6,6 +6,10 @@
 	color: $bronze;
 	border-radius: 2px;
 	cursor: pointer;
+
+	& a.yellow {
+		color: $bronze;
+	}
 	&:focus {
 		border: 1px solid $blue;
 	}
