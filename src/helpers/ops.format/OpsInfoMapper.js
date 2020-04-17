@@ -295,8 +295,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		case OPERATIONS_IDS.PROPOSAL_CREATE: {
-			// console.log('data.objectInfo', data.proposed_ops);
-			const proposalOperations = await Promise.all(data.proposed_ops.map(([idOp, op]) => transformOperationDataByType(idOp, op)));
 			return {
 				operationInfo: {
 					type,
@@ -314,11 +312,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						result_transaction: 'https://explorer.echo.org/blocks/70/1?op=1',
 					},
 				},
-				proposalOperations,
+				proposalOperations: data.proposed_ops,
 			};
 		}
 		case OPERATIONS_IDS.PROPOSAL_UPDATE: {
-			const proposalOperations = await Promise.all(data.proposed_ops.map(([idOp, op]) => transformOperationDataByType(idOp, op)));
 			return {
 				operationInfo: {
 					type,
@@ -339,11 +336,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						proposal_status: 'approved',
 					},
 				},
-				proposalOperations,
+				proposalOperations: data.proposed_ops,
 			};
 		}
 		case OPERATIONS_IDS.PROPOSAL_DELETE: {
-			const proposalOperations = await Promise.all(data.proposed_ops.map(([idOp, op]) => transformOperationDataByType(idOp, op)));
 			return {
 				operationInfo: {
 					type,
@@ -356,7 +352,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						proposal_status: 'approved',
 					},
 				},
-				proposalOperations,
+				// proposalOperations: data.proposed_ops,
 			};
 		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE:

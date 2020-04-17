@@ -509,6 +509,32 @@ class TransactionActionsClass extends BaseActionsClass {
 		return result;
 	}
 
+	getProposalOperations(proposedOps, blockNumber, blockTimestamp, trIndex) {
+		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
+			const [idPropOp] = proposedOp;
+			let propData = {};
+			try {
+				propData = await this.getOperation(
+					proposedOp,
+					blockNumber,
+					blockTimestamp,
+					trIndex,
+					proposedOpIndex,
+					[],
+				);
+			} catch (err) {
+				console.log('Error to parse proposal props', err);
+			}
+			let transformData = {};
+			try {
+				transformData = await transformOperationDataByType(idPropOp, propData);
+			} catch (err) {
+				console.log('Error to transformOperationDataByType', err);
+			}
+			return transformData;
+		});
+	}
+
 	async getOperation([type, options], blockNumber, blockTimestamp, trIndex, opIndex, operationResult, number = null, accountId = null, trId = null) {
 		const operation = Object.values(Operations).find((i) => i.value === type);
 
@@ -695,6 +721,11 @@ class TransactionActionsClass extends BaseActionsClass {
 			opIndex,
 		};
 		const opNumberToFormat = operation.value < 20 ? operation.value : 0;
+
+		if (proposalOperations.includes(operation.name)) {
+			const promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
+			op.proposed_ops = await Promise.all(promises);
+		}
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		return op;
 	}
