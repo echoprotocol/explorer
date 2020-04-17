@@ -1,0 +1,42 @@
+.transfers-field {
+	display: inline-flex;
+	align-items: center;
+	margin-right: auto;
+	padding: 12px 0;
+	&:first-child {
+		padding-top: 0;
+	}
+	&:last-child {
+		padding-bottom: 0;
+	}
+	&:not(:last-child) {
+		border-bottom: 1px solid $lightest-grey-bg;
+	}
+	.avatar-wrap {
+		span {
+			font-size: 11px;
+		}
+	}
+}
+
+.transfers-field__amount {
+	display: flex;
+	align-items: center;
+	width: 200px;
+}
+.transfers-field__amount-value {
+	display: inline-block;
+	@include text-overflow;
+	max-width: calc(100% - 50px);
+}
+.transfers-field__accounts {
+	display: flex;
+	align-items: center;
+}
+.transfers-field__accounts-from,
+.transfers-field__accounts-to {
+	display: flex;
+}
+.transfers-field__accounts-divider {
+	margin: 0 12px;
+}

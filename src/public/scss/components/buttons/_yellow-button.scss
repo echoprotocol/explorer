@@ -1,16 +1,15 @@
 .yellow-button {
-	font-size: 11px;
 	@include inter-ui-medium;
+	@include btn();
+	@include onFocus(2px, 1px, 1px, $blue);
+	font-size: 11px;
 	padding: 5px 10px;
 	border: 1px solid transparent;
 	color: $bronze;
+	background-color: $lightyellow;
 	border-radius: 2px;
 	cursor: pointer;
-
-	& a.yellow {
-		color: $bronze;
-	}
-	&:focus {
-		border: 1px solid $blue;
+	&:active {
+		opacity: 0.8;
 	}
 }

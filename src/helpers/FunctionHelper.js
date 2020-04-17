@@ -28,6 +28,13 @@ export const formatPrice = (n, _c = 2, _d = '.', _t = ' ') => {
 	return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, `$1${t}`) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
 };
 
+export const sliceText = (text, maxSymbols) => {
+	if (text.length > maxSymbols) {
+		const newText = `${text.slice(0, maxSymbols)}...`;
+		return newText;
+	}
+	return text;
+};
 /**
  * Converts a number to a string with the desired case
  * @param {Number} number

@@ -11,9 +11,9 @@ import SsrHrefHelper from '../../../helpers/SsrHrefHelper';
 import FormatHelper from '../../../helpers/FormatHelper';
 
 const LinkRow = ({
-	title, account, link, isLinkOut, objectId, asset, amount, rate,
+	title, account, link, isLinkOut, objectId, asset, amount, rate, className,
 }) => (
-	<div className="od-row">
+	<div className={`od-row ${className}`}>
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			{account &&
@@ -75,6 +75,7 @@ LinkRow.propTypes = {
 	asset: PropTypes.object,
 	link: PropTypes.string,
 	isLinkOut: PropTypes.bool,
+	className: PropTypes.string,
 };
 
 LinkRow.defaultProps = {
@@ -85,6 +86,7 @@ LinkRow.defaultProps = {
 	link: '',
 	objectId: '',
 	isLinkOut: false,
+	className: '',
 };
 
 export default LinkRow;

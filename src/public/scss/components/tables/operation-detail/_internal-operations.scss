@@ -1,0 +1,19 @@
+.internal-operation {
+	display: flex;
+	&:not(:last-child) {
+		border-bottom: 2px solid $lightest-grey-bg;
+	}
+}
+
+.internal-operation__title {
+	padding-top: 40px;
+	min-width: 140px;
+	@include inter-ui-medium;
+	font-size: 12px;
+	color: $explorer-black;
+}
+
+.internal-operation__rows {
+	padding: 20px 0;
+	width: 100%;
+}
