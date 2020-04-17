@@ -170,14 +170,22 @@ class ContractActions extends BaseActionsClass {
 					getObjectId(queryData.filters.to),
 				]);
 
-				const { items, total } = await getContractHistory({
-					subject,
-					fromFilter: fromFilter || undefined,
-					toFilter: toFilter || undefined,
-					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
-					count: queryData.sizePerPage,
-					operations: Object.keys(OPERATIONS_IDS),
-				});
+				let items = [];
+				let total = 0;
+				
+				try {
+					({ items, total } = await getContractHistory({
+						subject,
+						fromFilter: fromFilter || undefined,
+						toFilter: toFilter || undefined,
+						offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+						count: queryData.sizePerPage,
+						operations: Object.keys(OPERATIONS_IDS),
+					}));
+				} catch(err) {
+					console.log('EchoDB error', err);
+				}
+				
 				dispatch(GridActions.setTotalDataSize(CONTRACT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatContractHistory(transactions);
@@ -714,6 +722,7 @@ class ContractActions extends BaseActionsClass {
 					return;
 				}
 
+		
 				let { history, contractInfo, transferHistory } = await getContractInfo(id);
 				const contractTxs = (await getTotalHistory([id])).total;
 

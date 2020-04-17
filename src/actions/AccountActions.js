@@ -101,12 +101,23 @@ class AccountActions extends BaseActionsClass {
 					},
 				]));
 
-				const { total: totalAccountHistory } = await getTotalAccountHistory(account.id);
+				let totalAccountHistory = 0;
+				try {
+					totalAccountHistory = (await getTotalAccountHistory(account.id)).total;
+				} catch(err) {
+					console.log('EchoDB error', err);
+				}
+				
 				await dispatch(this.loadAccountHistory(account.id));
 				dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, account.name)));
 				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
-				const balances = await getBalances([account.id]);
-
+				let balances = [];
+				try {
+					balances = await getBalances([account.id]);
+				} catch(err) {
+					console.log('EchoDb error', err);
+				}
+			
 				const tokens = balances.data.getBalances.filter((balanceItem) =>
 					balanceItem.type === TOKEN_TYPE && !(new BN(balanceItem.amount)).isEqualTo(0));
 
@@ -172,14 +183,22 @@ class AccountActions extends BaseActionsClass {
 					getObjectId(queryData.filters.to),
 				]);
 
-				const { items, total } = await getHistory({
-					subject,
-					fromFilter: fromFilter || undefined,
-					toFilter: toFilter || undefined,
-					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
-					count: queryData.sizePerPage,
-					operations: Object.keys(OPERATIONS_IDS),
-				});
+				let items = [];
+				let total = 0;
+
+				try {
+					({ items, total } = await getHistory({
+						subject,
+						fromFilter: fromFilter || undefined,
+						toFilter: toFilter || undefined,
+						offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+						count: queryData.sizePerPage,
+						operations: Object.keys(OPERATIONS_IDS),
+					}));
+				} catch(err) {
+					console.log('EchoDb error', err);
+				}
+				
 				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatAccountHistory(accountId, transactions);
