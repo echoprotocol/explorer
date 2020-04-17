@@ -11,7 +11,6 @@ import getAdditionalInfoByOpId, { getAssetFlags } from './AddInfoHelper';
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
 	const description = OPS_DESCRIPTIONS[opNumber];
-
 	switch (opNumber) {
 		case OPERATIONS_IDS.TRANSFER:
 			return {
@@ -358,7 +357,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		// 	};
 		// }
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE: {
-			const { btc_address: btcAddress, committee_status: committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			const { btcAddress, committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
 			return {
 				operationInfo: {
 					type,
@@ -376,14 +375,14 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE: {
-			const { new_btc_address: newBtcAddress, committee_status: committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			const { btcAddress, committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
 			return {
 				operationInfo: {
 					type,
 					sender: data.committee_member_account,
 					new_url: data.new_url,
 					new_eth_address: data.new_eth_address,
-					new_btc_address: newBtcAddress,
+					new_btc_address: btcAddress,
 					fee: data.fee,
 					...description,
 					additionalInfo: {
@@ -393,7 +392,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS: {
-			console.log('data', data);
 			return {
 				operationInfo: {
 					type,
@@ -406,6 +404,108 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					...description,
 					additionalInfo: {
 						current_global_parametres: 'https://explorer.echo.org/blocks/70/1?op=1',
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE: {
+			// TODO check
+			// const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			return {
+				operationInfo: {
+					type,
+					account_name: data.committee_to_activate,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						// committee_status: committeeStatus,
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE: {
+			// TODO check
+			// const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			return {
+				operationInfo: {
+					type,
+					account_name: data.committee_to_deactivate,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						// committee_status: committeeStatus,
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT: {
+			const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			return {
+				operationInfo: {
+					type,
+					sender: data.committee_member_account,
+					amount: data.amount,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						committee_status: committeeStatus,
+						current_account_frozen_balance: data.objectInfo.get('frozenBalance'),
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_WITHDRAW: {
+			// check
+			const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			return {
+				operationInfo: {
+					type,
+					sender: data.committee_member_account,
+					amount: data.amount,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						committee_status: committeeStatus,
+						current_account_frozen_balance: data.objectInfo.get('frozenBalance'),
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.VESTING_BALANCE_CREATE: {
+			console.log('data', data.policy);
+			return {
+				operationInfo: {
+					type,
+					sender: data.creator,
+					owner: data.owner,
+					amount: data.amount,
+					policy: [{
+						name: 'Object 1',
+						begin_date: new Date(),
+						duration: '3 days, 23h:59m',
+						cliff: '14 days, 12h:33m',
+					}, {
+						name: 'Object 41',
+						begin_date: new Date(),
+						duration: '3 days, 23h:59m',
+						cliff: '14 days, 12h:33m',
+					}],
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						current_vesting_balance_state: [{
+							key: 'Status',
+							value: 'statusString',
+						}, {
+							key: 'Vested balance',
+							value: '1000.000000234 ECHO',
+						}, {
+							key: 'Available to claim',
+							value: 'string',
+						}, {
+							key: 'Allow to withdraw',
+							value: 'string',
+						}],
 					},
 				},
 			};

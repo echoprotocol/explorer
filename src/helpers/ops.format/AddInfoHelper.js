@@ -69,24 +69,49 @@ function getBtcAddressByPublicKey(address) {
 	return btcAddress;
 }
 
+async function isCommiteeMemberById(accountId) {
+	const committee = await echo.api.getCommitteeMemberByAccount(accountId);
+	return committee ? 'Member of the committee' : 'Not a member of the committee';
+}
+
 async function getCommiteeMemberCreateInfo({ btc_public_key: pubKey, committee_member_account: accountId }) {
 	const btcAddress = getBtcAddressByPublicKey(pubKey);
-	const committee = await echo.api.getCommitteeMemberByAccount(accountId.link);
+	const committeeStatus = await isCommiteeMemberById(accountId.link);
 	return {
-		btc_address: btcAddress,
-		committee_status: committee ? 'Member of the committee' : 'Not a member of the committee',
+		btcAddress,
+		committeeStatus,
 	};
 }
 
 async function getCommiteeMemberUpdateInfo({ new_btc_public_key: pubKey, committee_member_account: accountId }) {
 	const btcAddress = getBtcAddressByPublicKey(pubKey);
-	const committee = await echo.api.getCommitteeMemberByAccount(accountId.link);
+	const committeeStatus = await isCommiteeMemberById(accountId.link);
 	return {
-		new_btc_address: btcAddress,
-		committee_status: committee ? 'Member of the committee' : 'Not a member of the committee',
+		btcAddress,
+		committeeStatus,
 	};
 }
 
+async function getCommiteeMemberActivateInfo({ committee_to_activate: { link: accountId } }) {
+	const committeeStatus = await isCommiteeMemberById(accountId);
+	return {
+		committeeStatus,
+	};
+}
+
+async function getCommiteeMemberDeActivateInfo({ committee_to_deactivate: { link: accountId } }) {
+	const committeeStatus = await isCommiteeMemberById(accountId);
+	return {
+		committeeStatus,
+	};
+}
+
+async function getCommitteFrozenBalanceDepositInfo({ committee_member_account: { link: accountId } }) {
+	const committeeStatus = await isCommiteeMemberById(accountId);
+	return {
+		committeeStatus,
+	};
+}
 
 async function getAdditionalInfoByOpId(opId, data) {
 	try {
@@ -101,6 +126,12 @@ async function getAdditionalInfoByOpId(opId, data) {
 				return await getCommiteeMemberCreateInfo(data);
 			case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE:
 				return await getCommiteeMemberUpdateInfo(data);
+			case OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE:
+				return await getCommiteeMemberActivateInfo(data);
+			case OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE:
+				return await getCommiteeMemberDeActivateInfo(data);
+			case OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT:
+				return await getCommitteFrozenBalanceDepositInfo(data);
 			default:
 				return null;
 		}

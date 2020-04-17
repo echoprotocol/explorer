@@ -28,6 +28,26 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE]: Operations.committee_member_create.name,
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE]: Operations.committee_member_update.name,
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS]: Operations.committee_member_update_global_parameters.name,
+
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE]: Operations.committee_member_activate.name,
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE]: Operations.committee_member_deactivate.name,
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT]: Operations.committee_frozen_balance_deposit.name,
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_WITHDRAW]: Operations.committee_frozen_balance_withdraw.name,
+	[OPERATIONS_IDS.VESTING_BALANCE_CREATE]: Operations.vesting_balance_create.name,
+	[OPERATIONS_IDS.VESTING_BALANCE_WITHDRAW]: Operations.vesting_balance_withdraw.name,
+	[OPERATIONS_IDS.BALANCE_CLAIM]: Operations.balance_claim.name,
+	[OPERATIONS_IDS.BALANCE_FREEZE]: Operations.balance_freeze.name,
+	[OPERATIONS_IDS.BALANCE_UNFREEZE]: Operations.balance_unfreeze.name,
+	[OPERATIONS_IDS.CONTRACT_CREATE]: Operations.contract_create.name,
+	[OPERATIONS_IDS.CONTRACT_CALL]: Operations.contract_call.name,
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE]: Operations.contract_internal_create.name,
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CALL]: Operations.contract_internal_call.name,
+	[OPERATIONS_IDS.CONTRACT_SELFDESTRUCT]: Operations.contract_selfdestruct.name,
+	[OPERATIONS_IDS.CONTRACT_UPDATE]: Operations.contract_update.name,
+	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: Operations.contract_fund_pool.name,
+	[OPERATIONS_IDS.CONTRACT_WHITELIST]: Operations.contract_whitelist.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: Operations.sidechain_eth_create_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: Operations.deposit_eth.name,
 };
 
 export const OPS_DESCRIPTIONS = {
@@ -136,6 +156,89 @@ export const OPS_DESCRIPTIONS = {
 			'This operation allows the committee_members to update the global parameters on the blockchain. These control various tunable aspects of the chain, including block and maintenance intervals, maximum data sizes, the fees charged by the network, etc.\n' +
 			'This operation may only be used in a proposed transaction, and a proposed transaction which contains this operation must have a review period specified in the current global parameters before it may be accepted.',
 		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_member_update_global_parameters_operation',
+	},
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE]: {
+		description: 'Used by active committee_members to propose activation of committee_member\n' +
+			'This operation may only be used in a proposed transaction, and a proposed transaction which contains this operation must have a review period specified in the current global parameters before it may be accepted.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_member_activate_operation',
+	},
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE]: {
+		description: 'Used by active committee_members to propose deactivation of committee_member\n' +
+			'This operation may only be used in a proposed transaction, and a proposed transaction which contains this operation must have a review period specified in the current global parameters before it may be accepted.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_member_deactivate_operation',
+	},
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT]: {
+		description: 'Used by a committee_member to deposit a frozen balance',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_frozen_balance_deposit_operation',
+	},
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_WITHDRAW]: {
+		description: 'Used by a committee_member to withdraw a frozen balance',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_frozen_balance_withdraw_operation',
+	},
+	[OPERATIONS_IDS.VESTING_BALANCE_CREATE]: {
+		description: 'Create a vesting balance.\n' +
+			'The chain allows a user to create a vesting balance. Normally, vesting balances are created automatically as part of cashback and worker operations. This operation allows vesting balances to be created manually as well.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/vesting-balances#vesting_balance_create_operation',
+	},
+	[OPERATIONS_IDS.VESTING_BALANCE_WITHDRAW]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.BALANCE_CLAIM]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.BALANCE_FREEZE]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.BALANCE_UNFREEZE]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_CREATE]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_CALL]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CALL]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_SELFDESTRUCT]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_UPDATE]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.CONTRACT_WHITELIST]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: {
+		description: '',
+		link: '',
 	},
 };
 

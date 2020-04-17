@@ -20,9 +20,8 @@ import InfoTooltip from '../InfoTooltip';
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import SsrHrefHelper from '../../helpers/SsrHrefHelper';
-// import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
-const OperationsRow = React.memo(({
+const OperationsRow = ({
 	operation: {
 		operationsInfoData,
 		id,
@@ -45,10 +44,12 @@ const OperationsRow = React.memo(({
 	sizePerPage,
 	totalDataSize,
 }) => {
-	// const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
+	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
+	console.log('hehhe');
 	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 	const goToLink = (e, href, objectId) => {
+		console.log('goToLink', href, objectId);
 		e.preventDefault();
 		e.stopPropagation();
 		Router.push(SsrHrefHelper.getHrefByObjectId(objectId), href);
@@ -105,6 +106,7 @@ const OperationsRow = React.memo(({
 	if (numberOperation < 1) {
 		return null;
 	}
+
 	return (
 		<React.Fragment>
 			<tr
@@ -171,7 +173,9 @@ const OperationsRow = React.memo(({
 									{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
 									<Tab className="operation-detail-tab">Internal operations ({operationsInfoData.internalOperations.length})</Tab> }
 								</div>
-								<button className="yellow-button">View Raw JSON Object</button>
+								<button className="yellow-button" onClick={(e) => goToLink(e, operationObjectsUrl)}>
+									<a className="yellow" href={operationObjectsUrl} >View Raw JSON Object</a>
+								</button>
 							</TabList>
 							<div className="operation-detail-table">
 								{ operationsInfoData.operationInfo &&
@@ -199,7 +203,7 @@ const OperationsRow = React.memo(({
 		</React.Fragment>
 	);
 
-});
+};
 
 OperationsRow.propTypes = {
 	currentPage: PropTypes.number.isRequired,

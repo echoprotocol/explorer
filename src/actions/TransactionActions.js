@@ -175,14 +175,21 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
-				const committee = await echo.api.getObject(subject.id);
-				const committeeMemberAccount = await echo.api.getObject(committee.committee_member_account);
+				const accountId = from.id || subject.id;
+				const committee = await echo.api.getCommitteeMemberByAccount(accountId);
+				if (committee) {
+					const frozenBalance = await echo.api.getCommitteeFrozenBalance(committee.id);
+					const [asset] = await echo.api.getAssets([frozenBalance.asset_id]);
 
-				object = object
-					.set('id', committee.id)
-					.set('account', committeeMemberAccount && committeeMemberAccount.name)
-					.set('votes', committee.total_votes)
-					.set('url', committee.url);
+					object = object
+						.set('committee', committee)
+						.set('frozenBalance', {
+							amount: frozenBalance.amount,
+							asset_id: asset.id,
+							symbol: asset.symbol,
+							precision: asset.precision,
+						});
+				}
 			} else if (proposalOperations.includes(operation.name)) {
 				const proposal = await echo.api.getObject(subject.id);
 				const operations = options.proposed_ops.map(([opType]) => {
@@ -583,8 +590,11 @@ class TransactionActionsClass extends BaseActionsClass {
 						const accounts = await echo.api.getAccounts(value);
 						value = accounts.map(({ name, id }) => ({ value: name, link: id }));
 					} else if (key === 'proposed_ops') {
-						value = value.map(({ op }) => op);
+						const [name, data] = value;
+						value = [{ name, ...data }];
 						break;
+					} else if (key === 'policy') {
+						value = value.map((data) => data);
 					} else {
 						return {};
 					}
@@ -720,11 +730,10 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const opNumberToFormat = operation.value < 25 ? operation.value : 0;
+		const opNumberToFormat = operation.value < 30 ? operation.value : 0;
 
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		if (proposalOperations.includes(operation.name)) {
-			console.log('hohoho');
 			let promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
 			promises = await Promise.all(promises);
 			delete op.proposed_ops;

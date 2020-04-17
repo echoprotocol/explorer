@@ -245,8 +245,8 @@ const Operations = {
 		value: OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT,
 		name: 'Committee frozen balance deposit',
 		options: {
-			from: null,
-			subject: ['committee_member_account', 'name'],
+			from: ['committee_member_account', 'name'],
+			subject: null,
 			value: 'amount.amount',
 			asset: 'amount.asset_id',
 		},

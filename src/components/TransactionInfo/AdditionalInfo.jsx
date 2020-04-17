@@ -29,10 +29,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.current_global_parametres && <LinkRow title="Current global parameters" link={data.current_global_parametres} />}
 			{data.committee_status && <PrimaryRow title="Current account committee status" description={data.committee_status} />}
 			{data.current_account_committee_status && <PrimaryRow title="Current account committee status" description={data.current_account_committee_status} />}
-			{data.current_account_frozen_balance && <PrimaryRow
-				title="Current account frozen balance"
-				description={FormatHelper.formatAmount(data.current_account_frozen_balance.amount, data.current_account_frozen_balance.precision, data.current_account_frozen_balance.symbol)}
-			/> }
+			{data.current_account_frozen_balance && <LinkRow title="Current account frozen balance" amount={data.current_account_frozen_balance} /> }
 			{data.current_vesting_balance_state && <MultyRow title="Current vesting balance state" fields={data.current_vesting_balance_state} />}
 			{data.original_operation && <LinkRow title="Original operation" link={data.original_operation} />}
 			{data.called_contract_type && <PrimaryRow title="Called contract type" description={data.called_contract_type} />}
