@@ -13,6 +13,7 @@ import {
 } from '../constants/RouterConstants';
 
 import config from '../config/chain';
+import { BTC_EXPLORER, ETH_EXPLORER } from '../constants/OpsFormatConstants';
 
 class URLHelper {
 
@@ -194,6 +195,24 @@ class URLHelper {
 	 */
 	static getUrlWithOrigin(url) {
 		return typeof window !== 'undefined' ? `${window.location.origin}${url}` : url;
+	}
+
+	/**
+	 * @method createEthAddressOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createEthAddressOut(url) {
+		return `${ETH_EXPLORER}/address/${url}`;
+	}
+
+	/**
+	 * @method createBtcAddressOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createBtcAddressOut(url) {
+		return `${BTC_EXPLORER}/address/${url}`;
 	}
 
 }

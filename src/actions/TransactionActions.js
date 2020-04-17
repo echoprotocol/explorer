@@ -509,7 +509,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		return result;
 	}
 
-	getProposalOperations(proposedOps, blockNumber, blockTimestamp, trIndex) {
+	getProposalOperations(proposedOps = [], blockNumber, blockTimestamp, trIndex) {
 		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
 			const [idPropOp] = proposedOp;
 			let propData = {};
@@ -720,13 +720,17 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const opNumberToFormat = operation.value < 20 ? operation.value : 0;
+		const opNumberToFormat = operation.value < 25 ? operation.value : 0;
 
-		if (proposalOperations.includes(operation.name)) {
-			const promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
-			op.proposed_ops = await Promise.all(promises);
-		}
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
+		if (proposalOperations.includes(operation.name)) {
+			console.log('hohoho');
+			let promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
+			promises = await Promise.all(promises);
+			delete op.proposed_ops;
+			op.proposals = promises;
+		}
+
 		return op;
 	}
 

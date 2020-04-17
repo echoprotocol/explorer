@@ -1,5 +1,7 @@
 import echo, { OPERATIONS_IDS } from 'echojs-lib';
 import BN from 'bignumber.js';
+import { payments } from 'bitcoinjs-lib';
+import Buffer from 'buffer-ponyfill';
 
 import { ASSET_ISSUER_PERMISSION_FLAGS } from '../../constants/OpsFormatConstants';
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
@@ -55,6 +57,37 @@ async function getAssetUpdateFeedProducersInfo(assetId) {
 	return { assetFeedProducers };
 }
 
+function getBtcAddressByPublicKey(address) {
+	let btcAddress = '';
+	if (!address) { return btcAddress; }
+	try {
+		btcAddress = payments.p2pkh({ pubkey: Buffer.from(address, 'hex') }).address;
+	} catch (err) {
+		console.log('Error to transform btc_public_key', err);
+	}
+
+	return btcAddress;
+}
+
+async function getCommiteeMemberCreateInfo({ btc_public_key: pubKey, committee_member_account: accountId }) {
+	const btcAddress = getBtcAddressByPublicKey(pubKey);
+	const committee = await echo.api.getCommitteeMemberByAccount(accountId.link);
+	return {
+		btc_address: btcAddress,
+		committee_status: committee ? 'Member of the committee' : 'Not a member of the committee',
+	};
+}
+
+async function getCommiteeMemberUpdateInfo({ new_btc_public_key: pubKey, committee_member_account: accountId }) {
+	const btcAddress = getBtcAddressByPublicKey(pubKey);
+	const committee = await echo.api.getCommitteeMemberByAccount(accountId.link);
+	return {
+		new_btc_address: btcAddress,
+		committee_status: committee ? 'Member of the committee' : 'Not a member of the committee',
+	};
+}
+
+
 async function getAdditionalInfoByOpId(opId, data) {
 	try {
 		switch (opId) {
@@ -64,6 +97,10 @@ async function getAdditionalInfoByOpId(opId, data) {
 				return await getAssetCreateInfo(data);
 			case OPERATIONS_IDS.ASSET_UPDATE_FEED_PRODUCERS:
 				return await getAssetUpdateFeedProducersInfo(data);
+			case OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE:
+				return await getCommiteeMemberCreateInfo(data);
+			case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE:
+				return await getCommiteeMemberUpdateInfo(data);
 			default:
 				return null;
 		}

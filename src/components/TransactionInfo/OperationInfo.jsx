@@ -9,6 +9,7 @@ import SettingsRow from './Rows/SettingsRow';
 import MultyRow from './Rows/MultyRow';
 import ProducersRow from './Rows/ProducersRow';
 import AdditionalInfo from './AdditionalInfo';
+import URLHelper from '../../helpers/URLHelper';
 
 // import Avatar from '../Avatar';
 // import SsrHrefHelper from '../../helpers/SsrHrefHelper';
@@ -44,11 +45,11 @@ class OperationInfo extends React.Component {
 					{data.to_address && <PrimaryRow title="To address" description={data.to_address} />}
 					{data.to_account && <LinkRow title="To account" account={data.to_account} />}
 
-					{data.url && <LinkRow title="URL" link={data.url} />}
-					{data.new_url && <LinkRow title="New URL" link={data.new_url} />}
-					{data.eth_address && <LinkRow title="ETH address" link={data.eth_address} isLinkOut />}
+					{data.url && <PrimaryRow title="URL" description={data.url} />}
+					{data.new_url && <PrimaryRow title="New URL" description={data.new_url} />}
+					{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
-					{data.btc_address && <LinkRow title="BTC address" link={data.btc_address} isLinkOut />}
+					{data.btc_address && <LinkRow title="BTC address" value={data.btc_address} link={URLHelper.createBtcAddressOut(data.btc_address)} isLinkOut />}
 					{data.new_btc_address && <LinkRow title="New BTC address" link={data.new_btc_address} isLinkOut />}
 					{data.proposal_id && <LinkRow title="Proposal ID" link={data.proposal_id} />}
 
@@ -73,7 +74,7 @@ class OperationInfo extends React.Component {
 					{data.delegating_account && <LinkRow title="Delegating Account" account={data.delegating_account} />}
 					{data.delegate_share && <LinkRow title="Delegate share" amount={data.delegate_share} />}
 					{data.amount && <LinkRow title="Amount" amount={data.amount} />}
-					{data.deposit_amount && <PrimaryRow title="Deposit amount" description={data.deposit_amount} />}
+					{data.deposit_amount && <LinkRow title="Deposit amount" amount={data.deposit_amount} />}
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
 					{data.address && <PrimaryRow title="Address" description={data.address} />}
 					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}

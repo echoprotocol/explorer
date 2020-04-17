@@ -23,7 +23,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.proposal_status && <PrimaryRow title="Proposal status" description={data.proposal_status} status={data.proposal_status} />}
 			{data.result_transaction && <LinkRow title="Result transaction" link={data.result_transaction} />}
 			{data.current_global_parametres && <LinkRow title="Current global parameters" link={data.current_global_parametres} />}
-			{data.current_account_committee_status && <PrimaryRow title="Current account committee status" description={data.current_account_committee_status} />}
+			{data.committee_status && <PrimaryRow title="Current account committee status" description={data.committee_status} />}
 			{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
 		</div>
 	</div>
