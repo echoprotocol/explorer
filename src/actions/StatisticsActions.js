@@ -47,7 +47,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 				dispatch(this.updateAverageBlocktime(getBlock));
 				dispatch(this.updateFrozenData(getFrozenBalancesData));
 			} catch (error) {
-				//
+				console.log('EchoDB err', error);
 			}
 		};
 	}
