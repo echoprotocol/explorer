@@ -1,5 +1,4 @@
-import echo from 'echojs-lib';
-import { OPERATIONS_IDS } from 'echojs-lib';
+import echo, { OPERATIONS_IDS } from 'echojs-lib';
 
 import { ASSET_ISSUER_PERMISSION_FLAGS } from '../../constants/OpsFormatConstants';
 

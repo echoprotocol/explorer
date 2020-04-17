@@ -380,7 +380,6 @@ class TransactionActionsClass extends BaseActionsClass {
 		}
 
 		if (options.value) {
-			console.log('result', result);
 			result.value = {
 				...result.value,
 				amount: _.get(operation, options.value),
@@ -557,17 +556,22 @@ class TransactionActionsClass extends BaseActionsClass {
 						value = { value: account.name, link: value.delegating_account, amount: value.delegate_share };
 						key = 'delegate_data';
 					} else if (_.has(value, 'core_exchange_rate')) {
-						const { base, quote } = value.core_exchange_rate;
-						const [baseAsset, quoteAsset] = await Promise.all(echo.api.getAccounts(base.asset_id, quote.asset_id));
-						const rate = (new BN(baseAsset.amount).div(`1e${baseAsset.precision}`))
-							.div(new BN(quote.amount).div(`1e${quoteAsset.precision}`)).toString();
+						const asset = await echo.api.getObject(value.core_exchange_rate.base.asset_id);
 						key = 'rate';
 						value = {
-							asset_id: baseAsset.id,
-							precision: baseAsset.precision,
-							symbol: baseAsset.symbol,
-							amount: rate,
+							asset: value.core_exchange_rate.base.asset_id, precision: asset.precision, symbol: asset.symbol, amount: value.core_exchange_rate.base.amount,
 						};
+						// const { base, quote } = value.core_exchange_rate;
+						// const [baseAsset, quoteAsset] = await Promise.all(echo.api.getAccounts(base.asset_id, quote.asset_id));
+						// const rate = (new BN(baseAsset.amount).div(`1e${baseAsset.precision}`))
+						// 	.div(new BN(quote.amount).div(`1e${quoteAsset.precision}`)).toString();
+						// key = 'rate';
+						// value = {
+						// 	asset_id: baseAsset.id,
+						// 	precision: baseAsset.precision,
+						// 	symbol: baseAsset.symbol,
+						// 	amount: rate,
+						// };
 					} else if (key === 'new_feed_producers') {
 						const accounts = await echo.api.getAccounts(value);
 						value = accounts.map(({ name, id }) => ({ value: name, link: id }));

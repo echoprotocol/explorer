@@ -17,7 +17,13 @@ const packageJson = require('./package.json');
 
 const chainWrapper = (appConfig) => withFonts(withSass(withCSS(appConfig)));
 
+//		autoPrerender: true,
+// 		compress: true,
+
 module.exports = chainWrapper({
+	devIndicators: {
+
+	},
 	env: {
 		ECHO_NODE,
 		SERVER_URL,

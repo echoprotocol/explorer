@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { ECHO_ASSET } from '../../constants/GlobalConstants';
-import FormatHelper from '../../helpers/FormatHelper';
-
 import PrimaryRow from './Rows/PrimaryRow';
 import LinkRow from './Rows/LinkRow';
 import AuthorityRow from './Rows/AuthorityRow';
@@ -81,7 +78,7 @@ class OperationInfo extends React.Component {
 					{data.address && <PrimaryRow title="Address" description={data.address} />}
 					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}
 					{data.new_feed_producers && <ProducersRow title="New feed producers" accounts={data.new_feed_producers} /> }
-					{data.feeded_asset_price && <LinkRow title="Feeded asset price" asset={data.feeded_asset_price}/>}
+					{data.feeded_asset_price && <LinkRow title="Feeded asset price" asset={data.feeded_asset_price} />}
 					{data.changed_parameters && <PrimaryRow title="Changed parameters" description={data.changed_parameters.join(', ')} />}
 					{data.fee && <LinkRow title="Fee" amount={data.fee} />}
 				</div>

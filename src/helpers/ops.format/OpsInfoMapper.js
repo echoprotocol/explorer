@@ -7,7 +7,6 @@ import {
 } from '../../constants/OpsFormatConstants';
 
 import getAdditionalInfoByOpId, { getAssetFlags } from './AddInfoHelper';
-import { ECHO_ASSET } from '../../constants/GlobalConstants';
 
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
@@ -268,8 +267,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		case OPERATIONS_IDS.ASSET_PUBLISH_FEED:
-			console.log('feeded_asset_price', data);
-
 			return {
 				operationInfo: {
 					type,

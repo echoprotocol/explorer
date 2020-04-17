@@ -52,7 +52,7 @@ const OperationsRow = React.memo(({
 
 	const renderSubject = (subject) => {
 		if (!subject) return <div className="td-in">—</div>;
-		if (validators.isAssetName(subject)) return <div className="td-in">—</div>;
+		if (validators.isString(subject) && validators.isAssetName(subject)) return <div className="td-in">—</div>;
 		if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
 
 		return (
