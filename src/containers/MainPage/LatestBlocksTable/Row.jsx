@@ -43,7 +43,7 @@ const OperationsRow = React.memo(({
 
 			);
 		}
-		if (!diff < 60 && diff < 3600) {
+		if (!diff < 60 && diff < 86400) {
 			return (
 				<Tooltip
 					placement="top"
@@ -52,20 +52,10 @@ const OperationsRow = React.memo(({
 					overlay={`${date} ${age}`}
 					overlayStyle={{ pointerEvents: 'none' }}
 				>
-					<div className="age-value">{`${diffInMinutes}min ago`}</div>
-				</Tooltip>
-			);
-		}
-		if (!diff < 60 && !diff < 3600 && diff < 86400) {
-			return (
-				<Tooltip
-					placement="top"
-					mouseLeaveDelay={0}
-					trigger={['hover']}
-					overlay={`${date} ${age}`}
-					overlayStyle={{ pointerEvents: 'none' }}
-				>
-					<div className="age-value">{`${diffInHours}h ${diffInMinutes}min ago`}</div>
+					<div className="age-value">
+						{diffInHours !== 0 && `${diffInHours}h `}
+						{`${diffInMinutes}min ago`}
+					</div>
 				</Tooltip>
 			);
 		}
