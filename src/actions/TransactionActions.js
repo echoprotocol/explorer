@@ -27,6 +27,7 @@ import { getContractInfo } from '../services/queries/contract';
 import { transformOperationDataByType } from '../helpers/ops.format/OpsInfoMapper';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
+import { countRate } from '../helpers/ops.format/AddInfoHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -147,15 +148,12 @@ class TransactionActionsClass extends BaseActionsClass {
 				const asset = await echo.api.getObject(assetId || subject.id);
 				const issuer = await echo.api.getObject(asset.issuer);
 				const accumulatedFees = asset.dynamic.accumulated_fees;
-
-				const baseAmount = asset.options.core_exchange_rate.base.amount;
 				const quoteAmount = asset.options.core_exchange_rate.quote.amount;
 
+				const rate = await countRate(asset, asset.options.core_exchange_rate);
 				const price = new BN(asset.options.core_exchange_rate.quote.amount)
 					.div(asset.options.core_exchange_rate.base.amount)
 					.toString();
-				const rate = (new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
-					.div(new BN(quoteAmount).div(`1e${asset.precision}`)).toString();
 
 				object = object
 					.set('id', asset.id)
@@ -555,23 +553,6 @@ class TransactionActionsClass extends BaseActionsClass {
 						const [account] = await echo.api.getAccounts([value.delegating_account]);
 						value = { value: account.name, link: value.delegating_account, amount: value.delegate_share };
 						key = 'delegate_data';
-					} else if (_.has(value, 'core_exchange_rate')) {
-						const asset = await echo.api.getObject(value.core_exchange_rate.base.asset_id);
-						key = 'rate';
-						value = {
-							asset: value.core_exchange_rate.base.asset_id, precision: asset.precision, symbol: asset.symbol, amount: value.core_exchange_rate.base.amount,
-						};
-						// const { base, quote } = value.core_exchange_rate;
-						// const [baseAsset, quoteAsset] = await Promise.all(echo.api.getAccounts(base.asset_id, quote.asset_id));
-						// const rate = (new BN(baseAsset.amount).div(`1e${baseAsset.precision}`))
-						// 	.div(new BN(quote.amount).div(`1e${quoteAsset.precision}`)).toString();
-						// key = 'rate';
-						// value = {
-						// 	asset_id: baseAsset.id,
-						// 	precision: baseAsset.precision,
-						// 	symbol: baseAsset.symbol,
-						// 	amount: rate,
-						// };
 					} else if (key === 'new_feed_producers') {
 						const accounts = await echo.api.getAccounts(value);
 						value = accounts.map(({ name, id }) => ({ value: name, link: id }));

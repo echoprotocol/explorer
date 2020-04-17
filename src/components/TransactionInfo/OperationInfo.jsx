@@ -62,7 +62,7 @@ class OperationInfo extends React.Component {
 					{data.precision && <PrimaryRow title="Precision" description={data.precision} />}
 					{data.max_supply && <PrimaryRow title="Max Suply" description={data.max_supply} />}
 					{data.asset_description && <PrimaryRow title="Asset Description" description={data.asset_description} isText />}
-					{data.rate && <LinkRow title="Rate" amount={data.rate} />}
+					{data.rate && <LinkRow title="Rate" rate={data.rate} />}
 					{data.is_bit_asset && <PrimaryRow title="Is bitAsset" description={data.is_bit_asset} />}
 					{data.new_issuer && <LinkRow title="New issuer" account={data.new_issuer} />}
 					{data.settings && <SettingsRow title="Settings" settings={data.settings} />}

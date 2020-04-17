@@ -1,6 +1,20 @@
 import echo, { OPERATIONS_IDS } from 'echojs-lib';
+import BN from 'bignumber.js';
 
 import { ASSET_ISSUER_PERMISSION_FLAGS } from '../../constants/OpsFormatConstants';
+import { ECHO_ASSET } from '../../constants/GlobalConstants';
+
+export async function countRate(asset, { base, quote }) {
+	const amount = (new BN(base.amount).div(`1e${ECHO_ASSET.PRECISION}`))
+		.div(new BN(quote.amount).div(`1e${asset.precision}`)).toString();
+
+	return {
+		amount,
+		asset_id: asset.id,
+		symbol: asset.symbol,
+		precision: asset.precision,
+	};
+}
 
 async function getAccountWhiteListInfo(accountId) {
 	const [account] = await echo.api.getAccounts([accountId]);

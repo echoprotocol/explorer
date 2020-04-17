@@ -111,7 +111,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.ASSET_CREATE: {
 			const settings = await getAssetFlags(data.objectInfo.toJS());
 			const additionalInfo = await getAdditionalInfoByOpId(opNumber, data.mainInfo.result);
-			const asset = { value: data.mainInfo.name, link: data.mainInfo.id };
+			const asset = { value: data.mainInfo.subject.name, link: data.mainInfo.subject.id };
 			return {
 				operationInfo: {
 					type,
