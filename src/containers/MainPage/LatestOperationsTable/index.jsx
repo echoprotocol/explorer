@@ -20,8 +20,14 @@ const LatestOperationsTable = memo(({ operations, goToTransaction }) => (
 						<React.Fragment key={`${data.blockNumber}${data.trIndex}${data.opIndex}`}>
 							<Row
 								operation={data.type}
-								from={data.mainInfo.from.name}
-								to={data.mainInfo.subject.name}
+								from={{
+									name: data.mainInfo.from.name || '',
+									id: data.mainInfo.from.id || '',
+								}}
+								to={{
+									name: data.mainInfo.subject.name || '',
+									id: data.mainInfo.subject.id || '',
+								}}
 								amount={{
 									value: data.mainInfo.value.amount || 0,
 									coin: data.mainInfo.value.symbol,

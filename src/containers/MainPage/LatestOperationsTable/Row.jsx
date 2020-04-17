@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import cn from 'classnames';
+import { validators } from 'echojs-lib';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
@@ -16,11 +17,11 @@ const OperationsRow = React.memo(({
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
 				{
-					from ?
-						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(from)}>
+					from.name ?
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(from.id)}>
 							<a className="td-in avatar-wrap">
-								<Avatar accountName={from} />
-								<span>{from}</span>
+								{validators.isAccountId(from.id) && <Avatar accountName={from.name} />}
+								<span>{from.name}</span>
 							</a>
 						</Link>
 						:
@@ -28,11 +29,11 @@ const OperationsRow = React.memo(({
 			</td>
 			<td className="to">
 				{
-					to ?
-						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(to)}>
+					to.name ?
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(to.id)}>
 							<a className="td-in avatar-wrap">
-								<Avatar accountName={to} />
-								<span>{to}</span>
+								{validators.isAccountId(to.id) && <Avatar accountName={to.name} />}
+								<span>{to.name}</span>
 							</a>
 						</Link> :
 						<span>-</span>}
@@ -49,16 +50,10 @@ const OperationsRow = React.memo(({
 
 OperationsRow.propTypes = {
 	operation: PropTypes.string.isRequired,
-	from: PropTypes.string,
-	to: PropTypes.string,
+	from: PropTypes.object.isRequired,
+	to: PropTypes.object.isRequired,
 	amount: PropTypes.object.isRequired,
 	onClick: PropTypes.func.isRequired,
 };
-
-OperationsRow.defaultProps = {
-	from: '',
-	to: '',
-};
-
 
 export default OperationsRow;
