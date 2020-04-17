@@ -172,7 +172,7 @@ class ContractActions extends BaseActionsClass {
 
 				let items = [];
 				let total = 0;
-				
+
 				try {
 					({ items, total } = await getContractHistory({
 						subject,
@@ -182,10 +182,10 @@ class ContractActions extends BaseActionsClass {
 						count: queryData.sizePerPage,
 						operations: Object.keys(OPERATIONS_IDS),
 					}));
-				} catch(err) {
+				} catch (err) {
 					console.log('EchoDB error', err);
 				}
-				
+
 				dispatch(GridActions.setTotalDataSize(CONTRACT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatContractHistory(transactions);
@@ -722,7 +722,7 @@ class ContractActions extends BaseActionsClass {
 					return;
 				}
 
-		
+
 				let { history, contractInfo, transferHistory } = await getContractInfo(id);
 				const contractTxs = (await getTotalHistory([id])).total;
 

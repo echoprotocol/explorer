@@ -132,14 +132,14 @@ export const serverConnect = () => async (dispatch) => {
 		let block = null;
 		try {
 			block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
-		} catch(err) {
+		} catch (err) {
 			console.log('EchoDB error', err);
 		}
-		
+
 		if (block) {
 			await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
 		}
-		
+
 		await dispatch(getLatestOperations());
 		await dispatch(initBlocks());
 

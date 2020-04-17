@@ -104,20 +104,18 @@ class AccountActions extends BaseActionsClass {
 				let totalAccountHistory = 0;
 				try {
 					totalAccountHistory = (await getTotalAccountHistory(account.id)).total;
-				} catch(err) {
+				} catch (err) {
 					console.log('EchoDB error', err);
 				}
-				
 				await dispatch(this.loadAccountHistory(account.id));
 				dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, account.name)));
 				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
 				let balances = [];
 				try {
 					balances = await getBalances([account.id]);
-				} catch(err) {
+				} catch (err) {
 					console.log('EchoDb error', err);
 				}
-			
 				const tokens = balances.data.getBalances.filter((balanceItem) =>
 					balanceItem.type === TOKEN_TYPE && !(new BN(balanceItem.amount)).isEqualTo(0));
 
@@ -174,7 +172,7 @@ class AccountActions extends BaseActionsClass {
 							account = account.id;
 						}
 						// eslint-disable-next-line no-empty
-					} catch (err) {}
+					} catch (err) { }
 					return account;
 				};
 
@@ -195,10 +193,10 @@ class AccountActions extends BaseActionsClass {
 						count: queryData.sizePerPage,
 						operations: Object.keys(OPERATIONS_IDS),
 					}));
-				} catch(err) {
+				} catch (err) {
 					console.log('EchoDb error', err);
 				}
-				
+
 				dispatch(GridActions.setTotalDataSize(ACCOUNT_GRID, total));
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatAccountHistory(accountId, transactions);

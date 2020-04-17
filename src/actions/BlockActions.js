@@ -365,7 +365,7 @@ export const getLatestOperations = () => async (dispatch) => {
 	let latestOperations = [];
 	try {
 		latestOperations = await getLatestOperationsFromGQL();
-	} catch(err) {
+	} catch (err) {
 		console.log('EchoDB error', err);
 	}
 	const operations = latestOperations.data.getHistory.items;
