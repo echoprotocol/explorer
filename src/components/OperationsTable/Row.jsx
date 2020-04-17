@@ -42,6 +42,7 @@ const OperationsRow = React.memo(({
 	sizePerPage,
 	totalDataSize,
 }) => {
+	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
 	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 	const goToLink = (e, href, objectId) => {
@@ -155,7 +156,9 @@ const OperationsRow = React.memo(({
 									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
 									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
 								</div>
-								<button className="yellow-button">View Raw JSON Object</button>
+								<button className="yellow-button">
+									<a className="yellow" href={operationObjectsUrl} onClick={(e) => goToLink(e, operationObjectsUrl)} >View Raw JSON Object</a>
+								</button>
 							</TabList>
 							<div className="operation-detail-table">
 								{ operationsInfoData.operationInfo &&
