@@ -362,7 +362,12 @@ export const initBlocks = () => async (dispatch) => {
 };
 
 export const getLatestOperations = () => async (dispatch) => {
-	const latestOperations = await getLatestOperationsFromGQL();
+	let latestOperations = [];
+	try {
+		latestOperations = await getLatestOperationsFromGQL();
+	} catch (err) {
+		console.log('EchoDB error', err);
+	}
 	const operations = latestOperations.data.getHistory.items;
 	const transactions = AccountActions.formatHistoryFromEchoDB(operations);
 	const formattedOperations = await AccountActions.formatAccountHistory(null, transactions);
