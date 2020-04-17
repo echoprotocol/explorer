@@ -18,9 +18,8 @@ const LatestBlocksTable = memo(({ blocks, goToBlock }) => (
 					{ blocks.map((data) => (
 						<React.Fragment key={data.round}>
 							<Row
-								date={data.date}
+								time={data.time}
 								number={data.blockNumber}
-								age={data.time}
 								producer={data.producer}
 								size={{ weight: data.weight, weightSize: data.weightSize }}
 								txs={data.transactions}
