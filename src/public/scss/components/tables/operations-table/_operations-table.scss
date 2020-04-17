@@ -46,11 +46,6 @@
 		position: relative;
 		z-index: 1;
 		@include table-row-highlight();
-		td {
-			&:nth-child(2) {
-				padding: 12px 30px;
-			}
-		}
 	}
 
 	.amount,
@@ -97,7 +92,7 @@
 	}
 
 	.number {
-		max-width: 48px;
+		width: 48px;
 	}
 	.type {
 		width: 16%;
@@ -114,11 +109,5 @@
 	.reciever {
 		width: 17%;
 		max-width: 17%;
-	}
-	.amount {
-		width: 20%;
-	}
-	.fee {
-		width: auto;
 	}
 }

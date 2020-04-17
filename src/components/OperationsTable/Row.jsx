@@ -13,6 +13,9 @@ import ddIcon from '../../public/images/icons/curret-sm.svg';
 import Avatar from '../Avatar';
 import OperationInfo from '../TransactionInfo/OperationInfo';
 import ProposalOperations from '../TransactionInfo/ProposalOperations';
+import LogsInfo from '../TransactionInfo/LogsInfo';
+import InternalOperations from '../TransactionInfo/InternalOperations';
+import InfoTooltip from '../InfoTooltip';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -42,7 +45,7 @@ const OperationsRow = React.memo(({
 	sizePerPage,
 	totalDataSize,
 }) => {
-	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
+	// const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
 	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 	const goToLink = (e, href, objectId) => {
@@ -61,6 +64,10 @@ const OperationsRow = React.memo(({
 				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
 					{mainInfo.subject.name && <Avatar accountName={subject} />}
 					<span>{subject}</span>
+					<InfoTooltip
+						overlay="Tooltip"
+						type="receiver"
+					/>
 				</a>
 			</Link>
 		);
@@ -117,6 +124,10 @@ const OperationsRow = React.memo(({
 							<a href={URLHelper.getUrlWithOrigin(senderLink)} className="td-in avatar-wrap" onClick={(e) => goToLink(e, senderLink, mainInfo.from.id)}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
+								<InfoTooltip
+									overlay="Tooltip"
+									type="sender"
+								/>
 							</a>
 						</Link> : <div className="td-in">—</div>
 					}
@@ -155,10 +166,12 @@ const OperationsRow = React.memo(({
 									}
 									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
 									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
+									{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
+									<Tab className="operation-detail-tab">Event logs ({operationsInfoData.logs.length})</Tab>}
+									{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
+									<Tab className="operation-detail-tab">Internal operations ({operationsInfoData.internalOperations.length})</Tab> }
 								</div>
-								<button className="yellow-button">
-									<a className="yellow" href={operationObjectsUrl} onClick={(e) => goToLink(e, operationObjectsUrl)} >View Raw JSON Object</a>
-								</button>
+								<button className="yellow-button">View Raw JSON Object</button>
 							</TabList>
 							<div className="operation-detail-table">
 								{ operationsInfoData.operationInfo &&
@@ -169,6 +182,15 @@ const OperationsRow = React.memo(({
 								<TabPanel>
 									<ProposalOperations operations={operationsInfoData.proposalOperations} />
 								</TabPanel>}
+								{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
+								<TabPanel>
+									<LogsInfo logs={operationsInfoData.logs} />
+								</TabPanel>}
+								{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
+								<TabPanel>
+									<InternalOperations operations={operationsInfoData.internalOperations} />
+								</TabPanel>
+								}
 							</div>
 						</Tabs>
 					</td>

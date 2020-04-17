@@ -14,7 +14,6 @@ const OperationInfoRow = ({
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			<div className="producers-field">
-
 				{accounts.map((account) => (
 					<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(account.link)} key={account.link}>
 						<a className="avatar-wrap">
