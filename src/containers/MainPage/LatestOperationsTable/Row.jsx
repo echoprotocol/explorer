@@ -3,11 +3,33 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import cn from 'classnames';
 import { validators } from 'echojs-lib';
+import Router from 'next/router';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
-import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 import FormatHelper from '../../../helpers/FormatHelper';
+import SsrHrefHelper from '../../../helpers/SsrHrefHelper';
+
+const goToSubject = (e, url, id) => {
+	e.preventDefault();
+	e.stopPropagation();
+	Router.push(SsrHrefHelper.getHrefByObjectId(id), url);
+};
+
+const renderSubject = (subject) => {
+	if (typeof subject === 'object' && !subject.name && !subject.id) {
+		return <div className="td-in">—</div>;
+	}
+	if (validators.isHex(subject) && subject.length === 40) return <span className="td-in"><span>{subject}</span></span>;
+	return (
+		<Link href={SsrHrefHelper.getHrefByObjectId(subject.id)} as={URLHelper.createUrlById(subject.id)}>
+			<a href="" className="td-in avatar-wrap" onClick={(e) => goToSubject(e, URLHelper.createUrlById(subject.id), subject.id)}>
+				{validators.isAccountId(subject.id) && <Avatar accountName={subject.name} />}
+				<span>{subject.name ? subject.name : subject.id}</span>
+			</a>
+		</Link>
+	);
+};
 
 const OperationsRow = React.memo(({
 	operation, from, to, amount, onClick,
@@ -16,27 +38,10 @@ const OperationsRow = React.memo(({
 		<tr onClick={onClick} className={cn('view')}>
 			<td className="operation"><div className="td-in">{operation}</div></td>
 			<td className="from">
-				{
-					(from.name || from.id) ?
-						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(from.id)}>
-							<a className="td-in avatar-wrap">
-								{validators.isAccountId(from.id) && <Avatar accountName={from.name} />}
-								<span>{from.name ? from.name : from.id}</span>
-							</a>
-						</Link>
-						:
-						<span>-</span>}
+				{renderSubject(from)}
 			</td>
 			<td className="to">
-				{
-					(to.name || to.id) ?
-						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(to.id)}>
-							<a className="td-in avatar-wrap">
-								{validators.isAccountId(to.id) && <Avatar accountName={to.name} />}
-								<span>{to.name ? to.name : to.id}</span>
-							</a>
-						</Link> :
-						<span>-</span>}
+				{renderSubject(to)}
 			</td>
 			<td className="amount">
 				<div className="td-in">
