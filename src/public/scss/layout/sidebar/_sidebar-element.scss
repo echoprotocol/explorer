@@ -112,19 +112,25 @@
 	}
 	.sidebar-element {
 		&.total-supply {
-			width: 27.5%;
+			width: 397px;
+			@include max-vw($res-1600) {
+				width: 360px;
+			}
 			@include max-vw($res-1280) {
 				width: 100%;
 			}
 		}
 		&.blockchain-rates {
-			width: 34%;
+			width: 493px;
 			@include max-vw($res-1280) {
 				width: 100%;
 			}
 		}
 		&.frozen-funds {
-			width: 36.7%;
+			width: calc(100% - 397px - 493px - 20px);
+			@include max-vw($res-1600) {
+				width: calc(100% - 360px - 493px - 10px);
+			}
 			@include max-vw($res-1280) {
 				width: 100%;
 			}
