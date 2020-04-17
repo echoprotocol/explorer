@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 import URLHelper from '../../../helpers/URLHelper';
 import FormatHelper from '../../../helpers/FormatHelper';
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 import Avatar from '../../Avatar';
 
@@ -21,18 +22,22 @@ const TransfersRow = ({ title, transfers }) => (
 					</div>
 					<div className="transfers-field__accounts">
 						<div className="transfers-field__accounts-from">
-							<Link className="avatar-wrap" to={URLHelper.createUrlById(transfer.from.link)}>
-								{transfer.from.value && <Avatar accountName={transfer.from.value} />}
-								<span>{transfer.from.value ? transfer.from.value : transfer.from.link}</span>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(transfer.from.link)}>
+								<a className="avatar-wrap">
+									{transfer.from.value && <Avatar accountName={transfer.from.value} />}
+									<span>{transfer.from.value ? transfer.from.value : transfer.from.link}</span>
+								</a>
 							</Link>
 						</div>
 						<div className="transfers-field__accounts-divider">
 							<img src={arrow} alt="divider" />
 						</div>
 						<div className="transfers-field__accounts-to">
-							<Link className="avatar-wrap" to={URLHelper.createUrlById(transfer.to.link)}>
-								{transfer.to.value && <Avatar accountName={transfer.to.value} />}
-								<span>{transfer.to.value ? transfer.to.value : transfer.to.link}</span>
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(transfer.to.link)}>
+								<a className="avatar-wrap">
+									{transfer.to.value && <Avatar accountName={transfer.to.value} />}
+									<span>{transfer.to.value ? transfer.to.value : transfer.to.link}</span>
+								</a>
 							</Link>
 						</div>
 					</div>

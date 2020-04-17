@@ -1,9 +1,9 @@
 import { MODAL_ERROR, MODAL_EXTENSION_INFO } from '../constants/ModalConstants';
 import GlobalReducer from '../reducers/GlobalReducer';
 import BaseActionsClass from './BaseActionsClass';
-import { connect } from './SocketActions';
 import ModalActions from './ModalActions';
 import { BridgeService } from '../services/BridgeService';
+import { fullClientInit, partialClientConnect } from './SocketActions';
 
 class GlobalActionsClass extends BaseActionsClass {
 
@@ -35,7 +35,8 @@ class GlobalActionsClass extends BaseActionsClass {
 	 * @returns {function(*=): Promise<any>}
 	 */
 	init() {
-		return (dispatch) => new Promise((resolve) => {
+		return (dispatch, getState) => new Promise((resolve) => {
+			const connect = getState().global.get('connectedServer') ? partialClientConnect : fullClientInit;
 			Promise.all([
 				dispatch(connect()),
 			]).then((data) => {
@@ -48,9 +49,25 @@ class GlobalActionsClass extends BaseActionsClass {
 		});
 	}
 
+	/**
+	 * @method incrementHistoryLength
+	 * @return {function(...[*]=)}
+	 */
 	incrementHistoryLength() {
 		return (dispatch, getState) => {
 			dispatch(this.setValue('historyLength', getState().global.get('historyLength') + 1));
+		};
+	}
+
+	/**
+	 * @method updateHistoryPath
+	 * @param {string} newPath
+	 * @param {string} newRoute
+	 * @return {function(...[*]=)}
+	 */
+	updateHistoryPath(newPath, newRoute) {
+		return (dispatch) => {
+			dispatch(this.setValue('history', { path: newPath, route: newRoute }));
 		};
 	}
 

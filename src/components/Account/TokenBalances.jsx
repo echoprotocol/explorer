@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
+import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
 class TokenBalances extends React.Component {
 
@@ -31,9 +32,9 @@ class TokenBalances extends React.Component {
 				<span className="txt" title={FormatHelper.formatAmount(amount, parseInt(decimals, 10))}>
 					{FormatHelper.formatAmount(amount, parseInt(decimals, 10))}
 				</span>
-				<span className="blue">
-					<Link to={URLHelper.createUrlById(id)} className="blue">
-						{symbol}
+				<span className="name">
+					<Link href={SSR_CONTRACT_PATH} as={URLHelper.createUrlById(id)}>
+						<a className="link">{symbol}</a>
 					</Link>
 				</span>
 			</div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link } from 'next/link';
 import Media from 'react-media';
 import copy from 'copy-to-clipboard';
 import { validators } from 'echojs-lib';
@@ -59,8 +59,10 @@ class OperationInfo extends React.Component {
 				<div className="tt-col">
 					<div className="transfer-direction">
 						<Link className="avatar-wrap" to={URLHelper.createUrlById(op.from.id)}>
-							{op.from.name && <Avatar accountName={op.from.name} />}
-							<span>{op.from.name || op.from.id}</span>
+							<a href="">
+								{op.from.name && <Avatar accountName={op.from.name} />}
+								<span>{op.from.name || op.from.id}</span>
+							</a>
 						</Link>
 						{(op.subject.name || op.subject.id) && <img src={directionIcon} alt="" className="direction" />}
 						<Link className="avatar-wrap" to={URLHelper.createUrlById(op.subject.id)}>

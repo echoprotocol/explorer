@@ -8,31 +8,20 @@ import LinkRow from './Rows/LinkRow';
 import ProducersRow from './Rows/ProducersRow';
 import MultyRow from './Rows/MultyRow';
 import TransfersRow from './Rows/TransfersRow';
+import SettingsRow from './Rows/SettingsRow';
 
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
 		<div className="additional-info__title">Additional info</div>
 		<div className="operation-details-rows">
-			{data.account_white_list && <PrimaryRow title="Account white list" description={data.account_white_list} />}
-			{data.account_black_list && <PrimaryRow title="Account black list" description={data.account_black_list} />}
+			{data.whitelisting_accounts && data.whitelisting_accounts.map((account) => <LinkRow title="Account white list" account={account} />)}
+			{data.blacklisting_accounts && data.blacklisting_accounts.map((account) => <LinkRow title="Account black list" account={account} />)}
 			{data.current_asset_feed_producers && <ProducersRow title="Current asset feed producers" accounts={data.current_asset_feed_producers} /> }
 			{data.current_asset_total_supply && <PrimaryRow title="Current asset total supply" description={data.current_asset_total_supply} /> }
 			{data.current_asset_fee_pool && <PrimaryRow title="Current asset total supply" description={data.current_asset_fee_pool} />}
-			{data.current_asset_price &&
-			<PrimaryRow
-				title="Current asset price"
-				description={FormatHelper.formatAmount(data.current_asset_price.amount, data.current_asset_price.precision, data.current_asset_price.symbol)}
-			/>}
-			{data.feeded_asset_fee_pool &&
-			<PrimaryRow
-				title="Feeded asset fee pool"
-				description={FormatHelper.formatAmount(data.feeded_asset_fee_pool.amount, data.feeded_asset_fee_pool.precision, data.feeded_asset_fee_pool.symbol)}
-			/>}
-			{data.current_asset_unclaimed_fee &&
-			<PrimaryRow
-				title="Current asset unclaimed fee"
-				description={FormatHelper.formatAmount(data.current_asset_unclaimed_fee.amount, data.current_asset_unclaimed_fee.precision, data.current_asset_unclaimed_fee.symbol)}
-			/>}
+			{data.current_asset_price && <PrimaryRow title="Current asset price" description={data.current_asset_price} />}
+			{data.feeded_asset_fee_pool && <PrimaryRow title="Feeded asset fee pool" description={data.feeded_asset_fee_pool} />}
+			{data.current_asset_unclaimed_fee && <PrimaryRow title="Current asset unclaimed fee" description={data.current_asset_unclaimed_fee} />}
 			{data.count_approvals && <PrimaryRow title="Count approvals" description={`${data.count_approvals.value} out of ${data.count_approvals.total}`} />}
 			{data.count_signatures && <PrimaryRow title="Count signatures" description={data.count_signatures} />}
 			{data.proposal_status && <PrimaryRow title="Proposal status" description={data.proposal_status} status={data.proposal_status} />}
@@ -59,6 +48,7 @@ const AdditionalInfo = ({ data }) => (
 			/>}
 			{data.number_of_confirmations && <PrimaryRow title="Number of confirmations" description={`${data.number_of_confirmations.value} out of ${data.number_of_confirmations.total}`} />}
 			{data.received_deposit_address && <LinkRow title="Received deposit address" link={data.received_deposit_address} />}
+			{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
 		</div>
 	</div>
 );

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 import URLHelper from '../../../helpers/URLHelper';
 
 import Avatar from '../../Avatar';
@@ -14,9 +15,11 @@ const OperationInfoRow = ({
 		<div className="od-col">
 			<div className="producers-field">
 				{accounts.map((account) => (
-					<Link className="avatar-wrap" to={URLHelper.createUrlById(account.link)} key={account.link}>
-						<Avatar accountName={account.value} />
-						<span>{account.value}</span>
+					<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(account.link)} key={account.link}>
+						<a className="avatar-wrap">
+							<Avatar accountName={account.value} />
+							<span>{account.value}</span>
+						</a>
 					</Link>
 				))}
 			</div>

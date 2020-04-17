@@ -1,4 +1,5 @@
 import { validators } from 'echojs-lib';
+import queryString from 'query-string';
 
 import {
 	ACCOUNTS_PATH,
@@ -111,7 +112,7 @@ class URLHelper {
 	 *
 	 * @param {String} id
 	 */
-	static createUrlById(id) {
+	static createUrlById(id, addInfo) {
 
 		let url;
 
@@ -123,12 +124,23 @@ class URLHelper {
 			url = URLHelper.createContractUrl(id);
 		} else if (validators.isAssetId(id)) {
 			url = URLHelper.createAssetUrl(id);
+		} else if (validators.isAssetName(id)) {
+			url = URLHelper.createAssetUrl(addInfo);
 		} else {
 			url = URLHelper.createObjectsUrl(id);
 		}
 
 		return url;
 
+	}
+
+	/**
+	 * method getUrlAccountIcon
+	 * @param {string} accountName
+	 * @returns {string}
+	 */
+	static getUrlAccountIcon(accountName) {
+		return `${config.SERVER_URL}/api/accounts/${accountName}/avatar.png`;
 	}
 
 	/**
@@ -157,6 +169,31 @@ class URLHelper {
 	 */
 	static createTransactionUrl(round, index) {
 		return TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, index);
+	}
+
+	/**
+	 * @method createOperationUrlByFilter
+	 * @param {string} pathname
+	 * @param {object} passQuery
+	 * @param {object} newProps
+	 * @return {string}
+	 */
+	static createOperationUrlByFilter(pathname, passQuery, newProps) {
+		const { id, round, ...query } = passQuery;
+		let transformPathname = pathname.replace(/\[id\]/, id);
+		if (round) {
+			transformPathname = pathname.replace(/\[round\]/, round);
+		}
+		return `${transformPathname}?${queryString.stringify({ ...query, ...newProps })}`;
+	}
+
+	/**
+	 * @method getUrlWithOrigin
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static getUrlWithOrigin(url) {
+		return typeof window !== 'undefined' ? `${window.location.origin}${url}` : url;
 	}
 
 }

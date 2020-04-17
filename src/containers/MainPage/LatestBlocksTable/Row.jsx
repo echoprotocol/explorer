@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import cn from 'classnames';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
-	number, age, producer, size, txs, onClick,
+	number, age, producer, size, txs, onClick, date,
 }) => (
 	<React.Fragment>
 		<tr onClick={onClick} className={cn('view')}>
@@ -15,18 +16,16 @@ const OperationsRow = React.memo(({
 			<td className="number"><div className="td-in">{number}</div></td>
 			<td className="age">
 				<div className="td-in">
-					<span className="age-hint">25 Mar,</span>
+					<span className="age-hint">{date},</span>
 					<span className="age-value">{age}</span>
 				</div>
 			</td>
 			<td className="producer">
-				<Link
-					className="td-in avatar-wrap"
-					to={URLHelper.createAccountUrlByName(producer)}
-					onClick={(e) => e.stopPropagation()}
-				>
-					<Avatar accountName={producer} />
-					<span>{producer}</span>
+				<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrlByName(producer)}>
+					<a className="td-in avatar-wrap">
+						<Avatar accountName={producer} />
+						<span>{producer}</span>
+					</a>
 				</Link>
 			</td>
 			<td className="size"><div className="td-in">{size.weight} {size.weightSize}</div></td>
@@ -42,6 +41,7 @@ OperationsRow.propTypes = {
 	producer: PropTypes.string.isRequired,
 	size: PropTypes.object.isRequired,
 	txs: PropTypes.number.isRequired,
+	date: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
 };
 

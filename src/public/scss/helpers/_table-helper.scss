@@ -61,7 +61,10 @@
 		color: $lightgrey;
 		position: relative;
 		line-height: 15px;
-		@include inter-medium();
+		.td-in {
+			@include inter-semibold();
+			font-size: 12px;
+		}
 	}
 }
 
@@ -85,7 +88,7 @@
 @mixin table-air() {
 	.air {
 		background-color: transparent;
-		height: 15px;
+		height: 10px;
 	}
 }
 

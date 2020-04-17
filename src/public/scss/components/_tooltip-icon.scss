@@ -3,6 +3,7 @@
 	display: inline-flex;
 	align-items: center;
 	margin-left: 5px;
+	overflow: visible !important;
 	path {
 		fill: $lightgrey;
 	}

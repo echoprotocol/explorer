@@ -44,4 +44,3 @@ class ToastActionsClass {
 
 const ToastActions = new ToastActionsClass();
 export default ToastActions;
-

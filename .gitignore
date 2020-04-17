@@ -3,5 +3,8 @@ dist
 node_modules
 package-lock.json
 config/local.json
+.next
+./src/.next
 .vscode
 .next
+echo.ops.js

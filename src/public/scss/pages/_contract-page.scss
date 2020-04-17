@@ -319,6 +319,7 @@
 	}
 
 	.value {
+		@include text-overflow();
 		@include inter-ui-medium;
 		font-size: 13px;
 		color: #000;
@@ -524,21 +525,6 @@
 				@include max-vw($res-500) {
 					padding-left: 0px;
 					width: 100%;
-				}
-
-				&.is-owner {
-					&:after {
-						content: "OWNER";
-						position: absolute;
-						right: 0;
-						background-color: #cadef0;
-						top: -2px;
-						@include hack-bold;
-						padding: 3px;
-						font-size: 9px;
-						color: #2a90e6;
-						letter-spacing: 0.25em;
-					}
 				}
 
 				.txt {
