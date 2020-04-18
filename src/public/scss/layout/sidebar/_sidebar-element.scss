@@ -56,13 +56,6 @@
 			margin-top: 27px;
 		}
 	}
-
-	.recharts-wrapper {
-		width: auto !important;
-		.recharts-surface {
-			max-width: 100% !important;
-		}
-	}
 }
 
 .sidebar:not(.pinned) {
@@ -188,5 +181,12 @@
 	display: inline-flex;
 	@include max-vw($res-1280) {
 		margin-top: 15px;
+	}
+}
+
+.recharts-wrapper {
+	width: auto !important;
+	.recharts-surface {
+		max-width: 100% !important;
 	}
 }
