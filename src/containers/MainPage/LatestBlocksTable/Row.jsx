@@ -21,7 +21,7 @@ const OperationsRow = React.memo(({
 	return (
 		<React.Fragment>
 			<tr onClick={onClick} className={cn('view')}>
-				<td className="number"><div className="td-in">{number}.</div></td>
+				<td className="number"><div className="td-in">{number}</div></td>
 				<td className="age">
 					<div className="td-in">
 						<span className="age-hint">{date},</span>
