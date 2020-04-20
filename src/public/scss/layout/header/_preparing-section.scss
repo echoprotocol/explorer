@@ -17,7 +17,7 @@
 .preparing-head {
 	display: flex;
 	align-items: center;
-	svg {
+	> svg {
 		margin-right: 12px;
 	}
 }
@@ -38,6 +38,9 @@
 	@include max-vw($res-768) {
 		padding: 16px 20px 12px;
 	}
+	@include max-vw($res-500) {
+		padding: 16px 15px 12px;
+	}
 }
 .preparing-tooltip {
 	margin-left: 5px;
@@ -53,6 +56,8 @@
 .preparing-line {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
 	margin: 10px 0 0;
 	@include max-vw($res-1280) {
 		margin: 0 0 10px;
@@ -61,15 +66,22 @@
 		flex-direction: column;
 		align-items: flex-start;
 	}
+	@include max-vw($res-500) {
+		flex-direction: row;
+		align-items: center;
+	}
 	a {
 		font-size: 11px;
 		line-height: 13px;
 		letter-spacing: 0.02em;
-		margin-left: auto;
 		@include inter-medium();
 		@include link();
+		white-space: nowrap;
 		@include max-vw($res-768) {
 			margin: 5px 0 0;
+		}
+		@include max-vw($res-500) {
+			margin: 0;
 		}
 	}
 }
@@ -81,6 +93,7 @@
 	line-height: 13px;
 	letter-spacing: 0.02em;
 	@include inter-medium();
+	white-space: nowrap;
 }
 .preparing-caption {
 	letter-spacing: 0.02em;

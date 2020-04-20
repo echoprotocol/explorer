@@ -81,4 +81,7 @@
 	display: flex;
 	align-items: center;
 	height: 20px;
+	@include max-vw($res-500) {
+		justify-content: space-between;
+	}
 }

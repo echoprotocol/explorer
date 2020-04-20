@@ -3,11 +3,14 @@
 	margin-right: 20px;
 	align-self: stretch;
 	display: flex;
-
+	@include max-vw($res-1280) {
+		margin-right: 25px;
+	}
 	@include max-vw($res-768) {
 		position: absolute;
-		top: 33px;
-		right: 50px;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 	button {
 		background-color: transparent;
@@ -20,7 +23,7 @@
 		line-height: 17px;
 		color: $grey;
 		position: relative;
-
+		white-space: nowrap;
 		&:before {
 			@include absolute-stretch(-20px, 0, auto, 0);
 			transition: background-color $speed;
