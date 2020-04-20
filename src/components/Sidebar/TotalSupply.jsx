@@ -37,7 +37,7 @@ class TotalSupply extends React.Component {
 
 	render() {
 		const { assets } = this.state;
-		const amount = assets && assets[ECHO.ID] ? FormatHelper.formatAmount(assets[ECHO.ID].dynamic.current_supply) : '0';
+		const amount = assets && assets[ECHO.ID] ? FormatHelper.formatAmount(assets[ECHO.ID].dynamic.current_supply, ECHO.PRECISION) : '0';
 		return (
 			<React.Fragment>
 				<div className="total-supply">
