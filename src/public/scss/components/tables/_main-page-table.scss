@@ -2,8 +2,24 @@
 	position: relative;
 	max-width: calc(50% - 20px);
 	width: 100%;
+	&:first-child {
+		@include max-vw($res-1600) {
+			max-width: 45%;
+		}
+		@include max-vw($res-1280) {
+			max-width: 100%;
+		}
+	}
+	&:last-child {
+		@include max-vw($res-1600) {
+			max-width: 53%;
+		}
+		@include max-vw($res-1280) {
+			max-width: 100%;
+		}
+	}
+
 	@include max-vw($res-1280) {
-		max-width: 100%;
 		& + .main-page-table {
 			margin-top: 60px;
 		}
@@ -29,6 +45,10 @@
 	}
 	thead {
 		color: $grey;
+	}
+
+	.air {
+		height: 20px;
 	}
 
 	.view {
@@ -96,36 +116,63 @@
 			display: block;
 			max-width: 120px;
 			@include text-overflow();
-			@include max-vw($res-1280) {
-				max-width: 300px;
-			}
 		}
 	}
 
 	// Cell sizes Latest block table
 	.number {
 		width: 90px;
+		@include max-vw($res-1600) {
+			width: 72px;
+		}
+		@include max-vw($res-1280) {
+			width: 95px;
+		}
 	}
 	.age {
 		width: 22%;
 		white-space: nowrap;
+		@include max-vw($res-1600) {
+			width: 26%;
+		}
+		@include max-vw($res-1280) {
+			width: 21%;
+		}
 	}
 	.producer {
 		width: 33%;
+		@include max-vw($res-1600) {
+			width: 30%;
+		}
 	}
 	.size {
 		width: 21%;
+		@include max-vw($res-1600) {
+			width: 20%;
+		}
 	}
 
 	// Cell sizes latest operations table
 	.operation {
 		width: 27%;
 		min-width: 140px;
+		@include max-vw($res-1600) {
+			width: 24%;
+		}
+		@include max-vw($res-1280) {
+			width: 25%;
+		}
 	}
 	.from {
 		width: 26%;
+		@include max-vw($res-1280) {
+			width: 25%;
+		}
 	}
 	.to {
 		width: 28%;
+		@include max-vw($res-1600) {
+			width: 25%;
+		}
 	}
 }

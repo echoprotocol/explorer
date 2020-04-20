@@ -57,6 +57,9 @@
 		}
 	}
 
+	@include max-vw($res-500) {
+		padding: 36px 15px 20px;
+	}
 	.recharts-wrapper {
 		width: auto !important;
 		.recharts-surface {
