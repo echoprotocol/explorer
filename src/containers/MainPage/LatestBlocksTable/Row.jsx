@@ -12,7 +12,7 @@ import FormatHelper from '../../../helpers/FormatHelper';
 import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
-	number, producer, size, txs, onClick, time,
+	number, producer, size, txs, onClick, time, isLastByDay,
 }) => {
 	const producerLink = URLHelper.createAccountUrlByName(producer);
 	const goToAccount = (e) => {
@@ -20,7 +20,6 @@ const OperationsRow = React.memo(({
 		e.stopPropagation();
 		Router.push(SSR_ACCOUNTS_PATH, producerLink);
 	};
-
 	const date = FormatHelper.getBlockDateByTimestamp(time);
 	const age = FormatHelper.getBlockTimeByTimestamp(time);
 
@@ -32,13 +31,13 @@ const OperationsRow = React.memo(({
 		if (diff < 60) {
 			return (
 				<Tooltip
-					placement="top"
+					placement="rightBottom"
 					mouseLeaveDelay={0}
 					trigger={['hover']}
 					overlay={`${date} ${age}`}
 					overlayStyle={{ pointerEvents: 'none' }}
 				>
-					<div className="age-value">just now</div>
+					<span className="age-value">just now</span>
 				</Tooltip>
 
 			);
@@ -46,29 +45,29 @@ const OperationsRow = React.memo(({
 		if (!diff < 60 && diff < 86400) {
 			return (
 				<Tooltip
-					placement="top"
+					placement="rightBottom"
 					mouseLeaveDelay={0}
 					trigger={['hover']}
 					overlay={`${date} ${age}`}
 					overlayStyle={{ pointerEvents: 'none' }}
 				>
-					<div className="age-value">
+					<span className="age-value">
 						{diffInHours !== 0 && `${diffInHours}h `}
 						{`${diffInMinutes}min ago`}
-					</div>
+					</span>
 				</Tooltip>
 			);
 		}
 		return (
 			<Tooltip
-				placement="top"
+				placement="rightBottom"
 				mouseLeaveDelay={0}
 				trigger={['hover']}
 				overlay={`${date} ${age}`}
 				overlayStyle={{ pointerEvents: 'none' }}
 			>
 				<span>
-					<span className="age-hint">{date},</span>
+					{isLastByDay && <span className="age-hint">{date},</span>}
 					<span className="age-value">{age}</span>
 				</span>
 			</Tooltip>
@@ -106,6 +105,7 @@ OperationsRow.propTypes = {
 	size: PropTypes.object.isRequired,
 	txs: PropTypes.number.isRequired,
 	onClick: PropTypes.func.isRequired,
+	isLastByDay: PropTypes.bool.isRequired,
 };
 
 export default OperationsRow;
