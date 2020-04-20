@@ -341,13 +341,13 @@ class Contract extends React.Component {
 								(!matches ?
 									<div className={classnames('horizontal-tab-panel', { 'server-slick-track': typeof window === 'undefined' })}>
 										<Slider ref={this.slider} {...settings} >
-											{/* <div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
+											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
 												<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(id)}>
 													<a href="" onClick={(e) => this.goToSlide(e, 0)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null} >
 														<span className="menu-item-content">Contract info</span>
 													</a>
 												</Link>
-											</div> */}
+											</div>
 											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
 												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
 													<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
