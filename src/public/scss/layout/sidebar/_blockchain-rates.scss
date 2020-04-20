@@ -10,8 +10,9 @@
 			flex-direction: column;
 		}
 		.sidebar-element-block {
-			@include max-vw($res-1280) {
-				width: 50%;
+			width: 50%;
+			@include max-vw($res-500) {
+				width: 100%;
 			}
 		}
 	}
