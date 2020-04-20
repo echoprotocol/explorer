@@ -2,6 +2,7 @@ import echo, { OPERATIONS_IDS } from 'echojs-lib';
 import BN from 'bignumber.js';
 import { payments } from 'bitcoinjs-lib';
 import Buffer from 'buffer-ponyfill';
+import moment from 'moment';
 
 import { ASSET_ISSUER_PERMISSION_FLAGS } from '../../constants/OpsFormatConstants';
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
@@ -113,6 +114,54 @@ async function getCommitteFrozenBalanceDepositInfo({ committee_member_account: {
 	};
 }
 
+async function getVestingBalanceInfo({ owner: { link: accountId } }) {
+	const [{ balance: { amount: balanceToWithdraw }, policy }] = await echo.api.getVestingBalances(accountId);
+	const {
+		begin_timestamp: beginTimestamp, begin_balance: beginBalance, vesting_duration_seconds: duration,
+		vesting_cliff_seconds: cliff,
+	} = policy[1];
+	const diffNowAndBeginTimestamp = moment().diff(beginTimestamp, 'seconds');
+	const isAllowedBalance = diffNowAndBeginTimestamp > 0;
+	let balanceToClaim = new BN(0);
+
+	let percentVestedBalance = new BN(diffNowAndBeginTimestamp).dividedBy(duration);
+	if (percentVestedBalance.gt(1)) {
+		percentVestedBalance = new BN(1);
+	}
+	const vestedBalance = percentVestedBalance.multipliedBy(beginBalance);
+	const beginTimestampAndCliff = moment(beginTimestamp).add(cliff, 'second');
+	const isAllowToClaim = moment().diff(beginTimestampAndCliff, 'seconds') > 0;
+	if (isAllowToClaim) {
+		balanceToClaim = vestedBalance;
+	}
+
+	return {
+		isAllowedBalance,
+		vestedBalance: vestedBalance.toString(),
+		balanceToClaim: balanceToClaim.toString(),
+		balanceToWithdraw: balanceToWithdraw.toString(),
+	};
+}
+
+async function getContractCreateInfo(data) {
+	const objectInfo = data.objectInfo.toJS();
+	const contractId = data['new contract id'];
+	let token = null;
+
+	if (objectInfo.type === 'erc20') {
+
+		token = {
+			id: contractId,
+			...objectInfo.token,
+		};
+	}
+
+
+	return {
+		token,
+	};
+}
+
 async function getAdditionalInfoByOpId(opId, data) {
 	try {
 		switch (opId) {
@@ -132,6 +181,12 @@ async function getAdditionalInfoByOpId(opId, data) {
 				return await getCommiteeMemberDeActivateInfo(data);
 			case OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT:
 				return await getCommitteFrozenBalanceDepositInfo(data);
+			case OPERATIONS_IDS.VESTING_BALANCE_CREATE:
+				return await getVestingBalanceInfo(data);
+			case OPERATIONS_IDS.VESTING_BALANCE_WITHDRAW:
+				return await getVestingBalanceInfo(data);
+			case OPERATIONS_IDS.CONTRACT_CREATE:
+				return await getContractCreateInfo(data);
 			default:
 				return null;
 		}

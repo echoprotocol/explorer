@@ -96,13 +96,17 @@ class TransactionActionsClass extends BaseActionsClass {
 			if (supportedAsset !== null) {
 				supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
 			}
-			const chainContract = await echo.api.getContract(id);
+			const [chainContract] = await echo.api.getContracts([id]);
+
 			return new Map({})
-				.set('type', chainContract.type && chainContract.type.toUpperCase())
+				.set('type', chainContract.type)
 				.set('supportedAsset', supportedAsset)
 				.set('ethAccuracy', ethAccuracy ? 'Activated' : 'Inactivated')
-				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No')
-				.set('bytecode', chainContract[1].code);
+				.set('token', contractInfo.token === 'erc20' ? {
+					id: contractInfo.id,
+					...contractInfo.token,
+				} : null)
+				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No');
 		} catch (e) {
 			return null;
 		}
@@ -730,7 +734,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const opNumberToFormat = operation.value < 30 ? operation.value : 0;
+		const opNumberToFormat = operation.value < 40 ? operation.value : 0;
 
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		if (proposalOperations.includes(operation.name)) {

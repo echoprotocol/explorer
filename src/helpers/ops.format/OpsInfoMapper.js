@@ -1,4 +1,4 @@
-import { OPERATIONS_IDS } from 'echojs-lib';
+import echo, { OPERATIONS_IDS } from 'echojs-lib';
 
 import {
 	ACCOUNT_BLACK_WHITE, ECHO_COMMITTEE_ACCOUNT,
@@ -8,6 +8,7 @@ import {
 
 import getAdditionalInfoByOpId, { getAssetFlags } from './AddInfoHelper';
 
+// TODO description all
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
 	const description = OPS_DESCRIPTIONS[opNumber];
@@ -472,7 +473,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.VESTING_BALANCE_CREATE: {
-			console.log('data', data.policy);
+			const {
+				isAllowedBalance, vestedBalance, balanceToClaim, balanceToWithdraw,
+			} = await getAdditionalInfoByOpId(opNumber, data);
+
 			return {
 				operationInfo: {
 					type,
@@ -481,15 +485,68 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.amount,
 					policy: [{
 						name: 'Object 1',
-						begin_date: new Date(),
-						duration: '3 days, 23h:59m',
-						cliff: '14 days, 12h:33m',
-					}, {
-						name: 'Object 41',
-						begin_date: new Date(),
-						duration: '3 days, 23h:59m',
-						cliff: '14 days, 12h:33m',
+						...data.policy[1],
 					}],
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						current_vesting_balance_state: [{
+							key: 'Status',
+							value: isAllowedBalance ? 'Available' : 'Not available',
+						}, {
+							key: 'Vested balance',
+							value: `${vestedBalance} ECHO`,
+						}, {
+							key: 'Available to claim',
+							value: `${balanceToClaim} ECHO`,
+						}, {
+							key: 'Allow to withdraw',
+							value: `${balanceToWithdraw} ECHO`,
+						}],
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.VESTING_BALANCE_WITHDRAW: {
+			const {
+				isAllowedBalance, vestedBalance, balanceToClaim, balanceToWithdraw,
+			} = await getAdditionalInfoByOpId(opNumber, data);
+
+			return {
+				operationInfo: {
+					type,
+					sender: data.owner,
+					amount: data.amount,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						current_vesting_balance_state: [{
+							key: 'Status',
+							value: isAllowedBalance ? 'Available' : 'Not available',
+						}, {
+							key: 'Vested balance',
+							value: `${vestedBalance} ECHO`,
+						}, {
+							key: 'Available to claim',
+							value: `${balanceToClaim} ECHO`,
+						}, {
+							key: 'Allow to withdraw',
+							value: `${balanceToWithdraw} ECHO`,
+						}],
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.BALANCE_CLAIM: {
+			//  TODO
+			// balance_object_id check on null
+			return {
+				operationInfo: {
+					type,
+					sender: data.deposit_to_account,
+					balance_object_id: data.balance_to_claim,
+					amount: data.amount,
+					balance_owner_key: data.balance_owner_key,
 					fee: data.fee,
 					...description,
 					additionalInfo: {
@@ -508,6 +565,155 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						}],
 					},
 				},
+			};
+		}
+		case OPERATIONS_IDS.BALANCE_FREEZE: {
+			const duration = data.duration.amount > 1 ? `${data.duration.amount} days` : `${data.duration.amount} day`;
+			return {
+				operationInfo: {
+					type,
+					sender: data.account,
+					duration,
+					amount: data.amount,
+					fee: data.fee,
+					...description,
+				},
+			};
+		}
+		case OPERATIONS_IDS.BALANCE_UNFREEZE: {
+			return {
+				operationInfo: {
+					type: 'Unfreeze balance (virtual)',
+					receiver: data.account,
+					amount: data.amount,
+				},
+			};
+		}
+
+		case OPERATIONS_IDS.CONTRACT_CREATE: {
+			const objectInfo = data.objectInfo.toJS();
+			// const additionalInfo = await getAdditionalInfoByOpId(opNumber, data);
+
+			console.log('objectInfo.token', objectInfo.token);
+			console.log('data.logs', data.logs);
+			// console.log('type', data.objectInfo.get('type'));
+			const { bytecode, ...d } = data;
+			console.log('d', d.logs);
+			console.log('d', d);
+			return {
+				operationInfo: {
+					type,
+					sender: data.registrar,
+					contract_type: data.objectInfo.get('type'),
+					deployed_contract_bytecode: data.bytecode,
+					deploy_arguments: ['stringElement1', 'stringElement2', 'stringElement3', 'stringElement4', 'stringElement5'],
+					amount: data.value,
+					eth_accuracy_is_enabled: data.objectInfo.get('ethAccuracy'),
+					supported_asset: data.objectInfo.get('supportedAsset') || 'None',
+					fee: data.fee,
+					additionalInfo: {
+						...(objectInfo.token && {
+							erc20_token_info: [{
+								key: 'Token symbol (name)',
+								value: objectInfo.token.symbol,
+							}, {
+								key: 'Decimals',
+								value: objectInfo.token.decimals,
+							}, {
+								key: 'Total supply',
+								value: objectInfo.token.total_supply,
+							}],
+							erc20_token_transfers: [{
+								amount: {
+									amount: 230,
+									precision: 8,
+									symbol: 'ECHO',
+								},
+								from: {
+									value: 'account',
+									link: '1.2.4',
+								},
+								to: {
+									value: 'account',
+									link: '1.2.5',
+								},
+							}, {
+								amount: {
+									amount: 16,
+									precision: 8,
+									symbol: 'ECHO',
+								},
+								from: {
+									value: 'pink-n-floyd01230',
+									link: '1.2.3',
+								},
+								to: {
+									value: 'nathen1234',
+									link: '1.2.3',
+								},
+							}],
+						}),
+						asset_transfers: [{
+							amount: {
+								amount: 230,
+								precision: 8,
+								symbol: 'ECHO',
+							},
+							from: {
+								value: '',
+								link: '1.2.3',
+							},
+							to: {
+								value: 'account',
+								link: '1.2.3',
+							},
+						}],
+					},
+				},
+				logs: [{
+					address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					name: {
+						name: 'String',
+						params: ['param1', 'param2', 'param3'],
+					},
+					topics: ['ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3eh', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ek'],
+					data: '0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000009f8f72aa9304c8b593d555f12ef6589cc3a579a20000000000000000000000000000000000000000000000001408de424e0172550000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000005e745a6c',
+				}, {
+					address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc3',
+					name: {
+						name: 'String',
+						params: ['param1', 'param2', 'param3'],
+					},
+					topics: ['ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3eh', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ek'],
+					data: '0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000009f8f72aa9304c8b593d555f12ef6589cc3a579a20000000000000000000000000000000000000000000000001408de424e0172550000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000005e745a6c',
+				}],
+				internalOperations: [{
+					operationInfo: {
+						type: 'Contract call',
+						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+						asset_amount_sent: {
+							amount: 230,
+							precision: 8,
+							symbol: 'ECHO',
+						},
+						bytecode: '60806040523480156200001157600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506040805190810160405280600581526020017f4649584544000000000000000000000000000000000000000000000000000000815250600290805190602001906200009f92919062000221565b506040805190810160405280601a81526020017f4578616d706c6520466978656420537570706c7920',
+					},
+				}, {
+					operationInfo: {
+						type: 'Contract create',
+						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc3',
+						asset_amount_sent: {
+							amount: 230,
+							precision: 8,
+							symbol: 'ECHO',
+						},
+					},
+				}, {
+					operationInfo: {
+						type: 'Contract delete',
+						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc4',
+					},
+				}],
 			};
 		}
 		default:

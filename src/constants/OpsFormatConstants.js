@@ -185,20 +185,22 @@ export const OPS_DESCRIPTIONS = {
 		link: '',
 	},
 	[OPERATIONS_IDS.BALANCE_CLAIM]: {
-		description: '',
-		link: '',
+		description: 'Claim a balance in a @ref balance_object.\n' +
+			'This operation is used to claim the balance in a given @ref balance_object. If the balance object contains a vesting balance, total_claimed must not exceed @ref balance_object::available at the time of evaluation. If the object contains a non-vesting balance, total_claimed must be the full balance of the object.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_claim_operation',
 	},
 	[OPERATIONS_IDS.BALANCE_FREEZE]: {
-		description: '',
-		link: '',
+		description: 'Freeze balance to get more reward during fee distribution.\n' +
+			'Duration is indicated in days. For the selected duration, the balance modifier must be specified in the chain parameters',
+		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_freeze_operation',
 	},
 	[OPERATIONS_IDS.BALANCE_UNFREEZE]: {
-		description: '',
-		link: '',
+		description: 'Unfreeze balance.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_unfreeze_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_CREATE]: {
-		description: '',
-		link: '',
+		description: 'Creates new contract.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_create_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_CALL]: {
 		description: '',

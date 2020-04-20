@@ -286,7 +286,7 @@ const Operations = {
 		value: OPERATIONS_IDS.BALANCE_CLAIM,
 		name: 'Claim balance',
 		options: {
-			from: null,
+			from: ['deposit_to_account', 'name'],
 			subject: ['deposit_to_account', 'name'],
 			value: 'total_claimed.amount',
 			asset: 'total_claimed.asset_id',

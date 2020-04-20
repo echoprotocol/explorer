@@ -89,7 +89,7 @@ class OperationInfo extends React.Component {
 
 					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
-					{data.balance_owner_key && <AuthorityRow title="Balance owner key" authority={data.balance_owner_key} />}
+					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
 					{data.deposit_amount && <PrimaryRow title="Deposit amount" description={data.deposit_amount} />}
 					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
