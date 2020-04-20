@@ -67,7 +67,7 @@ const OperationsRow = React.memo(({
 				overlayStyle={{ pointerEvents: 'none' }}
 			>
 				<span>
-					{isLastByDay && <span className="age-hint">{date},</span>}
+					{isLastByDay && <span className="age-hint">{date},&nbsp;</span>}
 					<span className="age-value">{age}</span>
 				</span>
 			</Tooltip>
