@@ -8,9 +8,6 @@
 			margin-top: 45px;
 		}
 	}
-	.account-page-t-block {
-		margin-bottom: 0;
-	}
 	.tab-panel {
 		list-style-type: none;
 		display: flex;
@@ -119,7 +116,7 @@
 	padding: 50px 0;
 }
 
-.account-page-t-block {
+.page-t-block {
 	margin-bottom: 30px;
 	> .title {
 		@include inter-ui-bold;
@@ -190,7 +187,7 @@
 			}
 		}
 
-		&:last-child {
+		.additional {
 			margin-top: 13px;
 			@include max-vw($res-500) {
 				margin-top: 5px;

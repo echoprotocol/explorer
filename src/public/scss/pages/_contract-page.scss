@@ -17,7 +17,7 @@
 		z-index: 2;
 
 		&:before {
-			background-color: #e8e7eb;
+			background-color: $lightgrey-darker;
 			content: "";
 			position: absolute;
 			top: -15px;
@@ -101,34 +101,14 @@
 
 .created-info {
 	@include inter-ui-regular;
-	font-size: 13px;
-	margin: 6px 0 24px;
-	line-height: 30px;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-
-	@include min-vw(412) {
-		margin: 6px 0 24px;
-	}
-
-	.no-wrap {
+	font-size: 12px;
+	margin-bottom: 30px;
+	color: $grey;
+	.created-info-details {
+		margin-bottom: 20px;
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-	}
-
-	.date,
-	.time {
-		color: #848b94;
-		margin-left: 5px;
-	}
-
-	.time {
-		margin-right: 5px;
-
-		& + .plain-text {
-			margin-right: 5px;
-		}
 	}
 
 	.avatar-image {
@@ -136,7 +116,6 @@
 		height: 16px;
 		margin-right: 5px;
 		line-height: 0;
-
 		img {
 			width: 100%;
 		}
@@ -144,203 +123,201 @@
 
 	.link {
 		@include inter-ui-medium;
-		color: #498fdf;
+		color: $blue;
 	}
 
-	@include max-vw($res-1000) {
-		max-width: 278px;
-	}
-
-	@include max-vw($res-768) {
-		max-width: none;
-	}
-
-	@include max-vw($res-500) {
-		margin-left: 16px;
+	.created-info__account {
+		display: flex;
+		align-items: center;
 	}
 }
 
-.contract-info-panel {
-	.row {
-		display: flex;
-		justify-content: space-between;
-		max-width: 798px;
-		flex-wrap: wrap;
-
-		@include max-vw(1534) {
-			max-width: 100%;
-		}
-
-		@include max-vw($res-768) {
-			width: auto;
-
-			.column-right {
-				margin-top: 24px;
-				width: 100%;
-			}
-		}
-	}
-
-	.description {
-		@include inter-ui-regular;
-		max-width: 360px;
-		font-size: 12.63px;
-		line-height: 1.5;
-
-		@include max-vw($res-1000) {
-			max-width: 278px;
-		}
-
-		@include max-vw($res-768) {
-			max-width: none;
-		}
-
-		&.short {
-			overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-box-orient: vertical;
-			-webkit-line-clamp: 2;
-			max-height: 2 * 1.6;
-		}
-
-		& + .text-button {
-			margin-top: 15px;
-		}
-	}
-
-	.assets-title {
-		@include hack-bold;
-		margin: 24px 0 20px;
-		text-transform: uppercase;
-		color: rgba(#263c4b, 0.8);
-		font-size: 9px;
-		display: block;
-		padding: 18px 0 16px;
-		border-bottom: 1px solid rgba(#3f465a, 0.15);
-		letter-spacing: 2.2px;
-
-		@include max-vw($res-1000) {
-			max-width: 278px;
-			margin: 12px 0;
-		}
-
-		@include max-vw($res-500) {
-			max-width: 100%;
-		}
-	}
-
-	.assets-list {
-		max-width: 360px;
-		list-style-type: none;
-		padding: 0;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-
-		@include max-vw($res-1000) {
-			max-width: 278px;
-		}
-
-		@include max-vw($res-768) {
-			max-width: none;
-		}
-
-		li {
-			@include inter-ui-regular;
-			font-size: 11.66px;
-			padding: 10px 0 12px;
-			border-bottom: 1px solid rgba(#3f465a, 0.15);
-			width: 170px;
-			text-transform: uppercase;
-
-			@include max-vw($res-1000) {
-				width: 100%;
-			}
-
-			@include max-vw($res-768) {
-				width: 48%;
-			}
-
-			@include max-vw($res-500) {
-				width: 100%;
-			}
-
-			.value {
-				color: #0e0936;
-				margin-right: 5px;
-			}
-
-			.currency {
-				color: #498fdf;
-			}
-		}
-
-		& + .text-button {
-			margin-top: 15px;
-		}
-	}
+.created-info__description {
+	@include inter-ui-regular;
+	font-size: 13px;
+	line-height: 20px;
+	color: $grey;
 }
+// .contract-info-panel {
+// 	.row {
+// 		display: flex;
+// 		justify-content: space-between;
+// 		flex-wrap: wrap;
 
-.contract-info-block {
-	background-color: #fff;
-	padding: 29px 30px;
-	width: 356px;
+// 		@include max-vw(1534) {
+// 			max-width: 100%;
+// 		}
 
-	@include max-vw($res-768) {
-		width: 100%;
-	}
+// 		@include max-vw($res-768) {
+// 			width: auto;
 
-	.line {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
+// 			.column-right {
+// 				margin-top: 24px;
+// 				width: 100%;
+// 			}
+// 		}
+// 	}
 
-		&:not(:last-child) {
-			margin-bottom: 16px;
-		}
-	}
+// 	.description {
+// 		@include inter-ui-regular;
+// 		max-width: 360px;
+// 		font-size: 12.63px;
+// 		line-height: 1.5;
 
-	.key {
-		@include hack-bold;
-		font-size: 9px;
-		text-transform: uppercase;
-		color: rgba(#263c4b, 0.8);
-		white-space: nowrap;
-		letter-spacing: 2px;
-	}
+// 		@include max-vw($res-1000) {
+// 			max-width: 278px;
+// 		}
 
-	.underline {
-		height: 1px;
-		background-color: rgba(#3f465a, 0.15);
-		flex-grow: 1;
-		align-self: baseline;
-		margin: 0 7px;
-	}
+// 		@include max-vw($res-768) {
+// 			max-width: none;
+// 		}
 
-	.value {
-		@include text-overflow();
-		@include inter-ui-medium;
-		font-size: 13px;
-		color: #000;
-		white-space: nowrap;
+// 		&.short {
+// 			overflow: hidden;
+// 			text-overflow: ellipsis;
+// 			display: -webkit-box;
+// 			-webkit-box-orient: vertical;
+// 			-webkit-line-clamp: 2;
+// 			max-height: 2 * 1.6;
+// 		}
 
-		&.blue {
-			color: #498fdf;
-		}
+// 		& + .text-button {
+// 			margin-top: 15px;
+// 		}
+// 	}
 
-		.val {
-			display: flex;
-			max-width: 100%;
-			.txt {
-				@include text-overflow();
-			}
-			.txt2 {
-				width: calc(100% - 25vw);
-			}
-		}
-	}
-}
+// 	.assets-title {
+// 		@include hack-bold;
+// 		margin: 24px 0 20px;
+// 		text-transform: uppercase;
+// 		color: rgba(#263c4b, 0.8);
+// 		font-size: 9px;
+// 		display: block;
+// 		padding: 18px 0 16px;
+// 		border-bottom: 1px solid rgba(#3f465a, 0.15);
+// 		letter-spacing: 2.2px;
+
+// 		@include max-vw($res-1000) {
+// 			max-width: 278px;
+// 			margin: 12px 0;
+// 		}
+
+// 		@include max-vw($res-500) {
+// 			max-width: 100%;
+// 		}
+// 	}
+
+// 	.assets-list {
+// 		max-width: 360px;
+// 		list-style-type: none;
+// 		padding: 0;
+// 		display: flex;
+// 		flex-wrap: wrap;
+// 		justify-content: space-between;
+
+// 		@include max-vw($res-1000) {
+// 			max-width: 278px;
+// 		}
+
+// 		@include max-vw($res-768) {
+// 			max-width: none;
+// 		}
+
+// 		li {
+// 			@include inter-ui-regular;
+// 			font-size: 11.66px;
+// 			padding: 10px 0 12px;
+// 			border-bottom: 1px solid rgba(#3f465a, 0.15);
+// 			width: 170px;
+// 			text-transform: uppercase;
+
+// 			@include max-vw($res-1000) {
+// 				width: 100%;
+// 			}
+
+// 			@include max-vw($res-768) {
+// 				width: 48%;
+// 			}
+
+// 			@include max-vw($res-500) {
+// 				width: 100%;
+// 			}
+
+// 			.value {
+// 				color: #0e0936;
+// 				margin-right: 5px;
+// 			}
+
+// 			.currency {
+// 				color: #498fdf;
+// 			}
+// 		}
+
+// 		& + .text-button {
+// 			margin-top: 15px;
+// 		}
+// 	}
+// }
+
+// .contract-info-block {
+// 	background-color: #fff;
+// 	padding: 29px 30px;
+// 	width: 356px;
+
+// 	@include max-vw($res-768) {
+// 		width: 100%;
+// 	}
+
+// 	.line {
+// 		display: flex;
+// 		justify-content: space-between;
+// 		align-items: baseline;
+
+// 		&:not(:last-child) {
+// 			margin-bottom: 16px;
+// 		}
+// 	}
+
+// 	.key {
+// 		@include hack-bold;
+// 		font-size: 9px;
+// 		text-transform: uppercase;
+// 		color: rgba(#263c4b, 0.8);
+// 		white-space: nowrap;
+// 		letter-spacing: 2px;
+// 	}
+
+// 	.underline {
+// 		height: 1px;
+// 		background-color: rgba(#3f465a, 0.15);
+// 		flex-grow: 1;
+// 		align-self: baseline;
+// 		margin: 0 7px;
+// 	}
+
+// 	.value {
+// 		@include text-overflow();
+// 		@include inter-ui-medium;
+// 		font-size: 13px;
+// 		color: #000;
+// 		white-space: nowrap;
+
+// 		&.blue {
+// 			color: #498fdf;
+// 		}
+
+// 		.val {
+// 			display: flex;
+// 			max-width: 100%;
+// 			.txt {
+// 				@include text-overflow();
+// 			}
+// 			.txt2 {
+// 				width: calc(100% - 25vw);
+// 			}
+// 		}
+// 	}
+// }
 
 .dropdown-tab {
 	display: flex;
