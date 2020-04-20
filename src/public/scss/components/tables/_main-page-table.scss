@@ -56,12 +56,12 @@
 		z-index: 1;
 		@include inter-ui-regular();
 		@include table-row-highlight(true);
-		&:hover {
-			.age-hint {
-				max-width: 120px;
-				padding-right: 5px;
-			}
-		}
+		// &:hover {
+		// 	.age-hint {
+		// 		max-width: 120px;
+		// 		padding-right: 5px;
+		// 	}
+		// }
 	}
 
 	.amount {
@@ -102,7 +102,8 @@
 		}
 	}
 	.age-hint {
-		max-width: 0;
+		max-width: 120px;
+		padding-right: 5px;
 		transition: max-width $speed, padding $speed;
 		padding-right: 0;
 		display: inline-flex;

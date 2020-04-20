@@ -3,19 +3,75 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router from 'next/router';
 import cn from 'classnames';
+import moment from 'moment';
+import Tooltip from 'rc-tooltip';
 
 import Avatar from '../../../components/Avatar';
 import URLHelper from '../../../helpers/URLHelper';
+import FormatHelper from '../../../helpers/FormatHelper';
 import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
-	number, age, producer, size, txs, onClick, date,
+	number, producer, size, txs, onClick, time, isLastByDay,
 }) => {
 	const producerLink = URLHelper.createAccountUrlByName(producer);
 	const goToAccount = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
 		Router.push(SSR_ACCOUNTS_PATH, producerLink);
+	};
+	const date = FormatHelper.getBlockDateByTimestamp(time);
+	const age = FormatHelper.getBlockTimeByTimestamp(time);
+
+	const diffInSeconds = moment().diff(moment.utc(time), 'seconds');
+	const diffInHours = moment().diff(moment.utc(time), 'hours');
+	const diffInMinutes = moment.utc(moment.duration(diffInSeconds, 'seconds').asMilliseconds()).format('mm');
+
+	const renderTime = (diff) => {
+		if (diff < 60) {
+			return (
+				<Tooltip
+					placement="rightBottom"
+					mouseLeaveDelay={0}
+					trigger={['hover']}
+					overlay={`${date} ${age}`}
+					overlayStyle={{ pointerEvents: 'none' }}
+				>
+					<span className="age-value">just now</span>
+				</Tooltip>
+
+			);
+		}
+		if (!diff < 60 && diff < 86400) {
+			return (
+				<Tooltip
+					placement="rightBottom"
+					mouseLeaveDelay={0}
+					trigger={['hover']}
+					overlay={`${date} ${age}`}
+					overlayStyle={{ pointerEvents: 'none' }}
+				>
+					<span className="age-value">
+						{diffInHours !== 0 && `${diffInHours}h `}
+						{`${diffInMinutes}min ago`}
+					</span>
+				</Tooltip>
+			);
+		}
+		return (
+			<Tooltip
+				placement="rightBottom"
+				mouseLeaveDelay={0}
+				trigger={['hover']}
+				overlay={`${date} ${age}`}
+				overlayStyle={{ pointerEvents: 'none' }}
+			>
+				<span>
+					{isLastByDay && <span className="age-hint">{date},&nbsp;</span>}
+					<span className="age-value">{age}</span>
+				</span>
+			</Tooltip>
+		);
 	};
 
 	return (
@@ -24,8 +80,7 @@ const OperationsRow = React.memo(({
 				<td className="number"><div className="td-in">{number}</div></td>
 				<td className="age">
 					<div className="td-in">
-						<span className="age-hint">{date},</span>
-						<span className="age-value">{age}</span>
+						{renderTime(diffInSeconds)}
 					</div>
 				</td>
 				<td className="producer">
@@ -45,12 +100,12 @@ const OperationsRow = React.memo(({
 
 OperationsRow.propTypes = {
 	number: PropTypes.string.isRequired,
-	age: PropTypes.string.isRequired,
+	time: PropTypes.string.isRequired,
 	producer: PropTypes.string.isRequired,
 	size: PropTypes.object.isRequired,
 	txs: PropTypes.number.isRequired,
-	date: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
+	isLastByDay: PropTypes.bool.isRequired,
 };
 
 export default OperationsRow;

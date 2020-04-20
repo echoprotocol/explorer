@@ -28,8 +28,7 @@ class MainPage extends React.Component {
 			blocksResult.push({
 				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
-				time: FormatHelper.getBlockTimeByTimestamp(value.get('timestamp')),
-				date: FormatHelper.getBlockDateByTimestamp(value.get('timestamp')),
+				time: value.get('timestamp'),
 				producer: value.get('producer'),
 				producerId: value.get('producerId'),
 				reward: value.get('reward'),
