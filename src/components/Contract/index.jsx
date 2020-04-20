@@ -70,9 +70,8 @@ class Contract extends React.Component {
 
 		this.props.loadActiveAccount();
 
-		if (window.innerWidth > 400) {
-			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
-		}
+		this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
+
 		this.subscribe(id);
 	}
 
@@ -209,37 +208,37 @@ class Contract extends React.Component {
 		} = this.props;
 
 		const tabList = [
-			{
-				tab: !loading ?
-					<ContractInfo
-						dataGeneral={new Map({
-							isMobile,
-							token,
-							countTokenTransfer,
-							error,
-							blockNumber,
-							creationFee,
-							type,
-							contractTxs,
-							countUsedByAccount,
-							supportedAsset,
-							ethAccuracy,
-							compilerVersion,
-						})}
-						dataDescription={new Map({
-							error,
-							description,
-							createdAt,
-							owner,
-						})}
-						dataAssets={new Map({
-							isMobile,
-							balances,
-						})}
-					/>
-					: <Loader />,
-				key: 'tab-0',
-			},
+			// {
+			// 	tab: !loading ?
+			// 		<ContractInfo
+			// 			dataGeneral={new Map({
+			// 				isMobile,
+			// 				token,
+			// 				countTokenTransfer,
+			// 				error,
+			// 				blockNumber,
+			// 				creationFee,
+			// 				type,
+			// 				contractTxs,
+			// 				countUsedByAccount,
+			// 				supportedAsset,
+			// 				ethAccuracy,
+			// 				compilerVersion,
+			// 			})}
+			// 			dataDescription={new Map({
+			// 				error,
+			// 				description,
+			// 				createdAt,
+			// 				owner,
+			// 			})}
+			// 			dataAssets={new Map({
+			// 				isMobile,
+			// 				balances,
+			// 			})}
+			// 		/>
+			// 		: <Loader />,
+			// 	key: 'tab-0',
+			// },
 			{
 				tab: !loading ?
 					<OperationsTable
@@ -336,91 +335,55 @@ class Contract extends React.Component {
 								<Verify id={id} verified={verified} />
 							</div>
 						</div>
-						<Media query="(max-width: 400px)" defaultMatches={isMobile}>
-							{(matches) =>
-								(!matches ?
-									<div className={classnames('horizontal-tab-panel', { 'server-slick-track': typeof window === 'undefined' })}>
-										<Slider ref={this.slider} {...settings} >
-											{/* <div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
+						<div className={classnames('horizontal-tab-panel', { 'server-slick-track': typeof window === 'undefined' })}>
+							<Slider ref={this.slider} {...settings} >
+								{/* <div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
 												<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(id)}>
 													<a href="" onClick={(e) => this.goToSlide(e, 0)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null} >
 														<span className="menu-item-content">Contract info</span>
 													</a>
 												</Link>
 											</div> */}
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
-												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
-													<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
-														<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
-													</a>
-												</Link>
-											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
-												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}>
-													<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
-														<span className="menu-item-content">Byte Сode</span>
-													</a>
-												</Link>
-											</div>
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
-												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)}>
-													<a href="" onClick={(e) => this.goToSlide(e, 4)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}>
-														<span className="menu-item-content">ABI</span>
-													</a>
-												</Link>
-											</div>
-											{
-												verified &&
-												<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}>
-													<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}>
-														<a href="" onClick={(e) => this.goToSlide(e, 5)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 ? -1 : null}>
-															<span className="menu-item-content">Source code</span>
-														</a>
-													</Link>
-												</div>
-											}
-											<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
-												<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}>
-													<a href="" onClick={(e) => this.goToSlide(e, 3)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}>
-														<span className="menu-item-content">Balances</span>
-													</a>
-												</Link>
-											</div>
-										</Slider>
-									</div> :
-									<Dropdown className="dropdown-tab">
-										<Dropdown.Toggle variant="Info">
-											<span className="doropdown-tab-current">
-												{
-													CONTRACT_TABS[CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0].title
-												}
-											</span>
-											<span className="carret" />
-										</Dropdown.Toggle>
-
-										<Dropdown.Menu>
-											<PerfectScrollbar className="contract-tab-scroll">
-												<Dropdown.Item onClick={() => this.changeTab(id, 0)} eventKey={0}>
-													<span className="doropdown-tab-item">Contract info</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 1)} eventKey={1}>
-													<span className="doropdown-tab-item">{`Transactions (${contractTxs})`}</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 2)} eventKey={2}>
-													<span className="doropdown-tab-item">Bytecode</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 3)} eventKey={3}>
-													<span className="doropdown-tab-item">Balances</span>
-												</Dropdown.Item>
-												<Dropdown.Item onClick={() => this.changeTab(id, 4)} eventKey={4}>
-													<span className="doropdown-tab-item">ABI</span>
-												</Dropdown.Item>
-											</PerfectScrollbar>
-										</Dropdown.Menu>
-									</Dropdown>
-								)
-							}
-						</Media>
+								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
+										<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
+											<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
+										</a>
+									</Link>
+								</div>
+								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}>
+										<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
+											<span className="menu-item-content">Byte Сode</span>
+										</a>
+									</Link>
+								</div>
+								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)}>
+										<a href="" onClick={(e) => this.goToSlide(e, 4)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}>
+											<span className="menu-item-content">ABI</span>
+										</a>
+									</Link>
+								</div>
+								{
+									verified &&
+									<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 })}>
+										<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}>
+											<a href="" onClick={(e) => this.goToSlide(e, 5)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 ? -1 : null}>
+												<span className="menu-item-content">Source code</span>
+											</a>
+										</Link>
+									</div>
+								}
+								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}>
+										<a href="" onClick={(e) => this.goToSlide(e, 3)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}>
+											<span className="menu-item-content">Balances</span>
+										</a>
+									</Link>
+								</div>
+							</Slider>
+						</div>
 					</div>
 					<div className="tab-body">
 						{ this.renderTabs(tabList, CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) }
