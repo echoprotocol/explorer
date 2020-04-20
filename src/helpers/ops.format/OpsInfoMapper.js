@@ -592,14 +592,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 
 		case OPERATIONS_IDS.CONTRACT_CREATE: {
 			const objectInfo = data.objectInfo.toJS();
-			// const additionalInfo = await getAdditionalInfoByOpId(opNumber, data);
-
-			console.log('objectInfo.token', objectInfo.token);
-			console.log('data.logs', data.logs);
-			// console.log('type', data.objectInfo.get('type'));
-			const { bytecode, ...d } = data;
-			console.log('d', d.logs);
-			console.log('d', d);
 			return {
 				operationInfo: {
 					type,
