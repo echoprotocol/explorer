@@ -1,4 +1,4 @@
-import echo, { OPERATIONS_IDS } from 'echojs-lib';
+import { OPERATIONS_IDS } from 'echojs-lib';
 
 import {
 	ACCOUNT_BLACK_WHITE, ECHO_COMMITTEE_ACCOUNT,

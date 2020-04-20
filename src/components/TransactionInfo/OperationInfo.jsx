@@ -11,6 +11,7 @@ import ProducersRow from './Rows/ProducersRow';
 import AdditionalInfo from './AdditionalInfo';
 import PolicyRow from './Rows/PolicyRow';
 import CopyRow from './Rows/CopyRow';
+import URLHelper from '../../helpers/URLHelper';
 
 class OperationInfo extends React.Component {
 
