@@ -9,28 +9,19 @@ header {
 	display: inline-block;
 	height: 41px;
 }
-.logotype-min {
-	display: none;
-}
-
-@include max-vw($res-1000) {
-	.logotype-min {
-		display: block;
-	}
-	.logotype-max {
+.logotype-max {
+	@include max-vw($res-768) {
 		display: none;
 	}
 }
-.not-found-page {
-	@include max-vw($res-1000) {
-		.logotype-min {
-			display: none;
-		}
-		.logotype-max {
-			display: block;
-		}
+
+.logotype-min {
+	display: none;
+	@include max-vw($res-768) {
+		display: block;
 	}
 }
+
 .top-section {
 	padding: 20px 0 10px;
 	background-color: $explorer-dark;

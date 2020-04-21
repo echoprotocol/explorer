@@ -1,0 +1,7 @@
+.copy-field__text {
+	margin-bottom: 20px;
+	@include hack-regular;
+	font-size: 11px;
+	line-height: 160%;
+	word-break: break-all;
+}

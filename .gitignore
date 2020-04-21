@@ -6,3 +6,5 @@ config/local.json
 .next
 ./src/.next
 .vscode
+.next
+echo.ops.js

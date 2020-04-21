@@ -25,8 +25,8 @@ const Header = React.memo(({
 ));
 
 Header.propTypes = {
-	loadingSearch: PropTypes.bool,
 	errorSearch: PropTypes.string,
+	loadingSearch: PropTypes.bool,
 	hints: PropTypes.array,
 	getHints: PropTypes.func,
 };

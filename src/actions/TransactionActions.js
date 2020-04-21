@@ -24,8 +24,10 @@ import BaseActionsClass from './BaseActionsClass';
 import GlobalActions from './GlobalActions';
 
 import { getContractInfo } from '../services/queries/contract';
+import { transformOperationDataByType } from '../helpers/ops.format/OpsInfoMapper';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
+import { countRate } from '../helpers/ops.format/AddInfoHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -133,6 +135,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('id', account.id)
 					.set('name', account.name)
 					.set('echorandKey', account.echorand_key)
+					.set('active', account.active)
 					.set('activeAccounts', activeAccounts)
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
@@ -144,20 +147,32 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 				const asset = await echo.api.getObject(assetId || subject.id);
 				const issuer = await echo.api.getObject(asset.issuer);
+				const accumulatedFees = asset.dynamic.accumulated_fees;
+				const quoteAmount = asset.options.core_exchange_rate.quote.amount;
+
+				const rate = await countRate(asset, asset.options.core_exchange_rate);
+				const price = new BN(asset.options.core_exchange_rate.quote.amount)
+					.div(asset.options.core_exchange_rate.base.amount)
+					.toString();
 
 				object = object
 					.set('id', asset.id)
 					.set('name', asset.symbol)
 					.set('type', 'No')
+					.set('price', price)
 					.set(
-						'price',
-						new BN(asset.options.core_exchange_rate.quote.amount)
-							.div(asset.options.core_exchange_rate.base.amount)
-							.toString(),
+						'accumulated_fees',
+						accumulatedFees === 0 ? 0 : FormatHelper
+							.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision),
 					)
+					.set('rate', rate)
 					.set('issuer', issuer && issuer.name)
 					.set('precision', asset.precision)
 					.set('totalSupply', asset.dynamic.current_supply)
+					.set('issuer_permissions', asset.options.issuer_permissions)
+					.set('flags', asset.options.flags)
+					.set('description', asset.options.description)
+					.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
 				const committee = await echo.api.getObject(subject.id);
@@ -283,7 +298,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		const [type, operation] = data;
 		const [, resId] = operationResult;
 
-		const { name, options } = Object.values(Operations).find((i) => i.value === type);
+		const { name, options, value: opId } = Object.values(Operations).find((i) => i.value === type);
 		const result = {
 			type,
 			from: {
@@ -350,7 +365,13 @@ class TransactionActionsClass extends BaseActionsClass {
 						response = request;
 						break;
 				}
-				result.subject = { id: response.id, name: request };
+				if (opId === OPERATIONS_IDS.TRANSFER_TO_ADDRESS) {
+					const toAccountId = await echo.api.getAccountByAddress(request);
+					const [toAccount] = await echo.api.getAccounts([toAccountId]);
+					result.subject = { id: toAccountId, name: toAccount.name, address: request };
+				} else {
+					result.subject = { id: response.id, name: request };
+				}
 			} else {
 				result.subject = { id: operation[options.subject[0]] };
 			}
@@ -499,7 +520,6 @@ class TransactionActionsClass extends BaseActionsClass {
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
-
 		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
 
 		options = Object.entries(options).map(async ([key, value]) => {
@@ -507,6 +527,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			switch (typeof value) {
 				case 'number':
 					value = {
+						asset_id: ECHO_ASSET.ID,
 						precision: ECHO_ASSET.PRECISION,
 						symbol: ECHO_ASSET.SYMBOL,
 						amount: value,
@@ -526,9 +547,18 @@ class TransactionActionsClass extends BaseActionsClass {
 				case 'object':
 					if (_.has(value, 'amount') && value.asset_id) {
 						const asset = await echo.api.getObject(value.asset_id);
-						delete value.asset_id;
 						value.precision = asset.precision;
 						value.symbol = asset.symbol;
+					} else if (_.has(value, 'delegating_account')) {
+						const [account] = await echo.api.getAccounts([value.delegating_account]);
+						value = { value: account.name, link: value.delegating_account, amount: value.delegate_share };
+						key = 'delegate_data';
+					} else if (key === 'new_feed_producers') {
+						const accounts = await echo.api.getAccounts(value);
+						value = accounts.map(({ name, id }) => ({ value: name, link: id }));
+					} else if (key === 'proposed_ops') {
+						value = value.map(({ op }) => op);
+						break;
 					} else {
 						return {};
 					}
@@ -536,6 +566,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				case 'boolean':
 					value = value ? 'Yes' : 'No';
 					break;
+
 				default:
 					break;
 			}
@@ -547,6 +578,9 @@ class TransactionActionsClass extends BaseActionsClass {
 				case 'callee':
 					key = 'contract id';
 					link = value;
+					break;
+				case 'new_listing':
+					value = value.amount;
 					break;
 				default:
 					break;
@@ -616,12 +650,33 @@ class TransactionActionsClass extends BaseActionsClass {
 			case OPERATIONS_IDS.ACCOUNT_CREATE:
 				result = options.Name;
 				break;
+			case OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE: {
+				const [, addressId] = operationResult;
+				const [{ address }] = await echo.api.getObjects([addressId]);
+				[, result] = operationResult;
+				options.address = address;
+				break;
+			}
 			default:
 				[, result] = operationResult;
 				break;
 		}
 
-		return {
+		if (operation.value === OPERATIONS_IDS.TRANSFER_TO_ADDRESS) {
+			options.to_address = subject.address;
+			options.to_account = { link: subject.id, value: subject.name };
+		}
+
+		if (options.delegate_data) {
+			const { value, link, amount } = options.delegate_data;
+			options.delegating_account = { value, link };
+			options.delegate_share = {
+				amount, symbol: ECHO_ASSET.SYMBOL, precision: ECHO_ASSET.PRECISION, asset_id: ECHO_ASSET.ID,
+			};
+			delete options.delegate_data;
+		}
+
+		const op = {
 			mainInfo: {
 				from,
 				subject,
@@ -639,7 +694,9 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-
+		const opNumberToFormat = operation.value < 20 ? operation.value : 0;
+		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
+		return op;
 	}
 
 	getTransaction(blockNumber, index) {

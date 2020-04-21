@@ -1,0 +1,29 @@
+.policy-field {
+	display: inline-flex;
+	margin-right: auto;
+	padding: 15px 0 12px;
+	border-bottom: 1px solid $lightest-grey-bg;
+	@include inter-ui-medium;
+	font-size: 12px;
+	line-height: 140%;
+	&:first-child {
+		padding-top: 0;
+	}
+}
+
+.policy-field__name {
+	margin-right: 16px;
+}
+
+.policy-field-item {
+	display: flex;
+	align-items: center;
+	color: $grey;
+	&:not(:last-child) {
+		margin-right: 16px;
+	}
+}
+
+.policy-field-item__icon {
+	margin-right: 6px;
+}
