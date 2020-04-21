@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import Tooltip from 'rc-tooltip';
-import Media from 'react-media';
 
 import { NONE_SYMBOL, NOT_AVAILABLE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+
+import InfoTooltip from '../InfoTooltip';
 
 class ContractInfoBlock extends React.Component {
 
@@ -32,9 +32,8 @@ class ContractInfoBlock extends React.Component {
 			}
 		}
 		const creationFeeData = creationFee.split(' ');
-
 		return (
-			<React.Fragment>
+			<div className="left-card">
 				<div className="line">
 					<div className="title">Block:</div>
 					<div className="divider" />
@@ -50,28 +49,16 @@ class ContractInfoBlock extends React.Component {
 					</div>
 				</div>
 				<div className="line">
-					<div className="title">Creation FEE:</div>
+					<div className="title">
+						<span>Creation FEE:</span>
+						<InfoTooltip overlay={creationFee} iconFilled={false} />
+					</div>
 					<div className="divider" />
-					<div className="val name">
-						<Media query="(max-width: 350px)" defaultMatches={data.get('isMobile')}>
-							{(matches) =>
-								(matches ? (
-									<Tooltip
-										placement="topLeft"
-										overlayClassName="verify-contract-tooltip"
-										trigger={['hover']}
-										overlay={creationFee}
-									>
-										<div className="val">
-											<div className="txt">{creationFeeData[0]}</div>
-											<div className="txt2">{creationFeeData[1]}</div>
-										</div>
-									</Tooltip>
-								) : (
-									<span>{creationFee}</span>
-								))
-							}
-						</Media>
+					<div className="val">
+						<span className="amount">
+							{creationFeeData[0]}
+						</span>
+						<span className="currency">&nbsp;{creationFeeData[1]}</span>
 					</div>
 				</div>
 				<div className="line">
@@ -85,7 +72,10 @@ class ContractInfoBlock extends React.Component {
 					<div className="val name">{contractTxs}</div>
 				</div>
 				<div className="line">
-					<div className="title">Used by accounts:</div>
+					<div className="title">
+						<span>Used by accounts:</span>
+						<InfoTooltip overlay={countUsedByAccount} iconFilled={false} />
+					</div>
 					<div className="divider" />
 					<div className="val name">{countUsedByAccount}</div>
 				</div>
@@ -130,7 +120,7 @@ class ContractInfoBlock extends React.Component {
 						<div className="val name">{compilerVersion}</div>
 					</div>
 				}
-			</React.Fragment>
+			</div>
 		);
 	}
 

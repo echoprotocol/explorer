@@ -29,9 +29,9 @@ import {
 import ContractBytecode from './ContractBytecode';
 import AssetBalances from '../Account/AssetBalances';
 import Loader from '../Loader';
-import Verify from '../VerifyButton';
+// import Verify from '../VerifyButton';
 import manageIcon from '../../public/images/icons/pencil.svg';
-import ContractStar from './ContractStar';
+// import ContractStar from './ContractStar';
 import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';
 import ContractInfo from './ContractInfo';
@@ -203,9 +203,9 @@ class Contract extends React.Component {
 		const {
 			loading, loadingMoreHistory,
 			bytecode, contractHistory, balances, router: { query: { id, detail } }, abi, sourceCode, icon,
-			name, verified, stars, description, createdAt, blockNumber, creationFee,
+			name, verified, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
-			countTokenTransfer, activeAccount, error, isMobile,
+			countTokenTransfer, error, isMobile,
 		} = this.props;
 
 		const tabList = [
@@ -318,11 +318,11 @@ class Contract extends React.Component {
 						</div>
 						<div className="buttons-wrap">
 							<div className="item">
-								<ContractStar
+								{/* <ContractStar
 									stars={stars}
 									activeAccount={activeAccount}
 									setStarToContract={this.props.setStarToContract}
-								/>
+								/> */}
 							</div>
 							<div className="item">
 								<div className="action-button-wrap">
@@ -333,7 +333,7 @@ class Contract extends React.Component {
 								</div>
 							</div>
 							<div className="item">
-								<Verify id={id} verified={verified} />
+								{/* <Verify id={id} verified={verified} /> */}
 							</div>
 						</div>
 						<Media query="(max-width: 400px)" defaultMatches={isMobile}>

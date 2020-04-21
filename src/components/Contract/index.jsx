@@ -3,19 +3,13 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Router, { withRouter } from 'next/router';
 import echo from 'echojs-lib';
-import Media from 'react-media';
 import Slider from 'react-slick';
 import classnames from 'classnames';
-import { Dropdown } from 'react-bootstrap';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Map } from 'immutable';
-import { Helmet } from 'react-helmet';
 
 import { CONTRACT_TABS } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
-	CONTRACT_BALANCES,
-	CONTRACT_BYTECODE,
 	CONTRACT_TRANSACTIONS,
 	CONTRACT_DETAILS_NUMBERS_TAB,
 	CONTRACT_SOURCE_CODE,
@@ -23,12 +17,10 @@ import {
 	SSR_CONTRACT_PATH,
 	SSR_MANAGE_CONTRACT_PATH,
 	SSR_CONTRACT_DETAILS_PATH,
+	SSR_VERIFY_CONTRACT_PATH,
 } from '../../constants/RouterConstants';
 
-import ContractBytecode from './ContractBytecode';
-import AssetBalances from '../Account/AssetBalances';
 import Loader from '../Loader';
-import Verify from '../VerifyButton';
 import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';
 import ContractInfo from './ContractInfo';
@@ -145,27 +137,6 @@ class Contract extends React.Component {
 		}
 	}
 
-	// renderArrow({ text, className }) {
-	// 	return (
-	// 		<div className={className}>
-	// 			{text}
-	// 		</div>);
-	// }
-
-	// renderMenu(navList, selected) {
-
-	// 	const MenuItem = ({ text }) => (
-	// 		<div className={`menu-item-old ${text.key === `panel-${selected}` ? 'active' : ''}`}>
-	// 			{text.name}
-	// 		</div>
-	// 	);
-
-	// 	return navList.map((el) => {
-	// 		const { name, key } = el;
-	// 		return <MenuItem text={{ name, key }} key={key} />;
-	// 	});
-	// }
-
 	renderTabs(tabList, selected) {
 		const elment = tabList.map((el) => {
 			const { tab, key } = el;
@@ -177,21 +148,6 @@ class Contract extends React.Component {
 		return elment[selected];
 	}
 
-	// renderMeta() {
-	// 	const {
-	// 		icon, description, name, router: { query: { id } },
-	// 	} = this.props;
-
-	// 	return (
-	// 		<Helmet
-	// 			title={`Contract ${name || id} | Echo Explorer`}
-	// 			meta={[
-	// 				{ property: 'og:description', name: description || 'ECHO contract page' },
-	// 				{ property: 'og:image', content: URLHelper.getUrlContractIcon(icon) },
-	// 			]}
-	// 		/>
-	// 	);
-	// }
 
 	render() {
 		const {
@@ -202,37 +158,6 @@ class Contract extends React.Component {
 			countTokenTransfer, activeAccount, error, isMobile,
 		} = this.props;
 		const tabList = [
-			// {
-			// 	tab: !loading ?
-			// 		<ContractInfo
-			// 			dataGeneral={new Map({
-			// 				isMobile,
-			// 				token,
-			// 				countTokenTransfer,
-			// 				error,
-			// 				blockNumber,
-			// 				creationFee,
-			// 				type,
-			// 				contractTxs,
-			// 				countUsedByAccount,
-			// 				supportedAsset,
-			// 				ethAccuracy,
-			// 				compilerVersion,
-			// 			})}
-			// 			dataDescription={new Map({
-			// 				error,
-			// 				description,
-			// 				createdAt,
-			// 				owner,
-			// 			})}
-			// 			dataAssets={new Map({
-			// 				isMobile,
-			// 				balances,
-			// 			})}
-			// 		/>
-			// 		: <Loader />,
-			// 	key: 'tab-0',
-			// },
 			{
 				tab: !loading ?
 					<OperationsTable
@@ -247,29 +172,15 @@ class Contract extends React.Component {
 			},
 			{
 				tab: !loading ?
-					<ContractBytecode bytecode={bytecode} /> : <Loader />,
+					<div className="contract-abi">
+						<ContractAbi id={id} abi={abi} verified={verified} />
+						{verified && <ContractSourceCode sourceCode={sourceCode} />}
+						{!verified && <ActionButton name="Verify contract" onClick={() => Router.push(SSR_VERIFY_CONTRACT_PATH, URLHelper.createVerifyContractUrl(id))} />}
+
+					</div> : <Loader />,
 				key: 'tab-1',
 			},
-			{
-				tab: !loading ?
-					<div className="contract-asset-panel">
-						<AssetBalances title="assets" balances={balances} />
-					</div> : <Loader />,
-				key: 'tab-2',
-			},
-			{
-				tab: !loading ?
-					<ContractAbi id={id} abi={abi} verified={verified} /> : <Loader />,
-				key: 'tab-3',
-			},
 		];
-		if (verified) {
-			tabList.push({
-				tab: !loading ?
-					<ContractSourceCode sourceCode={sourceCode} /> : <Loader />,
-				key: 'tab-4',
-			});
-		}
 
 		const settings = {
 			dots: false,
@@ -280,38 +191,33 @@ class Contract extends React.Component {
 			variableWidth: true,
 			touchMove: false,
 			initialSlide: CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0,
-			responsive: [
-				{
-					breakpoint: 768,
-					settings: {
-						slidesToShow: 3,
-						slidesToScroll: 2,
-					},
-				},
-				{
-					breakpoint: 500,
-					settings: {
-						slidesToShow: 3,
-						slidesToScroll: 2,
-					},
-				},
-			],
+			// responsive: [
+			// 	{
+			// 		breakpoint: 768,
+			// 		settings: {
+			// 			slidesToShow: 3,
+			// 			slidesToScroll: 2,
+			// 		},
+			// 	},
+			// 	{
+			// 		breakpoint: 500,
+			// 		settings: {
+			// 			slidesToShow: 3,
+			// 			slidesToScroll: 2,
+			// 		},
+			// 	},
+			// ],
 		};
 
 		return (
 			<div className="inner-container">
 				<div className="contract-tabs">
-					<div className="tab-head">
+					<div className="page-info contract-info">
 						<InnerHeader>
 							<ContractIcon icon={icon} />
 							<div className="contract-header-title">Contract {id} {name && `: ${name}`}</div>
 							<div className="inner-header-buttons">
 								<CopyBtn valueToCopy={bytecode || ''} name="Copy Code" />
-								{/* <ContractStar
-									stars={stars}
-									activeAccount={activeAccount}
-									setStarToContract={this.props.setStarToContract}
-								/> */}
 								<ActionButton
 									name={stars.includes(activeAccount.get('id')) ? 'Unstar' : 'Star'}
 									onClick={() => this.props.setStarToContract()}
@@ -319,7 +225,6 @@ class Contract extends React.Component {
 									icon={starIcon}
 								/>
 								<ActionButton name="Edit info" onClick={this.manageContract} icon={editIcon} />
-								{/* <Verify id={id} verified={verified} /> */}
 							</div>
 						</InnerHeader>
 						<React.Fragment>
@@ -355,13 +260,6 @@ class Contract extends React.Component {
 						</React.Fragment>
 						<div className={classnames('horizontal-tab-panel', { 'server-slick-track': typeof window === 'undefined' })}>
 							<Slider ref={this.slider} {...settings} >
-								{/* <div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
-									<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(id)}>
-										<a href="" onClick={(e) => this.goToSlide(e, 0)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 ? -1 : null} >
-											<span className="menu-item-content">Contract info</span>
-										</a>
-									</Link>
-								</div> */}
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
 									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
 										<a href="" onClick={(e) => this.goToSlide(e, 0)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
@@ -370,33 +268,9 @@ class Contract extends React.Component {
 									</Link>
 								</div>
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
-									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BYTECODE)}>
-										<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
-											<span className="menu-item-content">Byte Сode</span>
-										</a>
-									</Link>
-								</div>
-								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 })}>
 									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)}>
-										<a href="" onClick={(e) => this.goToSlide(e, 3)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 ? -1 : null}>
-											<span className="menu-item-content">ABI</span>
-										</a>
-									</Link>
-								</div>
-								{
-									verified &&
-									<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 4 })}>
-										<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_SOURCE_CODE)}>
-											<a href="" onClick={(e) => this.goToSlide(e, 4)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 5 ? -1 : null}>
-												<span className="menu-item-content">Source code</span>
-											</a>
-										</Link>
-									</div>
-								}
-								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
-									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_BALANCES)}>
-										<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 3 ? -1 : null}>
-											<span className="menu-item-content">Balances</span>
+										<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
+											<span className={classnames('menu-item-content with-icon', { verified }, { unverified: !verified })}>Source Code & ABI</span>
 										</a>
 									</Link>
 								</div>

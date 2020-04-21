@@ -116,7 +116,7 @@ class UploadABI extends React.Component {
 				<div className="buttons-wrap">
 					<button
 						className="decline-button"
-						onClick={() => Router.push(CONTRACT_ABI, URLHelper.createContractUrl(id, CONTRACT_ABI))}
+						onClick={(e) => this.onBack(e, id)}
 					>
 						Cancel
 					</button>

@@ -36,7 +36,19 @@
 	.action-button-wrap {
 		&:not(:last-child) {
 			margin-right: 10px;
+			@include max-vw($res-500) {
+				margin-bottom: 10px;
+				margin-right: 0;
+			}
 		}
+	}
+	@include max-vw($res-768) {
+		margin-top: 20px;
+		width: 100%;
+	}
+	@include max-vw($res-500) {
+		flex-direction: column;
+		align-items: flex-start;
 	}
 }
 

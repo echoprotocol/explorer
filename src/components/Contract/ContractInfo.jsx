@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ContractInfoBlock from './ContractInfoBlock';
+import AssetBalances from '../Account/AssetBalances';
+import TokenBalances from '../Account/TokenBalances';
 import ContractDescription from './ContractDescription';
-import ContractAssets from './ContractAssets';
 
 
 class ContractInfo extends React.Component {
@@ -13,12 +14,11 @@ class ContractInfo extends React.Component {
 		return (
 			<div className="page-t-block">
 				<div className="help-container">
-					<div className="left-card">
-						<ContractInfoBlock data={dataGeneral} />
-					</div>
+					<ContractInfoBlock data={dataGeneral} />
 					<div className="right-container">
 						<ContractDescription data={dataDescription} />
-						<ContractAssets data={dataAssets} />
+						<AssetBalances title="Assets" balances={dataAssets.get('balances')} />
+						<TokenBalances title="Tokens" tokens={[]} />
 					</div>
 				</div>
 			</div>
