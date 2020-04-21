@@ -205,7 +205,7 @@ class OperationsTable extends React.Component {
 			isTransaction, label, loading, router, isMobile,
 		} = this.props;
 		let { filterAndPaginateData } = this.props;
-		const { showedOperations, airRows, isFilterOpen } = this.state;
+		const { showedOperations, isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
 
 		return (
@@ -236,7 +236,6 @@ class OperationsTable extends React.Component {
 									operation={op}
 									index={i}
 									active={showedOperations.includes(i)}
-									air={airRows.includes(i)}
 									tableRefs={this.tableRefs}
 									toggleOperationDetails={(index) => this.toggleOperationDetails(index)}
 								/>

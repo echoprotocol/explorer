@@ -1,311 +1,119 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Link from 'next/link';
-import Media from 'react-media';
-import copy from 'copy-to-clipboard';
-import { validators } from 'echojs-lib';
-import classnames from 'classnames';
-import BN from 'bignumber.js';
-import Tooltip from 'rc-tooltip';
+import moment from 'moment';
 
-import directionIcon from '../../public/images/icons/direction-icon.svg';
-
-import FormatHelper from '../../helpers/FormatHelper';
-import URLHelper from '../../helpers/URLHelper';
-
-import {
-	BLOCK_INFORMATION_PATH,
-	SSR_ASSET_PATH,
-	SSR_BLOCK_INFORMATION_PATH,
-	SSR_CONTRACT_PATH, SSR_TRANSACTION_INFORMATION_PATH,
-} from '../../constants/RouterConstants';
-import { BYTECODE_SYMBOLS_LENGTH } from '../../constants/GlobalConstants';
-
-import Avatar from '../Avatar';
-import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+import PrimaryRow from './Rows/PrimaryRow';
+import LinkRow from './Rows/LinkRow';
+import AuthorityRow from './Rows/AuthorityRow';
+import SettingsRow from './Rows/SettingsRow';
+import MultyRow from './Rows/MultyRow';
+import ProducersRow from './Rows/ProducersRow';
+import AdditionalInfo from './AdditionalInfo';
+import PolicyRow from './Rows/PolicyRow';
+import CopyRow from './Rows/CopyRow';
 
 class OperationInfo extends React.Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			loadMore: [],
-			showLogs: false,
-		};
-	}
-
-
-	onToggleLoadMore(index, e) {
-		e.preventDefault();
-
-		const { loadMore } = this.state;
-		loadMore[index] = !loadMore[index];
-		this.setState({ loadMore });
-	}
-
-	renderSingleInternal(op, index) {
-		const { precision, amount: amountData } = op.value;
-		const amount = new BN(amountData).div(10 ** precision).toString(10);
-		return (
-			<div className="tt-row token-transfer-table" key={index.toString()}>
-				<div className="tt-col amount">
-					<span className="value">
-						<Tooltip
-							placement="top"
-							overlayClassName="verify-contract-tooltip"
-							trigger={['hover']}
-							overlay={amount}
-						>
-							<span className="txt">{amount}</span>
-						</Tooltip>
-					</span>
-					<span className="currency">{op.value.symbol}</span>
-				</div>
-				<div className="tt-col">
-					<div className="transfer-direction">
-						<Link href={SsrHrefHelper.getHrefByObjectId(op.from.id)} as={URLHelper.createUrlById(op.from.id)}>
-							<div className="avatar-wrap link">
-								{op.from.name && <Avatar accountName={op.from.name} />}
-								<span className="blue">{op.from.name || op.from.id}</span>
-							</div>
-						</Link>
-						{(op.subject.name || op.subject.id) && <img src={directionIcon} alt="" className="direction" />}
-						<Link href={SsrHrefHelper.getHrefByObjectId(op.subject.id)} as={URLHelper.createUrlById(op.subject.id)}>
-							<div className="avatar-wrap link">
-								{op.subject.name && <Avatar accountName={op.subject.name} />}
-								<span className="blue">{op.subject.name || op.subject.id}</span>
-							</div>
-						</Link>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	renderContractLogs(logs) {
-		const { showLogs } = this.state;
-		const formattedLogs = logs.map((log, index) => (
-			<div className="mono" key={log.data}>
-				<div className="mono-bold">Log [{index}]:</div>
-				<div className="mono-bold">Contract: <Link href={SSR_CONTRACT_PATH} as={URLHelper.createUrlById(log.contract)}><a>{log.contract}</a></Link></div>
-				<div className="mono-bold">Topics:</div>
-				{log.topics.map((topic, i) => (<div key={topic}>[{i}]:{topic}</div>))}
-				<div className="mono-bold">Data:</div>
-				<div>{log.data}</div>
-			</div>
-		));
-
-		return (
-			<React.Fragment>
-				{
-					formattedLogs.length > 1 && !showLogs ? formattedLogs[0] : formattedLogs
-				}
-				{
-					(formattedLogs.length > 1 && !showLogs) &&
-					<button className="text-button" onClick={() => this.setState({ showLogs: true })}>View full log</button>
-				}
-			</React.Fragment>
-		);
-	}
-
-	renderOperationRowKey(key, value, index, type) {
-		return (
-			<React.Fragment>
-				{key === 'registrar' && type === 'Contract call' ? 'tx sender' : key}:
-			</React.Fragment>
-		);
-	}
-
-	renderOperationRowValue(key, value, index) {
-		const { objId, isMobile } = this.props;
-		const valueAmount = FormatHelper.formatAmount(value.amount, value.precision, value.symbol);
-		const [amount, amountName] = valueAmount.split(' ');
-
-		if (typeof value === 'object' && key !== 'logs') {
-			if (!value.link) {
-				value = (
-					<Media query="(max-width: 300px)" defaultMatches={isMobile}>
-						{(matches) =>
-							(matches ? (
-								<Tooltip
-									placement="top"
-									overlayClassName="verify-contract-tooltip"
-									trigger={['hover']}
-									overlay={valueAmount}
-								>
-									<div className="val">
-										<div className="txt">{amount}&nbsp;</div>
-										<div className="txt2">{amountName}</div>
-									</div>
-								</Tooltip>
-							) : (
-								<span>{valueAmount}</span>
-							))
-						}
-					</Media>
-				);
-			} else {
-				const isAccount = validators.isAccountId(value.link);
-
-				value = (
-					<Link href={SsrHrefHelper.getHrefByObjectId(value.link)} as={URLHelper.createUrlById(value.link)}>
-						<div className={classnames('link', { 'avatar-wrap': isAccount })}>
-							{validators.isAccountId(value.link) && <Avatar accountName={value.value} />}
-							<span className="blue">{value.value}</span>
-						</div>
-					</Link>
-				);
-			}
-		}
-
-		if (key === 'block') {
-			value = (
-				<Link href={SSR_BLOCK_INFORMATION_PATH} as={BLOCK_INFORMATION_PATH.replace(/:round/, value)} >
-					<a className="blue">{FormatHelper.formatAmount(value, 0)}</a>
-				</Link>
-			);
-		}
-
-		if (typeof value === 'number') {
-			value = FormatHelper.formatAmount(value, 0);
-		}
-
-		if (key === 'logs') {
-			return this.renderContractLogs(value);
-		}
-
-		if (key === 'symbol') {
-			return (
-				<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(objId)}>
-					<a>{value}</a>
-				</Link>
-			);
-		}
-
-		if (key === 'asset_to_issue') {
-			return (
-				<React.Fragment>
-					{amount}&nbsp;
-					<Link href={SSR_ASSET_PATH} as={URLHelper.createUrlById(objId)}>
-						<a>{amountName}</a>
-					</Link>
-				</React.Fragment>
-			);
-		}
-
-		if (key.toLowerCase() !== 'bytecode') {
-			return value;
-		}
-
-		const { loadMore } = this.state;
-
-		const bytecode = value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index] ?
-			value.slice(0, BYTECODE_SYMBOLS_LENGTH - 3).concat('...') : value;
-
-		return (
-			<React.Fragment>
-				<div className="mono">{bytecode}</div>
-				{
-					(value.length > BYTECODE_SYMBOLS_LENGTH && !loadMore[index]) &&
-					<button className="text-button" onClick={(e) => this.onToggleLoadMore(index, e)}>Expand</button>
-				}
-				<button className="copy-bytecode" onClick={() => copy(value)}>Copy code</button>
-			</React.Fragment>
-		);
-	}
-
-	renderInfo() {
-		const {
-			details, index, block, transaction, opIndex,
-		} = this.props;
-		const { type } = details;
-		const opKey = `${type}_${index}`;
-		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
-		const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
-		return (
-			<React.Fragment>
-				{
-					Object.entries(details).map(([key, value]) => {
-
-						if (key === 'Fee') {
-							return (
-								<React.Fragment key={`${opKey}_${key}_media`}>
-									<div className="od-row" key={`${opKey}_${key}`}>
-										<div className="od-col">{key}:</div>
-										<div className="od-col">
-											{this.renderOperationRowValue(key, value, index)}
-										</div>
-									</div>
-								</React.Fragment>
-							);
-						} else if (key === 'token transfers') {
-							return (
-								value.map((op, internalOpIndex) => (
-									<div className="od-row" key={`${opKey}_${key}_${internalOpIndex.toString()}`} >
-										<div className="od-col">
-											<div
-												className="tt-row"
-												key={index.toString()}
-											>
-												{op.label && `${op.label}:`}
-											</div>
-										</div>
-										<div className="od-col">
-											{this.renderSingleInternal(op, index)}
-										</div>
-									</div>
-								))
-							);
-						}
-						return (
-							<div className="od-row" key={`${opKey}_${key}`} >
-								<div className="od-col">
-									{this.renderOperationRowKey(key, value, index, type)}
-								</div>
-								<div className="od-col">
-									{this.renderOperationRowValue(key, value, index)}
-								</div>
-							</div>
-						);
-					})
-				}
-				<div className="od-row">
-					<div className="od-col">OPERATION:</div>
-					<div className="od-col">
-						<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={operationUrl}>
-							<a>{`${window.location.origin}${operationUrl}`}</a>
-						</Link>
-					</div>
-				</div>
-			</React.Fragment>
-		);
-	}
-
 	render() {
+		const { data, proposalIdx } = this.props;
+
 		return (
-			<div className="fold-operation-info">
-				<div className="fold-title">Operation info</div>
-				<div className="operation-detail-table">
-					{this.renderInfo()}
+			<div className="operation-info">
+				{data.description &&
+					<div className="describe-operation">
+						<div className="describe-operation__description">{data.description}</div>
+						<div className="describe-operation__details">
+							For more info read <a href={data.link} 	target="_blank" rel="noopener noreferrer" className="link">Operation Documentation</a>
+						</div>
+					</div>
+				}
+				<div className="operation-details-rows">
+					{data.type && proposalIdx && <div className="proposal-operation-header">{proposalIdx}.&nbsp;{data.type}</div>}
+					{data.type && !proposalIdx && <PrimaryRow title="Type" description={data.type} /> }
+					{data.issuer && <LinkRow title="Issuer" account={data.issuer} />}
+					{data.sender && <LinkRow title="Sender" account={data.sender} />}
+					{data.balance_object_id && <LinkRow title="Balance object ID" link={data.balance_object_id} />}
+					{data.destructed_contract && <LinkRow title="Destructed contract" link={data.destructed_contract} />}
+					{data.receiver && <LinkRow title="Receiver" account={data.receiver} />}
+					{data.recipient && <LinkRow title="Recipient" account={{ value: data.recipient.value, link: data.recipient.link }} />}
+					{data.owner && <LinkRow title="Owner" account={{ value: data.owner.value, link: data.owner.link }} />}
+					{data.contract && <LinkRow title="Contract" link={data.contract} />}
+					{data.added_to_whitelist && <LinkRow title="Added to whitelist" account={{ value: data.added_to_whitelist.value, link: data.added_to_whitelist.link }} />}
+					{data.removed_from_whitelist && <ProducersRow title="Removed from whitelist" accounts={data.removed_from_whitelist} />}
+					{data.new_owner && <LinkRow title="New owner" account={{ value: data.new_owner.value, link: data.new_owner.link }} />}
+					{data.from && <LinkRow title="From" account={data.from} />}
+					{data.to && <LinkRow title="To" account={data.to} />}
+					{data.listed_account && <LinkRow title="Listed account" account={data.listed_account} />}
+					{data.to_address && <PrimaryRow title="To address" description={data.to_address} />}
+					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
+					{data.url && <LinkRow title="URL" link={data.url} />}
+					{data.new_url && <LinkRow title="New URL" link={data.new_url} />}
+					{data.eth_address && <LinkRow title="ETH address" link={data.eth_address} isLinkOut />}
+					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
+					{data.btc_address && <LinkRow title="BTC address" link={data.btc_address} isLinkOut />}
+					{data.new_btc_address && <LinkRow title="New BTC address" link={data.new_btc_address} isLinkOut />}
+					{data.caller_contract && <LinkRow title="Caller contract" account={{ value: data.caller_contract.value, link: data.caller_contract.link }} />}
+					{data.new_contract && <LinkRow title="New contract" link={data.new_contract} />}
+					{data.to_account && <LinkRow title="To account" account={data.to_account} />}
+					{data.registrar && <LinkRow title="Registrar" account={data.registrar} />	}
+					{data.account_name && <LinkRow title="Account Name" account={data.account_name} />}
+					{data.proposal_id && <LinkRow title="Proposal ID" link={data.proposal_id} />}
+					{data.new_account_id && <LinkRow title="New Account ID" objectId={data.new_account_id} />}
+					{data.contract_type && <PrimaryRow title="Contract type" description={data.contract_type} />}
+					{data.deployed_contract_bytecode && <CopyRow title="Deployed contact bytecode" value={data.deployed_contract_bytecode} />}
+					{data.call_bytecode && <CopyRow title="Call bytecode" value={data.call_bytecode} />}
+					{data.deploy_arguments && <PrimaryRow title="Deploy arguments" description={`{${data.deploy_arguments.join('; ')}}`} />}
+					{data.expiration_time && <PrimaryRow title="Expiration time" description={moment(data.expiration_time).format('DD MMM, Y, HH:mm:ss')} />}
+					{data.preview_period && <PrimaryRow title="Preview period" description={data.preview_period} />}
+					{data.asset_name && <PrimaryRow title="Asset Name" description={data.asset_name} />}
+					{data.asset && <LinkRow title="Asset" asset={data.asset} />}
+					{data.precision && <PrimaryRow title="Precision" description={data.precision} />}
+					{data.max_supply && <PrimaryRow title="Max Suply" description={data.max_supply} />}
+					{data.asset_description && <PrimaryRow title="Asset Description" description={data.asset_description} isText />}
+					{data.rate && <LinkRow title="Rate" rate={data.rate} />}
+					{data.is_bit_asset && <PrimaryRow title="Is bitAsset" description={data.is_bit_asset} />}
+					{data.new_issuer && <LinkRow title="New issuer" account={data.new_issuer} />}
+					{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
+					{data.authority && <AuthorityRow title="Authority" tooltip="Public keys and accounts" weightThreshold={data.weight_threshold} authority={data.authority} />}
+					{data.approvals_to_add && <AuthorityRow title="Approvals to add" authority={data.approvals_to_add} />}
+					{data.approvals_to_remove && <AuthorityRow title="Approvals to add" authority={data.approvals_to_remove} />}
+					{data.echorand_key && <PrimaryRow title="EchoRand Key" description={data.echorand_key} />}
+					{data.account_updated && <LinkRow title="Account updated" account={{ value: data.account_updated.value, link: data.account_updated.link }} />}
+					{data.delegating_account && <LinkRow title="Delegating Account" account={data.delegating_account} />}
+					{data.delegate_share && <LinkRow title="Delegate share" amount={data.delegate_share} />}
+					{data.duration && <PrimaryRow title="Duration" description={data.duration} />}
+					{data.amount && <LinkRow title="Amount" amount={data.amount} />}
+					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
+					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
+					{data.balance_owner_key && <AuthorityRow title="Balance owner key" authority={data.balance_owner_key} />}
+					{data.deposit_amount && <PrimaryRow title="Deposit amount" description={data.deposit_amount} />}
+					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
+					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
+					{data.supported_asset && <PrimaryRow title="Supported asset" description={data.supported_asset} />}
+					{data.label && <PrimaryRow title="Label" description={data.label} />}
+					{data.address && <PrimaryRow title="Address" description={data.address} />}
+					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}
+					{data.new_feed_producers && <ProducersRow title="New feed producers" accounts={data.new_feed_producers} /> }
+					{data.feeded_asset_price && <LinkRow title="Feeded asset price" asset={data.feeded_asset_price} />}
+					{data.changed_parameters && <PrimaryRow title="Changed parameters" description={data.changed_parameters.join(', ')} />}
+					{data.fee && <LinkRow title="Fee" amount={data.fee} />}
+					{data.directLink && <LinkRow title="Operation direct link" link={data.directLink} />}
 				</div>
+				{data.additionalInfo && <AdditionalInfo data={data.additionalInfo} />}
 			</div>
 		);
 	}
 
 }
 
-OperationInfo.defaultProps = {
-	objId: '',
-};
+
 OperationInfo.propTypes = {
-	details: PropTypes.object.isRequired,
-	index: PropTypes.number.isRequired,
-	block: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-	transaction: PropTypes.number.isRequired,
-	opIndex: PropTypes.number.isRequired,
-	objId: PropTypes.string,
-	isMobile: PropTypes.bool.isRequired,
+	data: PropTypes.object,
+	proposalIdx: PropTypes.number,
 };
 
+OperationInfo.defaultProps = {
+	data: {},
+	proposalIdx: null,
+};
 export default OperationInfo;

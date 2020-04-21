@@ -112,7 +112,7 @@ class URLHelper {
 	 *
 	 * @param {String} id
 	 */
-	static createUrlById(id) {
+	static createUrlById(id, addInfo) {
 
 		let url;
 
@@ -124,6 +124,8 @@ class URLHelper {
 			url = URLHelper.createContractUrl(id);
 		} else if (validators.isAssetId(id)) {
 			url = URLHelper.createAssetUrl(id);
+		} else if (validators.isAssetName(id)) {
+			url = URLHelper.createAssetUrl(addInfo);
 		} else {
 			url = URLHelper.createObjectsUrl(id);
 		}
@@ -183,6 +185,15 @@ class URLHelper {
 			transformPathname = pathname.replace(/\[round\]/, round);
 		}
 		return `${transformPathname}?${queryString.stringify({ ...query, ...newProps })}`;
+	}
+
+	/**
+	 * @method getUrlWithOrigin
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static getUrlWithOrigin(url) {
+		return typeof window !== 'undefined' ? `${window.location.origin}${url}` : url;
 	}
 
 }
