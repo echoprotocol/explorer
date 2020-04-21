@@ -203,12 +203,12 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_create_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_CALL]: {
-		description: '',
-		link: '',
+		description: 'Operation to call specified contract.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_call_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE]: {
-		description: '',
-		link: '',
+		description: 'Virtual operation created when contract creates another contract.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_internal_create_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_INTERNAL_CALL]: {
 		description: '',
@@ -232,15 +232,15 @@ export const OPS_DESCRIPTIONS = {
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: {
 		description: '',
-		link: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_create_address_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: {
 		description: '',
-		link: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_approve_address_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: {
 		description: '',
-		link: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_deposit_operation',
 	},
 };
 

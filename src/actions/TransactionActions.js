@@ -24,10 +24,10 @@ import BaseActionsClass from './BaseActionsClass';
 import GlobalActions from './GlobalActions';
 
 import { getContractInfo } from '../services/queries/contract';
-import { transformOperationDataByType } from '../helpers/ops.format/OpsInfoMapper';
+import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
-import { countRate } from '../helpers/ops.format/AddInfoHelper';
+import { countRate } from '../services/transform.ops/AddInfoHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -734,7 +734,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const opNumberToFormat = operation.value < 40 ? operation.value : 0;
+		const opNumberToFormat = operation.value < 45 ? operation.value : 0;
 
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		if (proposalOperations.includes(operation.name)) {
