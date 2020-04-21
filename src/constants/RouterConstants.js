@@ -8,6 +8,7 @@ export const CONTRACT_BYTECODE = 'bytecode';
 export const CONTRACT_TRANSACTIONS = 'transactions';
 export const CONTRACT_BALANCES = 'balances';
 export const CONTRACT_ABI = 'abi';
+export const CONTRACT_ERC20 = 'erc20';
 export const CONTRACT_SOURCE_CODE = 'source-code';
 export const UPLOAD_ABI_PATH = '/contracts/:id/upload-abi';
 export const OBJECTS_PATH = '/objects';
@@ -30,6 +31,7 @@ export const SSR_CONTRACT_DETAILS_PATH = '/contracts/[id]/info/[detail]';
 export const CONTRACT_DETAILS_NUMBERS_TAB = {
 	[CONTRACT_TRANSACTIONS]: 0,
 	[CONTRACT_ABI]: 1,
+	[CONTRACT_ERC20]: 2,
 };
 
 export const ROUTES_WITH_COLUMN_DIRECTION = [INDEX_PATH];
