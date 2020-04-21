@@ -73,8 +73,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.BALANCE_CLAIM: {
-			//  TODO
-			// balance_object_id check on null
 			return {
 				operationInfo: {
 					type,
