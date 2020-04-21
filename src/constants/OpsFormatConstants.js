@@ -211,24 +211,24 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_internal_create_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_INTERNAL_CALL]: {
-		description: '',
-		link: '',
+		description: 'Virtual operation created when contract calls another contract or transfers asset',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_internal_call_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_SELFDESTRUCT]: {
-		description: '',
-		link: '',
+		description: 'Virtual operation created when contract self-destructs',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_selfdestruct_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_UPDATE]: {
-		description: '',
-		link: '',
+		description: 'Update contract data.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_update_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: {
 		description: '',
-		link: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_fund_pool_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_WHITELIST]: {
 		description: '',
-		link: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_whitelist_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: {
 		description: '',

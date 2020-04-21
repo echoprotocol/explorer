@@ -8,6 +8,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 
 	switch (opNumber) {
 		case OPERATIONS_IDS.CONTRACT_CREATE: {
+			// TODO additionalInfo
 			const objectInfo = data.objectInfo.toJS();
 			return {
 				operationInfo: {
@@ -128,6 +129,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		}
 		case OPERATIONS_IDS.CONTRACT_CALL: {
 			const objectInfo = data.objectInfo.toJS();
+			// TODO additionalInfo
 			return {
 				operationInfo: {
 					type,
@@ -273,6 +275,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE:
+			// TODO additionalInfo
 			return {
 				operationInfo: {
 					type: 'Create internal contract (virt)',
@@ -287,145 +290,90 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		case OPERATIONS_IDS.CONTRACT_INTERNAL_CALL:
+			// TODO additionalInfo
 			return {
 				operationInfo: {
 					type: 'Call internal contract (virt)',
-					caller_contract: {
-						value: 'yelly-jelly',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 230,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					caller_contract: data.caller,
+					called_contract: data.callee,
+					amount: data.amount,
+					...description,
 					additionalInfo: {
 						original_operation: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 					},
 				},
 			};
-		case OPERATIONS_IDS.CONTRACT_SELFDESTRUCT:
+		case OPERATIONS_IDS.CONTRACT_SELFDESTRUCT: {
+			// TODO additionalInfo
 			return {
 				operationInfo: {
 					type: 'Destruct contract (virt)',
 					destructed_contract: '0xc02aaa39b223fe8d0a0e',
-					recipient: {
-						value: 'yelly-jelly',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 230,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					recipient: data.recipient,
+					fee: data.fee,
+					amount: data.amount,
+					...description,
 					additionalInfo: {
 						original_operation: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 					},
 				},
 			};
-		case OPERATIONS_IDS.CONTRACT_UPDATE:
+		}
+		case OPERATIONS_IDS.CONTRACT_UPDATE: {
 			return {
 				operationInfo: {
-					type: 'Update contract owner',
-					sender: {
-						value: 'yelly-jelly',
-						link: '1.2.3',
-					},
-					contract: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-					new_owner: {
-						value: 'thebluezz',
-						link: '1.2.3',
-					},
-					amount: {
-						amount: 230,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.sender,
+					contract: data.contract,
+					new_owner: data.new_owner,
+					fee: data.fee,
+					amount: data.amount,
+					...description,
 					additionalInfo: {
-						current_contract_owner: {
-							value: 'nathen1234',
-							link: '1.2.3',
-						},
+						current_contract_owner: data.objectInfo.get('owner'),
 					},
 				},
 			};
-		case OPERATIONS_IDS.CONTRACT_FUND_POOL:
+		}
+		case OPERATIONS_IDS.CONTRACT_FUND_POOL: {
 			return {
 				operationInfo: {
-					type: 'Contract fund pool',
-					sender: {
-						value: 'yelly-jelly',
-						link: '1.2.3',
-					},
-					contract: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-					amount: {
-						amount: 230,
-						precision: 8,
-						symbol: 'ECHO',
-					},
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.sender,
+					contract: data.contract,
+					fee: data.fee,
+					amount: data.value,
+					...description,
 					additionalInfo: {
-						current_contract_owner: {
-							value: 'nathen1234',
-							link: '1.2.3',
-						},
-						current_contract_whitelist: ['String1', 'String2'],
-						current_contract_blacklist: ['String1', 'String2'],
-						current_contract_fee_pool_balance: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
+						current_contract_owner: data.objectInfo.get('owner'),
+						current_contract_whitelist: data.objectInfo.get('whitelist'),
+						current_contract_blacklist: data.objectInfo.get('blacklist'),
+						current_contract_fee_pool_balance: data.objectInfo.get('contractPoolBalance'),
 					},
 				},
 			};
-		case OPERATIONS_IDS.CONTRACT_WHITELIST:
+		}
+		case OPERATIONS_IDS.CONTRACT_WHITELIST: {
 			return {
 				operationInfo: {
-					type: 'Update contract whitelist',
-					sender: {
-						value: 'yelly-jelly',
-						link: '1.2.3',
-					},
-					contract: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-					added_to_whitelist: {
-						value: 'nathen1234',
-						link: '1.2.3',
-					},
-					removed_from_whitelist: [{
-						value: 'nathen1234',
-						link: '1.2.3',
-					}, {
-						value: 'yelly-jelly',
-						link: '1.2.4',
-					}, {
-						value: 'account',
-						link: '1.2.4',
-					}],
-					fee: {
-						amount: 23,
-						precision: 8,
-						symbol: 'ECHO',
-					},
+					type,
+					sender: data.sender,
+					contract: data.contract,
+					added_to_whitelist: data.addedToWhitelist,
+					removed_from_whitelist: data.removedFromWhitelist,
+					added_to_blacklist: data.addedToBlacklist,
+					remove_from_blacklist: data.removedFromBlacklist,
+					fee: data.fee,
+					...description,
 					additionalInfo: {
-						current_contract_owner: {
-							value: 'nathen1234',
-							link: '1.2.3',
-						},
-						current_contract_whitelist: ['String1', 'String2'],
-						current_contract_blacklist: ['String1', 'String2'],
-						current_contract_fee_pool_balance: {
-							amount: 23,
-							precision: 8,
-							symbol: 'ECHO',
-						},
+						current_contract_owner: data.objectInfo.get('owner'),
+						current_contract_whitelist: data.objectInfo.get('whitelist'),
+						current_contract_blacklist: data.objectInfo.get('blacklist'),
+						current_contract_fee_pool_balance: data.objectInfo.get('contractPoolBalance'),
 					},
 				},
 			};
+		}
 		default:
 			return null;
 	}

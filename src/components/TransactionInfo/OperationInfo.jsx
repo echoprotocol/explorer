@@ -38,9 +38,11 @@ class OperationInfo extends React.Component {
 					{data.receiver && <LinkRow title="Receiver" account={data.receiver} />}
 					{data.recipient && <LinkRow title="Recipient" account={{ value: data.recipient.value, link: data.recipient.link }} />}
 					{data.owner && <LinkRow title="Owner" account={{ value: data.owner.value, link: data.owner.link }} />}
-					{data.contract && <LinkRow title="Contract" link={data.contract} />}
-					{data.added_to_whitelist && <LinkRow title="Added to whitelist" account={{ value: data.added_to_whitelist.value, link: data.added_to_whitelist.link }} />}
+					{data.contract && <LinkRow title="Contract" contract={data.contract} />}
+					{data.added_to_whitelist && <ProducersRow title="Added to whitelist" accounts={data.added_to_whitelist} />}
 					{data.removed_from_whitelist && <ProducersRow title="Removed from whitelist" accounts={data.removed_from_whitelist} />}
+					{data.added_to_blacklist && <ProducersRow title="Added to blacklist" accounts={data.added_to_blacklist} />}
+					{data.remove_from_blacklist && <ProducersRow title="Removed from blacklist" accounts={data.remove_from_blacklist} />}
 					{data.new_owner && <LinkRow title="New owner" account={{ value: data.new_owner.value, link: data.new_owner.link }} />}
 					{data.from && <LinkRow title="From" account={data.from} />}
 					{data.to && <LinkRow title="To" account={data.to} />}
@@ -55,7 +57,8 @@ class OperationInfo extends React.Component {
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
 					{data.btc_address && <LinkRow title="BTC address" value={data.btc_address} link={URLHelper.createBtcAddressOut(data.btc_address)} isLinkOut />}
 					{data.new_btc_address && <LinkRow title="New BTC address" link={data.new_btc_address} isLinkOut />}
-					{data.caller_contract && <LinkRow title="Caller contract" account={{ value: data.caller_contract.value, link: data.caller_contract.link }} />}
+					{data.caller_contract && <LinkRow title="Caller contract" account={data.caller_contract} />}
+					{data.called_contract && <LinkRow title="Called contract" account={data.called_contract} />}
 					{data.new_contract && <LinkRow title="New contract" link={data.new_contract} />}
 					{data.to_account && <LinkRow title="To account" account={data.to_account} />}
 					{data.registrar && <LinkRow title="Registrar" account={data.registrar} />	}

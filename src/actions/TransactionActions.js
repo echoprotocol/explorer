@@ -97,9 +97,25 @@ class TransactionActionsClass extends BaseActionsClass {
 				supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
 			}
 			const [chainContract] = await echo.api.getContracts([id]);
+			const { whitelist, blacklist } = await echo.api.getContractPoolWhitelist(id);
+			const contractPoolBalance = await echo.api.getContractPoolBalance(id);
+			const [owner] = await echo.api.getAccounts([chainContract.owner]);
+			const [assetPoolBalance] = await echo.api.getAssets([contractPoolBalance.asset_id]);
+
+			const whitelistAccounts = await echo.api.getAccounts(whitelist);
+			const blacklistAccounts = await echo.api.getAccounts(blacklist);
 
 			return new Map({})
 				.set('type', chainContract.type)
+				.set('owner', { link: owner.id, value: owner.name })
+				.set('whitelist', whitelistAccounts.map((account) => ({ value: account.name, link: account.id })))
+				.set('blacklist', blacklistAccounts.map((account) => ({ value: account.name, link: account.id })))
+				.set('contractPoolBalance', {
+					asset_id: assetPoolBalance.id,
+					symbol: assetPoolBalance.symbol,
+					precision: assetPoolBalance.precision,
+					amount: contractPoolBalance.amount,
+				})
 				.set('supportedAsset', supportedAsset)
 				.set('ethAccuracy', ethAccuracy ? 'Activated' : 'Inactivated')
 				.set('token', contractInfo.token === 'erc20' ? {
@@ -599,6 +615,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						break;
 					} else if (key === 'policy') {
 						value = value.map((data) => data);
+					} else if (type === OPERATIONS_IDS.CONTRACT_WHITELIST) {
+						break;
 					} else {
 						return {};
 					}
@@ -676,6 +694,8 @@ class TransactionActionsClass extends BaseActionsClass {
 			objectInfo = await this.setContractObject(options.caller);
 		} else if (options['contract id']) {
 			objectInfo = await this.setContractObject(options['contract id'].value);
+		} else if (options.contract) {
+			objectInfo = await this.setContractObject(options.contract);
 		}
 
 		let result = null;
@@ -697,6 +717,12 @@ class TransactionActionsClass extends BaseActionsClass {
 				options.address = address;
 				break;
 			}
+			case OPERATIONS_IDS.CONTRACT_WHITELIST:
+				options.addedToWhitelist = (await echo.api.getAccounts(options.add_to_whitelist)).map((account) => ({ link: account.id, value: account.name }));
+				options.removedFromWhitelist = (await echo.api.getAccounts(options.remove_from_whitelist)).map((account) => ({ link: account.id, value: account.name }));
+				options.addedToBlacklist = (await echo.api.getAccounts(options.add_to_blacklist)).map((account) => ({ link: account.id, value: account.name }));
+				options.removedFromBlacklist = (await echo.api.getAccounts(options.remove_from_blacklist)).map((account) => ({ link: account.id, value: account.name }));
+				break;
 			default:
 				[, result] = operationResult;
 				break;

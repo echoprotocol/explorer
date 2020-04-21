@@ -45,11 +45,9 @@ const OperationsRow = ({
 	totalDataSize,
 }) => {
 	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
-	console.log('hehhe');
 	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 	const goToLink = (e, href, objectId) => {
-		console.log('goToLink', href, objectId);
 		e.preventDefault();
 		e.stopPropagation();
 		Router.push(SsrHrefHelper.getHrefByObjectId(objectId), href);
