@@ -66,7 +66,7 @@ const Operations = {
 		name: 'Account address create',
 		options: {
 			from: 'owner',
-			subject: ['label'],
+			subject: null,
 			value: null,
 			asset: null,
 		},
@@ -680,6 +680,7 @@ export const assetOperations = [
 	Operations.asset_reserve.name,
 	Operations.asset_fund_fee_pool.name,
 	Operations.asset_publish_feed.name,
+	Operations.asset_claim_fees.name,
 ];
 export const contractOperations = [
 	Operations.contract_create.name,

@@ -47,7 +47,9 @@ class AccountInfo extends React.Component {
 				<div className="line">
 					<div className="title">Account name</div>
 					<div className="divider" />
-					<div className="name">{name}</div>
+					<div className="val name">
+						{name}
+					</div>
 				</div>
 				<div className="line">
 					<div className="title">ECHO Balance</div>
