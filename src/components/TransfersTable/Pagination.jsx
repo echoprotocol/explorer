@@ -11,7 +11,7 @@ import { PrevButton } from '../Button/PrevButton';
 
 
 const TransfersPagination = ({
-	sizePerPage, totalDataSize, currentPage, from, to,
+	sizePerPage, totalDataSize, currentPage,
 }) => {
 	const sizePerPages = Array.from(new Set([...SIZES_PER_PAGE, sizePerPage].sort((a, b) => a - b)));
 	const [totalPages, setTotalPages] = useState(Math.ceil(totalDataSize / sizePerPage));
@@ -70,13 +70,7 @@ TransfersPagination.propTypes = {
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,
 	currentPage: PropTypes.number.isRequired,
-	from: PropTypes.string,
-	to: PropTypes.string,
 };
 
-TransfersPagination.defaultProps = {
-	from: '',
-	to: '',
-};
 
 export default TransfersPagination;

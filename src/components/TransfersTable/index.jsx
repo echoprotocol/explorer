@@ -62,8 +62,6 @@ class TransfersTable extends React.Component {
 					</table>
 				</PerfectScrollbar>
 				<TransferPagination
-					from=""
-					to=""
 					sizePerPage={20}
 					totalDataSize={1}
 					currentPage={1}

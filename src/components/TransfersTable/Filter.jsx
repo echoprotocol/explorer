@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
+
 import Input from '../Input';
+import FilterBtn from '../../components/Buttons/FilterBtn';
 
 const TransfersFilter = React.memo(({
 	open, onChangeFilter, from, to, onClearFilter,
@@ -27,6 +29,9 @@ const TransfersFilter = React.memo(({
 					onChange={(e) => onChangeFilter(e)}
 					placeholder="Receiver name"
 				/>
+			</div>
+			<div className="operations-filter__button">
+				<FilterBtn name="Apply filters" isLoading={false} />
 			</div>
 		</div>
 	</div>
