@@ -1,0 +1,89 @@
+.transfers-table {
+	position: relative;
+	width: 100%;
+
+	@include table();
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	@include table-avatar();
+	@include table-vertical-scroll();
+
+	thead {
+		.td-in {
+			@include inter-ui-medium;
+		}
+	}
+
+	.td-in {
+		display: inline-flex;
+		align-items: center;
+		@include inter-ui-medium;
+		font-size: 12px;
+	}
+	.view {
+		cursor: pointer;
+		z-index: 1;
+		@include inter-ui-regular();
+		@include table-row-highlight(true);
+	}
+
+	.amount {
+		.td-in {
+			display: flex;
+		}
+
+		.value {
+			@include text-overflow;
+			margin-right: 4px;
+			max-width: 140px;
+			display: block;
+			word-break: break-all;
+		}
+
+		.type {
+			color: $grey-mid;
+		}
+
+		.currency {
+			overflow: initial;
+		}
+	}
+
+	.date {
+		.td-in {
+			span {
+				display: inline-block;
+				@include text-overflow;
+				max-width: 125px;
+			}
+		}
+	}
+
+	.sender,
+	.receiver {
+		.td-in {
+			span {
+				display: inline-block;
+				@include text-overflow;
+				max-width: 100px;
+			}
+		}
+	}
+	// Tr sizes
+	.number {
+		width: 70px;
+	}
+	.date {
+		width: 17%;
+	}
+	.sender {
+		width: 19%;
+	}
+	.receiver {
+		width: 19%;
+	}
+	.amount {
+		width: 19.5%;
+	}
+}

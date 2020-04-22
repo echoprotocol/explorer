@@ -65,7 +65,9 @@ class Contract extends React.Component {
 
 		this.props.loadActiveAccount();
 
-		this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
+		if (this.slider.current) {
+			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
+		}
 
 		this.subscribe(id);
 	}
@@ -200,16 +202,9 @@ class Contract extends React.Component {
 			initialSlide: CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0,
 			responsive: [
 				{
-					breakpoint: 768,
-					settings: {
-						slidesToShow: 3,
-						slidesToScroll: 1,
-					},
-				},
-				{
 					breakpoint: 500,
 					settings: {
-						slidesToShow: 3,
+						slidesToShow: 2,
 						slidesToScroll: 1,
 					},
 				},
