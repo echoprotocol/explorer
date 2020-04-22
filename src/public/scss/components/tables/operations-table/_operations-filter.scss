@@ -1,7 +1,7 @@
 .operations-filter {
 	display: none;
 	position: relative;
-	padding: 8px 30px;
+	padding: 20px 30px;
 	background-color: $lightgrey-darker;
 	align-items: center;
 	animation: fade-in $speed;
@@ -29,11 +29,19 @@
 	}
 	&.open {
 		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 	}
 	.input-wrapper {
 		min-width: 218px;
 		@include max-vw($res-768) {
 			min-width: 270px;
+		}
+		.error-field {
+			top: 100%;
+			bottom: initial;
+			background-color: transparent;
+			font-size: 12px;
 		}
 	}
 }
@@ -53,6 +61,7 @@
 .operations-filter-wrap {
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	@include max-vw($res-768) {
 		flex-direction: column;
 		align-items: flex-end;
@@ -74,9 +83,21 @@
 .operations-filter-item + .operations-filter-item {
 	margin-left: 20px;
 	@include max-vw($res-768) {
-		margin: 10px 0 0 0;
+		margin: 20px 0 0 0;
 	}
 	@include max-vw($res-500) {
 		margin: 20px 0 0 0;
+	}
+}
+
+.operations-filter__button {
+	padding-left: 52px;
+	margin-top: 20px;
+	width: 100%;
+	@include max-vw($res-768) {
+		padding-left: 62px;
+	}
+	@include max-vw($res-500) {
+		padding-left: 0;
 	}
 }

@@ -4,7 +4,7 @@ import cn from 'classnames';
 import ClearBtn from './ClearBtn';
 
 const Input = ({
-	hundleClear, className, value, onChange, name, ...props
+	hundleClear, className, value, onChange, name, error, ...props
 }) => {
 	const [isFocused, setFocus] = useState(false);
 	const input = useRef(null);
@@ -13,7 +13,7 @@ const Input = ({
 		hundleClear(name);
 	};
 	return (
-		<div className={cn('input-wrapper', className)}>
+		<div className={cn('input-wrapper', { error: !!error }, className)}>
 			<input
 				className={cn('input', { focus: isFocused, clerable: hundleClear, filled: value })}
 				name={name}
@@ -40,11 +40,13 @@ Input.propTypes = {
 	className: PropTypes.string,
 	hundleClear: PropTypes.func,
 	onChange: PropTypes.func,
+	error: PropTypes.string,
 };
 Input.defaultProps = {
 	className: '',
 	value: '',
 	hundleClear: null,
+	error: '',
 	onChange: () => {},
 };
 export default Input;

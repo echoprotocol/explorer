@@ -1,0 +1,33 @@
+.filter-button {
+	position: relative;
+	@include inter-ui-regular;
+	@include btn();
+	@include onFocus(4px, 1px, 1px, rgba($blue, 0.53));
+	padding: 6px 10px;
+	font-size: 12px;
+	color: #fff;
+	background-color: $blue;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	&:hover {
+		background-color: lighten($blue, 10%);
+	}
+}
+.filter-button__loading {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: -15px;
+	width: 10px;
+	height: 10px;
+	animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+	from {
+		-webkit-transform: translateY(-50%) rotate(0deg);
+	}
+	to {
+		-webkit-transform: translateY(-50%) rotate(359deg);
+	}
+}
