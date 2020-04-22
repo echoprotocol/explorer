@@ -1,5 +1,6 @@
 .input-wrapper {
 	position: relative;
+	width: 100%;
 
 	.error-field {
 		color: #fb0707;
@@ -15,7 +16,11 @@
 		left: 6px;
 	}
 	// DEFAULT INPUT
-
+	&.error {
+		.input {
+			border: 1px solid $alarma;
+		}
+	}
 	.input {
 		border: 1px solid #aeb7be;
 		border-radius: 2px;
