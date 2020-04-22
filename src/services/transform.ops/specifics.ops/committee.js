@@ -44,7 +44,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS: {
-			// TODO check update changed_parameters
 			return {
 				operationInfo: {
 					type,
@@ -52,7 +51,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						value: ECHO_COMMITTEE_ACCOUNT.NAME,
 						link: ECHO_COMMITTEE_ACCOUNT.ID,
 					},
-					// changed_parameters: ['param1', 'param2', 'param3'],
+					changed_parameters: Object.keys(data.new_parameters),
 					fee: data.fee,
 					...description,
 					additionalInfo: {
@@ -62,8 +61,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE: {
-			// TODO check
-			// const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
 			return {
 				operationInfo: {
 					type,
@@ -71,14 +69,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						// committee_status: committeeStatus,
+						committee_status: committeeStatus,
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE: {
-			// TODO check
-			// const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
 			return {
 				operationInfo: {
 					type,
@@ -86,7 +83,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						// committee_status: committeeStatus,
+						committee_status: committeeStatus,
 					},
 				},
 			};

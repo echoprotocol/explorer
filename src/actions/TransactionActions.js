@@ -9,6 +9,7 @@ import Operations, {
 	assetOperations,
 	committeeOperations,
 	proposalOperations,
+	sidechainOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 import { ERC20_HASHES, ECHO_ASSET, NATHAN } from '../constants/GlobalConstants';
@@ -221,6 +222,30 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('id', proposal && proposal.id)
 					.set('expirationTime', options.expiration_time)
 					.set('operations', operations);
+			} else if (sidechainOperations.includes(operation.name)) {
+				let objectWithApprovals = '';
+				switch (operation.name) {
+					case Operations.sidechain_eth_approve_address.name:
+						objectWithApprovals = await echo.api.getEthAddress(options.account);
+						break;
+					case Operations.deposit_eth.name:
+						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
+							.find((el) => el.deposit_id === options.deposit_id);
+						break;
+					case Operations.eth_send_deposit.name:
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						break;
+					default:
+						break;
+				}
+				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
+				let approves = objectWithApprovals.approves.length;
+				if (approves === 0 && objectWithApprovals.is_approved) {
+					approves = total;
+				}
+				object = object
+					.set('approves', approves)
+					.set('total', total);
 			}
 
 			return object;

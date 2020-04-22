@@ -46,8 +46,11 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.CONTRACT_UPDATE]: Operations.contract_update.name,
 	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: Operations.contract_fund_pool.name,
 	[OPERATIONS_IDS.CONTRACT_WHITELIST]: Operations.contract_whitelist.name,
+
 	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: Operations.sidechain_eth_create_address.name,
-	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: Operations.deposit_eth.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: Operations.sidechain_eth_approve_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: Operations.deposit_eth.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: Operations.eth_send_deposit.name,
 };
 
 export const OPS_DESCRIPTIONS = {
@@ -241,6 +244,10 @@ export const OPS_DESCRIPTIONS = {
 	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: {
 		description: '',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_send_deposit_operation',
 	},
 };
 
