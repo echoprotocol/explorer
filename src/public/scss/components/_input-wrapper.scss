@@ -18,22 +18,3 @@
 		}
 	}
 }
-
-.input-wrapper {
-	width: 100%;
-	position: relative;
-
-	.error-field {
-		color: #fb0707;
-		font-size: 10px;
-		@include inter-ui-regular;
-		color: #fb0707;
-		font-size: 10px;
-		display: inline-block;
-		position: absolute;
-		bottom: -5px;
-		background: #fff;
-		padding: 0px 5px;
-		left: 6px;
-	}
-}
