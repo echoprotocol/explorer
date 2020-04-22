@@ -19,4 +19,9 @@ export default {
 		DEBUG: process.env.ECHO_NODE.DEBUG,
 		APIS: process.env.ECHO_NODE.APIS,
 	},
+	EXPLORER_URLS: {
+		TESTNET: process.env.EXPLORER_URLS.TESTNET,
+		MAINNET: process.env.EXPLORER_URLS.MAINNET,
+	},
+	MODE: process.env.MODE,
 };

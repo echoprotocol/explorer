@@ -1,0 +1,68 @@
+.net-dropdown {
+	position: relative;
+	@include inter-ui-regular;
+	font-size: 12px;
+	line-height: 18px;
+	width: 100px;
+	box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
+	.dropdown-trigger {
+		padding: 8px 10px;
+		height: 35px;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		background-color: #2d3346;
+		border: none;
+		border-radius: 2px;
+		cursor: pointer;
+		transition: background-color $speed;
+		&:active {
+			.dropdown-trigger-value,
+			.dropdown-arrow {
+				opacity: 0.5;
+			}
+		}
+	}
+	.dropdown-list {
+		padding: 5px 0;
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: calc(100% + 5px);
+		background-color: #2d3346;
+		box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
+	}
+	.dropdown-item {
+		display: flex;
+		padding: 5px 10px;
+		width: 100%;
+		color: $grey-mid;
+		background-color: #2d3346;
+		border: none;
+		cursor: pointer;
+	}
+	.dropdown-arrow {
+		transition: transform $speed;
+	}
+	&.opened {
+		.dropdown-arrow {
+			transform: rotate(180deg);
+		}
+	}
+	&.mainnet {
+		.dropdown-trigger {
+			color: $blue;
+		}
+		.dropdown-arrow {
+			fill: $blue;
+		}
+	}
+	&.testnet {
+		.dropdown-trigger {
+			background-color: $blue;
+			&:hover:not(:active) {
+				background-color: $lightblue;
+			}
+		}
+	}
+}

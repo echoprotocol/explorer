@@ -33,6 +33,7 @@ class ExplorerApp extends App {
 			this.props.store.dispatch(GlobalActions.incrementHistoryLength());
 		});
 		this.props.store.dispatch(GlobalActions.init());
+		this.props.store.dispatch(GlobalActions.setMode());
 	}
 	componentWillUnmount() {
 		this.props.store.dispatch(disconnect());

@@ -5,7 +5,9 @@ import Router from 'next/router';
 import Logotype from '../Logotype';
 import SearchField from '../SearchFields';
 import NavTabs from './NavTabs';
+import NetDropdown from '../NetDropdown';
 import { INDEX_PATH } from '../../constants/RouterConstants';
+import { MAINNET_MODE, TESTNET_MODE } from '../../constants/GlobalConstants';
 
 const Header = React.memo(({
 	hints, getHints, loadingSearch, errorSearch,
@@ -13,6 +15,17 @@ const Header = React.memo(({
 	<header>
 		<Logotype onClick={() => Router.push(INDEX_PATH)} />
 		<NavTabs />
+		<NetDropdown options={[
+			{
+				title: 'Mainnet',
+				id: MAINNET_MODE,
+			},
+			{
+				title: 'Testnet',
+				id: TESTNET_MODE,
+			}]
+		}
+		/>
 		<SearchField
 			loadingSearch={loadingSearch}
 			errorSearch={errorSearch}
