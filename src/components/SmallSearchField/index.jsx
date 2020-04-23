@@ -132,7 +132,7 @@ class SearchField extends React.Component {
 						onClick={(e) => { e.preventDefault(); ((small) ? (this.isSmallShow()) : false); }}
 					>
 						<svg>
-							<path fill="#686C86" d="M14.72 13.12l-3.54-3.54a6.12 6.12 0 10-1.6 1.6l3.53 3.55a1.14 1.14 0 001.6-1.6zm-12.45-7a3.85 3.85 0 117.7 0 3.85 3.85 0 01-7.7 0z" />
+							<path fill="#CCCCD4" d="M14.72 13.12l-3.54-3.54a6.12 6.12 0 10-1.6 1.6l3.53 3.55a1.14 1.14 0 001.6-1.6zm-12.45-7a3.85 3.85 0 117.7 0 3.85 3.85 0 01-7.7 0z" />
 						</svg>
 					</a>
 					<div className="input-field">
