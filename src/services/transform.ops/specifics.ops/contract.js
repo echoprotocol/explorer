@@ -7,19 +7,19 @@ export const transformOperationDataByType = async (opNumber, data) => {
 	const description = OPS_DESCRIPTIONS[opNumber];
 
 	switch (opNumber) {
+		// TODO asset_transfers & deploy_arguments
 		case OPERATIONS_IDS.CONTRACT_CREATE: {
-			// TODO additionalInfo
-			const objectInfo = data.objectInfo.toJS();
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
 					type,
 					sender: data.registrar,
-					contract_type: data.objectInfo.get('type'),
+					contract_type: objectInfo.type,
 					deployed_contract_bytecode: data.bytecode,
-					deploy_arguments: ['stringElement1', 'stringElement2', 'stringElement3', 'stringElement4', 'stringElement5'],
+					// deploy_arguments: ['stringElement1', 'stringElement2', 'stringElement3', 'stringElement4', 'stringElement5'],
 					amount: data.value,
-					eth_accuracy_is_enabled: data.objectInfo.get('ethAccuracy'),
-					supported_asset: data.objectInfo.get('supportedAsset') || 'None',
+					eth_accuracy_is_enabled: objectInfo.ethAccuracy,
+					supported_asset: objectInfo.supportedAsset || 'None',
 					fee: data.fee,
 					...description,
 					additionalInfo: {
@@ -34,113 +34,44 @@ export const transformOperationDataByType = async (opNumber, data) => {
 								key: 'Total supply',
 								value: objectInfo.token.total_supply,
 							}],
-							erc20_token_transfers: [{
-								amount: {
-									amount: 230,
-									precision: 8,
-									symbol: 'ECHO',
-								},
-								from: {
-									value: 'account',
-									link: '1.2.4',
-								},
-								to: {
-									value: 'account',
-									link: '1.2.5',
-								},
-							}, {
-								amount: {
-									amount: 16,
-									precision: 8,
-									symbol: 'ECHO',
-								},
-								from: {
-									value: 'pink-n-floyd01230',
-									link: '1.2.3',
-								},
-								to: {
-									value: 'nathen1234',
-									link: '1.2.3',
-								},
-							}],
+							erc20_token_transfers: data['token transfers'],
 						}),
-						asset_transfers: [{
-							amount: {
-								amount: 230,
-								precision: 8,
-								symbol: 'ECHO',
-							},
-							from: {
-								value: '',
-								link: '1.2.3',
-							},
-							to: {
-								value: 'account',
-								link: '1.2.3',
-							},
-						}],
+						// asset_transfers: [{
+						// 	amount: {
+						// 		amount: 230,
+						// 		precision: 8,
+						// 		symbol: 'ECHO',
+						// 	},
+						// 	from: {
+						// 		value: '',
+						// 		link: '1.2.3',
+						// 	},
+						// 	to: {
+						// 		value: 'account',
+						// 		link: '1.2.3',
+						// 	},
+						// }],
 					},
 				},
-				logs: [{
-					address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-					name: {
-						name: 'String',
-						params: ['param1', 'param2', 'param3'],
-					},
-					topics: ['ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3eh', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ek'],
-					data: '0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000009f8f72aa9304c8b593d555f12ef6589cc3a579a20000000000000000000000000000000000000000000000001408de424e0172550000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000005e745a6c',
-				}, {
-					address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc3',
-					name: {
-						name: 'String',
-						params: ['param1', 'param2', 'param3'],
-					},
-					topics: ['ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3eh', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ek'],
-					data: '0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000009f8f72aa9304c8b593d555f12ef6589cc3a579a20000000000000000000000000000000000000000000000001408de424e0172550000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000005e745a6c',
-				}],
-				internalOperations: [{
-					operationInfo: {
-						type: 'Contract call',
-						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-						asset_amount_sent: {
-							amount: 230,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						bytecode: '60806040523480156200001157600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506040805190810160405280600581526020017f4649584544000000000000000000000000000000000000000000000000000000815250600290805190602001906200009f92919062000221565b506040805190810160405280601a81526020017f4578616d706c6520466978656420537570706c7920',
-					},
-				}, {
-					operationInfo: {
-						type: 'Contract create',
-						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc3',
-						asset_amount_sent: {
-							amount: 230,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-					},
-				}, {
-					operationInfo: {
-						type: 'Contract delete',
-						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc4',
-					},
-				}],
+				logs: data.logs,
+				internalOperations: data.virtualOps,
 			};
 		}
+		// TODO asset_transfers
 		case OPERATIONS_IDS.CONTRACT_CALL: {
-			const objectInfo = data.objectInfo.toJS();
-			// TODO additionalInfo
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
+
 			return {
 				operationInfo: {
 					type,
 					sender: data.callee,
-					contract_type: data.objectInfo.get('type'),
+					contract_type: objectInfo.type,
 					call_bytecode: data.bytecode,
 					amount: data.amount,
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						called_contract_type: 'String',
+						called_contract_type: objectInfo.type,
 						...(objectInfo.token && {
 							erc20_token_info: [{
 								key: 'Token symbol (name)',
@@ -152,145 +83,47 @@ export const transformOperationDataByType = async (opNumber, data) => {
 								key: 'Total supply',
 								value: objectInfo.token.total_supply,
 							}],
-							erc20_token_transfers: [{
-								amount: {
-									amount: 230,
-									precision: 8,
-									symbol: 'ECHO',
-								},
-								from: {
-									value: 'account',
-									link: '1.2.4',
-								},
-								to: {
-									value: 'account',
-									link: '1.2.5',
-								},
-							}, {
-								amount: {
-									amount: 16,
-									precision: 8,
-									symbol: 'ECHO',
-								},
-								from: {
-									value: 'pink-n-floyd01230',
-									link: '1.2.3',
-								},
-								to: {
-									value: 'nathen1234',
-									link: '1.2.3',
-								},
-							}],
+							erc20_token_transfers: data['token transfers'],
 						}),
-						erc20_token_transfers: [{
-							amount: {
-								amount: 230,
-								precision: 8,
-								symbol: 'ECHO',
-							},
-							from: {
-								value: 'account',
-								link: '1.2.4',
-							},
-							to: {
-								value: 'account',
-								link: '1.2.5',
-							},
-						}, {
-							amount: {
-								amount: 16,
-								precision: 8,
-								symbol: 'ECHO',
-							},
-							from: {
-								value: 'pink-n-floyd01230',
-								link: '1.2.3',
-							},
-							to: {
-								value: 'nathen1234',
-								link: '1.2.3',
-							},
-						}],
-						asset_transfers: [{
-							amount: {
-								amount: 230,
-								precision: 8,
-								symbol: 'ECHO',
-							},
-							from: {
-								value: '',
-								link: '1.2.3',
-							},
-							to: {
-								value: 'account',
-								link: '1.2.3',
-							},
-						}],
+						// asset_transfers: [{
+						// 	amount: {
+						// 		amount: 230,
+						// 		precision: 8,
+						// 		symbol: 'ECHO',
+						// 	},
+						// 	from: {
+						// 		value: '',
+						// 		link: '1.2.3',
+						// 	},
+						// 	to: {
+						// 		value: 'account',
+						// 		link: '1.2.3',
+						// 	},
+						// }],
 					},
 				},
-				logs: [{
-					address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-					name: {
-						name: 'String',
-						params: ['param1', 'param2', 'param3'],
-					},
-					topics: ['ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3eh', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ek'],
-					data: '0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000009f8f72aa9304c8b593d555f12ef6589cc3a579a20000000000000000000000000000000000000000000000001408de424e0172550000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000005e745a6c',
-				}, {
-					address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc3',
-					name: {
-						name: 'String',
-						params: ['param1', 'param2', 'param3'],
-					},
-					topics: ['ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3eh', 'ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ek'],
-					data: '0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc20000000000000000000000009f8f72aa9304c8b593d555f12ef6589cc3a579a20000000000000000000000000000000000000000000000001408de424e0172550000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000005e745a6c',
-				}],
-				internalOperations: [{
-					operationInfo: {
-						type: 'Contract call',
-						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-						asset_amount_sent: {
-							amount: 230,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-						bytecode: '60806040523480156200001157600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506040805190810160405280600581526020017f4649584544000000000000000000000000000000000000000000000000000000815250600290805190602001906200009f92919062000221565b506040805190810160405280601a81526020017f4578616d706c6520466978656420537570706c7920',
-					},
-				}, {
-					operationInfo: {
-						type: 'Contract create',
-						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc3',
-						asset_amount_sent: {
-							amount: 230,
-							precision: 8,
-							symbol: 'ECHO',
-						},
-					},
-				}, {
-					operationInfo: {
-						type: 'Contract delete',
-						contract_id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc4',
-					},
-				}],
+				logs: data.logs,
+				internalOperations: data.virtualOps,
 			};
 		}
-		case OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE:
-			// TODO additionalInfo
+		case OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE: {
+			// TODO original_operation
 			return {
 				operationInfo: {
 					type: 'Create internal contract (virt)',
 					caller_contract: data.caller,
-					new_contract: data.new_contract,
+					new_contract: data.objectInfo.get('id'),
 					value: data.value,
-					eth_accuracy_is_enabled: 'String',
-					supported_asset: 'ECHO',
+					eth_accuracy_is_enabled: data.objectInfo.get('ethAccuracy'),
+					supported_asset: data.objectInfo.get('supportedAsset') || 'None',
 					additionalInfo: {
 						original_operation: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 					},
 				},
 			};
-		case OPERATIONS_IDS.CONTRACT_INTERNAL_CALL:
-			// TODO additionalInfo
+		}
+		case OPERATIONS_IDS.CONTRACT_INTERNAL_CALL: {
+			// TODO original_operation
 			return {
 				operationInfo: {
 					type: 'Call internal contract (virt)',
@@ -303,12 +136,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					},
 				},
 			};
+		}
 		case OPERATIONS_IDS.CONTRACT_SELFDESTRUCT: {
-			// TODO additionalInfo
+			// TODO original_operation
 			return {
 				operationInfo: {
 					type: 'Destruct contract (virt)',
-					destructed_contract: '0xc02aaa39b223fe8d0a0e',
+					destructed_contract: data.objectInfo.get('id'),
 					recipient: data.recipient,
 					fee: data.fee,
 					amount: data.amount,

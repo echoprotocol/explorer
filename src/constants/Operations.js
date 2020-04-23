@@ -707,10 +707,10 @@ export const proposalOperations = [
 	Operations.proposal_delete.name,
 ];
 export const sidechainOperations = [
-	Operations.sidechain_eth_create_address,
-	Operations.sidechain_eth_approve_address,
-	Operations.deposit_eth,
-	Operations.eth_send_deposit,
+	Operations.sidechain_eth_create_address.name,
+	Operations.sidechain_eth_approve_address.name,
+	Operations.deposit_eth.name,
+	Operations.eth_send_deposit.name,
 ];
 
 export default Operations;

@@ -10,6 +10,7 @@ import Operations, {
 	committeeOperations,
 	proposalOperations,
 	sidechainOperations,
+	contractOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 import { ERC20_HASHES, ECHO_ASSET, NATHAN } from '../constants/GlobalConstants';
@@ -29,6 +30,7 @@ import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
+import { getConrtactOperations } from '../services/queries/history';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -137,7 +139,7 @@ class TransactionActionsClass extends BaseActionsClass {
 	 * @param subject
 	 * @returns {Function}
 	 */
-	async setOperationObject(operation, options, from, subject) {
+	async setOperationObject(operation, options, from, subject, operationResult, opInfo) {
 		let object = new Map({});
 
 		try {
@@ -161,6 +163,66 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
 					.set('delegating', accounts[1] && accounts[1].name);
+			} else if (contractOperations.includes(operation.name)) {
+				let contractId;
+				switch (operation.name) {
+					case Operations.contract_internal_create.name:
+					case Operations.contract_create.name:
+						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						break;
+					case Operations.contract_internal_call.name:
+					case Operations.contract_call.name:
+						contractId = options.callee;
+						break;
+					case Operations.contract_selfdestruct.name:
+					case Operations.contract_update.name:
+					case Operations.contract_fund_pool.name:
+					case Operations.contract_whitelist.name:
+						contractId = options.contract;
+						break;
+					default:
+						break;
+				}
+				const contract = await echo.api.getObject(contractId);
+				const contractAdditionalInfo = await echo.api.getFullContract(contractId);
+				const { contractInfo } = await getContractInfo(contractId);
+				const { history } = await getConrtactOperations(contractId);
+				object = object
+					.set('id', contractId)
+					.set('type', contractInfo.type)
+					.set('ethAccuracy', contract.eth_accuracy)
+					.set('supportedAsset', contract.supported_asset)
+					.set('owner', contract.owner)
+					.set('contractPoolBalance', contractAdditionalInfo.poolBalance)
+					.set('whitelist', contractAdditionalInfo.whitelist || [])
+					.set('blacklist', contractAdditionalInfo.blacklist || []);
+				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
+					el.op_in_trx === opInfo.opInTrx &&
+					el.block.round === opInfo.block);
+				if (currentOp.virtual_operations.length) {
+					const formatVirtualOps = currentOp.virtual_operations.map((op) => this.formatOperation(op));
+					const virtualOps = await Promise.all(formatVirtualOps);
+					const formatted = virtualOps.map((el) => {
+						let contractIdInOp;
+						if (el.from && validators.isContractId(el.from.id)) {
+							contractIdInOp = from.id;
+						}
+						if (el.subject && validators.isContractId(el.subject.id)) {
+							contractIdInOp = subject.id;
+						}
+						return {
+							type: el.name,
+							bytecode: el.bytecode,
+							asset_amount_sent: el.value,
+							contract_id: contractIdInOp,
+						};
+					});
+
+					object.set('virtualOps', formatted);
+				}
+				if (contractInfo.token) {
+					object = object.set('token', contractInfo.token);
+				}
 			} else if (assetOperations.includes(operation.name)) {
 				let assetId = null;
 				if (operation.options.asset) {
@@ -598,7 +660,12 @@ class TransactionActionsClass extends BaseActionsClass {
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
-		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
+		const opInfo = {
+			block: blockNumber,
+			trxInblock: trIndex,
+			opInTrx: trIndex,
+		};
+		let objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo);
 
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
@@ -713,16 +780,20 @@ class TransactionActionsClass extends BaseActionsClass {
 			}
 		}
 
+		let contractObject;
 		if (options['new contract id']) {
-			objectInfo = await this.setContractObject(options['new contract id'].value, opIndex);
+			contractObject = await this.setContractObject(options['new contract id'].value, opIndex);
 		} else if (options.caller) {
-			objectInfo = await this.setContractObject(options.caller);
+			contractObject = await this.setContractObject(options.caller);
 		} else if (options['contract id']) {
-			objectInfo = await this.setContractObject(options['contract id'].value);
+			contractObject = await this.setContractObject(options['contract id'].value);
 		} else if (options.contract) {
-			objectInfo = await this.setContractObject(options.contract);
+			contractObject = await this.setContractObject(options.contract);
 		}
 
+		if (contractObject) {
+			objectInfo = contractObject;
+		}
 		let result = null;
 		switch (type) {
 			case OPERATIONS_IDS.CONTRACT_CREATE:
