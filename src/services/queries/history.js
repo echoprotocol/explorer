@@ -63,3 +63,33 @@ export const getLatestOperationsFromGQL = async () => {
 	`;
 	return client.getClient().query({ query });
 };
+
+export const getConrtactOperations = async (contractId) => {
+	const query = gql`
+	query getHistory($contractId: ContractId!){
+		getHistory(contracts: [$contractId]){
+			items {
+				id
+				body
+				result
+				virtual
+				trx_in_block
+				op_in_trx
+				block {
+					round
+				}
+				transaction {
+					ref_block_num
+						block {
+							round
+						}
+					}
+				}
+			}
+		}
+	`;
+	return client.getClient().query({ query, variables: { contractId } })
+		.then(({ data }) => ({
+			history: data.getHistory,
+		}));
+};

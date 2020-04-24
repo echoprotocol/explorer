@@ -30,7 +30,12 @@ module.exports = chainWrapper({
 		GRAPHQL_URL_WS_LINK: GRAPHQL_URL.WS,
 		APP_VERSION: packageJson.version,
 	},
-	webpack: (_config, { isServer }) => {
+	webpack: (_config, { isServer, dev }) => {
+
+		if (dev) {
+			_config.devtool = 'cheap-module-source-map';
+		}
+
 		if (!isServer) {
 			_config.node = {
 				fs: 'empty',

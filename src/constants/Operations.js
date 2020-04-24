@@ -245,8 +245,8 @@ const Operations = {
 		value: OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT,
 		name: 'Committee frozen balance deposit',
 		options: {
-			from: null,
-			subject: ['committee_member_account', 'name'],
+			from: ['committee_member_account', 'name'],
+			subject: null,
 			value: 'amount.amount',
 			asset: 'amount.asset_id',
 		},
@@ -286,7 +286,7 @@ const Operations = {
 		value: OPERATIONS_IDS.BALANCE_CLAIM,
 		name: 'Claim balance',
 		options: {
-			from: null,
+			from: ['deposit_to_account', 'name'],
 			subject: ['deposit_to_account', 'name'],
 			value: 'total_claimed.amount',
 			asset: 'total_claimed.asset_id',
@@ -705,6 +705,12 @@ export const proposalOperations = [
 	Operations.proposal_create.name,
 	Operations.proposal_update.name,
 	Operations.proposal_delete.name,
+];
+export const sidechainOperations = [
+	Operations.sidechain_eth_create_address.name,
+	Operations.sidechain_eth_approve_address.name,
+	Operations.deposit_eth.name,
+	Operations.eth_send_deposit.name,
 ];
 
 export default Operations;

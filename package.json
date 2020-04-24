@@ -30,6 +30,8 @@
 		"apollo-utilities": "^1.2.1",
 		"babel-eslint": "^8.0.3",
 		"bignumber.js": "^8.0.1",
+		"bitcoinjs-lib": "^5.1.7",
+		"buffer-ponyfill": "^0.1.1",
 		"classnames": "^2.2.6",
 		"codemirror": "^5.48.0",
 		"config": "^1.30.0",

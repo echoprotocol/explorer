@@ -9,6 +9,8 @@ import Operations, {
 	assetOperations,
 	committeeOperations,
 	proposalOperations,
+	sidechainOperations,
+	contractOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 import { ERC20_HASHES, ECHO_ASSET, NATHAN } from '../constants/GlobalConstants';
@@ -24,10 +26,12 @@ import BaseActionsClass from './BaseActionsClass';
 import GlobalActions from './GlobalActions';
 
 import { getContractInfo } from '../services/queries/contract';
-import { transformOperationDataByType } from '../helpers/ops.format/OpsInfoMapper';
+import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
-import { countRate } from '../helpers/ops.format/AddInfoHelper';
+import { countRate } from '../services/transform.ops/AddInfoHelper';
+import { getConrtactOperations, getHistory } from '../services/queries/history';
+import URLHelper from '../helpers/URLHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -96,13 +100,33 @@ class TransactionActionsClass extends BaseActionsClass {
 			if (supportedAsset !== null) {
 				supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
 			}
-			const chainContract = await echo.api.getContract(id);
+			const [chainContract] = await echo.api.getContracts([id]);
+			const { whitelist, blacklist } = await echo.api.getContractPoolWhitelist(id);
+			const contractPoolBalance = await echo.api.getContractPoolBalance(id);
+			const [owner] = await echo.api.getAccounts([chainContract.owner]);
+			const [assetPoolBalance] = await echo.api.getAssets([contractPoolBalance.asset_id]);
+
+			const whitelistAccounts = await echo.api.getAccounts(whitelist);
+			const blacklistAccounts = await echo.api.getAccounts(blacklist);
+
 			return new Map({})
-				.set('type', chainContract.type && chainContract.type.toUpperCase())
+				.set('type', chainContract.type)
+				.set('owner', { link: owner.id, value: owner.name })
+				.set('whitelist', whitelistAccounts.map((account) => ({ value: account.name, link: account.id })))
+				.set('blacklist', blacklistAccounts.map((account) => ({ value: account.name, link: account.id })))
+				.set('contractPoolBalance', {
+					asset_id: assetPoolBalance.id,
+					symbol: assetPoolBalance.symbol,
+					precision: assetPoolBalance.precision,
+					amount: contractPoolBalance.amount,
+				})
 				.set('supportedAsset', supportedAsset)
 				.set('ethAccuracy', ethAccuracy ? 'Activated' : 'Inactivated')
-				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No')
-				.set('bytecode', chainContract[1].code);
+				.set('token', contractInfo.token === 'erc20' ? {
+					id: contractInfo.id,
+					...contractInfo.token,
+				} : null)
+				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No');
 		} catch (e) {
 			return null;
 		}
@@ -116,7 +140,7 @@ class TransactionActionsClass extends BaseActionsClass {
 	 * @param subject
 	 * @returns {Function}
 	 */
-	async setOperationObject(operation, options, from, subject) {
+	async setOperationObject(operation, options, from, subject, operationResult, opInfo) {
 		let object = new Map({});
 
 		try {
@@ -140,6 +164,80 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
 					.set('delegating', accounts[1] && accounts[1].name);
+			} else if (contractOperations.includes(operation.name)) {
+				let contractId;
+				let isNeedLink = false;
+				switch (operation.name) {
+					case Operations.contract_internal_create.name:
+						isNeedLink = true;
+						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						break;
+					case Operations.contract_create.name:
+						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						break;
+					case Operations.contract_internal_call.name:
+						isNeedLink = true;
+						contractId = options.callee;
+						break;
+					case Operations.contract_call.name:
+						contractId = options.callee;
+						break;
+					case Operations.contract_selfdestruct.name:
+						isNeedLink = true;
+						contractId = options.contract;
+						break;
+					case Operations.contract_update.name:
+					case Operations.contract_fund_pool.name:
+					case Operations.contract_whitelist.name:
+						contractId = options.contract;
+						break;
+					default:
+						break;
+				}
+				const contract = await echo.api.getObject(contractId);
+				const contractAdditionalInfo = await echo.api.getFullContract(contractId);
+				const { contractInfo } = await getContractInfo(contractId);
+				const { history } = await getConrtactOperations(contractId);
+				object = object
+					.set('id', contractId)
+					.set('type', contractInfo.type)
+					.set('ethAccuracy', contract.eth_accuracy)
+					.set('supportedAsset', contract.supported_asset)
+					.set('owner', contract.owner)
+					.set('contractPoolBalance', contractAdditionalInfo.poolBalance)
+					.set('whitelist', contractAdditionalInfo.whitelist || [])
+					.set('blacklist', contractAdditionalInfo.blacklist || []);
+				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
+					el.op_in_trx === opInfo.opInTrx &&
+					el.block.round === opInfo.block);
+				if (isNeedLink) {
+					object = object
+						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block, currentOp.op_in_trx));
+				}
+				if (currentOp.virtual_operations.length) {
+					const formatVirtualOps = currentOp.virtual_operations.map((op) => this.formatOperation(op));
+					const virtualOps = await Promise.all(formatVirtualOps);
+					const formatted = virtualOps.map((el) => {
+						let contractIdInOp;
+						if (el.from && validators.isContractId(el.from.id)) {
+							contractIdInOp = from.id;
+						}
+						if (el.subject && validators.isContractId(el.subject.id)) {
+							contractIdInOp = subject.id;
+						}
+						return {
+							type: el.name,
+							bytecode: el.bytecode,
+							asset_amount_sent: el.value,
+							contract_id: contractIdInOp,
+						};
+					});
+
+					object.set('virtualOps', formatted);
+				}
+				if (contractInfo.token) {
+					object = object.set('token', contractInfo.token);
+				}
 			} else if (assetOperations.includes(operation.name)) {
 				let assetId = null;
 				if (operation.options.asset) {
@@ -175,25 +273,84 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
-				const committee = await echo.api.getObject(subject.id);
-				const committeeMemberAccount = await echo.api.getObject(committee.committee_member_account);
+				const accountId = from.id || subject.id;
+				const committee = await echo.api.getCommitteeMemberByAccount(accountId);
+				if (committee) {
+					const frozenBalance = await echo.api.getCommitteeFrozenBalance(committee.id);
+					const [asset] = await echo.api.getAssets([frozenBalance.asset_id]);
 
-				object = object
-					.set('id', committee.id)
-					.set('account', committeeMemberAccount && committeeMemberAccount.name)
-					.set('votes', committee.total_votes)
-					.set('url', committee.url);
+					object = object
+						.set('committee', committee)
+						.set('frozenBalance', {
+							amount: frozenBalance.amount,
+							asset_id: asset.id,
+							symbol: asset.symbol,
+							precision: asset.precision,
+						});
+				}
 			} else if (proposalOperations.includes(operation.name)) {
-				const proposal = await echo.api.getObject(subject.id);
+				let operationName;
+				switch (operation.name) {
+					case Operations.proposal_create.name:
+						operationName = 'PROPOSAL_CREATE';
+						break;
+					case Operations.proposal_update.name:
+						operationName = 'PROPOSAL_UPDATE';
+						break;
+					case Operations.proposal_delete.name:
+						operationName = 'PROPOSAL_DELETE';
+						break;
+					default:
+						break;
+				}
+				const { items } = await getHistory({ subject: from.id, operations: [operationName] });
+				const currentOperation = items.find((el) => el.trx_in_block === opInfo.trxInblock &&
+							el.op_in_trx === opInfo.opInTrx &&
+							el.block.round === opInfo.block);
 				const operations = options.proposed_ops.map(([opType]) => {
 					const op = Object.values(Operations).find((i) => i.value === opType);
 					return op && op.name;
 				});
 
 				object = object
-					.set('id', proposal && proposal.id)
-					.set('expirationTime', options.expiration_time)
+					.set('id', currentOperation.body.proposal || currentOperation.result)
+					.set('expirationTime', currentOperation.body.expiration_time)
+					.set('reviewPeriodSeconds', currentOperation.body.review_period_seconds)
 					.set('operations', operations);
+
+				const proposal = await echo.api.getObject(subject.id);
+				if (!proposal) {
+					const status = 'resolved or rejected';
+					object = object.set('status', status);
+				}
+			} else if (sidechainOperations.includes(operation.name)) {
+				let objectWithApprovals = '';
+				switch (operation.name) {
+					case Operations.sidechain_eth_approve_address.name:
+						objectWithApprovals = await echo.api.getEthAddress(options.account);
+						break;
+					case Operations.deposit_eth.name:
+						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
+							.find((el) => el.deposit_id === options.deposit_id);
+						object = object
+							.set('deposit_id', objectWithApprovals.id);
+						break;
+					case Operations.eth_send_deposit.name:
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						object = object
+							.set('deposit_id', objectWithApprovals.id);
+						break;
+					default:
+						break;
+				}
+				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
+				let approves = objectWithApprovals.approves.length;
+				if (approves === 0 && objectWithApprovals.is_approved) {
+					approves = total;
+				}
+				object = object
+					.set('approves', approves)
+					.set('total', total);
 			}
 
 			return object;
@@ -509,6 +666,32 @@ class TransactionActionsClass extends BaseActionsClass {
 		return result;
 	}
 
+	getProposalOperations(proposedOps = [], blockNumber, blockTimestamp, trIndex) {
+		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
+			const [idPropOp] = proposedOp;
+			let propData = {};
+			try {
+				propData = await this.getOperation(
+					proposedOp,
+					blockNumber,
+					blockTimestamp,
+					trIndex,
+					proposedOpIndex,
+					[],
+				);
+			} catch (err) {
+				console.log('Error to parse proposal props', err);
+			}
+			let transformData = {};
+			try {
+				transformData = await transformOperationDataByType(idPropOp, propData);
+			} catch (err) {
+				console.log('Error to transformOperationDataByType', err);
+			}
+			return transformData;
+		});
+	}
+
 	async getOperation([type, options], blockNumber, blockTimestamp, trIndex, opIndex, operationResult, number = null, accountId = null, trId = null) {
 		const operation = Object.values(Operations).find((i) => i.value === type);
 
@@ -520,7 +703,12 @@ class TransactionActionsClass extends BaseActionsClass {
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
-		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
+		const opInfo = {
+			block: blockNumber,
+			trxInblock: trIndex,
+			opInTrx: trIndex,
+		};
+		let objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo);
 
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
@@ -557,7 +745,12 @@ class TransactionActionsClass extends BaseActionsClass {
 						const accounts = await echo.api.getAccounts(value);
 						value = accounts.map(({ name, id }) => ({ value: name, link: id }));
 					} else if (key === 'proposed_ops') {
-						value = value.map(({ op }) => op);
+						const [name, data] = value;
+						value = [{ name, ...data }];
+						break;
+					} else if (key === 'policy') {
+						value = value.map((data) => data);
+					} else if (type === OPERATIONS_IDS.CONTRACT_WHITELIST) {
 						break;
 					} else {
 						return {};
@@ -630,14 +823,20 @@ class TransactionActionsClass extends BaseActionsClass {
 			}
 		}
 
+		let contractObject;
 		if (options['new contract id']) {
-			objectInfo = await this.setContractObject(options['new contract id'].value, opIndex);
+			contractObject = await this.setContractObject(options['new contract id'].value, opIndex);
 		} else if (options.caller) {
-			objectInfo = await this.setContractObject(options.caller);
+			contractObject = await this.setContractObject(options.caller);
 		} else if (options['contract id']) {
-			objectInfo = await this.setContractObject(options['contract id'].value);
+			contractObject = await this.setContractObject(options['contract id'].value);
+		} else if (options.contract) {
+			contractObject = await this.setContractObject(options.contract);
 		}
 
+		if (contractObject) {
+			objectInfo = contractObject;
+		}
 		let result = null;
 		switch (type) {
 			case OPERATIONS_IDS.CONTRACT_CREATE:
@@ -657,6 +856,12 @@ class TransactionActionsClass extends BaseActionsClass {
 				options.address = address;
 				break;
 			}
+			case OPERATIONS_IDS.CONTRACT_WHITELIST:
+				options.addedToWhitelist = (await echo.api.getAccounts(options.add_to_whitelist)).map((account) => ({ link: account.id, value: account.name }));
+				options.removedFromWhitelist = (await echo.api.getAccounts(options.remove_from_whitelist)).map((account) => ({ link: account.id, value: account.name }));
+				options.addedToBlacklist = (await echo.api.getAccounts(options.add_to_blacklist)).map((account) => ({ link: account.id, value: account.name }));
+				options.removedFromBlacklist = (await echo.api.getAccounts(options.remove_from_blacklist)).map((account) => ({ link: account.id, value: account.name }));
+				break;
 			default:
 				[, result] = operationResult;
 				break;
@@ -694,8 +899,16 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const opNumberToFormat = operation.value < 20 ? operation.value : 0;
+		const opNumberToFormat = operation.value < 45 ? operation.value : 0;
+
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
+		if (proposalOperations.includes(operation.name)) {
+			let promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
+			promises = await Promise.all(promises);
+			delete op.proposed_ops;
+			op.proposals = promises;
+		}
+
 		return op;
 	}
 

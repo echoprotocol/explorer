@@ -10,21 +10,22 @@ import Avatar from '../../Avatar';
 const OperationInfoRow = ({
 	title, accounts,
 }) => (
-	<div className="od-row">
-		<div className="od-col">{title}:</div>
-		<div className="od-col">
-			<div className="producers-field">
-				{accounts.map((account) => (
-					<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(account.link)} key={account.link}>
-						<a className="avatar-wrap">
-							<Avatar accountName={account.value} />
-							<span>{account.value}</span>
-						</a>
-					</Link>
-				))}
+	accounts.length > 0 ?
+		<div className="od-row">
+			<div className="od-col">{title}:</div>
+			<div className="od-col">
+				<div className="producers-field">
+					{accounts.map((account) => (
+						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(account.link)} key={account.link}>
+							<a className="avatar-wrap">
+								<Avatar accountName={account.value} />
+								<span>{account.value}</span>
+							</a>
+						</Link>
+					))}
+				</div>
 			</div>
-		</div>
-	</div>
+		</div> : null
 );
 
 OperationInfoRow.propTypes = {

@@ -11,6 +11,7 @@ import ProducersRow from './Rows/ProducersRow';
 import AdditionalInfo from './AdditionalInfo';
 import PolicyRow from './Rows/PolicyRow';
 import CopyRow from './Rows/CopyRow';
+import URLHelper from '../../helpers/URLHelper';
 
 class OperationInfo extends React.Component {
 
@@ -37,22 +38,27 @@ class OperationInfo extends React.Component {
 					{data.receiver && <LinkRow title="Receiver" account={data.receiver} />}
 					{data.recipient && <LinkRow title="Recipient" account={{ value: data.recipient.value, link: data.recipient.link }} />}
 					{data.owner && <LinkRow title="Owner" account={{ value: data.owner.value, link: data.owner.link }} />}
-					{data.contract && <LinkRow title="Contract" link={data.contract} />}
-					{data.added_to_whitelist && <LinkRow title="Added to whitelist" account={{ value: data.added_to_whitelist.value, link: data.added_to_whitelist.link }} />}
+					{data.contract && <LinkRow title="Contract" contract={data.contract} />}
+					{data.added_to_whitelist && <ProducersRow title="Added to whitelist" accounts={data.added_to_whitelist} />}
 					{data.removed_from_whitelist && <ProducersRow title="Removed from whitelist" accounts={data.removed_from_whitelist} />}
+					{data.added_to_blacklist && <ProducersRow title="Added to blacklist" accounts={data.added_to_blacklist} />}
+					{data.remove_from_blacklist && <ProducersRow title="Removed from blacklist" accounts={data.remove_from_blacklist} />}
 					{data.new_owner && <LinkRow title="New owner" account={{ value: data.new_owner.value, link: data.new_owner.link }} />}
 					{data.from && <LinkRow title="From" account={data.from} />}
 					{data.to && <LinkRow title="To" account={data.to} />}
 					{data.listed_account && <LinkRow title="Listed account" account={data.listed_account} />}
 					{data.to_address && <PrimaryRow title="To address" description={data.to_address} />}
+					{data.to_account && <LinkRow title="To account" account={data.to_account} />}
+
+					{data.url && <PrimaryRow title="URL" description={data.url} />}
+					{data.new_url && <PrimaryRow title="New URL" description={data.new_url} />}
+					{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
-					{data.url && <LinkRow title="URL" link={data.url} />}
-					{data.new_url && <LinkRow title="New URL" link={data.new_url} />}
-					{data.eth_address && <LinkRow title="ETH address" link={data.eth_address} isLinkOut />}
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
-					{data.btc_address && <LinkRow title="BTC address" link={data.btc_address} isLinkOut />}
+					{data.btc_address && <LinkRow title="BTC address" value={data.btc_address} link={URLHelper.createBtcAddressOut(data.btc_address)} isLinkOut />}
 					{data.new_btc_address && <LinkRow title="New BTC address" link={data.new_btc_address} isLinkOut />}
-					{data.caller_contract && <LinkRow title="Caller contract" account={{ value: data.caller_contract.value, link: data.caller_contract.link }} />}
+					{data.caller_contract && <LinkRow title="Caller contract" account={data.caller_contract} />}
+					{data.called_contract && <LinkRow title="Called contract" account={data.called_contract} />}
 					{data.new_contract && <LinkRow title="New contract" link={data.new_contract} />}
 					{data.to_account && <LinkRow title="To account" account={data.to_account} />}
 					{data.registrar && <LinkRow title="Registrar" account={data.registrar} />	}
@@ -83,10 +89,11 @@ class OperationInfo extends React.Component {
 					{data.delegate_share && <LinkRow title="Delegate share" amount={data.delegate_share} />}
 					{data.duration && <PrimaryRow title="Duration" description={data.duration} />}
 					{data.amount && <LinkRow title="Amount" amount={data.amount} />}
+					{data.deposit_amount && <LinkRow title="Deposit amount" amount={data.deposit_amount} />}
+
 					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
-					{data.balance_owner_key && <AuthorityRow title="Balance owner key" authority={data.balance_owner_key} />}
-					{data.deposit_amount && <PrimaryRow title="Deposit amount" description={data.deposit_amount} />}
+					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
 					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.supported_asset && <PrimaryRow title="Supported asset" description={data.supported_asset} />}
