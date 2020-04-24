@@ -142,7 +142,6 @@ class TransactionActionsClass extends BaseActionsClass {
 	 */
 	async setOperationObject(operation, options, from, subject, operationResult, opInfo) {
 		let object = new Map({});
-
 		try {
 			if (accountOperations.includes(operation.name)) {
 				let account = await echo.api.getObject(from.id);
@@ -324,7 +323,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					object = object.set('status', status);
 				}
 			} else if (sidechainOperations.includes(operation.name)) {
-				let objectWithApprovals = '';
+				let objectWithApprovals = { approves: [], is_approved: false };
 				switch (operation.name) {
 					case Operations.sidechain_eth_approve_address.name:
 						objectWithApprovals = await echo.api.getEthAddress(options.account);
@@ -340,9 +339,30 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('deposit_id', objectWithApprovals.id);
 						break;
+					case Operations.eth_send_withdraw.name:
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						break;
+					case Operations.approve_withdraw_eth.name:
+						objectWithApprovals = await echo.api.getObject(`1.15.${options.withdraw_id}`);
+						break;
+					case Operations.sidechain_issue.name:
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						break;
+					case Operations.register_erc20_token.name: {
+						const contractObject = await echo.api.getObject(operationResult[1]);
+						object = object
+							.set('decimals', String(options.decimals));
+						if (!contractObject) {
+							break;
+						}
+						object = object
+							.set('contract', contractObject.contract);
+						break;
+					}
 					default:
 						break;
 				}
+
 				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
 				let approves = objectWithApprovals.approves.length;
 				if (approves === 0 && objectWithApprovals.is_approved) {
@@ -899,7 +919,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const opNumberToFormat = operation.value < 49 ? operation.value : 0;
+		const opNumberToFormat = operation.value <= 49 ? operation.value : 0;
 
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		if (proposalOperations.includes(operation.name)) {

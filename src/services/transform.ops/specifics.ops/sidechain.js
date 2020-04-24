@@ -76,14 +76,14 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: data.account,
-					eth_addr: data.eth_addr,
+					eth_address: data.eth_addr,
 					amount: data.value,
 					fee: data.fee,
 					additionalInfo: {
-						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
-						},
+						// number_of_confirmations: {
+						// 	value: data.objectInfo.get('approves'),
+						// 	total: data.objectInfo.get('total'),
+						// },
 						transaction_hash: '', // TODO
 					},
 				},
@@ -174,13 +174,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: data.account,
-					eth_addr: data.eth_addr,
+					eth_address: data.eth_addr,
 					symbol: data.symbol,
 					name: data.name,
-					decimals: data.decimals,
+					decimals: data.objectInfo.get('decimals'),
 					fee: data.fee,
 					additionalInfo: {
-						associated_contract: '', // TODO
+						associated_contract: data.objectInfo.get('contract'),
 					},
 				},
 			};

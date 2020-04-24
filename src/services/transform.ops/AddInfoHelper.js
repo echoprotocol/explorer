@@ -162,6 +162,13 @@ async function getContractCreateInfo(data) {
 	};
 }
 
+async function getErc20RegisterTokenInfo(data) {
+	return {
+		...data,
+		decimals: String(data.decimals),
+	};
+}
+
 async function getAdditionalInfoByOpId(opId, data) {
 	try {
 		switch (opId) {
@@ -187,6 +194,8 @@ async function getAdditionalInfoByOpId(opId, data) {
 				return await getVestingBalanceInfo(data);
 			case OPERATIONS_IDS.CONTRACT_CREATE:
 				return await getContractCreateInfo(data);
+			case OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN:
+				return await getErc20RegisterTokenInfo(data);
 			default:
 				return null;
 		}

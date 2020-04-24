@@ -41,6 +41,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.number_of_confirmations && <PrimaryRow title="Number of confirmations" description={`${data.number_of_confirmations.value} out of ${data.number_of_confirmations.total}`} />}
 			{data.received_deposit_address && <LinkRow title="Received deposit address" link={data.received_deposit_address} />}
 			{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
+			{data.associated_contract && <LinkRow title="Associated contract" contract={data.associated_contract} />}
 		</div>
 	</div>
 );
