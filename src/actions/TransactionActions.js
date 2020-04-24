@@ -332,9 +332,13 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.deposit_eth.name:
 						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
 							.find((el) => el.deposit_id === options.deposit_id);
+						object = object
+							.set('deposit_id', objectWithApprovals.id);
 						break;
 					case Operations.eth_send_deposit.name:
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						object = object
+							.set('deposit_id', objectWithApprovals.id);
 						break;
 					default:
 						break;
