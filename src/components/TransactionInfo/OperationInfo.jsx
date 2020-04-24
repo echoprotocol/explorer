@@ -18,7 +18,6 @@ class OperationInfo extends React.Component {
 	render() {
 		const { data, proposalIdx } = this.props;
 
-		console.log('data', data)
 		return (
 			<div className="operation-info">
 				{data.description &&
