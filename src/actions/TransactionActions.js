@@ -30,7 +30,8 @@ import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
-import { getConrtactOperations } from '../services/queries/history';
+import { getConrtactOperations, getHistory } from '../services/queries/history';
+import URLHelper from '../helpers/URLHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -165,16 +166,26 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('delegating', accounts[1] && accounts[1].name);
 			} else if (contractOperations.includes(operation.name)) {
 				let contractId;
+				let isNeedLink = false;
 				switch (operation.name) {
 					case Operations.contract_internal_create.name:
+						isNeedLink = true;
+						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						break;
 					case Operations.contract_create.name:
 						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
 						break;
 					case Operations.contract_internal_call.name:
+						isNeedLink = true;
+						contractId = options.callee;
+						break;
 					case Operations.contract_call.name:
 						contractId = options.callee;
 						break;
 					case Operations.contract_selfdestruct.name:
+						isNeedLink = true;
+						contractId = options.contract;
+						break;
 					case Operations.contract_update.name:
 					case Operations.contract_fund_pool.name:
 					case Operations.contract_whitelist.name:
@@ -199,6 +210,10 @@ class TransactionActionsClass extends BaseActionsClass {
 				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
 					el.op_in_trx === opInfo.opInTrx &&
 					el.block.round === opInfo.block);
+				if (isNeedLink) {
+					object = object
+						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block, currentOp.op_in_trx));
+				}
 				if (currentOp.virtual_operations.length) {
 					const formatVirtualOps = currentOp.virtual_operations.map((op) => this.formatOperation(op));
 					const virtualOps = await Promise.all(formatVirtualOps);
@@ -274,16 +289,40 @@ class TransactionActionsClass extends BaseActionsClass {
 						});
 				}
 			} else if (proposalOperations.includes(operation.name)) {
-				const proposal = await echo.api.getObject(subject.id);
+				let operationName;
+				switch (operation.name) {
+					case Operations.proposal_create.name:
+						operationName = 'PROPOSAL_CREATE';
+						break;
+					case Operations.proposal_update.name:
+						operationName = 'PROPOSAL_UPDATE';
+						break;
+					case Operations.proposal_delete.name:
+						operationName = 'PROPOSAL_DELETE';
+						break;
+					default:
+						break;
+				}
+				const { items } = await getHistory({ subject: from.id, operations: [operationName] });
+				const currentOperation = items.find((el) => el.trx_in_block === opInfo.trxInblock &&
+							el.op_in_trx === opInfo.opInTrx &&
+							el.block.round === opInfo.block);
 				const operations = options.proposed_ops.map(([opType]) => {
 					const op = Object.values(Operations).find((i) => i.value === opType);
 					return op && op.name;
 				});
 
 				object = object
-					.set('id', proposal && proposal.id)
-					.set('expirationTime', options.expiration_time)
+					.set('id', currentOperation.body.proposal || currentOperation.result)
+					.set('expirationTime', currentOperation.body.expiration_time)
+					.set('reviewPeriodSeconds', currentOperation.body.review_period_seconds)
 					.set('operations', operations);
+
+				const proposal = await echo.api.getObject(subject.id);
+				if (!proposal) {
+					const status = 'resolved or rejected';
+					object = object.set('status', status);
+				}
 			} else if (sidechainOperations.includes(operation.name)) {
 				let objectWithApprovals = '';
 				switch (operation.name) {

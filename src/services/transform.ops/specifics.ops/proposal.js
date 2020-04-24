@@ -1,8 +1,10 @@
+// import { OPERATIONS_IDS } from 'echojs-lib';
 // import { OPS_DESCRIPTIONS, OPS_TYPES } from '../../../constants/OpsFormatConstants';
 
-export const transformOperationDataByType = async (opNumber) => {
+export const transformOperationDataByType = async (opNumber, data) => {
 	// const type = OPS_TYPES[opNumber];
 	// const description = OPS_DESCRIPTIONS[opNumber];
+	// const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 	// TODO almost all, have a trouble
 	switch (opNumber) {
 		// case OPERATIONS_IDS.PROPOSAL_CREATE: {
@@ -11,7 +13,7 @@ export const transformOperationDataByType = async (opNumber) => {
 		// 			type,
 		// 			sender: data.fee_paying_account,
 		// 			expiration_time: data.expiration_time,
-		// 			preview_period: data.review_period_seconds.amount,
+		// 			preview_period: data.review_period_seconds,
 		// 			fee: data.fee,
 		// 			...description,
 		// 			additionalInfo: {
@@ -19,7 +21,7 @@ export const transformOperationDataByType = async (opNumber) => {
 		// 				// 	value: 2,
 		// 				// 	total: 4,
 		// 				// },
-		// 				proposal_status: data.objectInfo ? 'resolve' : 'rejected',
+		// 				proposal_status: objectInfo.status,
 		// 				result_transaction: 'https://explorer.echo.org/blocks/70/1?op=1',
 		// 			},
 		// 		},
@@ -31,15 +33,9 @@ export const transformOperationDataByType = async (opNumber) => {
 		// 		operationInfo: {
 		// 			type,
 		// 			sender: data.fee_paying_account,
-		// 			proposal_id: 'https://explorer.echo.org/blocks/70/1?op=1',
-		// 			approvals_to_add: [{
-		// 				value: 'ECHOd9f8LmNjn32GUMXZwNZDsfBqa6qcBGvGk86kKTuvzkMjdW9saCrTtrPwGpuB',
-		// 				weight: '1',
-		// 			}],
-		// 			approvals_to_remove: [{
-		// 				value: 'vic.tor',
-		// 				weight: '1',
-		// 			}],
+		// 			proposal_id: data.proposal,
+		// 			approvals_to_add: [...data.active_approvals_to_add, ...data.key_approvals_to_add],
+		// 			approvals_to_remove: [...data.active_approvals_to_remove, ...data.key_approvals_to_remove],
 		// 			fee: data.fee,
 		// 			...description,
 		// 			additionalInfo: {
@@ -55,7 +51,7 @@ export const transformOperationDataByType = async (opNumber) => {
 		// 		operationInfo: {
 		// 			type,
 		// 			sender: data.fee_paying_account,
-		// 			proposal_id: 'https://explorer.echo.org/blocks/70/1?op=1',
+		// 			proposal_id: data.proposal,
 		// 			fee: data.fee,
 		// 			...description,
 		// 			additionalInfo: {
@@ -63,7 +59,7 @@ export const transformOperationDataByType = async (opNumber) => {
 		// 				proposal_status: 'approved',
 		// 			},
 		// 		},
-		// 		// proposalOperations: data.proposed_ops,
+		// 		proposalOperations: data.proposed_ops,
 		// 	};
 		// }
 		default:

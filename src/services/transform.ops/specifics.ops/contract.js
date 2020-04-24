@@ -108,22 +108,24 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		}
 		case OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE: {
 			// TODO original_operation
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
 					type: 'Create internal contract (virt)',
 					caller_contract: data.caller,
-					new_contract: data.objectInfo.get('id'),
+					new_contract: objectInfo.id,
 					value: data.value,
-					eth_accuracy_is_enabled: data.objectInfo.get('ethAccuracy'),
-					supported_asset: data.objectInfo.get('supportedAsset') || 'None',
+					eth_accuracy_is_enabled: objectInfo.ethAccuracy,
+					supported_asset: objectInfo.supportedAsset || 'None',
 					additionalInfo: {
-						original_operation: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+						original_operation: objectInfo.link,
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_INTERNAL_CALL: {
 			// TODO original_operation
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
 					type: 'Call internal contract (virt)',
@@ -132,28 +134,30 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.amount,
 					...description,
 					additionalInfo: {
-						original_operation: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+						original_operation: objectInfo.link,
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_SELFDESTRUCT: {
 			// TODO original_operation
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
 					type: 'Destruct contract (virt)',
-					destructed_contract: data.objectInfo.get('id'),
+					destructed_contract: objectInfo.id,
 					recipient: data.recipient,
 					fee: data.fee,
 					amount: data.amount,
 					...description,
 					additionalInfo: {
-						original_operation: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+						original_operation: objectInfo.link,
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_UPDATE: {
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
 					type,
@@ -164,12 +168,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.amount,
 					...description,
 					additionalInfo: {
-						current_contract_owner: data.objectInfo.get('owner'),
+						current_contract_owner: objectInfo.owner,
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_FUND_POOL: {
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
 					type,
@@ -179,15 +184,16 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.value,
 					...description,
 					additionalInfo: {
-						current_contract_owner: data.objectInfo.get('owner'),
-						current_contract_whitelist: data.objectInfo.get('whitelist'),
-						current_contract_blacklist: data.objectInfo.get('blacklist'),
-						current_contract_fee_pool_balance: data.objectInfo.get('contractPoolBalance'),
+						current_contract_owner: objectInfo.owner,
+						current_contract_whitelist: objectInfo.whitelist,
+						current_contract_blacklist: objectInfo.blacklist,
+						current_contract_fee_pool_balance: objectInfo.contractPoolBalance,
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_WHITELIST: {
+			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
 					type,
@@ -200,10 +206,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						current_contract_owner: data.objectInfo.get('owner'),
-						current_contract_whitelist: data.objectInfo.get('whitelist'),
-						current_contract_blacklist: data.objectInfo.get('blacklist'),
-						current_contract_fee_pool_balance: data.objectInfo.get('contractPoolBalance'),
+						current_contract_owner: objectInfo.owner,
+						current_contract_whitelist: objectInfo.whitelist,
+						current_contract_blacklist: objectInfo.blacklist,
+						current_contract_fee_pool_balance: objectInfo.contractPoolBalance,
 					},
 				},
 			};
