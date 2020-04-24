@@ -42,24 +42,6 @@
 				max-width: 75px;
 			}
 		}
-
-		.tooltip {
-			position: absolute;
-			margin-left: 5px;
-			margin-top: 1px;
-			height: 16px;
-			width: 9px;
-		}
-	}
-
-	.produced {
-		.tooltip {
-			position: absolute;
-			margin-left: 5px;
-			margin-top: 1px;
-			height: 16px;
-			width: 9px;
-		}
 	}
 
 	.avatar-image {
@@ -73,6 +55,31 @@
 		.produced {
 			color: $lightgrey;
 		}
+	}
+	thead {
+		.td-in {
+			display: flex;
+		}
+	}
+}
+
+.distribution-table__empty-message {
+	padding: 0 0 0 30px;
+	color: $lightgrey;
+	@include inter-ui-medium;
+	font-size: 11px;
+	line-height: 140%;
+	@include max-vw(1534) {
+		padding: 0 0 0 20px;
+	}
+	@include max-vw(1279) {
+		padding: 0 0 0 30px;
+	}
+	@include max-vw(767) {
+		padding: 0 0 0 20px;
+	}
+	@include max-vw(500) {
+		padding: 0 0 0 15px;
 	}
 }
 
