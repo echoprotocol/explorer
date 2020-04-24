@@ -35,8 +35,8 @@ const OperationsRow = ({
 		blockTimestamp,
 		...detailInfo
 	},
+	isASCOps,
 	index,
-	isTransaction,
 	active,
 	toggleOperationDetails,
 	tableRefs,
@@ -98,7 +98,7 @@ const OperationsRow = ({
 	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
 	let numberOperation = null;
 	if (number !== '') {
-		numberOperation = isTransaction ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
+		numberOperation = isASCOps ? numberOperationInPage + 1 : totalDataSize - numberOperationInPage;
 	}
 
 	if (numberOperation < 1) {
@@ -114,6 +114,9 @@ const OperationsRow = ({
 			>
 				<td className="number">
 					<div className="td-in">{numberOperation}.</div>
+				</td>
+				<td className="type">
+					<div className="td-in">{detailInfo.type}</div>
 				</td>
 				<td className="type">
 					<div className="td-in">{type}</div>
@@ -204,6 +207,7 @@ const OperationsRow = ({
 };
 
 OperationsRow.propTypes = {
+	isASCOps: PropTypes.bool.isRequired,
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,
@@ -212,11 +216,6 @@ OperationsRow.propTypes = {
 	active: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
-	isTransaction: PropTypes.bool,
-};
-
-OperationsRow.defaultProps = {
-	isTransaction: false,
 };
 
 
