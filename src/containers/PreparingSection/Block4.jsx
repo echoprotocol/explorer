@@ -32,10 +32,10 @@ const Block4 = React.memo((props) => (
 			<OperationsBlockIcon />
 			<span className="preparing-caption accent">{FormatHelper.formatAmount(props.operationCount)}</span>
 			<Media queries={{
-				hd: '(max-width: 1280px)',
-				lg: '(max-width: 1000px)',
-				md: '(max-width: 768px)',
-				sm: '(max-width: 500px)',
+				hd: '(max-width: 1279px)',
+				lg: '(max-width: 999px)',
+				md: '(max-width: 767px)',
+				sm: '(max-width: 499px)',
 			}}
 			>
 				{(matches) => (

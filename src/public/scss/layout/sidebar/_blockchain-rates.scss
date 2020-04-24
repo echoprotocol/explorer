@@ -9,6 +9,15 @@
 		@include max-vw($res-500) {
 			flex-direction: column;
 		}
+		.sidebar-element-block {
+			width: 50%;
+			@include max-vw($res-500) {
+				width: 100%;
+			}
+			@include max-vw($res-500) {
+				width: 100%;
+			}
+		}
 	}
 }
 .pinned {
@@ -22,6 +31,7 @@
 	display: flex;
 	align-items: center;
 	@include max-vw($res-500) {
+		justify-content: space-between;
 		margin-top: 15px;
 	}
 }

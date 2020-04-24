@@ -20,7 +20,7 @@
 
 .wrap.flex {
 	display: flex;
-	@include min-vw($res-1400) {
+	@include min-vw($res-1280) {
 		& + .footer {
 			display: none;
 		}

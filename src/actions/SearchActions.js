@@ -203,7 +203,6 @@ class SearchActions extends BaseActionsClass {
 		return hints;
 	}
 
-
 	/**
 	 * search object by name
 	 * @param {String} str
@@ -281,7 +280,7 @@ class SearchActions extends BaseActionsClass {
 		try {
 			assets = await getAssetsBySymbols(SEARCH_LIMIT.MAX, str.toUpperCase());
 		} catch (err) {
-			console.warn('Error getting asset by symbol from graphql');
+			console.warn('Error getting asset by symbol from graphql', err);
 		}
 
 		const assetHints = assets.items.map(({ id }) => ({

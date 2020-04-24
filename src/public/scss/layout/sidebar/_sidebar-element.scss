@@ -79,10 +79,10 @@
 			}
 			@include max-vw($res-1280) {
 				&:not(:last-child) {
-					padding-right: 30px;
+					padding-right: 20px;
 				}
 				&:not(:first-child) {
-					padding-left: 30px;
+					padding-left: 20px;
 				}
 			}
 			@include max-vw($res-768) {
@@ -97,6 +97,32 @@
 		@include max-vw($res-500) {
 			&:not(:first-child) {
 				margin-top: 20px;
+			}
+		}
+	}
+	.sidebar-element {
+		&.total-supply {
+			width: 397px;
+			@include max-vw($res-1600) {
+				width: 360px;
+			}
+			@include max-vw($res-1280) {
+				width: 100%;
+			}
+		}
+		&.blockchain-rates {
+			width: 493px;
+			@include max-vw($res-1280) {
+				width: 100%;
+			}
+		}
+		&.frozen-funds {
+			width: calc(100% - 397px - 493px - 20px);
+			@include max-vw($res-1600) {
+				width: calc(100% - 360px - 493px - 10px);
+			}
+			@include max-vw($res-1280) {
+				width: 100%;
 			}
 		}
 	}
@@ -144,6 +170,7 @@
 }
 
 .sidebar-element-wrap {
+	width: 100%;
 	margin-top: auto;
 	@include max-vw($res-1280) {
 		margin-top: 0;
@@ -152,9 +179,20 @@
 
 .sidebar-element-link {
 	@include link();
+	@include inter-ui-medium;
 	font-size: 11px;
 	line-height: 13px;
 	letter-spacing: 0.02em;
 	margin-top: 26px;
 	display: inline-flex;
+	@include max-vw($res-1280) {
+		margin-top: 15px;
+	}
+}
+
+.recharts-wrapper {
+	width: auto !important;
+	.recharts-surface {
+		max-width: 100% !important;
+	}
 }
