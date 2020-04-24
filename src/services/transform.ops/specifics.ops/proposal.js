@@ -1,7 +1,7 @@
 // import { OPERATIONS_IDS } from 'echojs-lib';
 // import { OPS_DESCRIPTIONS, OPS_TYPES } from '../../../constants/OpsFormatConstants';
 
-export const transformOperationDataByType = async (opNumber, data) => {
+export const transformOperationDataByType = async (opNumber) => {
 	// const type = OPS_TYPES[opNumber];
 	// const description = OPS_DESCRIPTIONS[opNumber];
 	// const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
