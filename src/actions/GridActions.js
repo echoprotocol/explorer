@@ -33,7 +33,7 @@ export class GridActionsClass extends BaseActionsClass {
 			const sizePerPage = TypesHelper.isStringNumber(params.l) ? parseInt(params.l, 10) : DEFAULT_SIZE_PER_PAGE;
 			const currentPage = TypesHelper.isStringNumber(params.p) ? parseInt(params.p, 10) : 1;
 			const transformParams = {
-				totalDataSize: 0,
+				totalDataSize: params.totalDataSize || 0,
 				sizePerPage,
 				currentPage,
 				filters: {

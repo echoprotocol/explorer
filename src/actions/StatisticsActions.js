@@ -8,7 +8,6 @@ import StatisticsReducer from '../reducers/StatisticsReducer';
 
 import { getStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
-import { ECHO_ASSET } from '../constants/GlobalConstants';
 import { getLatestOperations } from './BlockActions';
 
 class StatisticsActionsClass extends BaseActionsClass {
@@ -48,7 +47,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 				dispatch(this.updateAverageBlocktime(getBlock));
 				dispatch(this.updateFrozenData(getFrozenBalancesData));
 			} catch (error) {
-				//
+				console.log('EchoDB err', error);
 			}
 		};
 	}
@@ -135,10 +134,6 @@ class StatisticsActionsClass extends BaseActionsClass {
 		return (dispatch) => {
 			const { frozenData } = newBlock;
 			const historyFrozenData = frozenData.map((el) => el.frozenSums);
-			newBlock.currentFrozenData.accounts_freeze_sum = new BN(newBlock.currentFrozenData.accounts_freeze_sum)
-				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
-			newBlock.currentFrozenData.committee_freeze_sum = new BN(newBlock.currentFrozenData.committee_freeze_sum)
-				.div(10 ** ECHO_ASSET.PRECISION).toString(10);
 			dispatch(this.setMultipleValue({
 				currentFrozenData: newBlock.currentFrozenData,
 				frozenData: historyFrozenData,

@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle,camelcase,no-shadow */
 import BN from 'bignumber.js';
-import moment from 'moment';
 import { Map, List } from 'immutable';
 import echo, { serializers, validators } from 'echojs-lib';
 
@@ -211,9 +210,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			resultTransactions = await Promise.all(promiseTransactions);
 		}
 		value.transactionCount = resultTransactions.length;
-		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), [])).reverse();
+		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
 		value.round = planeBlock.round;
-		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
+		value.timestamp = planeBlock.timestamp;
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, resultTransactions.length));
 		await dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
@@ -322,7 +321,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
 				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
@@ -363,7 +361,12 @@ export const initBlocks = () => async (dispatch) => {
 };
 
 export const getLatestOperations = () => async (dispatch) => {
-	const latestOperations = await getLatestOperationsFromGQL();
+	let latestOperations = [];
+	try {
+		latestOperations = await getLatestOperationsFromGQL();
+	} catch (err) {
+		console.log('EchoDB error', err);
+	}
 	const operations = latestOperations.data.getHistory.items;
 	const transactions = AccountActions.formatHistoryFromEchoDB(operations);
 	const formattedOperations = await AccountActions.formatAccountHistory(null, transactions);

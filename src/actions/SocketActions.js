@@ -129,8 +129,17 @@ export const serverConnect = () => async (dispatch) => {
 			RoundReducer.actions.set({ field: 'blockReward', value: blockReward }),
 		]));
 
-		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
-		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		let block = null;
+		try {
+			block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
+		} catch (err) {
+			console.log('EchoDB error', err);
+		}
+
+		if (block) {
+			await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		}
+
 		await dispatch(getLatestOperations());
 		await dispatch(initBlocks());
 
@@ -220,7 +229,6 @@ export const partialClientConnect = () => async (dispatch) => {
 				apis: config.ECHO_NODE.APIS,
 			});
 		}
-
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 		await echo.subscriber.setBlockApplySubscribe(() => dispatch(blockRelease()));
 

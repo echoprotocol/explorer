@@ -10,6 +10,7 @@
 
 	@include max-vw($res-768) {
 		width: 40px;
+		height: 40px;
 		.input-container {
 			border-color: transparent;
 			.icon {
@@ -45,7 +46,9 @@
 				}
 
 				&:hover {
-					border-color: #383c57;
+					@include only-hover() {
+						border-color: #383c57;
+					}
 				}
 			}
 
@@ -56,9 +59,9 @@
 	}
 	@include max-vw($res-500) {
 		position: absolute;
-		right: 10px;
+		right: 15px;
 		&.active {
-			left: 10px;
+			left: 15px;
 		}
 	}
 	.input-container {
@@ -71,7 +74,9 @@
 		@include transition;
 
 		&:hover {
-			border-color: #383c57;
+			@include only-hover() {
+				border-color: #383c57;
+			}
 
 			input {
 				:placeholder {

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const getFullHour = (momentTime) => {
 	const fullDays = momentTime.as('days');
 	if (fullDays >= 1) {
-		return `${momentTime.as('hour')}h`;
+		return `${Math.floor(momentTime.as('hour'))}h`;
 	}
 
 	const h = momentTime.get('hour');
