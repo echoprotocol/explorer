@@ -40,7 +40,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					sender: data.committee_member_id,
 					account_name: data.account,
 					amount: data.value,
-					deposit_id: data.deposit_id,
+					deposit_id: data.objectInfo.get('deposit_id'),
 					fee: data.fee,
 					...description,
 					additionalInfo: {
@@ -59,7 +59,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					sender: data.committee_member_id,
 					account_name: data.account,
 					amount: data.amount,
-					deposit_id: data.deposit_id,
+					deposit_id: data.objectInfo.get('deposit_id'),
 					fee: data.fee,
 					...description,
 					additionalInfo: {

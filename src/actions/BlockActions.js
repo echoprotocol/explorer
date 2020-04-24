@@ -128,7 +128,6 @@ export const loadBlockHistory = () => async (dispatch, getState) => {
 		operations = operations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage);
 		dispatch(BlockReducer.actions.set({ field: 'filteredOperations', value: operations }));
 	} catch (error) {
-		console.log('error', error);
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));
 	}
