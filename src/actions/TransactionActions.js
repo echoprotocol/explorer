@@ -30,7 +30,7 @@ import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
-import { getConrtactOperations, getHistory } from '../services/queries/history';
+import { getConrtactOperations, getHistory, getSingleOpeation } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
@@ -324,7 +324,14 @@ class TransactionActionsClass extends BaseActionsClass {
 					object = object.set('status', status);
 				}
 			} else if (sidechainOperations.includes(operation.name)) {
-				let objectWithApprovals = '';
+				let singleOperation = {};
+				try {
+					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
+					singleOperation = operationFromGraphQl.getSingleOperation.body;
+				} catch (e) {
+					//
+				}
+				let objectWithApprovals = null;
 				switch (operation.name) {
 					case Operations.sidechain_eth_approve_address.name:
 						objectWithApprovals = await echo.api.getEthAddress(options.account);
@@ -340,17 +347,46 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('deposit_id', objectWithApprovals.id);
 						break;
-					default:
+					case Operations.approve_erc20_token_withdraw.name: {
+						const originalOpIndexes = singleOperation.sidchain_erc_20_withdraw_token.split('-');
+						const originalOp = await getSingleOpeation(...originalOpIndexes.map((i) => (+i)));
+						objectWithApprovals = await echo.api.getObject(originalOp.getSingleOperation.body.withdraw_id);
+						object = object
+							.set('withdraw_id', objectWithApprovals.id)
+							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
+							.set('transaction_hash', singleOperation.transaction_id || singleOperation.transaction_hash);
+						break;
+					} case Operations.sidechain_erc20_issue.name: {
+						const token = await echo.api.getObject(singleOperation.token);
+						object = object
+							.set('deposit_id', singleOperation.deposit)
+							.set('amount', singleOperation.amount)
+							.set('token', { value: token.symbol, link: token.id })
+							.set('sidchain_erc_20_deposit_token', singleOperation.sidchain_erc_20_deposit_token)
+							.set('approves_list', singleOperation.list_of_approvals);
+						break;
+					} case Operations.sidechain_erc20_burn.name: {
+						const token = await echo.api.getObject(singleOperation.token);
+						object = object
+							.set('withdraw_id', singleOperation.withdraw)
+							.set('amount', singleOperation.amount)
+							.set('token', { value: token.symbol, link: token.id })
+							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
+							.set('approves_list', singleOperation.list_of_approvals);
+						break;
+					} default:
 						break;
 				}
-				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
-				let approves = objectWithApprovals.approves.length;
-				if (approves === 0 && objectWithApprovals.is_approved) {
-					approves = total;
+				if (objectWithApprovals) {
+					const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
+					let approves = objectWithApprovals.approves.length;
+					if (approves === 0 && objectWithApprovals.is_approved) {
+						approves = total;
+					}
+					object = object
+						.set('approves', approves)
+						.set('total', total);
 				}
-				object = object
-					.set('approves', approves)
-					.set('total', total);
 			}
 
 			return object;
@@ -899,7 +935,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			blockTimestamp,
 			opIndex,
 		};
-		const opNumberToFormat = operation.value < 45 ? operation.value : 0;
+		const opNumberToFormat = operation.value;
 
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		if (proposalOperations.includes(operation.name)) {

@@ -7,6 +7,7 @@ import ProducersRow from './Rows/ProducersRow';
 import MultyRow from './Rows/MultyRow';
 import TransfersRow from './Rows/TransfersRow';
 import SettingsRow from './Rows/SettingsRow';
+import MultyLinksRow from './Rows/MultyLinksRow';
 
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
@@ -41,6 +42,9 @@ const AdditionalInfo = ({ data }) => (
 			{data.number_of_confirmations && <PrimaryRow title="Number of confirmations" description={`${data.number_of_confirmations.value} out of ${data.number_of_confirmations.total}`} />}
 			{data.received_deposit_address && <LinkRow title="Received deposit address" link={data.received_deposit_address} />}
 			{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
+			{data.approves && <MultyLinksRow title="Settings" readyLinks={data.approves} />}
+			{data.transaction_hash && <PrimaryRow title="Transaction hash" description={data.transaction_hash} />}
+			{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
 		</div>
 	</div>
 );

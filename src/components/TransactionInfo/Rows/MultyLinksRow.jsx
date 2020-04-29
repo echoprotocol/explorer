@@ -9,8 +9,10 @@ const MultyLinksRow = React.memo(({ title, fields, readyLinks }) => (
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			<div className="multy-field">
-				{readyLinks && readyLinks.map((link) => (
-					<a href={link.link}>{link.title}</a>
+				{readyLinks.length && readyLinks.map((link) => (
+					<Link href={link.link} as={URLHelper.createUrlById}>
+						<a href={link.link}>{link.title}</a>
+					</Link>
 				))}
 				{fields.length && fields.map((item) => (
 					<span className="multy-field-item" key={item.value}>

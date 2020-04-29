@@ -51,6 +51,10 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: Operations.sidechain_eth_approve_address.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: Operations.deposit_eth.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: Operations.eth_send_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW]: Operations.approve_erc20_token_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE]: Operations.sidechain_erc20_issue.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_BURN]: Operations.sidechain_erc20_burn.name,
+
 };
 
 export const OPS_DESCRIPTIONS = {

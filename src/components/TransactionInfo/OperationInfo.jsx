@@ -92,12 +92,16 @@ class OperationInfo extends React.Component {
 					{data.deposit_amount && <LinkRow title="Deposit amount" amount={data.deposit_amount} />}
 
 					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
+					{data.withdraw_id && <LinkRow title="Withdraw ID" link={data.withdraw_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
 					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.supported_asset && <PrimaryRow title="Supported asset" description={data.supported_asset} />}
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
+					{data.amount_info && <PrimaryRow title="Amount" description={data.amount_info} />}
+					{data.transaction_hash && <PrimaryRow title="Transaction hash" description={data.transaction_hash} />}
+					{data.token && <LinkRow title="Token" linkTitle={data.token.value} link={URLHelper.createUrlById(data.token.link)} />}
 					{data.address && <PrimaryRow title="Address" description={data.address} />}
 					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}
 					{data.new_feed_producers && <ProducersRow title="New feed producers" accounts={data.new_feed_producers} /> }
@@ -105,6 +109,7 @@ class OperationInfo extends React.Component {
 					{data.changed_parameters && <PrimaryRow title="Changed parameters" description={data.changed_parameters.join(', ')} />}
 					{data.fee && <LinkRow title="Fee" amount={data.fee} />}
 					{data.directLink && <LinkRow title="Operation direct link" link={data.directLink} />}
+					{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
 				</div>
 				{data.additionalInfo && <AdditionalInfo data={data.additionalInfo} />}
 			</div>

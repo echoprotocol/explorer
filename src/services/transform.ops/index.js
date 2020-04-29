@@ -61,6 +61,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS:
 		case OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT:
 		case OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT:
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW:
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE:
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_BURN:
 			return transformSidechainOperations(opNumber, data);
 		default:
 			return {};
