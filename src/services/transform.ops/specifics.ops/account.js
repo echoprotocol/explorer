@@ -6,6 +6,7 @@ import getAdditionalInfoByOpId from '../AddInfoHelper';
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
 	const description = OPS_DESCRIPTIONS[opNumber];
+	const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 
 	switch (opNumber) {
 		case OPERATIONS_IDS.ACCOUNT_CREATE: {
@@ -64,6 +65,25 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					sender: data.owner,
 					address: data.address,
 					label: data.label,
+					fee: data.fee,
+					...description,
+				},
+			};
+		case OPERATIONS_IDS.BLOCK_REWARD:
+			return {
+				operationInfo: {
+					type,
+					to: data.receiver,
+					assets: objectInfo.assets && objectInfo.assets.map((el) => ({ key: el.asset_id, value: el.amount })),
+					...description,
+				},
+			};
+		case OPERATIONS_IDS.EVM_ADDRESS_REGISTER:
+			return {
+				operationInfo: {
+					type,
+					sender: data.owner,
+					address: objectInfo.evm_address,
 					fee: data.fee,
 					...description,
 				},

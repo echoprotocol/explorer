@@ -12,12 +12,12 @@ import AdditionalInfo from './AdditionalInfo';
 import PolicyRow from './Rows/PolicyRow';
 import CopyRow from './Rows/CopyRow';
 import URLHelper from '../../helpers/URLHelper';
+import MultyLinksRow from './Rows/MultiLinksRow';
 
 class OperationInfo extends React.Component {
 
 	render() {
 		const { data, proposalIdx } = this.props;
-
 		return (
 			<div className="operation-info">
 				{data.description &&
@@ -92,12 +92,25 @@ class OperationInfo extends React.Component {
 					{data.deposit_amount && <LinkRow title="Deposit amount" amount={data.deposit_amount} />}
 
 					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
+					{data.address_id && <LinkRow title="Address ID" link={data.address_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
 					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.supported_asset && <PrimaryRow title="Supported asset" description={data.supported_asset} />}
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
+					{data.amount_info && <PrimaryRow title="Amount" description={data.amount_info} />}
+					{data.transaction_hash && <PrimaryRow title="Transaction hash" description={data.transaction_hash} />}
+					{data.aggregation_out_value && <PrimaryRow title="Aggregation out value" description={data.aggregation_out_value} />}
+					{data.btc_block_number && <PrimaryRow title="BTC block number" description={data.btc_block_number} />}
+					{data.sma_address && <PrimaryRow title="SMA Address" description={data.sma_address} />}
+					{data.signature && <PrimaryRow title="Signature" description={data.signature} />}
+					{data.committee_member_id && <PrimaryRow title="Committee member id" description={data.committee_member_id} />}
+					{data.deposits && <MultyLinksRow title="Deposits" fields={data.deposits} />}
+					{data.withdrawals && <MultyLinksRow title="Withdrawals" fields={data.withdrawals} />}
+					{data.committee_member_ids_in_script && <MultyLinksRow title="Committee member ids in script" fields={data.committee_member_ids_in_script} />}
+					{data.signatures && <MultyRow title="Signatures" fields={data.signatures} />}
+					{data.assets && <MultyLinksRow title="Assets" fields={data.assets} />}
 					{data.address && <PrimaryRow title="Address" description={data.address} />}
 					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}
 					{data.new_feed_producers && <ProducersRow title="New feed producers" accounts={data.new_feed_producers} /> }
@@ -105,6 +118,7 @@ class OperationInfo extends React.Component {
 					{data.changed_parameters && <PrimaryRow title="Changed parameters" description={data.changed_parameters.join(', ')} />}
 					{data.fee && <LinkRow title="Fee" amount={data.fee} />}
 					{data.directLink && <LinkRow title="Operation direct link" link={data.directLink} />}
+					{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
 				</div>
 				{data.additionalInfo && <AdditionalInfo data={data.additionalInfo} />}
 			</div>
