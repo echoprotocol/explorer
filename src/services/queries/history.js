@@ -96,15 +96,15 @@ export const getConrtactOperations = async (contractId) => {
 
 export const getSingleOpeation = async (block, trxInBlock, opInTrx) => {
 	const query = gql`
-	  query getOperationByBlockAndPosition($block: Int!, $trxInBlock: Int!, $opInTrx: Int!){
-		getOperationByBlockAndPosition(block: $block, trxInBlock: $trxInBlock, opInTrx: $opInTrx) {
-		  body
-		  result
+		query getOperationByBlockAndPosition($block: Int!, $trxInBlock: Int!, $opInTrx: Int!){
+			getOperationByBlockAndPosition(block: $block, trxInBlock: $trxInBlock, opInTrx: $opInTrx) {
+      	body
+    		result
+  		}
 		}
-	  }
 	`;
 	return client.getClient().query({ query, variables: { block, trxInBlock, opInTrx } })
 		.then(({ data }) => ({
-			data: data.getOperationByBlockAndPosition,
+			getSingleOperation: data.getOperationByBlockAndPosition,
 		}));
 };

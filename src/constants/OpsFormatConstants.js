@@ -58,6 +58,15 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN]: Operations.erc20_send_deposit.name,
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN]: Operations.withdraw_erc20_token.name,
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN]: Operations.erc20_send_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: Operations.sidechain_btc_create_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_create_intermediate_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_intermediate_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT]: Operations.sidechain_btc_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW]: Operations.sidechain_btc_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE]: Operations.sidechain_btc_aggregate.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: Operations.sidechain_btc_approve_aggregate.name,
+	[OPERATIONS_IDS.BLOCK_REWARD]: Operations.block_reward.name,
+	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: Operations.evm_address_register.name,
 };
 
 export const OPS_DESCRIPTIONS = {
@@ -299,6 +308,42 @@ export const OPS_DESCRIPTIONS = {
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN]: {
 		description: 'An internal operation by which committee members confirm the removal of tokens after 24h.',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_send_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_address_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_intermediate_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_intermediate_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_aggregate_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_approve_aggregate_operation',
+	},
+	[OPERATIONS_IDS.BLOCK_REWARD]: {
+		description: '',
+		link: 'https://github.com/echoprotocol/echowiki/blob/fba3e7b342a0192369621908292bc9cd969b901d/api-reference/echo-operations/block-reward.md#block_reward_operation',
+	},
+	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/account-management#evm_address_register_operation',
 	},
 };
 
