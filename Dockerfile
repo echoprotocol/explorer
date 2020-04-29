@@ -1,4 +1,4 @@
-FROM node:10.15-alpine as builder
+FROM node:12-alpine as builder
 
 WORKDIR /app
 RUN apk --no-cache add g++ gcc git libgcc libstdc++ linux-headers make python alpine-sdk ffmpeg
