@@ -116,9 +116,6 @@ const OperationsRow = ({
 					<div className="td-in">{numberOperation}.</div>
 				</td>
 				<td className="type">
-					<div className="td-in">{detailInfo.type}</div>
-				</td>
-				<td className="type">
 					<div className="td-in">{type}</div>
 				</td>
 				<td className="sender">
