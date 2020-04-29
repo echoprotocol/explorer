@@ -94,6 +94,12 @@
 	letter-spacing: 0.02em;
 	@include inter-medium();
 	white-space: nowrap;
+	@include max-vw($res-1400) {
+		width: 100%;
+	}
+	@include max-vw($res-1280) {
+		width: auto;
+	}
 }
 .preparing-caption {
 	letter-spacing: 0.02em;
