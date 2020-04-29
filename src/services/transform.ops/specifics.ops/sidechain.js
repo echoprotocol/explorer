@@ -67,6 +67,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
+						list_approvals: data.objectInfo.get('list_approvals'),
 					},
 				},
 			};
@@ -101,7 +102,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						original_operation: '', // TODO
+						original_operation: data.objectInfo.get('original_operation'),
 					},
 				},
 			};
@@ -118,7 +119,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						original_operation: '', // TODO
+						original_operation: data.objectInfo.get('original_operation'),
 					},
 				},
 			};
@@ -148,8 +149,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					deposit_id: data.deposit_id,
 					fee: data.fee,
 					additionalInfo: {
-						original_operation: '', // TODO
-						list_approvals: '', // TODO
+						original_operation: data.objectInfo.get('original_operation'),
+						list_approvals: data.objectInfo.get('list_approvals'),
 					},
 				},
 			};
@@ -163,8 +164,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					withdraw_id: data.withdraw_id,
 					fee: data.fee,
 					additionalInfo: {
-						original_operation: '', // TODO
-						list_approvals: '', // TODO
+						original_operation: data.objectInfo.get('original_operation'),
+						list_approvals: data.objectInfo.get('list_approvals'),
 					},
 				},
 			};

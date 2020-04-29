@@ -30,7 +30,7 @@ import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
-import { getConrtactOperations, getHistory } from '../services/queries/history';
+import { getConrtactOperations, getHistory, getSingleOpeation } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
@@ -324,6 +324,11 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 			} else if (sidechainOperations.includes(operation.name)) {
 				let objectWithApprovals = { approves: [], is_approved: false };
+				const { data } = await getSingleOpeation(
+					opInfo.block,
+					opInfo.trxInblock,
+					opInfo.opInTrx,
+				);
 				switch (operation.name) {
 					case Operations.sidechain_eth_approve_address.name:
 						objectWithApprovals = await echo.api.getEthAddress(options.account);
@@ -341,12 +346,33 @@ class TransactionActionsClass extends BaseActionsClass {
 						break;
 					case Operations.eth_send_withdraw.name:
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						if (data) {
+							object = object
+								.set('original_operation', data.body.sidchain_eth_withdraw);
+						}
 						break;
 					case Operations.approve_withdraw_eth.name:
 						objectWithApprovals = await echo.api.getObject(`1.15.${options.withdraw_id}`);
+						if (data) {
+							object = object
+								.set('original_operation', data.body.sidchain_eth_withdraw);
+						}
 						break;
 					case Operations.sidechain_issue.name:
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						if (data) {
+							object = object
+								.set('original_operation', data.body.sidchain_eth_deposit)
+								.set('list_approvals', data.body.list_of_approvals);
+						}
+						break;
+					case Operations.sidechain_burn.name:
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						if (data) {
+							object = object
+								.set('original_operation', data.body.sidchain_eth_withdraw)
+								.set('list_approvals', data.body.list_of_approvals);
+						}
 						break;
 					case Operations.register_erc20_token.name: {
 						const contractObject = await echo.api.getObject(operationResult[1]);

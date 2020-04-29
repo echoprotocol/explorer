@@ -105,6 +105,6 @@ export const getSingleOpeation = async (block, trxInBlock, opInTrx) => {
 	`;
 	return client.getClient().query({ query, variables: { block, trxInBlock, opInTrx } })
 		.then(({ data }) => ({
-			getSingleOperation: data.getOperationByBlockAndPosition,
+			data: data.getOperationByBlockAndPosition,
 		}));
 };

@@ -10,14 +10,14 @@
 			max-width: 100%;
 		}
 	}
-	&:last-child {
-		@include max-vw($res-1600) {
-			max-width: 53%;
-		}
-		@include max-vw($res-1280) {
-			max-width: 100%;
-		}
-	}
+	// &:last-child {
+	// 	@include max-vw($res-1600) {
+	// 		max-width: 53%;
+	// 	}
+	// 	@include max-vw($res-1280) {
+	// 		max-width: 100%;
+	// 	}
+	// }
 
 	@include max-vw($res-1280) {
 		& + .main-page-table {
