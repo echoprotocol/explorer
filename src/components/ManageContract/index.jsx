@@ -172,7 +172,7 @@ class ManageContract extends React.Component {
 													</span>
 													<div className="info">
 														<div className="action-description">Drop file here or click to add file</div>
-														<div className="file-description">{`.JPG, JPEG or .PNG formats. ${MAX_KB_CONTRACT_ICON} Kb max`}</div>
+														<div className="file-description">{`.JPG, JPEG or .PNG formats. ${MAX_KB_CONTRACT_ICON} KB max`}</div>
 													</div>
 												</div>
 											)}
