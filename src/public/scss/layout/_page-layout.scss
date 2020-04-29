@@ -113,7 +113,7 @@
 			}
 		}
 
-		.additional {
+		&.additional {
 			margin-top: 13px;
 			@include max-vw($res-500) {
 				margin-top: 5px;
