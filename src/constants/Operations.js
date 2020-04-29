@@ -670,6 +670,8 @@ export const accountOperations = [
 	Operations.account_update.name,
 	Operations.account_whitelist.name,
 	Operations.account_address_create.name,
+	Operations.evm_address_register.name,
+	Operations.block_reward.name,
 ];
 export const assetOperations = [
 	Operations.asset_create.name,
@@ -714,6 +716,16 @@ export const sidechainOperations = [
 	Operations.approve_erc20_token_withdraw.name,
 	Operations.sidechain_erc20_issue.name,
 	Operations.sidechain_erc20_burn.name,
+];
+
+export const sidechainBtcOperations = [
+	Operations.sidechain_btc_create_address.name,
+	Operations.sidechain_btc_create_intermediate_deposit.name,
+	Operations.sidechain_btc_intermediate_deposit.name,
+	Operations.sidechain_btc_deposit.name,
+	Operations.sidechain_btc_withdraw.name,
+	Operations.sidechain_btc_aggregate.name,
+	Operations.sidechain_btc_approve_aggregate.name,
 ];
 
 export default Operations;
