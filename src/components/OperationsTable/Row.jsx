@@ -115,9 +115,9 @@ const OperationsRow = ({
 				<td className="number">
 					<div className="td-in">{numberOperation}.</div>
 				</td>
-				<td className="type">
+				{/* <td className="type">
 					<div className="td-in">{detailInfo.type}</div>
-				</td>
+				</td> */}
 				<td className="type">
 					<div className="td-in">{type}</div>
 				</td>
