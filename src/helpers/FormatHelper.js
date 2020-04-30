@@ -169,8 +169,8 @@ class FormatHelper {
 	 * @param count
 	 * @returns {string}
 	 */
-	static getFormatTransactionsTitle(count) {
-		return `${count} Transaction${count !== 1 ? 's' : ''}`;
+	static getFormatTransactionsOperationTitle(transactionCount, operationCount) {
+		return `${operationCount} Operation${operationCount !== 1 ? 's' : ''}, ${transactionCount} Transaction${transactionCount !== 1 ? 's' : ''}`;
 	}
 	/**
 	 *
