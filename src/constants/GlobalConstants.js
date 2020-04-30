@@ -104,3 +104,6 @@ export const NONE_SYMBOL = '-';
 export const NOT_AVAILABLE_SYMBOL = 'N/A';
 
 export const TOKEN_TYPE = 'TOKEN';
+
+export const MAINNET_MODE = 'MAINNET';
+export const TESTNET_MODE = 'TESTNET';

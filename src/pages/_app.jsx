@@ -14,6 +14,7 @@ import Header from '../containers/Header';
 import Modal from '../containers/Modals';
 
 import { CONTRACT_DETAILS_NUMBERS_TAB, SSR_TRANSACTION_INFORMATION_PATH, ROUTES_WITH_COLUMN_DIRECTION } from '../constants/RouterConstants';
+import { TESTNET_MODE } from '../constants/GlobalConstants';
 import Footer from '../containers/Footer';
 import Sidebar from '../containers/Sidebar';
 import GlobalActions from '../actions/GlobalActions';
@@ -22,6 +23,7 @@ import ErrorScreen from '../components/Error/ErrorScreen';
 import NotFoundScreen from '../components/Error/NotFoundScreen';
 import InternetPopup from '../containers/InternetPopup';
 import Loader from '../components/Loader';
+import NetworkNotification from '../components/NetworkNotification';
 
 class ExplorerApp extends App {
 
@@ -88,6 +90,7 @@ class ExplorerApp extends App {
 		const errorPath = store.getState().global.get('errorPath');
 		const clientConnected = store.getState().global.get('connected');
 		const connectedServer = store.getState().global.get('connectedServer');
+		const networkMode = store.getState().global.get('mode');
 		if (error || errorScreen) {
 			return this.renderErrorScreen(error);
 		}
@@ -103,6 +106,7 @@ class ExplorerApp extends App {
 					{this.renderMeta()}
 					{this.renderModals()}
 					<Header />
+					{networkMode === TESTNET_MODE && <NetworkNotification />}
 					{ ROUTES_WITH_COLUMN_DIRECTION.includes(pathname) ?
 						<React.Fragment>
 							<div className="wrap">
@@ -138,6 +142,7 @@ ExplorerApp.getInitialProps = async ({ Component, ctx }) => {
 	if (ctx.isServer) {
 		const userAgent = ctx.req ? ctx.req.headers['user-agent'] : window.navigator.userAgent;
 		const isMobile = !!(new MobileDetect(userAgent)).mobile();
+		await ctx.store.dispatch(GlobalActions.setMode());
 		await ctx.store.dispatch(GlobalActions.setValue('isMobile', isMobile));
 		await ctx.store.dispatch(serverConnect());
 		if (Component.getInitialProps) {

@@ -1,0 +1,88 @@
+.network-notification {
+	width: 100%;
+	background-color: $blue;
+}
+
+.network-notification-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.network-notification__body {
+	padding: 11px 0;
+	@include inter-ui-regular;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.network-notification__link {
+	position: relative;
+	color: $explorer-black;
+	white-space: nowrap;
+	&:after {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: calc(100% - 1px);
+		width: 100%;
+		height: 1px;
+		background-color: $explorer-black;
+	}
+	&:before {
+		content: "";
+		position: absolute;
+		top: -5px;
+		right: -5px;
+		bottom: -5px;
+		left: -5px;
+		border: 1px solid transparent;
+		border-radius: 4px;
+		transition: border-color $speed, box-shadow $speed;
+	}
+	&:hover:not(:active):not(:focus) {
+		color: #053d60;
+		&:after {
+			background-color: #053d60;
+		}
+	}
+	&:active {
+		color: #105f91;
+		&:after {
+			background-color: #105f91;
+		}
+	}
+	&:focus:not(:active) {
+		&:before {
+			border-color: $explorer-black;
+		}
+	}
+}
+
+.network-notification__close {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 20px;
+	min-width: 30px;
+	height: 30px;
+	background-color: transparent;
+	border: 1px solid transparent;
+	cursor: pointer;
+	transition: background-color $speed;
+	img {
+		opacity: 0.5;
+		transition: opacity $speed;
+	}
+	&:hover:not(:focus):not(:active) {
+		background-color: rgba(26, 30, 50, 0.2);
+		img {
+			opacity: 1;
+		}
+	}
+	&:active {
+		background-color: rgba(26, 30, 50, 0.1);
+	}
+	&:focus:not(:active) {
+		border: 1px solid rgba(#1a1e32, 0.5);
+	}
+}

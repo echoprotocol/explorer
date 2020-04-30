@@ -3,7 +3,7 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 33px;
+	margin-bottom: 30px;
 	@include max-vw($res-1280) {
 		padding: 0 30px;
 	}
@@ -11,24 +11,49 @@ header {
 		padding: 0 20px;
 	}
 	@include max-vw($res-500) {
-		margin-bottom: 36px;
 		padding: 0 15px;
+		&.opened {
+			&:after {
+				transform: scaleY(1);
+			}
+		}
+	}
+	&:after {
+		content: "";
+		width: calc(100% + 20px);
+		height: calc(100% + 95px);
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		left: -10px;
+		box-shadow: 0px 4px 35px #171b2d;
+		transform: scaleY(0);
+		transform-origin: top;
+		transition: transform $speed;
 	}
 }
 
 .logotype {
+	position: relative;
+	z-index: 1;
 	display: inline-block;
 }
 .logotype-max {
-	@include max-vw($res-768) {
+	@include max-vw($res-1280) {
 		display: none;
+	}
+	@include max-vw($res-500) {
+		display: block;
 	}
 }
 
 .logotype-min {
 	display: none;
-	@include max-vw($res-768) {
+	@include max-vw($res-1280) {
 		display: block;
+	}
+	@include max-vw($res-500) {
+		display: none;
 	}
 }
 
@@ -37,5 +62,37 @@ header {
 	background-color: $explorer-dark;
 	@include max-vw($res-500) {
 		padding: 20px 0 10px;
+	}
+}
+
+.header-actions-wrap {
+	position: relative;
+	z-index: 1;
+	margin-left: auto;
+	margin-right: 25px;
+	display: flex;
+	transition: transform $speed;
+	@include max-vw($res-768) {
+		margin-right: 0;
+		position: absolute;
+		top: initial;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	@include max-vw($res-500) {
+		padding: 30px 0;
+		top: 100%;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		background-color: $explorer-dark;
+		transform: translateX(-50%) scaleY(0);
+		transform-origin: top;
+	}
+	&.opened {
+		transform: translateX(-50%) scaleY(1);
+		&:after {
+			display: block;
+		}
 	}
 }

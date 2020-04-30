@@ -1,44 +1,21 @@
 .nav-tabs {
-	margin-left: auto;
-	margin-right: 20px;
+	margin-right: 10px;
 	align-self: stretch;
 	display: flex;
-	@include max-vw($res-1280) {
-		margin-right: 25px;
-	}
-	@include max-vw($res-768) {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
 	button {
 		background-color: transparent;
 		outline: transparent;
 		border: transparent;
-		font-size: 14px;
+		font-size: 12px;
 		letter-spacing: 0.02em;
-		@include inter-medium;
+		@include inter-regular;
 		padding: 0 10px;
 		line-height: 17px;
 		color: $grey;
 		position: relative;
 		white-space: nowrap;
-		&:before {
-			@include absolute-stretch(-20px, 0, auto, 0);
-			transition: background-color $speed;
-			background-color: transparent;
-			height: 3px;
-			border-radius: 0px 0px 2px 2px;
-			@include max-vw($res-768) {
-				top: -33px;
-			}
-		}
 		&.active {
 			color: $lightgrey-darker;
-			&:before {
-				background-color: $blue;
-			}
 		}
 
 		&:hover {
@@ -48,6 +25,16 @@
 
 		&:active {
 			color: #e85e5e;
+		}
+
+		&:focus {
+			color: $lightgrey-darker;
+		}
+
+		&:first-child {
+			@include max-vw($res-500) {
+				padding-left: 0;
+			}
 		}
 	}
 }
