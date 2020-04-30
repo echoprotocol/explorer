@@ -143,7 +143,6 @@ class TransactionActionsClass extends BaseActionsClass {
 	 */
 	async setOperationObject(operation, options, from, subject, operationResult, opInfo) {
 		let object = new Map({});
-
 		try {
 			if (accountOperations.includes(operation.name)) {
 				let account = await echo.api.getObject(from.id);
@@ -153,7 +152,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				let singleOperation = {};
 				try {
 					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
-					singleOperation = operationFromGraphQl.getSingleOperation.body;
+					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
 				} catch (e) {
 					//
 				}
@@ -334,14 +333,15 @@ class TransactionActionsClass extends BaseActionsClass {
 					object = object.set('status', status);
 				}
 			} else if (sidechainOperations.includes(operation.name)) {
+				let objectWithApprovals = { approves: [], is_approved: false };
 				let singleOperation = {};
 				try {
 					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
-					singleOperation = operationFromGraphQl.getSingleOperation.body;
+					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
 				} catch (e) {
 					//
 				}
-				let objectWithApprovals = null;
+
 				switch (operation.name) {
 					case Operations.sidechain_eth_approve_address.name:
 						objectWithApprovals = await echo.api.getEthAddress(options.account);
@@ -405,24 +405,74 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.sidechain_btc_approve_aggregate.name:
 						objectWithApprovals = {};
 						break;
+					case Operations.eth_send_withdraw.name:
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
+						break;
+					case Operations.approve_withdraw_eth.name:
+						objectWithApprovals = await echo.api.getObject(`1.15.${options.withdraw_id}`);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
+						break;
+					case Operations.sidechain_issue.name: {
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit))
+							.set('list_approvals', listApprovals);
+						break;
+					}
+					case Operations.sidechain_burn.name: {
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
+							.set('list_approvals', listApprovals);
+						break;
+					}
+					case Operations.register_erc20_token.name: {
+						const contractObject = await echo.api.getObject(operationResult[1]);
+						object = object
+							.set('decimals', String(options.decimals));
+						if (!contractObject) {
+							break;
+						}
+						object = object
+							.set('contract', contractObject.contract);
+						break;
+					}
+					case Operations.erc20_send_deposit.name: {
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc20_token_deposit));
+						break;
+					}
+					case Operations.withdraw_erc20_token.name:
+						objectWithApprovals = await echo.api.getObject(operationResult[1]);
+						break;
+					case Operations.erc20_send_withdraw.name:
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
+						break;
 					default:
 						break;
 				}
-				if (objectWithApprovals) {
-					const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
-					let approves = objectWithApprovals.approves.length;
-					if (approves === 0 && objectWithApprovals.is_approved) {
-						approves = total;
-					}
-					object = object
-						.set('approves', approves)
-						.set('total', total);
+
+				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
+				let approves = objectWithApprovals.approves.length;
+				if (approves === 0 && objectWithApprovals.is_approved) {
+					approves = total;
 				}
 			} else if (sidechainBtcOperations.includes(operation.name)) {
 				let singleOperation = {};
 				try {
 					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
-					singleOperation = operationFromGraphQl.getSingleOperation.body;
+					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
 				} catch (e) {
 					//
 				}
