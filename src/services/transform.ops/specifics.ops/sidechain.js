@@ -82,10 +82,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.value,
 					fee: data.fee,
 					additionalInfo: {
-						// number_of_confirmations: {
-						// 	value: data.objectInfo.get('approves'),
-						// 	total: data.objectInfo.get('total'),
-						// },
+						number_of_confirmations: {
+							value: data.objectInfo.get('approves'),
+							total: data.objectInfo.get('total'),
+						},
 						transaction_hash: '', // TODO
 					},
 				},
