@@ -345,13 +345,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						approves: objectInfo.approves_list && objectInfo.approves_list.map((el) => {
-							const indexes = el.split('-');
-							return {
-								link: el && `/blocks/${indexes[0]}/${(+indexes[1]) + 1}?op=${(+indexes[2]) + 1}`,
-								title: 'Original operation',
-							};
-						}),
+						approves: objectInfo.approves_list,
 						operationLink: op && `/blocks/${op[0]}/${(+op[1]) + 1}?op=${(+op[2]) + 1}`,
 					},
 				},
@@ -378,7 +372,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.SIDECHAIN_ERC20_BURN: {
-			const op = objectInfo.sidchain_erc_20_withdraw_token && objectInfo.sidchain_erc_20_withdraw_token.split('-');
 			return {
 				operationInfo: {
 					type,
@@ -389,14 +382,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						approves: objectInfo.approves_list && objectInfo.approves_list.map((el) => {
-							const indexes = el.split('-');
-							return {
-								link: el && `/blocks/${indexes[0]}/${(+indexes[1]) + 1}?op=${(+indexes[2]) + 1}`,
-								title: 'Original operation',
-							};
-						}),
-						operationLink: op && `/blocks/${op[0]}/${(+op[1]) + 1}?op=${(+op[2]) + 1}`,
+						approves: objectInfo.approves_list,
 					},
 				},
 			};

@@ -368,21 +368,25 @@ class TransactionActionsClass extends BaseActionsClass {
 						break;
 					} case Operations.sidechain_erc20_issue.name: {
 						const token = await echo.api.getObject(singleOperation.token);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
 						object = object
 							.set('deposit_id', singleOperation.deposit)
 							.set('amount', singleOperation.amount)
 							.set('token', { value: token.symbol, link: token.id })
 							.set('sidchain_erc_20_deposit_token', singleOperation.sidchain_erc_20_deposit_token)
-							.set('approves_list', singleOperation.list_of_approvals);
+							.set('approves_list', listApprovals);
 						break;
 					} case Operations.sidechain_erc20_burn.name: {
 						const token = await echo.api.getObject(singleOperation.token);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
 						object = object
 							.set('withdraw_id', singleOperation.withdraw)
 							.set('amount', singleOperation.amount)
 							.set('token', { value: token.symbol, link: token.id })
 							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
-							.set('approves_list', singleOperation.list_of_approvals);
+							.set('approves_list', listApprovals);
 						break;
 					} case Operations.sidechain_btc_create_intermediate_deposit.name:
 						objectWithApprovals = {};
