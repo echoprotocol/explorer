@@ -104,23 +104,39 @@ class OperationsTable extends React.Component {
 		window.removeEventListener('resize', this.updateScroll);
 	}
 
-	async onChangeFilter(e) {
+	onChangeFilter(e) {
 		const { name, value } = e.target;
-		const { filterAndPaginateData, router } = this.props;
+		// const { filterAndPaginateData, router } = this.props;
+		// const { filters } = filterAndPaginateData.toJS();
+		// filters[name] = value;
+		// if (this.timeoutSearch) {
+		// 	clearTimeout(this.timeoutSearch);
+		// }
+		this.setState({ [name]: value });
+		// this.timeoutSearch = setTimeout(() => {
+		// 	const { url: pathname, query } = queryString.parseUrl(router.asPath);
+		// 	const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
+		// 		from: filters.from.trim(), to: filters.to.trim(), p: 1,
+		// 	});
+		// 	Router.push(router.route, linkToPage);
+		// }, DEBOUNCE_TIMEOUT);
+	}
+
+	async onSubmitFilter() {
+		const { name, value } = this.state;
+		const { filterAndPaginateData, router, loadAccountHistory } = this.props;
 		const { filters } = filterAndPaginateData.toJS();
 		filters[name] = value;
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.setState({ [name]: value });
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
 			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
-				from: filters.from.trim(), to: filters.to.trim(), p: 1,
+				from: this.state.from.trim(), to: this.state.to.trim(), p: 1,
 			});
 			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
-
 	}
 
 	onClearFilter(name) {
@@ -234,6 +250,7 @@ class OperationsTable extends React.Component {
 					open={isFilterOpen}
 					onChangeFilter={(e) => this.onChangeFilter(e)}
 					onClearFilter={(name) => this.onClearFilter(name)}
+					onSubmitFilter={() => this.onSubmitFilter()}
 				/>
 				<PerfectScrollbar ref={(ref) => { this.scrollBarRef = ref; }}>
 					<table>

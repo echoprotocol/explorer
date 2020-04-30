@@ -5,7 +5,7 @@ import Input from '../Input';
 import FilterBtn from '../../components/Buttons/FilterBtn';
 
 const OperationsFilter = React.memo(({
-	open, onChangeFilter, from, to, onClearFilter,
+	open, onChangeFilter, from, to, onClearFilter, onSubmitFilter,
 }) => (
 	<div className={cn('operations-filter', { open })}>
 		<div className="operations-filter-wrap">
@@ -30,7 +30,7 @@ const OperationsFilter = React.memo(({
 				/>
 			</div>
 			<div className="operations-filter__button">
-				<FilterBtn name="Apply filters" isLoading={false} />
+				<FilterBtn name="Apply filters" isLoading={false} onClick={onSubmitFilter} />
 			</div>
 		</div>
 	</div>
