@@ -118,7 +118,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					eth_accuracy_is_enabled: objectInfo.ethAccuracy,
 					supported_asset: objectInfo.supportedAsset || 'None',
 					additionalInfo: {
-						original_operation: objectInfo.link,
+						original_operation: {
+							link: objectInfo.link,
+							titel: 'Original operation',
+						},
 					},
 				},
 			};
@@ -134,7 +137,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.amount,
 					...description,
 					additionalInfo: {
-						original_operation: objectInfo.link,
+						original_operation: {
+							link: objectInfo.link,
+							titel: 'Original operation',
+						},
 					},
 				},
 			};
@@ -151,7 +157,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.amount,
 					...description,
 					additionalInfo: {
-						original_operation: objectInfo.link,
+						original_operation: {
+							link: objectInfo.link,
+							titel: 'Original operation',
+						},
 					},
 				},
 			};

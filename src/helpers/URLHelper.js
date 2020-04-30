@@ -231,9 +231,7 @@ class URLHelper {
 		if (slpitedUrl[2]) {
 			slpitedUrl[2] = parseInt(slpitedUrl[2], 10) + 1;
 		}
-		const result = slpitedUrl.join('-');
-
-		return result;
+		return `/blocks/${slpitedUrl[0]}/${slpitedUrl[1]}?op=${slpitedUrl[2]}`;
 	}
 
 }
