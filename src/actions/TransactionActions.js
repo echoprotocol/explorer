@@ -374,7 +374,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('amount', singleOperation.amount)
 							.set('token', { value: token.symbol, link: token.id })
 							.set('sidchain_erc_20_deposit_token', singleOperation.sidchain_erc_20_deposit_token)
-							.set('approves_list', listApprovals)
+							.set('list_approvals', listApprovals)
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_deposit_token));
 						break;
 					} case Operations.sidechain_erc20_burn.name: {
@@ -386,7 +386,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('amount', singleOperation.amount)
 							.set('token', { value: token.symbol, link: token.id })
 							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
-							.set('approves_list', listApprovals);
+							.set('list_approvals', listApprovals);
 						break;
 					} case Operations.sidechain_btc_create_intermediate_deposit.name:
 						objectWithApprovals = {};
