@@ -8,7 +8,6 @@ import ProducersRow from './Rows/ProducersRow';
 import MultyRow from './Rows/MultyRow';
 import TransfersRow from './Rows/TransfersRow';
 import SettingsRow from './Rows/SettingsRow';
-import MultyLinksRow from './Rows/MultyLinksRow';
 
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
