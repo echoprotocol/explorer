@@ -396,6 +396,21 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('contract', contractObject.contract);
 						break;
 					}
+					case Operations.erc20_send_deposit.name: {
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc20_token_deposit));
+						break;
+					}
+					case Operations.withdraw_erc20_token.name:
+						objectWithApprovals = await echo.api.getObject(operationResult[1]);
+						break;
+					case Operations.erc20_send_withdraw.name:
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
+						break;
 					default:
 						break;
 				}

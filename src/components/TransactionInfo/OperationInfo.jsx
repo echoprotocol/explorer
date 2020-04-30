@@ -53,6 +53,7 @@ class OperationInfo extends React.Component {
 					{data.url && <PrimaryRow title="URL" description={data.url} />}
 					{data.new_url && <PrimaryRow title="New URL" description={data.new_url} />}
 					{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
+					{data.to_eth_address && <LinkRow title="To ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.to_eth_address)} isLinkOut />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
 					{data.btc_address && <LinkRow title="BTC address" value={data.btc_address} link={URLHelper.createBtcAddressOut(data.btc_address)} isLinkOut />}
@@ -93,6 +94,7 @@ class OperationInfo extends React.Component {
 
 					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
 					{data.withdraw_id && <LinkRow title="Withdraw ID" objectId={data.withdraw_id} />}
+					{data.token && <LinkRow title="Token" objectId={data.token} />}
 					{data.address_id && <LinkRow title="Address ID" link={data.address_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}

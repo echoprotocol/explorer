@@ -103,7 +103,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						original_operation: data.objectInfo.get('original_operation'),
+						original_operation: {
+							link: data.objectInfo.get('original_operation'),
+							title: 'Withdraw operation',
+						},
 						list_approvals: data.objectInfo.get('list_approvals'),
 					},
 				},
@@ -121,7 +124,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						original_operation: data.objectInfo.get('original_operation'),
+						original_operation: {
+							link: data.objectInfo.get('original_operation'),
+							title: 'Withdraw operation',
+						},
 					},
 				},
 			};
@@ -151,7 +157,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					deposit_id: data.deposit_id,
 					fee: data.fee,
 					additionalInfo: {
-						original_operation: data.objectInfo.get('original_operation'),
+						original_operation: {
+							link: data.objectInfo.get('original_operation'),
+							title: 'Deposit operation',
+						},
 						list_approvals: data.objectInfo.get('list_approvals'),
 					},
 				},
@@ -166,7 +175,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					withdraw_id: data.withdraw_id,
 					fee: data.fee,
 					additionalInfo: {
-						original_operation: data.objectInfo.get('original_operation'),
+						original_operation: {
+							link: data.objectInfo.get('original_operation'),
+							title: 'Withdraw operation',
+						},
 						list_approvals: data.objectInfo.get('list_approvals'),
 					},
 				},
@@ -194,7 +206,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					type,
 					sender: '', // TODO
 					account: data.account,
-					amount: data.value,
+					amount_info: data.value,
 					fee: data.fee,
 					committee_member: data.committee_member_id,
 					from_address: '', // TODO
@@ -221,7 +233,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						original_operation: '', // TODO
+						original_operation: {
+							link: data.objectInfo.get('original_operation'),
+							title: 'Token deposit request operation',
+						},
 					},
 				},
 			};
@@ -230,9 +245,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: '', // TODO
-					to_address: '', // TODO
-					token: '', // TODO
+					sender: data.account,
+					to_eth_address: data.to,
+					token: data.erc20_token,
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
@@ -257,7 +272,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							total: data.objectInfo.get('total'),
 						},
 						transaction_hash: '', // TODO
-						original_operation: '', // TODO
+						original_operation: {
+							link: data.objectInfo.get('original_operation'),
+							title: 'Token withdraw request operation',
+						},
 					},
 				},
 			};

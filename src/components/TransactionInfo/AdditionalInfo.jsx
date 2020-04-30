@@ -30,7 +30,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.current_account_committee_status && <PrimaryRow title="Current account committee status" description={data.current_account_committee_status} />}
 			{data.current_account_frozen_balance && <LinkRow title="Current account frozen balance" amount={data.current_account_frozen_balance} /> }
 			{data.current_vesting_balance_state && <MultyRow title="Current vesting balance state" fields={data.current_vesting_balance_state} />}
-			{data.original_operation && <LinkRow title="Original operation" link={data.original_operation} />}
+			{data.original_operation && <LinkRow title="Original operation" linkTitle={data.original_operation.title} link={data.original_operation.link} />}
 			{data.list_approvals && <LinksArray title="List of approvals" links={data.list_approvals} />}
 			{data.called_contract_type && <PrimaryRow title="Called contract type" description={data.called_contract_type} />}
 			{data.erc20_token_info && <MultyRow title="ERC20 Token Info" fields={data.erc20_token_info} />}
