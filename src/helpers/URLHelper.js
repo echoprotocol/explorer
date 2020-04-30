@@ -215,6 +215,27 @@ class URLHelper {
 		return `${BTC_EXPLORER}/address/${url}`;
 	}
 
+	/**
+	 * @method transformEchodbOperationLinkToExplorerLink
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static transformEchodbOperationLinkToExplorerLink(url) {
+		if (!url || typeof url !== 'string') {
+			return url;
+		}
+		const slpitedUrl = url.split('-');
+		if (slpitedUrl[1]) {
+			slpitedUrl[1] = parseInt(slpitedUrl[1], 10) + 1;
+		}
+		if (slpitedUrl[2]) {
+			slpitedUrl[2] = parseInt(slpitedUrl[2], 10) + 1;
+		}
+		const result = slpitedUrl.join('-');
+
+		return result;
+	}
+
 }
 
 export default URLHelper;

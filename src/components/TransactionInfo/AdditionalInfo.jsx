@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import PrimaryRow from './Rows/PrimaryRow';
 import LinkRow from './Rows/LinkRow';
+import LinksArray from './Rows/LinksArray';
 import ProducersRow from './Rows/ProducersRow';
 import MultyRow from './Rows/MultyRow';
 import TransfersRow from './Rows/TransfersRow';
@@ -30,6 +31,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.current_account_frozen_balance && <LinkRow title="Current account frozen balance" amount={data.current_account_frozen_balance} /> }
 			{data.current_vesting_balance_state && <MultyRow title="Current vesting balance state" fields={data.current_vesting_balance_state} />}
 			{data.original_operation && <LinkRow title="Original operation" link={data.original_operation} />}
+			{data.list_approvals && <LinksArray title="List of approvals" links={data.list_approvals} />}
 			{data.called_contract_type && <PrimaryRow title="Called contract type" description={data.called_contract_type} />}
 			{data.erc20_token_info && <MultyRow title="ERC20 Token Info" fields={data.erc20_token_info} />}
 			{data.erc20_token_transfers && <TransfersRow title="ERC20 Token Transfers" transfers={data.erc20_token_transfers} />}
@@ -41,6 +43,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.number_of_confirmations && <PrimaryRow title="Number of confirmations" description={`${data.number_of_confirmations.value} out of ${data.number_of_confirmations.total}`} />}
 			{data.received_deposit_address && <LinkRow title="Received deposit address" link={data.received_deposit_address} />}
 			{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
+			{data.associated_contract && <LinkRow title="Associated contract" contract={data.associated_contract} />}
 		</div>
 	</div>
 );

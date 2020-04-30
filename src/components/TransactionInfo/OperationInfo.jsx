@@ -92,6 +92,7 @@ class OperationInfo extends React.Component {
 					{data.deposit_amount && <LinkRow title="Deposit amount" amount={data.deposit_amount} />}
 
 					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
+					{data.withdraw_id && <LinkRow title="Withdraw ID" objectId={data.withdraw_id} />}
 					{data.address_id && <LinkRow title="Address ID" link={data.address_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
@@ -116,6 +117,9 @@ class OperationInfo extends React.Component {
 					{data.new_feed_producers && <ProducersRow title="New feed producers" accounts={data.new_feed_producers} /> }
 					{data.feeded_asset_price && <LinkRow title="Feeded asset price" asset={data.feeded_asset_price} />}
 					{data.changed_parameters && <PrimaryRow title="Changed parameters" description={data.changed_parameters.join(', ')} />}
+					{data.name && <PrimaryRow title="Name" description={data.name} />}
+					{data.symbol && <PrimaryRow title="Symbol" description={data.symbol} />}
+					{data.decimals && <PrimaryRow title="Decimals" description={data.decimals} />}
 					{data.fee && <LinkRow title="Fee" amount={data.fee} />}
 					{data.directLink && <LinkRow title="Operation direct link" link={data.directLink} />}
 					{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}

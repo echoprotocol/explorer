@@ -20,15 +20,12 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.ASSET_FUND_FEE_POOL]: Operations.asset_fund_fee_pool.name,
 	[OPERATIONS_IDS.ASSET_PUBLISH_FEED]: Operations.asset_publish_feed.name,
 	[OPERATIONS_IDS.ASSET_CLAIM_FEES]: Operations.asset_claim_fees.name,
-
 	[OPERATIONS_IDS.PROPOSAL_CREATE]: Operations.proposal_create.name,
 	[OPERATIONS_IDS.PROPOSAL_UPDATE]: Operations.proposal_update.name,
 	[OPERATIONS_IDS.PROPOSAL_DELETE]: Operations.proposal_delete.name,
-
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE]: Operations.committee_member_create.name,
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE]: Operations.committee_member_update.name,
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS]: Operations.committee_member_update_global_parameters.name,
-
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE]: Operations.committee_member_activate.name,
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE]: Operations.committee_member_deactivate.name,
 	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT]: Operations.committee_frozen_balance_deposit.name,
@@ -46,12 +43,21 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.CONTRACT_UPDATE]: Operations.contract_update.name,
 	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: Operations.contract_fund_pool.name,
 	[OPERATIONS_IDS.CONTRACT_WHITELIST]: Operations.contract_whitelist.name,
-
 	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: Operations.sidechain_eth_create_address.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: Operations.sidechain_eth_approve_address.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: Operations.deposit_eth.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: Operations.eth_send_deposit.name,
-
+	[OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW]: Operations.withdraw_eth.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_WITHDRAW]: Operations.eth_send_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW]: Operations.approve_withdraw_eth.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_UPDATE_CONTRACT_ADDRESS]: Operations.eth_update_contract_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: Operations.sidechain_issue.name,
+	[OPERATIONS_IDS.SIDECHAIN_BURN]: Operations.sidechain_burn.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN]: Operations.register_erc20_token.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_DEPOSIT_TOKEN]: Operations.deposit_erc20_token.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN]: Operations.erc20_send_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN]: Operations.withdraw_erc20_token.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN]: Operations.erc20_send_withdraw.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: Operations.sidechain_btc_create_address.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_create_intermediate_deposit.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_intermediate_deposit.name,
@@ -258,6 +264,50 @@ export const OPS_DESCRIPTIONS = {
 	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: {
 		description: '',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_send_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW]: {
+		description: 'Used to withdraw the eETH and receive ETH to provided address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_WITHDRAW]: {
+		description: 'An internal operation by which committee members confirm the withdrawal of ETH after 24h.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_send_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW]: {
+		description: 'An internal operation by which committee members confirm the withdrawal of ETH and burn the eETH.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_approve_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_UPDATE_CONTRACT_ADDRESS]: {
+		description: 'An internal operation, sent by committee member to propose update of the eth contract address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_update_contract_address_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: {
+		description: 'Virtual operation, which reports that the money entered with the help of sidechain.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_issue_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BURN]: {
+		description: 'Virtual operation, which reports that the conclusion was successful and funds burned(withdrawn).',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_burn_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN]: {
+		description: 'Used to register a token in the sidechain',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_register_token_operation.',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_DEPOSIT_TOKEN]: {
+		description: 'An internal operation by which committee members confirm the entry of tokens.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_deposit_token_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN]: {
+		description: 'An internal operation by which committee members confirm the entry of tokens after 24h and credit token.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_send_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN]: {
+		description: 'Executed by the user and initiates the withdrawal of the token from the Echo network to the specified address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_withdraw_token_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN]: {
+		description: 'An internal operation by which committee members confirm the removal of tokens after 24h.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_send_withdraw_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: {
 		description: '',

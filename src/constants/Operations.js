@@ -708,11 +708,23 @@ export const proposalOperations = [
 	Operations.proposal_update.name,
 	Operations.proposal_delete.name,
 ];
+
 export const sidechainOperations = [
 	Operations.sidechain_eth_create_address.name,
 	Operations.sidechain_eth_approve_address.name,
 	Operations.deposit_eth.name,
 	Operations.eth_send_deposit.name,
+	Operations.withdraw_eth.name,
+	Operations.eth_send_withdraw.name,
+	Operations.approve_withdraw_eth.name,
+	Operations.eth_update_contract_address.name,
+	Operations.sidechain_issue.name,
+	Operations.sidechain_burn.name,
+	Operations.register_erc20_token.name,
+	Operations.deposit_erc20_token.name,
+	Operations.erc20_send_deposit.name,
+	Operations.withdraw_erc20_token.name,
+	Operations.erc20_send_withdraw.name,
 ];
 
 export const sidechainBtcOperations = [
