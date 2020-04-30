@@ -8,7 +8,7 @@ import TableLabel from '../../../components/TableLabel';
 import Thead from './Thead';
 import Row from './Row';
 
-const LatestOperationsTable = memo(({ operations }) => (
+const LatestOperationsTable = memo(({ operations, goToTransaction }) => (
 	<div className="main-page-table">
 		<TableLabel label="Latest Operations" />
 		<PerfectScrollbar>
@@ -20,9 +20,14 @@ const LatestOperationsTable = memo(({ operations }) => (
 						<React.Fragment key={`${data.blockNumber}${data.trIndex}${data.opIndex}`}>
 							<Row
 								operation={data.type}
-								from={data.mainInfo.from.name}
-								to={data.mainInfo.subject.name}
-								amount={{ value: data.mainInfo.value.amount || 0, coin: data.mainInfo.value.symbol }}
+								from={data.mainInfo.from}
+								to={data.mainInfo.subject}
+								amount={{
+									value: data.mainInfo.value.amount || 0,
+									coin: data.mainInfo.value.symbol,
+									precision: data.mainInfo.value.precision,
+								}}
+								onClick={(e) => goToTransaction(e, data.blockNumber, data.trIndex, data.opIndex)}
 							/>
 						</React.Fragment>
 					))
@@ -36,5 +41,6 @@ const LatestOperationsTable = memo(({ operations }) => (
 
 LatestOperationsTable.propTypes = {
 	operations: PropTypes.array.isRequired,
+	goToTransaction: PropTypes.func.isRequired,
 };
 export default LatestOperationsTable;

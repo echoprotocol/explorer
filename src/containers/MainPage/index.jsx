@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
-import moment from 'moment';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
 import BlockReducer from '../../reducers/BlockReducer';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import GlobalActions from '../../actions/GlobalActions';
-import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import LatestBlocksTable from './LatestBlocksTable';
 import LatestOperationsTable from './LatestOperationsTable';
+import URLHelper from '../../helpers/URLHelper';
 
 
 class MainPage extends React.Component {
@@ -28,8 +28,7 @@ class MainPage extends React.Component {
 			blocksResult.push({
 				round: key,
 				blockNumber: FormatHelper.formatAmount(key, 0),
-				time: value.get('time'),
-				date: moment.utc(value.get('timestamp')).local().format('DD MMM'),
+				time: value.get('timestamp'),
 				producer: value.get('producer'),
 				producerId: value.get('producerId'),
 				reward: value.get('reward'),
@@ -64,6 +63,13 @@ class MainPage extends React.Component {
 		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
 	}
 
+	goToTransaction(e, block, transaction, op) {
+		e.preventDefault();
+		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
+		const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, op + 1);
+		Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
+	}
+
 	render() {
 		return (
 			<div className="main-page">
@@ -73,6 +79,7 @@ class MainPage extends React.Component {
 						blocks={this.getBlocks()}
 					/>
 					<LatestOperationsTable
+						goToTransaction={(e, block, trx, op) => this.goToTransaction(e, block, trx, op)}
 						operations={this.getOperations()}
 					/>
 				</div>

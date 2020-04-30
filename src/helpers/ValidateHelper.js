@@ -160,7 +160,7 @@ export const validateContractIcon = (file) => {
 	}
 
 	if (size > KILO_BYTE * MAX_KB_CONTRACT_ICON) {
-		return `File should be less than ${MAX_KB_CONTRACT_ICON}kb`;
+		return `File should be less than ${MAX_KB_CONTRACT_ICON}KB`;
 	}
 
 	return null;

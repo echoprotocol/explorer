@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 
 import { ECHO_ASSET } from '../../../constants/GlobalConstants';
-import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH } from '../../../constants/RouterConstants';
+import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH, SSR_CONTRACT_PATH } from '../../../constants/RouterConstants';
 import URLHelper from '../../../helpers/URLHelper';
 
 import Avatar from '../../Avatar';
@@ -11,7 +11,7 @@ import SsrHrefHelper from '../../../helpers/SsrHrefHelper';
 import FormatHelper from '../../../helpers/FormatHelper';
 
 const LinkRow = ({
-	title, account, link, isLinkOut, objectId, asset, amount, rate, className,
+	title, account, link, isLinkOut, objectId, asset, amount, rate, value, className, contract, linkTitle,
 }) => (
 	<div className={`od-row ${className}`}>
 		<div className="od-col">{title}:</div>
@@ -28,6 +28,13 @@ const LinkRow = ({
 				<div>
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(asset.link)} >
 						<a className="blue">{asset.value}</a>
+					</Link>
+				</div>
+			}
+			{contract &&
+				<div>
+					<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(contract)} >
+						<a className="blue">{contract}</a>
 					</Link>
 				</div>
 			}
@@ -56,11 +63,11 @@ const LinkRow = ({
 			}
 			{link && !isLinkOut &&
 				<Link href={link} as={URLHelper.createUrlById}>
-					<a href="">{link}</a>
+					<a href={link}>{linkTitle || link}</a>
 				</Link>
 			}
 			{link && isLinkOut &&
-				<a href={link} className="link" target="_blank" rel="noopener noreferrer">{link}</a>
+				<a href={link} className="link" target="_blank" rel="noopener noreferrer">{value || link}</a>
 			}
 		</div>
 	</div>
@@ -69,24 +76,30 @@ const LinkRow = ({
 LinkRow.propTypes = {
 	title: PropTypes.string.isRequired,
 	account: PropTypes.object,
+	contract: PropTypes.string,
 	amount: PropTypes.object,
 	rate: PropTypes.object,
 	objectId: PropTypes.string,
 	asset: PropTypes.object,
 	link: PropTypes.string,
+	value: PropTypes.string,
 	isLinkOut: PropTypes.bool,
 	className: PropTypes.string,
+	linkTitle: PropTypes.string,
 };
 
 LinkRow.defaultProps = {
 	account: null,
+	contract: '',
 	amount: null,
 	asset: null,
 	rate: null,
 	link: '',
+	value: '',
 	objectId: '',
 	isLinkOut: false,
 	className: '',
+	linkTitle: '',
 };
 
 export default LinkRow;

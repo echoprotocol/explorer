@@ -13,5 +13,6 @@
 	"EXPLORER_URLS":{
 		"TEST_NET": "TEST_NET",
 		"MAIN_NET": "MAIN_NET"
-	}
+	},
+	"MODE":"MODE"
 }

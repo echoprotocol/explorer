@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { LatestBlockIcon } from '../../components/Icons/HeaderIcons';
 import Timer from '../../components/Time/Timer';
 
@@ -8,8 +9,7 @@ const calculateTimestamp = (latestBlock, blocks) => {
 	if (!lastTimestamp) {
 		return 0;
 	}
-	const GMT = new Date().getTimezoneOffset();
-	const diff = (Date.now() - Date.parse(lastTimestamp)) + (GMT * 60 * 1000);
+	const diff = moment().diff(moment.utc(lastTimestamp));
 	return Math.floor(diff / 1000);
 };
 

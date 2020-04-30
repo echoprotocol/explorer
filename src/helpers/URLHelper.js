@@ -13,6 +13,7 @@ import {
 } from '../constants/RouterConstants';
 
 import config from '../config/chain';
+import { BTC_EXPLORER, ETH_EXPLORER } from '../constants/OpsFormatConstants';
 
 class URLHelper {
 
@@ -194,6 +195,43 @@ class URLHelper {
 	 */
 	static getUrlWithOrigin(url) {
 		return typeof window !== 'undefined' ? `${window.location.origin}${url}` : url;
+	}
+
+	/**
+	 * @method createEthAddressOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createEthAddressOut(url) {
+		return `${ETH_EXPLORER}/address/${url}`;
+	}
+
+	/**
+	 * @method createBtcAddressOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createBtcAddressOut(url) {
+		return `${BTC_EXPLORER}/address/${url}`;
+	}
+
+	/**
+	 * @method transformEchodbOperationLinkToExplorerLink
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static transformEchodbOperationLinkToExplorerLink(url) {
+		if (!url || typeof url !== 'string') {
+			return url;
+		}
+		const slpitedUrl = url.split('-');
+		if (slpitedUrl[1]) {
+			slpitedUrl[1] = parseInt(slpitedUrl[1], 10) + 1;
+		}
+		if (slpitedUrl[2]) {
+			slpitedUrl[2] = parseInt(slpitedUrl[2], 10) + 1;
+		}
+		return `/blocks/${slpitedUrl[0]}/${slpitedUrl[1]}?op=${slpitedUrl[2]}`;
 	}
 
 }

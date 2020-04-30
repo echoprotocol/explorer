@@ -14,11 +14,12 @@ const Block1 = React.memo((props) => (
 		</div>
 		<div className="preparing-line">
 			<span className="preparing-text">
-				Next block&nbsp;
-				<span style={{ color: '#e9eaef' }}>
-					{props.latestBlock + 1}
+				<span>Next block:
+					<span style={{ color: '#e9eaef' }}>
+						{props.latestBlock + 1}&nbsp;
+					</span>
 				</span>
-				:&nbsp;{getStatus(props.stepProgress)}
+				<span>{getStatus(props.stepProgress)}</span>
 				<InfoTooltip iconFilled={false} overlay="Next block info" />
 			</span>
 			<a href="https://docs.echo.org/" target="_blank" rel="noopener noreferrer">Echo rand info</a>

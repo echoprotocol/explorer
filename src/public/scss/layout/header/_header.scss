@@ -37,7 +37,6 @@ header {
 	position: relative;
 	z-index: 1;
 	display: inline-block;
-	height: 41px;
 }
 .logotype-max {
 	@include max-vw($res-1280) {
@@ -59,8 +58,11 @@ header {
 }
 
 .top-section {
-	padding: 20px 0 10px;
+	padding: 15px 0 10px;
 	background-color: $explorer-dark;
+	@include max-vw($res-500) {
+		padding: 20px 0 10px;
+	}
 }
 
 .header-actions-wrap {

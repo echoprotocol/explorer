@@ -13,6 +13,7 @@
 		position: absolute;
 		right: 10px;
 		width: 40px;
+		height: 40px;
 		.input-container {
 			border-color: transparent;
 			.icon {
@@ -48,7 +49,9 @@
 				}
 
 				&:hover {
-					border-color: #383c57;
+					@include only-hover() {
+						border-color: #383c57;
+					}
 				}
 			}
 
@@ -72,7 +75,9 @@
 		@include transition;
 
 		&:hover {
-			border-color: #383c57;
+			@include only-hover() {
+				border-color: #383c57;
+			}
 
 			input {
 				:placeholder {

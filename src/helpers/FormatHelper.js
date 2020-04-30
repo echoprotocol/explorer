@@ -64,7 +64,7 @@ class FormatHelper {
 
 	static formatByteSize(bytes) {
 		if (bytes < 1024) return 'bytes';
-		else if (bytes < 1048576) return 'kB';
+		else if (bytes < 1048576) return 'KB';
 		else if (bytes < 1073741824) return 'MB';
 		return 'GB';
 	}
@@ -94,7 +94,7 @@ class FormatHelper {
 	 * @returns {{date: string, time: string}}
 	 */
 	static timestampToBlockCreationTime(timestamp) {
-		const [date, time] = moment(new Date(timestamp)).format('DD.MM.YYYY HH:mm').split(' ');
+		const [date, time] = moment.utc(timestamp).local().format('DD.MM.YYYY, hh:mm A').split(',');
 		return { date, time };
 	}
 
@@ -208,7 +208,19 @@ class FormatHelper {
 	 * @returns {string}
 	 */
 	static secondsToFullTime(time) {
-		return moment.utc(moment.duration(time, 'seconds').asMilliseconds()).format('HH:mm:ss');
+		const date = new Date(time * 1000);
+		const days = Math.floor(moment.duration(time * 1000).asDays());
+		const hours = date.getUTCHours();
+		const minutes = date.getUTCMinutes();
+		let daysString = '';
+
+		if (days === 1) {
+			daysString = '1 day, ';
+		} else if (days > 1) {
+			daysString = `${days} days, `;
+		}
+
+		return `${daysString}${hours}h:${minutes}m`;
 	}
 
 	/**
@@ -218,6 +230,34 @@ class FormatHelper {
 	 */
 	static convertToNumber(stringValue) {
 		return new BN(stringValue).toNumber();
+	}
+
+	/**
+	 *
+	 * @param date
+	 * @return {string}
+	 */
+	static formatPolicyBeginDate(date) {
+		return moment(date).format('DD MMM YYYY');
+	}
+
+	/**
+	 *
+	 * @method getBlockTimeByTimestamp
+	 * @param timestamp
+	 * @return {string}
+	 */
+	static getBlockTimeByTimestamp(timestamp) {
+		return moment.utc(timestamp).local().format('hh:mm:ss A');
+	}
+
+	/**
+	 * @method getBlockDateByTimestamp
+	 * @param timestamp
+	 * @return {string}
+	 */
+	static getBlockDateByTimestamp(timestamp) {
+		return moment.utc(timestamp).local().format('DD MMM');
 	}
 
 }

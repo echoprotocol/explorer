@@ -7,6 +7,8 @@
 	@include table-air();
 	@include table-avatar();
 	@include table-vertical-scroll();
+	@include table-loader();
+
 	thead {
 		border-top: 1px solid $grey-mid;
 	}
@@ -40,12 +42,40 @@
 		transition: transform $speed;
 	}
 
+	.fold-operation-info {
+		padding: 20px 0;
+		&:not(:last-child) {
+			margin-bottom: 20px;
+		}
+	}
+
 	.fold {
 		display: none;
 		animation: fade-in $speed;
 		position: relative;
 		z-index: 1;
 		@include table-row-highlight();
+		td {
+			&:nth-child(2) {
+				padding: 12px 30px;
+			}
+		}
+
+		.fold-header {
+			padding: 0 30px;
+			padding-bottom: 6px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			border-bottom: 1px solid rgba(#3f465a, 0.15);
+		}
+
+		.fold-title {
+			position: relative;
+			font-size: 12px;
+			@include inter-ui-medium;
+		}
 	}
 
 	.amount,

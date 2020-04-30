@@ -23,5 +23,6 @@
 	"EXPLORER_URLS":{
 		"TESTNET": "https://656-echo-explorer.pixelplex-test.by",
 		"MAINNET": "https://explorer.echo.org"
-	}
+	},
+	"MODE":"TESTNET"
 }
