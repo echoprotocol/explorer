@@ -1,14 +1,17 @@
 .input-search-block {
 	position: relative;
+	z-index: 1;
 	width: 460px;
 	height: 42px;
 
 	@include transition;
 	@include max-vw($res-1000) {
-		width: 388px;
+		width: 350px;
 	}
 
 	@include max-vw($res-768) {
+		position: absolute;
+		right: 10px;
 		width: 40px;
 		height: 40px;
 		.input-container {
@@ -37,7 +40,7 @@
 
 		&.active {
 			width: auto;
-
+			left: 0;
 			.input-container {
 				border-color: #31354f;
 
@@ -57,12 +60,10 @@
 			}
 		}
 	}
+
 	@include max-vw($res-500) {
-		position: absolute;
-		right: 15px;
-		&.active {
-			left: 15px;
-		}
+		left: initial;
+		right: 45px;
 	}
 	.input-container {
 		display: flex;

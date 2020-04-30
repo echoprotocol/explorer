@@ -6,6 +6,7 @@
   },
   "SERVER_URL": "https://656-echo-explorer.pixelplexlabs.com",
   "ECHO_NODE": {
-    "API_URL": "wss://testnet.echo-dev.io/ws"
-  }
+    "API_URL": "wss://devnet.echo-dev.io/ws"
+	},
+	"MODE":"TESTNET"
 }

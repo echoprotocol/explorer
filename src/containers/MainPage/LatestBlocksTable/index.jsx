@@ -16,7 +16,7 @@ const LatestBlocksTable = memo(({ blocks, goToBlock }) => {
 		const lastBlocksArr = [];
 		blocks.forEach((block) => {
 			const blockDiff = moment().diff(moment.utc(block.time), 'seconds');
-			const blockDate = 	FormatHelper.getBlockDateByTimestamp(block.time);
+			const blockDate = FormatHelper.getBlockDateByTimestamp(block.time);
 			if (blockDiff > 86400) {
 				if (lastBlocksArr.length === 0) {
 					lastBlocksArr.push({
@@ -24,14 +24,13 @@ const LatestBlocksTable = memo(({ blocks, goToBlock }) => {
 						date: blockDate,
 					});
 				} else {
-					lastBlocksArr.forEach((item) => {
-						if (item && item.date !== blockDate) {
-							lastBlocksArr.push({
-								number: block.blockNumber,
-								date: blockDate,
-							});
-						}
-					});
+					const isLastBlocksContainsDate = lastBlocksArr.some((item) => item.date === blockDate);
+					if (!isLastBlocksContainsDate) {
+						lastBlocksArr.push({
+							number: block.blockNumber,
+							date: blockDate,
+						});
+					}
 				}
 			}
 			return null;

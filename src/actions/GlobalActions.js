@@ -4,6 +4,7 @@ import BaseActionsClass from './BaseActionsClass';
 import ModalActions from './ModalActions';
 import { BridgeService } from '../services/BridgeService';
 import { fullClientInit, partialClientConnect } from './SocketActions';
+import config from '../config/chain';
 
 class GlobalActionsClass extends BaseActionsClass {
 
@@ -79,6 +80,16 @@ class GlobalActionsClass extends BaseActionsClass {
 	setTitle(title) {
 		return (dispatch) => {
 			dispatch(this.setValue('title', title));
+		};
+	}
+
+	/**
+	 * Set network mode
+	 * @returns {Function}
+	 */
+	setMode() {
+		return (dispatch) => {
+			dispatch(this.setValue('mode', config.MODE));
 		};
 	}
 
