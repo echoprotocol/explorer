@@ -39,10 +39,11 @@ const AuthorityRow = ({
 								<a href="">{item.value}</a>
 							</Link>
 						)}
+						{item.weight &&
 						<span className="authority-field__info-description">
 							<span>Weight:&nbsp;</span>
 							<span>{item.weight}</span>
-						</span>
+						</span>}
 					</div>
 				</div>
 			))

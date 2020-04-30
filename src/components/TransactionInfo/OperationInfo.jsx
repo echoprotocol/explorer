@@ -83,7 +83,7 @@ class OperationInfo extends React.Component {
 					{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
 					{data.authority && <AuthorityRow title="Authority" tooltip="Public keys and accounts" weightThreshold={data.weight_threshold} authority={data.authority} />}
 					{data.approvals_to_add && <AuthorityRow title="Approvals to add" authority={data.approvals_to_add} />}
-					{data.approvals_to_remove && <AuthorityRow title="Approvals to add" authority={data.approvals_to_remove} />}
+					{data.approvals_to_remove && <AuthorityRow title="Approvals to remove" authority={data.approvals_to_remove} />}
 					{data.echorand_key && <PrimaryRow title="EchoRand Key" description={data.echorand_key} />}
 					{data.account_updated && <LinkRow title="Account updated" account={{ value: data.account_updated.value, link: data.account_updated.link }} />}
 					{data.delegating_account && <LinkRow title="Delegating Account" account={data.delegating_account} />}
