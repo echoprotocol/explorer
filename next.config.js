@@ -57,6 +57,18 @@ module.exports = chainWrapper({
 				},
 			},
 		});
+		_config.module.rules.map((rule) => {
+			if (rule.test.toString() !== '/\\.scss$/') {
+				return rule;
+			}
+			rule.use = [{
+				loader: 'css-loader',
+			}, {
+				loader: 'sass-loader',
+			},
+			];
+			return rule;
+		});
 		return _config;
 	},
 });
