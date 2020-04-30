@@ -472,6 +472,9 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (approves === 0 && objectWithApprovals.is_approved) {
 					approves = total;
 				}
+				object = object
+					.set('approves', approves)
+					.set('total', total);
 			} else if (sidechainBtcOperations.includes(operation.name)) {
 				let singleOperation = {};
 				try {
