@@ -31,7 +31,7 @@ import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
-import { getConrtactOperations, getHistory, getSingleOpeation } from '../services/queries/history';
+import { getConrtactOperations, getSingleOpeation } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
@@ -298,39 +298,37 @@ class TransactionActionsClass extends BaseActionsClass {
 						});
 				}
 			} else if (proposalOperations.includes(operation.name)) {
-				let operationName;
-				switch (operation.name) {
-					case Operations.proposal_create.name:
-						operationName = 'PROPOSAL_CREATE';
-						break;
-					case Operations.proposal_update.name:
-						operationName = 'PROPOSAL_UPDATE';
-						break;
-					case Operations.proposal_delete.name:
-						operationName = 'PROPOSAL_DELETE';
-						break;
-					default:
-						break;
+				let singleOperation = {};
+				try {
+					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
+					singleOperation = operationFromGraphQl.getSingleOperation.body;
+					singleOperation.result = operationFromGraphQl.getSingleOperation.result;
+				} catch (e) {
+					//
 				}
-				const { items } = await getHistory({ subject: from.id, operations: [operationName] });
-				const currentOperation = items.find((el) => el.trx_in_block === opInfo.trxInblock &&
-							el.op_in_trx === opInfo.opInTrx &&
-							el.block.round === opInfo.block);
-				const operations = options.proposed_ops.map(([opType]) => {
+				const operations = options.proposed_ops ? options.proposed_ops.map((el) => {
+					const opType = el.op[0];
 					const op = Object.values(Operations).find((i) => i.value === opType);
 					return op && op.name;
-				});
+				}) : undefined;
 
 				object = object
-					.set('id', currentOperation.body.proposal || currentOperation.result)
-					.set('expirationTime', currentOperation.body.expiration_time)
-					.set('reviewPeriodSeconds', currentOperation.body.review_period_seconds)
+					.set('id', singleOperation.proposal || singleOperation.result)
+					.set('expirationTime', singleOperation.expiration_time)
+					.set('reviewPeriodSeconds', singleOperation.review_period_seconds)
+					.set('active_approvals_to_add', singleOperation.active_approvals_to_add)
+					.set('active_approvals_to_remove', singleOperation.active_approvals_to_remove)
+					.set('key_approvals_to_add', singleOperation.key_approvals_to_add)
+					.set('key_approvals_to_remove', singleOperation.key_approvals_to_remove)
 					.set('operations', operations);
 
-				const proposal = await echo.api.getObject(subject.id);
+				const proposal = await echo.api.getObject(object.get('id'));
 				if (!proposal) {
-					const status = 'resolved or rejected';
-					object = object.set('status', status);
+					// const feePayingAccount = singleOperation.fee_paying_account;
+					// const history = await echo.api.getAccountHistory(feePayingAccount);
+					// const currentProposalCreateOperation = history.find((el) => el.result[1])
+					// const status = 'resolved or rejected';
+					// object = object.set('status', status);
 				}
 			} else if (sidechainOperations.includes(operation.name)) {
 				let objectWithApprovals = { approves: [], is_approved: false };
@@ -803,11 +801,11 @@ class TransactionActionsClass extends BaseActionsClass {
 
 	getProposalOperations(proposedOps = [], blockNumber, blockTimestamp, trIndex) {
 		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
-			const [idPropOp] = proposedOp;
+			const [idPropOp] = proposedOp.name.op;
 			let propData = {};
 			try {
 				propData = await this.getOperation(
-					proposedOp,
+					proposedOp.name.op,
 					blockNumber,
 					blockTimestamp,
 					trIndex,
@@ -1038,10 +1036,16 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		if (proposalOperations.includes(operation.name)) {
-			let promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
-			promises = await Promise.all(promises);
-			delete op.proposed_ops;
-			op.proposals = promises;
+			try {
+				let promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
+				promises = await Promise.all(promises);
+				delete op.proposed_ops;
+				op.proposals = promises;
+				op.operationsInfoData.proposalOperations = promises;
+			} catch (e) {
+				//
+			}
+
 		}
 
 		return op;
