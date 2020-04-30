@@ -12,10 +12,10 @@ const LinksArray = ({
 			<div className="od-col">{title}:</div>
 			<div className="od-col">
 				<div>
-					{links.map((link) => (
+					{links.map((link, i) => (
 						<Link href={link} as={URLHelper.createUrlById}>
 							<a href="">
-								<span>{link}</span>&nbsp;
+								<span>Approve {i + 1}</span>&nbsp;
 							</a>
 						</Link>
 					))}

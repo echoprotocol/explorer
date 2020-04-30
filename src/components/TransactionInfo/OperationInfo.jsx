@@ -12,7 +12,7 @@ import AdditionalInfo from './AdditionalInfo';
 import PolicyRow from './Rows/PolicyRow';
 import CopyRow from './Rows/CopyRow';
 import URLHelper from '../../helpers/URLHelper';
-import MultyLinksRow from './Rows/MultiLinksRow';
+import MultyLinksRow from './Rows/MultyLinksRow';
 
 class OperationInfo extends React.Component {
 
@@ -104,6 +104,7 @@ class OperationInfo extends React.Component {
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
 					{data.amount_info && <PrimaryRow title="Amount" description={data.amount_info} />}
 					{data.transaction_hash && <PrimaryRow title="Transaction hash" description={data.transaction_hash} />}
+					{data.token && <LinkRow title="Token" linkTitle={data.token.value} objectId={data.token.link} />}
 					{data.aggregation_out_value && <PrimaryRow title="Aggregation out value" description={data.aggregation_out_value} />}
 					{data.btc_block_number && <PrimaryRow title="BTC block number" description={data.btc_block_number} />}
 					{data.sma_address && <PrimaryRow title="SMA Address" description={data.sma_address} />}

@@ -355,6 +355,60 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('deposit_id', objectWithApprovals.id);
 						break;
+					case Operations.approve_erc20_token_withdraw.name: {
+						const originalOpIndexes = singleOperation.sidchain_erc_20_withdraw_token.split('-');
+						const originalOp = await getSingleOpeation(...originalOpIndexes.map((i) => (+i)));
+						objectWithApprovals = await echo.api.getObject(originalOp.getSingleOperation.body.withdraw_id);
+						object = object
+							.set('withdraw_id', objectWithApprovals.id)
+							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
+							.set('transaction_hash', singleOperation.transaction_id || singleOperation.transaction_hash)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
+						break;
+					} case Operations.sidechain_erc20_issue.name: {
+						const token = await echo.api.getObject(singleOperation.token);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+						object = object
+							.set('deposit_id', singleOperation.deposit)
+							.set('amount', singleOperation.amount)
+							.set('token', { value: token.symbol, link: token.id })
+							.set('sidchain_erc_20_deposit_token', singleOperation.sidchain_erc_20_deposit_token)
+							.set('list_approvals', listApprovals)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_deposit_token));
+						break;
+					} case Operations.sidechain_erc20_burn.name: {
+						const token = await echo.api.getObject(singleOperation.token);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+						object = object
+							.set('withdraw_id', singleOperation.withdraw)
+							.set('amount', singleOperation.amount)
+							.set('token', { value: token.symbol, link: token.id })
+							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
+							.set('list_approvals', listApprovals);
+						break;
+					} case Operations.sidechain_btc_create_intermediate_deposit.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_intermediate_deposit.name: {
+						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_address_id);
+						const fromAccount = await echo.api.getObject(objectWithApprovals.account);
+						object = object.set('account', { link: fromAccount.id, value: fromAccount.name });
+						break;
+					}
+					case Operations.sidechain_btc_deposit.name:
+						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_deposit_id);
+						break;
+					case Operations.sidechain_btc_withdraw.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_aggregate.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_approve_aggregate.name:
+						objectWithApprovals = {};
+						break;
 					case Operations.eth_send_withdraw.name:
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						object = object

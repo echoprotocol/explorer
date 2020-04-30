@@ -313,6 +313,42 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		}
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW: {
+			return {
+				operationInfo: {
+					type,
+					sender: data.committee_member_id,
+					withdraw_id: objectInfo.withdraw_id,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						number_of_confirmations: {
+							value: objectInfo.approves,
+							total: objectInfo.total,
+						},
+						operationLink: objectInfo.original_operation,
+						transaction_hash: objectInfo.transaction_hash,
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE: {
+			return {
+				operationInfo: {
+					type,
+					amount_info: objectInfo.amount,
+					account_name: data.account,
+					deposit_id: objectInfo.deposit_id,
+					token: objectInfo.token,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						approves: objectInfo.approves_list,
+						operationLink: objectInfo.original_operation,
+					},
+				},
+			};
+		}
 		case OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT: {
 			return {
 				operationInfo: {
@@ -329,6 +365,22 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: objectInfo.approves,
 							total: objectInfo.total,
 						},
+					},
+				},
+			};
+		}
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_BURN: {
+			return {
+				operationInfo: {
+					type,
+					amount_info: objectInfo.amount,
+					account_name: data.account,
+					withdraw_id: objectInfo.withdraw_id,
+					token: objectInfo.token,
+					fee: data.fee,
+					...description,
+					additionalInfo: {
+						approves: objectInfo.approves_list,
 					},
 				},
 			};
