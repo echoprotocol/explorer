@@ -12,7 +12,7 @@ import AdditionalInfo from './AdditionalInfo';
 import PolicyRow from './Rows/PolicyRow';
 import CopyRow from './Rows/CopyRow';
 import URLHelper from '../../helpers/URLHelper';
-import MultyLinksRow from './Rows/MultiLinksRow';
+import MultyLinksRow from './Rows/MultyLinksRow';
 
 class OperationInfo extends React.Component {
 

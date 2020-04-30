@@ -364,7 +364,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('withdraw_id', objectWithApprovals.id)
 							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
-							.set('transaction_hash', singleOperation.transaction_id || singleOperation.transaction_hash);
+							.set('transaction_hash', singleOperation.transaction_id || singleOperation.transaction_hash)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
 					} case Operations.sidechain_erc20_issue.name: {
 						const token = await echo.api.getObject(singleOperation.token);
@@ -375,7 +376,8 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('amount', singleOperation.amount)
 							.set('token', { value: token.symbol, link: token.id })
 							.set('sidchain_erc_20_deposit_token', singleOperation.sidchain_erc_20_deposit_token)
-							.set('approves_list', listApprovals);
+							.set('approves_list', listApprovals)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_deposit_token));
 						break;
 					} case Operations.sidechain_erc20_burn.name: {
 						const token = await echo.api.getObject(singleOperation.token);

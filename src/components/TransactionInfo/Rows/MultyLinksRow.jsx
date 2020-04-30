@@ -4,17 +4,12 @@ import Link from 'next/link';
 import URLHelper from '../../../helpers/URLHelper';
 import SsrHrefHelper from '../../../helpers/SsrHrefHelper';
 
-const MultyLinksRow = React.memo(({ title, fields, readyLinks }) => (
+const MultyLinksRow = React.memo(({ title, fields }) => (
 	<div className="od-row">
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			<div className="multy-field">
-				{readyLinks.length && readyLinks.map((link) => (
-					<Link href={link.link} as={URLHelper.createUrlById}>
-						<a href={link.link}>{link.title}</a>
-					</Link>
-				))}
-				{fields.length && fields.map((item) => (
+				{fields.map((item) => (
 					<span className="multy-field-item" key={item.value}>
 						<span className="multy-field-item__name">
 							{item.key}:&nbsp;
@@ -38,12 +33,10 @@ const MultyLinksRow = React.memo(({ title, fields, readyLinks }) => (
 MultyLinksRow.propTypes = {
 	title: PropTypes.string.isRequired,
 	fields: PropTypes.array,
-	readyLinks: PropTypes.array,
 };
 
 MultyLinksRow.defaultProps = {
 	fields: [],
-	readyLinks: [],
 };
 
 export default MultyLinksRow;

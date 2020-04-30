@@ -314,7 +314,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW: {
-			const op = objectInfo.sidchain_erc_20_withdraw_token && objectInfo.sidchain_erc_20_withdraw_token.split('-');
 			return {
 				operationInfo: {
 					type,
@@ -327,14 +326,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: objectInfo.approves,
 							total: objectInfo.total,
 						},
-						operationLink: op && `/blocks/${op[0]}/${(+op[1]) + 1}?op=${(+op[2]) + 1}`,
+						operationLink: objectInfo.original_operation,
 						transaction_hash: objectInfo.transaction_hash,
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE: {
-			const op = objectInfo.sidchain_erc_20_deposit_token && objectInfo.sidchain_erc_20_deposit_token.split('-');
 			return {
 				operationInfo: {
 					type,
@@ -346,7 +344,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					...description,
 					additionalInfo: {
 						approves: objectInfo.approves_list,
-						operationLink: op && `/blocks/${op[0]}/${(+op[1]) + 1}?op=${(+op[2]) + 1}`,
+						operationLink: objectInfo.original_operation,
 					},
 				},
 			};
