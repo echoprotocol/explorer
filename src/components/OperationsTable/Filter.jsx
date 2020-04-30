@@ -32,7 +32,7 @@ const OperationsFilter = React.memo(({
 				/>
 			</div>
 			<div className="operations-filter__button">
-				<FilterBtn name="Apply filters" isLoading={loading} onClick={onSubmitFilter} />
+				<FilterBtn name="Apply filters" isLoading={loading} onClick={onSubmitFilter} disabled={loading} />
 			</div>
 		</div>
 	</div>
