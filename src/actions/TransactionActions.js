@@ -1187,6 +1187,10 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (virtual) {
 					const operationResults = [];
 					const virtualOperations = await echo.api.getBlockVirtualOperations(blockNumber);
+					if (!virtualOperations.length) {
+						dispatch(GlobalActions.toggleErrorPath(true));
+						return;
+					}
 					const transformedOperations = virtualOperations.reduce((res, { op, result }) => {
 						operationResults.push(result);
 						return [...res, op];
