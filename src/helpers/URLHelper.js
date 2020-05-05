@@ -52,8 +52,8 @@ class URLHelper {
 	 * @param op
 	 * @returns {string}
 	 */
-	static createTransactionOperationUrl(currentUrl, op) {
-		return `${currentUrl}?op=${op}`;
+	static createTransactionOperationUrl(currentUrl, op, virtual) {
+		return `${currentUrl}?op=${op}&virtual=${!!virtual}`;
 	}
 
 	/**
@@ -220,7 +220,7 @@ class URLHelper {
 	 * @param {string} url
 	 * @return {string}
 	 */
-	static transformEchodbOperationLinkToExplorerLink(url) {
+	static transformEchodbOperationLinkToExplorerLink(url, virtual) {
 		if (!url || typeof url !== 'string') {
 			return url;
 		}
@@ -231,7 +231,7 @@ class URLHelper {
 		if (slpitedUrl[2]) {
 			slpitedUrl[2] = parseInt(slpitedUrl[2], 10) + 1;
 		}
-		return `/blocks/${slpitedUrl[0]}/${slpitedUrl[1]}?op=${slpitedUrl[2]}`;
+		return `/blocks/${slpitedUrl[0]}/${slpitedUrl[1]}?op=${slpitedUrl[2]}&virtual=${!!virtual}`;
 	}
 
 }

@@ -189,9 +189,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		// remove after go to 0.10 testnet
 
 		const { transactions } = planeBlock;
-
+		const virtualTransaction = await echo.api.getBlockVirtualOperations(round);
 		let resultTransactions = [];
-		if (transactions.length !== 0) {
+		if (transactions.length !== 0 || virtualTransaction.length) {
 			// TODO: didnt work with ops data
 			// const ops = transactions.reduce((resultIds, { operations }) => resultIds.concat(operations), []);
 			// await TransactionActions.fetchTransactionsObjects(ops);
@@ -207,10 +207,27 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 						operation_results[i],
 						i ? '' : trIndex + 1,
 					))));
-			resultTransactions = await Promise.all(promiseTransactions);
+			const promiseVirtualTransactions = virtualTransaction
+				.map(({
+					op, result, op_in_trx, trx_in_block,
+				}, i) => TransactionActions.getOperation(
+					op,
+					planeBlock.round,
+					planeBlock.timestamp,
+					trx_in_block,
+					op_in_trx,
+					result,
+					i ? '' : op_in_trx + 1,
+					null,
+					null,
+					true,
+				));
+
+			resultTransactions = await Promise.all([...promiseTransactions, Promise.all(promiseVirtualTransactions)]);
 		}
 		value.transactionCount = resultTransactions.length;
 		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
+
 		value.round = planeBlock.round;
 		value.timestamp = planeBlock.timestamp;
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);

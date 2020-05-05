@@ -15,7 +15,6 @@ import OperationInfo from '../TransactionInfo/OperationInfo';
 import ProposalOperations from '../TransactionInfo/ProposalOperations';
 import LogsInfo from '../TransactionInfo/LogsInfo';
 import InternalOperations from '../TransactionInfo/InternalOperations';
-import InfoTooltip from '../InfoTooltip';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
@@ -63,10 +62,6 @@ const OperationsRow = ({
 				<a href="" className="td-in avatar-wrap" onClick={(e) => goToLink(e, URLHelper.createUrlById(subject), subject)}>
 					{mainInfo.subject.name && <Avatar accountName={subject} />}
 					<span>{subject}</span>
-					<InfoTooltip
-						overlay="Tooltip"
-						type="receiver"
-					/>
 				</a>
 			</Link>
 		);
@@ -124,10 +119,6 @@ const OperationsRow = ({
 							<a href={URLHelper.getUrlWithOrigin(senderLink)} className="td-in avatar-wrap" onClick={(e) => goToLink(e, senderLink, mainInfo.from.id)}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
-								<InfoTooltip
-									overlay="Tooltip"
-									type="sender"
-								/>
 							</a>
 						</Link> : <div className="td-in">—</div>
 					}

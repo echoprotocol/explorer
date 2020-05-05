@@ -217,10 +217,9 @@ class OperationsTable extends React.Component {
 		const { showedOperations, airRows } = this.state;
 		const queryProps = queryString.parse(search);
 		const v = showedOperations.indexOf(index);
-
 		if (!this.props.changeUrl && operations && operations.size) {
 			const { blockNumber, type } = operations.get(index);
-			const { trIndex, opIndex } = operations.get(index);
+			const { trIndex, opIndex, virtual } = operations.get(index);
 
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
@@ -230,7 +229,7 @@ class OperationsTable extends React.Component {
 			}
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
-			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
+			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1, virtual);
 			Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
 
 			return;
@@ -251,8 +250,9 @@ class OperationsTable extends React.Component {
 				}
 			});
 		} else {
+			const mainOperation = operations.get(index) || {};
 			showedOperations.push(index);
-			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1));
+			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1, mainOperation.virtual));
 		}
 
 		if (showedOperations.includes(index) && airRows.indexOf(index - 1) === -1) {

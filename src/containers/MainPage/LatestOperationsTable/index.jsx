@@ -27,7 +27,7 @@ const LatestOperationsTable = memo(({ operations, goToTransaction }) => (
 									coin: data.mainInfo.value.symbol,
 									precision: data.mainInfo.value.precision,
 								}}
-								onClick={(e) => goToTransaction(e, data.blockNumber, data.trIndex, data.opIndex)}
+								onClick={(e) => goToTransaction(e, data.blockNumber, data.trIndex, data.opIndex, data.virtual)}
 							/>
 						</React.Fragment>
 					))

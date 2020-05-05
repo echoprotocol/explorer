@@ -14,7 +14,7 @@ export default withRouter(connect(
 		loading: state.transaction.get('loading'),
 	}),
 	(dispatch) => ({
-		getTransaction: (round, index) => dispatch(TransactionActions.getTransaction(round, index)),
+		getTransaction: (round, index, virtual) => dispatch(TransactionActions.getTransaction(round, index, virtual)),
 		clearTransaction: () => dispatch(TransactionActions.clear()),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		getBlockInfo: (round) => dispatch(getBlockInformation(round)),
