@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import moment from 'moment';
@@ -10,7 +10,16 @@ import Row from './Row';
 
 import FormatHelper from '../../../helpers/FormatHelper';
 
-const LatestBlocksTable = memo(({ blocks, goToBlock }) => {
+const LatestBlocksTable = (({ blocks, goToBlock }) => {
+
+	const [handledBlcoks, setBlocks] = useState(blocks);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setBlocks([...blocks]);
+		}, 1000);
+		return () => clearInterval(interval);
+	}, [blocks]);
 
 	const getLastByDay = () => {
 		const lastBlocksArr = [];
@@ -46,7 +55,7 @@ const LatestBlocksTable = memo(({ blocks, goToBlock }) => {
 					<Thead />
 					<tbody>
 						<tr className="air"><td /></tr>
-						{ blocks.map((data) => (
+						{ handledBlcoks.map((data) => (
 							<React.Fragment key={data.round}>
 								<Row
 									isLastByDay={getLastByDay() && getLastByDay().includes(data.blockNumber)}
