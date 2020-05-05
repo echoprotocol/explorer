@@ -219,12 +219,17 @@ class TransactionActionsClass extends BaseActionsClass {
 				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
 					el.op_in_trx === opInfo.opInTrx &&
 					el.block.round === opInfo.block);
+				if (currentOp.body.asset_tranfers) {
+					const assetTransfers = await this.formatAssetsTransfer(currentOp.body.asset_tranfers);
+					object = object
+						.set('asset_transfers', assetTransfers);
+				}
 				if (isNeedLink) {
 					object = object
 						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1));
 				}
-				if (currentOp.virtual_operations.length) {
-					const formatVirtualOps = currentOp.virtual_operations.map((op) => this.formatOperation(op));
+				if (currentOp.body.virtual_operations.length) {
+					const formatVirtualOps = currentOp.body.virtual_operations.map((op) => this.formatOperation(op));
 					const virtualOps = await Promise.all(formatVirtualOps);
 					const formatted = virtualOps.map((el) => {
 						let contractIdInOp;
@@ -235,14 +240,16 @@ class TransactionActionsClass extends BaseActionsClass {
 							contractIdInOp = subject.id;
 						}
 						return {
-							type: el.name,
-							bytecode: el.bytecode,
-							asset_amount_sent: el.value,
-							contract_id: contractIdInOp,
+							operationInfo: {
+								type: el.name,
+								bytecode: el.bytecode,
+								asset_amount_sent: el.value,
+								contract_id: contractIdInOp,
+							},
 						};
 					});
 
-					object.set('virtualOps', formatted);
+					object = object.set('virtualOps', formatted);
 				}
 				if (contractInfo.token) {
 					object = object.set('token', contractInfo.token);
@@ -1005,7 +1012,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					}
 
 				}
-			// eslint-disable-next-line no-empty
+				// eslint-disable-next-line no-empty
 			} catch (error) {
 			}
 		}
@@ -1141,6 +1148,31 @@ class TransactionActionsClass extends BaseActionsClass {
 				dispatch(this.setValue('loading', false));
 			}
 		};
+	}
+
+	async formatAssetsTransfer(trasfers) {
+		const transferPromise = async (tr) => {
+			const from = await echo.api.getObject(tr.from);
+			const to = await echo.api.getObject(tr.to);
+			const asset = await echo.api.getObject(tr.value.asset_id);
+			return {
+				amount: {
+					amount: tr.value.amount,
+					precision: asset.precision,
+					symbol: asset.symbol,
+				},
+				from: {
+					value: from.name,
+					link: from.id,
+				},
+				to: {
+					value: to.name,
+					link: to.id,
+				},
+			};
+		};
+		const formatted = await Promise.all(trasfers.map((el) => transferPromise(el)));
+		return formatted;
 	}
 
 }
