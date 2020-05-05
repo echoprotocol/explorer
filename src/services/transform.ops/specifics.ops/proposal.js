@@ -19,10 +19,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						// count_approvals: { // ADD after succce proposal
-						// 	value: 2,
-						// 	total: 4,
-						// },
+						count_approvals: objectInfo.count_approvals,
 						proposal_status: objectInfo.status,
 						// result_transaction: 'https://explorer.echo.org/blocks/70/1?op=1',
 					},
@@ -49,11 +46,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						// count_signatures: '2',
-						proposal_status: 'approved',
+						count_signatures: objectInfo.count_signatures,
+						proposal_status: objectInfo.status,
 					},
 				},
-				proposalOperations: objectInfo.proposed_ops,
+				proposalOperations: data.proposals,
 			};
 		}
 		case OPERATIONS_IDS.PROPOSAL_DELETE: {
@@ -65,11 +62,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						// count_signatures: '2',
-						proposal_status: 'approved',
+						count_signatures: objectInfo.count_signatures,
+						proposal_status: objectInfo.status,
 					},
 				},
-				proposalOperations: objectInfo.proposed_ops,
+				proposalOperations: data.proposals,
 			};
 		}
 		default:
