@@ -6,7 +6,6 @@ import echo, { serializers, validators } from 'echojs-lib';
 import RoundReducer from '../reducers/RoundReducer';
 import BlockReducer from '../reducers/BlockReducer';
 
-
 import {
 	PAGE_BLOCKS_COUNT,
 	MAX_BLOCK_REQUESTS,
@@ -29,7 +28,6 @@ import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
 import { getLatestOperationsFromGQL } from '../services/queries/history';
 import AccountActions from './AccountActions';
 
-const util = require('util');
 /**
  *
  * @param {Object} targetBlock

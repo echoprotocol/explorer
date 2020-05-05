@@ -15,7 +15,6 @@ import OperationInfo from '../TransactionInfo/OperationInfo';
 import ProposalOperations from '../TransactionInfo/ProposalOperations';
 import LogsInfo from '../TransactionInfo/LogsInfo';
 import InternalOperations from '../TransactionInfo/InternalOperations';
-import InfoTooltip from '../InfoTooltip';
 
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
