@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import queryString from 'query-string';
 import Router from 'next/router';
+import echo, { validators } from 'echojs-lib';
 
 import URLHelper from '../../helpers/URLHelper';
 import TableLabel from '../TableLabel';
@@ -24,8 +25,14 @@ class OperationsTable extends React.Component {
 		super(props);
 
 		this.state = {
-			from: '',
-			to: '',
+			from: {
+				error: '',
+				value: '',
+			},
+			to: {
+				error: '',
+				value: '',
+			},
 			showedOperations: [],
 			airRows: [],
 			isFilterOpen: false,
@@ -43,8 +50,14 @@ class OperationsTable extends React.Component {
 		// eslint-disable-next-line react/no-did-mount-set-state
 		this.setState({
 			isFilterOpen: !!this.props.filterAndPaginateData.get('filters').from || !!this.props.filterAndPaginateData.get('filters').to,
-			from: this.props.filterAndPaginateData.get('filters').from,
-			to: this.props.filterAndPaginateData.get('filters').to,
+			from: {
+				value: this.props.filterAndPaginateData.get('filters').from,
+				error: '',
+			},
+			to: {
+				value: this.props.filterAndPaginateData.get('filters').to,
+				error: '',
+			},
 		});
 
 		if (!queryProps.op) {
@@ -104,23 +117,47 @@ class OperationsTable extends React.Component {
 		window.removeEventListener('resize', this.updateScroll);
 	}
 
-	async onChangeFilter(e) {
+	onChangeFilter(e) {
 		const { name, value } = e.target;
-		const { filterAndPaginateData, router } = this.props;
-		const { filters } = filterAndPaginateData.toJS();
-		filters[name] = value;
+		this.setState({
+			[name]: {
+				value,
+			},
+		});
+	}
+
+	async onSubmitFilter() {
+		const { router } = this.props;
+		const fromValidation = await this.validateFilterInput(this.state.from.value);
+		const toValidation = await this.validateFilterInput(this.state.to.value);
+		const isFilterValid = fromValidation === '' && toValidation === '';
+		if (!isFilterValid) {
+			this.setState({
+				from: {
+					...this.state.from,
+					error: fromValidation,
+				},
+				to: {
+					...this.state.to,
+					error: toValidation,
+				},
+			});
+			return false;
+		}
+
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.setState({ [name]: value });
+
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
 			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
-				from: filters.from.trim(), to: filters.to.trim(), p: 1,
+				from: this.state.from.value.trim(), to: this.state.to.value.trim(), p: 1,
 			});
 			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 
+		return null;
 	}
 
 	onClearFilter(name) {
@@ -130,7 +167,11 @@ class OperationsTable extends React.Component {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.setState({ [name]: '' });
+		this.setState({
+			[name]: {
+				value: '',
+			},
+		});
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
 			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
@@ -144,6 +185,23 @@ class OperationsTable extends React.Component {
 		const { totalDataSize } = this.props.filterAndPaginateData.toJS();
 		await this.props.initData({ ...filters, totalDataSize });
 		this.props.onLoadMoreHistory();
+	}
+
+	async validateFilterInput(value) {
+		if (!value) { return ''; }
+		if (validators.isAccountId(value)) {
+			return '';
+		}
+		let account = null;
+		try {
+			account = await echo.api.getAccountByName(value.trim());
+			if (account) {
+				return '';
+			}
+			return 'invalid value';
+		} catch (err) {
+			return 'invalid value';
+		}
 	}
 
 	updateScroll() {
@@ -215,14 +273,13 @@ class OperationsTable extends React.Component {
 	}
 
 	renderTable() {
-		const { from, to } = this.state;
+		const { from: { value: from, error: fromError }, to: { value: to, error: toError } } = this.state;
 		const {
 			isTransaction, label, loading, router, isMobile, isASCOps,
 		} = this.props;
 		let { filterAndPaginateData } = this.props;
 		const { showedOperations, isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
-
 		return (
 			<div className="operations-table">
 				<TableLabel label={label}>
@@ -230,10 +287,14 @@ class OperationsTable extends React.Component {
 				</TableLabel>
 				<OperationsFilter
 					from={from}
+					fromError={fromError}
+					loading={loading}
 					to={to}
+					toError={toError}
 					open={isFilterOpen}
 					onChangeFilter={(e) => this.onChangeFilter(e)}
 					onClearFilter={(name) => this.onClearFilter(name)}
+					onSubmitFilter={() => this.onSubmitFilter()}
 				/>
 				<PerfectScrollbar ref={(ref) => { this.scrollBarRef = ref; }}>
 					<table>

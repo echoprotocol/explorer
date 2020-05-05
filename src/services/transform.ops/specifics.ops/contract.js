@@ -7,7 +7,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 	const description = OPS_DESCRIPTIONS[opNumber];
 
 	switch (opNumber) {
-		// TODO asset_transfers & deploy_arguments
+		// TODO deploy_arguments
 		case OPERATIONS_IDS.CONTRACT_CREATE: {
 			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
@@ -36,28 +36,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							}],
 							erc20_token_transfers: data['token transfers'],
 						}),
-						// asset_transfers: [{
-						// 	amount: {
-						// 		amount: 230,
-						// 		precision: 8,
-						// 		symbol: 'ECHO',
-						// 	},
-						// 	from: {
-						// 		value: '',
-						// 		link: '1.2.3',
-						// 	},
-						// 	to: {
-						// 		value: 'account',
-						// 		link: '1.2.3',
-						// 	},
-						// }],
+						asset_transfers: objectInfo.asset_transfers,
 					},
 				},
 				logs: data.logs,
-				internalOperations: data.virtualOps,
+				internalOperations: objectInfo.virtualOps,
 			};
 		}
-		// TODO asset_transfers
 		case OPERATIONS_IDS.CONTRACT_CALL: {
 			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 
@@ -85,29 +70,14 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							}],
 							erc20_token_transfers: data['token transfers'],
 						}),
-						// asset_transfers: [{
-						// 	amount: {
-						// 		amount: 230,
-						// 		precision: 8,
-						// 		symbol: 'ECHO',
-						// 	},
-						// 	from: {
-						// 		value: '',
-						// 		link: '1.2.3',
-						// 	},
-						// 	to: {
-						// 		value: 'account',
-						// 		link: '1.2.3',
-						// 	},
-						// }],
+						asset_transfers: objectInfo.asset_transfers,
 					},
 				},
 				logs: data.logs,
-				internalOperations: data.virtualOps,
+				internalOperations: objectInfo.virtualOps,
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE: {
-			// TODO original_operation
 			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
@@ -120,14 +90,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					additionalInfo: {
 						original_operation: {
 							link: objectInfo.link,
-							titel: 'Original operation',
+							title: 'Original operation',
 						},
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_INTERNAL_CALL: {
-			// TODO original_operation
 			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
@@ -139,14 +108,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					additionalInfo: {
 						original_operation: {
 							link: objectInfo.link,
-							titel: 'Original operation',
+							title: 'Original operation',
 						},
 					},
 				},
 			};
 		}
 		case OPERATIONS_IDS.CONTRACT_SELFDESTRUCT: {
-			// TODO original_operation
 			const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 			return {
 				operationInfo: {
@@ -159,7 +127,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					additionalInfo: {
 						original_operation: {
 							link: objectInfo.link,
-							titel: 'Original operation',
+							title: 'Original operation',
 						},
 					},
 				},

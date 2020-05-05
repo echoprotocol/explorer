@@ -25,7 +25,7 @@ const OperationsRow = React.memo(({
 
 	const diffInSeconds = moment().diff(moment.utc(time), 'seconds');
 	const diffInHours = moment().diff(moment.utc(time), 'hours');
-	const diffInMinutes = moment.utc(moment.duration(diffInSeconds, 'seconds').asMilliseconds()).format('mm');
+	const diffInMinutes = moment.utc(moment.duration(diffInSeconds, 'seconds').asMilliseconds()).format('m');
 
 	const renderTime = (diff) => {
 		if (diff < 60) {
@@ -52,8 +52,15 @@ const OperationsRow = React.memo(({
 					overlayStyle={{ pointerEvents: 'none' }}
 				>
 					<span className="age-value">
-						{diffInHours !== 0 && `${diffInHours}h `}
-						{`${diffInMinutes}min ago`}
+						{diffInHours !== 0 && `${diffInHours}hr `}
+						{diffInHours !== 0 ?
+							<span className="age-value">
+								{`${diffInMinutes}min ago`}
+							</span> :
+							<span className="age-value">
+								{`${diffInMinutes} min ago`}
+							</span>
+						}
 					</span>
 				</Tooltip>
 			);

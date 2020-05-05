@@ -3,6 +3,7 @@ import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, Map } from 'immutable';
 import _ from 'lodash';
 import BN from 'bignumber.js';
+import moment from 'moment';
 
 import Operations, {
 	accountOperations,
@@ -31,7 +32,7 @@ import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
-import { getConrtactOperations, getSingleOpeation } from '../services/queries/history';
+import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
@@ -219,12 +220,17 @@ class TransactionActionsClass extends BaseActionsClass {
 				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
 					el.op_in_trx === opInfo.opInTrx &&
 					el.block.round === opInfo.block);
+				if (currentOp.body.asset_tranfers) {
+					const assetTransfers = await this.formatAssetsTransfer(currentOp.body.asset_tranfers);
+					object = object
+						.set('asset_transfers', assetTransfers);
+				}
 				if (isNeedLink) {
 					object = object
 						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1));
 				}
-				if (currentOp.virtual_operations.length) {
-					const formatVirtualOps = currentOp.virtual_operations.map((op) => this.formatOperation(op));
+				if (currentOp.body.virtual_operations.length) {
+					const formatVirtualOps = currentOp.body.virtual_operations.map((op) => this.formatOperation(op));
 					const virtualOps = await Promise.all(formatVirtualOps);
 					const formatted = virtualOps.map((el) => {
 						let contractIdInOp;
@@ -235,14 +241,16 @@ class TransactionActionsClass extends BaseActionsClass {
 							contractIdInOp = subject.id;
 						}
 						return {
-							type: el.name,
-							bytecode: el.bytecode,
-							asset_amount_sent: el.value,
-							contract_id: contractIdInOp,
+							operationInfo: {
+								type: el.name,
+								bytecode: el.bytecode,
+								asset_amount_sent: el.value,
+								contract_id: contractIdInOp,
+							},
 						};
 					});
 
-					object.set('virtualOps', formatted);
+					object = object.set('virtualOps', formatted);
 				}
 				if (contractInfo.token) {
 					object = object.set('token', contractInfo.token);
@@ -322,13 +330,42 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('key_approvals_to_remove', singleOperation.key_approvals_to_remove)
 					.set('operations', operations);
 
-				const proposal = await echo.api.getObject(object.get('id'));
-				if (!proposal) {
-					// const feePayingAccount = singleOperation.fee_paying_account;
-					// const history = await echo.api.getAccountHistory(feePayingAccount);
-					// const currentProposalCreateOperation = history.find((el) => el.result[1])
-					// const status = 'resolved or rejected';
-					// object = object.set('status', status);
+				if (singleOperation.have_delete_operation) {
+					object = object
+						.set('statuc', 'rejected');
+				}
+				let opWithApprovals = {};
+				if (operation.name !== Operations.proposal_create.name) {
+					const opIndex = singleOperation.create_operation.split('-').map((el) => +el);
+					const fullOpWithApprovals = await getSingleOpeation(...opIndex);
+					opWithApprovals = fullOpWithApprovals.getSingleOperation.body;
+					opWithApprovals.result = fullOpWithApprovals.getSingleOperation.result;
+				} else {
+					opWithApprovals = singleOperation;
+				}
+
+				const accountAuth = (await getAccountCondition(singleOperation.fee_paying_account, opWithApprovals.expiration_time))
+					.getAccountCondition;
+				const authArray = [...accountAuth.key_auths, ...accountAuth.account_auths];
+				const keyWeight = opWithApprovals.approvals ? opWithApprovals.approvals.reduce((sum, key) => {
+					const keyData = authArray.find((el) => el.key === key);
+					return keyData ? +keyData.value + sum : sum;
+				}, 0) : 0;
+				object = object
+					.set('count_approvals', { value: keyWeight, total: accountAuth.weight_threshold })
+					.set('count_signatures', opWithApprovals.approvals ? opWithApprovals.approvals.length : 0)
+					.set('proposal_operations', opWithApprovals.proposed_ops);
+				if (moment() < moment(opWithApprovals.expiration_time)) {
+					if (moment() > moment(opWithApprovals.expiration_time).subtract(opWithApprovals.review_period_seconds, 'seconds')) {
+						object = object
+							.set('status', 'in review');
+					} else {
+						object = object
+							.set('status', 'voting');
+					}
+				} else {
+					object = object
+						.set('status', keyWeight >= accountAuth.weight_threshold ? 'resolved' : 'rejected');
 				}
 			} else if (sidechainOperations.includes(operation.name)) {
 				let objectWithApprovals = { approves: [], is_approved: false };
@@ -864,11 +901,11 @@ class TransactionActionsClass extends BaseActionsClass {
 
 	getProposalOperations(proposedOps = [], blockNumber, blockTimestamp, trIndex) {
 		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
-			const [idPropOp] = proposedOp.name.op;
+			const [idPropOp] = proposedOp.op;
 			let propData = {};
 			try {
 				propData = await this.getOperation(
-					proposedOp.name.op,
+					proposedOp.op,
 					blockNumber,
 					blockTimestamp,
 					trIndex,
@@ -1026,7 +1063,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					}
 
 				}
-			// eslint-disable-next-line no-empty
+				// eslint-disable-next-line no-empty
 			} catch (error) {
 			}
 		}
@@ -1113,7 +1150,8 @@ class TransactionActionsClass extends BaseActionsClass {
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
 		if (proposalOperations.includes(operation.name)) {
 			try {
-				let promises = await this.getProposalOperations(op.proposed_ops, blockNumber, blockTimestamp, trIndex);
+				const proposedOps = objectInfo.get('proposal_operations');
+				let promises = await this.getProposalOperations(proposedOps, blockNumber, blockTimestamp, trIndex);
 				promises = await Promise.all(promises);
 				delete op.proposed_ops;
 				op.proposals = promises;
@@ -1187,6 +1225,31 @@ class TransactionActionsClass extends BaseActionsClass {
 				dispatch(this.setValue('loading', false));
 			}
 		};
+	}
+
+	async formatAssetsTransfer(trasfers) {
+		const transferPromise = async (tr) => {
+			const from = await echo.api.getObject(tr.from);
+			const to = await echo.api.getObject(tr.to);
+			const asset = await echo.api.getObject(tr.value.asset_id);
+			return {
+				amount: {
+					amount: tr.value.amount,
+					precision: asset.precision,
+					symbol: asset.symbol,
+				},
+				from: {
+					value: from.name,
+					link: from.id,
+				},
+				to: {
+					value: to.name,
+					link: to.id,
+				},
+			};
+		};
+		const formatted = await Promise.all(trasfers.map((el) => transferPromise(el)));
+		return formatted;
 	}
 
 }
