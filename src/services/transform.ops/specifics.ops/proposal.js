@@ -6,7 +6,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
 	const description = OPS_DESCRIPTIONS[opNumber];
 	const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
-	console.log('objectInfo', objectInfo);
 	switch (opNumber) {
 		case OPERATIONS_IDS.PROPOSAL_CREATE: {
 			return {
