@@ -63,10 +63,10 @@ class MainPage extends React.Component {
 		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
 	}
 
-	goToTransaction(e, block, transaction, op) {
+	goToTransaction(e, block, transaction, op, virtual) {
 		e.preventDefault();
 		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
-		const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, op + 1);
+		const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, op + 1, virtual);
 		Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
 	}
 
@@ -79,7 +79,7 @@ class MainPage extends React.Component {
 						blocks={this.getBlocks()}
 					/>
 					<LatestOperationsTable
-						goToTransaction={(e, block, trx, op) => this.goToTransaction(e, block, trx, op)}
+						goToTransaction={(e, block, trx, op, virtual) => this.goToTransaction(e, block, trx, op, virtual)}
 						operations={this.getOperations()}
 					/>
 				</div>

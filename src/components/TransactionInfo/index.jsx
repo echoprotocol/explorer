@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
+import queryString from 'query-string';
 
 import { INDEX_PATH, BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
@@ -21,11 +22,13 @@ import GridActions from '../../actions/GridActions';
 class TransactionsInfo extends React.Component {
 
 	componentDidMount() {
-		const { router: { query: { round, index } }, blockInformation, operations } = this.props;
+		const { router: { query: { round, index }, asPath }, blockInformation, operations } = this.props;
+		const { query } = queryString.parseUrl(asPath);
+
 		if (!blockInformation.get('blockNumber') || !operations.size) {
 			this.props.setTitle(TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round));
 			this.props.getBlockInfo(round);
-			this.props.getTransaction(round, index);
+			this.props.getTransaction(round, index, query.virtual);
 		}
 	}
 
@@ -113,14 +116,17 @@ TransactionsInfo.defaultProps = {
 	loading: false,
 };
 
-TransactionsInfo.getInitialProps = async ({ store, query }) => {
+TransactionsInfo.getInitialProps = async ({ store, query, asPath }) => {
 	const { round, index, ...filters } = query;
+
+	const { query: { virtual } } = queryString.parseUrl(asPath);
+
 	const title = TITLE_TEMPLATES.TRANSACTION.replace(/index/, index).replace(/round/, round);
 	await store.dispatch(GridActions.initData(TRANSACTION_GRID, filters));
 	await Promise.all([
 		store.dispatch(GlobalActions.setTitle(title)),
 		store.dispatch(getBlockInformation(round)),
-		store.dispatch(TransactionActions.getTransaction(round, index)),
+		store.dispatch(TransactionActions.getTransaction(round, index, virtual)),
 	]);
 	return {};
 };

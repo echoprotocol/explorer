@@ -94,7 +94,6 @@ class OperationInfo extends React.Component {
 
 					{data.deposit_id && <LinkRow title="Deposit ID" link={data.deposit_id} />}
 					{data.withdraw_id && <LinkRow title="Withdraw ID" objectId={data.withdraw_id} />}
-					{data.token && <LinkRow title="Token" objectId={data.token} />}
 					{data.address_id && <LinkRow title="Address ID" link={data.address_id} />}
 					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}

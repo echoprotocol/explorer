@@ -48,7 +48,7 @@ const LinkRow = ({
 			}
 			{objectId &&
 				<Link href={SsrHrefHelper.getHrefByObjectId(objectId)} as={URLHelper.createUrlById(objectId)}>
-					<a>{objectId}</a>
+					<a>{linkTitle || objectId}</a>
 				</Link>
 			}
 			{rate &&

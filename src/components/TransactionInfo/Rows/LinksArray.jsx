@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-import URLHelper from '../../../helpers/URLHelper';
-
 const LinksArray = ({
 	links, title,
 }) => (
@@ -13,7 +11,7 @@ const LinksArray = ({
 			<div className="od-col">
 				<div>
 					{links.map((link, i) => (
-						<Link href={link} as={URLHelper.createUrlById}>
+						<Link key={String(link)} href={link}>
 							<a href="">
 								<span>Approve {i + 1}</span>&nbsp;
 							</a>

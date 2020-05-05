@@ -334,7 +334,12 @@ class TransactionActionsClass extends BaseActionsClass {
 				let objectWithApprovals = { approves: [], is_approved: false };
 				let singleOperation = {};
 				try {
-					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
+					const operationFromGraphQl = await getSingleOpeation(
+						opInfo.block,
+						opInfo.trxInblock,
+						opInfo.opInTrx,
+						opInfo.virtual,
+					);
 					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
 				} catch (e) {
 					//
@@ -366,27 +371,22 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
 					} case Operations.sidechain_erc20_issue.name: {
-						const token = await echo.api.getObject(singleOperation.token);
+						const token = await echo.api.getObject(options.token);
 						const listApprovals = singleOperation.list_of_approvals
-							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
 						object = object
-							.set('deposit_id', singleOperation.deposit)
-							.set('amount', singleOperation.amount)
 							.set('token', { value: token.symbol, link: token.id })
-							.set('sidchain_erc_20_deposit_token', singleOperation.sidchain_erc_20_deposit_token)
 							.set('list_approvals', listApprovals)
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_deposit_token));
 						break;
 					} case Operations.sidechain_erc20_burn.name: {
-						const token = await echo.api.getObject(singleOperation.token);
+						const token = await echo.api.getObject(options.token);
 						const listApprovals = singleOperation.list_of_approvals
-							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
 						object = object
-							.set('withdraw_id', singleOperation.withdraw)
-							.set('amount', singleOperation.amount)
 							.set('token', { value: token.symbol, link: token.id })
-							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
-							.set('list_approvals', listApprovals);
+							.set('list_approvals', listApprovals)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
 					} case Operations.sidechain_btc_create_intermediate_deposit.name:
 						objectWithApprovals = {};
@@ -422,7 +422,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.sidechain_issue.name: {
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
 						const listApprovals = singleOperation.list_of_approvals
-							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit))
 							.set('list_approvals', listApprovals);
@@ -431,7 +431,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.sidechain_burn.name: {
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						const listApprovals = singleOperation.list_of_approvals
-							&& singleOperation.list_of_approvals.map(URLHelper.transformEchodbOperationLinkToExplorerLink);
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
 							.set('list_approvals', listApprovals);
@@ -455,9 +455,13 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc20_token_deposit));
 						break;
 					}
-					case Operations.withdraw_erc20_token.name:
+					case Operations.withdraw_erc20_token.name: {
+						const token = await echo.api.getObject(options.erc20_token);
 						objectWithApprovals = await echo.api.getObject(operationResult[1]);
+						object = object
+							.set('token', { value: token.symbol, link: token.id });
 						break;
+					}
 					case Operations.erc20_send_withdraw.name:
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						object = object
@@ -478,7 +482,12 @@ class TransactionActionsClass extends BaseActionsClass {
 			} else if (sidechainBtcOperations.includes(operation.name)) {
 				let singleOperation = {};
 				try {
-					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
+					const operationFromGraphQl = await getSingleOpeation(
+						opInfo.block,
+						opInfo.trxInblock,
+						opInfo.opInTrx,
+						opInfo.virtual,
+					);
 					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
 				} catch (e) {
 					//
@@ -879,7 +888,18 @@ class TransactionActionsClass extends BaseActionsClass {
 		});
 	}
 
-	async getOperation([type, options], blockNumber, blockTimestamp, trIndex, opIndex, operationResult, number = null, accountId = null, trId = null) {
+	async getOperation(
+		[type, options],
+		blockNumber,
+		blockTimestamp,
+		trIndex,
+		opIndex,
+		operationResult,
+		number = null,
+		accountId = null,
+		trId = null,
+		virtual = false,
+	) {
 		const operation = Object.values(Operations).find((i) => i.value === type);
 
 		delete options.memo;
@@ -894,6 +914,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			block: blockNumber,
 			trxInblock: trIndex,
 			opInTrx: opIndex,
+			virtual,
 		};
 		let objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo);
 
@@ -1085,6 +1106,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			number,
 			blockTimestamp,
 			opIndex,
+			virtual,
 		};
 		const opNumberToFormat = operation.value;
 
@@ -1105,21 +1127,41 @@ class TransactionActionsClass extends BaseActionsClass {
 		return op;
 	}
 
-	getTransaction(blockNumber, index) {
+	getTransaction(blockNumber, index, virtual = false) {
 		return async (dispatch) => {
+			virtual = typeof virtual === 'string' ? virtual === 'true' : !!virtual;
 			dispatch(this.setValue('loading', true));
 			try {
 				const block = await echo.api.getBlock(blockNumber);
 
-				if (!block || !block.transactions[index - 1]) {
+				if (!block) {
 					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
 				}
 
-				const transaction = block.transactions[index - 1];
+				if (!block.transactions[index - 1] && !virtual) {
+					dispatch(GlobalActions.toggleErrorPath(true));
+					return;
+				}
+
+				let transaction = {};
+
+				if (virtual) {
+					const operationResults = [];
+					const virtualOperations = await echo.api.getBlockVirtualOperations(blockNumber);
+					const transformedOperations = virtualOperations.reduce((res, { op, result }) => {
+						operationResults.push(result);
+						return [...res, op];
+					}, []);
+					transaction = {
+						operations: transformedOperations,
+						operation_results: operationResults,
+					};
+				} else {
+					transaction = block.transactions[index - 1];
+				}
 
 				await this.fetchTransactionsObjects(transaction.operations);
-
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
 						operation,
@@ -1128,6 +1170,10 @@ class TransactionActionsClass extends BaseActionsClass {
 						index - 1,
 						opIndex,
 						transaction.operation_results[opIndex],
+						null,
+						null,
+						null,
+						virtual,
 					);
 					return op;
 				});
