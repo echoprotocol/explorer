@@ -1,4 +1,4 @@
-import echo, { OPERATIONS_IDS } from 'echojs-lib';
+import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import BN from 'bignumber.js';
 import { payments } from 'bitcoinjs-lib';
 import Buffer from 'buffer-ponyfill';
@@ -100,9 +100,21 @@ async function getCommiteeMemberActivateInfo({ committee_to_activate: { link: ac
 	};
 }
 
-async function getCommiteeMemberDeActivateInfo({ committee_to_deactivate: { link: accountId } }) {
-	const committeeStatus = await isCommiteeMemberById(accountId);
+async function getCommiteeMemberDeActivateInfo({ committee_to_deactivate: committeeToDeactivate }) {
+	const committee = (committeeToDeactivate && committeeToDeactivate.link && typeof committeeToDeactivate.link !== 'function')
+		? committeeToDeactivate.link : committeeToDeactivate;
+	let id = committee;
+	if (!validators.isAccountId(id)) {
+		const committeMember = await echo.api.getObject(committee);
+		id = committeMember.committee_member_account;
+	}
+	const committeeStatus = await isCommiteeMemberById(id);
+	const account = await echo.api.getObject(id);
 	return {
+		account: {
+			value: account.name,
+			link: account.id,
+		},
 		committeeStatus,
 	};
 }

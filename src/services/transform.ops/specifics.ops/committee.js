@@ -75,11 +75,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE: {
-			const { committeeStatus } = await getAdditionalInfoByOpId(opNumber, data);
+			const { committeeStatus, account } = await getAdditionalInfoByOpId(opNumber, data);
 			return {
 				operationInfo: {
 					type,
-					account_name: data.committee_to_deactivate,
+					account_name: account,
 					fee: data.fee,
 					...description,
 					additionalInfo: {

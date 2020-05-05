@@ -108,3 +108,25 @@ export const getSingleOpeation = async (block, trxInBlock, opInTrx) => {
 			getSingleOperation: data.getOperationByBlockAndPosition,
 		}));
 };
+
+export const getAccountCondition = async (id, timestamp) => {
+	const query = gql`
+		query getAccountCondition($id: AccountId!, $timestamp: String!){
+			getAccountCondition(id: $id, timestamp: $timestamp) {
+      	weight_threshold
+        key_auths {
+          key
+					value
+        }
+        account_auths {
+          key
+					value
+        }
+  		}
+		}
+	`;
+	return client.getClient().query({ query, variables: { id, timestamp } })
+		.then(({ data }) => ({
+			getAccountCondition: data.getAccountCondition,
+		}));
+};
