@@ -86,7 +86,7 @@
 }
 
 .backwards-link {
-	@include onFocus(4px, 2px, 2px, rgba(#3570b6, 0.3));
+	@include onFocus(4px, 1px, 0px, rgba(#3570b6, 0.3));
 	width: 30px;
 	height: 30px;
 	display: flex;
