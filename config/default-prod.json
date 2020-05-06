@@ -7,5 +7,6 @@
   "SERVER_URL": "https://explorer.echo.org",
   "ECHO_NODE": {
     "API_URL": "wss://testnet.echo-dev.io/ws"
-  }
+	},
+	"MODE":"MAINNET"
 }

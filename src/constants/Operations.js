@@ -245,8 +245,8 @@ const Operations = {
 		value: OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT,
 		name: 'Committee frozen balance deposit',
 		options: {
-			from: null,
-			subject: ['committee_member_account', 'name'],
+			from: ['committee_member_account', 'name'],
+			subject: null,
 			value: 'amount.amount',
 			asset: 'amount.asset_id',
 		},
@@ -286,7 +286,7 @@ const Operations = {
 		value: OPERATIONS_IDS.BALANCE_CLAIM,
 		name: 'Claim balance',
 		options: {
-			from: null,
+			from: ['deposit_to_account', 'name'],
 			subject: ['deposit_to_account', 'name'],
 			value: 'total_claimed.amount',
 			asset: 'total_claimed.asset_id',
@@ -670,6 +670,8 @@ export const accountOperations = [
 	Operations.account_update.name,
 	Operations.account_whitelist.name,
 	Operations.account_address_create.name,
+	Operations.evm_address_register.name,
+	Operations.block_reward.name,
 ];
 export const assetOperations = [
 	Operations.asset_create.name,
@@ -705,6 +707,37 @@ export const proposalOperations = [
 	Operations.proposal_create.name,
 	Operations.proposal_update.name,
 	Operations.proposal_delete.name,
+];
+
+export const sidechainOperations = [
+	Operations.sidechain_eth_create_address.name,
+	Operations.sidechain_eth_approve_address.name,
+	Operations.deposit_eth.name,
+	Operations.eth_send_deposit.name,
+	Operations.approve_erc20_token_withdraw.name,
+	Operations.sidechain_erc20_issue.name,
+	Operations.sidechain_erc20_burn.name,
+	Operations.withdraw_eth.name,
+	Operations.eth_send_withdraw.name,
+	Operations.approve_withdraw_eth.name,
+	Operations.eth_update_contract_address.name,
+	Operations.sidechain_issue.name,
+	Operations.sidechain_burn.name,
+	Operations.register_erc20_token.name,
+	Operations.deposit_erc20_token.name,
+	Operations.erc20_send_deposit.name,
+	Operations.withdraw_erc20_token.name,
+	Operations.erc20_send_withdraw.name,
+];
+
+export const sidechainBtcOperations = [
+	Operations.sidechain_btc_create_address.name,
+	Operations.sidechain_btc_create_intermediate_deposit.name,
+	Operations.sidechain_btc_intermediate_deposit.name,
+	Operations.sidechain_btc_deposit.name,
+	Operations.sidechain_btc_withdraw.name,
+	Operations.sidechain_btc_aggregate.name,
+	Operations.sidechain_btc_approve_aggregate.name,
 ];
 
 export default Operations;

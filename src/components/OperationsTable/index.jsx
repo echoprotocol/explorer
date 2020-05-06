@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import queryString from 'query-string';
 import Router from 'next/router';
+import echo, { validators } from 'echojs-lib';
 
 import URLHelper from '../../helpers/URLHelper';
 import TableLabel from '../TableLabel';
 import FilterBtn from '../FilterBtn';
-import LoadMore from '../LoadMore';
 import Operations from '../../constants/Operations';
 
 import OperationRow from './Row';
@@ -17,6 +17,7 @@ import OperationsFilter from './Filter';
 import { DEBOUNCE_TIMEOUT } from '../../constants/TableConstants';
 import { NOT_FOUND_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import TypesHelper from '../../helpers/TypesHelper';
+import Loader from '../Loader';
 
 class OperationsTable extends React.Component {
 
@@ -24,8 +25,14 @@ class OperationsTable extends React.Component {
 		super(props);
 
 		this.state = {
-			from: '',
-			to: '',
+			from: {
+				error: '',
+				value: '',
+			},
+			to: {
+				error: '',
+				value: '',
+			},
 			showedOperations: [],
 			airRows: [],
 			isFilterOpen: false,
@@ -33,6 +40,7 @@ class OperationsTable extends React.Component {
 		this.timeoutSearch = null;
 		this.toggleFilter = this.toggleFilter.bind(this);
 		this.tableRefs = [];
+		this.updateScroll = this.updateScroll.bind(this);
 	}
 
 	componentDidMount() {
@@ -42,8 +50,14 @@ class OperationsTable extends React.Component {
 		// eslint-disable-next-line react/no-did-mount-set-state
 		this.setState({
 			isFilterOpen: !!this.props.filterAndPaginateData.get('filters').from || !!this.props.filterAndPaginateData.get('filters').to,
-			from: this.props.filterAndPaginateData.get('filters').from,
-			to: this.props.filterAndPaginateData.get('filters').to,
+			from: {
+				value: this.props.filterAndPaginateData.get('filters').from,
+				error: '',
+			},
+			to: {
+				value: this.props.filterAndPaginateData.get('filters').to,
+				error: '',
+			},
 		});
 
 		if (!queryProps.op) {
@@ -92,29 +106,58 @@ class OperationsTable extends React.Component {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ showedOperations });
 		}
+
+		window.addEventListener('resize', this.updateScroll);
 	}
 
 	componentWillUnmount() {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
+		window.removeEventListener('resize', this.updateScroll);
 	}
 
-	async onChangeFilter(e) {
+	onChangeFilter(e) {
 		const { name, value } = e.target;
-		const { filterAndPaginateData, router } = this.props;
-		const { filters } = filterAndPaginateData.toJS();
-		filters[name] = value;
+		this.setState({
+			[name]: {
+				value,
+			},
+		});
+	}
+
+	async onSubmitFilter() {
+		const { router } = this.props;
+		const fromValidation = await this.validateFilterInput(this.state.from.value);
+		const toValidation = await this.validateFilterInput(this.state.to.value);
+		const isFilterValid = fromValidation === '' && toValidation === '';
+		if (!isFilterValid) {
+			this.setState({
+				from: {
+					...this.state.from,
+					error: fromValidation,
+				},
+				to: {
+					...this.state.to,
+					error: toValidation,
+				},
+			});
+			return false;
+		}
+
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.setState({ [name]: value });
+
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
-			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from.trim(), to: filters.to.trim(), p: 1 });
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
+				from: this.state.from.value.trim(), to: this.state.to.value.trim(), p: 1,
+			});
 			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 
+		return null;
 	}
 
 	onClearFilter(name) {
@@ -124,17 +167,47 @@ class OperationsTable extends React.Component {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
 		}
-		this.setState({ [name]: '' });
+		this.setState({
+			[name]: {
+				value: '',
+			},
+		});
 		this.timeoutSearch = setTimeout(() => {
 			const { url: pathname, query } = queryString.parseUrl(router.asPath);
-			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, { from: filters.from, to: filters.to, p: 1 });
+			const linkToPage = URLHelper.createOperationUrlByFilter(pathname, query, {
+				from: filters.from, to: filters.to, p: 1,
+			});
 			Router.push(router.route, linkToPage);
 		}, DEBOUNCE_TIMEOUT);
 	}
 
 	async onChangeOperationFilters(filters) {
-		await this.props.initData(filters);
+		const { totalDataSize } = this.props.filterAndPaginateData.toJS();
+		await this.props.initData({ ...filters, totalDataSize });
 		this.props.onLoadMoreHistory();
+	}
+
+	async validateFilterInput(value) {
+		if (!value) { return ''; }
+		if (validators.isAccountId(value)) {
+			return '';
+		}
+		let account = null;
+		try {
+			account = await echo.api.getAccountByName(value.trim());
+			if (account) {
+				return '';
+			}
+			return 'invalid value';
+		} catch (err) {
+			return 'invalid value';
+		}
+	}
+
+	updateScroll() {
+		if (this.scrollBarRef) {
+			this.scrollBarRef.updateScroll();
+		}
 	}
 
 	toggleOperationDetails(index) {
@@ -144,10 +217,9 @@ class OperationsTable extends React.Component {
 		const { showedOperations, airRows } = this.state;
 		const queryProps = queryString.parse(search);
 		const v = showedOperations.indexOf(index);
-
 		if (!this.props.changeUrl && operations && operations.size) {
 			const { blockNumber, type } = operations.get(index);
-			const { trIndex, opIndex } = operations.get(index);
+			const { trIndex, opIndex, virtual } = operations.get(index);
 
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
@@ -157,7 +229,7 @@ class OperationsTable extends React.Component {
 			}
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
-			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1);
+			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1, virtual);
 			Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
 
 			return;
@@ -178,8 +250,9 @@ class OperationsTable extends React.Component {
 				}
 			});
 		} else {
+			const mainOperation = operations.get(index) || {};
 			showedOperations.push(index);
-			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1));
+			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1, mainOperation.virtual));
 		}
 
 		if (showedOperations.includes(index) && airRows.indexOf(index - 1) === -1) {
@@ -200,14 +273,13 @@ class OperationsTable extends React.Component {
 	}
 
 	renderTable() {
-		const { from, to } = this.state;
+		const { from: { value: from, error: fromError }, to: { value: to, error: toError } } = this.state;
 		const {
-			isTransaction, label, loading, router, isMobile,
+			isTransaction, label, loading, router, isMobile, isASCOps,
 		} = this.props;
 		let { filterAndPaginateData } = this.props;
 		const { showedOperations, isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
-
 		return (
 			<div className="operations-table">
 				<TableLabel label={label}>
@@ -215,18 +287,23 @@ class OperationsTable extends React.Component {
 				</TableLabel>
 				<OperationsFilter
 					from={from}
+					fromError={fromError}
+					loading={loading}
 					to={to}
+					toError={toError}
 					open={isFilterOpen}
 					onChangeFilter={(e) => this.onChangeFilter(e)}
 					onClearFilter={(name) => this.onClearFilter(name)}
+					onSubmitFilter={() => this.onSubmitFilter()}
 				/>
-				<PerfectScrollbar>
+				<PerfectScrollbar ref={(ref) => { this.scrollBarRef = ref; }}>
 					<table>
 						<Thead isTransaction={isTransaction} />
 						<tbody>
 							<tr className="air"><td /></tr>
 							{this.props.operations.map((op, i) => (
 								<OperationRow
+									isASCOps={isASCOps}
 									isMobile={isMobile}
 									totalDataSize={filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}
@@ -242,7 +319,7 @@ class OperationsTable extends React.Component {
 							))}
 						</tbody>
 					</table>
-					{loading && <LoadMore />}
+					{loading && <Loader />}
 				</PerfectScrollbar>
 				{!isTransaction && (
 					<OperationsPagination
@@ -265,6 +342,7 @@ class OperationsTable extends React.Component {
 }
 
 OperationsTable.propTypes = {
+	isASCOps: PropTypes.bool.isRequired,
 	isMobile: PropTypes.bool.isRequired,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,

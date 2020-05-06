@@ -107,6 +107,7 @@ class Account extends React.Component {
 
 		return (
 			<div className="inner-container">
+				{this.renderMeta()}
 				<div className="page-info">
 					{account && <InnerHeader title={`Account ${account.get('id')}`} />}
 					<div className="page-t-block">
@@ -135,6 +136,7 @@ class Account extends React.Component {
 						<React.Fragment>
 							{totalAccountHistory ? (
 								<OperationsTable
+									isASCOps={false}
 									onLoadMoreHistory={() => this.onLoadMoreHistory()}
 									gridName={ACCOUNT_GRID}
 									label="Transactions"

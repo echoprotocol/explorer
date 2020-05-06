@@ -26,7 +26,6 @@ class App extends React.Component {
 
 	componentDidMount() {
 		this.props.init();
-
 		document.title = this.props.title;
 	}
 
