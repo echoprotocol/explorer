@@ -132,14 +132,18 @@ class Account extends React.Component {
 											<AccountInfoRow
 												title="ECHO balance"
 												amount={{
-													value: FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision')),
-													symbol: balances.get(ECHO_ASSET.ID).asset.get('symbol'),
+													value: balances.size ?
+														FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision')) :
+														FormatHelper.formatAmount(0, 8),
+													symbol: balances.size ? balances.get(ECHO_ASSET.ID).asset.get('symbol') : 'ECHO',
 												}}
 												amountLink={{
 													href: SSR_ASSET_PATH,
 													as: URLHelper.createUrlById(ECHO_ASSET.ID),
 												}}
-												tooltip={`${FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision'))} ${balances.get(ECHO_ASSET.ID).asset.get('symbol')}`}
+												tooltip={balances.size ?
+													`${FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision'))} ${balances.get(ECHO_ASSET.ID).asset.get('symbol')}` :
+													`${FormatHelper.formatAmount(0, 8)} ECHO`}
 											/>
 											<AccountInfoRow additionalLink={{
 												href: OBJECTS_PATH,
