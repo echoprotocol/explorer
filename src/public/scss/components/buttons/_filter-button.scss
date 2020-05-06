@@ -9,8 +9,11 @@
 	background-color: $blue;
 	border: 1px solid transparent;
 	border-radius: 4px;
-	&:hover {
+	&:hover:not(:disabled) {
 		background-color: lighten($blue, 10%);
+	}
+	&:disabled {
+		opacity: 0.5;
 	}
 }
 .filter-button__loading {

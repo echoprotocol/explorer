@@ -50,10 +50,10 @@
 		max-width: 92px;
 		@include text-overflow();
 		@include max-vw($res-1400) {
-			max-width: 80px;
+			max-width: 100px;
 		}
 		@include max-vw($res-1280) {
-			max-width: 400px;
+			max-width: 100px;
 		}
 		@include max-vw($res-500) {
 			max-width: 80px;
@@ -67,6 +67,12 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		&:first-child {
+			min-width: 155px;
+			@include max-vw($res-1280) {
+				min-width: 175px;
+			}
+		}
 	}
 }
 
@@ -75,4 +81,7 @@
 	display: flex;
 	align-items: center;
 	height: 20px;
+	@include max-vw($res-500) {
+		justify-content: space-between;
+	}
 }

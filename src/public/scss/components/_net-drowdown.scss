@@ -1,0 +1,151 @@
+.net-dropdown {
+	position: relative;
+	@include inter-ui-regular;
+	font-size: 12px;
+	line-height: 18px;
+	width: 100px;
+	box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
+	@include max-vw($res-500) {
+		width: 122px;
+	}
+	.dropdown-trigger {
+		position: relative;
+		padding: 8px 10px;
+		height: 35px;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		background-color: #2d3346;
+		border: none;
+		border-radius: 2px;
+		cursor: pointer;
+		transition: background-color $speed;
+		&:active {
+			.dropdown-trigger__value,
+			.dropdown-arrow {
+				opacity: 0.5;
+			}
+		}
+		&:before {
+			content: "";
+			position: absolute;
+			top: -1px;
+			right: -1px;
+			bottom: -1px;
+			left: -1px;
+			border: 1px solid transparent;
+			border-radius: 3px;
+			transition: border-color $speed, box-shadow $speed;
+		}
+
+		&:not(:active) {
+			&:focus {
+				&:before {
+					border-color: #fff;
+					box-shadow: 0px 0px 4px #2995d8;
+				}
+			}
+		}
+	}
+	.dropdown-list {
+		padding: 5px 0;
+		position: absolute;
+		width: 100%;
+		left: 0;
+		top: calc(100% + 5px);
+		background-color: #2d3346;
+		border-radius: 4px;
+		box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
+	}
+	.dropdown-item {
+		display: flex;
+		padding: 5px 10px;
+		height: 28px;
+		width: 100%;
+		color: $grey-mid;
+		background-color: #2d3346;
+		border: none;
+		cursor: pointer;
+		&.active {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+
+		&:hover:not(:active):not(:focus) {
+			@include only-hover {
+				background-color: rgba(255, 255, 255, 0.1);
+			}
+		}
+		&:active {
+			background-color: rgba(255, 255, 255, 0.05);
+			.dropdown-item__value {
+				opacity: 0.5;
+			}
+		}
+		&:not(:active) {
+			&:focus {
+				.dropdown-item__value {
+					&:before {
+						border-color: #fff;
+						box-shadow: 0px 0px 4px #2995d8;
+					}
+				}
+			}
+		}
+	}
+	.dropdown-item__value {
+		position: relative;
+		z-index: 1;
+		line-height: 18px;
+		&:before {
+			content: "";
+			position: absolute;
+			top: -2px;
+			right: -5px;
+			bottom: -2px;
+			left: -5px;
+			border: 1px solid transparent;
+			border-radius: 4px;
+			transition: border-color $speed, box-shadow $speed;
+		}
+	}
+	.dropdown-arrow {
+		transition: transform $speed;
+	}
+	&.opened {
+		.dropdown-arrow {
+			transform: rotate(180deg);
+		}
+	}
+	&.mainnet {
+		.dropdown-trigger {
+			color: $blue;
+			&:hover:not(:active):not(:focus) {
+				@include only-hover {
+					background-color: #3e4660;
+				}
+			}
+		}
+		.dropdown-arrow {
+			fill: $blue;
+		}
+	}
+	&.testnet {
+		.dropdown-trigger {
+			background-color: $blue;
+			&:hover:not(:active):not(:focus) {
+				@include only-hover {
+					background-color: $lightblue;
+				}
+			}
+			.tooltip-icon {
+				path {
+					fill: $explorer-black;
+				}
+			}
+		}
+	}
+	.tooltip-icon {
+		position: relative;
+		z-index: 2;
+	}
+}

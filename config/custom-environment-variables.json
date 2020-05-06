@@ -9,5 +9,10 @@
   "INSTALL_NODE_LINK": "INSTALL_NODE_LINK",
   "ECHO_NODE": {
     "API_URL": "API_URL"
-  }
+	},
+	"EXPLORER_URLS":{
+		"TEST_NET": "TEST_NET",
+		"MAIN_NET": "MAIN_NET"
+	},
+	"MODE":"MODE"
 }

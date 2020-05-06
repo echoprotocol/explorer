@@ -115,13 +115,14 @@ class BlockInformation extends React.Component {
 		const { toggleRewardDistribution, isDistributionRewardOpen, filteredOperations } = this.props;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
-		const time = blockInformation.get('time');
+		const time = FormatHelper.timestampToBlockInformationTime(blockInformation.get('timestamp'));
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
 		const transactionCount = blockInformation.get('transactionCount') || 0;
+		const operationCount = blockInformation.get('operations').size || transactionCount;
 		const rewardDistribution = blockInformation.get('rewardDistribution');
-
+		const label = FormatHelper.getFormatTransactionsOperationTitle(transactionCount, operationCount);
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',
@@ -205,9 +206,10 @@ class BlockInformation extends React.Component {
 				<div className="blocks-table-wrap">
 					{ transactionCount ?
 						<OperationsTable
+							isASCOps
 							gridName={BLOCK_GRID}
 							onLoadMoreHistory={() => this.onLoadMoreHistory()}
-							label={FormatHelper.getFormatTransactionsTitle(transactionCount)}
+							label={label}
 							fee
 							operations={filteredOperations}
 							router={this.props.router}

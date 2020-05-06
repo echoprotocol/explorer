@@ -20,14 +20,56 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.ASSET_FUND_FEE_POOL]: Operations.asset_fund_fee_pool.name,
 	[OPERATIONS_IDS.ASSET_PUBLISH_FEED]: Operations.asset_publish_feed.name,
 	[OPERATIONS_IDS.ASSET_CLAIM_FEES]: Operations.asset_claim_fees.name,
-
 	[OPERATIONS_IDS.PROPOSAL_CREATE]: Operations.proposal_create.name,
 	[OPERATIONS_IDS.PROPOSAL_UPDATE]: Operations.proposal_update.name,
 	[OPERATIONS_IDS.PROPOSAL_DELETE]: Operations.proposal_delete.name,
-
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE]: Operations.committee_member_create.name,
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE]: Operations.committee_member_update.name,
 	[OPERATIONS_IDS.COMMITTEE_MEMBER_UPDATE_GLOBAL_PARAMETERS]: Operations.committee_member_update_global_parameters.name,
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE]: Operations.committee_member_activate.name,
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE]: Operations.committee_member_deactivate.name,
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT]: Operations.committee_frozen_balance_deposit.name,
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_WITHDRAW]: Operations.committee_frozen_balance_withdraw.name,
+	[OPERATIONS_IDS.VESTING_BALANCE_CREATE]: Operations.vesting_balance_create.name,
+	[OPERATIONS_IDS.VESTING_BALANCE_WITHDRAW]: Operations.vesting_balance_withdraw.name,
+	[OPERATIONS_IDS.BALANCE_CLAIM]: Operations.balance_claim.name,
+	[OPERATIONS_IDS.BALANCE_FREEZE]: Operations.balance_freeze.name,
+	[OPERATIONS_IDS.BALANCE_UNFREEZE]: Operations.balance_unfreeze.name,
+	[OPERATIONS_IDS.CONTRACT_CREATE]: Operations.contract_create.name,
+	[OPERATIONS_IDS.CONTRACT_CALL]: Operations.contract_call.name,
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE]: Operations.contract_internal_create.name,
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CALL]: Operations.contract_internal_call.name,
+	[OPERATIONS_IDS.CONTRACT_SELFDESTRUCT]: Operations.contract_selfdestruct.name,
+	[OPERATIONS_IDS.CONTRACT_UPDATE]: Operations.contract_update.name,
+	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: Operations.contract_fund_pool.name,
+	[OPERATIONS_IDS.CONTRACT_WHITELIST]: Operations.contract_whitelist.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: Operations.sidechain_eth_create_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: Operations.sidechain_eth_approve_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: Operations.deposit_eth.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: Operations.eth_send_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW]: Operations.approve_erc20_token_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE]: Operations.sidechain_erc20_issue.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_BURN]: Operations.sidechain_erc20_burn.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW]: Operations.withdraw_eth.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_WITHDRAW]: Operations.eth_send_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW]: Operations.approve_withdraw_eth.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_UPDATE_CONTRACT_ADDRESS]: Operations.eth_update_contract_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: Operations.sidechain_issue.name,
+	[OPERATIONS_IDS.SIDECHAIN_BURN]: Operations.sidechain_burn.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN]: Operations.register_erc20_token.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_DEPOSIT_TOKEN]: Operations.deposit_erc20_token.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN]: Operations.erc20_send_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN]: Operations.withdraw_erc20_token.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN]: Operations.erc20_send_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: Operations.sidechain_btc_create_address.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_create_intermediate_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_intermediate_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT]: Operations.sidechain_btc_deposit.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW]: Operations.sidechain_btc_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE]: Operations.sidechain_btc_aggregate.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: Operations.sidechain_btc_approve_aggregate.name,
+	[OPERATIONS_IDS.BLOCK_REWARD]: Operations.block_reward.name,
+	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: Operations.evm_address_register.name,
 };
 
 export const OPS_DESCRIPTIONS = {
@@ -137,6 +179,175 @@ export const OPS_DESCRIPTIONS = {
 			'This operation may only be used in a proposed transaction, and a proposed transaction which contains this operation must have a review period specified in the current global parameters before it may be accepted.',
 		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_member_update_global_parameters_operation',
 	},
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_ACTIVATE]: {
+		description: 'Used by active committee_members to propose activation of committee_member\n' +
+			'This operation may only be used in a proposed transaction, and a proposed transaction which contains this operation must have a review period specified in the current global parameters before it may be accepted.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_member_activate_operation',
+	},
+	[OPERATIONS_IDS.COMMITTEE_MEMBER_DEACTIVATE]: {
+		description: 'Used by active committee_members to propose deactivation of committee_member\n' +
+			'This operation may only be used in a proposed transaction, and a proposed transaction which contains this operation must have a review period specified in the current global parameters before it may be accepted.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_member_deactivate_operation',
+	},
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_DEPOSIT]: {
+		description: 'Used by a committee_member to deposit a frozen balance',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_frozen_balance_deposit_operation',
+	},
+	[OPERATIONS_IDS.COMMITTEE_FROZEN_BALANCE_WITHDRAW]: {
+		description: 'Used by a committee_member to withdraw a frozen balance',
+		link: 'https://docs.echo.org/api-reference/echo-operations/committee-member#committee_frozen_balance_withdraw_operation',
+	},
+	[OPERATIONS_IDS.VESTING_BALANCE_CREATE]: {
+		description: 'Create a vesting balance.\n' +
+			'The chain allows a user to create a vesting balance. Normally, vesting balances are created automatically as part of cashback and worker operations. This operation allows vesting balances to be created manually as well.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/vesting-balances#vesting_balance_create_operation',
+	},
+	[OPERATIONS_IDS.VESTING_BALANCE_WITHDRAW]: {
+		description: '',
+		link: '',
+	},
+	[OPERATIONS_IDS.BALANCE_CLAIM]: {
+		description: 'Claim a balance in a @ref balance_object.\n' +
+			'This operation is used to claim the balance in a given @ref balance_object. If the balance object contains a vesting balance, total_claimed must not exceed @ref balance_object::available at the time of evaluation. If the object contains a non-vesting balance, total_claimed must be the full balance of the object.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_claim_operation',
+	},
+	[OPERATIONS_IDS.BALANCE_FREEZE]: {
+		description: 'Freeze balance to get more reward during fee distribution.\n' +
+			'Duration is indicated in days. For the selected duration, the balance modifier must be specified in the chain parameters',
+		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_freeze_operation',
+	},
+	[OPERATIONS_IDS.BALANCE_UNFREEZE]: {
+		description: 'Unfreeze balance.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_unfreeze_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_CREATE]: {
+		description: 'Creates new contract.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_create_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_CALL]: {
+		description: 'Operation to call specified contract.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_call_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE]: {
+		description: 'Virtual operation created when contract creates another contract.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_internal_create_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_INTERNAL_CALL]: {
+		description: 'Virtual operation created when contract calls another contract or transfers asset',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_internal_call_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_SELFDESTRUCT]: {
+		description: 'Virtual operation created when contract self-destructs',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_selfdestruct_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_UPDATE]: {
+		description: 'Update contract data.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_update_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_fund_pool_operation',
+	},
+	[OPERATIONS_IDS.CONTRACT_WHITELIST]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_whitelist_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_create_address_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_approve_address_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_send_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW]: {
+		description: 'Used to withdraw the eETH and receive ETH to provided address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_WITHDRAW]: {
+		description: 'An internal operation by which committee members confirm the withdrawal of ETH after 24h.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_send_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW]: {
+		description: 'An internal operation by which committee members confirm the withdrawal of ETH and burn the eETH.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_approve_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_UPDATE_CONTRACT_ADDRESS]: {
+		description: 'An internal operation, sent by committee member to propose update of the eth contract address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_update_contract_address_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: {
+		description: 'Virtual operation, which reports that the money entered with the help of sidechain.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_issue_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BURN]: {
+		description: 'Virtual operation, which reports that the conclusion was successful and funds burned(withdrawn).',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_burn_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN]: {
+		description: 'Used to register a token in the sidechain',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_register_token_operation.',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_DEPOSIT_TOKEN]: {
+		description: 'An internal operation by which committee members confirm the entry of tokens.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_deposit_token_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN]: {
+		description: 'An internal operation by which committee members confirm the entry of tokens after 24h and credit token.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_send_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN]: {
+		description: 'Executed by the user and initiates the withdrawal of the token from the Echo network to the specified address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_withdraw_token_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN]: {
+		description: 'An internal operation by which committee members confirm the removal of tokens after 24h.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_send_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_address_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_intermediate_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_intermediate_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_deposit_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_aggregate_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_approve_aggregate_operation',
+	},
+	[OPERATIONS_IDS.BLOCK_REWARD]: {
+		description: '',
+		link: 'https://github.com/echoprotocol/echowiki/blob/fba3e7b342a0192369621908292bc9cd969b901d/api-reference/echo-operations/block-reward.md#block_reward_operation',
+	},
+	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: {
+		description: '',
+		link: 'https://docs.echo.org/api-reference/echo-operations/account-management#evm_address_register_operation',
+	},
 };
 
 export const ACCOUNT_BLACK_WHITE = {
@@ -157,3 +368,6 @@ export const ECHO_COMMITTEE_ACCOUNT = {
 	NAME: 'committee-account',
 	ID: '1.2.1',
 };
+
+export const ETH_EXPLORER = 'https://etherscan.io/';
+export const BTC_EXPLORER = 'https://www.blockchain.com/btc';

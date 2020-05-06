@@ -35,6 +35,13 @@ export const MAX_BLOCK_REQUESTS = PAGE_BLOCKS_COUNT;
 export const KEY_CODE_ENTER = 13;
 export const KEY_CODE_ESC = 27;
 
+export const ERC20_EVENT_HASHES = {
+	'Transfer(address,address,uint256)': 'ddf252ad',
+	'Approval(address,address,uint256)': '8c5be1e5',
+	'Withdrawal(address, uint256)': '7fcf532c',
+	'Deposit(address, uint256)': 'e1fffcc4',
+};
+
 export const ERC20_REQIURED_HASHES = {
 	'allowance(address,address)': 'dd62ed3e',
 	'approve(address,uint256)': '095ea7b3',
@@ -104,3 +111,6 @@ export const NONE_SYMBOL = '-';
 export const NOT_AVAILABLE_SYMBOL = 'N/A';
 
 export const TOKEN_TYPE = 'TOKEN';
+
+export const MAINNET_MODE = 'MAINNET';
+export const TESTNET_MODE = 'TESTNET';
