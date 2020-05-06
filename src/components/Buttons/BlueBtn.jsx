@@ -5,10 +5,10 @@ import loadingIcon from '../../public/images/icons/loader-l.png';
 const BlueBtn = ({
 	name, className, isLoading, ...props
 }) => (
-	<button className={`filter-button ${className}`} {...props}>
+	<button className={`blue-button ${className}`} {...props}>
 		<span>{name}</span>
 		{isLoading &&
-		<img src={loadingIcon} className="filter-button__loading" alt="loading" />}
+		<img src={loadingIcon} className="blue-button__loading" alt="loading" />}
 	</button>
 );
 

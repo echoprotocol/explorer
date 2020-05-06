@@ -98,16 +98,9 @@ class NodeMap extends React.Component {
 
 		return (
 			<div className="inner-container">
-				<InnerHeader title="Nodes Distribution">
+				<InnerHeader title="Nodes Distribution" className="distribution">
 					<BlueBtn name="How to run full node" onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} />
-					{/* <button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
-						How to run full node
-					</button> */}
 				</InnerHeader>
-				{/* <div className="distribution-header">
-					<h1>Nodes Distribution</h1>
-
-				</div> */}
 				<Map
 					className="distribution-map"
 					// eslint-disable-next-line react/style-prop-object

@@ -38,16 +38,20 @@
 		}
 	}
 	.inner-header {
-		padding-left: calc(((100vw - 1440px) / 2));
+		padding-left: calc(((100vw - 1380px) / 2));
 		@include max-vw($res-1600) {
-			padding-left: calc((100vw - 1380px) / 2);
+			padding-left: calc((100vw - 1320px) / 2);
 		}
 		@include max-vw(1440) {
-			padding-left: 30px;
+			padding-left: 60px;
 		}
 		@include max-vw($res-1280) {
-			padding-left: 10px;
-			padding-right: 10px;
+			padding-left: 40px;
+			padding-right: 40px;
+		}
+		@include max-vw($res-768) {
+			padding-left: 30px;
+			padding-right: 30px;
 		}
 	}
 }

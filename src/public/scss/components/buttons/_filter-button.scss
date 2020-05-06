@@ -1,4 +1,4 @@
-.filter-button {
+.blue-button {
 	position: relative;
 	@include inter-ui-regular;
 	@include btn();
@@ -16,7 +16,7 @@
 		opacity: 0.5;
 	}
 }
-.filter-button__loading {
+.blue-button__loading {
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
