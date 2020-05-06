@@ -71,7 +71,8 @@ class Account extends React.Component {
 			const currentIndexes = `${op.trIndex}-${op.blockNumber}`;
 			return trxs.includes(currentIndexes) ? trxs : [...trxs, currentIndexes];
 		}, []).length;
-		return `${transactionsCount} transactions, ${operationsCount} operations`;
+		return `${operationsCount} Operation${operationsCount > 1 ? 's' : ''},
+			${transactionsCount} Transaction${transactionsCount > 1 ? 's' : ''}`;
 	}
 
 	async subscribeHistoryUpdate(id) {
