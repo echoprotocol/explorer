@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import loadingIcon from '../../public/images/icons/loader-l.png';
 
-const FilterBtn = ({
+const BlueBtn = ({
 	name, className, isLoading, ...props
 }) => (
 	<button className={`filter-button ${className}`} {...props}>
@@ -12,15 +12,15 @@ const FilterBtn = ({
 	</button>
 );
 
-FilterBtn.propTypes = {
+BlueBtn.propTypes = {
 	name: PropTypes.string.isRequired,
 	className: PropTypes.string,
 	isLoading: PropTypes.bool,
 };
 
-FilterBtn.defaultProps = {
+BlueBtn.defaultProps = {
 	className: '',
 	isLoading: false,
 };
-export default FilterBtn;
+export default BlueBtn;
 
