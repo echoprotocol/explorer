@@ -3,7 +3,7 @@
 	@include inter-ui-regular;
 	@include btn();
 	@include onFocus(4px, 1px, 1px, rgba($blue, 0.53));
-	padding: 6px 10px;
+	padding: 7px 10px;
 	font-size: 12px;
 	color: #fff;
 	background-color: $blue;
@@ -24,6 +24,9 @@
 	width: 10px;
 	height: 10px;
 	animation: rotation 1s infinite linear;
+	@include max-vw($res-500) {
+		right: 15px;
+	}
 }
 
 @keyframes rotation {
