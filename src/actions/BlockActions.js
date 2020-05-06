@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle,camelcase,no-shadow */
 import BN from 'bignumber.js';
-import moment from 'moment';
 import { Map, List } from 'immutable';
 import echo, { serializers, validators } from 'echojs-lib';
 
@@ -128,7 +127,6 @@ export const loadBlockHistory = () => async (dispatch, getState) => {
 		operations = operations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage);
 		dispatch(BlockReducer.actions.set({ field: 'filteredOperations', value: operations }));
 	} catch (error) {
-		console.log('error', error);
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));
 	}
@@ -191,9 +189,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		// remove after go to 0.10 testnet
 
 		const { transactions } = planeBlock;
-
+		const virtualTransaction = await echo.api.getBlockVirtualOperations(round);
 		let resultTransactions = [];
-		if (transactions.length !== 0) {
+		if (transactions.length !== 0 || virtualTransaction.length) {
 			// TODO: didnt work with ops data
 			// const ops = transactions.reduce((resultIds, { operations }) => resultIds.concat(operations), []);
 			// await TransactionActions.fetchTransactionsObjects(ops);
@@ -209,12 +207,29 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 						operation_results[i],
 						i ? '' : trIndex + 1,
 					))));
-			resultTransactions = await Promise.all(promiseTransactions);
+			const promiseVirtualTransactions = virtualTransaction
+				.map(({
+					op, result, op_in_trx, trx_in_block,
+				}, i) => TransactionActions.getOperation(
+					op,
+					planeBlock.round,
+					planeBlock.timestamp,
+					trx_in_block,
+					op_in_trx,
+					result,
+					i ? '' : op_in_trx + 1,
+					null,
+					null,
+					true,
+				));
+
+			resultTransactions = await Promise.all([...promiseTransactions, Promise.all(promiseVirtualTransactions)]);
 		}
 		value.transactionCount = resultTransactions.length;
-		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), [])).reverse();
+		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
+
 		value.round = planeBlock.round;
-		value.time = FormatHelper.timestampToBlockInformationTime(planeBlock.timestamp);
+		value.timestamp = planeBlock.timestamp;
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
 		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, resultTransactions.length));
 		await dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
@@ -323,7 +338,6 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 			const blockNumber = blocksResult[i].round;
 			mapBlocks
-				.setIn([blockNumber, 'time'], moment.utc(blocksResult[i].timestamp).local().format('hh:mm:ss A'))
 				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
 				.setIn([blockNumber, 'producer'], accounts[i].name)
 				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
@@ -364,7 +378,12 @@ export const initBlocks = () => async (dispatch) => {
 };
 
 export const getLatestOperations = () => async (dispatch) => {
-	const latestOperations = await getLatestOperationsFromGQL();
+	let latestOperations = [];
+	try {
+		latestOperations = await getLatestOperationsFromGQL();
+	} catch (err) {
+		console.log('EchoDB error', err);
+	}
 	const operations = latestOperations.data.getHistory.items;
 	const transactions = AccountActions.formatHistoryFromEchoDB(operations);
 	const formattedOperations = await AccountActions.formatAccountHistory(null, transactions);

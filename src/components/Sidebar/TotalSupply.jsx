@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Tooltip from 'rc-tooltip';
 
 import { ECHO } from '../../constants/TotalSupplyConstants';
 
@@ -36,23 +37,30 @@ class TotalSupply extends React.Component {
 
 	render() {
 		const { assets } = this.state;
-
+		const amount = assets && assets[ECHO.ID] ? FormatHelper.formatAmount(assets[ECHO.ID].dynamic.current_supply, ECHO.PRECISION) : '0';
 		return (
 			<React.Fragment>
 				<div className="total-supply">
 					<TotalSupplyIcon />
-					<div className="total-supply-value">
-						{assets && assets[ECHO.ID] ? FormatHelper.formatAmount(assets[ECHO.ID].dynamic.current_supply) : '0'}
-					</div>
+					<Tooltip
+						placement="top"
+						overlayClassName="verify-contract-tooltip"
+						trigger={['hover']}
+						overlay={amount}
+					>
+						<div className="total-supply-value">
+							{amount}
+						</div>
+					</Tooltip>
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
 						<a href="" className="total-supply-coin">
 							{ECHO.SYMBOL}
 						</a>
 					</Link>
 				</div>
-				{/* <a className="sidebar-element-link" href="" onClick={(e) => this.onToggleAssets(e)}> */}
-				{/*	View all Assets */}
-				{/* </a> */}
+				{/* <a className="sidebar-element-link" href="" onClick={(e) => this.onToggleAssets(e)}>
+					View all Assets
+				</a> */}
 			</React.Fragment>
 		);
 	}

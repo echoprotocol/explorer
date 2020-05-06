@@ -161,6 +161,7 @@ class Contract extends React.Component {
 			{
 				tab: !loading ?
 					<OperationsTable
+						isASCOps={false}
 						onLoadMoreHistory={() => this.onLoadMoreHistory()}
 						gridName={CONTRACT_GRID}
 						operations={contractHistory}

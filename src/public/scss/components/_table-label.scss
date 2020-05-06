@@ -28,13 +28,13 @@
 	@include max-vw(1534) {
 		padding: 0 0 0 20px;
 	}
-	@include max-vw(1279) {
+	@include max-vw($res-1280) {
 		padding: 0 0 0 30px;
 	}
-	@include max-vw(767) {
+	@include max-vw($res-768) {
 		padding: 0 0 0 20px;
 	}
-	@include max-vw(500) {
+	@include max-vw($res-500) {
 		padding: 0 0 0 15px;
 	}
 }

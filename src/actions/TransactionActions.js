@@ -3,12 +3,16 @@ import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import { List, Map } from 'immutable';
 import _ from 'lodash';
 import BN from 'bignumber.js';
+import moment from 'moment';
 
 import Operations, {
 	accountOperations,
 	assetOperations,
 	committeeOperations,
 	proposalOperations,
+	sidechainOperations,
+	contractOperations,
+	sidechainBtcOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 import { ERC20_HASHES, ECHO_ASSET, NATHAN } from '../constants/GlobalConstants';
@@ -24,10 +28,12 @@ import BaseActionsClass from './BaseActionsClass';
 import GlobalActions from './GlobalActions';
 
 import { getContractInfo } from '../services/queries/contract';
-import { transformOperationDataByType } from '../helpers/ops.format/OpsInfoMapper';
+import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
-import { countRate } from '../helpers/ops.format/AddInfoHelper';
+import { countRate } from '../services/transform.ops/AddInfoHelper';
+import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
+import URLHelper from '../helpers/URLHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -96,13 +102,33 @@ class TransactionActionsClass extends BaseActionsClass {
 			if (supportedAsset !== null) {
 				supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
 			}
-			const chainContract = await echo.api.getContract(id);
+			const [chainContract] = await echo.api.getContracts([id]);
+			const { whitelist, blacklist } = await echo.api.getContractPoolWhitelist(id);
+			const contractPoolBalance = await echo.api.getContractPoolBalance(id);
+			const [owner] = await echo.api.getAccounts([chainContract.owner]);
+			const [assetPoolBalance] = await echo.api.getAssets([contractPoolBalance.asset_id]);
+
+			const whitelistAccounts = await echo.api.getAccounts(whitelist);
+			const blacklistAccounts = await echo.api.getAccounts(blacklist);
+
 			return new Map({})
-				.set('type', chainContract.type && chainContract.type.toUpperCase())
+				.set('type', chainContract.type)
+				.set('owner', { link: owner.id, value: owner.name })
+				.set('whitelist', whitelistAccounts.map((account) => ({ value: account.name, link: account.id })))
+				.set('blacklist', blacklistAccounts.map((account) => ({ value: account.name, link: account.id })))
+				.set('contractPoolBalance', {
+					asset_id: assetPoolBalance.id,
+					symbol: assetPoolBalance.symbol,
+					precision: assetPoolBalance.precision,
+					amount: contractPoolBalance.amount,
+				})
 				.set('supportedAsset', supportedAsset)
 				.set('ethAccuracy', ethAccuracy ? 'Activated' : 'Inactivated')
-				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No')
-				.set('bytecode', chainContract[1].code);
+				.set('token', contractInfo.token === 'erc20' ? {
+					id: contractInfo.id,
+					...contractInfo.token,
+				} : null)
+				.set('erc20', type && type === 'erc20' ? 'Yes' : 'No');
 		} catch (e) {
 			return null;
 		}
@@ -116,14 +142,20 @@ class TransactionActionsClass extends BaseActionsClass {
 	 * @param subject
 	 * @returns {Function}
 	 */
-	async setOperationObject(operation, options, from, subject) {
+	async setOperationObject(operation, options, from, subject, operationResult, opInfo) {
 		let object = new Map({});
-
 		try {
 			if (accountOperations.includes(operation.name)) {
 				let account = await echo.api.getObject(from.id);
 				if (operation.name === Operations.account_create.name) {
 					account = await echo.api.getObject(subject.id);
+				}
+				let singleOperation = {};
+				try {
+					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
+					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
+				} catch (e) {
+					//
 				}
 				const activeAccounts = await Promise.all(account.active.account_auths.map(async ([id]) => {
 					const acc = await echo.api.getObject(id);
@@ -139,7 +171,90 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('activeAccounts', activeAccounts)
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
-					.set('delegating', accounts[1] && accounts[1].name);
+					.set('delegating', accounts[1] && accounts[1].name)
+					.set('assets', singleOperation.assets)
+					.set('evm_address', singleOperation.evm_address);
+			} else if (contractOperations.includes(operation.name)) {
+				let contractId;
+				let isNeedLink = false;
+				switch (operation.name) {
+					case Operations.contract_internal_create.name:
+						isNeedLink = true;
+						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						break;
+					case Operations.contract_create.name:
+						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						break;
+					case Operations.contract_internal_call.name:
+						isNeedLink = true;
+						contractId = options.callee;
+						break;
+					case Operations.contract_call.name:
+						contractId = options.callee;
+						break;
+					case Operations.contract_selfdestruct.name:
+						isNeedLink = true;
+						contractId = options.contract;
+						break;
+					case Operations.contract_update.name:
+					case Operations.contract_fund_pool.name:
+					case Operations.contract_whitelist.name:
+						contractId = options.contract;
+						break;
+					default:
+						break;
+				}
+				const contract = await echo.api.getObject(contractId);
+				const contractAdditionalInfo = await echo.api.getFullContract(contractId);
+				const { contractInfo } = await getContractInfo(contractId);
+				const { history } = await getConrtactOperations(contractId);
+				object = object
+					.set('id', contractId)
+					.set('type', contractInfo.type)
+					.set('ethAccuracy', contract.eth_accuracy)
+					.set('supportedAsset', contract.supported_asset)
+					.set('owner', contract.owner)
+					.set('contractPoolBalance', contractAdditionalInfo.poolBalance)
+					.set('whitelist', contractAdditionalInfo.whitelist || [])
+					.set('blacklist', contractAdditionalInfo.blacklist || []);
+				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
+					el.op_in_trx === opInfo.opInTrx &&
+					el.block.round === opInfo.block);
+				if (currentOp.body.asset_tranfers) {
+					const assetTransfers = await this.formatAssetsTransfer(currentOp.body.asset_tranfers);
+					object = object
+						.set('asset_transfers', assetTransfers);
+				}
+				if (isNeedLink) {
+					object = object
+						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1));
+				}
+				if (currentOp.body.virtual_operations.length) {
+					const formatVirtualOps = currentOp.body.virtual_operations.map((op) => this.formatOperation(op));
+					const virtualOps = await Promise.all(formatVirtualOps);
+					const formatted = virtualOps.map((el) => {
+						let contractIdInOp;
+						if (el.from && validators.isContractId(el.from.id)) {
+							contractIdInOp = from.id;
+						}
+						if (el.subject && validators.isContractId(el.subject.id)) {
+							contractIdInOp = subject.id;
+						}
+						return {
+							operationInfo: {
+								type: el.name,
+								bytecode: el.bytecode,
+								asset_amount_sent: el.value,
+								contract_id: contractIdInOp,
+							},
+						};
+					});
+
+					object = object.set('virtualOps', formatted);
+				}
+				if (contractInfo.token) {
+					object = object.set('token', contractInfo.token);
+				}
 			} else if (assetOperations.includes(operation.name)) {
 				let assetId = null;
 				if (operation.options.asset) {
@@ -175,25 +290,300 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
-				const committee = await echo.api.getObject(subject.id);
-				const committeeMemberAccount = await echo.api.getObject(committee.committee_member_account);
+				const accountId = from.id || subject.id;
+				const committee = await echo.api.getCommitteeMemberByAccount(accountId);
+				if (committee) {
+					const frozenBalance = await echo.api.getCommitteeFrozenBalance(committee.id);
+					const [asset] = await echo.api.getAssets([frozenBalance.asset_id]);
 
-				object = object
-					.set('id', committee.id)
-					.set('account', committeeMemberAccount && committeeMemberAccount.name)
-					.set('votes', committee.total_votes)
-					.set('url', committee.url);
+					object = object
+						.set('committee', committee)
+						.set('frozenBalance', {
+							amount: frozenBalance.amount,
+							asset_id: asset.id,
+							symbol: asset.symbol,
+							precision: asset.precision,
+						});
+				}
 			} else if (proposalOperations.includes(operation.name)) {
-				const proposal = await echo.api.getObject(subject.id);
-				const operations = options.proposed_ops.map(([opType]) => {
+				let singleOperation = {};
+				try {
+					const operationFromGraphQl = await getSingleOpeation(opInfo.block, opInfo.trxInblock, opInfo.opInTrx);
+					singleOperation = operationFromGraphQl.getSingleOperation.body;
+					singleOperation.result = operationFromGraphQl.getSingleOperation.result;
+				} catch (e) {
+					//
+				}
+				const operations = options.proposed_ops ? options.proposed_ops.map((el) => {
+					const opType = el.op[0];
 					const op = Object.values(Operations).find((i) => i.value === opType);
 					return op && op.name;
-				});
+				}) : undefined;
 
 				object = object
-					.set('id', proposal && proposal.id)
-					.set('expirationTime', options.expiration_time)
+					.set('id', singleOperation.proposal || singleOperation.result)
+					.set('expirationTime', singleOperation.expiration_time)
+					.set('reviewPeriodSeconds', singleOperation.review_period_seconds)
+					.set('active_approvals_to_add', singleOperation.active_approvals_to_add)
+					.set('active_approvals_to_remove', singleOperation.active_approvals_to_remove)
+					.set('key_approvals_to_add', singleOperation.key_approvals_to_add)
+					.set('key_approvals_to_remove', singleOperation.key_approvals_to_remove)
 					.set('operations', operations);
+
+				if (singleOperation.have_delete_operation) {
+					object = object
+						.set('statuc', 'rejected');
+				}
+				let opWithApprovals = {};
+				if (operation.name !== Operations.proposal_create.name) {
+					const opIndex = singleOperation.create_operation.split('-').map((el) => +el);
+					const fullOpWithApprovals = await getSingleOpeation(...opIndex);
+					opWithApprovals = fullOpWithApprovals.getSingleOperation.body;
+					opWithApprovals.result = fullOpWithApprovals.getSingleOperation.result;
+				} else {
+					opWithApprovals = singleOperation;
+				}
+
+				const accountAuth = (await getAccountCondition(singleOperation.fee_paying_account, opWithApprovals.expiration_time))
+					.getAccountCondition;
+				const authArray = [...accountAuth.key_auths, ...accountAuth.account_auths];
+				const keyWeight = opWithApprovals.approvals ? opWithApprovals.approvals.reduce((sum, key) => {
+					const keyData = authArray.find((el) => el.key === key);
+					return keyData ? +keyData.value + sum : sum;
+				}, 0) : 0;
+				object = object
+					.set('count_approvals', { value: keyWeight, total: accountAuth.weight_threshold })
+					.set('count_signatures', opWithApprovals.approvals ? opWithApprovals.approvals.length : 0)
+					.set('proposal_operations', opWithApprovals.proposed_ops);
+				if (moment() < moment(opWithApprovals.expiration_time)) {
+					if (moment() > moment(opWithApprovals.expiration_time).subtract(opWithApprovals.review_period_seconds, 'seconds')) {
+						object = object
+							.set('status', 'in review');
+					} else {
+						object = object
+							.set('status', 'voting');
+					}
+				} else {
+					object = object
+						.set('status', keyWeight >= accountAuth.weight_threshold ? 'resolved' : 'rejected');
+				}
+			} else if (sidechainOperations.includes(operation.name)) {
+				let objectWithApprovals = { approves: [], is_approved: false };
+				let singleOperation = {};
+				try {
+					const operationFromGraphQl = await getSingleOpeation(
+						opInfo.block,
+						opInfo.trxInblock,
+						opInfo.opInTrx,
+						opInfo.virtual,
+					);
+					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
+				} catch (e) {
+					//
+				}
+
+				switch (operation.name) {
+					case Operations.sidechain_eth_approve_address.name:
+						objectWithApprovals = await echo.api.getEthAddress(options.account);
+						break;
+					case Operations.deposit_eth.name:
+						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
+							.find((el) => el.deposit_id === options.deposit_id);
+						object = object
+							.set('deposit_id', objectWithApprovals.id);
+						break;
+					case Operations.eth_send_deposit.name:
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						object = object
+							.set('deposit_id', objectWithApprovals.id);
+						break;
+					case Operations.approve_erc20_token_withdraw.name: {
+						const originalOpIndexes = singleOperation.sidchain_erc_20_withdraw_token.split('-');
+						const originalOp = await getSingleOpeation(...originalOpIndexes.map((i) => (+i)));
+						objectWithApprovals = await echo.api.getObject(originalOp.getSingleOperation.body.withdraw_id);
+						object = object
+							.set('withdraw_id', objectWithApprovals.id)
+							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
+							.set('transaction_hash', singleOperation.transaction_id || singleOperation.transaction_hash)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
+						break;
+					} case Operations.sidechain_erc20_issue.name: {
+						const token = await echo.api.getObject(options.token);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						object = object
+							.set('token', { value: token.symbol, link: token.id })
+							.set('list_approvals', listApprovals)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_deposit_token));
+						break;
+					} case Operations.sidechain_erc20_burn.name: {
+						const token = await echo.api.getObject(options.token);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						object = object
+							.set('token', { value: token.symbol, link: token.id })
+							.set('list_approvals', listApprovals)
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
+						break;
+					} case Operations.sidechain_btc_create_intermediate_deposit.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_intermediate_deposit.name: {
+						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_address_id);
+						const fromAccount = await echo.api.getObject(objectWithApprovals.account);
+						object = object.set('account', { link: fromAccount.id, value: fromAccount.name });
+						break;
+					}
+					case Operations.sidechain_btc_deposit.name:
+						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_deposit_id);
+						break;
+					case Operations.sidechain_btc_withdraw.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_aggregate.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_approve_aggregate.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.eth_send_withdraw.name:
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
+						break;
+					case Operations.approve_withdraw_eth.name:
+						objectWithApprovals = await echo.api.getObject(`1.15.${options.withdraw_id}`);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
+						break;
+					case Operations.sidechain_issue.name: {
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit))
+							.set('list_approvals', listApprovals);
+						break;
+					}
+					case Operations.sidechain_burn.name: {
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						const listApprovals = singleOperation.list_of_approvals
+							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
+							.set('list_approvals', listApprovals);
+						break;
+					}
+					case Operations.register_erc20_token.name: {
+						const contractObject = await echo.api.getObject(operationResult[1]);
+						object = object
+							.set('decimals', String(options.decimals));
+						if (!contractObject) {
+							break;
+						}
+						object = object
+							.set('contract', contractObject.contract);
+						break;
+					}
+					case Operations.erc20_send_deposit.name: {
+						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc20_token_deposit));
+						break;
+					}
+					case Operations.withdraw_erc20_token.name: {
+						const token = await echo.api.getObject(options.erc20_token);
+						objectWithApprovals = await echo.api.getObject(operationResult[1]);
+						object = object
+							.set('token', { value: token.symbol, link: token.id });
+						break;
+					}
+					case Operations.erc20_send_withdraw.name:
+						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
+						object = object
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
+						break;
+					default:
+						break;
+				}
+
+				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
+				let approves = objectWithApprovals.approves.length;
+				if (approves === 0 && objectWithApprovals.is_approved) {
+					approves = total;
+				}
+				object = object
+					.set('approves', approves)
+					.set('total', total);
+			} else if (sidechainBtcOperations.includes(operation.name)) {
+				let singleOperation = {};
+				try {
+					const operationFromGraphQl = await getSingleOpeation(
+						opInfo.block,
+						opInfo.trxInblock,
+						opInfo.opInTrx,
+						opInfo.virtual,
+					);
+					singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
+				} catch (e) {
+					//
+				}
+				let objectWithApprovals = null;
+				switch (operation.name) {
+					case Operations.sidechain_btc_create_intermediate_deposit.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_intermediate_deposit.name: {
+						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_address_id);
+						const fromAccount = await echo.api.getObject(objectWithApprovals.account);
+						object = object.set('account', { link: fromAccount.id, value: fromAccount.name });
+						break;
+					}
+					case Operations.sidechain_btc_deposit.name:
+						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_deposit_id);
+						break;
+					case Operations.sidechain_btc_withdraw.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_aggregate.name:
+						objectWithApprovals = {};
+						break;
+					case Operations.sidechain_btc_approve_aggregate.name:
+						objectWithApprovals = {};
+						break;
+					default:
+						break;
+				}
+				if (objectWithApprovals) {
+					const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
+					let approves = objectWithApprovals.approves ? objectWithApprovals.approves.length : 0;
+					if (approves === 0 && objectWithApprovals.is_approved) {
+						approves = total;
+					}
+					object = object
+						.set('approves', approves)
+						.set('total', total);
+				}
+				object = object
+					.set('transaction_hash', singleOperation.transaction_id || singleOperation.transaction_hash)
+					.set('received_deposit_address', singleOperation.received_deposit_address)
+					.set('deposit_address', singleOperation.deposit_address)
+					.set('intermediate_address', singleOperation.intermediate_address)
+					.set('intermediate_address_id', singleOperation.intermediate_address_id)
+					.set('intermediate_deposit_id', singleOperation.intermediate_deposit_id)
+					.set('btc_addr', singleOperation.btc_addr)
+					.set('aggregation_out_value', singleOperation.aggregation_out_value)
+					.set('btc_block_number', singleOperation.btc_block_number)
+					.set('sma_address', singleOperation.sma_address && singleOperation.sma_address.address)
+					.set('amount', singleOperation.amount || singleOperation.value)
+					.set('deposits', singleOperation.deposits)
+					.set('withdrawals', singleOperation.withdrawals)
+					.set('committee_member_id', singleOperation.committee_member_id)
+					.set('committee_member_ids_in_script', singleOperation.committee_member_ids_in_script)
+					.set('signature', singleOperation.signature)
+					.set('signatures', singleOperation.signatures && singleOperation.signatures)
+					.set('aggregate_request_operation', singleOperation.aggregate_request_operation);
 			}
 
 			return object;
@@ -509,7 +899,44 @@ class TransactionActionsClass extends BaseActionsClass {
 		return result;
 	}
 
-	async getOperation([type, options], blockNumber, blockTimestamp, trIndex, opIndex, operationResult, number = null, accountId = null, trId = null) {
+	getProposalOperations(proposedOps = [], blockNumber, blockTimestamp, trIndex) {
+		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
+			const [idPropOp] = proposedOp.op;
+			let propData = {};
+			try {
+				propData = await this.getOperation(
+					proposedOp.op,
+					blockNumber,
+					blockTimestamp,
+					trIndex,
+					proposedOpIndex,
+					[],
+				);
+			} catch (err) {
+				console.log('Error to parse proposal props', err);
+			}
+			let transformData = {};
+			try {
+				transformData = await transformOperationDataByType(idPropOp, propData);
+			} catch (err) {
+				console.log('Error to transformOperationDataByType', err);
+			}
+			return transformData;
+		});
+	}
+
+	async getOperation(
+		[type, options],
+		blockNumber,
+		blockTimestamp,
+		trIndex,
+		opIndex,
+		operationResult,
+		number = null,
+		accountId = null,
+		trId = null,
+		virtual = false,
+	) {
 		const operation = Object.values(Operations).find((i) => i.value === type);
 
 		delete options.memo;
@@ -520,7 +947,13 @@ class TransactionActionsClass extends BaseActionsClass {
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
 		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
-		let objectInfo = await this.setOperationObject(operation, options, from, subject, opIndex);
+		const opInfo = {
+			block: blockNumber,
+			trxInblock: trIndex,
+			opInTrx: opIndex,
+			virtual,
+		};
+		let objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo);
 
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
@@ -557,7 +990,12 @@ class TransactionActionsClass extends BaseActionsClass {
 						const accounts = await echo.api.getAccounts(value);
 						value = accounts.map(({ name, id }) => ({ value: name, link: id }));
 					} else if (key === 'proposed_ops') {
-						value = value.map(({ op }) => op);
+						const [name, data] = value;
+						value = [{ name, ...data }];
+						break;
+					} else if (key === 'policy') {
+						value = value.map((data) => data);
+					} else if (type === OPERATIONS_IDS.CONTRACT_WHITELIST) {
 						break;
 					} else {
 						return {};
@@ -625,19 +1063,25 @@ class TransactionActionsClass extends BaseActionsClass {
 					}
 
 				}
-			// eslint-disable-next-line no-empty
+				// eslint-disable-next-line no-empty
 			} catch (error) {
 			}
 		}
 
+		let contractObject;
 		if (options['new contract id']) {
-			objectInfo = await this.setContractObject(options['new contract id'].value, opIndex);
+			contractObject = await this.setContractObject(options['new contract id'].value, opIndex);
 		} else if (options.caller) {
-			objectInfo = await this.setContractObject(options.caller);
+			contractObject = await this.setContractObject(options.caller);
 		} else if (options['contract id']) {
-			objectInfo = await this.setContractObject(options['contract id'].value);
+			contractObject = await this.setContractObject(options['contract id'].value);
+		} else if (options.contract) {
+			contractObject = await this.setContractObject(options.contract);
 		}
 
+		if (contractObject) {
+			objectInfo = contractObject;
+		}
 		let result = null;
 		switch (type) {
 			case OPERATIONS_IDS.CONTRACT_CREATE:
@@ -657,6 +1101,12 @@ class TransactionActionsClass extends BaseActionsClass {
 				options.address = address;
 				break;
 			}
+			case OPERATIONS_IDS.CONTRACT_WHITELIST:
+				options.addedToWhitelist = (await echo.api.getAccounts(options.add_to_whitelist)).map((account) => ({ link: account.id, value: account.name }));
+				options.removedFromWhitelist = (await echo.api.getAccounts(options.remove_from_whitelist)).map((account) => ({ link: account.id, value: account.name }));
+				options.addedToBlacklist = (await echo.api.getAccounts(options.add_to_blacklist)).map((account) => ({ link: account.id, value: account.name }));
+				options.removedFromBlacklist = (await echo.api.getAccounts(options.remove_from_blacklist)).map((account) => ({ link: account.id, value: account.name }));
+				break;
 			default:
 				[, result] = operationResult;
 				break;
@@ -693,27 +1143,67 @@ class TransactionActionsClass extends BaseActionsClass {
 			number,
 			blockTimestamp,
 			opIndex,
+			virtual,
 		};
-		const opNumberToFormat = operation.value < 20 ? operation.value : 0;
+		const opNumberToFormat = operation.value;
+
 		op.operationsInfoData = (await transformOperationDataByType(opNumberToFormat, op));
+		if (proposalOperations.includes(operation.name)) {
+			try {
+				const proposedOps = objectInfo.get('proposal_operations');
+				let promises = await this.getProposalOperations(proposedOps, blockNumber, blockTimestamp, trIndex);
+				promises = await Promise.all(promises);
+				delete op.proposed_ops;
+				op.proposals = promises;
+				op.operationsInfoData.proposalOperations = promises;
+			} catch (e) {
+				//
+			}
+
+		}
+
 		return op;
 	}
 
-	getTransaction(blockNumber, index) {
+	getTransaction(blockNumber, index, virtual = false) {
 		return async (dispatch) => {
+			virtual = typeof virtual === 'string' ? virtual === 'true' : !!virtual;
 			dispatch(this.setValue('loading', true));
 			try {
 				const block = await echo.api.getBlock(blockNumber);
 
-				if (!block || !block.transactions[index - 1]) {
+				if (!block) {
 					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
 				}
 
-				const transaction = block.transactions[index - 1];
+				if (!block.transactions[index - 1] && !virtual) {
+					dispatch(GlobalActions.toggleErrorPath(true));
+					return;
+				}
+
+				let transaction = {};
+
+				if (virtual) {
+					const operationResults = [];
+					const virtualOperations = await echo.api.getBlockVirtualOperations(blockNumber);
+					if (!virtualOperations.length) {
+						dispatch(GlobalActions.toggleErrorPath(true));
+						return;
+					}
+					const transformedOperations = virtualOperations.reduce((res, { op, result }) => {
+						operationResults.push(result);
+						return [...res, op];
+					}, []);
+					transaction = {
+						operations: transformedOperations,
+						operation_results: operationResults,
+					};
+				} else {
+					transaction = block.transactions[index - 1];
+				}
 
 				await this.fetchTransactionsObjects(transaction.operations);
-
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
 						operation,
@@ -722,6 +1212,10 @@ class TransactionActionsClass extends BaseActionsClass {
 						index - 1,
 						opIndex,
 						transaction.operation_results[opIndex],
+						null,
+						null,
+						null,
+						virtual,
 					);
 					return op;
 				});
@@ -735,6 +1229,31 @@ class TransactionActionsClass extends BaseActionsClass {
 				dispatch(this.setValue('loading', false));
 			}
 		};
+	}
+
+	async formatAssetsTransfer(trasfers) {
+		const transferPromise = async (tr) => {
+			const from = await echo.api.getObject(tr.from);
+			const to = await echo.api.getObject(tr.to);
+			const asset = await echo.api.getObject(tr.value.asset_id);
+			return {
+				amount: {
+					amount: tr.value.amount,
+					precision: asset.precision,
+					symbol: asset.symbol,
+				},
+				from: {
+					value: from.name,
+					link: from.id,
+				},
+				to: {
+					value: to.name,
+					link: to.id,
+				},
+			};
+		};
+		const formatted = await Promise.all(trasfers.map((el) => transferPromise(el)));
+		return formatted;
 	}
 
 }
