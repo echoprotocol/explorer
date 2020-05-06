@@ -92,12 +92,16 @@
 
 .operations-filter__button {
 	padding-left: 52px;
-	margin-top: 20px;
+	margin-top: 10px;
 	width: 100%;
 	@include max-vw($res-768) {
 		padding-left: 62px;
 	}
 	@include max-vw($res-500) {
+		margin-top: 20px;
 		padding-left: 0;
+		.filter-button {
+			width: 100%;
+		}
 	}
 }

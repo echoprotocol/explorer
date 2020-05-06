@@ -93,7 +93,7 @@ const Operations = {
 	},
 	asset_update_bitasset: {
 		value: OPERATIONS_IDS.ASSET_UPDATE_BITASSET,
-		name: 'Update SmartCoin',
+		name: 'Update asset bitasset operation',
 		options: {
 			from: 'issuer',
 			subject: ['asset_to_update', 'symbol'],

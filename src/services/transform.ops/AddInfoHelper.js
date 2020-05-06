@@ -93,9 +93,21 @@ async function getCommiteeMemberUpdateInfo({ new_btc_public_key: pubKey, committ
 	};
 }
 
-async function getCommiteeMemberActivateInfo({ committee_to_activate: { link: accountId } }) {
-	const committeeStatus = await isCommiteeMemberById(accountId);
+async function getCommiteeMemberActivateInfo({ committee_to_activate: committeeToActivate }) {
+	const committee = (committeeToActivate && committeeToActivate.link && typeof committeeToActivate.link !== 'function')
+		? committeeToActivate.link : committeeToActivate;
+	let id = committee;
+	if (!validators.isAccountId(id)) {
+		const committeMember = await echo.api.getObject(committee);
+		id = committeMember.committee_member_account;
+	}
+	const committeeStatus = await isCommiteeMemberById(id);
+	const account = await echo.api.getObject(id);
 	return {
+		account: {
+			value: account.name,
+			link: account.id,
+		},
 		committeeStatus,
 	};
 }
