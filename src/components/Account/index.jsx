@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import AccountInfo from './AccountInfo';
+import AccountInfoRow from './AccountInfoRow';
 import AccountBalances from './AccountBalances';
 import OperationsTable from '../../containers/OperationsTable';
 import InnerHeader from '../InnerHeader';
@@ -10,9 +11,11 @@ import { ECHO_ASSET } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 import AccountActions from '../../actions/AccountActions';
 import URLHelper from '../../helpers/URLHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 import { ACCOUNT_GRID } from '../../constants/TableConstants';
 import GridActions from '../../actions/GridActions';
 import { subscribeAccountHistoryUpdate } from '../../services/subscriptions/account';
+import { OBJECTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
 
 class Account extends React.Component {
 
@@ -112,9 +115,8 @@ class Account extends React.Component {
 
 	render() {
 		const {
-			loading, loadingMoreHistory, account, balances, tokens, accountHistory, isMobile, totalAccountHistory,
+			loading, loadingMoreHistory, account, balances, tokens, accountHistory, totalAccountHistory,
 		} = this.props;
-
 		return (
 			<div className="inner-container">
 				{this.renderMeta()}
@@ -125,12 +127,31 @@ class Account extends React.Component {
 							{
 								account ?
 									<React.Fragment>
-										<AccountInfo
-											isMobile={isMobile}
-											echo={balances.get(ECHO_ASSET.ID)}
-											name={account.get('name')}
-											id={account.get('id')}
-										/>
+										<AccountInfo>
+											<AccountInfoRow title="Account name" value={account.get('name')} />
+											<AccountInfoRow
+												title="ECHO balance"
+												amount={{
+													value: balances.size ?
+														FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision')) :
+														FormatHelper.formatAmount(0, 8),
+													symbol: balances.size ? balances.get(ECHO_ASSET.ID).asset.get('symbol') : 'ECHO',
+												}}
+												amountLink={{
+													href: SSR_ASSET_PATH,
+													as: URLHelper.createUrlById(ECHO_ASSET.ID),
+												}}
+												tooltip={balances.size ?
+													`${FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision'))} ${balances.get(ECHO_ASSET.ID).asset.get('symbol')}` :
+													`${FormatHelper.formatAmount(0, 8)} ECHO`}
+											/>
+											<AccountInfoRow additionalLink={{
+												href: OBJECTS_PATH,
+												as: URLHelper.createObjectsUrl(account.get('id')),
+												value: 'Raw account object',
+											}}
+											/>
+										</AccountInfo>
 										<AccountBalances
 											balances={balances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
 											tokens={tokens}
@@ -166,7 +187,6 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
-	isMobile: PropTypes.bool.isRequired,
 	router: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
 	loadingMoreHistory: PropTypes.bool,
