@@ -14,6 +14,7 @@ import {
 	CONTRACT_DETAILS_NUMBERS_TAB,
 	CONTRACT_SOURCE_CODE,
 	CONTRACT_ABI,
+	CONTRACT_ERC20,
 	SSR_CONTRACT_PATH,
 	SSR_MANAGE_CONTRACT_PATH,
 	SSR_CONTRACT_DETAILS_PATH,
@@ -24,6 +25,7 @@ import Loader from '../Loader';
 import ContractAbi from './ContractAbi';
 import ContractSourceCode from './ContractSourceCode';
 import ContractInfo from './ContractInfo';
+import ErcInfo from '../ErcInfo';
 import { ContractIcon } from './ContractIcon';
 import CopyBtn from '../Buttons/CopyBtn';
 import InnerHeader from '../InnerHeader';
@@ -63,7 +65,9 @@ class Contract extends React.Component {
 
 		this.props.loadActiveAccount();
 
-		this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
+		if (this.slider.current) {
+			this.slider.current.slickGoTo(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0);
+		}
 
 		this.subscribe(id);
 	}
@@ -177,9 +181,14 @@ class Contract extends React.Component {
 						<ContractAbi id={id} abi={abi} verified={verified} />
 						{verified && <ContractSourceCode sourceCode={sourceCode} />}
 						{!verified && <ActionButton name="Verify contract" onClick={() => Router.push(SSR_VERIFY_CONTRACT_PATH, URLHelper.createVerifyContractUrl(id))} />}
-
 					</div> : <Loader />,
 				key: 'tab-1',
+			},
+			{
+				tab: !loading ?
+					<ErcInfo /> :
+					<Loader />,
+				key: 'tab-2',
 			},
 		];
 
@@ -192,22 +201,15 @@ class Contract extends React.Component {
 			variableWidth: true,
 			touchMove: false,
 			initialSlide: CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0,
-			// responsive: [
-			// 	{
-			// 		breakpoint: 768,
-			// 		settings: {
-			// 			slidesToShow: 3,
-			// 			slidesToScroll: 2,
-			// 		},
-			// 	},
-			// 	{
-			// 		breakpoint: 500,
-			// 		settings: {
-			// 			slidesToShow: 3,
-			// 			slidesToScroll: 2,
-			// 		},
-			// 	},
-			// ],
+			responsive: [
+				{
+					breakpoint: 500,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 1,
+					},
+				},
+			],
 		};
 
 		return (
@@ -272,6 +274,13 @@ class Contract extends React.Component {
 									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)}>
 										<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
 											<span className={classnames('menu-item-content with-icon', { verified }, { unverified: !verified })}>Source Code & ABI</span>
+										</a>
+									</Link>
+								</div>
+								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ERC20)}>
+										<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
+											<span className="menu-item-content">ERC20 info</span>
 										</a>
 									</Link>
 								</div>

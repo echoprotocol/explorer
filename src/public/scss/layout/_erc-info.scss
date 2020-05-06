@@ -1,0 +1,91 @@
+.erc-info-block {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 50px;
+	@include max-vw($res-768) {
+		justify-content: space-between;
+	}
+}
+.erc-info-block__item {
+	padding: 0 20px;
+	@include max-vw($res-768) {
+		padding: 10px 0;
+	}
+	&:first-child {
+		padding-left: 0;
+	}
+	&:not(:last-child) {
+		border-right: 1px solid #d4d4db;
+		@include max-vw($res-768) {
+			border-right: 0;
+			border-bottom: 1px solid #d4d4db;
+		}
+	}
+	&.symbol {
+		width: 19.5%;
+		min-width: 148px;
+		@include max-vw($res-768) {
+			width: 49%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+	&.decimals {
+		width: 12.5%;
+		@include max-vw($res-768) {
+			width: 49%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+	&.supply {
+		width: 34.5%;
+		@include max-vw($res-768) {
+			width: 49%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+	&.holders {
+		width: 18%;
+		@include max-vw($res-768) {
+			width: 49%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+	&.transfers {
+		@include max-vw($res-768) {
+			width: 49%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+}
+
+.erc-info-block__item-title {
+	margin-bottom: 15px;
+	@include inter-ui-medium;
+	font-size: 12px;
+	color: $lightgrey;
+}
+
+.erc-info-block__item-value {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	@include inter-semibold;
+	font-size: 13px;
+	color: $grey;
+	white-space: nowrap;
+	.half {
+		display: inline-block;
+		@include text-overflow;
+		max-width: calc(50%);
+	}
+}

@@ -33,6 +33,7 @@
 @import "layout/modals";
 @import "layout/transaction-component";
 @import "layout/page-layout";
+@import "layout/erc-info";
 
 @import "pages/main-page";
 @import "pages/contract-page";
@@ -84,6 +85,7 @@
 @import "components/block-description";
 
 @import "components/tables/main-page-table";
+@import "components/tables/transfers-table";
 @import "components/tables/operation-detail/operation-detail-table";
 @import "components/tables/operation-detail/account-field";
 @import "components/tables/operation-detail/settings-field";
