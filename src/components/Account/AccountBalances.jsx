@@ -8,7 +8,6 @@ class AccountBalances extends React.Component {
 
 	render() {
 		const { owner, balances, tokens } = this.props;
-
 		return (
 			<div className="right-container">
 				<AssetBalances title="Other assets" owner={owner} balances={balances} />

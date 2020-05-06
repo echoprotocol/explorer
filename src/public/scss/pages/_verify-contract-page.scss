@@ -1,6 +1,4 @@
-.inner-page.verify-contract {
-	padding-top: 15px;
-
+.verify-contract {
 	@include max-vw($res-500) {
 		padding-top: 45px;
 	}

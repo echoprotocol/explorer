@@ -34,15 +34,6 @@
 	align-items: center;
 	position: relative;
 	z-index: 3;
-	&.action {
-		.account-page-t-block {
-			width: 100%;
-
-			.copy-bytecode {
-				margin: auto 0 auto auto;
-			}
-		}
-	}
 
 	@include max-vw($res-1000) {
 		padding-left: 18px;

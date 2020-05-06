@@ -1,0 +1,294 @@
+.page-info {
+	margin-top: -15px;
+	margin-right: -30px;
+	padding: 45px 30px 40px 0;
+	background-color: $lightgrey-darker;
+	position: relative;
+
+	&.contract-info {
+		padding-bottom: 0;
+	}
+
+	@include max-vw(1534) {
+		padding: 45px 40px 40px 0;
+	}
+
+	@include max-vw(1279) {
+		padding: 50px 30px 40px 0;
+		margin-right: 0;
+		&:after {
+			content: "";
+			position: absolute;
+			z-index: 1;
+			width: 20px;
+			height: 100%;
+			top: 0;
+			right: -20px;
+			background-color: $lightgrey-darker;
+		}
+	}
+
+	@include max-vw($res-768) {
+		padding: 50px 0 40px;
+	}
+	&:before {
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: -100%;
+		background-color: $lightgrey-darker;
+	}
+}
+
+.page-t-block {
+	margin-bottom: 30px;
+	> .title {
+		@include inter-ui-bold;
+		font-size: 23px;
+		color: #18142a;
+		margin-bottom: 33px;
+		letter-spacing: 0.59px;
+		margin-top: 50px;
+		margin-left: 30px;
+
+		@include max-vw(1534) {
+			margin-left: 19px;
+		}
+
+		@include max-vw($res-1000) {
+			margin-left: 23px;
+			margin-bottom: 29px;
+		}
+
+		@include max-vw($res-768) {
+			margin-left: 17px;
+		}
+	}
+
+	.help-container {
+		display: flex;
+		align-items: flex-start;
+
+		@include max-vw($res-768) {
+			flex-direction: column;
+		}
+	}
+}
+
+.left-card {
+	background-color: $lightest-grey-bg;
+	display: inline-flex;
+	flex-direction: column;
+	width: 380px;
+	padding: 43px 30px 30px;
+	flex-shrink: 0;
+
+	@include max-vw($res-768) {
+		padding: 30px 20px;
+		width: 100%;
+	}
+
+	@include max-vw($res-500) {
+		padding: 45px 25px;
+		position: relative;
+		z-index: 2;
+		width: calc(100% + 20px);
+		transform: translateX(-10px);
+	}
+	.line {
+		display: flex;
+		align-items: center;
+
+		@include max-vw($res-500) {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		&:not(:last-child) {
+			margin-bottom: 20px;
+			@include max-vw($res-500) {
+				margin-bottom: 30px;
+			}
+		}
+
+		.additional {
+			margin-top: 13px;
+			@include max-vw($res-500) {
+				margin-top: 5px;
+			}
+		}
+
+		.title {
+			@include inter-ui-medium;
+			color: $grey;
+			font-size: 12px;
+			line-height: 1em;
+			display: block;
+			white-space: nowrap;
+
+			@include max-vw($res-500) {
+				margin-bottom: 10px;
+			}
+		}
+
+		.val {
+			@include inter-ui-medium;
+			font-size: 15px;
+			line-height: 1em;
+			display: flex;
+			align-items: center;
+			white-space: nowrap;
+			.txt {
+				margin-right: 5px;
+				@include text-overflow;
+			}
+			.amount {
+				display: inline-block;
+				@include text-overflow();
+				max-width: 120px;
+			}
+			&.name {
+				display: inline-block;
+				@include text-overflow();
+				max-width: calc(50%);
+			}
+		}
+
+		.divider {
+			flex-grow: 1;
+			height: 1px;
+			align-self: flex-end;
+			margin: 0 5px;
+			background-image: url("../images/icons/point.svg");
+			background-size: auto;
+			background-repeat: repeat;
+			transform: translateY(-3px);
+			@include max-vw($res-500) {
+				display: none;
+			}
+		}
+
+		.name {
+			@include text-overflow;
+			max-width: calc(100% - 90px);
+			@include max-vw($res-500) {
+				max-width: calc(100%);
+			}
+		}
+	}
+
+	.raw-link {
+		@include inter-ui-medium;
+		letter-spacing: 0.3px;
+		font-size: 12px;
+		color: $blue;
+	}
+}
+
+.right-container {
+	padding-top: 15px;
+	margin-left: 55px;
+	width: 100%;
+	@include max-vw($res-1000) {
+		margin-left: 50px;
+	}
+
+	@include max-vw($res-768) {
+		padding: 30px 20px 0;
+		width: 100%;
+		margin-left: 0;
+	}
+
+	@include max-vw($res-500) {
+		padding: 30px 15px 0;
+	}
+	.elem {
+		&:not(:last-child) {
+			margin-bottom: 35px;
+
+			@include max-vw($res-768) {
+				margin-bottom: 30px;
+			}
+		}
+
+		.title {
+			@include inter-ui-medium;
+			font-size: 12px;
+			color: $grey;
+
+			.gray {
+				color: $lightgrey;
+			}
+		}
+
+		.load-more {
+			display: inline-flex;
+
+			@include max-vw($res-500) {
+				margin-left: 20px;
+			}
+		}
+	}
+
+	.inner-elem {
+		display: flex;
+		align-items: center;
+		margin-right: 15px;
+		margin-bottom: 20px;
+		position: relative;
+		padding-bottom: 14px;
+		width: 31%;
+		@include inter-ui-medium;
+		font-size: 12px;
+		border-bottom: 1px solid #d8d9de;
+
+		&:nth-child(3n) {
+			margin-right: 0;
+		}
+
+		@include max-vw(1534) {
+			width: 48%;
+			margin-right: 0;
+		}
+
+		@include max-vw($res-1000) {
+			width: 100%;
+		}
+
+		@include max-vw($res-768) {
+			width: 48%;
+		}
+
+		@include max-vw($res-500) {
+			width: 100%;
+		}
+
+		.txt {
+			@include text-overflow();
+			max-width: calc(50%);
+			margin-right: 5px;
+			display: inline-block;
+		}
+
+		.name {
+			max-width: calc(50%);
+			.link {
+				display: block;
+				@include text-overflow();
+				max-width: calc(100%);
+			}
+		}
+	}
+
+	.elements-container {
+		margin-top: 20px;
+		display: flex;
+		flex-wrap: wrap;
+
+		@include max-vw(1534) {
+			justify-content: space-between;
+		}
+	}
+}

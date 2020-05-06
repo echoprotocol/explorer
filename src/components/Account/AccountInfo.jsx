@@ -56,7 +56,7 @@ class AccountInfo extends React.Component {
 					<div className="divider" />
 					{this.renderEcho()}
 				</div>
-				<div className="line">
+				<div className="line additional">
 					<Link href={OBJECTS_PATH} as={URLHelper.createObjectsUrl(id)}>
 						<a className="raw-link blue">Raw account object</a>
 					</Link>

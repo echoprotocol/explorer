@@ -118,9 +118,9 @@ class Account extends React.Component {
 		return (
 			<div className="inner-container">
 				{this.renderMeta()}
-				<div className="account-page-info">
+				<div className="page-info">
 					{account && <InnerHeader title={`Account ${account.get('id')}`} />}
-					<div className="account-page-t-block">
+					<div className="page-t-block">
 						<div className="help-container">
 							{
 								account ?

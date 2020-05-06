@@ -28,11 +28,8 @@ export const SSR_MANAGE_CONTRACT_PATH = '/contracts/[id]/manage';
 export const SSR_CONTRACT_DETAILS_PATH = '/contracts/[id]/info/[detail]';
 
 export const CONTRACT_DETAILS_NUMBERS_TAB = {
-	[CONTRACT_TRANSACTIONS]: 1,
-	[CONTRACT_BYTECODE]: 2,
-	[CONTRACT_BALANCES]: 3,
-	[CONTRACT_ABI]: 4,
-	[CONTRACT_SOURCE_CODE]: 5,
+	[CONTRACT_TRANSACTIONS]: 0,
+	[CONTRACT_ABI]: 1,
 };
 
 export const ROUTES_WITH_COLUMN_DIRECTION = [INDEX_PATH];

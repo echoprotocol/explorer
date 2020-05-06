@@ -7,28 +7,24 @@ const InnerHeader = React.memo(({
 	children, title, className, returnFunction,
 }) => (
 	<div className={cn('inner-header', className)}>
-		{children &&
-		<div className="inner-header-line">
-			{ children }
-		</div>}
 		<div className="inner-header-line">
 			{returnFunction && <BackwardsLink returnFunction={returnFunction} />}
-			<div className="inner-header-title">
-				{title}
-			</div>
+			{title && <div className="inner-header-title"> {title}</div>}
+			{children && children}
 		</div>
 	</div>
 ));
 
 
 InnerHeader.propTypes = {
-	title: PropTypes.string.isRequired,
+	title: PropTypes.string,
 	className: PropTypes.string,
 	children: PropTypes.node,
 	returnFunction: PropTypes.func,
 };
 
 InnerHeader.defaultProps = {
+	title: '',
 	children: null,
 	className: '',
 	returnFunction: null,

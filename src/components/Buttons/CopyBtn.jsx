@@ -18,10 +18,12 @@ const CopyButton = React.memo(({ valueToCopy, name }) => {
 	};
 
 	return (
-		<button onClick={onCopy} className="copy-btn">
-			<img src={copyIcon} className="copy-btn__icon" alt="copy" />
-			<span className="copy-btn__name">{isCopied ? 'Copied' : name}</span>
-		</button>
+		<div className="action-button-wrap">
+			<button onClick={onCopy} className="action-button">
+				<img src={copyIcon} className="action-button__icon" alt="copy" />
+				<span className="action-button__name">{isCopied ? 'Copied' : name}</span>
+			</button>
+		</div>
 	);
 });
 

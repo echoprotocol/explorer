@@ -8,6 +8,7 @@ import URLHelper from '../../helpers/URLHelper';
 import { CONTRACT_ABI, SSR_CONTRACT_DETAILS_PATH } from '../../constants/RouterConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import { ContractIcon } from '../Contract/ContractIcon';
+import InnerHeader from '../InnerHeader';
 
 const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
 	ssr: false,
@@ -62,7 +63,7 @@ class UploadABI extends React.Component {
 
 		return (
 			<div className="inner-container inner-page">
-				<div className="backwards">
+				<InnerHeader>
 					<a
 						href=""
 						className="backwards-link"
@@ -70,16 +71,13 @@ class UploadABI extends React.Component {
 					>
 						<BackwardIcon />
 					</a>
-					<div className="account-page-t-block">
-
-						<div className="icon">
+					<div className="inner-header-title">
+						<div className="inner-header-title__icon">
 							<ContractIcon icon={icon} />
 						</div>
-
-						<div className="title">{`Contract ${id} — Upload ABI`}</div>
+						<span>{`Contract ${id} — Upload ABI`}</span>
 					</div>
-				</div>
-
+				</InnerHeader>
 				<div className="page-helper-section">
 					<div className="section-description">
 						You can upload ABI while contract is not yet verified. All the methods should be in contract.
@@ -118,7 +116,7 @@ class UploadABI extends React.Component {
 				<div className="buttons-wrap">
 					<button
 						className="decline-button"
-						onClick={() => Router.push(CONTRACT_ABI, URLHelper.createContractUrl(id, CONTRACT_ABI))}
+						onClick={(e) => this.onBack(e, id)}
 					>
 						Cancel
 					</button>

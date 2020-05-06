@@ -1,95 +1,45 @@
 .action-button-wrap {
-	@include inter-ui-regular;
 	display: flex;
+	align-items: center;
+}
 
-	.content {
-		letter-spacing: 0.2px;
+.action-button {
+	@include inter-ui-regular;
+	@include btn();
+	@include onFocus(4px, 1px, 1px, $blue);
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 0 10px;
+	height: 30px;
+	background-color: #fff;
+	border: 1px solid #aeb7be;
+	border-radius: 4px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: opacity $speed, box-shadow $speed;
+	&:active {
+		opacity: 0.8;
 	}
-
-	.action-button {
-		@include btn();
-		@include onFocus(4px, 2px, 2px, rgba(#498fdf, 0.53));
-		font-size: 12px;
-		background-color: #fff;
-		background-image: linear-gradient(to top, #efeef1 0%, #ffffff 100%);
-		border-radius: 3px;
-		height: 22px;
-		border: 1px solid #b0b7bd;
-		z-index: 1;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		padding: 0 9px 0 7px;
-
-		img {
-			padding-bottom: 1px;
-			width: 9px;
-
-			& + .content {
-				margin-left: 4px;
-			}
-		}
-
-		& + .action-label {
-			margin-left: -2px;
-			padding: 0 6px 0 10px;
-			line-height: 22px;
-		}
-
-		&:hover:not(:focus) {
-			box-shadow: 0px 1px 1px 0px rgba(176, 183, 189, 1);
-		}
-
-		&.star {
-			padding: 0 6px 0 7px;
-		}
-
-		&:active {
-			background-color: #d8dadf;
-		}
+	&:hover:not(:focus) {
+		box-shadow: 0px 1px 3px 0px rgba($grey, 0.5);
 	}
+}
 
-	.action-label {
-		background-color: rgba(#cfcdd4, 0.6);
-		font-size: 12px;
-		padding: 0px 20px 0px 8px;
-		line-height: 22px;
-		color: #120e30;
-		display: flex;
-		border-radius: 1px;
+.action-button__icon {
+	margin-right: 6px;
+}
 
-		.info-icon {
-			padding: 0;
-			border: 0;
-			background-color: transparent;
-			width: 9px;
-			margin-left: 6px;
-			cursor: pointer;
-		}
-
-		.content {
-			white-space: nowrap;
-
-			& + img {
-				width: 9px;
-				margin-left: 4px;
-			}
-		}
-
-		& + .action-button {
-			margin-left: -11px;
-		}
-	}
-
-	&.verified {
-		.action-label {
-			padding: 4px 6px;
-			color: #fff;
-			background-color: #498fdf;
-		}
-
-		.action-button {
-			display: none;
-		}
-	}
+.action-button__label {
+	@include inter-ui-regular;
+	font-size: 12px;
+	line-height: 18px;
+	height: 28px;
+	padding: 5px 5px 5px 7px;
+	background-color: #d9d9df;
+	border-top-right-radius: 2px;
+	border-bottom-left-radius: 2px;
+	transform: translateX(-2px);
 }

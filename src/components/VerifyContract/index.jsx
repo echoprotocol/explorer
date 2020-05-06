@@ -9,6 +9,8 @@ import URLHelper from '../../helpers/URLHelper';
 import { KEY_CODES } from '../../constants/GlobalConstants';
 import { SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
 
+import InnerHeader from '../InnerHeader';
+
 const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.UnControlled), {
 	ssr: false,
 });
@@ -222,7 +224,7 @@ class VerifyContract extends React.Component {
 
 		return (
 			<div className="inner-container inner-page verify-contract">
-				<div className="backwards">
+				<InnerHeader>
 					<a
 						href=""
 						className="backwards-link"
@@ -231,13 +233,13 @@ class VerifyContract extends React.Component {
 					>
 						<BackwardIcon />
 					</a>
-					<div className="account-page-t-block">
-						<div className="icon">
+					<div className="inner-header-title">
+						<div className="inner-header-title__icon">
 							<img src={verifyIcon} alt="" />
 						</div>
-						<div className="title">{`Verify contract ${id}`}</div>
+						<span>{`Verify contract ${id}`}</span>
 					</div>
-				</div>
+				</InnerHeader>
 
 				<div className="page-helper-section">
 					<div className="section-description">

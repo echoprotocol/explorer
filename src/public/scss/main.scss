@@ -32,6 +32,7 @@
 @import "layout/account-asset";
 @import "layout/modals";
 @import "layout/transaction-component";
+@import "layout/page-layout";
 
 @import "pages/main-page";
 @import "pages/contract-page";
@@ -79,6 +80,7 @@
 @import "components/view-list-container";
 @import "components/table-label";
 @import "components/inner-header";
+@import "components/page-breadcrumbs";
 @import "components/block-description";
 
 @import "components/tables/main-page-table";

@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import copy from 'copy-to-clipboard';
+import CopyBtn from '../Buttons/CopyBtn';
 
 const CodeMirror = dynamic(() => import('../CodeMirror').then((component) => component.Controlled), {
 	ssr: false,
@@ -17,13 +17,9 @@ class ContractSourceCode extends React.Component {
 		};
 		return (
 			<div className="contract-source-code-panel">
-
 				<div className="line">
-					<div className="action-button-wrap">
-						<button className="action-button" onClick={() => copy(sourceCode)}>Copy code</button>
-					</div>
+					<CopyBtn valueToCopy={sourceCode} name="Copy Code" />
 				</div>
-
 				<div className="code-block max-height-none">
 					<CodeMirror
 						value={sourceCode}
