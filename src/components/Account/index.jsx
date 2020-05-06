@@ -65,6 +65,16 @@ class Account extends React.Component {
 		this.props.loadAccountHistory(account.get('id'));
 	}
 
+	getTableLabel() {
+		const operationsCount = this.props.accountHistory.size;
+		const transactionsCount = this.props.accountHistory.reduce((trxs, op) => {
+			const currentIndexes = `${op.trIndex}-${op.blockNumber}`;
+			return trxs.includes(currentIndexes) ? trxs : [...trxs, currentIndexes];
+		}, []).length;
+		return `${operationsCount} Operation${operationsCount > 1 ? 's' : ''},
+			${transactionsCount} Transaction${transactionsCount > 1 ? 's' : ''}`;
+	}
+
 	async subscribeHistoryUpdate(id) {
 		const updateHistory = await subscribeAccountHistoryUpdate([id]);
 		const nextUpdate = () => {
@@ -139,7 +149,7 @@ class Account extends React.Component {
 									isASCOps={false}
 									onLoadMoreHistory={() => this.onLoadMoreHistory()}
 									gridName={ACCOUNT_GRID}
-									label="Transactions"
+									label={this.getTableLabel()}
 									router={this.props.router}
 									operations={accountHistory}
 									loading={loadingMoreHistory}
