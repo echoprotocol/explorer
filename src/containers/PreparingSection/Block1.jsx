@@ -22,7 +22,6 @@ const Block1 = React.memo((props) => (
 				<span>{getStatus(props.stepProgress)}</span>
 				<InfoTooltip iconFilled={false} overlay="Next block info" />
 			</span>
-			<a href="https://docs.echo.org/" target="_blank" rel="noopener noreferrer">Echo rand info</a>
 		</div>
 	</React.Fragment>
 ));
