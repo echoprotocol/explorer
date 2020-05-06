@@ -51,6 +51,7 @@ class AccountActions extends BaseActionsClass {
 				null,
 				accountId,
 				t.id,
+				t.virtual,
 			);
 		});
 
@@ -144,6 +145,7 @@ class AccountActions extends BaseActionsClass {
 				trx_in_block: data.trx_in_block,
 				op_in_trx: data.op_in_trx,
 				virtual_op: 0,
+				virtual: data.virtual,
 			});
 		});
 	}
