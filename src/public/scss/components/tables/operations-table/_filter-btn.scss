@@ -7,7 +7,7 @@
 	line-height: 13px;
 	letter-spacing: 0.02em;
 	transition: color $speed;
-
+	white-space: nowrap;
 	&:not(:disabled) {
 		cursor: pointer;
 	}
