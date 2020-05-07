@@ -26,6 +26,7 @@ class SearchField extends React.Component {
 			href: '',
 		};
 		this.timeoutSearch = null;
+		this.timeoutPressEnter = null;
 		this.setWrapperRef = this.setWrapperRef.bind(this);
 		this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
@@ -37,6 +38,9 @@ class SearchField extends React.Component {
 	componentWillUnmount() {
 		if (this.timeoutSearch) {
 			clearTimeout(this.timeoutSearch);
+		}
+		if (this.timeoutPressEnter) {
+			clearTimeout(this.timeoutPressEnter);
 		}
 		document.removeEventListener('mousedown', this.handleClickOutside);
 	}
@@ -87,16 +91,21 @@ class SearchField extends React.Component {
 	}
 
 	onKeyPress(e) {
-		const { loadingSearch } = this.props;
-		const { inputValue } = this.state;
+		const { loadingSearch, hints } = this.props;
+		const { inputValue, to } = this.state;
 		const code = e.keyCode || e.which;
 
-		if (!loadingSearch && KEY_CODES.ENTER_CODE === code && inputValue && this.state.to) {
-			if (this.props.hints.length !== 0) {
-				Router.push(this.state.href, this.state.to);
-				this.setState({ focus: false, isChange: false });
-				this.inputEl.blur();
-			}
+		if (this.timeoutPressEnter) {
+			clearTimeout(this.timeoutPressEnter);
+		}
+		if (!loadingSearch && KEY_CODES.ENTER_CODE === code && inputValue && to) {
+			this.timeoutPressEnter = setTimeout(() => {
+				if (this.props.hints.length !== 0 && hints.find((el) => el.value === inputValue)) {
+					Router.push(this.state.href, this.state.to);
+					this.setState({ focus: false, isChange: false });
+					this.inputEl.blur();
+				}
+			}, 300);
 		}
 
 		if (KEY_CODES.ESC_CODE === code) {
