@@ -9,15 +9,16 @@
 	min-height: 34px;
 	letter-spacing: 0.025em;
 	padding: 0 14px;
-	transition: color $speed;
-
+	transition: color $speed background-color $speed;
+	border: 1px solid $lightgrey;
 	@include onFocus(22px, 2px, 2px, rgba(#498fdf, 0.5));
 
 	path {
 		fill: $explorer-black;
 		transition: fill $speed;
 	}
-	&:disabled, &.disabled {
+	&:disabled,
+	&.disabled {
 		background-color: $lightgrey-darker;
 		border: 1px solid $lightgrey-darker;
 		color: $lightgrey;
@@ -26,7 +27,7 @@
 		}
 	}
 	&:hover:not(:disabled) {
-		border: 1px solid $lightgrey;
+		background-color: #fff;
 	}
 	&:active {
 		color: rgba($explorer-black, 0.6);
