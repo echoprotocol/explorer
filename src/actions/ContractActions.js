@@ -36,7 +36,7 @@ import ValidateHelper, {
 
 import ApiService from '../services/ApiService';
 import { BridgeService } from '../services/BridgeService';
-import { getContractInfo, getTotalHistory } from '../services/queries/contract';
+import { getContractInfo } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
