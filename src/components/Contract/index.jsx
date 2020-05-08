@@ -7,7 +7,7 @@ import Slider from 'react-slick';
 import classnames from 'classnames';
 import { Map } from 'immutable';
 
-import { CONTRACT_TABS } from '../../constants/ContractConstants';
+import { CONTRACT_TABS, ERC20_TOKEN_SYMBOL } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
 	CONTRACT_TRANSACTIONS,
@@ -188,7 +188,7 @@ class Contract extends React.Component {
 					</div> : <Loader />,
 				key: 'tab-1',
 			},
-			{
+			type.includes(ERC20_TOKEN_SYMBOL) && {
 				tab: !loading ?
 					<ErcInfo
 						filterAndPaginateData={filterAndPaginateData}
@@ -289,13 +289,14 @@ class Contract extends React.Component {
 										</a>
 									</Link>
 								</div>
+								{type.includes(ERC20_TOKEN_SYMBOL) &&
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
 									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ERC20)}>
 										<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
 											<span className="menu-item-content">ERC20 info</span>
 										</a>
 									</Link>
-								</div>
+								</div>}
 							</Slider>
 						</div>
 					</div>
