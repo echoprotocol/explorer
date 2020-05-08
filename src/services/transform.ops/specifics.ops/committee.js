@@ -2,6 +2,7 @@ import { OPERATIONS_IDS } from 'echojs-lib';
 
 import { ECHO_COMMITTEE_ACCOUNT, OPS_DESCRIPTIONS, OPS_TYPES } from '../../../constants/OpsFormatConstants';
 import getAdditionalInfoByOpId from '../AddInfoHelper';
+import FormatHelper from '../../../helpers/FormatHelper';
 
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
@@ -52,19 +53,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						value: ECHO_COMMITTEE_ACCOUNT.NAME,
 						link: ECHO_COMMITTEE_ACCOUNT.ID,
 					},
-					changed_parameters: Object.entries(objectInfo.new_parameters)
-						.map((el) => ({
-							key: el[0].split('_').map((w) => w[0].toUpperCase() + w.substring(1, w.length)).join(' '),
-							value: el[1],
-						})),
+					changed_parameters: FormatHelper.formatGlobalParameters(objectInfo.new_parameters),
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						current_parameters: Object.entries(objectInfo.current_parameters)
-							.map((el) => ({
-								key: el[0].split('_').map((w) => w[0].toUpperCase() + w.substring(1, w.length)).join(' '),
-								value: el[1],
-							})),
+						current_parameters: FormatHelper.formatGlobalParameters(objectInfo.current_parameters),
 					},
 				},
 			};
