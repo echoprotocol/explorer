@@ -91,6 +91,10 @@ class Contract extends React.Component {
 		this.props.loadContractHistory(this.props.router.query.id);
 	}
 
+	onLoadMoreErc20History() {
+		this.props.loadErc20History(this.props.router.query.id);
+	}
+
 	async initContract() {
 		const { query: { id } } = this.props.router;
 		await this.props.onChangeFilter();
@@ -155,7 +159,7 @@ class Contract extends React.Component {
 
 	render() {
 		const {
-			loading, loadingMoreHistory,
+			loading, loadingMoreHistory, filterAndPaginateData, initData,
 			bytecode, contractHistory, balances, router: { query: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
@@ -187,9 +191,13 @@ class Contract extends React.Component {
 			{
 				tab: !loading ?
 					<ErcInfo
+						filterAndPaginateData={filterAndPaginateData}
 						tokenTransfers={tokenTransfers}
 						countTokenTransfer={countTokenTransfer}
 						token={token}
+						onLoadMoreHistory={() => this.onLoadMoreErc20History()}
+						initData={initData}
+						router={this.props.router}
 					/> :
 					<Loader />,
 				key: 'tab-2',
@@ -346,6 +354,9 @@ Contract.propTypes = {
 	owner: PropTypes.object.isRequired,
 	updateContractHistory: PropTypes.func.isRequired,
 	onChangeFilter: PropTypes.func.isRequired,
+	filterAndPaginateData: PropTypes.object.isRequired,
+	initData: PropTypes.func.isRequired,
+	loadErc20History: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {
@@ -356,7 +367,7 @@ Contract.defaultProps = {
 	sourceCode: null,
 	supportedAsset: '',
 	activeAccount: new Map(),
-	token: null,
+	token: {},
 	tokenTransfers: [],
 };
 

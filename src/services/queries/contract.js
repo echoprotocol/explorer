@@ -1,10 +1,12 @@
 import gql from 'graphql-tag';
 import client from '../GraphqlService';
 
-export const getContractInfo = async (contractId) => {
+export const getContractInfo = async ({
+	id, offset, count, to, from,
+}) => {
 	const query = gql`
-		query getContract($contractId: ContractId!) {
-			getContract(id: $contractId) {
+		query getContract($id: ContractId!, $from: [AccountOrContractId!], $to: [AccountOrContractId!], $offset: Int, $count: Int) {
+			getContract(id: $id) {
 				id,
 				registrar {
 					name
@@ -26,12 +28,12 @@ export const getContractInfo = async (contractId) => {
           holders_count
         },
 			}
-			getHistory(contracts: [$contractId], operations:[CONTRACT_CREATE]) {
+			getHistory(contracts: [$id], operations:[CONTRACT_CREATE]) {
 				items {
 					body
 				}
 			}
-			getTransferHistory(contracts: [$contractId]) {
+			getTransferHistory(contracts: [$id], from: $from, to: $to, offset: $offset, count: $count) {
 				total
 				items {
 					block,
@@ -48,12 +50,16 @@ export const getContractInfo = async (contractId) => {
 		}
 	`;
 
-	return client.getClient().query({ query, variables: { contractId } })
-		.then(({ data }) => ({
-			history: data.getHistory,
-			contractInfo: data.getContract,
-			transferHistory: data.getTransferHistory,
-		}));
+	return client.getClient().query({
+		query,
+		variables: {
+			id, offset, count, to, from,
+		},
+	}).then(({ data }) => ({
+		history: data.getHistory,
+		contractInfo: data.getContract,
+		transferHistory: data.getTransferHistory,
+	}));
 };
 
 
