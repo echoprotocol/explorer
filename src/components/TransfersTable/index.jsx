@@ -42,8 +42,8 @@ class TransfersTable extends React.Component {
 						<Thead />
 						<tbody>
 							{tokenTransfers.map((tr, i) => (
-								<React.Fragment>
-									<tr className="air" key={tr.timestamp}><td /></tr>
+								<React.Fragment key={tr.timestamp}>
+									<tr className="air"><td /></tr>
 									<Row
 										id={i + 1}
 										date={new Date(tr.timestamp).toUTCString().replace('GMT', '')}
