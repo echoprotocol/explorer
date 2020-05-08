@@ -31,31 +31,3 @@
 		background-color: #d8dadf;
 	}
 }
-
-.copy-btn {
-	@include inter-ui-regular;
-	@include btn();
-	@include onFocus(4px, 1px, 1px, $blue);
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	padding: 0 10px;
-	min-width: 100px;
-	height: 30px;
-	background-color: #fff;
-	border: 1px solid #aeb7be;
-	border-radius: 4px;
-	font-size: 12px;
-	cursor: pointer;
-	transition: opacity $speed, box-shadow $speed;
-	&:active {
-		opacity: 0.8;
-	}
-	&:hover:not(:focus) {
-		box-shadow: 0px 1px 3px 0px rgba($grey, 0.5);
-	}
-}
-
-.copy-btn__icon {
-	margin-right: 6px;
-}

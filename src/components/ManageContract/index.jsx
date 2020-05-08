@@ -12,6 +12,7 @@ import URLHelper from '../../helpers/URLHelper';
 
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
+import InnerHeader from '../InnerHeader';
 import { ContractIcon } from '../Contract/ContractIcon';
 import contractIconDefault from '../../public/images/icons/default-icn.svg';
 import bridge from '../../public/images/icons/bridge-logo.svg';
@@ -84,7 +85,7 @@ class ManageContract extends React.Component {
 		const defaultIcon = iconBase64.value || contractIconDefault;
 		return (
 			<div className="inner-container inner-page manage-contract">
-				<div className="backwards">
+				<InnerHeader>
 					<a
 						href=""
 						className="backwards-link"
@@ -92,15 +93,13 @@ class ManageContract extends React.Component {
 					>
 						<BackwardIcon />
 					</a>
-					<div className="account-page-t-block">
-
-						<div className="icon">
+					<div className="inner-header-title">
+						<div className="inner-header-title__icon">
 							<ContractIcon icon={contractIcon} />
 						</div>
-
-						<div className="title">Manage contract {id}</div>
+						<span>Manage contract {id}</span>
 					</div>
-				</div>
+				</InnerHeader>
 
 				<div className="page-helper-section">
 					<div className="page-helper-info">

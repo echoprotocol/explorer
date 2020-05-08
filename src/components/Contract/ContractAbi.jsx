@@ -1,8 +1,9 @@
 import React from 'react';
+import Router, { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import copy from 'copy-to-clipboard';
-import Router, { withRouter } from 'next/router';
+
+import CopyBtn from '../Buttons/CopyBtn';
 
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_UPLOAD_ABI_PATH } from '../../constants/RouterConstants';
@@ -18,7 +19,7 @@ class ContractAbi extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="abi-info">
-					This contract has not been verified but you can upload ABI.
+					Contract is not verified yet
 				</div>
 				<div className="action-button-wrap">
 					<label
@@ -65,7 +66,7 @@ class ContractAbi extends React.Component {
 							</label>
 						}
 					</div>
-					<button className="copy-button" onClick={() => copy(abi)}>Copy code</button>
+					<CopyBtn name="Copy code" valueToCopy={abi} />
 				</div>
 
 				{/* If code-block readonly add class uncontrolled  */}

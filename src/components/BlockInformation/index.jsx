@@ -135,7 +135,7 @@ class BlockInformation extends React.Component {
 
 		return (
 			<React.Fragment>
-				<InnerHeader returnFunction={() => this.returnFunction()} title={`Block ${formattedBlockNumber}`}>
+				<div className="page-breadcrumbs">
 					<BreadCrumbs
 						breadcrumbs={breadcrumbs}
 						returnFunction={() => this.returnFunction()}
@@ -156,7 +156,8 @@ class BlockInformation extends React.Component {
 							Next block
 						</button>
 					</div>
-				</InnerHeader>
+				</div>
+				<InnerHeader returnFunction={() => this.returnFunction()} title={`Block ${formattedBlockNumber}`} />
 				<div className="block-description">
 					<div className="container time">
 						<div className="title">Date, time</div>
