@@ -982,7 +982,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			virtual,
 		};
 		let objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo, isEchodbObject);
-		// let objectInfo = new Map({});
 
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
