@@ -46,6 +46,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.transaction_hash && <PrimaryRow title="Transaction hash" description={data.transaction_hash} />}
 			{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
 			{data.associated_contract && <LinkRow title="Associated contract" contract={data.associated_contract} />}
+			{data.current_parameters && <MultyRow title="Current parameters" fields={data.current_parameters} />}
 		</div>
 	</div>
 );

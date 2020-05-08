@@ -260,6 +260,14 @@ class FormatHelper {
 		return moment.utc(timestamp).local().format('DD MMM');
 	}
 
+	static formatGlobalParameters(parameters) {
+		return Object.entries(parameters)
+			.map((el) => ({
+				key: el[0].split('_').map((w) => w[0].toUpperCase() + w.substring(1, w.length)).join(' '),
+				value: el[1],
+			}));
+	}
+
 }
 
 export default FormatHelper;

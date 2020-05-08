@@ -291,7 +291,17 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('maxSupply', asset.options.max_supply);
 			} else if (committeeOperations.includes(operation.name)) {
 				const accountId = from.id || subject.id;
-				const committee = await echo.api.getCommitteeMemberByAccount(accountId);
+				let committee;
+
+				if (operation.name === Operations.committee_member_update_global_parameters.name) {
+					const currentParameters = (await echo.api.getGlobalProperties()).parameters;
+					object = object
+						.set('current_parameters', FormatHelper.formatGlobalParameters(currentParameters))
+						.set('new_parameters', FormatHelper.formatGlobalParameters(options.new_parameters));
+				}
+				if (accountId) {
+					committee = await echo.api.getCommitteeMemberByAccount(accountId);
+				}
 				if (committee) {
 					const frozenBalance = await echo.api.getCommitteeFrozenBalance(committee.id);
 					const [asset] = await echo.api.getAssets([frozenBalance.asset_id]);
