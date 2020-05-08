@@ -17,7 +17,6 @@ import { getBalances } from '../services/queries/balance';
 import { getHistory } from '../services/queries/history';
 import { ACCOUNT_GRID } from '../constants/TableConstants';
 import GridActions from './GridActions';
-import { getTotalAccountHistory } from '../services/queries/account';
 
 class AccountActions extends BaseActionsClass {
 
