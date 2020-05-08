@@ -743,6 +743,7 @@ class ContractActions extends BaseActionsClass {
 					error: '',
 					token,
 					countTokenTransfer: transferHistory.total,
+					tokenTransfers: transferHistory.items,
 					registrar: registrar.name,
 					blockNumber: block.round,
 					countUsedByAccount: callers.accounts.length,

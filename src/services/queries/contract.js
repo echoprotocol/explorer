@@ -10,20 +10,21 @@ export const getContractInfo = async (contractId) => {
 					name
 				}
 				block {
-          			round
-          			timestamp
-		        }
-		        callers { accounts { id } }
-        		type,
-        		supported_asset_id
-        		eth_accuracy
-        		token {
-        			name,
+          round
+          timestamp
+		  	}
+		    callers { accounts { id } }
+        type,
+        supported_asset_id
+        eth_accuracy
+        token {
+					name,
 					symbol,
 					type,
-					decimals,
-					total_supply
-        		}
+          decimals,
+          total_supply,
+          holders_count
+        },
 			}
 			getHistory(contracts: [$contractId], operations:[CONTRACT_CREATE]) {
 				items {
@@ -32,6 +33,17 @@ export const getContractInfo = async (contractId) => {
 			}
 			getTransferHistory(contracts: [$contractId]) {
 				total
+				items {
+					block,
+					timestamp
+					from {
+						name
+					},
+					to {
+						name
+					},
+					amount
+				}
 			}
 		}
 	`;
@@ -85,4 +97,40 @@ export const getContractBySymbol = (name, count) => {
 		}
 	`;
 	return client.getClient().query({ query, variables: { count, name } }).then(({ data }) => data.getTokens);
+};
+
+export const getERC20Info = async (contractId, count, offset) => {
+	const query = gql`
+		query getTransferHistory($id: ContractId!, offset: Int, count: Int){
+			getTransferHistory(contracts: [$contractId!], count: $count, offset: $offset) {
+				total,
+				items {
+					block,
+					timestamp
+					from{
+						name
+					},
+					to{
+						name
+					},
+					amount
+				}
+			}
+			getContract(id: $id) {
+				type
+				token {
+					symbol,
+          total_supply,
+          decimals,
+          name,
+          holders_count
+        },
+			}
+		}
+	`;
+	return client.getClient().query({ query, variables: { contractId, count, offset } })
+		.then(({ data }) => ({
+			transfers: data.getTransferHistory,
+			token: data.getContract,
+		}));
 };

@@ -27,7 +27,7 @@ class TransfersTable extends React.Component {
 	}
 
 	render() {
-		const {	label } = this.props;
+		const { label, tokenTransfers, coin } = this.props;
 		const { isFilterOpen } = this.state;
 		return (
 			<div className="transfers-table">
@@ -35,29 +35,29 @@ class TransfersTable extends React.Component {
 					<FilterBtn onClick={this.toggleFilter} />
 				</TableLabel>
 				<TransfersFilter
-					from=""
-					to=""
 					open={isFilterOpen}
-					onChangeFilter={() => {}}
-					onClearFilter={() => {}}
 				/>
 				<PerfectScrollbar>
 					<table>
 						<Thead />
 						<tbody>
-							<tr className="air"><td /></tr>
-							<Row
-								id={1}
-								date="09.03.2020 11:15"
-								block="21"
-								sender="nathan"
-								receiver="init1"
-								amount={{
-									value: '123',
-									coin: 'ECHO',
-								}}
-								onClick={() => {}}
-							/>
+							{tokenTransfers.map((tr, i) => (
+								<React.Fragment>
+									<tr className="air" key={tr.timestamp}><td /></tr>
+									<Row
+										id={i + 1}
+										date={new Date(tr.timestamp).toUTCString().replace('GMT', '')}
+										block={tr.block}
+										sender={tr.from.name}
+										receiver={tr.to.name}
+										amount={{
+											value: tr.amount,
+											coin,
+										}}
+										onClick={() => { }}
+									/>
+								</React.Fragment>
+							))}
 						</tbody>
 					</table>
 				</PerfectScrollbar>
@@ -73,12 +73,16 @@ class TransfersTable extends React.Component {
 }
 
 TransfersTable.propTypes = {
+	tokenTransfers: PropTypes.array,
 	label: PropTypes.string,
+	coin: PropTypes.string,
 };
 
 
 TransfersTable.defaultProps = {
+	tokenTransfers: [],
 	label: 'Transfers',
+	coin: '',
 };
 
 export default TransfersTable;

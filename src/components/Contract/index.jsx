@@ -159,7 +159,7 @@ class Contract extends React.Component {
 			bytecode, contractHistory, balances, router: { query: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
-			countTokenTransfer, activeAccount, error, isMobile,
+			countTokenTransfer, tokenTransfers, activeAccount, error, isMobile,
 		} = this.props;
 		const tabList = [
 			{
@@ -186,7 +186,11 @@ class Contract extends React.Component {
 			},
 			{
 				tab: !loading ?
-					<ErcInfo /> :
+					<ErcInfo
+						tokenTransfers={tokenTransfers}
+						countTokenTransfer={countTokenTransfer}
+						token={token}
+					/> :
 					<Loader />,
 				key: 'tab-2',
 			},
@@ -327,6 +331,7 @@ Contract.propTypes = {
 	type: PropTypes.object.isRequired,
 	token: PropTypes.object,
 	countTokenTransfer: PropTypes.number.isRequired,
+	tokenTransfers: PropTypes.array,
 
 	name: PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,
@@ -352,6 +357,7 @@ Contract.defaultProps = {
 	supportedAsset: '',
 	activeAccount: new Map(),
 	token: null,
+	tokenTransfers: [],
 };
 
 Contract.getInitialProps = async ({ query: { id: contractId, ...filters }, store }) => {
