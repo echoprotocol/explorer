@@ -296,8 +296,8 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (operation.name === Operations.committee_member_update_global_parameters.name) {
 					const currentParameters = (await echo.api.getGlobalProperties()).parameters;
 					object = object
-						.set('current_parameters', currentParameters)
-						.set('new_parameters', options.new_parameters);
+						.set('current_parameters', FormatHelper.formatGlobalParameters(currentParameters))
+						.set('new_parameters', FormatHelper.formatGlobalParameters(options.new_parameters));
 				}
 				if (accountId) {
 					committee = await echo.api.getCommitteeMemberByAccount(accountId);

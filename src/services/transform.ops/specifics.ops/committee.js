@@ -53,11 +53,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						value: ECHO_COMMITTEE_ACCOUNT.NAME,
 						link: ECHO_COMMITTEE_ACCOUNT.ID,
 					},
-					changed_parameters: FormatHelper.formatGlobalParameters(objectInfo.new_parameters),
+					changed_parameters: objectInfo.new_parameters,
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						current_parameters: FormatHelper.formatGlobalParameters(objectInfo.current_parameters),
+						current_parameters: objectInfo.current_parameters,
 					},
 				},
 			};
