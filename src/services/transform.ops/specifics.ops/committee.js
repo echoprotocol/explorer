@@ -6,6 +6,7 @@ import getAdditionalInfoByOpId from '../AddInfoHelper';
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
 	const description = OPS_DESCRIPTIONS[opNumber];
+	const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 
 	switch (opNumber) {
 		case OPERATIONS_IDS.COMMITTEE_MEMBER_CREATE: {
@@ -51,11 +52,19 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						value: ECHO_COMMITTEE_ACCOUNT.NAME,
 						link: ECHO_COMMITTEE_ACCOUNT.ID,
 					},
-					changed_parameters: Object.keys(data.new_parameters),
+					changed_parameters: Object.entries(objectInfo.new_parameters)
+						.map((el) => ({
+							key: el[0].split('_').map((w) => w[0].toUpperCase() + w.substring(1, w.length)).join(' '),
+							value: el[1],
+						})),
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						current_global_parametres: 'https://explorer.echo.org/blocks/70/1?op=1',
+						current_parameters: Object.entries(objectInfo.current_parameters)
+							.map((el) => ({
+								key: el[0].split('_').map((w) => w[0].toUpperCase() + w.substring(1, w.length)).join(' '),
+								value: el[1],
+							})),
 					},
 				},
 			};

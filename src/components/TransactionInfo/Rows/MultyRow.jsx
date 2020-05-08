@@ -12,7 +12,7 @@ const MultyRow = React.memo(({ title, fields }) => (
 							{item.key}:&nbsp;
 						</span>
 						<span className="multy-field-item__value">
-							{item.value}
+							{JSON.stringify(item.value)}
 						</span>
 					</span>
 				))}

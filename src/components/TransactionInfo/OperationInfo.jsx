@@ -116,9 +116,9 @@ class OperationInfo extends React.Component {
 					{data.assets && <MultyLinksRow title="Assets" fields={data.assets} />}
 					{data.address && <PrimaryRow title="Address" description={data.address} />}
 					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}
+					{data.changed_parameters && <MultyRow title="New parameters" fields={data.changed_parameters} />}
 					{data.new_feed_producers && <ProducersRow title="New feed producers" accounts={data.new_feed_producers} /> }
 					{data.feeded_asset_price && <LinkRow title="Feeded asset price" asset={data.feeded_asset_price} />}
-					{data.changed_parameters && <PrimaryRow title="Changed parameters" description={data.changed_parameters.join(', ')} />}
 					{data.name && <PrimaryRow title="Name" description={data.name} />}
 					{data.symbol && <PrimaryRow title="Symbol" description={data.symbol} />}
 					{data.decimals && <PrimaryRow title="Decimals" description={data.decimals} />}
