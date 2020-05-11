@@ -37,7 +37,9 @@ export const getContractInfo = async ({
 				total
 				items {
 					block,
-					timestamp
+					timestamp,
+					trx_in_block,
+          op_in_trx,
 					from {
 						name
 					},

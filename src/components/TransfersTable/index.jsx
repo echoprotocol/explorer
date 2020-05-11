@@ -12,7 +12,7 @@ import TransfersFilter from './Filter';
 import TransferPagination from './Pagination';
 import Row from './Row';
 import { DEBOUNCE_TIMEOUT } from '../../constants/TableConstants';
-import { NOT_FOUND_PATH } from '../../constants/RouterConstants';
+import { NOT_FOUND_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import TypesHelper from '../../helpers/TypesHelper';
 import URLHelper from '../../helpers/URLHelper';
 
@@ -202,6 +202,13 @@ class TransfersTable extends React.Component {
 		this.setState({ isFilterOpen: !isFilterOpen });
 	}
 
+	goToTransaction(e, block, transaction, op, virtual) {
+		e.preventDefault();
+		const transactionUrl = URLHelper.createTransactionUrl(block, transaction + 1);
+		const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, op + 1, virtual);
+		Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
+	}
+
 	render() {
 		const { from: { value: from, error: fromError }, to: { value: to, error: toError } } = this.state;
 		const {
@@ -242,7 +249,7 @@ class TransfersTable extends React.Component {
 											value: tr.amount,
 											coin,
 										}}
-										onClick={() => { }}
+										onClick={(e) => this.goToTransaction(e, tr.block, tr.trx_in_block, tr.op_in_trx, tr.virtual)}
 									/>
 								</React.Fragment>
 							))}
