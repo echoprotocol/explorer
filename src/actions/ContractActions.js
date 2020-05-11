@@ -74,12 +74,23 @@ class ContractActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	async formatContractHistory(transactions) {
-		await TransactionActions.fetchTransactionsObjects(transactions);
 
 		let history = transactions.map(async (t) => {
 			const { op: operation, result } = t;
 			const block = await echo.api.getBlock(t.block_num);
-			return TransactionActions.getOperation(operation, t.block_num, block.timestamp, t.trx_in_block, t.op_in_trx, result);
+			return TransactionActions.getOperation(
+				operation,
+				t.block_num,
+				block ? block.timestamp : null,
+				t.trx_in_block,
+				t.op_in_trx,
+				result,
+				null,
+				null,
+				t.id,
+				t.virtual,
+				true,
+			);
 		});
 
 		history = await Promise.all(history);

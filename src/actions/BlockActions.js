@@ -192,9 +192,6 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const virtualTransaction = await echo.api.getBlockVirtualOperations(round);
 		let resultTransactions = [];
 		if (transactions.length !== 0 || virtualTransaction.length) {
-			// TODO: didnt work with ops data
-			// const ops = transactions.reduce((resultIds, { operations }) => resultIds.concat(operations), []);
-			// await TransactionActions.fetchTransactionsObjects(ops);
 
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
@@ -206,6 +203,10 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 						i,
 						operation_results[i],
 						i ? '' : trIndex + 1,
+						null,
+						null,
+						false,
+						false,
 					))));
 			const promiseVirtualTransactions = virtualTransaction
 				.map(({
@@ -221,6 +222,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 					null,
 					null,
 					true,
+					false,
 				));
 
 			resultTransactions = await Promise.all([...promiseTransactions, Promise.all(promiseVirtualTransactions)]);
