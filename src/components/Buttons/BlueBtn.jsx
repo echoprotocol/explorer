@@ -2,25 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import loadingIcon from '../../public/images/icons/loader-l.png';
 
-const FilterBtn = ({
+const BlueBtn = ({
 	name, className, isLoading, ...props
 }) => (
-	<button className={`filter-button ${className}`} {...props}>
+	<button className={`blue-button ${className}`} {...props}>
 		<span>{name}</span>
 		{isLoading &&
-		<img src={loadingIcon} className="filter-button__loading" alt="loading" />}
+		<img src={loadingIcon} className="blue-button__loading" alt="loading" />}
 	</button>
 );
 
-FilterBtn.propTypes = {
+BlueBtn.propTypes = {
 	name: PropTypes.string.isRequired,
 	className: PropTypes.string,
 	isLoading: PropTypes.bool,
 };
 
-FilterBtn.defaultProps = {
+BlueBtn.defaultProps = {
 	className: '',
 	isLoading: false,
 };
-export default FilterBtn;
+export default BlueBtn;
 

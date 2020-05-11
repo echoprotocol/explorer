@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import Input from '../Input';
-import FilterBtn from '../../components/Buttons/FilterBtn';
+import BlueBtn from '../Buttons/BlueBtn';
 
 const OperationsFilter = React.memo(({
 	open, onChangeFilter, from, to, onClearFilter, onSubmitFilter, fromError, toError, loading,
@@ -32,7 +32,7 @@ const OperationsFilter = React.memo(({
 				/>
 			</div>
 			<div className="operations-filter__button">
-				<FilterBtn name="Apply filters" isLoading={loading} onClick={onSubmitFilter} disabled={loading} />
+				<BlueBtn name="Apply filters" isLoading={loading} onClick={onSubmitFilter} disabled={loading} />
 			</div>
 		</div>
 	</div>

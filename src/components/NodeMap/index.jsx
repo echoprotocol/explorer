@@ -6,6 +6,9 @@ import config from '../../config/chain';
 import { DEFAULT_MAP_ZOOM } from '../../constants/NetworkConstants';
 import Loader from '../Loader';
 
+import InnerHeader from '../InnerHeader';
+import BlueBtn from '../Buttons/BlueBtn';
+
 const Map = dynamic(() => import('./mapbox'), {
 	ssr: false,
 	loading: () => <Loader />,
@@ -94,13 +97,10 @@ class NodeMap extends React.Component {
 		} = this.state;
 
 		return (
-			<div className="distribution inner-container">
-				<div className="distribution-header">
-					<h1>Nodes Distribution</h1>
-					<button onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} >
-						How to run full node
-					</button>
-				</div>
+			<div className="inner-container">
+				<InnerHeader title="Nodes Distribution" className="distribution">
+					<BlueBtn name="How to run full node" onClick={(() => window.open(config.INSTALL_NODE_LINK, '_blank'))} />
+				</InnerHeader>
 				<Map
 					className="distribution-map"
 					// eslint-disable-next-line react/style-prop-object

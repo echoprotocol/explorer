@@ -20,6 +20,19 @@
 			}
 		}
 	}
+	&.distribution {
+		.inner-header-line {
+			@include max-vw($res-500) {
+				align-items: flex-start;
+				flex-direction: column;
+			}
+		}
+		.inner-header-title {
+			@include max-vw($res-500) {
+				margin-bottom: 20px;
+			}
+		}
+	}
 }
 
 .inner-header-line {

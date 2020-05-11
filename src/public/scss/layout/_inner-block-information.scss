@@ -5,7 +5,7 @@
 	padding-right: 30px;
 	width: 1012px;
 	background-color: #f3f2f5;
-	min-height: calc(100vh - 182px - 12px);
+	min-height: calc(100vh - 177px);
 	@include max-vw($res-1600) {
 		width: 960px;
 	}

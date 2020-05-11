@@ -13,7 +13,7 @@ import '../public/loader';
 import Header from '../containers/Header';
 import Modal from '../containers/Modals';
 
-import { CONTRACT_DETAILS_NUMBERS_TAB, SSR_TRANSACTION_INFORMATION_PATH, ROUTES_WITH_COLUMN_DIRECTION } from '../constants/RouterConstants';
+import { CONTRACT_DETAILS_NUMBERS_TAB, SSR_TRANSACTION_INFORMATION_PATH, ROUTES_WITH_COLUMN_DIRECTION, ROUTES_WITH_FULL_WRAP } from '../constants/RouterConstants';
 import { TESTNET_MODE } from '../constants/GlobalConstants';
 import Footer from '../containers/Footer';
 import Sidebar from '../containers/Sidebar';
@@ -84,7 +84,7 @@ class ExplorerApp extends App {
 			Component, pageProps, store,
 		} = this.props;
 		const parsedLocation = pathname.split('/')[1];
-		const full = Object.keys(CONTRACT_DETAILS_NUMBERS_TAB).includes(parsedLocation);
+		const full = Object.keys(CONTRACT_DETAILS_NUMBERS_TAB).includes(parsedLocation) || ROUTES_WITH_FULL_WRAP.includes(pathname);
 		const error = store.getState().global.get('error');
 		const errorScreen = store.getState().global.get('errorScreen');
 		const errorPath = store.getState().global.get('errorPath');
