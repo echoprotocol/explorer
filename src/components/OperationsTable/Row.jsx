@@ -68,7 +68,12 @@ const OperationsRow = ({
 	};
 
 	const renderAmount = () => {
-		if (!mainInfo.value.amount) return <div className="td-in">—</div>;
+		if (!mainInfo.value.amount) {
+			if (operationsInfoData.operationInfo.amount_info) {
+				return <div className="td-in">{FormatHelper.formatAmount(operationsInfoData.operationInfo.amount_info)}</div>;
+			}
+			return <div className="td-in">—</div>;
+		}
 		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
 		return (
 			<div className="td-in">
