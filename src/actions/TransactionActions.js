@@ -294,7 +294,7 @@ class TransactionActionsClass extends BaseActionsClass {
 								precision: asset.precision,
 								asset_id: asset.id,
 
-							}
+							},
 						)
 						.set('rate', rate)
 						.set('issuer', issuer && issuer.name)
