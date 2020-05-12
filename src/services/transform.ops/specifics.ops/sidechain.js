@@ -204,12 +204,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: '', // TODO
-					account: data.account,
+					sender: data.account,
 					amount_info: data.value,
 					fee: data.fee,
 					committee_member: data.committee_member_id,
-					from_address: '', // TODO
+					from_address: objectInfo.from_address,
 					deposit_id: '', // TODO
 					additionalInfo: {
 						number_of_confirmations: {

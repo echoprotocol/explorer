@@ -514,6 +514,13 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
+					case Operations.deposit_erc20_token.name:
+						object = object
+							.set('from_address', {
+								link: URLHelper.createEthAddressOut(options.erc20_token_addr),
+								title: options.erc20_token_addr,
+							});
+						break;
 					default:
 						break;
 				}
