@@ -20,7 +20,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.current_asset_fee_pool && <PrimaryRow title="Current asset total supply" description={data.current_asset_fee_pool} />}
 			{data.current_asset_price && <PrimaryRow title="Current asset price" description={data.current_asset_price} />}
 			{data.feeded_asset_fee_pool && <PrimaryRow title="Feeded asset fee pool" description={data.feeded_asset_fee_pool} />}
-			{data.current_asset_unclaimed_fee && <PrimaryRow title="Current asset unclaimed fee" description={data.current_asset_unclaimed_fee} />}
+			{data.current_asset_unclaimed_fee && <LinkRow title="Current asset unclaimed fee" amount={data.current_asset_unclaimed_fee} />}
 			{data.count_approvals && <PrimaryRow title="Count approvals" description={`${data.count_approvals.value} out of ${data.count_approvals.total}`} />}
 			{data.count_signatures && <PrimaryRow title="Count signatures" description={data.count_signatures} />}
 			{data.proposal_status && <PrimaryRow title="Proposal status" description={data.proposal_status} status={data.proposal_status} />}
