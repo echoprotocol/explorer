@@ -478,7 +478,7 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = await echo.api.getObject(withdrawId);
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
-							.set('withdraw_id', withdrawId)
+							.set('withdraw_id', withdrawId);
 						break;
 					} case Operations.sidechain_issue.name: {
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
