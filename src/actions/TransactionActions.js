@@ -473,12 +473,14 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
 						break;
-					case Operations.approve_withdraw_eth.name:
-						objectWithApprovals = await echo.api.getObject(`1.15.${options.withdraw_id}`);
+					case Operations.approve_withdraw_eth.name: {
+						const withdrawId = `1.15.${options.withdraw_id}`;
+						objectWithApprovals = await echo.api.getObject(withdrawId);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
+							.set('withdraw_id', withdrawId);
 						break;
-					case Operations.sidechain_issue.name: {
+					} case Operations.sidechain_issue.name: {
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
 						const listApprovals = singleOperation.list_of_approvals
 							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
@@ -781,6 +783,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					const toAccountId = await echo.api.getAccountByAddress(request);
 					const [toAccount] = await echo.api.getAccounts([toAccountId]);
 					result.subject = { id: toAccountId, name: toAccount.name, address: request };
+				} else if (opId === OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW) {
+					result.subject = { id: `1.15.${request}` };
 				} else {
 					result.subject = { id: response.id, name: request };
 				}

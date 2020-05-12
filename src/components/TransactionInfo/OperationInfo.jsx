@@ -108,6 +108,7 @@ class OperationInfo extends React.Component {
 					{data.btc_block_number && <PrimaryRow title="BTC block number" description={data.btc_block_number} />}
 					{data.sma_address && <PrimaryRow title="SMA Address" description={data.sma_address} />}
 					{data.signature && <PrimaryRow title="Signature" description={data.signature} />}
+					{data.committee_member && <LinkRow title="Committee member" account={data.committee_member} />}
 					{data.committee_member_id && <PrimaryRow title="Committee member id" description={data.committee_member_id} />}
 					{data.deposits && <MultyLinksRow title="Deposits" fields={data.deposits} />}
 					{data.withdrawals && <MultyLinksRow title="Withdrawals" fields={data.withdrawals} />}
