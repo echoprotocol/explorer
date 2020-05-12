@@ -260,35 +260,47 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (operation.options.asset) {
 					assetId = _.get(options, operation.options.asset);
 				}
-				const asset = await echo.api.getObject(assetId || subject.id);
-				const issuer = await echo.api.getObject(asset.issuer);
-				const accumulatedFees = asset.dynamic.accumulated_fees;
-				const quoteAmount = asset.options.core_exchange_rate.quote.amount;
-
-				const rate = await countRate(asset, asset.options.core_exchange_rate);
-				const price = new BN(asset.options.core_exchange_rate.quote.amount)
-					.div(asset.options.core_exchange_rate.base.amount)
-					.toString();
-
+				let asset = null;
+				try {
+					asset = await echo.api.getObject(assetId || subject.id);
+				} catch (e) {
+					//
+				}
 				object = object
-					.set('id', asset.id)
-					.set('name', asset.symbol)
-					.set('type', 'No')
-					.set('price', price)
-					.set(
-						'accumulated_fees',
-						accumulatedFees === 0 ? 0 : FormatHelper
-							.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision),
-					)
-					.set('rate', rate)
-					.set('issuer', issuer && issuer.name)
-					.set('precision', asset.precision)
-					.set('totalSupply', asset.dynamic.current_supply)
-					.set('issuer_permissions', asset.options.issuer_permissions)
-					.set('flags', asset.options.flags)
-					.set('description', asset.options.description)
-					.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
-					.set('maxSupply', asset.options.max_supply);
+					.set('type', 'No');
+				if (asset) {
+					let issuer = null;
+					try {
+						issuer = await echo.api.getObject(asset.issuer);
+					} catch (e) {
+						//
+					}
+					const rate = await countRate(asset, asset.options.core_exchange_rate);
+					const price = new BN(asset.options.core_exchange_rate.quote.amount)
+						.div(asset.options.core_exchange_rate.base.amount)
+						.toString();
+					const accumulatedFees = asset.dynamic.accumulated_fees;
+					const quoteAmount = asset.options.core_exchange_rate.quote.amount;
+					object = object
+						.set('id', asset.id)
+						.set('name', asset.symbol)
+						.set('total_supply', FormatHelper.formatAmount(asset.dynamic.current_supply, asset.precision))
+						.set('price', price)
+						.set(
+							'accumulated_fees',
+							accumulatedFees === 0 ? 0 : FormatHelper
+								.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision),
+						)
+						.set('rate', rate)
+						.set('issuer', issuer && issuer.name)
+						.set('precision', asset.precision)
+						.set('totalSupply', asset.dynamic.current_supply)
+						.set('issuer_permissions', asset.options.issuer_permissions)
+						.set('flags', asset.options.flags)
+						.set('description', asset.options.description)
+						.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
+						.set('maxSupply', asset.options.max_supply);
+				}
 			} else if (committeeOperations.includes(operation.name)) {
 				const accountId = from.id || subject.id;
 				let committee;
