@@ -305,7 +305,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					type,
 					amount_info: data.amount,
 					account_name: data.account,
-					deposit_id: data.deposit_id,
+					deposit_id: data.deposit,
 					token: objectInfo.token,
 					fee: data.fee,
 					...description,
