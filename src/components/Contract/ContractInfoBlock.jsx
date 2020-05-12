@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import Tooltip from 'rc-tooltip';
-import Media from 'react-media';
 
 import { NONE_SYMBOL, NOT_AVAILABLE_SYMBOL } from '../../constants/GlobalConstants';
 import FormatHelper from '../../helpers/FormatHelper';
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
+
+import InfoTooltip from '../InfoTooltip';
 
 class ContractInfoBlock extends React.Component {
 
@@ -32,13 +32,12 @@ class ContractInfoBlock extends React.Component {
 			}
 		}
 		const creationFeeData = creationFee.split(' ');
-
 		return (
-			<div className="contract-info-block">
+			<div className="left-card">
 				<div className="line">
-					<div className="key">Block:</div>
-					<div className="underline" />
-					<div className="value">
+					<div className="title">Block:</div>
+					<div className="divider" />
+					<div className="val name">
 						{blockNumber === NONE_SYMBOL ? blockNumber : (
 							<Link
 								href={SSR_BLOCK_INFORMATION_PATH}
@@ -50,89 +49,75 @@ class ContractInfoBlock extends React.Component {
 					</div>
 				</div>
 				<div className="line">
-					<div className="key">Creation FEE:</div>
-					<div className="underline" />
-					<div className="value">
-						<Media query="(max-width: 350px)" defaultMatches={data.get('isMobile')}>
-							{(matches) =>
-								(matches ? (
-									<Tooltip
-										placement="topLeft"
-										overlayClassName="verify-contract-tooltip"
-										trigger={['hover']}
-										overlay={creationFee}
-									>
-										<div className="val">
-											<div className="txt">{creationFeeData[0]}</div>
-											<div className="txt2">{creationFeeData[1]}</div>
-										</div>
-									</Tooltip>
-								) : (
-									<span>{creationFee}</span>
-								))
-							}
-						</Media>
+					<div className="title">
+						<span>Creation FEE:</span>
+						<InfoTooltip overlay={creationFee} iconFilled={false} />
+					</div>
+					<div className="divider" />
+					<div className="val">
+						<span className="amount">
+							{creationFeeData[0]}
+						</span>
+						<span className="currency">&nbsp;{creationFeeData[1]}</span>
 					</div>
 				</div>
 				<div className="line">
-					<div className="key">Type:</div>
-					<div className="underline" />
-					<div className="value">{type}</div>
+					<div className="title">Type:</div>
+					<div className="divider" />
+					<div className="val name">{type}</div>
 				</div>
 				<div className="line">
-					<div className="key">Contract txs:</div>
-					<div className="underline" />
-					<div className="value">{contractTxs}</div>
+					<div className="title">Contract txs:</div>
+					<div className="divider" />
+					<div className="val name">{contractTxs}</div>
 				</div>
 				<div className="line">
-					<div className="key">Used by accounts:</div>
-					<div className="underline" />
-					<div className="value">{countUsedByAccount}</div>
+					<div className="title">
+						<span>Used by accounts:</span>
+						<InfoTooltip overlay={countUsedByAccount} iconFilled={false} />
+					</div>
+					<div className="divider" />
+					<div className="val name">{countUsedByAccount}</div>
 				</div>
 				<div className="line">
-					<div className="key">Supported assets:</div>
-					<div className="underline" />
-					<div className="value">{assets}</div>
+					<div className="title">Supported assets:</div>
+					<div className="divider" />
+					<div className="val name">{assets}</div>
 				</div>
 				<div className="line">
-					<div className="key">Eth accuracy:</div>
-					<div className="underline" />
-					<div className="value">{accuracy}</div>
+					<div className="title">Eth accuracy:</div>
+					<div className="divider" />
+					<div className="val name">{accuracy}</div>
 				</div>
 				{erc20Token && (
 					<React.Fragment>
 						<div className="line">
-							<div className="key">Token symbol(name):</div>
-							<div className="underline" />
-							<div className="value">{`${erc20Token.symbol || NOT_AVAILABLE_SYMBOL} (${erc20Token.name || NOT_AVAILABLE_SYMBOL})`}</div>
+							<div className="title">Token symbol(name):</div>
+							<div className="divider" />
+							<div className="val name">{`${erc20Token.symbol || NOT_AVAILABLE_SYMBOL} (${erc20Token.name || NOT_AVAILABLE_SYMBOL})`}</div>
 						</div>
 						<div className="line">
-							<div className="key">Decimals:</div>
-							<div className="underline" />
-							<div className="value">{erc20Token.decimals || NOT_AVAILABLE_SYMBOL}</div>
+							<div className="title">Decimals:</div>
+							<div className="divider" />
+							<div className="val name">{erc20Token.decimals || NOT_AVAILABLE_SYMBOL}</div>
 						</div>
 						<div className="line">
-							<div className="key">Total supply:</div>
-							<div className="underline" />
-							<div className="value">{erc20Token.total_supply || NOT_AVAILABLE_SYMBOL}</div>
+							<div className="title">Total supply:</div>
+							<div className="divider" />
+							<div className="val name">{erc20Token.total_supply || NOT_AVAILABLE_SYMBOL}</div>
 						</div>
-						{/* <div className="line"> */}
-						{/*	<div className="key">Holders:</div> */}
-						{/*	<div className="underline" /> */}
-						{/*	<div className="value">{erc20Token.holders || 0}</div> */}
-						{/* </div> */}
 						<div className="line">
-							<div className="key">Transfers:</div>
-							<div className="underline" />
-							<div className="value">{countTokenTransfer}</div>
+							<div className="title">Transfers:</div>
+							<div className="divider" />
+							<div className="val name">{countTokenTransfer}</div>
 						</div>
 					</React.Fragment>
 				)}
 				{data.get('compilerVersion') &&
 					<div className="line">
-						<div className="key">Compiler version:</div>
-						<div className="underline" />
-						<div className="value">{compilerVersion}</div>
+						<div className="title">Compiler version:</div>
+						<div className="divider" />
+						<div className="val name">{compilerVersion}</div>
 					</div>
 				}
 			</div>

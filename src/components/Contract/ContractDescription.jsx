@@ -7,7 +7,7 @@ import Avatar from '../Avatar';
 
 
 import URLHelper from '../../helpers/URLHelper';
-import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
+import { SSR_ACCOUNTS_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 class ContractDescription extends React.Component {
 
@@ -22,22 +22,28 @@ class ContractDescription extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="created-info">
-					<div className="plain-text">Created</div>
-					<span className="date">{date}</span>{' '}
-					<span className="time">{time}</span>{' '}
-					<div className="plain-text">by</div>
-					<span className="no-wrap">
-						<Avatar accountName={data.getIn(['owner', 'name'])} />
-						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(data.getIn(['owner', 'name']))} >
-							<a className="link">{data.getIn(['owner', 'name'])}</a>
+					<div className="created-info-details">
+						<span>Created&nbsp;</span>
+						<Link
+							href={SSR_BLOCK_INFORMATION_PATH}
+							as={URLHelper.createBlockUrl(data.get('blockNumber'))}
+						>
+							<a className="link created-info__date">{date}{time}&nbsp;</a>
 						</Link>
-					</span>
-				</div>
-				{data.get('description') && (
-					<div className="description">
-						{data.get('description')}
+						<span style={{ color: '#828B95' }}>by &nbsp;</span>
+						<span className="created-info__account">
+							<Avatar accountName={data.getIn(['owner', 'name'])} />
+							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(data.getIn(['owner', 'name']))} >
+								<a className="link">{data.getIn(['owner', 'name'])}</a>
+							</Link>
+						</span>
 					</div>
-				)}
+					{data.get('description') && (
+						<div className="created-info__description">
+							{data.get('description')}
+						</div>
+					)}
+				</div>
 			</React.Fragment>
 		);
 	}
