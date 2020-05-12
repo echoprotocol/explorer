@@ -138,7 +138,7 @@
 				fill: $lightgrey;
 				opacity: 0.4;
 				@include transition;
-				@include max-vw($res-500) {
+				@include max-vw($res-768) {
 					fill: #ccccd4;
 					opacity: 1;
 				}
