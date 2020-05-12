@@ -274,6 +274,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('id', asset.id)
 					.set('name', asset.symbol)
 					.set('type', 'No')
+					.set('total_supply', FormatHelper.formatAmount(asset.dynamic.current_supply, asset.precision))
 					.set('price', price)
 					.set(
 						'accumulated_fees',
