@@ -16,6 +16,44 @@
 
 .wrap.full {
 	justify-content: center;
+	padding-right: calc((100% - 1440px) / 2);
+	overflow: hidden;
+	@include max-vw($res-1600) {
+		padding-right: calc((100% - 1380px) / 2);
+	}
+	@include max-vw(1440) {
+		padding-right: 30px;
+	}
+	@include max-vw($res-1280) {
+		padding-right: 0;
+	}
+	.inner-container {
+		width: 100%;
+		margin-right: 70px;
+		@include max-vw($res-1600) {
+			margin-right: 50px;
+		}
+		@include max-vw($res-1280) {
+			margin-right: 0;
+		}
+	}
+	.inner-header {
+		padding-left: calc(((100vw - 1380px) / 2));
+		@include max-vw($res-1600) {
+			padding-left: calc((100vw - 1320px) / 2);
+		}
+		@include max-vw(1440) {
+			padding-left: 60px;
+		}
+		@include max-vw($res-1280) {
+			padding-left: 40px;
+			padding-right: 40px;
+		}
+		@include max-vw($res-768) {
+			padding-left: 30px;
+			padding-right: 30px;
+		}
+	}
 }
 
 .wrap.flex {
