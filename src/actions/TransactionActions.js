@@ -569,6 +569,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = {};
 						break;
 					case Operations.sidechain_btc_aggregate.name:
+						console.log('options', options);
+						console.log('singleOperation.committee_member_id', singleOperation.committee_member_id);
 						objectWithApprovals = {};
 						break;
 					case Operations.sidechain_btc_approve_aggregate.name:

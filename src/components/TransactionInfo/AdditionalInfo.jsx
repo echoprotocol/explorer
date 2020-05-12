@@ -9,6 +9,8 @@ import MultyRow from './Rows/MultyRow';
 import TransfersRow from './Rows/TransfersRow';
 import SettingsRow from './Rows/SettingsRow';
 
+import URLHelper from '../../helpers/URLHelper';
+
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
 		<div className="additional-info__title">Additional info</div>
@@ -43,7 +45,18 @@ const AdditionalInfo = ({ data }) => (
 			{data.number_of_confirmations && <PrimaryRow title="Number of confirmations" description={`${data.number_of_confirmations.value} out of ${data.number_of_confirmations.total}`} />}
 			{data.received_deposit_address && <LinkRow title="Received deposit address" link={data.received_deposit_address} />}
 			{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
-			{data.transaction_hash && <PrimaryRow title="Transaction hash" description={data.transaction_hash} />}
+			{data.eth_transaction_hash && <LinkRow
+				title="Transaction hash"
+				value={data.eth_transaction_hash}
+				link={URLHelper.createEthTransactionOut(data.eth_transaction_hash)}
+				isLinkOut
+			/>}
+			{data.btc_transaction_hash && <LinkRow
+				title="Transaction hash"
+				value={data.btc_transaction_hash}
+				link={URLHelper.createBtcTransactionOut(data.btc_transaction_hash)}
+				isLinkOut
+			/>}
 			{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
 			{data.associated_contract && <LinkRow title="Associated contract" contract={data.associated_contract} />}
 			{data.current_parameters && <MultyRow title="Current parameters" fields={data.current_parameters} />}
