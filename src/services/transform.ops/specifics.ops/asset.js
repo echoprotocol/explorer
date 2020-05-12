@@ -136,7 +136,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						current_asset_total_supply: data.objectInfo.get('totalSupply'),
+						current_asset_total_supply: data.objectInfo.get('total_supply'),
 					},
 				},
 			};
@@ -149,7 +149,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						current_asset_total_supply: data.objectInfo.get('totalSupply'),
+						current_asset_total_supply: data.objectInfo.get('total_supply'),
 					},
 				},
 			};
@@ -162,7 +162,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						current_asset_fee_pool: data.objectInfo.get('totalSupply'),
+						current_asset_fee_pool: data.objectInfo.get('total_supply'),
 					},
 				},
 			};
@@ -189,7 +189,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						feeded_asset_fee_pool: data.objectInfo.get('totalSupply'),
+						feeded_asset_fee_pool: data.objectInfo.get('total_supply'),
 						current_asset_unclaimed_fee: data.objectInfo.get('accumulated_fees'),
 					},
 				},
