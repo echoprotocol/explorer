@@ -126,6 +126,7 @@ const OperationsRow = ({
 				<td className="reciever">{renderSubject(subjectValue, mainInfo)}</td>
 				<td className="amount">{renderAmount()}</td>
 				<td className="fee">
+					<img src={ddIcon} alt="" className="toggle-icon" />
 					<div className="td-in">
 						{detailInfo.fee ?
 							<React.Fragment>
@@ -142,7 +143,6 @@ const OperationsRow = ({
 								<span className="currency">{detailInfo.fee.symbol}</span>
 							</React.Fragment> : '-'}
 					</div>
-					<img src={ddIcon} alt="" className="toggle-icon" />
 				</td>
 			</tr>
 
