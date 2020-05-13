@@ -304,7 +304,6 @@ class TransactionActionsClass extends BaseActionsClass {
 						.set('rate', rate)
 						.set('issuer', issuer && issuer.name)
 						.set('precision', asset.precision)
-						.set('totalSupply', asset.dynamic.current_supply)
 						.set('issuer_permissions', asset.options.issuer_permissions)
 						.set('flags', asset.options.flags)
 						.set('description', asset.options.description)

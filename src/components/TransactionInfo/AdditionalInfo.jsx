@@ -19,7 +19,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.blacklisting_accounts && data.blacklisting_accounts.map((account) => <LinkRow title="Account black list" account={account} />)}
 			{data.current_asset_feed_producers && <ProducersRow title="Current asset feed producers" accounts={data.current_asset_feed_producers} /> }
 			{data.current_asset_total_supply && <LinkRow title="Current asset total supply" amount={data.current_asset_total_supply} /> }
-			{data.current_asset_fee_pool && <PrimaryRow title="Current asset total supply" description={data.current_asset_fee_pool} />}
+			{data.current_asset_fee_pool && <LinkRow title="Current asset fee pool" amount={data.current_asset_fee_pool} />}
 			{data.current_asset_price && <PrimaryRow title="Current asset price" description={data.current_asset_price} />}
 			{data.feeded_asset_fee_pool && <PrimaryRow title="Feeded asset fee pool" description={data.feeded_asset_fee_pool} />}
 			{data.current_asset_unclaimed_fee && <LinkRow title="Current asset unclaimed fee" amount={data.current_asset_unclaimed_fee} />}
