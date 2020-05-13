@@ -9,6 +9,8 @@ import MultyRow from './Rows/MultyRow';
 import TransfersRow from './Rows/TransfersRow';
 import SettingsRow from './Rows/SettingsRow';
 
+import URLHelper from '../../helpers/URLHelper';
+
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
 		<div className="additional-info__title">Additional info</div>
@@ -47,6 +49,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
 			{data.associated_contract && <LinkRow title="Associated contract" contract={data.associated_contract} />}
 			{data.current_parameters && <MultyRow title="Current parameters" fields={data.current_parameters} />}
+			{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
 		</div>
 	</div>
 );

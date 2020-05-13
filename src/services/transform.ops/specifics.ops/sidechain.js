@@ -14,6 +14,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					sender: data.account,
 					fee: data.fee,
 					...description,
+					additionalInfo: {
+						eth_address: data.objectInfo.get('eth_addr'),
+						number_of_confirmations: {
+							value: data.objectInfo.get('approves'),
+							total: data.objectInfo.get('total'),
+						},
+					},
 				},
 			};
 		}
@@ -29,7 +36,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						received_deposit_address: data.eth_addr,
+						eth_address: data.eth_addr,
 					},
 				},
 			};
