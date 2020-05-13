@@ -415,9 +415,22 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				switch (operation.name) {
-					case Operations.sidechain_eth_approve_address.name:
-						objectWithApprovals = await echo.api.getEthAddress(options.account);
+					case Operations.sidechain_eth_create_address.name: {
+						const ethAddress = await echo.api.getEthAddress(options.account);
+						if (ethAddress) {
+							object = object
+								.set('eth_addr', ethAddress.eth_addr);
+							objectWithApprovals = ethAddress;
+						}
 						break;
+					}
+					case Operations.sidechain_eth_approve_address.name: {
+						const ethAddress = await echo.api.getEthAddress(options.account);
+						if (ethAddress) {
+							objectWithApprovals = ethAddress;
+						}
+						break;
+					}
 					case Operations.deposit_eth.name:
 						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
 							.find((el) => el.deposit_id === options.deposit_id);
