@@ -96,12 +96,14 @@ class Asset extends React.Component {
 			assetSymbol
 		) {
 			exchangeRate = (new BN(baseAmount).div(`1e${ECHO_ASSET.PRECISION}`))
-				.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString();
+				.div(new BN(quoteAmount).div(`1e${assetPrecision}`)).toString(10);
 			poolBalance = feePool === 0 ? 0 : FormatHelper
-				.formatAmount(new BN(feePool).div(baseAmount).toString(), ECHO_ASSET.PRECISION);
+				.formatAmount(new BN(feePool).div(baseAmount).toString(10), ECHO_ASSET.PRECISION);
 			unclamedIssuerBalances = accumulatedFees === 0 ? 0 : FormatHelper
-				.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), assetPrecision);
+				.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(10), assetPrecision);
 		}
+
+		const maxSupplyFormated = FormatHelper.formatAmount(maxSupply, assetPrecision);
 
 		return (
 			<div className="asset-container">
@@ -151,12 +153,12 @@ class Asset extends React.Component {
 													placement="top"
 													overlayClassName="verify-contract-tooltip"
 													trigger={['hover']}
-													overlay={maxSupply}
+													overlay={maxSupplyFormated}
 												>
-													<span className="txt">{maxSupply}</span>
+													<span className="txt">{maxSupplyFormated}</span>
 												</Tooltip>
 											) : (
-												<span>{maxSupply}</span>
+												<span>{maxSupplyFormated}</span>
 											))
 										}
 									</Media>
