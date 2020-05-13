@@ -966,6 +966,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		trId = null,
 		virtual = false,
 		isEchodbObject = false,
+		requestDetails = true,
 	) {
 		const operation = Object.values(Operations).find((i) => i.value === type);
 
@@ -986,7 +987,7 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		let objectInfo = new Map();
 
-		if (!isEchodbObject) {
+		if (!isEchodbObject || requestDetails) {
 			objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo, isEchodbObject);
 		}
 		options = Object.entries(options).map(async ([key, value]) => {
