@@ -60,6 +60,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
 			{data.associated_contract && <LinkRow title="Associated contract" contract={data.associated_contract} />}
 			{data.current_parameters && <MultyRow title="Current parameters" fields={data.current_parameters} />}
+			{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
 		</div>
 	</div>
 );
