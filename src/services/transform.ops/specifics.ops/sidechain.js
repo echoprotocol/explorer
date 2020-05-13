@@ -332,7 +332,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					type,
 					amount_info: data.amount,
 					account_name: data.account,
-					withdraw_id: data.withdraw_id,
+					withdraw_id: data.withdraw,
 					token: objectInfo.token,
 					fee: data.fee,
 					...description,
@@ -364,7 +364,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					account_name: data.account,
 					fee: data.fee,
 					...description,

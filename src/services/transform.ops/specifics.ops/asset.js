@@ -58,6 +58,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.ASSET_UPDATE: {
 			const isShowIssuer = data.new_issuer && data.issuer.link !== data.new_issuer.link;
 			const settings = await getAssetFlags(data.objectInfo.toJS());
+			const bitAssetOps = data.objectInfo.get('bitAssetOps');
 			return {
 				operationInfo: {
 					type,
@@ -79,6 +80,16 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					}, {
 						key: 'Commitee fed asset authority',
 						value: settings.isCommette,
+					}],
+					bit_asset_options: bitAssetOps && [{
+						key: 'Feed lifetime',
+						value: bitAssetOps.feed_lifetime_sec,
+					}, {
+						key: 'Minimum feeds',
+						value: bitAssetOps.minimum_feeds,
+					}, {
+						key: 'Short backing asset',
+						value: bitAssetOps.short_backing_asset,
 					}],
 					fee: data.fee,
 					...description,
