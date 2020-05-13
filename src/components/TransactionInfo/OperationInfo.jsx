@@ -129,6 +129,12 @@ class OperationInfo extends React.Component {
 						isLinkOut
 					/>}
 					{data.signature && <PrimaryRow title="Signature" description={data.signature} />}
+					{data.from_address && <LinkRow
+						title="From address"
+						value={data.from_address}
+						link={URLHelper.createEthAddressOut(data.from_address)}
+						isLinkOut
+					/>}
 					{data.committee_member && <LinkRow title="Committee member" account={data.committee_member} />}
 					{data.committee_member_id && <PrimaryRow title="Committee member id" description={data.committee_member_id} />}
 					{data.deposits && <MultyLinksRow title="Deposits" fields={data.deposits} />}
