@@ -14,6 +14,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					sender: data.account,
 					fee: data.fee,
 					...description,
+					additionalInfo: {
+						eth_address: data.objectInfo.get('eth_addr'),
+						number_of_confirmations: {
+							value: data.objectInfo.get('approves'),
+							total: data.objectInfo.get('total'),
+						},
+					},
 				},
 			};
 		}
@@ -29,7 +36,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						received_deposit_address: data.eth_addr,
+						eth_address: data.eth_addr,
 					},
 				},
 			};
@@ -38,7 +45,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					account_name: data.account,
 					amount: data.value,
 					deposit_id: data.objectInfo.get('deposit_id'),
@@ -57,7 +64,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					account_name: data.account,
 					amount: data.amount,
 					deposit_id: data.objectInfo.get('deposit_id'),
@@ -86,7 +93,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						transaction_hash: '', // TODO
+						eth_transaction_hash: '', // TODO
 					},
 				},
 			};
@@ -95,7 +102,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					withdraw_id: data.withdraw_id,
 					fee: data.fee,
 					additionalInfo: {
@@ -116,8 +123,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
-					withdraw_id: data.withdraw_id,
+					committee_member: data.committee_member_id,
+					withdraw_id: data.objectInfo.get('withdraw_id'),
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
@@ -215,7 +222,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						transaction_hash: data.transaction_hash,
+						eth_transaction_hash: data.transaction_hash,
 					},
 				},
 			};
@@ -224,7 +231,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					deposit_id: data.deposit_id,
 					fee: data.fee,
 					additionalInfo: {
@@ -253,7 +260,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						transaction_hash: '', // TODO
+						eth_transaction_hash: '', // TODO
 					},
 				},
 			};
@@ -262,7 +269,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					withdraw_id: data.withdraw_id,
 					fee: data.fee,
 					additionalInfo: {
@@ -270,7 +277,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
-						transaction_hash: '', // TODO
+						eth_transaction_hash: '', // TODO
 						original_operation: {
 							link: data.objectInfo.get('original_operation'),
 							title: 'Token withdraw request operation',
@@ -283,7 +290,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					withdraw_id: objectInfo.withdraw_id,
 					fee: data.fee,
 					...description,
@@ -293,7 +300,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							total: objectInfo.total,
 						},
 						operationLink: objectInfo.original_operation,
-						transaction_hash: objectInfo.transaction_hash,
+						eth_transaction_hash: objectInfo.transaction_hash,
 					},
 				},
 			};
@@ -304,7 +311,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					type,
 					amount_info: data.amount,
 					account_name: data.account,
-					deposit_id: data.deposit_id,
+					deposit_id: data.deposit,
 					token: objectInfo.token,
 					fee: data.fee,
 					...description,
@@ -324,7 +331,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					type,
 					amount_info: data.amount,
 					account_name: data.account,
-					withdraw_id: data.withdraw_id,
+					withdraw_id: data.withdraw,
 					token: objectInfo.token,
 					fee: data.fee,
 					...description,
@@ -356,12 +363,12 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					account_name: data.account,
 					fee: data.fee,
 					...description,
 					btc_address: objectInfo.deposit_address,
-					transaction_hash: objectInfo.transaction_hash,
+					btc_transaction_hash: objectInfo.transaction_hash,
 					additionalInfo: {
 						number_of_confirmations: {
 							value: objectInfo.approves,
@@ -375,7 +382,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					account_name: objectInfo.account,
 					btc_address: objectInfo.intermediate_address,
 					address_id: objectInfo.intermediate_address_id,
@@ -395,10 +402,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					account_name: data.account,
 					amount_info: objectInfo.amount,
-					transaction_hash: objectInfo.transaction_hash,
+					btc_transaction_hash: objectInfo.transaction_hash,
 					deposit_id: objectInfo.intermediate_deposit_id,
 					fee: data.fee,
 					...description,
@@ -418,7 +425,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					account_name: data.account,
 					amount_info: objectInfo.amount,
 					btc_address: objectInfo.btc_addr,
-					transaction_hash: objectInfo.transaction_hash,
+					btc_transaction_hash: objectInfo.transaction_hash,
 					fee: data.fee,
 					...description,
 					additionalInfo: {
@@ -434,8 +441,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
-					transaction_hash: objectInfo.transaction_hash,
+					committee_member: data.committee_member_id,
+					btc_transaction_hash: objectInfo.transaction_hash,
 					aggregation_out_value: objectInfo.aggregation_out_value,
 					btc_block_number: objectInfo.btc_block_number,
 					deposits: objectInfo.deposits.length ? objectInfo.deposits
@@ -463,8 +470,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
-					transaction_hash: objectInfo.transaction_hash,
+					committee_member: data.committee_member_id,
+					btc_transaction_hash: objectInfo.transaction_hash,
 					fee: data.fee,
 					...description,
 					additionalInfo: {
