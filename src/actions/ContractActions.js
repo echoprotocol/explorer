@@ -36,7 +36,7 @@ import ValidateHelper, {
 
 import ApiService from '../services/ApiService';
 import { BridgeService } from '../services/BridgeService';
-import { getContractInfo } from '../services/queries/contract';
+import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
@@ -734,7 +734,14 @@ class ContractActions extends BaseActionsClass {
 					return;
 				}
 
-				let { history, contractInfo, transferHistory } = await getContractInfo(id);
+				const [
+					{ history, contractInfo, transferHistory },
+					{ total: contractTxs }
+				] = await Promise.all([
+					getContractInfo(id),
+					getTotalHistory([id]),
+				]);
+				// let { history, contractInfo, transferHistory } = await getContractInfo(id);
 
 				const creationFee = history.items[0].body.fee;
 				const feeAsset = await echo.api.getObject(creationFee.asset_id);
@@ -748,6 +755,7 @@ class ContractActions extends BaseActionsClass {
 				if (supportedAsset !== null) {
 					supportedAsset = (await echo.api.getObject(supportedAsset)).symbol;
 				}
+				// const contractTxs = (await getTotalHistory([id])).total;
 
 				dispatch(this.setMultipleValue({
 					error: '',
@@ -759,7 +767,7 @@ class ContractActions extends BaseActionsClass {
 					type: fromJS([contract.type, type]),
 					supportedAsset,
 					ethAccuracy,
-					contractTxs: history.length,
+					contractTxs,
 					creationFee: new Map({
 						amount: creationFee.amount,
 						precision: feeAsset.precision,
