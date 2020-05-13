@@ -7,17 +7,35 @@
 	@include max-vw($res-1600) {
 		padding-left: 20px;
 	}
+	@include max-vw($res-1280) {
+		padding-left: 30px;
+	}
+	@include max-vw($res-768) {
+		padding-left: 20px;
+	}
+	@include max-vw($res-500) {
+		padding-left: 15px;
+	}
 	.backwards-link {
 		position: absolute;
-		left: 0;
+		left: -5px;
 		@include max-vw($res-1600) {
-			top: -35px;
-			left: 20px;
+			top: -36px;
+			left: 18px;
 			width: 20px;
 			height: 20px;
 			svg {
 				width: 12px;
 			}
+		}
+		@include max-vw($res-1280) {
+			left: 25px;
+		}
+		@include max-vw($res-768) {
+			left: 18px;
+		}
+		@include max-vw($res-500) {
+			left: 13px;
 		}
 	}
 }
