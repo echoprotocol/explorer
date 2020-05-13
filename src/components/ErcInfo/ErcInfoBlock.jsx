@@ -14,10 +14,9 @@ const ErcInfoBlock = React.memo(({ data, countTransfers }) => (
 			<div className="erc-info-block__item-value">{data.decimals}</div>
 		</div>
 		<div className="erc-info-block__item supply">
-			<div className="erc-info-block__item-title">Current supply (total supply)</div>
+			<div className="erc-info-block__item-title">Total supply</div>
 			<div className="erc-info-block__item-value">
-				<span className="half">{data.current_supply}</span>
-				(<span className="half">{data.total_supply}</span>)
+				<span className="half">{data.total_supply}</span>
 			</div>
 		</div>
 		<div className="erc-info-block__item holders">
