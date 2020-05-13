@@ -364,7 +364,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
+					committee_member: data.committee_member_id,
 					account_name: data.account,
 					fee: data.fee,
 					...description,
