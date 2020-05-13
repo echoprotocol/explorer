@@ -10,7 +10,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 
 	switch (opNumber) {
 		case OPERATIONS_IDS.ACCOUNT_CREATE: {
-			const { active } = data.objectInfo.toJS();
 			return {
 				operationInfo: {
 					type,
@@ -20,8 +19,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						link: data.mainInfo.subject.id,
 					},
 					new_account_id: data.mainInfo.subject.id,
-					authority: [...active.key_auths, ...active.account_auths].map(([value, weight]) => ({ value, weight })),
-					weight_threshold: active.weight_threshold,
+					authority: objectInfo.key_auths,
+					weight_threshold: objectInfo.weight_threshold,
 					echorand_key: data.echorand_key,
 					delegating_account: data.delegating_account,
 					delegate_share: data.delegate_share,
@@ -31,13 +30,12 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.ACCOUNT_UPDATE: {
-			const { active } = data.objectInfo.toJS();
 			return {
 				operationInfo: {
 					type,
 					delegate_share: data.delegate_share,
 					delegating_account: data.delegating_account,
-					authority: [...active.key_auths, ...active.account_auths].map(([value, weight]) => ({ value, weight })),
+					authority: objectInfo.key_auths,
 					echorand_key: data.objectInfo.get('echorandKey'),
 					fee: data.fee,
 					...description,

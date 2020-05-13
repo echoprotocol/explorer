@@ -169,12 +169,14 @@ class TransactionActionsClass extends BaseActionsClass {
 					return acc && acc.name;
 				}));
 				const accounts = await echo.api.getObjects([account.registrar, account.options.delegating_account]);
-
+				const key_auths = [...account.active.key_auths, ...account.active.account_auths].map(([value, weight]) => ({ value, weight }));
 				object = object
 					.set('id', account.id)
 					.set('name', account.name)
 					.set('echorandKey', account.echorand_key)
 					.set('active', account.active)
+					.set('key_auths', key_auths)
+					.set('weight_threshold', account.weight_threshold)
 					.set('activeAccounts', activeAccounts)
 					.set('activeKeys', account.active.key_auths.map(([key]) => key))
 					.set('registrar', accounts[0] && accounts[0].name)
@@ -981,9 +983,12 @@ class TransactionActionsClass extends BaseActionsClass {
 			opInTrx: opIndex,
 			virtual,
 		};
-		let objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo, isEchodbObject);
-		// let objectInfo = new Map({});
 
+		let objectInfo = new Map();
+
+		if (!isEchodbObject) {
+			objectInfo = await this.setOperationObject(operation, options, from, subject, operationResult, opInfo, isEchodbObject);
+		}
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
 			switch (typeof value) {
@@ -1180,11 +1185,13 @@ class TransactionActionsClass extends BaseActionsClass {
 		if (proposalOperations.includes(operation.name)) {
 			try {
 				const proposedOps = objectInfo.get('proposal_operations');
-				let promises = await this.getProposalOperations(proposedOps, blockNumber, blockTimestamp, trIndex);
-				promises = await Promise.all(promises);
-				delete op.proposed_ops;
-				op.proposals = promises;
-				op.operationsInfoData.proposalOperations = promises;
+				if (proposedOps) {
+					let promises = await this.getProposalOperations(proposedOps, blockNumber, blockTimestamp, trIndex);
+					promises = await Promise.all(promises);
+					delete op.proposed_ops;
+					op.proposals = promises;
+					op.operationsInfoData.proposalOperations = promises;
+				}
 			} catch (e) {
 				//
 			}

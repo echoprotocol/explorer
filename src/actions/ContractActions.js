@@ -120,13 +120,15 @@ class ContractActions extends BaseActionsClass {
 					return;
 				}
 
-				await dispatch(this.getContractInfoFromExplorer(id));
-				await dispatch(this.getContractInfoFromGraphql(id));
+				let [balances, { owner }] = await Promise.all([
+					echo.api.getContractBalances(id),
+					echo.api.getObject(id),
+					dispatch(this.getContractInfoFromExplorer(id)),
+					dispatch(this.getContractInfoFromGraphql(id)),
+					dispatch(this.loadContractHistory(id)),
+				]);
 
-				let balances = await echo.api.getContractBalances(id);
 				const assets = await echo.api.getObjects(balances.map((b) => b.asset_id));
-
-				let { owner } = await echo.api.getObject(id);
 				owner = new Map(await echo.api.getObject(owner));
 
 				balances = balances.map((balance, index) => {
@@ -142,7 +144,6 @@ class ContractActions extends BaseActionsClass {
 					balances: new List(balances),
 					owner,
 				}));
-				await dispatch(this.loadContractHistory(id));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -733,9 +734,13 @@ class ContractActions extends BaseActionsClass {
 					return;
 				}
 
-
-				let { history, contractInfo, transferHistory } = await getContractInfo(id);
-				const contractTxs = (await getTotalHistory([id])).total;
+				const [
+					{ history, contractInfo, transferHistory },
+					{ total: contractTxs }
+				] = await Promise.all([
+					getContractInfo(id),
+					getTotalHistory([id]),
+				]);
 
 				const creationFee = history.items[0].body.fee;
 				const feeAsset = await echo.api.getObject(creationFee.asset_id);
