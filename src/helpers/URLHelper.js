@@ -207,12 +207,39 @@ class URLHelper {
 	}
 
 	/**
+	 * @method createEthTransactionOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createEthTransactionOut(url) {
+		return `${ETH_EXPLORER}/tx/${url}`;
+	}
+
+	/**
 	 * @method createBtcAddressOut
 	 * @param {string} url
 	 * @return {string}
 	 */
 	static createBtcAddressOut(url) {
 		return `${BTC_EXPLORER}/address/${url}`;
+	}
+
+	/**
+	 * @method createBtcTransactionOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createBtcTransactionOut(url) {
+		return `${BTC_EXPLORER}/tx/${url}`;
+	}
+
+	/**
+	 * @method createBtcBlockOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createBtcBlockOut(url) {
+		return `${BTC_EXPLORER}/block/${url}`;
 	}
 
 	/**

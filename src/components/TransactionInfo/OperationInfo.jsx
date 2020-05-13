@@ -102,11 +102,32 @@ class OperationInfo extends React.Component {
 					{data.supported_asset && <PrimaryRow title="Supported asset" description={data.supported_asset} />}
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
 					{data.amount_info && <PrimaryRow title="Amount" description={data.amount_info} />}
-					{data.transaction_hash && <PrimaryRow title="Transaction hash" description={data.transaction_hash} />}
+					{data.eth_transaction_hash && <LinkRow
+						title="Transaction hash"
+						value={data.eth_transaction_hash}
+						link={URLHelper.createEthTransactionOut(data.eth_transaction_hash)}
+						isLinkOut
+					/>}
+					{data.btc_transaction_hash && <LinkRow
+						title="Transaction hash"
+						value={data.btc_transaction_hash}
+						link={URLHelper.createBtcTransactionOut(data.btc_transaction_hash)}
+						isLinkOut
+					/>}
 					{data.token && <LinkRow title="Token" linkTitle={data.token.value} objectId={data.token.link} />}
 					{data.aggregation_out_value && <PrimaryRow title="Aggregation out value" description={data.aggregation_out_value} />}
-					{data.btc_block_number && <PrimaryRow title="BTC block number" description={data.btc_block_number} />}
-					{data.sma_address && <PrimaryRow title="SMA Address" description={data.sma_address} />}
+					{data.btc_block_number && <LinkRow
+						title="BTC block number"
+						value={data.btc_block_number}
+						link={URLHelper.createBtcBlockOut(data.btc_block_number)}
+						isLinkOut
+					/>}
+					{data.sma_address && <LinkRow
+						title="SMA Address"
+						value={data.sma_address}
+						link={URLHelper.createBtcAddressOut(data.sma_address)}
+						isLinkOut
+					/>}
 					{data.signature && <PrimaryRow title="Signature" description={data.signature} />}
 					{data.committee_member && <LinkRow title="Committee member" account={data.committee_member} />}
 					{data.committee_member_id && <PrimaryRow title="Committee member id" description={data.committee_member_id} />}
