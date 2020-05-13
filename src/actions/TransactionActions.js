@@ -288,8 +288,13 @@ class TransactionActionsClass extends BaseActionsClass {
 						.set('price', price)
 						.set(
 							'accumulated_fees',
-							accumulatedFees === 0 ? 0 : FormatHelper
-								.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision),
+							{
+								amount: accumulatedFees === 0 ? 0 : new BN(accumulatedFees).div(quoteAmount).toString(10),
+								symbol: asset.symbol,
+								precision: asset.precision,
+								asset_id: asset.id,
+
+							},
 						)
 						.set('rate', rate)
 						.set('issuer', issuer && issuer.name)
