@@ -8,10 +8,11 @@ header {
 		padding: 0 30px;
 	}
 	@include max-vw($res-768) {
+		margin-top: 3px;
 		padding: 0 20px;
 	}
 	@include max-vw($res-500) {
-		padding: 0 15px;
+		padding: 0 10px 0 15px;
 		&.opened {
 			&:after {
 				transform: scaleY(1);
@@ -61,7 +62,7 @@ header {
 	padding: 15px 0 10px;
 	background-color: $explorer-dark;
 	@include max-vw($res-500) {
-		padding: 20px 0 10px;
+		padding: 17px 0 10px;
 	}
 }
 

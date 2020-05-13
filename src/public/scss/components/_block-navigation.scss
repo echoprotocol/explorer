@@ -6,12 +6,8 @@
 	}
 	button {
 		display: inline-flex;
-		font-family: "hack";
-		font-weight: 700;
-		font-style: normal;
-		font-size: 9px;
-		letter-spacing: 2px;
-		text-transform: uppercase;
+		@include inter-ui-medium;
+		font-size: 11px;
 		padding-top: 5px;
 		padding-bottom: 5px;
 		transition: 0.2s ease-out;
