@@ -179,7 +179,7 @@ class SearchField extends React.Component {
 			}, i) => ({
 				key: i,
 				value: to,
-				href: SsrHrefHelper.getHrefByTypeSection(section),
+				href: to,
 				content: (
 					<Link key={to} href={SsrHrefHelper.getHrefByTypeSection(section)} as={to} >
 						<div className="element">
