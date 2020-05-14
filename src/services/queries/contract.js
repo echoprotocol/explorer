@@ -1,47 +1,67 @@
 import gql from 'graphql-tag';
 import client from '../GraphqlService';
 
-export const getContractInfo = async (contractId) => {
+export const getContractInfo = async ({
+	id, offset, count, to, from,
+}) => {
 	const query = gql`
-		query getContract($contractId: ContractId!) {
-			getContract(id: $contractId) {
+		query getContract($id: ContractId!, $from: [AccountOrContractId!], $to: [AccountOrContractId!], $offset: Int, $count: Int) {
+			getContract(id: $id) {
 				id,
 				registrar {
 					name
 				}
 				block {
-          			round
-          			timestamp
-		        }
-		        callers { accounts { id } }
-        		type,
-        		supported_asset_id
-        		eth_accuracy
-        		token {
-        			name,
+          round
+          timestamp
+		  	}
+		    callers { accounts { id } }
+        type,
+        supported_asset_id
+        eth_accuracy
+        token {
+					name,
 					symbol,
 					type,
-					decimals,
-					total_supply
-        		}
+          decimals,
+          total_supply,
+          holders_count
+        },
 			}
-			getHistory(contracts: [$contractId], operations:[CONTRACT_CREATE]) {
+			getHistory(contracts: [$id], operations:[CONTRACT_CREATE]) {
 				items {
 					body
 				}
 			}
-			getTransferHistory(contracts: [$contractId]) {
+			getTransferHistory(contracts: [$id], from: $from, to: $to, offset: $offset, count: $count) {
 				total
+				items {
+					block,
+					timestamp,
+					trx_in_block,
+          op_in_trx,
+					from {
+						name
+					},
+					to {
+						name
+					},
+					amount
+				}
 			}
 		}
 	`;
 
-	return client.getClient().query({ query, variables: { contractId } })
-		.then(({ data }) => ({
-			history: data.getHistory,
-			contractInfo: data.getContract,
-			transferHistory: data.getTransferHistory,
-		}));
+	return client.getClient().query({
+		query,
+		variables: {
+			id, offset, count, to, from,
+		},
+	}).then(({ data }) => ({
+		history: data.getHistory,
+		contractInfo: data.getContract,
+		transferHistory: data.getTransferHistory,
+	}));
 };
 
 
@@ -85,4 +105,40 @@ export const getContractBySymbol = (name, count) => {
 		}
 	`;
 	return client.getClient().query({ query, variables: { count, name } }).then(({ data }) => data.getTokens);
+};
+
+export const getERC20Info = async (contractId, count, offset) => {
+	const query = gql`
+		query getTransferHistory($id: ContractId!, offset: Int, count: Int){
+			getTransferHistory(contracts: [$contractId!], count: $count, offset: $offset) {
+				total,
+				items {
+					block,
+					timestamp
+					from{
+						name
+					},
+					to{
+						name
+					},
+					amount
+				}
+			}
+			getContract(id: $id) {
+				type
+				token {
+					symbol,
+          total_supply,
+          decimals,
+          name,
+          holders_count
+        },
+			}
+		}
+	`;
+	return client.getClient().query({ query, variables: { contractId, count, offset } })
+		.then(({ data }) => ({
+			transfers: data.getTransferHistory,
+			token: data.getContract,
+		}));
 };

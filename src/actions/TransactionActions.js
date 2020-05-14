@@ -93,7 +93,7 @@ class TransactionActionsClass extends BaseActionsClass {
 	 */
 	async setContractObject(id) {
 		try {
-			const { contractInfo } = await getContractInfo(id);
+			const { contractInfo } = await getContractInfo({ id });
 			const {
 				type, eth_accuracy: ethAccuracy,
 			} = contractInfo;
@@ -215,7 +215,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 				const contract = await echo.api.getObject(contractId);
 				const contractAdditionalInfo = await echo.api.getFullContract(contractId);
-				const { contractInfo } = await getContractInfo(contractId);
+				const { contractInfo } = await getContractInfo({ id: contractId });
 				const { history } = await getConrtactOperations(contractId);
 				object = object
 					.set('id', contractId)

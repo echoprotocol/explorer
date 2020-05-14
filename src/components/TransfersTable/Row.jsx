@@ -61,7 +61,7 @@ const OperationsRow = React.memo(({
 
 OperationsRow.propTypes = {
 	id: PropTypes.number.isRequired,
-	block: PropTypes.string.isRequired,
+	block: PropTypes.number.isRequired,
 	sender: PropTypes.string.isRequired,
 	receiver: PropTypes.string.isRequired,
 	amount: PropTypes.object.isRequired,

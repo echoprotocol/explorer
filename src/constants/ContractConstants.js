@@ -33,3 +33,4 @@ export const COMPILER_CONSTS = {
 	SOLC_NOT_ENOUGH_STACK_ERROR: 'Maximum call stack size exceeded',
 	MAX_TRIES_TO_COMPILE: 2,
 };
+export const ERC20_TOKEN_SYMBOL = 'erc20';

@@ -39,6 +39,7 @@ const DEFAULT_FIELDS = new Map({
 	progress: 0,
 	token: null,
 	countTokenTransfer: 0,
+	tokenTransfers: [],
 });
 
 export default createModule({

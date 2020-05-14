@@ -1,22 +1,41 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ErcInfoBlock from './ErcInfoBlock';
 
 import TransfersTable from '../TransfersTable';
 
-const infoBlockData = {
-	token_symbol: 'Test (test token)',
-	decimals: 18,
-	current_supply: '21 000 000.0000000000',
-	total_supply: '90 000 000.0000000000',
-	holders: 43,
-	transfers: 323,
-};
 
-const ErcInfo = () => (
+const ErcInfo = ({
+	countTokenTransfer, token, tokenTransfers, router,
+	filterAndPaginateData, initData, onLoadMoreHistory,
+}) => (
 	<React.Fragment>
-		<ErcInfoBlock data={infoBlockData} />
-		<TransfersTable label="Transfers" />
+		<ErcInfoBlock data={token} countTransfers={countTokenTransfer} />
+		<TransfersTable
+			label="Transfers"
+			tokenTransfers={tokenTransfers}
+			coin={token && token.symbol}
+			onLoadMoreHistory={onLoadMoreHistory}
+			initData={initData}
+			filterAndPaginateData={filterAndPaginateData}
+			router={router}
+		/>
 	</React.Fragment>
 );
+
+ErcInfo.propTypes = {
+	countTokenTransfer: PropTypes.number.isRequired,
+	token: PropTypes.object,
+	tokenTransfers: PropTypes.array,
+	filterAndPaginateData: PropTypes.object.isRequired,
+	initData: PropTypes.func.isRequired,
+	onLoadMoreHistory: PropTypes.func.isRequired,
+	router: PropTypes.object.isRequired,
+};
+
+ErcInfo.defaultProps = {
+	token: {},
+	tokenTransfers: [],
+};
 
 export default ErcInfo;

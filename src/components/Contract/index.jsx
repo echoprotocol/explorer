@@ -7,7 +7,7 @@ import Slider from 'react-slick';
 import classnames from 'classnames';
 import { Map } from 'immutable';
 
-import { CONTRACT_TABS } from '../../constants/ContractConstants';
+import { CONTRACT_TABS, ERC20_TOKEN_SYMBOL } from '../../constants/ContractConstants';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import {
 	CONTRACT_TRANSACTIONS,
@@ -91,6 +91,10 @@ class Contract extends React.Component {
 		this.props.loadContractHistory(this.props.router.query.id);
 	}
 
+	onLoadMoreErc20History() {
+		this.props.loadErc20History(this.props.router.query.id);
+	}
+
 	async initContract() {
 		const { query: { id } } = this.props.router;
 		await this.props.onChangeFilter();
@@ -155,11 +159,11 @@ class Contract extends React.Component {
 
 	render() {
 		const {
-			loading, loadingMoreHistory,
+			loading, loadingMoreHistory, filterAndPaginateData, initData,
 			bytecode, contractHistory, balances, router: { query: { id, detail } }, abi, sourceCode, icon,
 			name, verified, stars, description, createdAt, blockNumber, creationFee,
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
-			countTokenTransfer, activeAccount, error, isMobile,
+			countTokenTransfer, tokenTransfers, activeAccount, error, isMobile,
 		} = this.props;
 		const tabList = [
 			{
@@ -184,9 +188,17 @@ class Contract extends React.Component {
 					</div> : <Loader />,
 				key: 'tab-1',
 			},
-			{
+			type.includes(ERC20_TOKEN_SYMBOL) && {
 				tab: !loading ?
-					<ErcInfo /> :
+					<ErcInfo
+						filterAndPaginateData={filterAndPaginateData}
+						tokenTransfers={tokenTransfers}
+						countTokenTransfer={countTokenTransfer}
+						token={token}
+						onLoadMoreHistory={() => this.onLoadMoreErc20History()}
+						initData={initData}
+						router={this.props.router}
+					/> :
 					<Loader />,
 				key: 'tab-2',
 			},
@@ -277,13 +289,14 @@ class Contract extends React.Component {
 										</a>
 									</Link>
 								</div>
+								{type.includes(ERC20_TOKEN_SYMBOL) &&
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
 									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ERC20)}>
 										<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
 											<span className="menu-item-content">ERC20 info</span>
 										</a>
 									</Link>
-								</div>
+								</div>}
 							</Slider>
 						</div>
 					</div>
@@ -327,6 +340,7 @@ Contract.propTypes = {
 	type: PropTypes.object.isRequired,
 	token: PropTypes.object,
 	countTokenTransfer: PropTypes.number.isRequired,
+	tokenTransfers: PropTypes.array,
 
 	name: PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,
@@ -341,6 +355,9 @@ Contract.propTypes = {
 	owner: PropTypes.object.isRequired,
 	updateContractHistory: PropTypes.func.isRequired,
 	onChangeFilter: PropTypes.func.isRequired,
+	filterAndPaginateData: PropTypes.object.isRequired,
+	initData: PropTypes.func.isRequired,
+	loadErc20History: PropTypes.func.isRequired,
 };
 
 Contract.defaultProps = {
@@ -351,7 +368,8 @@ Contract.defaultProps = {
 	sourceCode: null,
 	supportedAsset: '',
 	activeAccount: new Map(),
-	token: null,
+	token: {},
+	tokenTransfers: [],
 };
 
 Contract.getInitialProps = async ({ query: { id: contractId, ...filters }, store }) => {
