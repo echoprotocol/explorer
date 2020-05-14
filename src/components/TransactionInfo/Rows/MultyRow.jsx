@@ -6,8 +6,8 @@ const MultyRow = React.memo(({ title, fields }) => (
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
 			<div className="multy-field">
-				{fields.map((item) => (
-					<span className="multy-field-item" key={item.value}>
+				{fields.map((item, i) => (
+					<span className="multy-field-item" key={`${title}${item.key}${i.toString()}`}>
 						<span className="multy-field-item__name">
 							{item.key}:&nbsp;
 						</span>
