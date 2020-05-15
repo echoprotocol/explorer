@@ -1230,7 +1230,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			dispatch(this.setValue('loading', true));
 			try {
 				const block = await echo.api.getBlock(blockNumber);
-
 				if (!block) {
 					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
@@ -1246,11 +1245,13 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (virtual) {
 					const operationResults = [];
 					const virtualOperations = await echo.api.getBlockVirtualOperations(blockNumber);
-					if (!virtualOperations.length) {
+					const filtredVirtualOperations = virtualOperations.filter(({ trx_in_block }) => trx_in_block === index - 1);
+
+					if (!filtredVirtualOperations.length) {
 						dispatch(GlobalActions.toggleErrorPath(true));
 						return;
 					}
-					const transformedOperations = virtualOperations.reduce((res, { op, result }) => {
+					const transformedOperations = filtredVirtualOperations.reduce((res, { op, result }) => {
 						operationResults.push(result);
 						return [...res, op];
 					}, []);
@@ -1262,7 +1263,6 @@ class TransactionActionsClass extends BaseActionsClass {
 					transaction = block.transactions[index - 1];
 				}
 
-				await this.fetchTransactionsObjects(transaction.operations);
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
 						operation,

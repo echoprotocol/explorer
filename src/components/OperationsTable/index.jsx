@@ -223,7 +223,7 @@ class OperationsTable extends React.Component {
 
 			// TODO delete in future
 			if (Operations.block_reward.name === type) {
-				const transactionUrl = URLHelper.createTransactionUrl(blockNumber, 1);
+				const transactionUrl = URLHelper.createTransactionUrl(blockNumber, 1, virtual);
 				Router.push(SSR_TRANSACTION_INFORMATION_PATH, transactionUrl);
 				return;
 			}
@@ -239,7 +239,7 @@ class OperationsTable extends React.Component {
 			showedOperations.splice(v, 1);
 
 			if (queryProps.op && parseInt(queryProps.op, 10) - 1 === index) {
-				Router.push(SSR_TRANSACTION_INFORMATION_PATH, pathname);
+				Router.push(SSR_TRANSACTION_INFORMATION_PATH, `${pathname}?virtual=${queryProps.virtual}`);
 			}
 
 			[index - 1, index].forEach((i) => {
@@ -308,7 +308,7 @@ class OperationsTable extends React.Component {
 									totalDataSize={filterAndPaginateData.totalDataSize}
 									sizePerPage={filterAndPaginateData.sizePerPage}
 									currentPage={filterAndPaginateData.currentPage}
-									key={i.toString()}
+									key={`${i.toString()}${op.id}${op.type}`}
 									isTransaction={isTransaction}
 									operation={op}
 									index={i}
