@@ -168,8 +168,9 @@ class URLHelper {
 	 * @param index
 	 * @returns {string}
 	 */
-	static createTransactionUrl(round, index) {
-		return TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, index);
+	static createTransactionUrl(round, index, virtual) {
+		const url = TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, index);
+		return virtual === undefined ? url : `${url}?virtual=${!!virtual}`;
 	}
 
 	/**

@@ -320,9 +320,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					...description,
 					additionalInfo: {
-						list_approvals: data.objectInfo.get('list_approvals'),
+						list_approvals: objectInfo.list_approvals,
 						original_operation: {
-							link: data.objectInfo.get('original_operation'),
+							link: objectInfo.original_operation,
 							title: 'Deposit operation',
 						},
 					},
