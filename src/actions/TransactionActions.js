@@ -503,20 +503,22 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('withdraw_id', withdrawId);
 						break;
 					} case Operations.sidechain_issue.name: {
-						objectWithApprovals = await echo.api.getObject(options.deposit_id);
 						const listApprovals = singleOperation.list_of_approvals
 							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						const originalOperation = singleOperation.sidchain_eth_deposit
+							&& URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit))
+							.set('original_operation', originalOperation)
 							.set('list_approvals', listApprovals);
 						break;
 					}
 					case Operations.sidechain_burn.name: {
-						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						const listApprovals = singleOperation.list_of_approvals
 							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						const originalOperation = singleOperation.sidchain_eth_withdraw
+							&& URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
+							.set('original_operation', originalOperation)
 							.set('list_approvals', listApprovals);
 						break;
 					}
@@ -559,10 +561,12 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
-				let approves = objectWithApprovals.approves.length;
+				let approves = objectWithApprovals.approves ? objectWithApprovals.approves.length : 0;
+
 				if (approves === 0 && objectWithApprovals.is_approved) {
 					approves = total;
 				}
+
 				object = object
 					.set('approves', approves)
 					.set('total', total);

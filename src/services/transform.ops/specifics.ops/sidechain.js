@@ -156,6 +156,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			};
 		}
 		case OPERATIONS_IDS.SIDECHAIN_ISSUE: {
+			const originalOperation = data.objectInfo.get('original_operation');
+			const listApprovals = data.objectInfo.get('list_approvals');
 			return {
 				operationInfo: {
 					type,
@@ -163,17 +165,19 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.value,
 					deposit_id: data.deposit_id,
 					fee: data.fee,
-					additionalInfo: {
+					additionalInfo: (originalOperation || listApprovals) ? {
 						original_operation: {
-							link: data.objectInfo.get('original_operation'),
+							link: originalOperation,
 							title: 'Deposit operation',
 						},
-						list_approvals: data.objectInfo.get('list_approvals'),
-					},
+						list_approvals: listApprovals,
+					} : undefined,
 				},
 			};
 		}
 		case OPERATIONS_IDS.SIDECHAIN_BURN: {
+			const originalOperation = data.objectInfo.get('original_operation');
+			const listApprovals = data.objectInfo.get('list_approvals');
 			return {
 				operationInfo: {
 					type,
@@ -181,13 +185,13 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					amount: data.value,
 					withdraw_id: data.withdraw_id,
 					fee: data.fee,
-					additionalInfo: {
+					additionalInfo: (originalOperation || listApprovals) ? {
 						original_operation: {
-							link: data.objectInfo.get('original_operation'),
+							link: originalOperation,
 							title: 'Withdraw operation',
 						},
-						list_approvals: data.objectInfo.get('list_approvals'),
-					},
+						list_approvals: listApprovals,
+					} : undefined,
 				},
 			};
 		}

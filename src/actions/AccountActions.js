@@ -17,7 +17,6 @@ import { getBalances } from '../services/queries/balance';
 import { getHistory } from '../services/queries/history';
 import { ACCOUNT_GRID } from '../constants/TableConstants';
 import GridActions from './GridActions';
-import { getTotalAccountHistory } from '../services/queries/account';
 
 class AccountActions extends BaseActionsClass {
 
@@ -104,7 +103,7 @@ class AccountActions extends BaseActionsClass {
 
 				let totalAccountHistory = 0;
 				try {
-					totalAccountHistory = (await getTotalAccountHistory(account.id)).total;
+					totalAccountHistory = (await getHistory({ subject: account.id })).total;
 				} catch (err) {
 					console.log('EchoDB error', err);
 				}
