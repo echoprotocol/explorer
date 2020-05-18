@@ -70,6 +70,9 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: Operations.sidechain_btc_approve_aggregate.name,
 	[OPERATIONS_IDS.BLOCK_REWARD]: Operations.block_reward.name,
 	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: Operations.evm_address_register.name,
+	[OPERATIONS_IDS.DID_CREATE]: Operations.did_create_operation.name,
+	[OPERATIONS_IDS.DID_UPDATE]: Operations.did_update_operation.name,
+	[OPERATIONS_IDS.DID_DELETE]: Operations.did_delete_operation.name,
 };
 
 export const OPS_DESCRIPTIONS = {
@@ -347,6 +350,18 @@ export const OPS_DESCRIPTIONS = {
 	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: {
 		description: '',
 		link: 'https://docs.echo.org/api-reference/echo-operations/account-management#evm_address_register_operation',
+	},
+	[OPERATIONS_IDS.DID_CREATE]: {
+		description: '',
+		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_create_operation',
+	},
+	[OPERATIONS_IDS.DID_UPDATE]: {
+		description: '',
+		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_update_operation',
+	},
+	[OPERATIONS_IDS.DID_DELETE]: {
+		description: '',
+		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_delete_operation',
 	},
 };
 

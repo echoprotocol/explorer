@@ -8,6 +8,7 @@ import transformCommitteeOperations from './specifics.ops/committee';
 import transformVestingOperations from './specifics.ops/vesting.balance';
 import transformContractOperations from './specifics.ops/contract';
 import transformSidechainOperations from './specifics.ops/sidechain';
+import transformDidOperations from './specifics.ops/did';
 
 export const transformOperationDataByType = async (opNumber, data) => {
 	switch (opNumber) {
@@ -85,6 +86,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE:
 		case OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE:
 			return transformSidechainOperations(opNumber, data);
+		case OPERATIONS_IDS.DID_CREATE:
+		case OPERATIONS_IDS.DID_UPDATE:
+		case OPERATIONS_IDS.DID_DELETE:
+			return transformDidOperations(opNumber, data);
 		default:
 			return transformTransferOperations(0, data);
 	}

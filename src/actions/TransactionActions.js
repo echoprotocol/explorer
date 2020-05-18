@@ -13,6 +13,7 @@ import Operations, {
 	sidechainOperations,
 	contractOperations,
 	sidechainBtcOperations,
+	didOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 import { ERC20_HASHES, ECHO_ASSET, NATHAN } from '../constants/GlobalConstants';
@@ -609,6 +610,13 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('signature', singleOperation.signature)
 					.set('signatures', singleOperation.signatures && singleOperation.signatures)
 					.set('aggregate_request_operation', singleOperation.aggregate_request_operation);
+			} else if (didOperations.includes(operation.name)) {
+				object = object
+					.set('essence', options.essence)
+					.set('did_identifier', options.did_identifier)
+					.set('public_keys', options.public_keys.map((el, i) => ({ key: i, value: el })))
+					.set('pub_keys_to_delete', options.pub_keys_to_delete.map((el, i) => ({ key: i, value: el })))
+					.set('pub_keys_to_add', options.pub_keys_to_add.map((el, i) => ({ key: i, value: el })));
 			}
 
 			return object;
