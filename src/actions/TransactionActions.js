@@ -396,6 +396,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							opInfo.virtual,
 						);
 						singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
+						singleOperation.result = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.result;
 					} catch (e) {
 						//
 					}
@@ -403,13 +404,16 @@ class TransactionActionsClass extends BaseActionsClass {
 
 				switch (operation.name) {
 					case Operations.sidechain_eth_approve_address.name:
-						objectWithApprovals = await echo.api.getEthAddress(options.account);
+						objectWithApprovals = await echo.api.getObject(singleOperation.result);
+						object = object
+							.set('eth_addr', objectWithApprovals.eth_addr);
 						break;
 					case Operations.deposit_eth.name:
 						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
 							.find((el) => el.deposit_id === options.deposit_id);
 						object = object
-							.set('deposit_id', objectWithApprovals.id);
+							.set('deposit_id', objectWithApprovals.id)
+							.set('transaction_hash', objectWithApprovals.transaction_hash);
 						break;
 					case Operations.eth_send_deposit.name:
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
@@ -444,28 +448,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							.set('list_approvals', listApprovals)
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
-					} case Operations.sidechain_btc_create_intermediate_deposit.name:
-						objectWithApprovals = {};
-						break;
-					case Operations.sidechain_btc_intermediate_deposit.name: {
-						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_address_id);
-						const fromAccount = await echo.api.getObject(objectWithApprovals.account);
-						object = object.set('account', { link: fromAccount.id, value: fromAccount.name });
-						break;
-					}
-					case Operations.sidechain_btc_deposit.name:
-						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_deposit_id);
-						break;
-					case Operations.sidechain_btc_withdraw.name:
-						objectWithApprovals = {};
-						break;
-					case Operations.sidechain_btc_aggregate.name:
-						objectWithApprovals = {};
-						break;
-					case Operations.sidechain_btc_approve_aggregate.name:
-						objectWithApprovals = {};
-						break;
-					case Operations.eth_send_withdraw.name:
+					} case Operations.eth_send_withdraw.name:
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
@@ -473,7 +456,13 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.approve_withdraw_eth.name:
 						objectWithApprovals = await echo.api.getObject(`1.15.${options.withdraw_id}`);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
+							.set('transaction_hash', objectWithApprovals.transaction_hash);
+						break;
+					case Operations.withdraw_eth.name:
+						objectWithApprovals = await echo.api.getObject(getSingleOpeation.result);
+						object = object
+							.set('transaction_hash', objectWithApprovals.transaction_hash);
 						break;
 					case Operations.sidechain_issue.name: {
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
@@ -515,13 +504,23 @@ class TransactionActionsClass extends BaseActionsClass {
 						const token = await echo.api.getObject(options.erc20_token);
 						objectWithApprovals = await echo.api.getObject(operationResult[1]);
 						object = object
-							.set('token', { value: token.symbol, link: token.id });
+							.set('token', { value: token.symbol, link: token.id })
+							.set('transaction_hash', objectWithApprovals.transaction_hash);
+						break;
+					}
+					case Operations.deposit_erc20_token.name: {
+						objectWithApprovals = await echo.api.getObject(singleOperation.result);
+						object = object
+							.set('from_address', singleOperation.erc20_token_addr)
+							.set('deposit_id', objectWithApprovals.id)
+							.set('transaction_hash', objectWithApprovals.transaction_hash);
 						break;
 					}
 					case Operations.erc20_send_withdraw.name:
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token))
+							.set('transaction_hash', objectWithApprovals.transaction_hash);
 						break;
 					default:
 						break;
@@ -549,6 +548,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							opInfo.virtual,
 						);
 						singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
+						singleOperation.result = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.result;
 					} catch (e) {
 						//
 					}
@@ -557,7 +557,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				let objectWithApprovals = null;
 				switch (operation.name) {
 					case Operations.sidechain_btc_create_intermediate_deposit.name:
-						objectWithApprovals = {};
+						objectWithApprovals = singleOperation.result;
 						break;
 					case Operations.sidechain_btc_intermediate_deposit.name: {
 						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_address_id);
@@ -569,13 +569,13 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = await echo.api.getObject(singleOperation.intermediate_deposit_id);
 						break;
 					case Operations.sidechain_btc_withdraw.name:
-						objectWithApprovals = {};
+						objectWithApprovals = singleOperation.result;
 						break;
 					case Operations.sidechain_btc_aggregate.name:
-						objectWithApprovals = {};
+						objectWithApprovals = singleOperation.result;
 						break;
 					case Operations.sidechain_btc_approve_aggregate.name:
-						objectWithApprovals = {};
+						objectWithApprovals = singleOperation.result;
 						break;
 					default:
 						break;
@@ -607,7 +607,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('committee_member_id', singleOperation.committee_member_id)
 					.set('committee_member_ids_in_script', singleOperation.committee_member_ids_in_script)
 					.set('signature', singleOperation.signature)
-					.set('signatures', singleOperation.signatures && singleOperation.signatures)
+					.set('signatures', singleOperation.signatures)
 					.set('aggregate_request_operation', singleOperation.aggregate_request_operation);
 			}
 
