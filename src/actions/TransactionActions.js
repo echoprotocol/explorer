@@ -666,11 +666,9 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('aggregate_request_operation', singleOperation.aggregate_request_operation);
 			} else if (didOperations.includes(operation.name)) {
 				object = object
-					.set('essence', options.essence)
-					.set('did_identifier', options.did_identifier)
-					.set('public_keys', options.public_keys.map((el, i) => ({ key: i, value: el })))
-					.set('pub_keys_to_delete', options.pub_keys_to_delete.map((el, i) => ({ key: i, value: el })))
-					.set('pub_keys_to_add', options.pub_keys_to_add.map((el, i) => ({ key: i, value: el })));
+					.set('public_keys', options.public_keys && options.public_keys.map((el, i) => ({ key: i, value: el })))
+					.set('pub_keys_to_delete', options.pub_keys_to_delete && options.pub_keys_to_delete.map((el, i) => ({ key: i, value: el })))
+					.set('pub_keys_to_add', options.pub_keys_to_add && options.pub_keys_to_add.map((el, i) => ({ key: i, value: el })));
 			}
 
 			return object;

@@ -86,9 +86,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE:
 		case OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE:
 			return transformSidechainOperations(opNumber, data);
-		case OPERATIONS_IDS.DID_CREATE:
-		case OPERATIONS_IDS.DID_UPDATE:
-		case OPERATIONS_IDS.DID_DELETE:
+		case OPERATIONS_IDS.DID_CREATE_OPERATION:
+		case OPERATIONS_IDS.DID_UPDATE_OPERATION:
+		case OPERATIONS_IDS.DID_DELETE_OPERATION:
 			return transformDidOperations(opNumber, data);
 		default:
 			return transformTransferOperations(0, data);
