@@ -17,7 +17,6 @@ import { getBalances } from '../services/queries/balance';
 import { getHistory } from '../services/queries/history';
 import { ACCOUNT_GRID } from '../constants/TableConstants';
 import GridActions from './GridActions';
-import { getTotalAccountHistory } from '../services/queries/account';
 
 class AccountActions extends BaseActionsClass {
 
@@ -35,7 +34,6 @@ class AccountActions extends BaseActionsClass {
 	 * @returns {function}
 	 */
 	async formatAccountHistory(accountId, transactions) {
-		await TransactionActions.fetchTransactionsObjects(transactions);
 
 		let accountHistory = transactions.map(async (t) => {
 			const { op: operation, result } = t;
@@ -52,6 +50,7 @@ class AccountActions extends BaseActionsClass {
 				accountId,
 				t.id,
 				t.virtual,
+				true,
 			);
 		});
 
@@ -102,13 +101,7 @@ class AccountActions extends BaseActionsClass {
 					},
 				]));
 
-				let totalAccountHistory = 0;
-				try {
-					totalAccountHistory = (await getTotalAccountHistory(account.id)).total;
-				} catch (err) {
-					console.log('EchoDB error', err);
-				}
-				await dispatch(this.loadAccountHistory(account.id));
+				const { total } = await dispatch(this.loadAccountHistory(account.id));
 				dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.ACCOUNT.replace(/name/, account.name)));
 				dispatch(this.setMultipleValue({ id: account.id, balances: balanceToSave, echoAccountInfo: fromJS(account) }));
 				let balances = [];
@@ -120,7 +113,7 @@ class AccountActions extends BaseActionsClass {
 				const tokens = balances.data.getBalances.filter((balanceItem) =>
 					balanceItem.type === TOKEN_TYPE && !(new BN(balanceItem.amount)).isEqualTo(0));
 
-				dispatch(this.setMultipleValue({ tokens, totalAccountHistory }));
+				dispatch(this.setMultipleValue({ tokens, totalAccountHistory: total }));
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -157,6 +150,8 @@ class AccountActions extends BaseActionsClass {
 	 */
 	loadAccountHistory(accountId) {
 		return async (dispatch, getState) => {
+			let total = 0;
+			let items = [];
 			try {
 				const queryData = getState().grid.get(ACCOUNT_GRID).toJS();
 				dispatch(this.setValue('loadingMoreHistory', true));
@@ -183,9 +178,6 @@ class AccountActions extends BaseActionsClass {
 					getObjectId(queryData.filters.to),
 				]);
 
-				let items = [];
-				let total = 0;
-
 				try {
 					({ items, total } = await getHistory({
 						subject,
@@ -203,8 +195,10 @@ class AccountActions extends BaseActionsClass {
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatAccountHistory(accountId, transactions);
 				dispatch(this.setValue('history', new List(transactions)));
+				return { total, items };
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
+				return { total, items };
 			} finally {
 				dispatch(this.setValue('loadingMoreHistory', false));
 			}

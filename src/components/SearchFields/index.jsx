@@ -179,9 +179,9 @@ class SearchField extends React.Component {
 			}, i) => ({
 				key: i,
 				value: to,
-				href: SsrHrefHelper.getHrefByTypeSection(section),
+				href: to,
 				content: (
-					<Link key={to} href={SsrHrefHelper.getHrefByTypeSection(section)} as={to} >
+					<Link key={`${to}${i.toString()}`} href={SsrHrefHelper.getHrefByTypeSection(section)} as={to} >
 						<div className="element">
 							<div className="section-name">{section}</div>
 							<div className="value">{prefix}<span className="select">{value}</span>{postfix}</div>

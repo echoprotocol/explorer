@@ -64,7 +64,7 @@ class OperationInfo extends React.Component {
 					{data.to_account && <LinkRow title="To account" account={data.to_account} />}
 					{data.registrar && <LinkRow title="Registrar" account={data.registrar} />	}
 					{data.account_name && <LinkRow title="Account Name" account={data.account_name} />}
-					{data.proposal_id && <LinkRow title="Proposal ID" link={data.proposal_id} />}
+					{data.proposal_id && <LinkRow title="Proposal ID" objectId={data.proposal_id} />}
 					{data.new_account_id && <LinkRow title="New Account ID" objectId={data.new_account_id} />}
 					{data.contract_type && <PrimaryRow title="Contract type" description={data.contract_type} />}
 					{data.deployed_contract_bytecode && <CopyRow title="Deployed contact bytecode" value={data.deployed_contract_bytecode} />}
