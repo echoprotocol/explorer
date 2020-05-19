@@ -352,15 +352,15 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/account-management#evm_address_register_operation',
 	},
 	[OPERATIONS_IDS.DID_CREATE]: {
-		description: '',
+		description: 'Create new DID',
 		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_create_operation',
 	},
 	[OPERATIONS_IDS.DID_UPDATE]: {
-		description: '',
+		description: 'Update an existing DID',
 		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_update_operation',
 	},
 	[OPERATIONS_IDS.DID_DELETE]: {
-		description: '',
+		description: 'Remove DID',
 		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_delete_operation',
 	},
 };
