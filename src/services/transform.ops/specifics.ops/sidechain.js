@@ -56,6 +56,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 							value: data.objectInfo.get('approves'),
 							total: data.objectInfo.get('total'),
 						},
+						eth_transaction_hash: objectInfo.transaction_hash,
 					},
 				},
 			};
