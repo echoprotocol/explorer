@@ -8,14 +8,14 @@ const PrimaryRow = ({
 	<div className={`od-row ${className}`}>
 		<div className="od-col">{title}:</div>
 		<div className="od-col">
-			{description && <span className={cn(`description ${status}`, { text: isText })}>{description}</span>}
+			{description !== undefined && <span className={cn(`description ${status}`, { text: isText })}>{description}</span>}
 		</div>
 	</div>
 );
 
 PrimaryRow.propTypes = {
 	title: PropTypes.string.isRequired,
-	description: PropTypes.string,
+	description: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 	isText: PropTypes.bool,
 	status: PropTypes.string,
 	className: PropTypes.string,

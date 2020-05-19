@@ -16,17 +16,18 @@ const getFullHour = (momentTime) => {
 const TimeFace = React.memo(({ time }) => {
 	const momentTime = moment.duration(time, 'milliseconds');
 
-	const m = momentTime.get('minute');
-	const s = momentTime.get('second');
+	const m = momentTime.get('minute') || 0;
+	const s = momentTime.get('second') || 0;
 
 	const fullH = getFullHour(momentTime);
-	const fullS = s === 0 && !m && !fullH ? undefined : `${s}s`;
-	const fullM = m === 0 && !s && !fullH ? undefined : `${m}m`;
+	const fullS = `${s}s`;
+	const fullM = `${m}m`;
 
-	const ftiltredTime = [fullH, fullM, fullS].filter((v) => v);
+	const ftiltredTime = fullH ? [fullH, fullM, fullS] : [fullM, fullS];
 
-	const [primeTime = '0s', ...restTime] = ftiltredTime;
-	const restTimeWithSeparators = restTime.length === 0 ? undefined : ` : ${restTime.join(' : ')}`;
+	const [primeTime, ...restTime] = ftiltredTime;
+
+	const restTimeWithSeparators = ` : ${restTime.join(' : ')}`;
 
 	return (
 		<React.Fragment>

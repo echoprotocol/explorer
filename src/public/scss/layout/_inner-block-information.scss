@@ -10,7 +10,7 @@
 		width: 960px;
 	}
 	@include max-vw($res-1400) {
-		width: calc(100vw - 342px - 90px);
+		width: calc(100vw - 322px - 90px);
 	}
 	@include max-vw($res-1280) {
 		width: 100%;
