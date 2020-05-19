@@ -168,8 +168,9 @@ class URLHelper {
 	 * @param index
 	 * @returns {string}
 	 */
-	static createTransactionUrl(round, index) {
-		return TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, index);
+	static createTransactionUrl(round, index, virtual) {
+		const url = TRANSACTION_INFORMATION_PATH.replace(/:round/, round).replace(/:index/, index);
+		return virtual === undefined ? url : `${url}?virtual=${!!virtual}`;
 	}
 
 	/**
@@ -207,12 +208,39 @@ class URLHelper {
 	}
 
 	/**
+	 * @method createEthTransactionOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createEthTransactionOut(url) {
+		return `${ETH_EXPLORER}/tx/${url}`;
+	}
+
+	/**
 	 * @method createBtcAddressOut
 	 * @param {string} url
 	 * @return {string}
 	 */
 	static createBtcAddressOut(url) {
 		return `${BTC_EXPLORER}/address/${url}`;
+	}
+
+	/**
+	 * @method createBtcTransactionOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createBtcTransactionOut(url) {
+		return `${BTC_EXPLORER}/tx/${url}`;
+	}
+
+	/**
+	 * @method createBtcBlockOut
+	 * @param {string} url
+	 * @return {string}
+	 */
+	static createBtcBlockOut(url) {
+		return `${BTC_EXPLORER}/block/${url}`;
 	}
 
 	/**

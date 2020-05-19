@@ -40,6 +40,9 @@
 		top: 50%;
 		transform: translateY(-50%) rotate(180deg);
 		transition: transform $speed;
+		& ~ .td-in {
+			padding-right: 25px;
+		}
 	}
 
 	.fold-operation-info {

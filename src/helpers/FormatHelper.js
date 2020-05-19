@@ -169,7 +169,7 @@ class FormatHelper {
 	 * @param count
 	 * @returns {string}
 	 */
-	static getFormatTransactionsOperationTitle(transactionCount, operationCount) {
+	static getFormatTransactionsOperationTitle(operationCount, transactionCount) {
 		return `${operationCount} Operation${operationCount !== 1 ? 's' : ''}, ${transactionCount} Transaction${transactionCount !== 1 ? 's' : ''}`;
 	}
 	/**
@@ -258,6 +258,14 @@ class FormatHelper {
 	 */
 	static getBlockDateByTimestamp(timestamp) {
 		return moment.utc(timestamp).local().format('DD MMM');
+	}
+
+	static formatGlobalParameters(parameters) {
+		return Object.entries(parameters)
+			.map((el) => ({
+				key: el[0].split('_').map((w) => w[0].toUpperCase() + w.substring(1, w.length)).join(' '),
+				value: el[1],
+			}));
 	}
 
 }

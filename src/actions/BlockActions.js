@@ -93,11 +93,11 @@ const getRewardDistribution = async (targetBlock, nextBlock) => {
  * method loadBlockHistory
  * @return {function(...[*]=)}
  */
-export const loadBlockHistory = () => async (dispatch, getState) => {
+export const loadBlockHistory = (paramsOperations) => async (dispatch, getState) => {
 	try {
 		const queryData = getState().grid.get(BLOCK_GRID).toJS();
 		const { currentPage, sizePerPage } = queryData;
-		let operations = getState().block.getIn(['blockInformation', 'operations']) || new List([]);
+		let operations = paramsOperations || getState().block.getIn(['blockInformation', 'operations']) || new List([]);
 		const getObjectId = async (objectId) => {
 			if (!objectId) { return null; }
 			if (isSidechainEthDeposit(objectId) || validators.isContractId(objectId)) {
@@ -202,7 +202,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 						trIndex,
 						i,
 						operation_results[i],
-						i ? '' : trIndex + 1,
+						trIndex + 1,
 						null,
 						null,
 						false,
@@ -212,14 +212,14 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 			const promiseVirtualTransactions = virtualTransaction
 				.map(({
 					op, result, op_in_trx, trx_in_block,
-				}, i) => TransactionActions.getOperation(
+				}) => TransactionActions.getOperation(
 					op,
 					planeBlock.round,
 					planeBlock.timestamp,
 					trx_in_block,
 					op_in_trx,
 					result,
-					i ? '' : op_in_trx + 1,
+					op_in_trx + 1,
 					null,
 					null,
 					true,
@@ -235,9 +235,9 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.round = planeBlock.round;
 		value.timestamp = planeBlock.timestamp;
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
-		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, resultTransactions.length));
+		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, value.operations.size));
 		await dispatch(BlockReducer.actions.set({ field: 'blockInformation', value: new Map(value) }));
-		dispatch(loadBlockHistory());
+		await dispatch(loadBlockHistory(value.operations));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));
