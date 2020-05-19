@@ -41,6 +41,7 @@
 		&.active {
 			width: auto;
 			left: 0;
+			background-color: $explorer-dark;
 			.input-container {
 				border-color: #31354f;
 
@@ -80,7 +81,7 @@
 			}
 
 			input {
-				:placeholder {
+				&::placeholder {
 					color: $lightgrey;
 				}
 			}
@@ -93,6 +94,7 @@
 			.icon {
 				svg {
 					path {
+						opacity: 1;
 						fill: #18142a;
 					}
 				}
@@ -102,7 +104,7 @@
 				color: #18142a;
 
 				&::placeholder {
-					color: rgba(24, 20, 42, 0.4);
+					color: $lightgrey;
 				}
 			}
 
@@ -132,9 +134,14 @@
 		svg {
 			width: 15px;
 			height: 15px;
-
 			path {
+				fill: $lightgrey;
+				opacity: 0.4;
 				@include transition;
+				@include max-vw($res-768) {
+					fill: #ccccd4;
+					opacity: 1;
+				}
 			}
 		}
 	}
@@ -242,6 +249,7 @@
 		top: 100%;
 		right: 0;
 		min-width: 100%;
+		max-width: 100%;
 		margin-top: 2px;
 		border-radius: 2px;
 		overflow: hidden;

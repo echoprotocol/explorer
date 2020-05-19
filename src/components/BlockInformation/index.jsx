@@ -122,7 +122,7 @@ class BlockInformation extends React.Component {
 		const transactionCount = blockInformation.get('transactionCount') || 0;
 		const operationCount = blockInformation.get('operations').size || transactionCount;
 		const rewardDistribution = blockInformation.get('rewardDistribution');
-		const label = FormatHelper.getFormatTransactionsOperationTitle(transactionCount, operationCount);
+		const label = FormatHelper.getFormatTransactionsOperationTitle(operationCount, transactionCount);
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',

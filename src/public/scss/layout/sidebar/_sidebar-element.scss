@@ -160,10 +160,12 @@
 }
 
 .sidebar-element-block-title {
+	display: flex;
+	align-items: center;
 	color: $lightgrey;
 	font-size: 11px;
-	line-height: 13px;
-	height: 13px;
+	line-height: 12px;
+	height: 12px;
 	letter-spacing: 0.02em;
 	white-space: nowrap;
 	@include inter-medium();
