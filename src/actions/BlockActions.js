@@ -207,6 +207,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 						null,
 						false,
 						false,
+						false,
 					))));
 			const promiseVirtualTransactions = virtualTransaction
 				.map(({
@@ -222,6 +223,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 					null,
 					null,
 					true,
+					false,
 					false,
 				));
 
