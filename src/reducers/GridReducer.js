@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import {
 	DEFAULT_SIZE_PER_PAGE,
-	ACCOUNT_GRID, CONTRACT_GRID, BLOCK_GRID, TRANSACTION_GRID,
+	ACCOUNT_GRID, CONTRACT_GRID, BLOCK_GRID, TRANSACTION_GRID, ERC20_GRID,
 } from '../constants/TableConstants';
 import TransformModules from '../utils/TransformModules';
 
@@ -23,6 +23,7 @@ const DEFAULT_STATE = Map({
 	[CONTRACT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[BLOCK_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[TRANSACTION_GRID]: _.cloneDeep(DEFAULT_FIELDS),
+	[ERC20_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 });
 
 export default createModule({

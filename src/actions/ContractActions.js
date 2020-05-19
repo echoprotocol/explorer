@@ -41,7 +41,7 @@ import { getContractInfo, getTotalHistory } from '../services/queries/contract';
 import { loadScript } from '../api/ContractApi';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
 
-import { CONTRACT_GRID } from '../constants/TableConstants';
+import { CONTRACT_GRID, ERC20_GRID } from '../constants/TableConstants';
 import { getHistory as getContractHistory } from '../services/queries/history';
 import GridActions from './GridActions';
 import config from '../config/chain';
@@ -202,6 +202,49 @@ class ContractActions extends BaseActionsClass {
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatContractHistory(transactions);
 				dispatch(this.setValue('history', new List(transactions)));
+			} catch (e) {
+				dispatch(this.setValue('error', e.message));
+			} finally {
+				dispatch(this.setValue('loadingMoreHistory', false));
+			}
+		};
+	}
+
+	loadErc20History(contractId) {
+		return async (dispatch, getState) => {
+			try {
+				const queryData = getState().grid.get(ERC20_GRID).toJS();
+				dispatch(this.setValue('loadingMoreHistory', true));
+				const subject = contractId;
+				const getObjectId = async (objectId) => {
+					if (!objectId) { return; }
+					let account = null;
+					try {
+						account = await echo.api.getAccountByName(objectId.trim());
+						if (account) {
+							account = account.id;
+						}
+						// eslint-disable-next-line no-empty
+					} catch (err) { }
+					// eslint-disable-next-line consistent-return
+					return account;
+				};
+
+				const [fromFilter, toFilter] = await Promise.all([
+					getObjectId(queryData.filters.from),
+					getObjectId(queryData.filters.to),
+				]);
+				try {
+					const options = {
+						from: fromFilter,
+						to: toFilter,
+						offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+						count: queryData.sizePerPage,
+					};
+					await dispatch(this.getContractInfoFromGraphql(subject, options));
+				} catch (err) {
+					console.log('EchoDB error', err);
+				}
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
@@ -724,7 +767,7 @@ class ContractActions extends BaseActionsClass {
 	 * @param {string} id
 	 * @returns {Function}
 	 */
-	getContractInfoFromGraphql(id) {
+	getContractInfoFromGraphql(id, options = {}) {
 		return async (dispatch) => {
 			try {
 				const contract = await echo.api.getObject(id);
@@ -738,7 +781,7 @@ class ContractActions extends BaseActionsClass {
 					{ history, contractInfo, transferHistory },
 					{ total: contractTxs }
 				] = await Promise.all([
-					getContractInfo(id),
+					getContractInfo({ id, ...options }),
 					getTotalHistory([id]),
 				]);
 
@@ -759,6 +802,7 @@ class ContractActions extends BaseActionsClass {
 					error: '',
 					token,
 					countTokenTransfer: transferHistory.total,
+					tokenTransfers: transferHistory.items,
 					registrar: registrar.name,
 					blockNumber: block.round,
 					countUsedByAccount: callers.accounts.length,
@@ -773,6 +817,7 @@ class ContractActions extends BaseActionsClass {
 					}),
 					createdAt: block.timestamp,
 				}));
+				dispatch(GridActions.setTotalDataSize(ERC20_GRID, transferHistory.total));
 
 			} catch (err) {
 				dispatch(this.setValue('error', FormatHelper.formatError(err)));
