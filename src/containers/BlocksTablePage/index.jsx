@@ -7,7 +7,6 @@ import FormatHelper from '../../helpers/FormatHelper';
 import BlockReducer from '../../reducers/BlockReducer';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import GlobalActions from '../../actions/GlobalActions';
-import GridActions from '../../actions/GridActions';
 import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import { BLOCKS_GRID } from '../../constants/TableConstants';
 import URLHelper from '../../helpers/URLHelper';
