@@ -4,7 +4,7 @@ import OperationInfo from './OperationInfo';
 
 const ProposalOperations = ({ operations }) => (
 	operations.map((operation, id) => (
-		<OperationInfo data={operation.operationInfo} key={operation.operationInfo.type} proposalIdx={id + 1} />
+		<OperationInfo data={operation.operationInfo} key={`${operation.operationInfo.type}id`} proposalIdx={id + 1} />
 	)));
 
 ProposalOperations.propTypes = {
