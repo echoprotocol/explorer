@@ -458,7 +458,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.eth_send_deposit.name:
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
 						object = object
-							.set('deposit_id', objectWithApprovals.id);
+							.set('deposit_id', objectWithApprovals.id)
+							.set('transaction_hash', objectWithApprovals.transaction_hash);
 						break;
 					case Operations.approve_erc20_token_withdraw.name: {
 						const originalOpIndexes = singleOperation.sidchain_erc_20_withdraw_token.split('-');
