@@ -1,5 +1,5 @@
 .table-label-wrap {
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -8,16 +8,17 @@
 			margin-right: -8px;
 		}
 	}
-	@include max-vw(1279) {
-		.filter-btn {
-			margin-right: 4px;
-		}
-	}
 	@include max-vw(1000) {
 		margin-right: 20px;
 	}
+	@include max-vw($res-768) {
+		margin-right: 10px;
+	}
 	@include max-vw($res-500) {
 		align-items: flex-end;
+		.filter-btn {
+			margin-right: 0;
+		}
 	}
 }
 

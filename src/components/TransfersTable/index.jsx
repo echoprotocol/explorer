@@ -8,8 +8,8 @@ import echo, { validators } from 'echojs-lib';
 import TableLabel from '../TableLabel';
 import Thead from './Thead';
 import FilterBtn from '../FilterBtn';
-import TransfersFilter from './Filter';
-import TransferPagination from './Pagination';
+import TableFilter from '../../components/TableFilter';
+import TablePagination from '../../components/TablePagination';
 import Row from './Row';
 import { DEBOUNCE_TIMEOUT } from '../../constants/TableConstants';
 import { NOT_FOUND_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
@@ -222,7 +222,7 @@ class TransfersTable extends React.Component {
 				<TableLabel label={label}>
 					<FilterBtn onClick={this.toggleFilter} />
 				</TableLabel>
-				<TransfersFilter
+				<TableFilter
 					open={isFilterOpen}
 					from={from}
 					fromError={fromError}
@@ -256,7 +256,7 @@ class TransfersTable extends React.Component {
 						</tbody>
 					</table>
 				</PerfectScrollbar>
-				<TransferPagination
+				<TablePagination
 					from={filterAndPaginateData.filters.from}
 					to={filterAndPaginateData.filters.to}
 					router={router}

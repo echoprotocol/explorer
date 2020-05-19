@@ -84,6 +84,7 @@
 @import "components/page-breadcrumbs";
 @import "components/block-description";
 
+@import "components/tables/table-filter";
 @import "components/tables/main-page-table";
 @import "components/tables/transfers-table";
 @import "components/tables/operation-detail/operation-detail-table";
@@ -97,7 +98,6 @@
 @import "components/tables/operation-detail/logs-info";
 @import "components/tables/operation-detail/internal-operations";
 @import "components/tables/operations-table/operations-table";
-@import "components/tables/operations-table/operations-filter";
 @import "components/tables/operations-table/operations-pagination";
 @import "components/tables/operations-table/filter-btn";
 @import "components/tables/distribution-table";

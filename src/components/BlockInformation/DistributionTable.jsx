@@ -58,7 +58,7 @@ class DistributionTable extends React.PureComponent {
 					</td>
 					<td className="produced">
 						<div className="td-in">
-							<span className="currency">{producedByCommittee ? 'Yes' : 'No'}</span>
+							<span>{producedByCommittee ? 'Yes' : 'No'}</span>
 						</div>
 					</td>
 				</tr>

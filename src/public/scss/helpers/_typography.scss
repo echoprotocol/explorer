@@ -1,5 +1,4 @@
 @mixin h2() {
-	font-size: 22px;
-	@include inter-ui-bold;
-	letter-spacing: 1px;
+	font-size: 21px;
+	@include inter-semibold;
 }

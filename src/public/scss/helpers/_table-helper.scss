@@ -90,6 +90,20 @@
 			color: $grey;
 		}
 	}
+	.td-in {
+		.value {
+			@include text-overflow;
+			margin-right: 4px;
+			max-width: 140px;
+			display: block;
+			word-break: break-all;
+		}
+
+		.currency {
+			color: $grey-mid;
+			overflow: initial;
+		}
+	}
 }
 
 @mixin table-air() {

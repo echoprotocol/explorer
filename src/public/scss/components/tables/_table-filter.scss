@@ -1,4 +1,4 @@
-.operations-filter {
+.table-filter {
 	display: none;
 	position: relative;
 	padding: 20px 30px;
@@ -45,7 +45,7 @@
 		}
 	}
 }
-.operations-filter-caption {
+.table-filter-caption {
 	@include inter-ui-bold();
 	font-size: 12px;
 	line-height: 15px;
@@ -58,7 +58,7 @@
 		margin: 0 0 10px 0;
 	}
 }
-.operations-filter-wrap {
+.table-filter-wrap {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
@@ -69,18 +69,20 @@
 		margin-right: auto;
 	}
 	@include max-vw($res-500) {
+		width: 100%;
 		margin-left: 0;
 	}
 }
-.operations-filter-item {
+.table-filter-item {
 	display: flex;
 	align-items: center;
 	@include max-vw($res-500) {
+		width: 100%;
 		flex-direction: column;
 		align-items: flex-start;
 	}
 }
-.operations-filter-item + .operations-filter-item {
+.table-filter-item + .table-filter-item {
 	margin-left: 20px;
 	@include max-vw($res-768) {
 		margin: 20px 0 0 0;
@@ -90,7 +92,7 @@
 	}
 }
 
-.operations-filter__button {
+.table-filter__button {
 	padding-left: 52px;
 	margin-top: 10px;
 	width: 100%;
@@ -100,7 +102,7 @@
 	@include max-vw($res-500) {
 		margin-top: 20px;
 		padding-left: 0;
-		.filter-button {
+		.blue-button {
 			width: 100%;
 		}
 	}
