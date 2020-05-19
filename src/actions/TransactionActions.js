@@ -269,38 +269,69 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (operation.options.asset) {
 					assetId = _.get(options, operation.options.asset);
 				}
-				const asset = await echo.api.getObject(assetId || subject.id);
-				const issuer = await echo.api.getObject(asset.issuer);
-				const accumulatedFees = asset.dynamic.accumulated_fees;
-				const quoteAmount = asset.options.core_exchange_rate.quote.amount;
-
-				const rate = await countRate(asset, asset.options.core_exchange_rate);
-				const price = new BN(asset.options.core_exchange_rate.quote.amount)
-					.div(asset.options.core_exchange_rate.base.amount)
-					.toString();
-
+				let asset = null;
+				try {
+					asset = await echo.api.getObject(assetId || subject.id);
+				} catch (e) {
+					//
+				}
 				object = object
-					.set('id', asset.id)
-					.set('name', asset.symbol)
-					.set('type', 'No')
-					.set('price', price)
-					.set(
-						'accumulated_fees',
-						accumulatedFees === 0 ? 0 : FormatHelper
-							.formatAmount(new BN(accumulatedFees).div(quoteAmount).toString(), asset.precision),
-					)
-					.set('rate', rate)
-					.set('issuer', issuer && issuer.name)
-					.set('precision', asset.precision)
-					.set('totalSupply', asset.dynamic.current_supply)
-					.set('issuer_permissions', asset.options.issuer_permissions)
-					.set('flags', asset.options.flags)
-					.set('description', asset.options.description)
-					.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
-					.set('maxSupply', asset.options.max_supply);
+					.set('type', 'No');
+				if (asset) {
+					let issuer = null;
+					try {
+						issuer = await echo.api.getObject(asset.issuer);
+					} catch (e) {
+						//
+					}
+					const rate = await countRate(asset, asset.options.core_exchange_rate);
+					const price = new BN(asset.options.core_exchange_rate.quote.amount)
+						.div(asset.options.core_exchange_rate.base.amount)
+						.toString();
+					const accumulatedFees = asset.dynamic.accumulated_fees;
+					const quoteAmount = asset.options.core_exchange_rate.quote.amount;
+					object = object
+						.set('id', asset.id)
+						.set('name', asset.symbol)
+						.set('total_supply', {
+							amount: asset.dynamic.current_supply,
+							precision: asset.precision,
+							symbol: asset.symbol,
+							asset_id: asset.id,
+						})
+						.set('price', price)
+						.set(
+							'accumulated_fees',
+							{
+								amount: accumulatedFees === 0 ? 0 : new BN(accumulatedFees).div(quoteAmount).toString(10),
+								symbol: asset.symbol,
+								precision: asset.precision,
+								asset_id: asset.id,
+
+							},
+						)
+						.set('rate', rate)
+						.set('issuer', issuer && issuer.name)
+						.set('precision', asset.precision)
+						.set('issuer_permissions', asset.options.issuer_permissions)
+						.set('flags', asset.options.flags)
+						.set('description', asset.options.description)
+						.set('bitAssetOps', asset.bitasset ? asset.bitasset.options : null)
+						.set('maxSupply', asset.options.max_supply);
+				}
 			} else if (committeeOperations.includes(operation.name)) {
 				const accountId = from.id || subject.id;
-				const committee = await echo.api.getCommitteeMemberByAccount(accountId);
+				let committee;
+
+				if (operation.name === Operations.committee_member_update_global_parameters.name) {
+					const currentParameters = (await echo.api.getGlobalProperties()).parameters;
+					object = object
+						.set('current_parameters', FormatHelper.formatGlobalParameters(currentParameters))
+						.set('new_parameters', FormatHelper.formatGlobalParameters(options.new_parameters));
+				}
+				if (accountId) {
+					committee = await echo.api.getCommitteeMemberByAccount(accountId);
+				}
 				if (committee) {
 					const frozenBalance = await echo.api.getCommitteeFrozenBalance(committee.id);
 					const [asset] = await echo.api.getAssets([frozenBalance.asset_id]);
@@ -402,9 +433,22 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				switch (operation.name) {
-					case Operations.sidechain_eth_approve_address.name:
-						objectWithApprovals = await echo.api.getEthAddress(options.account);
+					case Operations.sidechain_eth_create_address.name: {
+						const ethAddress = await echo.api.getEthAddress(options.account);
+						if (ethAddress) {
+							object = object
+								.set('eth_addr', ethAddress.eth_addr);
+							objectWithApprovals = ethAddress;
+						}
 						break;
+					}
+					case Operations.sidechain_eth_approve_address.name: {
+						const ethAddress = await echo.api.getEthAddress(options.account);
+						if (ethAddress) {
+							objectWithApprovals = ethAddress;
+						}
+						break;
+					}
 					case Operations.deposit_eth.name:
 						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
 							.find((el) => el.deposit_id === options.deposit_id);
@@ -470,26 +514,30 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
 						break;
-					case Operations.approve_withdraw_eth.name:
-						objectWithApprovals = await echo.api.getObject(`1.15.${options.withdraw_id}`);
+					case Operations.approve_withdraw_eth.name: {
+						const withdrawId = `1.15.${options.withdraw_id}`;
+						objectWithApprovals = await echo.api.getObject(withdrawId);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw));
+							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
+							.set('withdraw_id', withdrawId);
 						break;
-					case Operations.sidechain_issue.name: {
-						objectWithApprovals = await echo.api.getObject(options.deposit_id);
+					} case Operations.sidechain_issue.name: {
 						const listApprovals = singleOperation.list_of_approvals
 							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						const originalOperation = singleOperation.sidchain_eth_deposit
+							&& URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit))
+							.set('original_operation', originalOperation)
 							.set('list_approvals', listApprovals);
 						break;
 					}
 					case Operations.sidechain_burn.name: {
-						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						const listApprovals = singleOperation.list_of_approvals
 							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
+						const originalOperation = singleOperation.sidchain_eth_withdraw
+							&& URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw);
 						object = object
-							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
+							.set('original_operation', originalOperation)
 							.set('list_approvals', listApprovals);
 						break;
 					}
@@ -523,15 +571,21 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
+					case Operations.deposit_erc20_token.name:
+						object = object
+							.set('from_address', options.erc20_token_addr);
+						break;
 					default:
 						break;
 				}
 
 				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;
-				let approves = objectWithApprovals.approves.length;
+				let approves = objectWithApprovals.approves ? objectWithApprovals.approves.length : 0;
+
 				if (approves === 0 && objectWithApprovals.is_approved) {
 					approves = total;
 				}
+
 				object = object
 					.set('approves', approves)
 					.set('total', total);
@@ -784,6 +838,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					const toAccountId = await echo.api.getAccountByAddress(request);
 					const [toAccount] = await echo.api.getAccounts([toAccountId]);
 					result.subject = { id: toAccountId, name: toAccount.name, address: request };
+				} else if (opId === OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW) {
+					result.subject = { id: `1.15.${request}` };
 				} else {
 					result.subject = { id: response.id, name: request };
 				}
@@ -1208,7 +1264,6 @@ class TransactionActionsClass extends BaseActionsClass {
 			dispatch(this.setValue('loading', true));
 			try {
 				const block = await echo.api.getBlock(blockNumber);
-
 				if (!block) {
 					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
@@ -1224,11 +1279,13 @@ class TransactionActionsClass extends BaseActionsClass {
 				if (virtual) {
 					const operationResults = [];
 					const virtualOperations = await echo.api.getBlockVirtualOperations(blockNumber);
-					if (!virtualOperations.length) {
+					const filtredVirtualOperations = virtualOperations.filter(({ trx_in_block }) => trx_in_block === index - 1);
+
+					if (!filtredVirtualOperations.length) {
 						dispatch(GlobalActions.toggleErrorPath(true));
 						return;
 					}
-					const transformedOperations = virtualOperations.reduce((res, { op, result }) => {
+					const transformedOperations = filtredVirtualOperations.reduce((res, { op, result }) => {
 						operationResults.push(result);
 						return [...res, op];
 					}, []);
@@ -1240,7 +1297,6 @@ class TransactionActionsClass extends BaseActionsClass {
 					transaction = block.transactions[index - 1];
 				}
 
-				await this.fetchTransactionsObjects(transaction.operations);
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
 						operation,

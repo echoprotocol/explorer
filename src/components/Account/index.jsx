@@ -69,13 +69,9 @@ class Account extends React.Component {
 	}
 
 	getTableLabel() {
-		const operationsCount = this.props.accountHistory.size;
-		const transactionsCount = this.props.accountHistory.reduce((trxs, op) => {
-			const currentIndexes = `${op.trIndex}-${op.blockNumber}`;
-			return trxs.includes(currentIndexes) ? trxs : [...trxs, currentIndexes];
-		}, []).length;
-		return `${operationsCount} Operation${operationsCount > 1 ? 's' : ''},
-			${transactionsCount} Transaction${transactionsCount > 1 ? 's' : ''}`;
+		const operationsCount = this.props.totalAccountHistory;
+		const transactionsCount = this.props.totalAccountHistory;
+		return FormatHelper.getFormatTransactionsOperationTitle(operationsCount, transactionsCount);
 	}
 
 	async subscribeHistoryUpdate(id) {
