@@ -1,0 +1,28 @@
+.members-table {
+	position: relative;
+	width: 100%;
+
+	@include table();
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	@include table-avatar();
+	@include table-vertical-scroll();
+
+	thead {
+		color: $grey;
+		.td-in {
+			@include inter-semibold;
+			font-size: 12px;
+		}
+	}
+
+	.view {
+		cursor: pointer;
+		@include only-hover() {
+			&:hover {
+				background-color: $lightgrey-darker;
+			}
+		}
+	}
+}
