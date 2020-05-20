@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Switch from '../../Switch';
-import { ERC20_EVENT_HASHES } from '../../../constants/GlobalConstants';
 
-const LogsTopicsItem = ({ id, value, isLink }) => {
+const LogsTopicsItem = ({
+	id, value, isLink, decValue,
+}) => {
 	const [isDec, setDec] = useState(false);
 
 	const toggleToDec = () => {
@@ -15,13 +16,6 @@ const LogsTopicsItem = ({ id, value, isLink }) => {
 		setDec(false);
 	};
 
-	let decValue;
-	if (id === 0) {
-		const event = Object.entries(ERC20_EVENT_HASHES).find((el) => el[1] === value.substring(0, 8));
-		decValue = event ? event[0] : 'Unsupported event';
-	} else {
-		decValue = Number(`0x${value}`, 10);
-	}
 
 	return (
 		<div className="logs-topics-item">
@@ -40,6 +34,7 @@ LogsTopicsItem.propTypes = {
 	id: PropTypes.number.isRequired,
 	value: PropTypes.string.isRequired,
 	isLink: PropTypes.bool,
+	decValue: PropTypes.string.isRequired,
 };
 
 LogsTopicsItem.defaultProps = {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Switch from '../../Switch';
 import TransformedLogsItem from './TransformedLogItem';
 
-const LogsDataRow = ({ data }) => {
+const LogsDataRow = ({ data, decData }) => {
 	const [isDataTransformed, setDataTransformed] = useState(false);
 
 	const toggleToTransformedData = () => {
@@ -16,8 +16,7 @@ const LogsDataRow = ({ data }) => {
 
 	const renderTransformedData = () => (
 		<div className="logs-multy-row">
-			<TransformedLogsItem name="pay_gem" value="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" />
-			<TransformedLogsItem name="id" value="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" isLink />
+			{decData.map((d) => <TransformedLogsItem name="id" value={d} />)}
 		</div>
 	);
 
@@ -37,5 +36,6 @@ const LogsDataRow = ({ data }) => {
 
 LogsDataRow.propTypes = {
 	data: PropTypes.string.isRequired,
+	decData: PropTypes.array.isRequired,
 };
 export default LogsDataRow;
