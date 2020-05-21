@@ -17,8 +17,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					additionalInfo: {
 						eth_address: data.objectInfo.get('eth_addr'),
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 					},
 				},
@@ -33,8 +33,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					...description,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						received_deposit_address: objectInfo.eth_addr,
 					},
@@ -53,8 +53,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					...description,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						eth_transaction_hash: objectInfo.transaction_hash,
 					},
@@ -73,8 +73,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					...description,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						eth_transaction_hash: objectInfo.transaction_hash,
 					},
@@ -91,8 +91,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						eth_transaction_hash: data.objectInfo.get('transaction_hash'),
 					},
@@ -108,8 +108,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						original_operation: {
 							link: data.objectInfo.get('original_operation'),
@@ -129,8 +129,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						original_operation: {
 							link: data.objectInfo.get('original_operation'),
@@ -224,8 +224,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					deposit_id: data.objectInfo.get('deposit_id'),
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						eth_transaction_hash: data.transaction_hash,
 					},
@@ -241,8 +241,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						original_operation: {
 							link: data.objectInfo.get('original_operation'),
@@ -262,8 +262,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						eth_transaction_hash: objectInfo.transaction_hash,
 					},
@@ -279,8 +279,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
-							value: data.objectInfo.get('approves'),
-							total: data.objectInfo.get('total'),
+							value: objectInfo.approves,
+							total: objectInfo.total,
 						},
 						eth_transaction_hash: objectInfo.transaction_hash,
 						original_operation: {
