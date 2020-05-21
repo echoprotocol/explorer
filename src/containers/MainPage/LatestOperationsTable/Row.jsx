@@ -48,7 +48,7 @@ const OperationsRow = React.memo(({
 				<td className="amount">
 					<div className="td-in">
 						<span className="value">{FormatHelper.formatAmount(amount.value, amount.precision)}</span>
-						<span className="type">{amount.coin}</span>
+						<span className="currency">{amount.coin}</span>
 					</div>
 				</td>
 			</tr>

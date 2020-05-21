@@ -20,6 +20,7 @@ export const TITLE_TEMPLATES = {
 	OBJECT: `Object id | ${DEFAULT_TITLE}`,
 	TRANSACTION: `Transaction index in block round | ${DEFAULT_TITLE}`,
 	CONTRACT: `Contract id | ${DEFAULT_TITLE}`,
+	BLOCKS_TABLE: `Blocks table | ${DEFAULT_TITLE}`,
 };
 
 export const DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES = constants.DYNAMIC_GLOBAL_OBJECT_ID;

@@ -6,13 +6,13 @@ import cn from 'classnames';
 import moment from 'moment';
 import Tooltip from 'rc-tooltip';
 
-import Avatar from '../../../components/Avatar';
-import URLHelper from '../../../helpers/URLHelper';
-import FormatHelper from '../../../helpers/FormatHelper';
-import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
+import Avatar from '../Avatar';
+import URLHelper from '../../helpers/URLHelper';
+import FormatHelper from '../../helpers/FormatHelper';
+import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 
 const OperationsRow = React.memo(({
-	number, producer, size, txs, onClick, time, isLastByDay,
+	number, producer, reward, rewardCurrency, size, txs, onClick, time, isLastByDay, isAllBlocks,
 }) => {
 	const producerLink = URLHelper.createAccountUrlByName(producer);
 	const goToAccount = (e) => {
@@ -98,6 +98,13 @@ const OperationsRow = React.memo(({
 						</a>
 					</Link>
 				</td>
+				{isAllBlocks &&
+				<td className="reward">
+					<div className="td-in">
+						<span className="value">{reward}</span>
+						<span className="currency">{rewardCurrency}</span>
+					</div>
+				</td> }
 				<td className="size"><div className="td-in">{size.weight} {size.weightSize}</div></td>
 				<td className="txs"><div className="td-in">{txs}</div></td>
 			</tr>
@@ -109,10 +116,16 @@ OperationsRow.propTypes = {
 	number: PropTypes.string.isRequired,
 	time: PropTypes.string.isRequired,
 	producer: PropTypes.string.isRequired,
+	reward: PropTypes.string.isRequired,
+	rewardCurrency: PropTypes.string.isRequired,
 	size: PropTypes.object.isRequired,
 	txs: PropTypes.number.isRequired,
 	onClick: PropTypes.func.isRequired,
 	isLastByDay: PropTypes.bool.isRequired,
+	isAllBlocks: PropTypes.bool,
 };
 
+OperationsRow.defaultProps = {
+	isAllBlocks: false,
+};
 export default OperationsRow;

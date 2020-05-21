@@ -6,7 +6,7 @@ import Input from '../Input';
 import BlueBtn from '../../components/Buttons/BlueBtn';
 import { KEY_CODE_ENTER } from '../../constants/GlobalConstants';
 
-const TransfersFilter = React.memo(({
+const TableFilter = React.memo(({
 	open, onChangeFilter, from, to, onClearFilter, onSubmitFilter, fromError, toError,
 }) => {
 	const onKeyPress = (e) => {
@@ -15,10 +15,10 @@ const TransfersFilter = React.memo(({
 		onSubmitFilter(e);
 	};
 	return (
-		<div className={cn('operations-filter', { open })}>
-			<div className="operations-filter-wrap">
-				<div className="operations-filter-item">
-					<span className="operations-filter-caption">Sender</span>
+		<div className={cn('table-filter', { open })}>
+			<div className="table-filter-wrap">
+				<div className="table-filter-item">
+					<span className="table-filter-caption">Sender</span>
 					<Input
 						name="from"
 						hundleClear={(name) => onClearFilter(name)}
@@ -29,8 +29,8 @@ const TransfersFilter = React.memo(({
 						placeholder="Sender name"
 					/>
 				</div>
-				<div className="operations-filter-item">
-					<span className="operations-filter-caption">Receiver</span>
+				<div className="table-filter-item">
+					<span className="table-filter-caption">Receiver</span>
 					<Input
 						name="to"
 						hundleClear={(name) => onClearFilter(name)}
@@ -41,7 +41,7 @@ const TransfersFilter = React.memo(({
 						placeholder="Receiver name"
 					/>
 				</div>
-				<div className="operations-filter__button">
+				<div className="table-filter__button">
 					<BlueBtn name="Apply filters" onClick={onSubmitFilter} isLoading={false} />
 				</div>
 			</div>
@@ -49,7 +49,7 @@ const TransfersFilter = React.memo(({
 	);
 });
 
-TransfersFilter.propTypes = {
+TableFilter.propTypes = {
 	from: PropTypes.string,
 	to: PropTypes.string,
 	open: PropTypes.bool.isRequired,
@@ -60,11 +60,11 @@ TransfersFilter.propTypes = {
 	toError: PropTypes.string,
 };
 
-TransfersFilter.defaultProps = {
+TableFilter.defaultProps = {
 	from: '',
 	to: '',
 	fromError: '',
 	toError: '',
 };
 
-export default TransfersFilter;
+export default TableFilter;

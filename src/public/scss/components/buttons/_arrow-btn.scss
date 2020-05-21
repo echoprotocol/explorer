@@ -2,7 +2,7 @@
 	@include btn();
 	@include inter-medium();
 	@include onFocus(4px, 2px, 1px, rgba($blue, 0.4));
-
+	padding: 9px 19px;
 	font-size: 12px;
 	line-height: 15px;
 	color: $grey;

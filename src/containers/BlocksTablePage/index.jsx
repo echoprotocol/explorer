@@ -4,20 +4,21 @@ import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
 
 import FormatHelper from '../../helpers/FormatHelper';
-
 import BlockReducer from '../../reducers/BlockReducer';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import GlobalActions from '../../actions/GlobalActions';
 import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
-import LatestBlocksTable from '../../components/BlocksTable';
-import LatestOperationsTable from './LatestOperationsTable';
+import { BLOCKS_GRID } from '../../constants/TableConstants';
 import URLHelper from '../../helpers/URLHelper';
 
+import BlocksTable from '../../components/BlocksTable';
+import InnerHeader from '../../components/InnerHeader';
 
-class MainPage extends React.Component {
+
+class BlocksTablePage extends React.Component {
 
 	componentDidMount() {
-		this.props.setTitle(TITLE_TEMPLATES.MAIN);
+		this.props.setTitle(TITLE_TEMPLATES.BLOCKS_TABLE);
 	}
 
 	getBlocks() {
@@ -71,30 +72,31 @@ class MainPage extends React.Component {
 	}
 
 	render() {
+		const { router, filterAndPaginateData } = this.props;
 		return (
-			<div className="main-page">
-				<div className="wrap">
-					<LatestBlocksTable
-						label="Latest Blocks"
-						goToBlock={(e, block) => this.goToBlock(e, block)}
-						blocks={this.getBlocks()}
-					/>
-					<LatestOperationsTable
-						goToTransaction={(e, block, trx, op, virtual) => this.goToTransaction(e, block, trx, op, virtual)}
-						operations={this.getOperations()}
-					/>
-				</div>
+			<div className="inner-container blocks-page">
+				<InnerHeader title="Blocks list" />
+				<BlocksTable
+					router={router}
+					isAllBlocks
+					goToBlock={(e, block) => this.goToBlock(e, block)}
+					blocks={this.getBlocks()}
+					filterAndPaginateData={filterAndPaginateData.toJS()}
+				/>
 			</div>
 		);
 	}
 
 }
 
-MainPage.propTypes = {
+BlocksTablePage.propTypes = {
 	blocks: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	latestOperations: PropTypes.array.isRequired,
+	filterAndPaginateData: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired,
 };
+
 
 export default withRouter(connect(
 	(state) => ({
@@ -102,9 +104,10 @@ export default withRouter(connect(
 		blocks: state.block.get('blocks'),
 		latestBlock: state.round.get('latestBlock'),
 		latestOperations: state.block.get('latestOperations'),
+		filterAndPaginateData: state.grid.get(BLOCKS_GRID),
 	}),
 	(dispatch) => ({
 		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 	}),
-)(MainPage));
+)(BlocksTablePage));
