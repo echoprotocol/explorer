@@ -6,7 +6,7 @@ import ContractActions from '../../actions/ContractActions';
 import GlobalActions from '../../actions/GlobalActions';
 import AccountActions from '../../actions/AccountActions';
 import GridActions from '../../actions/GridActions';
-import { CONTRACT_GRID } from '../../constants/TableConstants';
+import { CONTRACT_GRID, ERC20_GRID } from '../../constants/TableConstants';
 
 export default withRouter(connect(
 	(state) => ({
@@ -30,6 +30,7 @@ export default withRouter(connect(
 		owner: state.contract.get('owner'),
 		token: state.contract.get('token'),
 		countTokenTransfer: state.contract.get('countTokenTransfer'),
+		tokenTransfers: state.contract.get('tokenTransfers'),
 
 		name: state.contract.get('name'),
 		description: state.contract.get('description'),
@@ -42,6 +43,7 @@ export default withRouter(connect(
 		error: state.contract.get('error'),
 
 		activeAccount: state.global.get('activeAccount'),
+		filterAndPaginateData: state.grid.get(ERC20_GRID),
 	}),
 	(dispatch) => ({
 		onChangeFilter: (filters) => dispatch(GridActions.initData(CONTRACT_GRID, filters)),
@@ -55,5 +57,7 @@ export default withRouter(connect(
 		setActiveAccount: (account) => dispatch(AccountActions.setActiveAccount(account)),
 		loadActiveAccount: () => dispatch(AccountActions.loadActiveAccount()),
 		updateContractHistory: (data) => dispatch(ContractActions.updateContractHistory(data)),
+		initData: (params) => dispatch(GridActions.initData(ERC20_GRID, params)),
+		loadErc20History: (contractId) => dispatch(ContractActions.loadErc20History(contractId)),
 	}),
 )(Contract));
