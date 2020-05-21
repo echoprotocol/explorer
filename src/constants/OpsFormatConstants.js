@@ -70,6 +70,9 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: Operations.sidechain_btc_approve_aggregate.name,
 	[OPERATIONS_IDS.BLOCK_REWARD]: Operations.block_reward.name,
 	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: Operations.evm_address_register.name,
+	[OPERATIONS_IDS.DID_CREATE]: Operations.did_create_operation.name,
+	[OPERATIONS_IDS.DID_UPDATE]: Operations.did_update_operation.name,
+	[OPERATIONS_IDS.DID_DELETE]: Operations.did_delete_operation.name,
 };
 
 export const OPS_DESCRIPTIONS = {
@@ -203,8 +206,8 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/vesting-balances#vesting_balance_create_operation',
 	},
 	[OPERATIONS_IDS.VESTING_BALANCE_WITHDRAW]: {
-		description: '',
-		link: '',
+		description: 'Withdraw from a vesting balance',
+		link: 'https://docs.echo.org/api-reference/echo-operations/vesting-balances#vesting_balance_withdraw_operation',
 	},
 	[OPERATIONS_IDS.BALANCE_CLAIM]: {
 		description: 'Claim a balance in a @ref balance_object.\n' +
@@ -245,27 +248,28 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_update_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: {
-		description: '',
+		description: 'Transfer asset to fee pool',
 		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_fund_pool_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_WHITELIST]: {
-		description: '',
+		description: 'Manage the blacklist and whitelist pool of the contract',
 		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_whitelist_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: {
-		description: '',
+		description: 'Used to generate address in ETH blockchain. After the address is generated eth_address_object(s) will be created in echo db and can be retrieved using get_eth_address method.\n' +
+		'Until one of the objects will receive sufficient amount of approvals the number of objects connected to account id can be more than one',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_create_address_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: {
-		description: '',
+		description: 'An internal operation by which committee members confirm the created Ethereum address',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_approve_address_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: {
-		description: '',
+		description: 'An internal operation by which committee members confirm Ethereum deposit',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_deposit_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: {
-		description: '',
+		description: 'An internal operation by which committee members confirm Ethereum deposit after 24h and credit eETH',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_send_deposit_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW]: {
@@ -313,40 +317,52 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_send_withdraw_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: {
-		description: '',
+		description: 'Used to generate address in BTC blockchain. After the address is generated btc_address_object(s) will be created in echo db and can be retrieved using get_btc_address method',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_address_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: {
-		description: '',
+		description: 'An internal operation by which committee members processed deposit to account',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_intermediate_deposit_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: {
-		description: '',
+		description: 'An internal operation by which committee members send from intermediate address to deposit address',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_intermediate_deposit_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT]: {
-		description: '',
+		description: 'An internal operation by which committee members processed deposit to deposit address from intermediate address',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_deposit_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW]: {
-		description: '',
+		description: 'Used to withdraw the eBTC and receive BTC to provided address',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_withdraw_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE]: {
-		description: '',
+		description: 'An internal operation by which committee members collect an aggregate transaction',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_aggregate_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: {
-		description: '',
+		description: ' An internal operation by which committee members confirm the aggregate transaction',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_approve_aggregate_operation',
 	},
 	[OPERATIONS_IDS.BLOCK_REWARD]: {
-		description: '',
+		description: 'Virtual operation that indicates payout of block reward',
 		link: 'https://github.com/echoprotocol/echowiki/blob/fba3e7b342a0192369621908292bc9cd969b901d/api-reference/echo-operations/block-reward.md#block_reward_operation',
 	},
 	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: {
-		description: '',
+		description: 'Register EVM address',
 		link: 'https://docs.echo.org/api-reference/echo-operations/account-management#evm_address_register_operation',
+	},
+	[OPERATIONS_IDS.DID_CREATE]: {
+		description: 'Create new DID',
+		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_create_operation',
+	},
+	[OPERATIONS_IDS.DID_UPDATE]: {
+		description: 'Update an existing DID',
+		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_update_operation',
+	},
+	[OPERATIONS_IDS.DID_DELETE]: {
+		description: 'Remove DID',
+		link: 'https://github.com/echoprotocol/echowiki/blob/266df7813ef42fef9e2d3a4d35cc8b6c7fc84044/api-reference/echo-operations/did.md#did_delete_operation',
 	},
 };
 
