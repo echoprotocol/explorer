@@ -16,6 +16,7 @@ import URLHelper from '../../helpers/URLHelper';
 import BlocksTable from '../../components/BlocksTable';
 import InnerHeader from '../../components/InnerHeader';
 import { getBlocksByIndexes as getBlocks } from '../../actions/BlockActions';
+import GridActions from '../../actions/GridActions';
 
 
 class BlocksTablePage extends React.Component {
@@ -115,6 +116,7 @@ BlocksTablePage.getInitialProps = async ({ asPath, store }) => {
 		page = search.p;
 		onPage = search.l;
 	}
+	await store.dispatch(GridActions.initData(BLOCKS_GRID));
 	fetchedBlocks = (await store.dispatch(getBlocks(page, onPage))).blocks;
 	return { blocks: fetchedBlocks };
 };

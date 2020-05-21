@@ -22,7 +22,7 @@ import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
 import GridActions from './GridActions';
-import { BLOCK_GRID } from '../constants/TableConstants';
+import { BLOCK_GRID, BLOCKS_GRID } from '../constants/TableConstants';
 
 import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
 import { getLatestOperationsFromGQL } from '../services/queries/history';
@@ -340,6 +340,9 @@ export const getBlocksByIndexes = (pageNumber, size) => async (dispatch, getStat
 		}
 	});
 	dispatch(BlockReducer.actions.set({ field: 'blocksOnTable', value: blocks }));
+	dispatch(GridActions.setPage(BLOCKS_GRID, page));
+	dispatch(GridActions.setPageSize(BLOCKS_GRID, onPage));
+	dispatch(GridActions.setTotalDataSize(BLOCKS_GRID, latestBlock));
 	return { blocks };
 };
 /**

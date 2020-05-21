@@ -25,6 +25,7 @@ import {
 	setLatestBlock,
 	updateBlockList,
 	getLatestOperations,
+	getBlocksByIndexes,
 } from './BlockActions';
 import { INDEX_PATH } from '../constants/RouterConstants';
 import StatisticsActions from './StatisticsActions';
@@ -104,6 +105,7 @@ const blockRelease = () => async (dispatch) => {
 	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
 	await dispatch(updateBlockList(global.head_block_number));
+	await dispatch(getBlocksByIndexes());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
 };
