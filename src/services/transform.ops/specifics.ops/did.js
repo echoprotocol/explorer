@@ -1,5 +1,4 @@
 import { OPERATIONS_IDS } from 'echojs-lib';
-
 import { OPS_DESCRIPTIONS, OPS_TYPES } from '../../../constants/OpsFormatConstants';
 
 export const transformOperationDataByType = async (opNumber, data) => {
@@ -7,44 +6,44 @@ export const transformOperationDataByType = async (opNumber, data) => {
 	const description = OPS_DESCRIPTIONS[opNumber];
 	const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 	switch (opNumber) {
-		case OPERATIONS_IDS.DID_CREATE: {
+		case OPERATIONS_IDS.DID_CREATE_OPERATION: {
 			return {
 				operationInfo: {
 					type,
-					sender: data.account,
+					registrar: data.registrar,
+					essence: data.essence,
 					fee: data.fee,
-					essence: objectInfo.essence,
 					public_keys: objectInfo.public_keys,
 					...description,
 				},
 			};
 		}
-		case OPERATIONS_IDS.DID_UPDATE: {
+		case OPERATIONS_IDS.DID_UPDATE_OPERATION: {
 			return {
 				operationInfo: {
 					type,
-					sender: data.account,
-					fee: data.fee,
-					did_identifier: objectInfo.did_identifier,
-					pub_keys_to_delete: objectInfo.pub_keys_to_delete,
+					registrar: data.registrar,
+					did_identifier: data.did_identifier,
 					pub_keys_to_add: objectInfo.pub_keys_to_add,
+					pub_keys_to_delete: objectInfo.pub_keys_to_delete,
+					fee: data.fee,
 					...description,
 				},
 			};
 		}
-		case OPERATIONS_IDS.DID_DELETE: {
+		case OPERATIONS_IDS.DID_DELETE_OPERATION: {
 			return {
 				operationInfo: {
 					type,
-					sender: data.account,
+					registrar: data.registrar,
+					did_identifier: data.did_identifier,
 					fee: data.fee,
-					did_identifier: objectInfo.did_identifier,
 					...description,
 				},
 			};
 		}
 		default:
-			return null;
+			return { };
 	}
 };
 
