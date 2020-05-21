@@ -47,3 +47,5 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return null;
 	}
 };
+
+export default transformOperationDataByType;
