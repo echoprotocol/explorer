@@ -107,7 +107,7 @@
 		}
 
 		&:not(:last-child) {
-			margin-bottom: 20px;
+			margin-bottom: 19px;
 			@include max-vw($res-500) {
 				margin-bottom: 30px;
 			}
@@ -133,10 +133,15 @@
 			}
 		}
 
+		&.lg {
+			.val {
+				font-size: 15px;
+			}
+		}
 		.val {
 			@include inter-ui-medium;
-			font-size: 15px;
-			line-height: 1em;
+			font-size: 14px;
+			line-height: 17px;
 			display: flex;
 			align-items: center;
 			white-space: nowrap;
