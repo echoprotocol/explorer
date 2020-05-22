@@ -106,9 +106,10 @@ class ContractActions extends BaseActionsClass {
 	getContractInfo(id) {
 		return async (dispatch) => {
 
+			let contractOwner = null;
 			if (!validators.isContractId(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));
-				return;
+				return { owner: contractOwner };
 			}
 
 			dispatch(this.setValue('loading', true));
@@ -117,7 +118,7 @@ class ContractActions extends BaseActionsClass {
 
 				if (!contract) {
 					dispatch(GlobalActions.toggleErrorPath(true));
-					return;
+					return { owner: contractOwner };
 				}
 
 				let [balances, { owner }] = await Promise.all([
@@ -144,11 +145,13 @@ class ContractActions extends BaseActionsClass {
 					balances: new List(balances),
 					owner,
 				}));
+				contractOwner = owner;
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));
 			}
+			return { owner: contractOwner };
 		};
 	}
 
@@ -796,7 +799,7 @@ class ContractActions extends BaseActionsClass {
 
 				const tokenTransfers = transferHistory.items.map((transfer) =>
 					({ ...transfer, amount: FormatHelper.formatAmount(transfer.amount, decimals) }))
-				
+
 				let { supported_asset_id: supportedAsset } = contractInfo;
 
 				if (supportedAsset !== null) {
