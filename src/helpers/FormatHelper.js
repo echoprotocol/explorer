@@ -18,7 +18,7 @@ class FormatHelper {
      * @returns {string}
      */
 	static formatAmount(amount, precision = 0, symbol) {
-		const number = new BN(amount).div(10 ** precision);
+		const number = new BN(amount).div(new BN(10).pow(precision));
 
 		const base = `${parseInt(this.toFixed(Math.abs(number || 0), precision), 10)}`;
 		const mod = base.length > 3 ? base.length % 3 : 0;
