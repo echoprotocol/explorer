@@ -3,6 +3,7 @@ import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 import * as wrapper from 'solc/wrapper';
 import Router from 'next/router';
+import BN from 'bignumber.js';
 
 import {
 	CONTRACT_FIELDS,
@@ -45,7 +46,6 @@ import { CONTRACT_GRID, ERC20_GRID } from '../constants/TableConstants';
 import { getHistory as getContractHistory } from '../services/queries/history';
 import GridActions from './GridActions';
 import config from '../config/chain';
-import BN from 'bignumber.js';
 class ContractActions extends BaseActionsClass {
 
 	/**
