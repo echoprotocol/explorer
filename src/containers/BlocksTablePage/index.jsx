@@ -48,16 +48,6 @@ class BlocksTablePage extends React.Component {
 		});
 	}
 
-	getOperations() {
-		const { latestOperations } = this.props;
-		const blockResult = [];
-		if (latestOperations) {
-			blockResult.push(...latestOperations);
-		}
-
-		return blockResult;
-	}
-
 	goToBlock(e, block) {
 		e.preventDefault();
 		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
