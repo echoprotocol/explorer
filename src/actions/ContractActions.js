@@ -792,6 +792,11 @@ class ContractActions extends BaseActionsClass {
 					registrar, block, callers, type, eth_accuracy: ethAccuracy, token,
 				} = contractInfo;
 
+				const decimals = new BN((token && token.decimals) || 0).toNumber();
+
+				const tokenTransfers = transferHistory.items.map((transfer) =>
+					({ ...transfer, amount: FormatHelper.formatAmount(transfer.amount, decimals) }))
+				
 				let { supported_asset_id: supportedAsset } = contractInfo;
 
 				if (supportedAsset !== null) {
@@ -802,7 +807,7 @@ class ContractActions extends BaseActionsClass {
 					error: '',
 					token,
 					countTokenTransfer: transferHistory.total,
-					tokenTransfers: transferHistory.items,
+					tokenTransfers,
 					registrar: registrar.name,
 					blockNumber: block.round,
 					countUsedByAccount: callers.accounts.length,
