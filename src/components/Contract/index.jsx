@@ -34,6 +34,7 @@ import ActionButton from '../Buttons/ActionButton';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 import OperationsTable from '../../containers/OperationsTable';
 import { CONTRACT_GRID } from '../../constants/TableConstants';
 import ContractActions from '../../actions/ContractActions';
@@ -175,6 +176,7 @@ class Contract extends React.Component {
 						operations={contractHistory}
 						router={this.props.router}
 						loading={loadingMoreHistory}
+						label={FormatHelper.getFormaOperationsTitle(contractTxs)}
 						timestamp
 					/> : <Loader />,
 				key: 'tab-0',
