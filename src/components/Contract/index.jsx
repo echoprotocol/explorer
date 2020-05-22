@@ -237,7 +237,7 @@ class Contract extends React.Component {
 								<CopyBtn valueToCopy={bytecode || ''} name="Copy Code" />
 								<ActionButton
 									name={stars.includes(activeAccount.get('id')) ? 'Unstar' : 'Star'}
-									onClick={() => this.props.setStarToContract()}
+									onClick={() => this.props.setStarToContract(id)}
 									label={stars.includes(activeAccount.get('id')) ? `${stars.size}` : null}
 									icon={starIcon}
 								/>
