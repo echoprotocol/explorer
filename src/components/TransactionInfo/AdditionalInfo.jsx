@@ -14,7 +14,7 @@ import URLHelper from '../../helpers/URLHelper';
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
 		<div className="additional-info__title">Additional info</div>
-		<div className="operation-details-rows">
+		<div className="table-detail-rows">
 			{data.whitelisting_accounts && data.whitelisting_accounts.map((account) => <LinkRow title="Account white list" account={account} />)}
 			{data.blacklisting_accounts && data.blacklisting_accounts.map((account) => <LinkRow title="Account black list" account={account} />)}
 			{data.current_asset_feed_producers && <ProducersRow title="Current asset feed producers" accounts={data.current_asset_feed_producers} /> }

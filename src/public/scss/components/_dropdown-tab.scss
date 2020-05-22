@@ -1,0 +1,65 @@
+.dropdown-tab {
+	position: relative;
+	width: 100%;
+	@include inter-ui-regular;
+	font-size: 12px;
+	margin-bottom: 20px;
+
+	.toggle-icon {
+		transition: transform $speed;
+	}
+
+	&.opened {
+		.toggle-icon {
+			transform: rotate(180deg);
+		}
+	}
+}
+.dropdown-tab__trigger {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 7px 10px;
+	width: 100%;
+	background-color: transparent;
+	border: 1px solid #aeb7be;
+	border-radius: 2px;
+	line-height: 18px;
+	&:focus {
+		@include onFocus(2px, 1px, 1px, $blue);
+	}
+	&:active {
+		opacity: 0.7;
+	}
+}
+
+.dropdown-tab-list {
+	position: absolute;
+	z-index: 2;
+	top: calc(100% + 5px);
+	width: 100%;
+	box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-tab__item {
+	display: flex;
+	padding: 7px 10px;
+	width: 100%;
+	background-color: $lightest-grey-bg;
+	border: none;
+	&:focus {
+		background-color: $lightgrey-darker;
+	}
+	@include only-hover {
+		&:hover {
+			cursor: pointer;
+			background-color: $lightgrey-darker;
+		}
+	}
+}
+
+.react-tabs__tab--selected {
+	.dropdown-tab__item {
+		background-color: $grey-mid;
+	}
+}

@@ -19,7 +19,7 @@ class OperationInfo extends React.Component {
 	render() {
 		const { data, proposalIdx } = this.props;
 		return (
-			<div className="operation-info">
+			<div className="row-info">
 				{data.description &&
 					<div className="describe-operation">
 						<div className="describe-operation__description">{data.description}</div>
@@ -28,7 +28,7 @@ class OperationInfo extends React.Component {
 						</div>
 					</div>
 				}
-				<div className="operation-details-rows">
+				<div className="table-detail-rows">
 					{data.type && proposalIdx && <div className="proposal-operation-header">{proposalIdx}.&nbsp;{data.type}</div>}
 					{data.type && !proposalIdx && <PrimaryRow title="Type" description={data.type} /> }
 					{data.issuer && <LinkRow title="Issuer" account={data.issuer} />}
