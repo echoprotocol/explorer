@@ -1,0 +1,234 @@
+.info-block {
+	position: relative;
+	z-index: 2;
+	box-shadow: 0px 0px 62px rgba(64, 64, 64, 0.15);
+	padding: 0 33px 0 33px;
+	margin-bottom: 30px;
+	@include inter-ui-medium;
+	@include max-vw($res-1600) {
+		padding: 0 20px;
+	}
+
+	@include max-vw($res-1280) {
+		padding: 0 30px;
+	}
+
+	@include max-vw($res-768) {
+		padding: 0 20px;
+	}
+
+	@include max-vw($res-500) {
+		padding: 0 15px;
+	}
+
+	a {
+		@include link();
+	}
+	.od-row {
+		@include max-vw($res-500) {
+			flex-wrap: wrap;
+		}
+	}
+	.od-col {
+		@include max-vw($res-500) {
+			width: 100%;
+		}
+		&:first-child {
+			@include max-vw($res-500) {
+				margin-right: 0;
+				margin-bottom: 20px;
+			}
+		}
+	}
+	.settings-field {
+		@include max-vw($res-500) {
+			margin-top: 0;
+		}
+	}
+}
+
+.info-block-main {
+	display: flex;
+	padding: 24px 0 18px 0;
+	justify-content: space-between;
+	@include max-vw($res-1280) {
+		padding: 20px 0;
+	}
+	@include max-vw($res-768) {
+		padding: 17px 0;
+		flex-wrap: wrap;
+	}
+	@include max-vw($res-500) {
+		padding: 33px 0;
+	}
+}
+
+.info-block-secondary {
+	margin-top: 10px;
+	border-top: 1px solid $grey-mid;
+}
+
+.info-block__item {
+	flex-shrink: 0;
+	word-break: break-all;
+
+	@include max-vw($res-768) {
+		width: 100%;
+		display: flex;
+		align-items: center;
+	}
+	@include max-vw($res-500) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	&:not(:last-child) {
+		padding-right: 5px;
+		@include max-vw($res-1280) {
+			padding-right: 0;
+		}
+		@include max-vw($res-768) {
+			margin-bottom: 9px;
+		}
+		@include max-vw($res-500) {
+			margin-bottom: 24px;
+		}
+	}
+
+	.title {
+		font-size: 11px;
+		color: $lightgrey;
+		margin-bottom: 15px;
+		min-height: 10px;
+		@include max-vw($res-768) {
+			width: 125px;
+			margin-bottom: 0;
+		}
+		@include max-vw($res-500) {
+			margin-bottom: 7px;
+			width: 100%;
+		}
+	}
+
+	.value {
+		font-size: 14px;
+		letter-spacing: 0;
+		min-height: 21px;
+		line-height: normal;
+		align-items: center;
+		max-width: calc(100%);
+		display: block;
+		@include text-overflow();
+		@include max-vw($res-1000) {
+			font-size: 14px;
+			line-height: 20px;
+		}
+		@include max-vw($res-768) {
+			width: calc(100% - 140px);
+		}
+		@include max-vw($res-500) {
+			width: 100%;
+		}
+	}
+
+	// block Item sizes
+	&.time {
+		width: 25%;
+		@include max-vw($res-1600) {
+			width: 30%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.size {
+		width: 19%;
+		@include max-vw($res-1600) {
+			width: 15%;
+		}
+		@include max-vw($res-1280) {
+			width: 14%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.producer {
+		width: 19%;
+		white-space: nowrap;
+		@include max-vw($res-1600) {
+			width: 18%;
+		}
+		@include max-vw($res-1280) {
+			width: 16%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.verifiers {
+		width: 19%;
+		white-space: nowrap;
+		@include max-vw($res-1600) {
+			width: 15%;
+		}
+		@include max-vw($res-1280) {
+			width: 14%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.reward {
+		width: 19%;
+		white-space: nowrap;
+		@include max-vw($res-1600) {
+			width: 20%;
+		}
+		@include max-vw($res-1280) {
+			width: 23%;
+		}
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	// asset-item-sizes
+	&.issuer {
+		width: 23%;
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.precision {
+		width: 19%;
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.current-supply {
+		width: 22%;
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.max-supply {
+		width: 26%;
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+
+	&.bit-asset {
+		width: 10%;
+		@include max-vw($res-768) {
+			width: 100%;
+		}
+	}
+}

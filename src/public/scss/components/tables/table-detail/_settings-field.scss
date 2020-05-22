@@ -2,6 +2,11 @@
 	display: flex;
 	flex-wrap: wrap;
 	margin-bottom: -5px;
+	&.white {
+		.settings-item {
+			background-color: #ffffff;
+		}
+	}
 }
 
 .settings-item {
