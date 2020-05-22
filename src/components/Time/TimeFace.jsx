@@ -10,7 +10,15 @@ const getFullHour = (momentTime) => {
 
 	const h = momentTime.get('hour');
 
-	return h === 0 ? undefined : `${h}h`;
+	if (h === 0) {
+		return undefined;
+	}
+
+	if (h < 10) {
+		return `0${h}h`;
+	}
+
+	return `${h}h`;
 };
 
 const TimeFace = React.memo(({ time }) => {
