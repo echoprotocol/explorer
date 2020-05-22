@@ -41,7 +41,7 @@ class ObjectInfo extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="fold-title">Object: proposal</div>
-				<div className="operation-detail-table">
+				<div className="table-detail-table">
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
@@ -69,7 +69,7 @@ class ObjectInfo extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="fold-title">Object: committee</div>
-				<div className="operation-detail-table">
+				<div className="table-detail-table">
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
@@ -105,7 +105,7 @@ class ObjectInfo extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="fold-title">Object: asset</div>
-				<div className="operation-detail-table">
+				<div className="table-detail-table">
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
@@ -161,7 +161,7 @@ class ObjectInfo extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="fold-title">Object: account</div>
-				<div className="operation-detail-table">
+				<div className="table-detail-table">
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">
@@ -249,7 +249,7 @@ class ObjectInfo extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="fold-title">Object: contract</div>
-				<div className="operation-detail-table">
+				<div className="table-detail-table">
 					<div className="od-row">
 						<div className="od-col">ID:</div>
 						<div className="od-col">

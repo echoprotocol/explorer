@@ -1,0 +1,133 @@
+.members-table {
+	position: relative;
+	width: 100%;
+
+	@include table();
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	@include table-avatar();
+	@include table-vertical-scroll();
+
+	table {
+		min-width: 800px;
+	}
+	.scrollbar-container {
+		@include max-vw(800) {
+			overflow: hidden;
+			padding-bottom: 40px;
+		}
+	}
+	thead {
+		color: $grey;
+		.td-in {
+			@include inter-semibold;
+			font-size: 12px;
+			white-space: nowrap;
+		}
+	}
+
+	tbody {
+		.bitcoin-address,
+		.etherium-address {
+			.td-in {
+				display: inline-block;
+				@include text-overflow();
+				max-width: 160px;
+			}
+		}
+		td:last-child {
+			.td-in {
+				display: inline-block;
+				@include text-overflow();
+				max-width: 165px;
+			}
+		}
+	}
+
+	.air {
+		height: 20px;
+	}
+
+	.view {
+		cursor: pointer;
+		@include only-hover() {
+			&:hover:not(.active) {
+				background-color: $lightgrey-darker;
+			}
+		}
+		&.active {
+			background-color: #fff;
+			.toggle-icon {
+				opacity: 1;
+			}
+		}
+	}
+
+	.account {
+		@include table-avatar();
+		.td-in {
+			span {
+				display: inline-block;
+				max-width: 95px;
+			}
+		}
+	}
+
+	.toggle-icon {
+		opacity: 0;
+		transform: translateY(-50%);
+		transition: opacity $speed;
+	}
+
+	// Cell sizes
+	.number {
+		width: 68px;
+		min-width: 68px;
+		@include max-vw($res-1600) {
+			width: 49px;
+			min-width: 49px;
+		}
+		@include max-vw($res-1280) {
+			width: 51px;
+			min-width: 51px;
+		}
+	}
+	.account {
+		width: 14%;
+		@include max-vw($res-1600) {
+			width: 14.5%;
+		}
+		@include max-vw($res-1280) {
+			width: 15%;
+		}
+	}
+	.abandon {
+		width: 9.5%;
+	}
+	.confirmations,
+	.participation {
+		width: 11.5%;
+		@include max-vw($res-1280) {
+			width: 12%;
+		}
+	}
+	.bitcoin-address {
+		width: 21.5%;
+		@include max-vw($res-1600) {
+			width: 18.5%;
+		}
+	}
+	.etherium-address {
+		width: 20.5%;
+		@include max-vw($res-1600) {
+			width: 17.5%;
+		}
+	}
+	.id {
+		width: 8%;
+		@include max-vw($res-1600) {
+			width: 10%;
+		}
+	}
+}

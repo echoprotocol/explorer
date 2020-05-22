@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import cn from 'classnames';
@@ -7,7 +7,7 @@ import Avatar from '../Avatar';
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_ACCOUNTS_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
-const OperationsRow = React.memo(({
+const OperationsRow = ({
 	date, sender, receiver, amount, block, id, onClick,
 }) => (
 	<React.Fragment>
@@ -57,7 +57,7 @@ const OperationsRow = React.memo(({
 			</td>
 		</tr>
 	</React.Fragment>
-));
+);
 
 OperationsRow.propTypes = {
 	id: PropTypes.number.isRequired,
@@ -69,4 +69,4 @@ OperationsRow.propTypes = {
 	onClick: PropTypes.func.isRequired,
 };
 
-export default OperationsRow;
+export default memo(OperationsRow);

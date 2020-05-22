@@ -1,0 +1,57 @@
+.assets-field {
+	max-width: 320px;
+	display: flex;
+	flex-direction: column;
+}
+
+.assets-field-item {
+	display: flex;
+	align-items: center;
+	padding: 12px 0;
+	&:first-child {
+		padding-top: 0;
+	}
+	.title {
+		@include inter-ui-medium;
+		color: $grey;
+		font-size: 11px;
+		line-height: 1em;
+		display: block;
+		white-space: nowrap;
+	}
+
+	.value {
+		@include inter-ui-medium;
+		font-size: 12px;
+		line-height: 1em;
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+		.amount {
+			display: inline-block;
+			@include text-overflow();
+			max-width: 135px;
+		}
+		&.name {
+			display: inline-block;
+			@include text-overflow();
+		}
+	}
+
+	.divider {
+		flex-grow: 1;
+		height: 1px;
+		align-self: flex-end;
+		margin: 0 5px;
+		background-image: url("../images/icons/point.svg");
+		background-size: auto;
+		background-repeat: repeat;
+		transform: translateY(-3px);
+	}
+
+	&.lg {
+		.value {
+			font-size: 15px;
+		}
+	}
+}

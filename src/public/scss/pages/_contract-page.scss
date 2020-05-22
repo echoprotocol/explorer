@@ -65,15 +65,6 @@
 	color: $grey;
 }
 
-.dropdown-tab {
-	display: flex;
-	z-index: 1;
-
-	.dropdown-toggle {
-		z-index: 1;
-	}
-}
-
 .abi-info {
 	@include inter-ui-regular;
 	color: #6e6d6f;

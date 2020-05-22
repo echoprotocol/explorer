@@ -155,23 +155,37 @@ const OperationsRow = ({
 				<tr className="fold">
 					<td colSpan="6">
 						<Tabs>
-							<TabList className="operation-detail-header">
-								<div className="operation-detail-tabs">
+							<TabList className="table-detail-header">
+								<div className="tabs">
 									{	operationsInfoData.operationInfo &&
-										<Tab className="operation-detail-tab">Operation Info</Tab>
+										<Tab>
+											<button className="tab">Operation Info</button>
+										</Tab>
 									}
 									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
-									<Tab className="operation-detail-tab">Proposal operations ({operationsInfoData.proposalOperations.length})</Tab> }
+									<Tab>
+										<button className="tab">
+											Proposal operations ({operationsInfoData.proposalOperations.length})
+										</button>
+									</Tab> }
 									{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
-									<Tab className="operation-detail-tab">Event logs ({operationsInfoData.logs.length})</Tab>}
+									<Tab>
+										<button className="tab">
+											Event logs ({operationsInfoData.logs.length})
+										</button>
+									</Tab>}
 									{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
-									<Tab className="operation-detail-tab">Internal operations ({operationsInfoData.internalOperations.length})</Tab> }
+									<Tab>
+										<button className="tab">
+											Internal operations ({operationsInfoData.internalOperations.length})
+										</button>
+									</Tab> }
 								</div>
 								<button className="yellow-button" onClick={(e) => goToLink(e, operationObjectsUrl)}>
 									<a className="yellow" href={operationObjectsUrl} >View Raw JSON Object</a>
 								</button>
 							</TabList>
-							<div className="operation-detail-table">
+							<div className="table-detail-table">
 								{ operationsInfoData.operationInfo &&
 								<TabPanel>
 									<OperationInfo data={operationsInfoData.operationInfo} />
