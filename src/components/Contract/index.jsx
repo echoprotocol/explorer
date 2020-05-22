@@ -231,7 +231,7 @@ class Contract extends React.Component {
 				<div className="contract-tabs">
 					<div className="page-info contract-info">
 						<InnerHeader>
-							<ContractIcon icon={icon} />
+							<ContractIcon icon={icon} className="inner-header__icon" />
 							<div className="contract-header-title">Contract {id} {name && `: ${name}`}</div>
 							<div className="inner-header-buttons">
 								<CopyBtn valueToCopy={bytecode || ''} name="Copy Code" />
