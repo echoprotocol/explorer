@@ -45,7 +45,7 @@ import { CONTRACT_GRID, ERC20_GRID } from '../constants/TableConstants';
 import { getHistory as getContractHistory } from '../services/queries/history';
 import GridActions from './GridActions';
 import config from '../config/chain';
-import BN from 'bignumber.js';
+
 class ContractActions extends BaseActionsClass {
 
 	/**
