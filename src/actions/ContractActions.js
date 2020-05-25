@@ -3,6 +3,7 @@ import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 import * as wrapper from 'solc/wrapper';
 import Router from 'next/router';
+import BN from 'bignumber.js';
 
 import {
 	CONTRACT_FIELDS,
