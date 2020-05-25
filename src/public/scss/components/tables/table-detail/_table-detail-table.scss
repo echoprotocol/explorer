@@ -1,51 +1,6 @@
 .table-detail-table {
 	padding: 0 30px 20px;
 	width: 100%;
-
-	.od-row {
-		display: flex;
-		align-items: flex-start;
-		padding: 20px 0;
-		&:not(:last-child) {
-			border-bottom: 1px solid $lightgrey-darker;
-		}
-		&.sm {
-			.od-col:nth-child(1) {
-				min-width: 150px;
-			}
-		}
-		&.align-center {
-			align-items: center;
-		}
-	}
-
-	.od-col {
-		line-height: 15px;
-		@include inter-ui-medium;
-		&.logs {
-			@include hack-regular;
-		}
-		&.flex {
-			display: flex;
-		}
-		&:nth-child(1) {
-			font-size: 11px;
-			color: $lightgrey;
-			white-space: nowrap;
-			min-width: 210px;
-			margin-right: 20px;
-		}
-
-		&:nth-child(2) {
-			flex-grow: 1;
-			font-size: 12px;
-			color: $explorer-black;
-			&.logs {
-				font-size: 11px;
-			}
-		}
-	}
-
 	.description {
 		display: flex;
 		justify-content: space-between;
@@ -142,4 +97,48 @@
 	@include inter-ui-medium;
 	color: $bronze;
 	margin-bottom: 12px;
+}
+
+.od-row {
+	display: flex;
+	align-items: flex-start;
+	padding: 20px 0;
+	&:not(:last-child) {
+		border-bottom: 1px solid $lightgrey-darker;
+	}
+	&.sm {
+		.od-col:nth-child(1) {
+			min-width: 150px;
+		}
+	}
+	&.align-center {
+		align-items: center;
+	}
+}
+
+.od-col {
+	line-height: 15px;
+	@include inter-ui-medium;
+	&.logs {
+		@include hack-regular;
+	}
+	&.flex {
+		display: flex;
+	}
+	&:nth-child(1) {
+		font-size: 11px;
+		color: $lightgrey;
+		white-space: nowrap;
+		min-width: 210px;
+		margin-right: 20px;
+	}
+
+	&:nth-child(2) {
+		flex-grow: 1;
+		font-size: 12px;
+		color: $explorer-black;
+		&.logs {
+			font-size: 11px;
+		}
+	}
 }

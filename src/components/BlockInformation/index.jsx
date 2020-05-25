@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
-import Link from 'next/link';
 import classnames from 'classnames';
 import BN from 'bignumber.js';
 
@@ -12,6 +11,8 @@ import TableLabel from '../TableLabel';
 import InnerHeader from '../InnerHeader';
 import Loader from '../Loader';
 import DistributionTable from './DistributionTable';
+import InfoBlock from '../InfoBlock';
+import InfoBlockItem from '../InfoBlock/InfoBlockItem';
 
 import {
 	INDEX_PATH,
@@ -132,7 +133,6 @@ class BlockInformation extends React.Component {
 		];
 
 		const blockNumber = Number(FormatHelper.removeCommas(formattedBlockNumber));
-
 		return (
 			<React.Fragment>
 				<div className="page-breadcrumbs">
@@ -158,32 +158,28 @@ class BlockInformation extends React.Component {
 					</div>
 				</div>
 				<InnerHeader returnFunction={() => this.returnFunction()} title={`Block ${formattedBlockNumber}`} />
-				<div className="block-description">
-					<div className="container time">
-						<div className="title">Date, time</div>
-						<div className="value">{time}</div>
-					</div>
-					<div className="container size">
-						<div className="title">Size</div>
-						<div className="value">{size}</div>
-					</div>
-					<div className="container producer">
-						<div className="title">Producer</div>
-						<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createAccountUrl(producer.name)}>
-							<a className="link value blue">{producer.name}</a>
-						</Link>
-					</div>
-					<div className="container verifiers">
-						<div className="title">Verifiers</div>
-						<div className="value">
-							{(rewardDistribution && rewardDistribution.length) ? rewardDistribution.length - 1 : '—'}
-						</div>
-					</div>
-					<div className="container reward">
-						<div className="title">Reward</div>
-						<div className="value">{`${FormatHelper.formatAmount(reward, ECHO_ASSET.PRECISION)} ${ECHO_ASSET.SYMBOL}`}</div>
-					</div>
-				</div>
+				<InfoBlock>
+					<InfoBlockItem title="Date, time" value={time} className="time" />
+					<InfoBlockItem title="Size" value={size} className="size" />
+					<InfoBlockItem
+						title="Producer"
+						value={producer.name}
+						isLink
+						href={SSR_ACCOUNTS_PATH}
+						as={URLHelper.createAccountUrl(producer.name)}
+						className="producer"
+					/>
+					<InfoBlockItem
+						title="Verifiers"
+						value={(rewardDistribution && rewardDistribution.length) ? rewardDistribution.length - 1 : '—'}
+						className="verifiers"
+					/>
+					<InfoBlockItem
+						title="Reward"
+						value={`${FormatHelper.formatAmount(reward, ECHO_ASSET.PRECISION)} ${ECHO_ASSET.SYMBOL}`}
+						className="reward"
+					/>
+				</InfoBlock>
 
 				<TableLabel label="Block Certificate">
 					{
