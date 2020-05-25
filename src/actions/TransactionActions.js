@@ -449,13 +449,17 @@ class TransactionActionsClass extends BaseActionsClass {
 						}
 						break;
 					}
-					case Operations.deposit_eth.name:
-						objectWithApprovals = (await echo.api.getAccountDeposits(options.account, 'eth'))
-							.find((el) => el.deposit_id === options.deposit_id);
+					case Operations.deposit_eth.name: {
+						const deposits = await echo.api.getAccountDeposits(options.account, 'eth');
+						if (!deposits) {
+							break;
+						}
+						objectWithApprovals = deposits.find((el) => el.deposit_id === options.deposit_id) || {};
 						object = object
 							.set('deposit_id', objectWithApprovals.id)
 							.set('transaction_hash', objectWithApprovals.transaction_hash);
 						break;
+					}
 					case Operations.eth_send_deposit.name:
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
 						object = object
@@ -555,7 +559,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						break;
 					}
 					case Operations.deposit_erc20_token.name: {
-						objectWithApprovals = await echo.api.getObject(singleOperation.result);
+						const [, result] = operationResult || [];
+						objectWithApprovals = await echo.api.getObject(result) || {};
 						object = object
 							.set('from_address', singleOperation.erc20_token_addr)
 							.set('deposit_id', objectWithApprovals.id)
