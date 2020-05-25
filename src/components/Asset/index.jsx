@@ -10,6 +10,7 @@ import Loader from '../Loader';
 import InnerHeader from '../InnerHeader';
 import InfoBlock from '../InfoBlock';
 import InfoBlockItem from '../InfoBlock/InfoBlockItem';
+import AssetGraphic from '../AssetGraphic';
 
 import {
 	ECHO_ASSET,
@@ -23,6 +24,7 @@ import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstan
 import GlobalActions from '../../actions/GlobalActions';
 
 import settings from './settingsData';
+import chartData from './chartData';
 
 class Asset extends React.Component {
 
@@ -192,7 +194,7 @@ class Asset extends React.Component {
 					<Loader /> :
 					<React.Fragment>
 						<InnerHeader title={`Asset: ${assetSymbol}`} className="committee-members" />
-						<InfoBlock settings={settings}>
+						<InfoBlock settings={settings} className="asset">
 							<InfoBlockItem
 								title="Issuer"
 								value={issuerName}
@@ -206,6 +208,7 @@ class Asset extends React.Component {
 							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
+						<AssetGraphic data={chartData} />
 					</React.Fragment>
 				}
 			</div>
