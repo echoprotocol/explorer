@@ -53,6 +53,7 @@ class OperationInfo extends React.Component {
 					{data.url && <PrimaryRow title="URL" description={data.url} />}
 					{data.new_url && <PrimaryRow title="New URL" description={data.new_url} />}
 					{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
+					{data.from_address && <LinkRow title="From address" value={data.from_address} link={URLHelper.createEthAddressOut(data.from_address)} isLinkOut />}
 					{data.to_eth_address && <LinkRow title="To ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.to_eth_address)} isLinkOut />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
@@ -153,6 +154,11 @@ class OperationInfo extends React.Component {
 					{data.fee && <LinkRow title="Fee" amount={data.fee} />}
 					{data.directLink && <LinkRow title="Operation direct link" link={data.directLink} />}
 					{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
+					{data.essence && <PrimaryRow title="Essence" description={data.essence} />}
+					{data.did_identifier && <PrimaryRow title="DID Identifier" description={data.did_identifier} />}
+					{data.public_keys && <MultyRow title="Public keys" description={data.public_keys} />}
+					{data.pub_keys_to_delete && <MultyRow title="Public keys to delete" description={data.pub_keys_to_delete} />}
+					{data.pub_keys_to_add && <MultyRow title="Public keys to add" description={data.pub_keys_to_add} />}
 				</div>
 				{data.additionalInfo && <AdditionalInfo data={data.additionalInfo} />}
 			</div>

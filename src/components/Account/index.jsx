@@ -140,6 +140,7 @@ class Account extends React.Component {
 												tooltip={balances.size ?
 													`${FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision'))} ${balances.get(ECHO_ASSET.ID).asset.get('symbol')}` :
 													`${FormatHelper.formatAmount(0, 8)} ECHO`}
+												className="lg"
 											/>
 											<AccountInfoRow additionalLink={{
 												href: OBJECTS_PATH,

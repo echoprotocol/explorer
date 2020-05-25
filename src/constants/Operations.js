@@ -663,6 +663,36 @@ const Operations = {
 			asset: null,
 		},
 	},
+	did_create_operation: {
+		value: OPERATIONS_IDS.DID_CREATE,
+		name: 'Did create',
+		options: {
+			from: 'registrar',
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
+	did_update_operation: {
+		value: OPERATIONS_IDS.DID_UPDATE,
+		name: 'Did update',
+		options: {
+			from: 'registrar',
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
+	did_delete_operation: {
+		value: OPERATIONS_IDS.DID_DELETE,
+		name: 'Did delete',
+		options: {
+			from: 'registrar',
+			subject: null,
+			value: null,
+			asset: null,
+		},
+	},
 };
 
 export const accountOperations = [
@@ -738,6 +768,12 @@ export const sidechainBtcOperations = [
 	Operations.sidechain_btc_withdraw.name,
 	Operations.sidechain_btc_aggregate.name,
 	Operations.sidechain_btc_approve_aggregate.name,
+];
+
+export const didOperations = [
+	Operations.did_create_operation.name,
+	Operations.did_update_operation.name,
+	Operations.did_delete_operation.name,
 ];
 
 export default Operations;

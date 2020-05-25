@@ -3,6 +3,7 @@ import { List, fromJS, Map } from 'immutable';
 import { batchActions } from 'redux-batched-actions';
 import * as wrapper from 'solc/wrapper';
 import Router from 'next/router';
+import BN from 'bignumber.js';
 
 import {
 	CONTRACT_FIELDS,
@@ -106,9 +107,10 @@ class ContractActions extends BaseActionsClass {
 	getContractInfo(id) {
 		return async (dispatch) => {
 
+			let contractOwner = null;
 			if (!validators.isContractId(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));
-				return;
+				return { owner: contractOwner };
 			}
 
 			dispatch(this.setValue('loading', true));
@@ -117,7 +119,7 @@ class ContractActions extends BaseActionsClass {
 
 				if (!contract) {
 					dispatch(GlobalActions.toggleErrorPath(true));
-					return;
+					return { owner: contractOwner };
 				}
 
 				let [balances, { owner }] = await Promise.all([
@@ -144,11 +146,13 @@ class ContractActions extends BaseActionsClass {
 					balances: new List(balances),
 					owner,
 				}));
+				contractOwner = owner;
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 			} finally {
 				dispatch(this.setValue('loading', false));
 			}
+			return { owner: contractOwner };
 		};
 	}
 
@@ -792,6 +796,11 @@ class ContractActions extends BaseActionsClass {
 					registrar, block, callers, type, eth_accuracy: ethAccuracy, token,
 				} = contractInfo;
 
+				const decimals = new BN((token && token.decimals) || 0).toNumber();
+
+				const tokenTransfers = transferHistory.items.map((transfer) =>
+					({ ...transfer, amount: FormatHelper.formatAmount(transfer.amount, decimals) }))
+
 				let { supported_asset_id: supportedAsset } = contractInfo;
 
 				if (supportedAsset !== null) {
@@ -802,7 +811,7 @@ class ContractActions extends BaseActionsClass {
 					error: '',
 					token,
 					countTokenTransfer: transferHistory.total,
-					tokenTransfers: transferHistory.items,
+					tokenTransfers,
 					registrar: registrar.name,
 					blockNumber: block.round,
 					countUsedByAccount: callers.accounts.length,

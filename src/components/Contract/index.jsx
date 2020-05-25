@@ -34,6 +34,7 @@ import ActionButton from '../Buttons/ActionButton';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 import OperationsTable from '../../containers/OperationsTable';
 import { CONTRACT_GRID } from '../../constants/TableConstants';
 import ContractActions from '../../actions/ContractActions';
@@ -175,6 +176,7 @@ class Contract extends React.Component {
 						operations={contractHistory}
 						router={this.props.router}
 						loading={loadingMoreHistory}
+						label={FormatHelper.getFormaOperationsTitle(contractTxs)}
 						timestamp
 					/> : <Loader />,
 				key: 'tab-0',
@@ -229,13 +231,13 @@ class Contract extends React.Component {
 				<div className="contract-tabs">
 					<div className="page-info contract-info">
 						<InnerHeader>
-							<ContractIcon icon={icon} />
+							<ContractIcon icon={icon} className="inner-header__icon" />
 							<div className="contract-header-title">Contract {id} {name && `: ${name}`}</div>
 							<div className="inner-header-buttons">
 								<CopyBtn valueToCopy={bytecode || ''} name="Copy Code" />
 								<ActionButton
 									name={stars.includes(activeAccount.get('id')) ? 'Unstar' : 'Star'}
-									onClick={() => this.props.setStarToContract()}
+									onClick={() => this.props.setStarToContract(id)}
 									label={stars.includes(activeAccount.get('id')) ? `${stars.size}` : null}
 									icon={starIcon}
 								/>
@@ -276,14 +278,14 @@ class Contract extends React.Component {
 						<div className={classnames('horizontal-tab-panel', { 'server-slick-track': typeof window === 'undefined' })}>
 							<Slider ref={this.slider} {...settings} >
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 0 })}>
-									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_TRANSACTIONS)} scroll={false}>
 										<a href="" onClick={(e) => this.goToSlide(e, 0)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
 											<span className="menu-item-content">{`Operations (${contractTxs})`}</span>
 										</a>
 									</Link>
 								</div>
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
-									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)} scroll={false}>
 										<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
 											<span className={classnames('menu-item-content with-icon', { verified }, { unverified: !verified })}>Source Code & ABI</span>
 										</a>
@@ -291,7 +293,7 @@ class Contract extends React.Component {
 								</div>
 								{type.includes(ERC20_TOKEN_SYMBOL) &&
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 })}>
-									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ERC20)}>
+									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ERC20)} scroll={false}>
 										<a href="" onClick={(e) => this.goToSlide(e, 2)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 2 ? -1 : null}>
 											<span className="menu-item-content">ERC20 info</span>
 										</a>

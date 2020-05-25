@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import cn from 'classnames';
+import Tooltip from 'rc-tooltip';
 
 import Avatar from '../Avatar';
 import URLHelper from '../../helpers/URLHelper';
@@ -41,7 +42,14 @@ const OperationsRow = ({
 			</td>
 			<td className="amount">
 				<div className="td-in">
-					<span className="value">{amount.value}</span>
+					<Tooltip
+						placement="top"
+						overlayClassName="verify-contract-tooltip"
+						trigger={['hover']}
+						overlay={amount.value}
+					>
+						<span className="txt">{amount.value}&nbsp;</span>
+					</Tooltip>
 					<span className="type">{amount.coin}</span>
 				</div>
 			</td>

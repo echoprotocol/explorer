@@ -46,24 +46,6 @@
 			display: flex;
 			align-items: center;
 		}
-
-		&:not(:last-child) {
-			.menu-item:not(.active) {
-				&:after {
-					content: "";
-					width: 2px;
-					height: 2px;
-					background-color: #040404;
-					opacity: 0.7;
-					display: block;
-					position: absolute;
-					right: 0;
-					top: 0;
-					bottom: 0;
-					margin: auto;
-				}
-			}
-		}
 	}
 
 	.menu-item {
