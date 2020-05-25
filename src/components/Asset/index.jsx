@@ -180,12 +180,12 @@ class Asset extends React.Component {
 
 	render() {
 		const { asset, issuer } = this.state;
-		const assetSymbol = asset.get('symbol');
-		const issuerName = issuer.get('name');
-		const assetPrecision = asset.get('precision');
-		const currentSupply = asset.getIn(['dynamic', 'current_supply']);
-		const maxSupply = asset.getIn(['options', 'max_supply']);
-
+		const assetSymbol = asset && asset.get('symbol');
+		const issuerName = issuer && issuer.get('name');
+		const assetPrecision = asset && asset.get('precision');
+		const currentSupply = asset && asset.getIn(['dynamic', 'current_supply']);
+		const maxSupply = asset && asset.getIn(['options', 'max_supply']);
+		const isbitAsset = asset && !!asset.get('bitasset_data_id');
 		return (
 			<div className="inner-container indent-lg">
 				{(asset === null && issuer === null) ?
@@ -204,7 +204,7 @@ class Asset extends React.Component {
 							<InfoBlockItem title="Precision" value={`${assetPrecision} kb`} className="precision" />
 							<InfoBlockItem title="Current supply" value={currentSupply} className="current-supply" />
 							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
-							<InfoBlockItem title="Bit asset" value="No" className="bit-asset" />
+							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
 					</React.Fragment>
 				}
