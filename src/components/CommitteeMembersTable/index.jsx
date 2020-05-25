@@ -2,7 +2,11 @@ import React, { useEffect, memo } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 
-import { COMMITTEE_TABLE_TYPE } from '../../constants/TableConstants';
+import {
+	CANDIDATE_COMMITTEE_GRID,
+	CURRENT_COMMITTEE_GRID,
+	DEACTIVATED_COMMITTEE_GRID,
+} from '../../constants/TableConstants';
 
 import Thead from './Thead';
 import Row from './Row';
@@ -42,7 +46,6 @@ const CommitteeMembersTable = ({ members, type, router }) => {
 					</tbody>
 				</table>
 			</PerfectScrollbar>
-			{(type === COMMITTEE_TABLE_TYPE.COMMITTEE_CANDIDATES || type === COMMITTEE_TABLE_TYPE.FORMER_MEMBERS) &&
 			<TablePagination
 				from=""
 				to=""
@@ -50,7 +53,7 @@ const CommitteeMembersTable = ({ members, type, router }) => {
 				totalDataSize={20}
 				currentPage={1}
 				sizePerPage={20}
-			/>}
+			/>
 		</div>
 	);
 };
@@ -58,7 +61,7 @@ const CommitteeMembersTable = ({ members, type, router }) => {
 CommitteeMembersTable.propTypes = {
 	members: PropTypes.array.isRequired,
 	type: PropTypes
-		.oneOf([COMMITTEE_TABLE_TYPE.CURRENT_MEMBERS, COMMITTEE_TABLE_TYPE.COMMITTEE_CANDIDATES, COMMITTEE_TABLE_TYPE.FORMER_MEMBERS])
+		.oneOf([CANDIDATE_COMMITTEE_GRID, CURRENT_COMMITTEE_GRID, DEACTIVATED_COMMITTEE_GRID])
 		.isRequired,
 	router: PropTypes.object.isRequired,
 };

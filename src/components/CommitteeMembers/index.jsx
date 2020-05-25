@@ -6,9 +6,17 @@ import InnerHeader from '../InnerHeader';
 import CommitteeMembersTable from '../CommitteeMembersTable';
 import TabDropdown from '../TabDropdown/';
 
+import GridActions from '../../actions/GridActions';
+import AccountActions from '../../actions/AccountActions';
 import membersData from './data';
 
-import { COMMITTEE_TABLE_TYPE } from '../../constants/TableConstants';
+import {
+	CANDIDATE_COMMITTEE_GRID,
+	CURRENT_COMMITTEE_GRID,
+	DEACTIVATED_COMMITTEE_GRID,
+} from '../../constants/TableConstants';
+
+import { ECHODB_COMMITTEE_STATUS } from '../../constants/CommitteeConstants';
 
 class CommitteeMembers extends React.Component {
 
@@ -98,13 +106,13 @@ class CommitteeMembers extends React.Component {
 							</TabDropdown>}
 					</TabList>
 					<TabPanel>
-						<CommitteeMembersTable members={membersData.currentMembers} type={COMMITTEE_TABLE_TYPE.CURRENT_MEMBERS} router={router} />
+						<CommitteeMembersTable members={this.props.currentCommittee.toArray()} type={CURRENT_COMMITTEE_GRID} router={router} />
 					</TabPanel>
 					<TabPanel>
-						<CommitteeMembersTable members={membersData.committeeCandidates} type={COMMITTEE_TABLE_TYPE.COMMITTEE_CANDIDATES} router={router} />
+						<CommitteeMembersTable members={this.props.candidateCommittee.toArray()} type={CANDIDATE_COMMITTEE_GRID} router={router} />
 					</TabPanel>
 					<TabPanel>
-						<CommitteeMembersTable members={membersData.formerMembers} type={COMMITTEE_TABLE_TYPE.FORMER_MEMBERS} router={router} />
+						<CommitteeMembersTable members={this.props.deactivatedCommittee.toArray()} type={DEACTIVATED_COMMITTEE_GRID} router={router} />
 					</TabPanel>
 				</Tabs>
 			</div>
@@ -115,6 +123,19 @@ class CommitteeMembers extends React.Component {
 
 CommitteeMembers.propTypes = {
 	router: PropTypes.object.isRequired,
+	currentCommittee: PropTypes.object.isRequired,
+	candidateCommittee: PropTypes.object.isRequired,
+	deactivatedCommittee: PropTypes.object.isRequired,
+};
+
+CommitteeMembers.getInitialProps = async ({ query: { ...filters }, store }) => {
+	await store.dispatch(GridActions.initData(CURRENT_COMMITTEE_GRID, filters));
+	// await store.dispatch(GridActions.initData(CANDIDATE_COMMITTEE_GRID, filters));
+	// await store.dispatch(GridActions.initData(DEACTIVATED_COMMITTEE_GRID, filters));
+	await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.ACTIVE));
+	// await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.CANDIDATE));
+	// await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.DEACTIVATED));
+	return {};
 };
 
 export default CommitteeMembers;

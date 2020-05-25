@@ -12,6 +12,9 @@ const DEFAULT_FIELDS = new Map({
 	balances: new Map({}),
 	tokens: new List([]),
 	history: new List([]),
+	currentCommittee: new List([]),
+	candidateCommittee: new List([]),
+	deactivatedCommittee: new List([]),
 	echoAccountInfo: null,
 	totalAccountHistory: 0,
 });
