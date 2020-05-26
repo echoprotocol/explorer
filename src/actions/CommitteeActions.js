@@ -1,7 +1,7 @@
 import { List } from 'immutable';
+import echo from 'echojs-lib';
 
 import GridActions from './GridActions';
-
 
 import CommitteeReducer from '../reducers/CommitteeReducer';
 import BaseActionsClass from './BaseActionsClass';
@@ -15,7 +15,7 @@ import {
 } from '../constants/TableConstants';
 import { ECHODB_COMMITTEE_STATUS } from '../constants/CommitteeConstants';
 import Operations from '../constants/Operations';
-
+import { ECHO_ASSET, EBTC_ASSET_ID, EETH_ASSET_ID } from '../constants/GlobalConstants';
 
 class CommitteeActions extends BaseActionsClass {
 
@@ -55,6 +55,53 @@ class CommitteeActions extends BaseActionsClass {
 		});
 	}
 
+	/**
+	* Format account history
+	* @param {String} accountId
+	* @returns {Promise<Object>}
+	*/
+	async getCommitteAdditionalInfo(accountId, committeeId) {
+		const assetsIds = [
+			ECHO_ASSET.ID,
+			EETH_ASSET_ID,
+			EBTC_ASSET_ID,
+		];
+		const [committeBalances, committeeFrozenData, assetsData, committeMember] = await Promise.all([
+			echo.api.getAccountBalances(accountId, assetsIds),
+			echo.api.getCommitteeFrozenBalance(committeeId),
+			echo.api.getAssets(assetsIds),
+			echo.api.getCommitteeMegemberByAccount(accountId),
+		]);
+		const assets = assetsData.map((el) => ({
+			amount: committeBalances.find((b) => b.asset_id === el.id).amount,
+			asset_id: el.id,
+			precision: el.precision,
+			symbol: el.symbol,
+		}));
+		const website = committeMember && committeMember.url;
+		const frozenBalanceAmount = committeeFrozenData.amount || 0;
+		const frozenBalance = {
+			amount: frozenBalanceAmount,
+			asset_id: ECHO_ASSET.ID,
+			precision: ECHO_ASSET.PRECISION,
+			symbol: ECHO_ASSET.SYMBOL,
+		};
+		return { assets, frozenBalance, website };
+	}
+
+	addAditinalInfo(committeeData) {
+		return committeeData.map(async (data) => {
+			try {
+				const aditionalData = await this.getCommitteAdditionalInfo(data.account.link, data.id);
+				data.additionalInfo = aditionalData;
+				return data;
+			} catch (e) {
+				console.log('Get additional committee data error', e);
+				return data;
+			}
+		});
+	}
+
 	loadCommittees(status) {
 		return async (dispatch, getState) => {
 			let total = 0;
@@ -88,8 +135,8 @@ class CommitteeActions extends BaseActionsClass {
 				}
 
 				dispatch(GridActions.setTotalDataSize(grid, total));
-				const committeeAccounts = this.formatCommitteeAccounts(items);
-				// committeeAccounts = await this.addAditinalInfo(committeeAccounts);
+				let committeeAccounts = this.formatCommitteeAccounts(items);
+				committeeAccounts = await Promise.all(this.addAditinalInfo(committeeAccounts));
 				dispatch(this.setValue(listKey, new List(committeeAccounts)));
 				return { total, items };
 			} catch (e) {
