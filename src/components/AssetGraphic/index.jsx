@@ -31,8 +31,8 @@ const AssetGraphic = ({ data }) => {
 						className="y-tooltip"
 						style={{
 							position: 'relative',
-							left: '0px',
-							top: `${activePoint.y - 10}px`,
+							left: '1px',
+							top: `${activePoint.y - 11}px`,
 						}}
 					>
 						{tooltipData && formatPrice(tooltipData.payload[0].payload.price, 0, '.', ',')}
@@ -84,11 +84,13 @@ const AssetGraphic = ({ data }) => {
 						dataKey="date"
 						tickMargin={10}
 						height={40}
+						interval="preserveStartEnd"
 					/>
 					<YAxis
 						dataKey="price"
 						type="number"
-						tickMargin={resolution < 1000 ? 20 : 65}
+						tickSize={15}
+						tickMargin={resolution < 1000 ? 10 : 55}
 						tickFormatter={(tick) => formatPrice(tick, 0, '.', ',')}
 					/>
 					<Tooltip
