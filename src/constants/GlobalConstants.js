@@ -76,6 +76,8 @@ export const ECHO_ASSET = {
 	SYMBOL: 'ECHO',
 	PRECISION: 8,
 };
+export const EETH_ASSET_ID = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.1`;
+export const EBTC_ASSET_ID = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.2`;
 
 export const NATHAN = {
 	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ACCOUNT}.15`,
