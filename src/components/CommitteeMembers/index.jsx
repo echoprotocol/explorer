@@ -7,7 +7,7 @@ import CommitteeMembersTable from '../CommitteeMembersTable';
 import TabDropdown from '../TabDropdown/';
 
 import GridActions from '../../actions/GridActions';
-import AccountActions from '../../actions/AccountActions';
+import CommitteeActions from '../../actions/CommitteeActions';
 import membersData from './data';
 
 import {
@@ -132,7 +132,7 @@ CommitteeMembers.getInitialProps = async ({ query: { ...filters }, store }) => {
 	await store.dispatch(GridActions.initData(CURRENT_COMMITTEE_GRID, filters));
 	// await store.dispatch(GridActions.initData(CANDIDATE_COMMITTEE_GRID, filters));
 	// await store.dispatch(GridActions.initData(DEACTIVATED_COMMITTEE_GRID, filters));
-	await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.ACTIVE));
+	await store.dispatch(CommitteeActions.loadCommittees(ECHODB_COMMITTEE_STATUS.ACTIVE));
 	// await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.CANDIDATE));
 	// await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.DEACTIVATED));
 	return {};

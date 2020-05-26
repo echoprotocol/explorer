@@ -4,7 +4,6 @@ import BN from 'bignumber.js';
 
 import { TITLE_TEMPLATES, TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
-import { ECHODB_COMMITTEE_STATUS } from '../constants/CommitteeConstants';
 
 import AccountReducer from '../reducers/AccountReducer';
 
@@ -16,13 +15,7 @@ import TransactionActions from './TransactionActions';
 import { BridgeService } from '../services/BridgeService';
 import { getBalances } from '../services/queries/balance';
 import { getHistory } from '../services/queries/history';
-import { getCommitteAccounts } from '../services/queries/account';
-import {
-	ACCOUNT_GRID,
-	CURRENT_COMMITTEE_GRID,
-	CANDIDATE_COMMITTEE_GRID,
-	DEACTIVATED_COMMITTEE_GRID,
-} from '../constants/TableConstants';
+import { ACCOUNT_GRID } from '../constants/TableConstants';
 import GridActions from './GridActions';
 
 class AccountActions extends BaseActionsClass {
@@ -150,25 +143,6 @@ class AccountActions extends BaseActionsClass {
 		});
 	}
 
-	formatCommitteeAccounts(committees) {
-		return committees.map((data) => ({
-			account: {
-				link: data.id,
-				value: data.name,
-			},
-			id: data.committee_options.committee_member_id,
-			bitcoinHash: data.committee_options.btc_public_key,
-			etheriumHash: data.committee_options.eth_address,
-			participation: data.committee_options.last_status_change_time,
-			lastOperation: {
-				type: 'operation',
-				link: data.committee_options.last_executed_operation,
-			},
-			proposalTransaction: data.committee_options.proposal_operation,
-			confirmations: data.committee_options.approves_count,
-		}));
-	}
-
 	/**
 	 * Load account history
 	 * @param {string} accountId
@@ -221,52 +195,6 @@ class AccountActions extends BaseActionsClass {
 				let transactions = this.formatHistoryFromEchoDB(items);
 				transactions = await this.formatAccountHistory(accountId, transactions);
 				dispatch(this.setValue('history', new List(transactions)));
-				return { total, items };
-			} catch (e) {
-				dispatch(this.setValue('error', e.message));
-				return { total, items };
-			} finally {
-				dispatch(this.setValue('loadingMoreHistory', false));
-			}
-		};
-	}
-
-	loadCommittees(status) {
-		return async (dispatch, getState) => {
-			let total = 0;
-			let items = [];
-			try {
-				const getGreedAndListKEy = (echodbStatus) => {
-					switch (echodbStatus) {
-						case ECHODB_COMMITTEE_STATUS.ACTIVE:
-							return { grid: CURRENT_COMMITTEE_GRID, listKey: 'currentCommittee' };
-						case ECHODB_COMMITTEE_STATUS.CANDIDATE:
-							return { grid: CANDIDATE_COMMITTEE_GRID, listKey: 'candidateCommittee' };
-						case ECHODB_COMMITTEE_STATUS.DEACTIVATED:
-							return { grid: DEACTIVATED_COMMITTEE_GRID, listKey: 'deactivatedCommittee' };
-						default:
-							return { grid: CURRENT_COMMITTEE_GRID, listKey: 'currentCommittee' };
-					}
-				};
-
-				const { grid, listKey } = getGreedAndListKEy(status);
-				const queryData = getState().grid.get(grid).toJS();
-				dispatch(this.setValue('loadingMoreHistory', true));
-
-				try {
-					({ items, total } = await getCommitteAccounts({
-						status: ECHODB_COMMITTEE_STATUS.ACTIVE,
-						offset: (queryData.currentPage - 1) * queryData.sizePerPage,
-						count: queryData.sizePerPage,
-					}));
-				} catch (err) {
-					console.log('EchoDB getCommitteAccounts error', err);
-				}
-
-				dispatch(GridActions.setTotalDataSize(grid, total));
-				const committeeAccounts = this.formatCommitteeAccounts(items);
-				// committeeAccounts = await this.addAditinalInfo(committeeAccounts);
-				dispatch(this.setValue(listKey, new List(committeeAccounts)));
 				return { total, items };
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));

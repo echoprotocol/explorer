@@ -12,6 +12,7 @@ import contractReducer from './ContractReducer';
 import internetPopupReducer from './InternetPopupReducer';
 import networkReducer from './NetworkReducer';
 import statisticsReducer from './StatisticsReducer';
+import committeeReducer from './CommitteeReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -28,4 +29,5 @@ export default {
 	internetPopup: internetPopupReducer.reducer,
 	network: networkReducer.reducer,
 	statistics: statisticsReducer.reducer,
+	committee: committeeReducer.reducer,
 };

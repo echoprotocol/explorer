@@ -7,17 +7,15 @@ import { DEFAULT_ROWS_COUNT } from '../constants/GlobalConstants';
 
 const DEFAULT_FIELDS = new Map({
 	loading: false,
-	loadingMoreHistory: false,
-	id: null,
-	balances: new Map({}),
-	tokens: new List([]),
-	history: new List([]),
-	echoAccountInfo: null,
+	loadingMoreCommittee: false,
+	currentCommittee: new List([]),
+	candidateCommittee: new List([]),
+	deactivatedCommittee: new List([]),
 	totalAccountHistory: 0,
 });
 
 export default createModule({
-	name: 'account',
+	name: 'committee',
 	initialState: _.cloneDeep(DEFAULT_FIELDS),
 	transformations: {
 		..._.cloneDeep(TransformModules(DEFAULT_FIELDS)),
