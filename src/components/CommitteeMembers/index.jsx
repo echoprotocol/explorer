@@ -1,6 +1,7 @@
 import React from 'react';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
+import cn from 'classnames';
 
 import InnerHeader from '../InnerHeader';
 import CommitteeMembersTable from '../CommitteeMembersTable';
@@ -15,6 +16,13 @@ import {
 	CURRENT_COMMITTEE_GRID,
 	DEACTIVATED_COMMITTEE_GRID,
 } from '../../constants/TableConstants';
+
+import {
+	SSR_CURRENT_COMMITTEE_PATH,
+	SSR_CANDIDATE_COMMITTEE_PATH,
+	SSR_FORMER_COMMITTEE_PATH,
+	COMMITTEE_PATH,
+} from '../../constants/RouterConstants';
 
 import { ECHODB_COMMITTEE_STATUS } from '../../constants/CommitteeConstants';
 
@@ -72,49 +80,61 @@ class CommitteeMembers extends React.Component {
 		return (
 			<div className="inner-container indent-lg">
 				<InnerHeader title="Committee Members" className="committee-members" />
-				<Tabs>
-					<TabList className="tabs members-tabs">
-						{resolution > 499 &&
-						<React.Fragment>
-							<Tab>
-								<button className="tab">Current Members</button>
-							</Tab>
-							<Tab>
-								<button className="tab">Committee candidates</button>
-							</Tab>
-							<Tab>
-								<button className="tab">Former members</button>
-							</Tab>
-						</React.Fragment>}
-						{resolution <= 499 &&
-							<TabDropdown
-								value={currentTab}
-								toggleDropdown={this.toggleDropdown}
-								opened={isDropdownOpened}
-								trigerRef={this.trigerRef}
-								dropDownRef={this.dropdownRef}
-							>
-								<Tab>
-									<button className="dropdown-tab__item" onClick={() => this.setActiveTab(0)}>{tabs[0]}</button>
-								</Tab>
-								<Tab>
-									<button className="dropdown-tab__item" onClick={() => this.setActiveTab(1)}>{tabs[1]}</button>
-								</Tab>
-								<Tab>
-									<button className="dropdown-tab__item" onClick={() => this.setActiveTab(2)}>{tabs[2]}</button>
-								</Tab>
-							</TabDropdown>}
-					</TabList>
-					<TabPanel>
-						<CommitteeMembersTable members={this.props.currentCommittee.toArray()} type={CURRENT_COMMITTEE_GRID} router={router} />
-					</TabPanel>
-					<TabPanel>
-						<CommitteeMembersTable members={this.props.candidateCommittee.toArray()} type={CANDIDATE_COMMITTEE_GRID} router={router} />
-					</TabPanel>
-					<TabPanel>
-						<CommitteeMembersTable members={this.props.deactivatedCommittee.toArray()} type={DEACTIVATED_COMMITTEE_GRID} router={router} />
-					</TabPanel>
-				</Tabs>
+				{resolution > 499 &&
+					<div className="tabs members-tabs">
+						<Link href={COMMITTEE_PATH} as={SSR_CURRENT_COMMITTEE_PATH} scroll={false}>
+							<a className={cn('tab', { active: router.asPath === SSR_CURRENT_COMMITTEE_PATH || router.asPath === COMMITTEE_PATH })}>Current Members</a>
+						</Link>
+						<Link href={COMMITTEE_PATH} as={SSR_CANDIDATE_COMMITTEE_PATH} scroll={false}>
+							<a className={cn('tab', { active: router.asPath === SSR_CANDIDATE_COMMITTEE_PATH })} >Committee candidates</a>
+						</Link>
+						<Link href={COMMITTEE_PATH} as={SSR_FORMER_COMMITTEE_PATH} scroll={false}>
+							<a className={cn('tab', { active: router.asPath === SSR_FORMER_COMMITTEE_PATH })}>Former members</a>
+						</Link>
+					</div>
+				}
+				{resolution <= 499 &&
+				<TabDropdown
+					value={currentTab}
+					toggleDropdown={this.toggleDropdown}
+					opened={isDropdownOpened}
+					trigerRef={this.trigerRef}
+					dropDownRef={this.dropdownRef}
+				>
+					<Link href={COMMITTEE_PATH} as={SSR_CURRENT_COMMITTEE_PATH} scroll={false}>
+						<a
+							role="presentation"
+							className={cn('dropdown-tab__item', { active: router.asPath === SSR_CURRENT_COMMITTEE_PATH || router.asPath === COMMITTEE_PATH })}
+							onClick={() => this.setActiveTab(0)}
+						>{tabs[0]}
+						</a>
+					</Link>
+					<Link href={COMMITTEE_PATH} as={SSR_CANDIDATE_COMMITTEE_PATH} scroll={false}>
+						<a
+							role="presentation"
+							className={cn('dropdown-tab__item', { active: router.asPath === SSR_CANDIDATE_COMMITTEE_PATH })}
+							onClick={() => this.setActiveTab(1)}
+						>{tabs[1]}
+						</a>
+					</Link>
+					<Link href={COMMITTEE_PATH} as={SSR_FORMER_COMMITTEE_PATH} scroll={false}>
+						<a
+							role="presentation"
+							className={cn('dropdown-tab__item', { active: router.asPath === SSR_FORMER_COMMITTEE_PATH })}
+							onClick={() => this.setActiveTab(2)}
+						>{tabs[2]}
+						</a>
+					</Link>
+				</TabDropdown>}
+				{(router.asPath === SSR_CURRENT_COMMITTEE_PATH || router.asPath === COMMITTEE_PATH) &&
+					<CommitteeMembersTable members={this.props.currentCommittee.toArray()} type={CURRENT_COMMITTEE_GRID} router={router} />
+				}
+				{router.asPath === SSR_CANDIDATE_COMMITTEE_PATH &&
+					<CommitteeMembersTable members={this.props.candidateCommittee.toArray()} type={CANDIDATE_COMMITTEE_GRID} router={router} />
+				}
+				{router.asPath === SSR_FORMER_COMMITTEE_PATH &&
+					<CommitteeMembersTable members={this.props.deactivatedCommittee.toArray()} type={DEACTIVATED_COMMITTEE_GRID} router={router} />
+				}
 			</div>
 		);
 	}
