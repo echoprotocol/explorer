@@ -10,9 +10,12 @@ import InfoBlockItem from '../InfoBlock/InfoBlockItem';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
-import { getFullAssetInformation } from '../../actions/AssetActions';
+import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
+import GridActions from '../../actions/GridActions';
+import { ASSET_GRID } from '../../constants/TableConstants';
+import AssetTransfersTable from './AssetTransferTable';
 
 class Asset extends React.Component {
 
@@ -46,6 +49,10 @@ class Asset extends React.Component {
 		}
 	}
 
+	onLoadMoreHistory() {
+		this.props.loadAssetHisotry(this.props.router.query.id);
+	}
+
 	updateAssetData(id) {
 		this.props.getAssetInfo(id)
 			.then(({ asset, issuer }) => {
@@ -59,6 +66,10 @@ class Asset extends React.Component {
 
 	render() {
 		const { asset, issuer } = this.state;
+		const {
+			filterAndPaginateData, initData,
+			assetTransfers, router,
+		} = this.props;
 		const assetSymbol = asset && asset.get('symbol');
 		const issuerName = issuer && issuer.get('name');
 		const assetPrecision = asset && asset.get('precision');
@@ -86,6 +97,14 @@ class Asset extends React.Component {
 							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
+						<AssetTransfersTable
+							label="Asset transfers"
+							assetTransfers={assetTransfers}
+							onLoadMoreHistory={() => this.onLoadMoreHistory()}
+							initData={initData}
+							filterAndPaginateData={filterAndPaginateData}
+							router={router}
+						/>
 					</React.Fragment>
 				}
 			</div>
@@ -98,12 +117,20 @@ Asset.propTypes = {
 	router: PropTypes.object.isRequired,
 	getAssetInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	assetTransfers: PropTypes.array,
+	filterAndPaginateData: PropTypes.object.isRequired,
+	initData: PropTypes.func.isRequired,
+	loadAssetHisotry: PropTypes.func.isRequired,
 };
 
-Asset.defaultProps = {};
+Asset.defaultProps = {
+	assetTransfers: [],
+};
 
-Asset.getInitialProps = async ({ query, store }) => {
-	const { asset, issuer } = await store.dispatch(getFullAssetInformation(query.id));
+Asset.getInitialProps = async ({ query: { id: assetId, ...filters }, store }) => {
+	const { asset, issuer } = await store.dispatch(getFullAssetInformation(assetId));
+	await store.dispatch(getAssetTransfers(assetId));
+	await store.dispatch(GridActions.initData(ASSET_GRID, filters));
 	const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);
 	await store.dispatch(GlobalActions.setTitle(title));
 	return { asset, issuer };

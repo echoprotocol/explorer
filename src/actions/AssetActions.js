@@ -7,6 +7,7 @@ import { ASSET_GRID } from '../constants/TableConstants';
 import { getAssetHistory } from '../services/queries/asset';
 import GridActions from './GridActions';
 import AssetReducer from '../reducers/AssetReducer';
+import Operations from '../constants/Operations';
 
 /**
  * @method getFullAssetInformation
@@ -62,15 +63,35 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 	try {
 		({ items, total } = await getAssetHistory({
 			assetId,
-			fromFilter: fromFilter || undefined,
-			toFilter: toFilter || undefined,
+			from: fromFilter || undefined,
+			to: toFilter || undefined,
 			offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 			count: queryData.sizePerPage,
 		}));
 	} catch (err) {
 		console.log('EchoDB error', err);
 	}
+	let transfers = items.map(async (el) => {
+		const feeAsset = await echo.api.getObject(el.fee.asset_id);
+		const operation = Object.values(Operations).find((o) => o.value === el.operationId);
+		el.fee = {
+			asset_id: feeAsset.id,
+			precision: feeAsset.precision,
+			symbol: feeAsset.symbol,
+			value: el.fee.amount,
+		};
+		if (el.contract) {
+			el.asset = {
+				id: el.contract.id,
+				symbol: el.contract.token.symbol,
+				precision: Number(el.contract.token.decimals),
+			};
+		}
+		el.operation = operation.name;
+		return el;
+	});
+	transfers = await Promise.all(transfers);
 
 	dispatch(GridActions.setTotalDataSize(ASSET_GRID, total));
-	dispatch(AssetReducer.actions.set({ field: 'history', value: new List(items) }));
+	dispatch(AssetReducer.actions.set({ field: 'history', value: new List(transfers) }));
 };

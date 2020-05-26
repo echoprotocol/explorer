@@ -37,12 +37,21 @@ export const getAssetHistory = ({
       		}
           amount,
           asset {
-            id
+            id,
+            symbol
+            precision
           },
           fee {
 						amount,
-            asset_id
-          }
+            asset_id,
+					}
+					contract {
+						id,
+						token {
+							symbol,
+							decimals
+						}
+					}
 				}
 			}
 		}
