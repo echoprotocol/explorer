@@ -21,7 +21,7 @@ InfoBlock.propTypes = {
 };
 
 InfoBlock.defaultProps = {
-	settings: [],
+	settings: null,
 	className: '',
 };
 export default memo(InfoBlock);

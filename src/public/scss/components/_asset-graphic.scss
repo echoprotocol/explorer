@@ -72,22 +72,16 @@
 		}
 	}
 
-	// .recharts-brush-traveller {
-	// 	position: relative;
-	// 	&:first-of-type {
-	// 		transform: translate(-14px, 14px);
-	// 	}
-	// 	line {
-	// 		opacity: 0;
-	// 	}
-	// 	rect {
-	// 		height: 31px !important;
-	// 	}
-	// }
+	.recharts-brush-traveller {
+		position: relative;
+		transform: translate(-14px, 14px);
+		border-radius: 50%;
+		rect {
+			height: 31px !important;
+			width: 31px !important;
+		}
+	}
 
-	// .recharts-brush-texts {
-	// 	display: none;
-	// }
 	svg:not(:root) {
 		overflow: visible;
 	}

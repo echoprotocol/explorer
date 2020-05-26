@@ -97,6 +97,10 @@ const AssetGraphic = ({ data }) => {
 						fill="#f3f2f5"
 						startIndex={1}
 						travellerWidth={5}
+						leaveTimeOut={0}
+						padding={{
+							bottom: 0, left: 0, right: 0, top: 0,
+						}}
 					>
 						<LineChart>
 							<Line type="monotone" dataKey="price" stroke="#CCCCD4" dot={false} />

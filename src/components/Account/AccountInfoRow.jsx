@@ -1,15 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 
 import InfoTooltip from '../InfoTooltip';
 
 const AccountInfoRow = React.memo(({
-	title, value, link, amount, tooltip, amountLink, additionalLink,
+	title, value, link, amount, tooltip, amountLink, additionalLink, className,
 }) => (
 	<React.Fragment>
 		{!additionalLink &&
-		<div className="line">
+		<div className={cn('line', className)}>
 			{title &&
 			<div className="title">
 				<span>{title}</span>
@@ -65,6 +66,7 @@ AccountInfoRow.propTypes = {
 	link: PropTypes.object,
 	amountLink: PropTypes.object,
 	additionalLink: PropTypes.object,
+	className: PropTypes.string,
 };
 
 AccountInfoRow.defaultProps = {
@@ -74,6 +76,7 @@ AccountInfoRow.defaultProps = {
 	link: null,
 	amountLink: null,
 	additionalLink: null,
+	className: '',
 };
 
 export default AccountInfoRow;
