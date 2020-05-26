@@ -2,7 +2,7 @@ import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import Inmmutable, { List, fromJS } from 'immutable';
 import BN from 'bignumber.js';
 
-import { TITLE_TEMPLATES, TOKEN_TYPE, ECHO_ASSET } from '../constants/GlobalConstants';
+import { TITLE_TEMPLATES, TOKEN_TYPE, ECHO_ASSET, EBTC_ASSET_ID, EETH_ASSET_ID } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
 
 import AccountReducer from '../reducers/AccountReducer';
@@ -254,7 +254,11 @@ class AccountActions extends BaseActionsClass {
 	* @returns {Promise<Object>}
 	*/
 	async getCommitteAdditionalInfo(accountId) {
-		const assetsIds = ['1.3.0', '1.3.1', '1.3.2'];
+		const assetsIds = [
+			ECHO_ASSET.ID,
+			EETH_ASSET_ID,
+			EBTC_ASSET_ID,
+		];
 		const [committeBalances, committeeFrozenData, assetsData, committeMember] = await Promise.all([
 			echo.api.getAccountBalances(accountId, assetsIds),
 			echo.api.getFrozenBalances(accountId),
