@@ -9,7 +9,6 @@ import TabDropdown from '../TabDropdown/';
 
 import GridActions from '../../actions/GridActions';
 import CommitteeActions from '../../actions/CommitteeActions';
-import membersData from './data';
 
 import {
 	CANDIDATE_COMMITTEE_GRID,
@@ -50,6 +49,7 @@ class CommitteeMembers extends React.Component {
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.updateResolution);
+		this.props.clearCommitteeInfo();
 	}
 
 	setActiveTab(index) {
@@ -143,6 +143,7 @@ class CommitteeMembers extends React.Component {
 
 CommitteeMembers.propTypes = {
 	router: PropTypes.object.isRequired,
+	clearCommitteeInfo: PropTypes.func.isRequired,
 	currentCommittee: PropTypes.object.isRequired,
 	candidateCommittee: PropTypes.object.isRequired,
 	deactivatedCommittee: PropTypes.object.isRequired,
@@ -150,11 +151,11 @@ CommitteeMembers.propTypes = {
 
 CommitteeMembers.getInitialProps = async ({ query: { ...filters }, store }) => {
 	await store.dispatch(GridActions.initData(CURRENT_COMMITTEE_GRID, filters));
-	// await store.dispatch(GridActions.initData(CANDIDATE_COMMITTEE_GRID, filters));
-	// await store.dispatch(GridActions.initData(DEACTIVATED_COMMITTEE_GRID, filters));
+	await store.dispatch(GridActions.initData(CANDIDATE_COMMITTEE_GRID, filters));
+	await store.dispatch(GridActions.initData(DEACTIVATED_COMMITTEE_GRID, filters));
 	await store.dispatch(CommitteeActions.loadCommittees(ECHODB_COMMITTEE_STATUS.ACTIVE));
-	// await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.CANDIDATE));
-	// await store.dispatch(AccountActions.loadCommittees(ECHODB_COMMITTEE_STATUS.DEACTIVATED));
+	await store.dispatch(CommitteeActions.loadCommittees(ECHODB_COMMITTEE_STATUS.CANDIDATE));
+	await store.dispatch(CommitteeActions.loadCommittees(ECHODB_COMMITTEE_STATUS.DEACTIVATED));
 	return {};
 };
 

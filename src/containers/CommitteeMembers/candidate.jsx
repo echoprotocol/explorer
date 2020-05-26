@@ -7,7 +7,6 @@ import CommitteeMembers from '../../components/CommitteeMembers';
 import { CANDIDATE_COMMITTEE_GRID } from '../../constants/TableConstants';
 import { ECHODB_COMMITTEE_STATUS } from '../../constants/CommitteeConstants';
 
-
 export default withRouter(connect(
 	(state) => ({
 		filterAndPaginateData: state.grid.get(CANDIDATE_COMMITTEE_GRID),

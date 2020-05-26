@@ -2,11 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'next/router';
 
 import CommitteeActions from '../../actions/CommitteeActions';
-import {
-    CURRENT_COMMITTEE_GRID,
-    // CANDIDATE_COMMITTEE_GRID,
-    // DEACTIVATED_COMMITTEE_GRID,
-} from '../../constants/TableConstants';
+import { CURRENT_COMMITTEE_GRID } from '../../constants/TableConstants';
 import GridActions from '../../actions/GridActions';
 import CommitteeMembers from '../../components/CommitteeMembers';
 
