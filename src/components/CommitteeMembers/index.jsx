@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import cn from 'classnames';
+import queryString from 'query-string';
 
 import InnerHeader from '../InnerHeader';
-import CommitteeMembersTable from '../CommitteeMembersTable';
+import CommitteeMembersTable from '../../containers/CommitteeTable';
 import TabDropdown from '../TabDropdown/';
 
 import GridActions from '../../actions/GridActions';
@@ -71,25 +72,71 @@ class CommitteeMembers extends React.Component {
 		this.setState({ resolution: window.innerWidth });
 	}
 
+	renderTable() {
+		const { router, loadingMoreCommittee } = this.props;
+		const { asPath } = router;
+		const { url } = queryString.parseUrl(asPath);
+		const members = this.props.committee.toArray();
+
+		if (url === SSR_CURRENT_COMMITTEE_PATH) {
+			return (
+				<CommitteeMembersTable
+					members={members}
+					gridName={CURRENT_COMMITTEE_GRID}
+					router={router}
+					onLoadCommittee={() => this.props.loadCommittees()}
+					loading={loadingMoreCommittee}
+				/>
+			);
+		}
+
+		if (url === SSR_CANDIDATE_COMMITTEE_PATH) {
+			return (
+				<CommitteeMembersTable
+					members={members}
+					gridName={CANDIDATE_COMMITTEE_GRID}
+					router={router}
+					onLoadCommittee={() => this.props.loadCommittees()}
+					loading={loadingMoreCommittee}
+				/>
+			);
+		}
+
+		if (url === SSR_FORMER_COMMITTEE_PATH) {
+			return (
+				<CommitteeMembersTable
+					members={members}
+					gridName={DEACTIVATED_COMMITTEE_GRID}
+					router={router}
+					onLoadCommittee={() => this.props.loadCommittees()}
+					loading={loadingMoreCommittee}
+				/>
+			);
+		}
+
+		return undefined;
+	}
+
 
 	render() {
 		const {
 			currentTab, isDropdownOpened, tabs, resolution,
 		} = this.state;
 		const { router } = this.props;
+		const { url } = queryString.parseUrl(router.asPath);
 		return (
 			<div className="inner-container indent-lg">
 				<InnerHeader title="Committee Members" className="committee-members" />
 				{resolution > 499 &&
 					<div className="tabs members-tabs">
 						<Link href={COMMITTEE_PATH} as={SSR_CURRENT_COMMITTEE_PATH} scroll={false}>
-							<a className={cn('tab', { active: router.asPath === SSR_CURRENT_COMMITTEE_PATH || router.asPath === COMMITTEE_PATH })}>Current Members</a>
+							<a className={cn('tab', { active: url === SSR_CURRENT_COMMITTEE_PATH })}>Current Members</a>
 						</Link>
 						<Link href={COMMITTEE_PATH} as={SSR_CANDIDATE_COMMITTEE_PATH} scroll={false}>
-							<a className={cn('tab', { active: router.asPath === SSR_CANDIDATE_COMMITTEE_PATH })} >Committee candidates</a>
+							<a className={cn('tab', { active: url === SSR_CANDIDATE_COMMITTEE_PATH })} >Committee candidates</a>
 						</Link>
 						<Link href={COMMITTEE_PATH} as={SSR_FORMER_COMMITTEE_PATH} scroll={false}>
-							<a className={cn('tab', { active: router.asPath === SSR_FORMER_COMMITTEE_PATH })}>Former members</a>
+							<a className={cn('tab', { active: url === SSR_FORMER_COMMITTEE_PATH })}>Former members</a>
 						</Link>
 					</div>
 				}
@@ -104,7 +151,7 @@ class CommitteeMembers extends React.Component {
 					<Link href={COMMITTEE_PATH} as={SSR_CURRENT_COMMITTEE_PATH} scroll={false}>
 						<a
 							role="presentation"
-							className={cn('dropdown-tab__item', { active: router.asPath === SSR_CURRENT_COMMITTEE_PATH || router.asPath === COMMITTEE_PATH })}
+							className={cn('dropdown-tab__item', { active: url === SSR_CURRENT_COMMITTEE_PATH })}
 							onClick={() => this.setActiveTab(0)}
 						>{tabs[0]}
 						</a>
@@ -112,7 +159,7 @@ class CommitteeMembers extends React.Component {
 					<Link href={COMMITTEE_PATH} as={SSR_CANDIDATE_COMMITTEE_PATH} scroll={false}>
 						<a
 							role="presentation"
-							className={cn('dropdown-tab__item', { active: router.asPath === SSR_CANDIDATE_COMMITTEE_PATH })}
+							className={cn('dropdown-tab__item', { active: url === SSR_CANDIDATE_COMMITTEE_PATH })}
 							onClick={() => this.setActiveTab(1)}
 						>{tabs[1]}
 						</a>
@@ -120,21 +167,13 @@ class CommitteeMembers extends React.Component {
 					<Link href={COMMITTEE_PATH} as={SSR_FORMER_COMMITTEE_PATH} scroll={false}>
 						<a
 							role="presentation"
-							className={cn('dropdown-tab__item', { active: router.asPath === SSR_FORMER_COMMITTEE_PATH })}
+							className={cn('dropdown-tab__item', { active: url === SSR_FORMER_COMMITTEE_PATH })}
 							onClick={() => this.setActiveTab(2)}
 						>{tabs[2]}
 						</a>
 					</Link>
 				</TabDropdown>}
-				{(router.asPath === SSR_CURRENT_COMMITTEE_PATH || router.asPath === COMMITTEE_PATH) &&
-					<CommitteeMembersTable members={this.props.currentCommittee.toArray()} type={CURRENT_COMMITTEE_GRID} router={router} />
-				}
-				{router.asPath === SSR_CANDIDATE_COMMITTEE_PATH &&
-					<CommitteeMembersTable members={this.props.candidateCommittee.toArray()} type={CANDIDATE_COMMITTEE_GRID} router={router} />
-				}
-				{router.asPath === SSR_FORMER_COMMITTEE_PATH &&
-					<CommitteeMembersTable members={this.props.deactivatedCommittee.toArray()} type={DEACTIVATED_COMMITTEE_GRID} router={router} />
-				}
+				{this.renderTable()}
 			</div>
 		);
 	}
@@ -144,9 +183,9 @@ class CommitteeMembers extends React.Component {
 CommitteeMembers.propTypes = {
 	router: PropTypes.object.isRequired,
 	clearCommitteeInfo: PropTypes.func.isRequired,
-	currentCommittee: PropTypes.object.isRequired,
-	candidateCommittee: PropTypes.object.isRequired,
-	deactivatedCommittee: PropTypes.object.isRequired,
+	loadCommittees: PropTypes.func.isRequired,
+	committee: PropTypes.object.isRequired,
+	loadingMoreCommittee: PropTypes.bool.isRequired,
 };
 
 CommitteeMembers.getInitialProps = async ({ query: { ...filters }, store }) => {

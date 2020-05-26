@@ -10,6 +10,5 @@ export default connect(
 	}),
 	(dispatch, props) => ({
 		initData: (params) => dispatch(GridActions.initData(props.gridName, params)),
-		onChangeFilter: (params) => dispatch(GridActions.setFilter(props.gridName, params)),
 	}),
 )(CommitteeMembersTable);

@@ -166,7 +166,7 @@ class Contract extends React.Component {
 			type, contractTxs, countUsedByAccount, supportedAsset, ethAccuracy, compilerVersion, owner, token,
 			countTokenTransfer, tokenTransfers, activeAccount, error, isMobile,
 		} = this.props;
-		console.log(type);
+
 		const tabList = [
 			{
 				tab: !loading ?

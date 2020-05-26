@@ -1,17 +1,21 @@
 import { List } from 'immutable';
 
-import { ECHODB_COMMITTEE_STATUS } from '../constants/CommitteeConstants';
+import GridActions from './GridActions';
+
 
 import CommitteeReducer from '../reducers/CommitteeReducer';
 import BaseActionsClass from './BaseActionsClass';
 
 import { getCommitteAccounts } from '../services/queries/account';
+
 import {
 	CURRENT_COMMITTEE_GRID,
 	CANDIDATE_COMMITTEE_GRID,
 	DEACTIVATED_COMMITTEE_GRID,
 } from '../constants/TableConstants';
-import GridActions from './GridActions';
+import { ECHODB_COMMITTEE_STATUS } from '../constants/CommitteeConstants';
+import Operations from '../constants/Operations';
+
 
 class CommitteeActions extends BaseActionsClass {
 
@@ -23,22 +27,32 @@ class CommitteeActions extends BaseActionsClass {
 	}
 
 	formatCommitteeAccounts(committees) {
-		return committees.map((data) => ({
-			account: {
-				link: data.id,
-				value: data.name,
-			},
-			id: data.committee_options.committee_member_id,
-			bitcoinHash: data.committee_options.btc_public_key,
-			etheriumHash: data.committee_options.eth_address,
-			participation: data.committee_options.last_status_change_time,
-			lastOperation: {
-				type: 'operation',
-				// link: data.committee_options.last_executed_operation,
-			},
-			proposalTransaction: data.committee_options.proposal_operation,
-			confirmations: data.committee_options.approves_count,
-		}));
+		const operationValues = Object.values(Operations);
+
+		return committees.map((data) => {
+			const operationId = data.committee_options.last_executed_operation_id;
+			const operationInfo = operationValues.find((op) => op.value === operationId);
+
+			const opType = (operationInfo && operationInfo.name) || 'operation';
+
+			return {
+				account: {
+					link: data.id,
+					value: data.name,
+				},
+				id: data.committee_options.committee_member_id,
+				bitcoinHash: data.committee_options.btc_public_key,
+				etheriumHash: data.committee_options.eth_address,
+				participation: data.committee_options.last_status_change_time,
+				abandon: data.committee_options.last_status_change_time,
+				lastOperation: {
+					type: opType,
+					link: data.committee_options.last_executed_operation,
+				},
+				proposalTransaction: data.committee_options.proposal_operation,
+				confirmations: data.committee_options.approves_count,
+			};
+		});
 	}
 
 	loadCommittees(status) {
@@ -46,6 +60,7 @@ class CommitteeActions extends BaseActionsClass {
 			let total = 0;
 			let items = [];
 			try {
+				// dispatch(this.setValue('loadingMoreCommittee', true));
 				const getGreedAndListKEy = (echodbStatus) => {
 					switch (echodbStatus) {
 						case ECHODB_COMMITTEE_STATUS.ACTIVE:
@@ -61,11 +76,10 @@ class CommitteeActions extends BaseActionsClass {
 
 				const { grid, listKey } = getGreedAndListKEy(status);
 				const queryData = getState().grid.get(grid).toJS();
-				dispatch(this.setValue('loadingMoreCommittee', true));
 
 				try {
 					({ items, total } = await getCommitteAccounts({
-						status: ECHODB_COMMITTEE_STATUS.ACTIVE,
+						status,
 						offset: (queryData.currentPage - 1) * queryData.sizePerPage,
 						count: queryData.sizePerPage,
 					}));
@@ -82,7 +96,7 @@ class CommitteeActions extends BaseActionsClass {
 				dispatch(this.setValue('error', e.message));
 				return { total, items };
 			} finally {
-				dispatch(this.setValue('loadingMoreCommittee', false));
+				// dispatch(this.setValue('loadingMoreCommittee', false));
 			}
 		};
 	}

@@ -29,6 +29,7 @@ export const getCommitteAccounts = ({ status, offset, count }) => {
 					proposal_operation
 					approves_count
 					last_executed_operation
+					last_executed_operation_id
 					last_status_change_time
 				  }
 				}

@@ -9,11 +9,16 @@ import MemberInfo from './MemberInfo';
 
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
+import {
+	CANDIDATE_COMMITTEE_GRID,
+	CURRENT_COMMITTEE_GRID,
+	DEACTIVATED_COMMITTEE_GRID,
+} from '../../constants/TableConstants';
 
 import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 const MembersRow = ({
-	index, data,
+	index, data, type,
 }) => {
 	const [isInfoActive, setInfoActive] = useState(false);
 
@@ -36,8 +41,8 @@ const MembersRow = ({
 	return (
 		<React.Fragment>
 			<tr onClick={() => setInfoActive(!isInfoActive)}className={cn('view', { active: isInfoActive })}>
-				<td className="number"><div className="td-in">{index}</div></td>
-				{data.abandon &&
+				<td className="number"><div className="td-in">{index + 1}</div></td>
+				{type === DEACTIVATED_COMMITTEE_GRID && data.abandon &&
 				<td className="abandon">
 					<div className="td-in">
 						<span>{transformDate(data.abandon)}</span>
@@ -51,7 +56,7 @@ const MembersRow = ({
 						</a>
 					</Link>
 				</td>
-				{data.participation &&
+				{type === CURRENT_COMMITTEE_GRID && data.participation &&
 				<td className="participation">
 					<div className="td-in">
 						<span>
@@ -59,7 +64,7 @@ const MembersRow = ({
 						</span>
 					</div>
 				</td>}
-				{data.confirmations &&
+				{type === CANDIDATE_COMMITTEE_GRID && data.confirmations &&
 				<td className="confirmations">
 					<div className="td-in">
 						<span>{data.confirmations}</span>
@@ -81,14 +86,14 @@ const MembersRow = ({
 						<span>{data.id}</span>
 					</div>
 				</td>
-				{data.lastOperation &&
+				{type === CURRENT_COMMITTEE_GRID && data.lastOperation &&
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
-					<a href="#" className="td-in">
+					<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)} className="td-in" target="_blank" rel="noopener noreferrer">
 						<span>{data.lastOperation.type}</span>
 					</a>
 				</td>}
-				{data.proposalTransaction &&
+				{(type === CANDIDATE_COMMITTEE_GRID || type === DEACTIVATED_COMMITTEE_GRID) && data.proposalTransaction &&
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
 					<a href="#" className="td-in">
@@ -117,6 +122,9 @@ const MembersRow = ({
 MembersRow.propTypes = {
 	index: PropTypes.number.isRequired,
 	data: PropTypes.object.isRequired,
+	type: PropTypes
+		.oneOf([CURRENT_COMMITTEE_GRID, CANDIDATE_COMMITTEE_GRID, DEACTIVATED_COMMITTEE_GRID])
+		.isRequired,
 };
 
 export default memo(MembersRow);
