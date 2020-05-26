@@ -1,10 +1,23 @@
-import React, { memo, useRef } from 'react';
+import React, { memo, useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Brush, ResponsiveContainer } from 'recharts';
+
+import { formatPrice } from '../../helpers/FunctionHelper';
 
 const AssetGraphic = ({ data }) => {
 
 	const lineRef = useRef();
+	const [resolution, setResolution] = useState(1920);
+
+	const updateResolution = () => {
+		setResolution(window.innerWidth);
+	};
+
+	useEffect(() => {
+		updateResolution();
+		window.addEventListener('resize', updateResolution);
+		return () => window.removeEventListener('resize', updateResolution);
+	});
 
 	const CustomTooltip = (tooltipData) => {
 		const points = lineRef.current ? lineRef.current.props.points : null;
@@ -19,16 +32,16 @@ const AssetGraphic = ({ data }) => {
 						style={{
 							position: 'relative',
 							left: '0px',
-							top: `${activePoint.y - 8}px`,
+							top: `${activePoint.y - 10}px`,
 						}}
 					>
-						{tooltipData && tooltipData.payload[0].payload.price}
+						{tooltipData && formatPrice(tooltipData.payload[0].payload.price, 0, '.', ',')}
 					</div>
 					<div
 						className="x-tooltip"
 						style={{
 							position: 'relative',
-							top: `${chartHeight - 13}px`,
+							top: `${chartHeight - 16}px`,
 							left: `${activePoint.x - 40}px`,
 						}}
 					>{tooltipData && tooltipData.payload[0].payload.date}
@@ -39,14 +52,14 @@ const AssetGraphic = ({ data }) => {
 							position: 'relative',
 							left: '60px',
 							width: `${activePoint.x - 60}px`,
-							top: `${activePoint.y - 40}px`,
+							top: `${activePoint.y - 46}px`,
 						}}
 					/>
 					<div
 						className="x-cursor"
 						style={{
 							position: 'relative',
-							top: `${activePoint.y - 40}px`,
+							top: `${activePoint.y - 46}px`,
 							left: `${activePoint.x}px`,
 							height: `${chartHeight - activePoint.y}px`,
 						}}
@@ -59,7 +72,7 @@ const AssetGraphic = ({ data }) => {
 
 	return (
 		<div className="asset-graphic">
-			<ResponsiveContainer width="96%" height={265}>
+			<ResponsiveContainer width={resolution < 1000 ? '100%' : '96%'} height={265}>
 				<LineChart
 					data={data}
 					margin={{
@@ -70,11 +83,13 @@ const AssetGraphic = ({ data }) => {
 					<XAxis
 						dataKey="date"
 						tickMargin={10}
+						height={40}
 					/>
 					<YAxis
 						dataKey="price"
 						type="number"
-						tickMargin={65}
+						tickMargin={resolution < 1000 ? 20 : 65}
+						tickFormatter={(tick) => formatPrice(tick, 0, '.', ',')}
 					/>
 					<Tooltip
 						content={<CustomTooltip />}

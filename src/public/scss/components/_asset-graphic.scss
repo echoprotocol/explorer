@@ -19,6 +19,7 @@
 		color: #fff;
 		@include inter-ui-medium;
 		font-size: 11px;
+		line-height: 140%;
 	}
 	.y-tooltip {
 		width: 52px;
@@ -71,17 +72,6 @@
 			stroke: none;
 		}
 	}
-
-	.recharts-brush-traveller {
-		position: relative;
-		transform: translate(-14px, 14px);
-		border-radius: 50%;
-		rect {
-			height: 31px !important;
-			width: 31px !important;
-		}
-	}
-
 	svg:not(:root) {
 		overflow: visible;
 	}
