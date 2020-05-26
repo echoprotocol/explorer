@@ -244,7 +244,7 @@ class AssetTransfersTable extends React.Component {
 										from={tr.from}
 										to={tr.to}
 										amount={tr.amount}
-										fee={tr.fee}
+										fee={tr.feeData}
 										asset={tr.asset}
 										onClick={(e) => this.goToTransaction(e, tr.block, tr.trx_in_block, tr.op_in_trx, tr.virtual)}
 									/>
@@ -268,7 +268,7 @@ class AssetTransfersTable extends React.Component {
 }
 
 AssetTransfersTable.propTypes = {
-	assetTransfers: PropTypes.array,
+	assetTransfers: PropTypes.object,
 	label: PropTypes.string,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
@@ -278,8 +278,8 @@ AssetTransfersTable.propTypes = {
 
 
 AssetTransfersTable.defaultProps = {
-	assetTransfers: [],
-	label: 'Transfers',
+	assetTransfers: {},
+	label: 'Asset transfers',
 	onLoadMoreHistory: () => { },
 };
 

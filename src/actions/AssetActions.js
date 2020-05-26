@@ -74,7 +74,7 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 	let transfers = items.map(async (el) => {
 		const feeAsset = await echo.api.getObject(el.fee.asset_id);
 		const operation = Object.values(Operations).find((o) => o.value === el.operationId);
-		el.fee = {
+		el.feeData = {
 			asset_id: feeAsset.id,
 			precision: feeAsset.precision,
 			symbol: feeAsset.symbol,

@@ -16,11 +16,11 @@ export const getAssetsBySymbols = (count, ...symbols) => {
 };
 
 export const getAssetHistory = ({
-	id, offset, count, to, from,
+	assetId, offset, count, to, from,
 }) => {
 	const query = gql`
-		query getTransferHistory($id: [AssetId!], $from: [AccountOrContractId!], $to: [AccountOrContractId!], $offset: Int, $count: Int) {
-			getTransferHistory(assets: $id, from: $from, to: $to, offset: $offset, count: $count) {
+		query getTransferHistory($assetId: [AssetId!], $from: [AccountOrContractId!], $to: [AccountOrContractId!], $offset: Int, $count: Int) {
+			getTransferHistory(assets: $assetId, from: $from, to: $to, offset: $offset, count: $count) {
 				total
 				items {
 					block,
@@ -60,7 +60,7 @@ export const getAssetHistory = ({
 	return client.getClient().query({
 		query,
 		variables: {
-			id, offset, count, to, from,
+			assetId, offset, count, to, from,
 		},
 	}).then(({ data }) => data.getTransferHistory);
 };

@@ -117,14 +117,14 @@ Asset.propTypes = {
 	router: PropTypes.object.isRequired,
 	getAssetInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
-	assetTransfers: PropTypes.array,
+	assetTransfers: PropTypes.object,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
 	loadAssetHisotry: PropTypes.func.isRequired,
 };
 
 Asset.defaultProps = {
-	assetTransfers: [],
+	assetTransfers: {},
 };
 
 Asset.getInitialProps = async ({ query: { id: assetId, ...filters }, store }) => {
