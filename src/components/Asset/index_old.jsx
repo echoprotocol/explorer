@@ -4,12 +4,11 @@ import Link from 'next/link';
 
 import { validators } from 'echojs-lib';
 import BN from 'bignumber.js';
+import Tooltip from 'rc-tooltip';
+import Media from 'react-media';
 import { fromJS } from 'immutable';
 
 import Loader from '../Loader';
-import InnerHeader from '../InnerHeader';
-import InfoBlock from '../InfoBlock';
-import InfoBlockItem from '../InfoBlock/InfoBlockItem';
 
 import {
 	ECHO_ASSET,
@@ -21,8 +20,6 @@ import FormatHelper from '../../helpers/FormatHelper';
 import { getFullAssetInformation } from '../../actions/AssetActions';
 import { SSR_ACCOUNTS_PATH, SSR_ASSET_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
-
-import settings from './settingsData';
 
 class Asset extends React.Component {
 
@@ -72,6 +69,7 @@ class Asset extends React.Component {
 	}
 
 	renderAsset() {
+		const { isMobile } = this.props;
 		const { asset, issuer } = this.state;
 		const issuerName = issuer.get('name');
 
@@ -127,13 +125,43 @@ class Asset extends React.Component {
 							<div className="block">
 								<div className="title">Current supply</div>
 								<div className="val">
-									<span>{currentSupply}</span>
+									<Media query="(max-width: 300px)" defaultMatches={isMobile}>
+										{(matches) =>
+											(matches ? (
+												<Tooltip
+													placement="top"
+													overlayClassName="verify-contract-tooltip"
+													trigger={['hover']}
+													overlay={currentSupply}
+												>
+													<span className="txt">{currentSupply}</span>
+												</Tooltip>
+											) : (
+												<span>{currentSupply}</span>
+											))
+										}
+									</Media>
 								</div>
 							</div>
 							<div className="block">
 								<div className="title">Max supply</div>
 								<div className="val">
-									<span>{maxSupplyFormated}</span>
+									<Media query="(max-width: 300px)" defaultMatches={isMobile}>
+										{(matches) =>
+											(matches ? (
+												<Tooltip
+													placement="top"
+													overlayClassName="verify-contract-tooltip"
+													trigger={['hover']}
+													overlay={maxSupplyFormated}
+												>
+													<span className="txt">{maxSupplyFormated}</span>
+												</Tooltip>
+											) : (
+												<span>{maxSupplyFormated}</span>
+											))
+										}
+									</Media>
 								</div>
 							</div>
 						</div>
@@ -180,34 +208,9 @@ class Asset extends React.Component {
 
 	render() {
 		const { asset, issuer } = this.state;
-		const assetSymbol = asset && asset.get('symbol');
-		const issuerName = issuer && issuer.get('name');
-		const assetPrecision = asset && asset.get('precision');
-		const currentSupply = asset && asset.getIn(['dynamic', 'current_supply']);
-		const maxSupply = asset && asset.getIn(['options', 'max_supply']);
-		const isbitAsset = asset && !!asset.get('bitasset_data_id');
 		return (
-			<div className="inner-container indent-lg">
-				{(asset === null && issuer === null) ?
-					<Loader /> :
-					<React.Fragment>
-						<InnerHeader title={`Asset: ${assetSymbol}`} className="committee-members" />
-						<InfoBlock settings={settings}>
-							<InfoBlockItem
-								title="Issuer"
-								value={issuerName}
-								isLink
-								href={SSR_ACCOUNTS_PATH}
-								as={URLHelper.createAccountUrl(issuerName)}
-								className="issuer"
-							/>
-							<InfoBlockItem title="Precision" value={`${assetPrecision} kb`} className="precision" />
-							<InfoBlockItem title="Current supply" value={currentSupply} className="current-supply" />
-							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
-							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
-						</InfoBlock>
-					</React.Fragment>
-				}
+			<div className="inner-container account-asset-page">
+				{(asset === null && issuer === null) ? this.renderLoader() : this.renderAsset()}
 			</div>
 		);
 	}
@@ -216,6 +219,7 @@ class Asset extends React.Component {
 
 Asset.propTypes = {
 	router: PropTypes.object.isRequired,
+	isMobile: PropTypes.bool.isRequired,
 	getAssetInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 };
