@@ -26,9 +26,10 @@ import {
 	updateBlockList,
 	getLatestOperations,
 } from './BlockActions';
-import { INDEX_PATH } from '../constants/RouterConstants';
+import { INDEX_PATH, SSR_ASSET_PATH } from '../constants/RouterConstants';
 import StatisticsActions from './StatisticsActions';
 import { getBlockFromGraphQl } from '../services/queries/block';
+import { getAssetTransfers } from './AssetActions';
 
 /**
  * set connected parameter to true
@@ -97,6 +98,19 @@ const roundSubscribe = (notification) => (dispatch) => {
 
 /**
  *  @method blockRelease
+ */
+const updateCurrentPageInfo = () => async (dispatch) => {
+	switch (Router.route) {
+		case SSR_ASSET_PATH:
+			await dispatch(getAssetTransfers(Router.router.query.id));
+			break;
+		default:
+			break;
+	}
+};
+
+/**
+ *  @method blockRelease
  *
  * 	Call when trigger setBlockApplySubscribe (release new block)
  */
@@ -104,6 +118,7 @@ const blockRelease = () => async (dispatch) => {
 	const global = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES, true);
 	dispatch(setLatestBlock(global.head_block_number));
 	await dispatch(updateBlockList(global.head_block_number));
+	await dispatch(updateCurrentPageInfo());
 	dispatch(RoundReducer.actions.set({ field: 'stepProgress', value: BLOCK_APPLIED_CALLBACK }));
 	dispatch(RoundReducer.actions.set({ field: 'preparingBlock', value: global.head_block_number + 1 }));
 };
