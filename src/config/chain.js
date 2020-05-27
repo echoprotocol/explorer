@@ -23,5 +23,9 @@ export default {
 		TESTNET: process.env.EXPLORER_URLS.TESTNET,
 		MAINNET: process.env.EXPLORER_URLS.MAINNET,
 	},
+	SIDECHAIN_EXPLORER_URLS: {
+		ETHEREUM: process.env.SIDECHAIN_EXPLORER_URLS.ETHEREUM,
+		BITCOIN: process.env.EXPLORER_URLS.BITCOIN,
+	},
 	MODE: process.env.MODE,
 };

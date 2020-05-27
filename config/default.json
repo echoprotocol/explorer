@@ -23,6 +23,10 @@
 	"EXPLORER_URLS":{
 		"TESTNET": "https://656-echo-explorer.pixelplex-test.by",
 		"MAINNET": "https://explorer.echo.org"
+  },
+  "SIDECHAIN_EXPLORER_URLS":{
+		"ETHEREUM": "https://etherscan.io",
+		"BITCOIN": "https://blockexplorer.one/btc/mainnet"
 	},
 	"MODE":"TESTNET"
 }

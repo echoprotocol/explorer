@@ -13,7 +13,6 @@ import {
 } from '../constants/RouterConstants';
 
 import config from '../config/chain';
-import { BTC_EXPLORER, ETH_EXPLORER } from '../constants/OpsFormatConstants';
 
 class URLHelper {
 
@@ -204,7 +203,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createEthAddressOut(url) {
-		return `${ETH_EXPLORER}/address/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.ETHEREUM}/address/${url}`;
 	}
 
 	/**
@@ -213,7 +212,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createEthTransactionOut(url) {
-		return `${ETH_EXPLORER}/tx/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.ETHEREUM}/tx/${url}`;
 	}
 
 	/**
@@ -222,7 +221,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createBtcAddressOut(url) {
-		return `${BTC_EXPLORER}/address/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.BITCOIN}/address/${url}`;
 	}
 
 	/**
@@ -231,7 +230,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createBtcTransactionOut(url) {
-		return `${BTC_EXPLORER}/tx/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.BITCOIN}/tx/${url}`;
 	}
 
 	/**
@@ -240,7 +239,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createBtcBlockOut(url) {
-		return `${BTC_EXPLORER}/block/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.BITCOIN}/blockId/${url}`;
 	}
 
 	/**

@@ -384,6 +384,3 @@ export const ECHO_COMMITTEE_ACCOUNT = {
 	NAME: 'committee-account',
 	ID: '1.2.1',
 };
-
-export const ETH_EXPLORER = 'https://etherscan.io';
-export const BTC_EXPLORER = 'https://www.blockchain.com/btc';

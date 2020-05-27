@@ -8,5 +8,9 @@
   "ECHO_NODE": {
     "API_URL": "wss://testnet.echo-dev.io/ws"
   },
+  "SIDECHAIN_EXPLORER_URLS":{
+    "ETHEREUM": "https://rinkeby.etherscan.io",
+    "BITCOIN": "https://blockexplorer.one/btc/testnet"
+  },
 	"MODE":"TESTNET"
 }
