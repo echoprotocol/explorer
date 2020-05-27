@@ -11,7 +11,8 @@ import SsrHrefHelper from '../../../helpers/SsrHrefHelper';
 import FormatHelper from '../../../helpers/FormatHelper';
 
 const LinkRow = ({
-	title, account, link, isLinkOut, objectId, asset, amount, rate, value, className, contract, linkTitle,
+	title, account, link, isLinkOut, objectId, asset, amount,
+	rate, value, className, contract, linkTitle, token,
 }) => (
 	<div className={`od-row ${className}`}>
 		<div className="od-col">{title}:</div>
@@ -43,6 +44,14 @@ const LinkRow = ({
 					<span className="txt">{FormatHelper.formatAmount(amount.amount, amount.precision)} </span>
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(amount.asset_id)} >
 						<a className="blue">{amount.symbol}</a>
+					</Link>
+				</div>
+			}
+			{token &&
+				<div>
+					<span className="txt">{FormatHelper.formatAmount(token.amount, token.precision)} </span>
+					<Link href={SSR_CONTRACT_PATH} as={URLHelper.createContractUrl(token.link)} >
+						<a className="blue">{token.symbol}</a>
 					</Link>
 				</div>
 			}
@@ -81,6 +90,7 @@ LinkRow.propTypes = {
 	rate: PropTypes.object,
 	objectId: PropTypes.string,
 	asset: PropTypes.object,
+	token: PropTypes.object,
 	link: PropTypes.string,
 	value: PropTypes.string,
 	isLinkOut: PropTypes.bool,
@@ -90,6 +100,7 @@ LinkRow.propTypes = {
 
 LinkRow.defaultProps = {
 	account: null,
+	token: null,
 	contract: '',
 	amount: null,
 	asset: null,

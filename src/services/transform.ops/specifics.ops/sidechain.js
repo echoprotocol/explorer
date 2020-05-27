@@ -217,7 +217,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					account: data.account,
-					amount_info: data.value,
+					sidechain_amount_info: {
+						amount: data.value,
+						...objectInfo.sidechain_amount_info,
+					},
 					fee: data.fee,
 					committee_member: data.committee_member_id,
 					from_address: data.objectInfo.get('from_address'),
@@ -314,7 +317,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					amount_info: data.amount,
+					sidechain_amount_info: {
+						amount: data.amount,
+						...objectInfo.sidechain_amount_info,
+					},
 					account_name: data.account,
 					deposit_id: data.deposit,
 					token: objectInfo.token,
@@ -334,7 +340,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					amount_info: data.amount,
+					sidechain_amount_info: {
+						amount: data.amount,
+						...objectInfo.sidechain_amount_info,
+					},
 					account_name: data.account,
 					withdraw_id: data.withdraw,
 					token: objectInfo.token,
