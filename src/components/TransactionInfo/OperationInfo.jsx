@@ -54,7 +54,7 @@ class OperationInfo extends React.Component {
 					{data.new_url && <PrimaryRow title="New URL" description={data.new_url} />}
 					{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
 					{data.from_address && <LinkRow title="From address" value={data.from_address} link={URLHelper.createEthAddressOut(data.from_address)} isLinkOut />}
-					{data.to_eth_address && <LinkRow title="To ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.to_eth_address)} isLinkOut />}
+					{data.to_eth_address && <LinkRow title="To ETH address" value={data.to_eth_address} link={URLHelper.createEthAddressOut(data.to_eth_address)} isLinkOut />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
 					{data.btc_address && <LinkRow title="BTC address" value={data.btc_address} link={URLHelper.createBtcAddressOut(data.btc_address)} isLinkOut />}
