@@ -72,10 +72,13 @@ class TransactionsInfo extends React.Component {
 		const timeBlockCreated = FormatHelper.timestampToBlockCreationTime(blockInformation.get('timestamp'));
 
 		return (
-			<div className="inner-container indent-lg">
-				<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}>
-					<BackwardsLink returnFunction={() => this.returnFunction()} />
+			<div className="inner-container">
+				<div className="page-breadcrumbs">
 					<BreadCrumbs breadcrumbs={breadcrumbs} />
+				</div>
+				<InnerHeader>
+					<BackwardsLink returnFunction={() => this.returnFunction()} className="move-top" />
+					<div className="inner-header-title">{`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}</div>
 				</InnerHeader>
 				{ !loading ?
 					<React.Fragment>
