@@ -107,7 +107,6 @@ class CommitteeActions extends BaseActionsClass {
 			let total = 0;
 			let items = [];
 			try {
-				// dispatch(this.setValue('loadingMoreCommittee', true));
 				const getGreedAndListKEy = (echodbStatus) => {
 					switch (echodbStatus) {
 						case ECHODB_COMMITTEE_STATUS.ACTIVE:
@@ -142,8 +141,6 @@ class CommitteeActions extends BaseActionsClass {
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 				return { total, items };
-			} finally {
-				// dispatch(this.setValue('loadingMoreCommittee', false));
 			}
 		};
 	}
