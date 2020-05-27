@@ -41,6 +41,7 @@ class Objects extends React.Component {
 
 	componentWillUnmount() {
 		this.props.setError(null);
+		this.props.clearData();
 	}
 
 	checkObject(id) {
@@ -126,6 +127,7 @@ Objects.propTypes = {
 	error: PropTypes.string,
 	setTitle: PropTypes.func.isRequired,
 	getObjectInfo: PropTypes.func.isRequired,
+	clearData: PropTypes.func.isRequired,
 };
 
 Objects.defaultProps = {

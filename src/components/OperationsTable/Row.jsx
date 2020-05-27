@@ -32,6 +32,7 @@ const OperationsRow = ({
 		number,
 		type,
 		blockTimestamp,
+		virtual,
 		...detailInfo
 	},
 	isASCOps,
@@ -43,7 +44,7 @@ const OperationsRow = ({
 	sizePerPage,
 	totalDataSize,
 }) => {
-	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
+	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1, virtual);
 	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
 		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
 	const goToLink = (e, href, objectId) => {
