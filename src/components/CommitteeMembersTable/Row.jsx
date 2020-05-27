@@ -21,7 +21,6 @@ const MembersRow = ({
 	index, data, type,
 }) => {
 	const [isInfoActive, setInfoActive] = useState(false);
-
 	const transformDate = (timeStamp) => {
 		const participationHours = moment().diff(moment.utc(timeStamp), 'hours');
 		const participationDays = moment().diff(moment.utc(timeStamp), 'days');
@@ -42,10 +41,10 @@ const MembersRow = ({
 		<React.Fragment>
 			<tr onClick={() => setInfoActive(!isInfoActive)}className={cn('view', { active: isInfoActive })}>
 				<td className="number"><div className="td-in">{index + 1}</div></td>
-				{type === DEACTIVATED_COMMITTEE_GRID && data.abandon &&
+				{type === DEACTIVATED_COMMITTEE_GRID &&
 				<td className="abandon">
 					<div className="td-in">
-						<span>{transformDate(data.abandon)}</span>
+						<span>{data.abandon ? transformDate(data.abandon) : '-'}</span>
 					</div>
 				</td>}
 				<td className="account">
@@ -56,18 +55,18 @@ const MembersRow = ({
 						</a>
 					</Link>
 				</td>
-				{type === CURRENT_COMMITTEE_GRID && data.participation &&
+				{type === CURRENT_COMMITTEE_GRID &&
 				<td className="participation">
 					<div className="td-in">
 						<span>
-							{transformDate(data.participation)}
+							{data.participation ? transformDate(data.participation) : '-'}
 						</span>
 					</div>
 				</td>}
-				{type === CANDIDATE_COMMITTEE_GRID && data.confirmations &&
+				{type === CANDIDATE_COMMITTEE_GRID &&
 				<td className="confirmations">
 					<div className="td-in">
-						<span>{data.confirmations}</span>
+						<span>{data.confirmations ? data.confirmations : 0}</span>
 					</div>
 				</td>
 				}
@@ -86,19 +85,28 @@ const MembersRow = ({
 						<span>{data.id}</span>
 					</div>
 				</td>
-				{type === CURRENT_COMMITTEE_GRID && data.lastOperation &&
+				{type === CURRENT_COMMITTEE_GRID &&
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
-					<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)} className="td-in" target="_blank" rel="noopener noreferrer">
-						<span>{data.lastOperation.type}</span>
-					</a>
+					{data.lastOperation ?
+						<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)} className="td-in" target="_blank" rel="noopener noreferrer">
+							<span>{data.lastOperation.type}</span>
+						</a> :
+						<div className="td-in">
+							<span>-</span>
+						</div>
+					}
 				</td>}
-				{(type === CANDIDATE_COMMITTEE_GRID || type === DEACTIVATED_COMMITTEE_GRID) && data.proposalTransaction &&
+				{(type === CANDIDATE_COMMITTEE_GRID || type === DEACTIVATED_COMMITTEE_GRID) &&
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
-					<a href="#" className="td-in">
-						<span>{data.proposalTransaction}</span>
-					</a>
+					{data.proposalTransaction ?
+						<a href="#" className="td-in">
+							<span>{data.proposalTransaction}</span>
+						</a> :
+						<div className="td-in">
+							<span>-</span>
+						</div>}
 				</td>}
 			</tr>
 			{
