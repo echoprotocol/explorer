@@ -15,7 +15,6 @@
 		margin-right: 10px;
 	}
 	@include max-vw($res-500) {
-		align-items: flex-end;
 		.filter-btn {
 			margin-right: 0;
 		}

@@ -73,9 +73,12 @@ class TransactionsInfo extends React.Component {
 
 		return (
 			<div className="inner-container">
-				<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}>
-					<BackwardsLink returnFunction={() => this.returnFunction()} />
+				<div className="page-breadcrumbs">
 					<BreadCrumbs breadcrumbs={breadcrumbs} />
+				</div>
+				<InnerHeader>
+					<BackwardsLink returnFunction={() => this.returnFunction()} className="move-top" />
+					<div className="inner-header-title">{`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}</div>
 				</InnerHeader>
 				{ !loading ?
 					<React.Fragment>
