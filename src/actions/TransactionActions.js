@@ -438,13 +438,13 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.sidechain_eth_approve_address.name:
 						objectWithApprovals = await echo.api.getObject(singleOperation.result);
 						object = object
-							.set('eth_addr', objectWithApprovals.eth_addr);
+							.set('eth_addr', `0x${objectWithApprovals.eth_addr}`);
 						break;
 					case Operations.sidechain_eth_create_address.name: {
 						const ethAddress = await echo.api.getEthAddress(options.account);
 						if (ethAddress) {
 							object = object
-								.set('eth_addr', ethAddress.eth_addr);
+								.set('eth_addr', `0x${ethAddress.eth_addr}`);
 							objectWithApprovals = ethAddress;
 						}
 						break;
@@ -457,23 +457,24 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = deposits.find((el) => el.deposit_id === options.deposit_id) || {};
 						object = object
 							.set('deposit_id', objectWithApprovals.id)
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', `0x${objectWithApprovals.transaction_hash}`);
 						break;
 					}
-					case Operations.eth_send_deposit.name:
+					case Operations.eth_send_deposit.name: {
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
 						object = object
 							.set('deposit_id', objectWithApprovals.id)
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', `0x${objectWithApprovals.transaction_hash}`)
+							.set('amount', singleOperation.amount);
 						break;
-					case Operations.approve_erc20_token_withdraw.name: {
+					} case Operations.approve_erc20_token_withdraw.name: {
 						const originalOpIndexes = singleOperation.sidchain_erc_20_withdraw_token.split('-');
 						const originalOp = await getSingleOpeation(...originalOpIndexes.map((i) => (+i)));
 						objectWithApprovals = await echo.api.getObject(originalOp.getSingleOperation.body.withdraw_id);
 						object = object
 							.set('withdraw_id', objectWithApprovals.id)
 							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
-							.set('transaction_hash', singleOperation.transaction_hash)
+							.set('transaction_hash', `0x${singleOperation.transaction_hash}`)
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
 					} case Operations.sidechain_erc20_issue.name: {
@@ -504,13 +505,13 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = await echo.api.getObject(withdrawId);
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
-							.set('transaction_hash', objectWithApprovals.transaction_hash)
+							.set('transaction_hash', `0x${objectWithApprovals.transaction_hash}`)
 							.set('withdraw_id', withdrawId);
 						break;
 					} case Operations.withdraw_eth.name: {
 						objectWithApprovals = await echo.api.getObject(getSingleOpeation.result);
 						object = object
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', `0x${objectWithApprovals.transaction_hash}`);
 						break;
 					} case Operations.sidechain_issue.name: {
 						const listApprovals = singleOperation.list_of_approvals
@@ -555,25 +556,25 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = await echo.api.getObject(operationResult[1]);
 						object = object
 							.set('token', { value: token.symbol, link: token.id })
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', objectWithApprovals.transaction_hash && `0x${objectWithApprovals.transaction_hash}`);
 						break;
 					}
 					case Operations.deposit_erc20_token.name: {
 						const [, result] = operationResult || [];
 						objectWithApprovals = await echo.api.getObject(result) || {};
 						object = object
-							.set('from_address', singleOperation.erc20_token_addr)
+							.set('from_address', `0x${singleOperation.erc20_token_addr}`)
 							.set('deposit_id', objectWithApprovals.id)
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', objectWithApprovals.transaction_hash && `0x${objectWithApprovals.transaction_hash}`);
 						break;
 					}
-					case Operations.erc20_send_withdraw.name:
+					case Operations.erc20_send_withdraw.name: {
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token))
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', objectWithApprovals.transaction_hash && `0x${objectWithApprovals.transaction_hash}`);
 						break;
-					default:
+					} default:
 						break;
 				}
 
