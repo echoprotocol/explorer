@@ -13,7 +13,6 @@ import {
 } from '../constants/RouterConstants';
 
 import config from '../config/chain';
-import { BTC_EXPLORER, ETH_EXPLORER } from '../constants/OpsFormatConstants';
 
 class URLHelper {
 
