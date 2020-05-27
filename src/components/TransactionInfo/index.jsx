@@ -72,7 +72,7 @@ class TransactionsInfo extends React.Component {
 		const timeBlockCreated = FormatHelper.timestampToBlockCreationTime(blockInformation.get('timestamp'));
 
 		return (
-			<div className="inner-container">
+			<div className="inner-container indent-lg">
 				<InnerHeader title={`Transaction ${index} in Block ${FormatHelper.formatAmount(round, 0)}`}>
 					<BackwardsLink returnFunction={() => this.returnFunction()} />
 					<BreadCrumbs breadcrumbs={breadcrumbs} />
