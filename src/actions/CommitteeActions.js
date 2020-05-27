@@ -60,18 +60,21 @@ class CommitteeActions extends BaseActionsClass {
 	* @param {String} accountId
 	* @returns {Promise<Object>}
 	*/
-	async getCommitteAdditionalInfo(accountId, committeeId) {
+	async getCommitteAdditionalInfo(accountId) {
 		const assetsIds = [
 			ECHO_ASSET.ID,
 			EETH_ASSET_ID,
 			EBTC_ASSET_ID,
 		];
-		const [committeBalances, committeeFrozenData, assetsData, committeMember] = await Promise.all([
+		const [committeBalances, assetsData, committeMember] = await Promise.all([
 			echo.api.getAccountBalances(accountId, assetsIds),
-			echo.api.getCommitteeFrozenBalance(committeeId),
 			echo.api.getAssets(assetsIds),
-			echo.api.getCommitteeMegemberByAccount(accountId),
+			echo.api.getCommitteeMemberByAccount(accountId),
 		]);
+		let committeeFrozenData = {};
+		if (committeMember) {
+			committeeFrozenData = await echo.api.getCommitteeFrozenBalance(committeMember.id);
+		}
 		const assets = assetsData.map((el) => ({
 			amount: committeBalances.find((b) => b.asset_id === el.id).amount,
 			asset_id: el.id,
@@ -92,7 +95,7 @@ class CommitteeActions extends BaseActionsClass {
 	addAditinalInfo(committeeData) {
 		return committeeData.map(async (data) => {
 			try {
-				const aditionalData = await this.getCommitteAdditionalInfo(data.account.link, data.id);
+				const aditionalData = await this.getCommitteAdditionalInfo(data.account.link);
 				data.additionalInfo = aditionalData;
 				return data;
 			} catch (e) {
@@ -107,6 +110,7 @@ class CommitteeActions extends BaseActionsClass {
 			let total = 0;
 			let items = [];
 			try {
+				if (!echo.api) return {};
 				const getGreedAndListKEy = (echodbStatus) => {
 					switch (echodbStatus) {
 						case ECHODB_COMMITTEE_STATUS.ACTIVE:
