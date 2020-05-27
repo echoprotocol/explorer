@@ -12,6 +12,7 @@ const {
 	INSTALL_NODE_LINK,
 	ECHO_NODE,
 	EXPLORER_URLS,
+	SIDECHAIN_EXPLORER_URLS,
 	MODE,
 } = require('config');
 
@@ -22,6 +23,7 @@ const chainWrapper = (appConfig) => withFonts(withSass(withCSS(appConfig)));
 module.exports = chainWrapper({
 	env: {
 		EXPLORER_URLS,
+		SIDECHAIN_EXPLORER_URLS,
 		MODE,
 		ECHO_NODE,
 		SERVER_URL,
