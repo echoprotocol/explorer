@@ -36,6 +36,9 @@ const BlocksTable = (({
 			await getBlocks();
 		};
 		const { asPath } = router;
+		if (!asPath) {
+			return;
+		}
 		const { query: search } = queryString.parseUrl(asPath);
 		const { totalDataSize } = filterAndPaginateData;
 		initData({ ...search, totalDataSize });
