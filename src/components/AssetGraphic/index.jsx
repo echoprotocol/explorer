@@ -113,7 +113,7 @@ const AssetGraphic = ({ data }) => {
 						stroke="#CCCCD4"
 						fill="#f3f2f5"
 						startIndex={1}
-						travellerWidth={5}
+						travellerWidth={1}
 						leaveTimeOut={0}
 						padding={{
 							bottom: 0, left: 0, right: 0, top: 0,

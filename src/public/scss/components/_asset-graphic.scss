@@ -1,5 +1,8 @@
 .asset-graphic {
 	margin-bottom: 50px;
+	@include max-vw($res-1280) {
+		padding-right: 10px;
+	}
 	.recharts-responsive-container {
 		margin-left: auto;
 	}
@@ -62,6 +65,14 @@
 		.recharts-cartesian-axis-tick-line {
 			display: none;
 		}
+		.recharts-cartesian-axis-tick {
+			&:not(:last-child) {
+				transform: translateX(32px);
+			}
+			&:last-child {
+				transform: translateX(6px);
+			}
+		}
 	}
 	.recharts-cartesian-axis-line,
 	.recharts-cartesian-axis-tick-line {
@@ -71,6 +82,25 @@
 	.recharts-brush {
 		> rect:first-child {
 			stroke: none;
+		}
+	}
+	.recharts-brush-traveller {
+		rect {
+			width: 31px;
+			height: 31px;
+			rx: 50%;
+			fill: #fff;
+			transform: translate(-14px, 14px);
+		}
+		line {
+			stroke-width: 15px;
+			stroke: #ccccd4;
+			&:nth-child(2) {
+				transform: translate(0, 0);
+			}
+			&:nth-child(3) {
+				transform: translate(4px, -2px);
+			}
 		}
 	}
 	svg:not(:root) {
