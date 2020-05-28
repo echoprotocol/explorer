@@ -10,7 +10,15 @@ const getFullHour = (momentTime) => {
 
 	const h = momentTime.get('hour');
 
-	return h === 0 ? undefined : `${h}h`;
+	if (h === 0) {
+		return undefined;
+	}
+
+	if (h < 10) {
+		return `0${h}h`;
+	}
+
+	return `${h}h`;
 };
 
 const TimeFace = React.memo(({ time }) => {
@@ -20,8 +28,8 @@ const TimeFace = React.memo(({ time }) => {
 	const s = momentTime.get('second') || 0;
 
 	const fullH = getFullHour(momentTime);
-	const fullS = `${s}s`;
-	const fullM = `${m}m`;
+	const fullS = s < 10 ? `0${s}s` : `${s}s`;
+	const fullM = m < 10 ? `0${m}m` : `${m}m`;
 
 	const ftiltredTime = fullH ? [fullH, fullM, fullS] : [fullM, fullS];
 

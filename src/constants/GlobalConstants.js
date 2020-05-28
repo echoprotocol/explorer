@@ -20,6 +20,7 @@ export const TITLE_TEMPLATES = {
 	OBJECT: `Object id | ${DEFAULT_TITLE}`,
 	TRANSACTION: `Transaction index in block round | ${DEFAULT_TITLE}`,
 	CONTRACT: `Contract id | ${DEFAULT_TITLE}`,
+	BLOCKS_TABLE: `Blocks table | ${DEFAULT_TITLE}`,
 };
 
 export const DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES = constants.DYNAMIC_GLOBAL_OBJECT_ID;
@@ -75,6 +76,8 @@ export const ECHO_ASSET = {
 	SYMBOL: 'ECHO',
 	PRECISION: 8,
 };
+export const EETH_ASSET_ID = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.1`;
+export const EBTC_ASSET_ID = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.2`;
 
 export const NATHAN = {
 	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ACCOUNT}.15`,

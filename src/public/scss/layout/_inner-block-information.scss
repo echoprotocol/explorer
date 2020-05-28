@@ -18,11 +18,14 @@
 		//min-height: 100vh - (header + footer)
 		min-height: calc(100vh - 263px - 90px);
 	}
-
 	@include max-vw($res-500) {
 		& > .checkbox {
 			margin-bottom: 20px;
 		}
+	}
+
+	&.indent-lg {
+		padding-top: 65px;
 	}
 
 	.checkbox {

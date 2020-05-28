@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
+import Router from 'next/router';
 import Link from 'next/link';
-import Router, { withRouter, useRouter } from 'next/router';
+import queryString from 'query-string';
 
 import { SIZES_PER_PAGE } from '../../constants/TableConstants';
 import Input from '../Input';
 
-import Button from '../Button';
-import { NextButton } from '../Button/NextButton';
-import { PrevButton } from '../Button/PrevButton';
 import { KEY_CODE_ENTER } from '../../constants/GlobalConstants';
 import TypesHelper from '../../helpers/TypesHelper';
 import URLHelper from '../../helpers/URLHelper';
+import Button from '../Button';
+import { NextButton } from '../Button/NextButton';
+import { PrevButton } from '../Button/PrevButton';
 
-const TransfersPagination = ({
-	sizePerPage, totalDataSize, currentPage, from, to,
+
+const TablePagination = ({
+	currentPage, totalDataSize, sizePerPage, router, from, to,
 }) => {
-	const router = useRouter();
 	const { url: pathname, query } = queryString.parseUrl(router.asPath);
 	const [inputCurrentPage, setCurrentPage] = useState(currentPage);
 	const [totalPages, setTotalPages] = useState(Math.ceil(totalDataSize / sizePerPage));
@@ -65,7 +65,7 @@ const TransfersPagination = ({
 	};
 
 	return (
-		<div className="operations-pagination">
+		<div className="table-pagination">
 			<div className="pg-nav-1">
 				<div className="pg-caption">Operations per page:</div>
 				{sizePerPages.map((size) => {
@@ -80,16 +80,16 @@ const TransfersPagination = ({
 				})}
 			</div>
 			<div className="pg-nav-2">
-				<label htmlFor="pg-input" className="pg-caption">Page:</label>
+				<label htmlFor="pg-input" className="pg-caption">Page</label>
 				<Input
 					name="pg-input"
 					className="pg-input"
+					placeholder="page"
 					value={inputCurrentPage.toString()}
 					onChange={(e) => onChangeInputCurrentPage(e.target.value)}
 					onKeyDown={(e) => onKeyPressInputCurrentPage(e, totalPages)}
 				/>
-				<div className="pg-caption">
-					out of
+				<div className="pg-caption">out of
 					{!totalPages ? <span> {totalPages}</span> : <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}> {totalPages}</a>}
 				</div>
 			</div>
@@ -117,17 +117,18 @@ const TransfersPagination = ({
 	);
 };
 
-TransfersPagination.propTypes = {
+TablePagination.propTypes = {
 	from: PropTypes.string,
 	to: PropTypes.string,
+	router: PropTypes.object.isRequired,
+	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,
-	currentPage: PropTypes.number.isRequired,
 };
 
-TransfersPagination.defaultProps = {
+TablePagination.defaultProps = {
 	from: '',
 	to: '',
 };
 
-export default withRouter(TransfersPagination);
+export default TablePagination;

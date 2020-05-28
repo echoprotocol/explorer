@@ -9,7 +9,7 @@ import BlockReducer from '../../reducers/BlockReducer';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import GlobalActions from '../../actions/GlobalActions';
 import { BLOCK_INFORMATION_PATH, SSR_BLOCK_INFORMATION_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
-import LatestBlocksTable from './LatestBlocksTable';
+import LatestBlocksTable from '../../components/BlocksTable';
 import LatestOperationsTable from './LatestOperationsTable';
 import URLHelper from '../../helpers/URLHelper';
 
@@ -75,6 +75,7 @@ class MainPage extends React.Component {
 			<div className="main-page">
 				<div className="wrap">
 					<LatestBlocksTable
+						label="Latest Blocks"
 						goToBlock={(e, block) => this.goToBlock(e, block)}
 						blocks={this.getBlocks()}
 					/>

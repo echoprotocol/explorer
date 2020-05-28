@@ -4,10 +4,10 @@ import defaultIcon from '../../public/images/icons/default-icn.svg';
 import URLHelper from '../../helpers/URLHelper';
 
 
-export const ContractIcon = React.memo(({ icon }) => (
+export const ContractIcon = React.memo(({ icon, ...props }) => (
 	icon ?
-		<img src={URLHelper.getUrlContractIcon(icon)} alt="icon" /> :
-		<img src={defaultIcon} alt="icon" />
+		<img src={URLHelper.getUrlContractIcon(icon)} alt="icon" {...props} /> :
+		<img src={defaultIcon} alt="icon" {...props} />
 ));
 
 

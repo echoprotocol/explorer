@@ -12,8 +12,8 @@ import Operations from '../../constants/Operations';
 
 import OperationRow from './Row';
 import Thead from './Thead';
-import OperationsPagination from './Pagination';
-import OperationsFilter from './Filter';
+import TablePagination from '../TablePagination';
+import TableFilter from '../TableFilter';
 import { DEBOUNCE_TIMEOUT } from '../../constants/TableConstants';
 import { NOT_FOUND_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import TypesHelper from '../../helpers/TypesHelper';
@@ -285,7 +285,7 @@ class OperationsTable extends React.Component {
 				<TableLabel label={label}>
 					<FilterBtn onClick={this.toggleFilter} />
 				</TableLabel>
-				<OperationsFilter
+				<TableFilter
 					from={from}
 					fromError={fromError}
 					loading={loading}
@@ -322,7 +322,7 @@ class OperationsTable extends React.Component {
 					{loading && <Loader />}
 				</PerfectScrollbar>
 				{!isTransaction && (
-					<OperationsPagination
+					<TablePagination
 						from={filterAndPaginateData.filters.from}
 						to={filterAndPaginateData.filters.to}
 						router={router}
