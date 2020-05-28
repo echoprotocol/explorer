@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
+import { OrderedMap } from 'immutable';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import BlockReducer from '../../reducers/BlockReducer';
@@ -12,6 +13,8 @@ import { BLOCKS_GRID } from '../../constants/TableConstants';
 
 import BlocksTable from '../../components/BlocksTable';
 import InnerHeader from '../../components/InnerHeader';
+import { getBlocksByIndexes as getBlocks } from '../../actions/BlockActions';
+import GridActions from '../../actions/GridActions';
 
 
 class BlocksTablePage extends React.Component {
@@ -20,8 +23,7 @@ class BlocksTablePage extends React.Component {
 		this.props.setTitle(TITLE_TEMPLATES.BLOCKS_TABLE);
 	}
 
-	getBlocks() {
-		const { blocks } = this.props;
+	getBlocks(blocks) {
 		const blocksResult = [];
 
 		blocks.mapEntries(([key, value]) => {
@@ -54,7 +56,10 @@ class BlocksTablePage extends React.Component {
 	}
 
 	render() {
-		const { router, filterAndPaginateData } = this.props;
+		const {
+			router, filterAndPaginateData, getBlocksByIndexes,
+			blocksOnTable, initData,
+		} = this.props;
 		return (
 			<div className="inner-container blocks-page">
 				<InnerHeader title="Blocks list" />
@@ -62,8 +67,10 @@ class BlocksTablePage extends React.Component {
 					router={router}
 					isAllBlocks
 					goToBlock={(e, block) => this.goToBlock(e, block)}
-					blocks={this.getBlocks()}
+					blocks={this.getBlocks(blocksOnTable)}
 					filterAndPaginateData={filterAndPaginateData.toJS()}
+					getBlocks={() => getBlocksByIndexes()}
+					initData={initData}
 				/>
 			</div>
 		);
@@ -72,22 +79,32 @@ class BlocksTablePage extends React.Component {
 }
 
 BlocksTablePage.propTypes = {
-	blocks: PropTypes.object.isRequired,
+	blocksOnTable: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	getBlocksByIndexes: PropTypes.func.isRequired,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
+	initData: PropTypes.func.isRequired,
 };
 
+BlocksTablePage.getInitialProps = async ({ store }) => {
+	let fetchedBlocks = new OrderedMap();
+	await store.dispatch(GridActions.initData(BLOCKS_GRID));
+	fetchedBlocks = (await store.dispatch(getBlocks())).blocks;
+	return { blocks: fetchedBlocks };
+};
 
 export default withRouter(connect(
 	(state) => ({
 		loading: state.block.get('loading'),
 		blocks: state.block.get('blocks'),
-		latestBlock: state.round.get('latestBlock'),
+		blocksOnTable: state.block.get('blocksOnTable'),
 		filterAndPaginateData: state.grid.get(BLOCKS_GRID),
 	}),
 	(dispatch) => ({
 		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
+		getBlocksByIndexes: (page, size) => dispatch(getBlocks(page, size)),
+		initData: (params) => dispatch(GridActions.initData(BLOCKS_GRID, params)),
 	}),
 )(BlocksTablePage));

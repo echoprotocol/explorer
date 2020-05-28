@@ -17,7 +17,7 @@ export const NOT_FOUND_PATH = '/not-found';
 export const VERIFY_CONTRACT_PATH = '/contracts/:id/verify';
 export const MANAGE_CONTRACT_PATH = '/contracts/:id/manage';
 export const NODE_MAP = '/node-map';
-export const BLOCKS_TABLE_PATH = '/blocks-table';
+export const BLOCKS_TABLE_PATH = '/blocks';
 
 export const SSR_BLOCK_INFORMATION_PATH = '/blocks/[round]';
 export const SSR_ACCOUNTS_PATH = '/accounts/[id]/info';

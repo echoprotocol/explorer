@@ -8,6 +8,7 @@ const DEFAULT_FIELDS = Map({
 	error: '',
 	blockInformation: new Map({}),
 	blocks: new OrderedMap({}),
+	blocksOnTable: new OrderedMap({}),
 	blocksCount: PAGE_BLOCKS_COUNT,
 	loading: false,
 	isDistributionRewardOpen: false,
