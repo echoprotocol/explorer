@@ -230,6 +230,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('supportedAsset', contract.supported_asset)
 					.set('owner', contract.owner)
 					.set('contractPoolBalance', contractAdditionalInfo.poolBalance)
+					.set('bytecode', FormatHelper.addEthPrefix(options.code))
 					.set('whitelist', contractAdditionalInfo.whitelist || [])
 					.set('blacklist', contractAdditionalInfo.blacklist || []);
 				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&

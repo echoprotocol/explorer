@@ -35,8 +35,8 @@ const AdditionalInfo = ({ data }) => (
 			{data.list_approvals && <LinksArray title="List of approvals" links={data.list_approvals} />}
 			{data.called_contract_type && <PrimaryRow title="Called contract type" description={data.called_contract_type} />}
 			{data.erc20_token_info && <MultyRow title="ERC20 Token Info" fields={data.erc20_token_info} />}
-			{data.erc20_token_transfers && <TransfersRow title="ERC20 Token Transfers" transfers={data.erc20_token_transfers} />}
-			{data.asset_transfers && <TransfersRow title="Asset transfers" transfers={data.asset_transfers} />}
+			{data.erc20_token_transfers ? <TransfersRow title="ERC20 Token Transfers" transfers={data.erc20_token_transfers} /> : null}
+			{data.asset_transfers ? <TransfersRow title="Asset transfers" transfers={data.asset_transfers} /> : null}
 			{data.current_contract_owner && <LinkRow title="Current contract owner" account={data.current_contract_owner} />}
 			{data.current_contract_whitelist && <ProducersRow title="Current contract whitelist" accounts={data.current_contract_whitelist} />}
 			{data.current_contract_blacklist && <ProducersRow title="Current contract blacklist" accounts={data.current_contract_blacklist} />}
