@@ -14,25 +14,38 @@ class ConvertHelper {
 		let abiEvents;
 		let abiTypes;
 		let decValues = new Array(logs.length);
-		if (abi) {
+		if (abi && abi.length) {
 			abiEvents = abi.filter((el) => el.type === 'event');
 			const abiEventsInputTypes = abiEvents.map((e) => e.inputs.map((i) => i.type));
 			const abiEventsHashes = abiEvents.map((e, i) => keccak256(`${e.name}(${abiEventsInputTypes[i].join(',')})`).toString('hex'));
 			const eventIndex = abiEventsHashes.findIndex((h) => h.substring(0, 8) === logs[0].substring(0, 8));
 			abiTypes = abiEventsInputTypes[eventIndex];
-			event = `${abiEvents[eventIndex].name}(${abiTypes.join(',')})`;
+			event = `${abiEvents.name}(${abiTypes.join(',')})`;
 		} else {
 			const eventData = Object.entries(ERC20_EVENT_HASHES).find((el) => el[1] === logs[0].substring(0, 8));
-			[event] = Object.keys(eventData);
+			if (!eventData) {
+				return {
+					decValues: decValues.fill(null),
+					decData: null,
+				};
+			}
+			[event] = eventData;
 			abiTypes = eventData && event.substring(event.indexOf('(') + 1, event.indexOf(')')).split(',');
-		}
-		if (!event) {
-			return decValues.fill('This is not commmon ERC20 event and ABI was not provided');
 		}
 
 		const paramsLogs = logs.slice(1);
-		decValues = [event, ...decode(paramsLogs.join(''), abiTypes.slice(0, paramsLogs.length))].map((el) => el.toString());
-		const decData = decode(data, abiTypes.slice(paramsLogs.length)).map((el) => el.toString());
+		decValues = [event, ...decode(paramsLogs.join(''), abiTypes.slice(0, paramsLogs.length))];
+		if (decValues instanceof Array) {
+			decValues = decValues.map((el) => el.toString());
+		} else {
+			decValues = [decValues.toString()];
+		}
+		let decData = decode(data, abiTypes.slice(paramsLogs.length));
+		if (decData instanceof Array) {
+			decData = decData.map((el) => el.toString());
+		} else {
+			decData = [decData.toString()];
+		}
 
 		return { decValues, decData };
 	}

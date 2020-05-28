@@ -5,8 +5,9 @@ import Switch from '../../Switch';
 import TransformedLogsItem from './TransformedLogItem';
 
 const LogsDataRow = ({ data, decData }) => {
-	const [isDataTransformed, setDataTransformed] = useState(false);
+	const [isDataTransformed, setDataTransformed] = useState(!!decData);
 
+	const decRowData = decData || ['This is not commmon ERC20 event and ABI was not provided'];
 	const toggleToTransformedData = () => {
 		setDataTransformed(true);
 	};
@@ -16,7 +17,7 @@ const LogsDataRow = ({ data, decData }) => {
 
 	const renderTransformedData = () => (
 		<div className="logs-multy-row">
-			{decData.map((d) => <TransformedLogsItem name="id" value={d} />)}
+			{decRowData.map((d) => <TransformedLogsItem value={d} />)}
 		</div>
 	);
 
