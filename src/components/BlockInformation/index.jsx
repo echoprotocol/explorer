@@ -6,6 +6,7 @@ import BN from 'bignumber.js';
 
 import OperationsTable from '../../containers/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
+import BackwardsLink from '../BackwardLink';
 import ViewListPopover from '../ViewListPopover';
 import TableLabel from '../TableLabel';
 import InnerHeader from '../InnerHeader';
@@ -157,7 +158,10 @@ class BlockInformation extends React.Component {
 						</button>
 					</div>
 				</div>
-				<InnerHeader returnFunction={() => this.returnFunction()} title={`Block ${formattedBlockNumber}`} />
+				<InnerHeader>
+					<BackwardsLink returnFunction={() => this.returnFunction()} className="move-top" />
+					<div className="inner-header-title">{`Block ${formattedBlockNumber}`}</div>
+				</InnerHeader>
 				<InfoBlock>
 					<InfoBlockItem title="Date, time" value={time} className="time" />
 					<InfoBlockItem title="Size" value={size} className="size" />
