@@ -268,6 +268,13 @@ class FormatHelper {
 			}));
 	}
 
+	static addEthPrefix(addrOrHash) {
+		if (!addrOrHash) {
+			return '';
+		}
+		return addrOrHash && addrOrHash.indexOf('0x') === 0 ? addrOrHash : `0x${addrOrHash}`;
+	}
+
 }
 
 export default FormatHelper;
