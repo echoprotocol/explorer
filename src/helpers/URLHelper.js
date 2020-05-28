@@ -258,7 +258,18 @@ class URLHelper {
 		if (slpitedUrl[2]) {
 			slpitedUrl[2] = parseInt(slpitedUrl[2], 10) + 1;
 		}
+		if (slpitedUrl[3]) {
+			if (virtual === undefined) {
+				virtual = slpitedUrl[3] === 'virtual';
+			}
+		}
 		return `/blocks/${slpitedUrl[0]}/${slpitedUrl[1]}?op=${slpitedUrl[2]}&virtual=${!!virtual}`;
+	}
+
+	static compileFullUrlFromOriginAndPath(path) {
+		const globalObj = global || {};
+		const windowObj = globalObj.window || { location: { origin: '' } };
+		return `${windowObj.location.origin}${path}`;
 	}
 
 }
