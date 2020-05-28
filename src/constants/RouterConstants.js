@@ -19,6 +19,7 @@ export const MANAGE_CONTRACT_PATH = '/contracts/:id/manage';
 export const NODE_MAP = '/node-map';
 export const COMMITTEE_PATH = '/committee';
 export const BLOCKS_TABLE_PATH = '/blocks';
+export const COMMITTEE_MEMBERS_PATH = '/committee-members';
 
 export const SSR_BLOCK_INFORMATION_PATH = '/blocks/[round]';
 export const SSR_ACCOUNTS_PATH = '/accounts/[id]/info';
