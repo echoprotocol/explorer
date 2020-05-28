@@ -57,7 +57,7 @@ class BlocksTablePage extends React.Component {
 
 	render() {
 		const {
-			router, filterAndPaginateData, getBlocksByIndexes, latestBlock,
+			router, filterAndPaginateData, getBlocksByIndexes,
 			blocksOnTable, initData,
 		} = this.props;
 		return (
@@ -70,7 +70,6 @@ class BlocksTablePage extends React.Component {
 					blocks={this.getBlocks(blocksOnTable)}
 					filterAndPaginateData={filterAndPaginateData.toJS()}
 					getBlocks={() => getBlocksByIndexes()}
-					latestBlock={latestBlock}
 					initData={initData}
 				/>
 			</div>
@@ -83,7 +82,6 @@ BlocksTablePage.propTypes = {
 	blocksOnTable: PropTypes.object.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	getBlocksByIndexes: PropTypes.func.isRequired,
-	latestBlock: PropTypes.number.isRequired,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
@@ -101,7 +99,6 @@ export default withRouter(connect(
 		loading: state.block.get('loading'),
 		blocks: state.block.get('blocks'),
 		blocksOnTable: state.block.get('blocksOnTable'),
-		latestBlock: state.round.get('latestBlock'),
 		filterAndPaginateData: state.grid.get(BLOCKS_GRID),
 	}),
 	(dispatch) => ({

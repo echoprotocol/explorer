@@ -18,7 +18,7 @@ import { BLOCKS_TABLE_PATH } from '../../constants/RouterConstants';
 
 const BlocksTable = (({
 	blocks, goToBlock, label, isAllBlocks, router, filterAndPaginateData,
-	getBlocks, latestBlock, initData,
+	getBlocks, initData,
 }) => {
 	const [didMount, setDidMount] = useState(false);
 	useEffect(() => setDidMount(true), []);
@@ -70,15 +70,6 @@ const BlocksTable = (({
 		return lastBlocksArr.map((item) => item.number);
 	};
 
-	const { asPath } = router;
-	const { currentPage, sizePerPage } = filterAndPaginateData;
-	let page = currentPage;
-	let onPage = sizePerPage;
-	if (asPath) {
-		const { query: search } = queryString.parseUrl(asPath);
-		page = search.p || currentPage;
-		onPage = search.l || sizePerPage;
-	}
 	return (
 		<div className={cn('main-page-table', { full: isAllBlocks })}>
 			<TableLabel label={label} />
@@ -113,9 +104,9 @@ const BlocksTable = (({
 				from={filterAndPaginateData.filters.from}
 				to={filterAndPaginateData.filters.to}
 				router={router}
-				totalDataSize={latestBlock}
-				currentPage={Number(page)}
-				sizePerPage={Number(onPage)}
+				totalDataSize={filterAndPaginateData.totalDataSize}
+				currentPage={filterAndPaginateData.currentPage}
+				sizePerPage={filterAndPaginateData.sizePerPage}
 			/>}
 			{!isAllBlocks &&
 			<Link as={BLOCKS_TABLE_PATH} href={BLOCKS_TABLE_PATH}>
@@ -136,7 +127,6 @@ BlocksTable.propTypes = {
 	filterAndPaginateData: PropTypes.object,
 	getBlocks: PropTypes.func,
 	initData: PropTypes.func.isRequired,
-	latestBlock: PropTypes.number,
 };
 
 BlocksTable.defaultProps = {
@@ -145,7 +135,6 @@ BlocksTable.defaultProps = {
 	router: {},
 	filterAndPaginateData: {},
 	getBlocks: () => { },
-	latestBlock: 0,
 };
 
 export default memo(BlocksTable);
