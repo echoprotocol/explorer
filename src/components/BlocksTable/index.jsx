@@ -14,7 +14,7 @@ import ArrowBtn from '../../components/Buttons/ArrowBtn';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
-import { BLOCKS_TABLE_PATH } from '../../constants/RouterConstants';
+import { BLOCKS_TABLE_PATH, SSR_CURRENT_COMMITTEE_PATH } from '../../constants/RouterConstants';
 
 const BlocksTable = (({
 	blocks, goToBlock, label, isAllBlocks, router, filterAndPaginateData,
@@ -75,7 +75,11 @@ const BlocksTable = (({
 
 	return (
 		<div className={cn('main-page-table', { full: isAllBlocks })}>
-			<TableLabel label={label} />
+			<TableLabel label={label}>
+				<Link href={SSR_CURRENT_COMMITTEE_PATH} as={SSR_CURRENT_COMMITTEE_PATH}>
+					<a className="link">View Committee members</a>
+				</Link>
+			</TableLabel>
 			<PerfectScrollbar>
 				<table>
 					<Thead isAllBlocks={isAllBlocks} />
