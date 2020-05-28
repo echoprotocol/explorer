@@ -271,12 +271,12 @@ export const setLatestBlock = (latestBlock) => (dispatch) => {
  * 	@param {Number?} pageNumber
  * 	@param {Number?} size
  */
-export const getBlocksByIndexes = (pageNumber, size) => async (dispatch, getState) => {
+export const getBlocksByIndexes = () => async (dispatch, getState) => {
 	const latestBlock = getState().round.get('latestBlock');
-	const gridData = getState().grid.get(BLOCK_GRID).toJS();
+	const gridData = getState().grid.get(BLOCKS_GRID).toJS();
 	const { currentPage, sizePerPage } = gridData;
-	const page = pageNumber || currentPage;
-	const onPage = size || sizePerPage;
+	const page = currentPage;
+	const onPage = sizePerPage;
 	const lastBlock = latestBlock - (onPage * (page - 1));
 	const startBlock = lastBlock - onPage >= 0 ? lastBlock - onPage : 0;
 

@@ -18,7 +18,7 @@ import { BLOCKS_TABLE_PATH } from '../../constants/RouterConstants';
 
 const BlocksTable = (({
 	blocks, goToBlock, label, isAllBlocks, router, filterAndPaginateData,
-	getBlocks, latestBlock,
+	getBlocks, latestBlock, initData,
 }) => {
 	const [didMount, setDidMount] = useState(false);
 	useEffect(() => setDidMount(true), []);
@@ -33,13 +33,12 @@ const BlocksTable = (({
 
 	useEffect(() => {
 		const loadBlocks = async () => {
-			const { asPath } = router;
-			if (!asPath) {
-				return;
-			}
-			const { query: search } = queryString.parseUrl(asPath);
-			await getBlocks(search.p, search.l);
+			await getBlocks();
 		};
+		const { asPath } = router;
+		const { query: search } = queryString.parseUrl(asPath);
+		const { totalDataSize } = filterAndPaginateData;
+		initData({ ...search, totalDataSize });
 		if (didMount) {
 			loadBlocks();
 		}
@@ -136,6 +135,7 @@ BlocksTable.propTypes = {
 	router: PropTypes.object,
 	filterAndPaginateData: PropTypes.object,
 	getBlocks: PropTypes.func,
+	initData: PropTypes.func.isRequired,
 	latestBlock: PropTypes.number,
 };
 

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
 import { OrderedMap } from 'immutable';
-import queryString from 'query-string';
 
 import FormatHelper from '../../helpers/FormatHelper';
 import BlockReducer from '../../reducers/BlockReducer';
@@ -59,7 +58,7 @@ class BlocksTablePage extends React.Component {
 	render() {
 		const {
 			router, filterAndPaginateData, getBlocksByIndexes, latestBlock,
-			blocksOnTable,
+			blocksOnTable, initData,
 		} = this.props;
 		return (
 			<div className="inner-container blocks-page">
@@ -70,8 +69,9 @@ class BlocksTablePage extends React.Component {
 					goToBlock={(e, block) => this.goToBlock(e, block)}
 					blocks={this.getBlocks(blocksOnTable)}
 					filterAndPaginateData={filterAndPaginateData.toJS()}
-					getBlocks={(page, size) => getBlocksByIndexes(page, size)}
+					getBlocks={() => getBlocksByIndexes()}
 					latestBlock={latestBlock}
+					initData={initData}
 				/>
 			</div>
 		);
@@ -86,19 +86,13 @@ BlocksTablePage.propTypes = {
 	latestBlock: PropTypes.number.isRequired,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
+	initData: PropTypes.func.isRequired,
 };
 
-BlocksTablePage.getInitialProps = async ({ asPath, store }) => {
+BlocksTablePage.getInitialProps = async ({ store }) => {
 	let fetchedBlocks = new OrderedMap();
-	let page;
-	let onPage;
-	if (asPath) {
-		const { query: search } = queryString.parseUrl(asPath);
-		page = search.p;
-		onPage = search.l;
-	}
 	await store.dispatch(GridActions.initData(BLOCKS_GRID));
-	fetchedBlocks = (await store.dispatch(getBlocks(page, onPage))).blocks;
+	fetchedBlocks = (await store.dispatch(getBlocks())).blocks;
 	return { blocks: fetchedBlocks };
 };
 
@@ -114,5 +108,6 @@ export default withRouter(connect(
 		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		getBlocksByIndexes: (page, size) => dispatch(getBlocks(page, size)),
+		initData: (params) => dispatch(GridActions.initData(BLOCKS_GRID, params)),
 	}),
 )(BlocksTablePage));
