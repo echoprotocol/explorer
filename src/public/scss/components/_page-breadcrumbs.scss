@@ -4,25 +4,21 @@
 	margin-bottom: 15px;
 	padding-left: 30px;
 	@include max-vw($res-1600) {
-		padding-left: 18px;
+		padding-left: 43px;
 	}
 	@include max-vw($res-1280) {
-		padding-left: 25px;
+		padding-left: 50px;
 		padding-right: 25px;
 	}
 	@include max-vw($res-768) {
-		padding-left: 18px;
+		padding-left: 43px;
 		padding-right: 18px;
 	}
 	@include max-vw($res-500) {
-		padding-left: 13px;
+		padding-left: 38px;
 		padding-right: 13px;
 	}
 	.breadcrumbs-container {
 		margin-right: auto;
-		@include max-vw($res-1600) {
-			padding-left: 25px;
-			padding-right: 25px;
-		}
 	}
 }

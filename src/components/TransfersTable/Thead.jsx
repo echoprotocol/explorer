@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-const TranfersThead = memo(() => (
+const TranfersThead = () => (
 	<thead>
 		<tr>
 			<td className="number"><div className="td-in">#</div></td>
@@ -11,7 +11,7 @@ const TranfersThead = memo(() => (
 			<td className="block"><div className="td-in">Block #</div></td>
 		</tr>
 	</thead>
-));
+);
 
 
-export default TranfersThead;
+export default memo(TranfersThead);

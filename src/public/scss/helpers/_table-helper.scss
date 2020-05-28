@@ -22,6 +22,7 @@
 @mixin table-y-rythm() {
 	td {
 		position: relative;
+		z-index: 1;
 		&:first-child,
 		&:last-child {
 			padding: 0;
@@ -90,6 +91,18 @@
 			color: $grey;
 		}
 	}
+
+	.toggle-icon {
+		position: absolute;
+		right: 17px;
+		top: 50%;
+		transform: translateY(-50%) rotate(180deg);
+		transition: transform $speed;
+		& ~ .td-in {
+			padding-right: 25px;
+		}
+	}
+
 	.td-in {
 		.value {
 			@include text-overflow;
@@ -102,6 +115,40 @@
 		.currency {
 			color: $grey-mid;
 			overflow: initial;
+		}
+	}
+	.scrollbar-container {
+		overflow: initial;
+		@include max-vw($res-768) {
+			overflow: hidden;
+		}
+	}
+	.fold {
+		transform: scale(1);
+		animation: fade-in $speed;
+		position: relative;
+		z-index: 1;
+		@include table-row-highlight();
+		td:first-child {
+			position: relative;
+			z-index: 1;
+		}
+		&:after {
+			content: "";
+			position: absolute;
+			top: -36px;
+			left: 0;
+			width: 100%;
+			height: calc(100% + 36px);
+			box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.05);
+			@include max-vw($res-768) {
+				box-shadow: none;
+			}
+		}
+		td {
+			&:nth-child(2) {
+				padding: 12px 30px;
+			}
 		}
 	}
 }
@@ -155,10 +202,9 @@
 				display: block;
 				max-height: 100%;
 			}
-
-			span {
-				@include text-overflow();
-			}
+		}
+		span {
+			@include text-overflow();
 		}
 	}
 }

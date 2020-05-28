@@ -8,13 +8,12 @@ import ProducersRow from './Rows/ProducersRow';
 import MultyRow from './Rows/MultyRow';
 import TransfersRow from './Rows/TransfersRow';
 import SettingsRow from './Rows/SettingsRow';
-
 import URLHelper from '../../helpers/URLHelper';
 
 const AdditionalInfo = ({ data }) => (
 	<div className="additional-info">
 		<div className="additional-info__title">Additional info</div>
-		<div className="operation-details-rows">
+		<div className="table-detail-rows">
 			{data.whitelisting_accounts && data.whitelisting_accounts.map((account) => <LinkRow title="Account white list" account={account} />)}
 			{data.blacklisting_accounts && data.blacklisting_accounts.map((account) => <LinkRow title="Account black list" account={account} />)}
 			{data.current_asset_feed_producers && <ProducersRow title="Current asset feed producers" accounts={data.current_asset_feed_producers} /> }
@@ -43,7 +42,7 @@ const AdditionalInfo = ({ data }) => (
 			{data.current_contract_blacklist && <ProducersRow title="Current contract blacklist" accounts={data.current_contract_blacklist} />}
 			{data.current_contract_fee_pool_balance && <LinkRow title="Current contract fee pool balance" amount={data.current_contract_fee_pool_balance} />}
 			{data.number_of_confirmations && <PrimaryRow title="Number of confirmations" description={`${data.number_of_confirmations.value} out of ${data.number_of_confirmations.total}`} />}
-			{data.received_deposit_address && <LinkRow title="Received deposit address" link={data.received_deposit_address} />}
+			{data.received_deposit_address && <LinkRow title="Received deposit address" value={data.received_deposit_address} link={URLHelper.createEthAddressOut(data.received_deposit_address)} isLinkOut />}
 			{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
 			{data.eth_transaction_hash && <LinkRow
 				title="Transaction hash"

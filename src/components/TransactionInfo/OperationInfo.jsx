@@ -19,7 +19,7 @@ class OperationInfo extends React.Component {
 	render() {
 		const { data, proposalIdx } = this.props;
 		return (
-			<div className="operation-info">
+			<div className="row-info">
 				{data.description &&
 					<div className="describe-operation">
 						<div className="describe-operation__description">{data.description}</div>
@@ -28,7 +28,7 @@ class OperationInfo extends React.Component {
 						</div>
 					</div>
 				}
-				<div className="operation-details-rows">
+				<div className="table-detail-rows">
 					{data.type && proposalIdx && <div className="proposal-operation-header">{proposalIdx}.&nbsp;{data.type}</div>}
 					{data.type && !proposalIdx && <PrimaryRow title="Type" description={data.type} /> }
 					{data.issuer && <LinkRow title="Issuer" account={data.issuer} />}
@@ -53,7 +53,8 @@ class OperationInfo extends React.Component {
 					{data.url && <PrimaryRow title="URL" description={data.url} />}
 					{data.new_url && <PrimaryRow title="New URL" description={data.new_url} />}
 					{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
-					{data.to_eth_address && <LinkRow title="To ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.to_eth_address)} isLinkOut />}
+					{data.from_address && <LinkRow title="From address" value={data.from_address} link={URLHelper.createEthAddressOut(data.from_address)} isLinkOut />}
+					{data.to_eth_address && <LinkRow title="To ETH address" value={data.to_eth_address} link={URLHelper.createEthAddressOut(data.to_eth_address)} isLinkOut />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}
 					{data.new_eth_address && <LinkRow title="New ETH address" link={data.new_eth_address} isLinkOut />}
 					{data.btc_address && <LinkRow title="BTC address" value={data.btc_address} link={URLHelper.createBtcAddressOut(data.btc_address)} isLinkOut />}
@@ -129,12 +130,6 @@ class OperationInfo extends React.Component {
 						isLinkOut
 					/>}
 					{data.signature && <PrimaryRow title="Signature" description={data.signature} />}
-					{data.from_address && <LinkRow
-						title="From address"
-						value={data.from_address}
-						link={URLHelper.createEthAddressOut(data.from_address)}
-						isLinkOut
-					/>}
 					{data.committee_member && <LinkRow title="Committee member" account={data.committee_member} />}
 					{data.committee_member_id && <PrimaryRow title="Committee member id" description={data.committee_member_id} />}
 					{data.deposits && <MultyLinksRow title="Deposits" fields={data.deposits} />}
@@ -153,6 +148,11 @@ class OperationInfo extends React.Component {
 					{data.fee && <LinkRow title="Fee" amount={data.fee} />}
 					{data.directLink && <LinkRow title="Operation direct link" link={data.directLink} />}
 					{data.operationLink && <LinkRow title="Orirginal operation link" linkTitle="Operation link" link={data.operationLink} />}
+					{data.essence && <PrimaryRow title="Essence" description={data.essence} />}
+					{data.did_identifier && <PrimaryRow title="DID Identifier" description={data.did_identifier} />}
+					{data.public_keys && <MultyRow title="Public keys" description={data.public_keys} />}
+					{data.pub_keys_to_delete && <MultyRow title="Public keys to delete" description={data.pub_keys_to_delete} />}
+					{data.pub_keys_to_add && <MultyRow title="Public keys to add" description={data.pub_keys_to_add} />}
 				</div>
 				{data.additionalInfo && <AdditionalInfo data={data.additionalInfo} />}
 			</div>
