@@ -17,6 +17,7 @@ import { ContractIcon } from '../Contract/ContractIcon';
 import contractIconDefault from '../../public/images/icons/default-icn.svg';
 import bridge from '../../public/images/icons/bridge-logo.svg';
 import { SSR_ACCOUNTS_PATH, SSR_CONTRACT_PATH } from '../../constants/RouterConstants';
+import ContractActions from '../../actions/ContractActions';
 
 class ManageContract extends React.Component {
 
@@ -74,7 +75,6 @@ class ManageContract extends React.Component {
 		const { router: { query: { id } } } = this.props;
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
-		await this.props.getContractInfo(id);
 		this.props.setDefaultDateContract(id);
 	}
 
@@ -233,6 +233,11 @@ ManageContract.defaultProps = {
 	isChangedForm: false,
 	isErrorForm: false,
 	activeAccount: null,
+};
+
+ManageContract.getInitialProps = async ({ query: { id }, store }) => {
+	const contractOwner = (await store.dispatch(ContractActions.getContractInfo(id))).owner;
+	return { owner: contractOwner };
 };
 
 export default ManageContract;

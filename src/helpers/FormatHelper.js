@@ -18,7 +18,7 @@ class FormatHelper {
      * @returns {string}
      */
 	static formatAmount(amount, precision = 0, symbol) {
-		const number = new BN(amount).div(10 ** precision);
+		const number = new BN(amount).div(new BN(10).pow(precision));
 
 		const base = `${parseInt(this.toFixed(Math.abs(number || 0), precision), 10)}`;
 		const mod = base.length > 3 ? base.length % 3 : 0;
@@ -266,6 +266,13 @@ class FormatHelper {
 				key: el[0].split('_').map((w) => w[0].toUpperCase() + w.substring(1, w.length)).join(' '),
 				value: el[1],
 			}));
+	}
+
+	static addEthPrefix(addrOrHash) {
+		if (!addrOrHash) {
+			return '';
+		}
+		return addrOrHash && addrOrHash.indexOf('0x') === 0 ? addrOrHash : `0x${addrOrHash}`;
 	}
 
 }
