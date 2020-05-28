@@ -13,6 +13,7 @@ import {
 	CURRENT_COMMITTEE_GRID,
 	CANDIDATE_COMMITTEE_GRID,
 	DEACTIVATED_COMMITTEE_GRID,
+	ASSET_GRID,
 } from '../constants/TableConstants';
 import TransformModules from '../utils/TransformModules';
 
@@ -27,6 +28,7 @@ const DEFAULT_FIELDS = Map({
 });
 
 const DEFAULT_STATE = Map({
+	[ASSET_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[ACCOUNT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[CONTRACT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[BLOCK_GRID]: _.cloneDeep(DEFAULT_FIELDS),

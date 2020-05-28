@@ -13,6 +13,7 @@ import internetPopupReducer from './InternetPopupReducer';
 import networkReducer from './NetworkReducer';
 import statisticsReducer from './StatisticsReducer';
 import committeeReducer from './CommitteeReducer';
+import AssetReducer from './AssetReducer';
 
 export default {
 	modal: modalReducer.reducer,
@@ -30,4 +31,5 @@ export default {
 	network: networkReducer.reducer,
 	statistics: statisticsReducer.reducer,
 	committee: committeeReducer.reducer,
+	asset: AssetReducer.reducer,
 };

@@ -8,7 +8,7 @@ import Avatar from '../Avatar';
 import MemberInfo from './MemberInfo';
 
 import URLHelper from '../../helpers/URLHelper';
-import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
+import { SSR_ACCOUNTS_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 import {
 	CANDIDATE_COMMITTEE_GRID,
 	CURRENT_COMMITTEE_GRID,
@@ -89,9 +89,11 @@ const MembersRow = ({
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
 					{data.lastOperation ?
-						<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)} className="td-in" target="_blank" rel="noopener noreferrer">
-							<span>{data.lastOperation.type}</span>
-						</a> :
+						<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)}>
+							<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)} className="td-in" rel="noopener noreferrer">
+								<span>{data.lastOperation.type}</span>
+							</a>
+						</Link> :
 						<div className="td-in">
 							<span>-</span>
 						</div>
@@ -101,9 +103,13 @@ const MembersRow = ({
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
 					{data.proposalTransaction ?
-						<a href="#" className="td-in">
-							<span>{data.proposalTransaction}</span>
-						</a> :
+						<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={URLHelper.transformEchodbOperationLinkToExplorerLink(data.proposalTransaction)}>
+							<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.proposalTransaction)} className="td-in" rel="noopener noreferrer">
+								<span>
+									{URLHelper.compileFullUrlFromOriginAndPath(URLHelper.transformEchodbOperationLinkToExplorerLink(data.proposalTransaction))}
+								</span>
+							</a>
+						</Link> :
 						<div className="td-in">
 							<span>-</span>
 						</div>}
