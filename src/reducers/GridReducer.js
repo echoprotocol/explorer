@@ -3,7 +3,7 @@ import { Map } from 'immutable';
 import _ from 'lodash';
 
 import {
-	DEFAULT_SIZE_PER_PAGE,
+	DEFAULT_SIZE_PER_PAGE, ASSET_GRID,
 	ACCOUNT_GRID, CONTRACT_GRID, BLOCK_GRID, TRANSACTION_GRID, ERC20_GRID, BLOCKS_GRID,
 } from '../constants/TableConstants';
 import TransformModules from '../utils/TransformModules';
@@ -19,6 +19,7 @@ const DEFAULT_FIELDS = Map({
 });
 
 const DEFAULT_STATE = Map({
+	[ASSET_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[ACCOUNT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[CONTRACT_GRID]: _.cloneDeep(DEFAULT_FIELDS),
 	[BLOCK_GRID]: _.cloneDeep(DEFAULT_FIELDS),
