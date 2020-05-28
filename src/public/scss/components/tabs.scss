@@ -18,6 +18,12 @@
 			padding-left: 15px;
 			padding-right: 15px;
 		}
+		.tab:not(:last-child) {
+			margin-right: 25px;
+			@include max-vw($res-500) {
+				margin-right: 0;
+			}
+		}
 	}
 	.react-tabs__tab {
 		&:not(:last-child) {

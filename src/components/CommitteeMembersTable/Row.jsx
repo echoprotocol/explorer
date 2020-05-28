@@ -8,15 +8,19 @@ import Avatar from '../Avatar';
 import MemberInfo from './MemberInfo';
 
 import URLHelper from '../../helpers/URLHelper';
-import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
+import { SSR_ACCOUNTS_PATH, SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
+import {
+	CANDIDATE_COMMITTEE_GRID,
+	CURRENT_COMMITTEE_GRID,
+	DEACTIVATED_COMMITTEE_GRID,
+} from '../../constants/TableConstants';
 
 import ddIcon from '../../public/images/icons/curret-sm.svg';
 
 const MembersRow = ({
-	index, data,
+	index, data, type,
 }) => {
 	const [isInfoActive, setInfoActive] = useState(false);
-
 	const transformDate = (timeStamp) => {
 		const participationHours = moment().diff(moment.utc(timeStamp), 'hours');
 		const participationDays = moment().diff(moment.utc(timeStamp), 'days');
@@ -36,11 +40,11 @@ const MembersRow = ({
 	return (
 		<React.Fragment>
 			<tr onClick={() => setInfoActive(!isInfoActive)}className={cn('view', { active: isInfoActive })}>
-				<td className="number"><div className="td-in">{index}</div></td>
-				{data.abandon &&
+				<td className="number"><div className="td-in">{index + 1}</div></td>
+				{type === DEACTIVATED_COMMITTEE_GRID &&
 				<td className="abandon">
 					<div className="td-in">
-						<span>{transformDate(data.abandon)}</span>
+						<span>{data.abandon ? transformDate(data.abandon) : '-'}</span>
 					</div>
 				</td>}
 				<td className="account">
@@ -51,18 +55,18 @@ const MembersRow = ({
 						</a>
 					</Link>
 				</td>
-				{data.participation &&
+				{type === CURRENT_COMMITTEE_GRID &&
 				<td className="participation">
 					<div className="td-in">
 						<span>
-							{transformDate(data.participation)}
+							{data.participation ? transformDate(data.participation) : '-'}
 						</span>
 					</div>
 				</td>}
-				{data.confirmations &&
+				{type === CANDIDATE_COMMITTEE_GRID &&
 				<td className="confirmations">
 					<div className="td-in">
-						<span>{data.confirmations}</span>
+						<span>{data.confirmations ? data.confirmations : 0}</span>
 					</div>
 				</td>
 				}
@@ -81,19 +85,34 @@ const MembersRow = ({
 						<span>{data.id}</span>
 					</div>
 				</td>
-				{data.lastOperation &&
+				{type === CURRENT_COMMITTEE_GRID &&
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
-					<a href="#" className="td-in">
-						<span>{data.lastOperation.type}</span>
-					</a>
+					{data.lastOperation ?
+						<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)}>
+							<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.lastOperation.link)} className="td-in" rel="noopener noreferrer">
+								<span>{data.lastOperation.type}</span>
+							</a>
+						</Link> :
+						<div className="td-in">
+							<span>-</span>
+						</div>
+					}
 				</td>}
-				{data.proposalTransaction &&
+				{(type === CANDIDATE_COMMITTEE_GRID || type === DEACTIVATED_COMMITTEE_GRID) &&
 				<td className="last-operation">
 					<img src={ddIcon} alt="" className="toggle-icon" />
-					<a href="#" className="td-in">
-						<span>{data.proposalTransaction}</span>
-					</a>
+					{data.proposalTransaction ?
+						<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={URLHelper.transformEchodbOperationLinkToExplorerLink(data.proposalTransaction)}>
+							<a href={URLHelper.transformEchodbOperationLinkToExplorerLink(data.proposalTransaction)} className="td-in" rel="noopener noreferrer">
+								<span>
+									{URLHelper.compileFullUrlFromOriginAndPath(URLHelper.transformEchodbOperationLinkToExplorerLink(data.proposalTransaction))}
+								</span>
+							</a>
+						</Link> :
+						<div className="td-in">
+							<span>-</span>
+						</div>}
 				</td>}
 			</tr>
 			{
@@ -117,6 +136,9 @@ const MembersRow = ({
 MembersRow.propTypes = {
 	index: PropTypes.number.isRequired,
 	data: PropTypes.object.isRequired,
+	type: PropTypes
+		.oneOf([CURRENT_COMMITTEE_GRID, CANDIDATE_COMMITTEE_GRID, DEACTIVATED_COMMITTEE_GRID])
+		.isRequired,
 };
 
 export default memo(MembersRow);

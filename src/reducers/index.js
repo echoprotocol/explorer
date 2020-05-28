@@ -12,6 +12,7 @@ import contractReducer from './ContractReducer';
 import internetPopupReducer from './InternetPopupReducer';
 import networkReducer from './NetworkReducer';
 import statisticsReducer from './StatisticsReducer';
+import committeeReducer from './CommitteeReducer';
 import AssetReducer from './AssetReducer';
 
 export default {
@@ -29,5 +30,6 @@ export default {
 	internetPopup: internetPopupReducer.reducer,
 	network: networkReducer.reducer,
 	statistics: statisticsReducer.reducer,
+	committee: committeeReducer.reducer,
 	asset: AssetReducer.reducer,
 };
