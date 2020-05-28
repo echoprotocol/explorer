@@ -11,11 +11,11 @@ import AssetGraphic from '../AssetGraphic';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
-import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
 
 import chartData from './chartData';
+import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
 import GridActions from '../../actions/GridActions';
 import { ASSET_GRID } from '../../constants/TableConstants';
 import AssetTransfersTable from './AssetTransferTable';
