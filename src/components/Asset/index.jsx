@@ -10,9 +10,9 @@ import InfoBlockItem from '../InfoBlock/InfoBlockItem';
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
-import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
+import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
 import GridActions from '../../actions/GridActions';
 import { ASSET_GRID } from '../../constants/TableConstants';
 import AssetTransfersTable from './AssetTransferTable';
