@@ -269,6 +269,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					object = object.set('virtualOps', formatted);
 				}
 				if (contractInfo.token) {
+					contractInfo.token.formatted_total_supply =
+						FormatHelper.formatAmount(contractInfo.token.total_supply, Number(contractInfo.token.decimals));
 					object = object.set('token', contractInfo.token);
 				}
 			} else if (assetOperations.includes(operation.name)) {
