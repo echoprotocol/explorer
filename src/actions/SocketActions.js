@@ -137,7 +137,7 @@ export const serverConnect = () => async (dispatch) => {
 		}
 
 		const dynamicGlobalParams = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
-		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
+		const globalParams = (await echo.api.getGlobalProperties(true)).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
 		await dispatch(batchActions([
@@ -189,7 +189,7 @@ export const fullClientInit = () => async (dispatch) => {
 		});
 
 		const dynamicGlobalParams = await echo.api.getObject(DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES);
-		const globalParams = (await echo.api.wsApi.database.getGlobalProperties()).parameters;
+		const globalParams = (await echo.api.getGlobalProperties(true)).parameters;
 		const blockReward = globalParams.block_producer_reward_ratio;
 
 		await dispatch(batchActions([
