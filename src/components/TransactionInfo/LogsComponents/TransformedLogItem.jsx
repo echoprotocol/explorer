@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 const TransformedLogsItem = ({ name, value, isLink }) => (
 	<div className="transformed-logs-item">
-		<div className="transformed-logs-item__name">{name}:&nbsp;</div>
+		<div className="transformed-logs-item__name">{name}
+			{name && ': '}
+		</div>
 		{isLink ?
 			<a href="" className="transformed-logs-item__value">{value}</a> :
 			<div className="transformed-logs-item__value">{value}</div>

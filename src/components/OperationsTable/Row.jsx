@@ -46,7 +46,7 @@ const OperationsRow = ({
 	sizePerPage,
 	totalDataSize,
 }) => {
-	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
+	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1, virtual);
 	let senderLink = '';
 	if (mainInfo) {
 		senderLink = mainInfo.from && (!mainInfo.from.name && validators.isContractId(mainInfo.from.id)) ?
