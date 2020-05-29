@@ -20,6 +20,7 @@ export default withRouter(connect(
 		historyLength: state.global.get('historyLength'),
 		isDistributionRewardOpen: state.block.get('isDistributionRewardOpen'),
 		latestBlock: state.round.get('latestBlock'),
+		previousPath: state.global.getIn(['history', 'route']),
 	}),
 	(dispatch) => ({
 		onSetFilter: (params) => dispatch(GridActions.setFilter(BLOCK_GRID, params)),

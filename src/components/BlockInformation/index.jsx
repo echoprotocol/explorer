@@ -6,6 +6,7 @@ import BN from 'bignumber.js';
 
 import OperationsTable from '../../containers/OperationsTable';
 import BreadCrumbs from '../InformationBreadCrumbs';
+import BackwardsLink from '../BackwardLink';
 import ViewListPopover from '../ViewListPopover';
 import TableLabel from '../TableLabel';
 import InnerHeader from '../InnerHeader';
@@ -18,6 +19,7 @@ import {
 	INDEX_PATH,
 	SSR_ACCOUNTS_PATH,
 	SSR_BLOCK_INFORMATION_PATH,
+	BLOCKS_TABLE_PATH,
 } from '../../constants/RouterConstants';
 import { BLOCK_GRID } from '../../constants/TableConstants';
 
@@ -105,7 +107,8 @@ class BlockInformation extends React.Component {
 	}
 
 	returnFunction() {
-		Router.push(INDEX_PATH);
+		const { previousPath } = this.props;
+		Router.push(previousPath === BLOCKS_TABLE_PATH ? previousPath : INDEX_PATH);
 	}
 
 	renderLoader() {
@@ -113,7 +116,9 @@ class BlockInformation extends React.Component {
 	}
 
 	renderBlockInformation(blockInformation, latestBlock) {
-		const { toggleRewardDistribution, isDistributionRewardOpen, filteredOperations } = this.props;
+		const {
+			toggleRewardDistribution, isDistributionRewardOpen, filteredOperations, previousPath,
+		} = this.props;
 
 		const formattedBlockNumber = blockInformation.get('blockNumber') || '';
 		const time = FormatHelper.timestampToBlockInformationTime(blockInformation.get('timestamp'));
@@ -124,11 +129,12 @@ class BlockInformation extends React.Component {
 		const operationCount = blockInformation.get('operations').size || transactionCount;
 		const rewardDistribution = blockInformation.get('rewardDistribution');
 		const label = FormatHelper.getFormatTransactionsOperationTitle(operationCount, transactionCount);
+		const path = previousPath === BLOCKS_TABLE_PATH ? previousPath : INDEX_PATH;
 		const breadcrumbs = [
 			{
 				title: 'Blocks list',
-				as: INDEX_PATH,
-				href: INDEX_PATH,
+				as: path,
+				href: path,
 			},
 		];
 
@@ -157,7 +163,10 @@ class BlockInformation extends React.Component {
 						</button>
 					</div>
 				</div>
-				<InnerHeader returnFunction={() => this.returnFunction()} title={`Block ${formattedBlockNumber}`} />
+				<InnerHeader>
+					<BackwardsLink returnFunction={() => this.returnFunction()} className="move-top" />
+					<div className="inner-header-title">{`Block ${formattedBlockNumber}`}</div>
+				</InnerHeader>
 				<InfoBlock>
 					<InfoBlockItem title="Date, time" value={time} className="time" />
 					<InfoBlockItem title="Size" value={size} className="size" />
@@ -234,6 +243,7 @@ BlockInformation.propTypes = {
 	router: PropTypes.object.isRequired,
 	latestBlock: PropTypes.number.isRequired,
 	blockInformation: PropTypes.object.isRequired,
+	previousPath: PropTypes.string.isRequired,
 	getBlockInfo: PropTypes.func.isRequired,
 	clearBlockInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,

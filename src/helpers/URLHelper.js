@@ -13,7 +13,6 @@ import {
 } from '../constants/RouterConstants';
 
 import config from '../config/chain';
-import { BTC_EXPLORER, ETH_EXPLORER } from '../constants/OpsFormatConstants';
 
 class URLHelper {
 
@@ -42,8 +41,8 @@ class URLHelper {
 	 * @param trNum
 	 * @param opNum
 	 */
-	static createOperationObjectsUrl(block, trNum, opNum) {
-		return `/objects?opId=${block}-${trNum}-${opNum}`;
+	static createOperationObjectsUrl(block, trNum, opNum, virtual) {
+		return `/objects?opId=${block}-${trNum}-${opNum}${virtual ? '-virtual' : ''}`;
 	}
 
 	/**
@@ -52,8 +51,8 @@ class URLHelper {
 	 * @param op
 	 * @returns {string}
 	 */
-	static createTransactionOperationUrl(currentUrl, op, virtual) {
-		return `${currentUrl}?op=${op}&virtual=${!!virtual}`;
+	static createTransactionOperationUrl(currentUrl, op, virtual, logs) {
+		return `${currentUrl}?op=${op}&virtual=${!!virtual}${logs ? '&logs=true' : ''}`;
 	}
 
 	/**
@@ -204,7 +203,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createEthAddressOut(url) {
-		return `${ETH_EXPLORER}/address/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.ETHEREUM}/address/${url}`;
 	}
 
 	/**
@@ -213,7 +212,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createEthTransactionOut(url) {
-		return `${ETH_EXPLORER}/tx/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.ETHEREUM}/tx/${url}`;
 	}
 
 	/**
@@ -222,7 +221,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createBtcAddressOut(url) {
-		return `${BTC_EXPLORER}/address/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.BITCOIN}/address/${url}`;
 	}
 
 	/**
@@ -231,7 +230,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createBtcTransactionOut(url) {
-		return `${BTC_EXPLORER}/tx/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.BITCOIN}/tx/${url}`;
 	}
 
 	/**
@@ -240,7 +239,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createBtcBlockOut(url) {
-		return `${BTC_EXPLORER}/block/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.BITCOIN}/blockId/${url}`;
 	}
 
 	/**
@@ -259,7 +258,18 @@ class URLHelper {
 		if (slpitedUrl[2]) {
 			slpitedUrl[2] = parseInt(slpitedUrl[2], 10) + 1;
 		}
+		if (slpitedUrl[3]) {
+			if (virtual === undefined) {
+				virtual = slpitedUrl[3] === 'virtual';
+			}
+		}
 		return `/blocks/${slpitedUrl[0]}/${slpitedUrl[1]}?op=${slpitedUrl[2]}&virtual=${!!virtual}`;
+	}
+
+	static compileFullUrlFromOriginAndPath(path) {
+		const globalObj = global || {};
+		const windowObj = globalObj.window || { location: { origin: '' } };
+		return `${windowObj.location.origin}${path}`;
 	}
 
 }

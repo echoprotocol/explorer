@@ -16,7 +16,14 @@ import Operations, {
 	didOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
-import { ERC20_HASHES, ECHO_ASSET, NATHAN } from '../constants/GlobalConstants';
+import {
+	ERC20_HASHES,
+	ECHO_ASSET,
+	NATHAN,
+	ERC20_EVENT_HASHES,
+	EBTC_ASSET_ID,
+	EETH_ASSET_ID,
+} from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX, CONTRACT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
 import ConvertHelper from '../helpers/ConvertHelper';
@@ -35,7 +42,11 @@ import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
 import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
-import { OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING } from '../constants/OpsFormatConstants';
+import {
+	OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING,
+	SIDECHAIN_OPS_DEFAULT_ASSETS,
+} from '../constants/OpsFormatConstants';
+import ApiService from '../services/ApiService';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -193,10 +204,14 @@ class TransactionActionsClass extends BaseActionsClass {
 						isNeedLink = true;
 						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
 						break;
-					case Operations.contract_create.name:
+					case Operations.contract_create.name: {
 						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						// TODO deploy args
+						// const contractAbi = (await ApiService.getContractInfo(contractId)).abi;
+						// const contract = await echo.api.getContract(contractId);
+						// const constructor = contractAbi.find((el) => el.type === 'constructor');
 						break;
-					case Operations.contract_internal_call.name:
+					} case Operations.contract_internal_call.name:
 						isNeedLink = true;
 						contractId = options.callee;
 						break;
@@ -226,6 +241,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('supportedAsset', contract.supported_asset)
 					.set('owner', contract.owner)
 					.set('contractPoolBalance', contractAdditionalInfo.poolBalance)
+					.set('bytecode', FormatHelper.addEthPrefix(options.code))
 					.set('whitelist', contractAdditionalInfo.whitelist || [])
 					.set('blacklist', contractAdditionalInfo.blacklist || []);
 				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
@@ -238,7 +254,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 				if (isNeedLink) {
 					object = object
-						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1));
+						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1, currentOp.virtual));
 				}
 				if (currentOp.body.virtual_operations.length) {
 					const formatVirtualOps = currentOp.body.virtual_operations.map((op) => this.formatOperation(op));
@@ -264,6 +280,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					object = object.set('virtualOps', formatted);
 				}
 				if (contractInfo.token) {
+					contractInfo.token.formatted_total_supply =
+						FormatHelper.formatAmount(contractInfo.token.total_supply, Number(contractInfo.token.decimals));
 					object = object.set('token', contractInfo.token);
 				}
 			} else if (assetOperations.includes(operation.name)) {
@@ -439,13 +457,13 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.sidechain_eth_approve_address.name:
 						objectWithApprovals = await echo.api.getObject(singleOperation.result);
 						object = object
-							.set('eth_addr', objectWithApprovals.eth_addr);
+							.set('eth_addr', FormatHelper.addEthPrefix(objectWithApprovals.eth_addr));
 						break;
 					case Operations.sidechain_eth_create_address.name: {
 						const ethAddress = await echo.api.getEthAddress(options.account);
 						if (ethAddress) {
 							object = object
-								.set('eth_addr', ethAddress.eth_addr);
+								.set('eth_addr', FormatHelper.addEthPrefix(ethAddress.eth_addr));
 							objectWithApprovals = ethAddress;
 						}
 						break;
@@ -458,14 +476,19 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = deposits.find((el) => el.deposit_id === options.deposit_id) || {};
 						object = object
 							.set('deposit_id', objectWithApprovals.id)
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash));
 						break;
 					}
-					case Operations.eth_send_deposit.name:
+					case Operations.eth_send_deposit.name: {
 						objectWithApprovals = await echo.api.getObject(options.deposit_id);
 						object = object
 							.set('deposit_id', objectWithApprovals.id)
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash))
+							.set('amount', singleOperation.amount);
+						break;
+					} case Operations.eth_update_contract_address:
+						object = object
+							.set('new_addr', FormatHelper.addEthPrefix(singleOperation.new_addr));
 						break;
 					case Operations.approve_erc20_token_withdraw.name: {
 						const originalOpIndexes = singleOperation.sidchain_erc_20_withdraw_token.split('-');
@@ -474,7 +497,7 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('withdraw_id', objectWithApprovals.id)
 							.set('sidchain_erc_20_withdraw_token', singleOperation.sidchain_erc_20_withdraw_token)
-							.set('transaction_hash', singleOperation.transaction_hash)
+							.set('transaction_hash', FormatHelper.addEthPrefix(singleOperation.transaction_hash))
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
 					} case Operations.sidechain_erc20_issue.name: {
@@ -505,13 +528,14 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = await echo.api.getObject(withdrawId);
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw))
-							.set('transaction_hash', objectWithApprovals.transaction_hash)
+							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash))
 							.set('withdraw_id', withdrawId);
 						break;
 					} case Operations.withdraw_eth.name: {
 						objectWithApprovals = await echo.api.getObject(getSingleOpeation.result);
 						object = object
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash))
+							.set('eth_address', FormatHelper.addEthPrefix(singleOperation.eth_addr));
 						break;
 					} case Operations.sidechain_issue.name: {
 						const listApprovals = singleOperation.list_of_approvals
@@ -536,7 +560,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.register_erc20_token.name: {
 						const contractObject = await echo.api.getObject(operationResult[1]);
 						object = object
-							.set('decimals', String(options.decimals));
+							.set('decimals', String(options.decimals))
+							.set('eth_addr', FormatHelper.addEthPrefix(singleOperation.eth_addr));
 						if (!contractObject) {
 							break;
 						}
@@ -556,25 +581,26 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = await echo.api.getObject(operationResult[1]);
 						object = object
 							.set('token', { value: token.symbol, link: token.id })
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash));
 						break;
 					}
 					case Operations.deposit_erc20_token.name: {
 						const [, result] = operationResult || [];
 						objectWithApprovals = await echo.api.getObject(result) || {};
 						object = object
-							.set('from_address', singleOperation.erc20_token_addr)
+							.set('from_address', FormatHelper.addEthPrefix(singleOperation.erc20_token_addr))
 							.set('deposit_id', objectWithApprovals.id)
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash))
+							.set('to', FormatHelper.addEthPrefix(objectWithApprovals.to));
 						break;
 					}
-					case Operations.erc20_send_withdraw.name:
+					case Operations.erc20_send_withdraw.name: {
 						objectWithApprovals = await echo.api.getObject(options.withdraw_id);
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token))
-							.set('transaction_hash', objectWithApprovals.transaction_hash);
+							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash));
 						break;
-					default:
+					} default:
 						break;
 				}
 
@@ -878,8 +904,11 @@ class TransactionActionsClass extends BaseActionsClass {
 				symbol: response.symbol,
 			};
 		} else {
-			result.value.precision = ECHO_ASSET.PRECISION;
-			result.value.symbol = ECHO_ASSET.SYMBOL;
+			const defaultAsset = await this.getDefaultOperationAsset(type);
+			result.value = {
+				...result.value,
+				...defaultAsset,
+			};
 		}
 
 		// filter sub-operations by account
@@ -994,6 +1023,46 @@ class TransactionActionsClass extends BaseActionsClass {
 		return result;
 	}
 
+	async getErc20TransfersFromLogs(logs) {
+		try {
+			const getObjectId = async (objectId) => {
+				if (!objectId) { return {}; }
+				let account = null;
+				try {
+					account = await echo.api.getObject(objectId);
+				// eslint-disable-next-line no-empty
+				} catch (err) {
+					return {};
+				}
+				return account;
+			};
+			let erc20Tranfers = logs.filter((l) => l.decValues[0] === Object.keys(ERC20_EVENT_HASHES)[0]);
+			const erc20Promises = erc20Tranfers.map(async (t) => {
+				const [fromAcc, toAcc] = await Promise.all([
+					getObjectId(t.decValues[1]),
+					getObjectId(t.decValues[2]),
+				]);
+				return {
+					from: {
+						value: fromAcc.name,
+						link: fromAcc.id,
+					},
+					to: {
+						value: toAcc.name,
+						link: toAcc.id,
+					},
+					amount: {
+						amount: t.decData[0],
+					},
+				};
+			});
+			erc20Tranfers = await Promise.all(erc20Promises);
+			return erc20Tranfers;
+		} catch (e) {
+			return [];
+		}
+	}
+
 	getProposalOperations(proposedOps = [], blockNumber, blockTimestamp, trIndex) {
 		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
 			const [idPropOp] = proposedOp.op;
@@ -1022,6 +1091,23 @@ class TransactionActionsClass extends BaseActionsClass {
 			}
 			return transformData;
 		});
+	}
+
+	async getDefaultOperationAsset(type) {
+		let assetId;
+		if (SIDECHAIN_OPS_DEFAULT_ASSETS.BTC.includes(type)) {
+			assetId = EBTC_ASSET_ID;
+		} else if (SIDECHAIN_OPS_DEFAULT_ASSETS.ETH.includes(type)) {
+			assetId = EETH_ASSET_ID;
+		} else {
+			assetId = ECHO_ASSET.ID;
+		}
+		const asset = await echo.api.getObject(assetId);
+		return {
+			id: assetId,
+			precision: asset.precision,
+			symbol: asset.symbol,
+		};
 	}
 
 	async getOperation(
@@ -1063,15 +1149,16 @@ class TransactionActionsClass extends BaseActionsClass {
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
 			switch (typeof value) {
-				case 'number':
+				case 'number': {
+					const defaultAsset = await this.getDefaultOperationAsset(type);
 					value = {
-						asset_id: ECHO_ASSET.ID,
-						precision: ECHO_ASSET.PRECISION,
-						symbol: ECHO_ASSET.SYMBOL,
+						asset_id: defaultAsset.id,
+						precision: defaultAsset.precision,
+						symbol: defaultAsset.symbol,
 						amount: value,
 					};
 					break;
-				case 'string':
+				} case 'string':
 					if (value === '') {
 						return {};
 					}
@@ -1161,10 +1248,34 @@ class TransactionActionsClass extends BaseActionsClass {
 					}
 
 					if (log.length) {
-						options.logs = log.map(({ address, data, log: topics }) => {
+						let promises = log.map(async ({ address, data, log: topics }) => {
 							const convertedContract = ConvertHelper.toContractId(address);
-							return { topics, contract: convertedContract, data };
+							const contractAbi = (await ApiService.getContractInfo(convertedContract)).abi;
+							const dec = ConvertHelper.convertLogs(topics, contractAbi, data);
+							return {
+								topics,
+								contract: convertedContract,
+								data,
+								decValues: dec.decValues,
+								decData: dec.decData,
+							};
 						});
+						promises = await Promise.all(promises);
+						options.logs = promises;
+
+						const tokenInfo = objectInfo.get('token');
+						let erc20Tranfers = await this.getErc20TransfersFromLogs(options.logs);
+						erc20Tranfers = erc20Tranfers.map((t) => ({
+							...t,
+							amount: {
+								...t.amount,
+								precision: Number(tokenInfo.decimals),
+								symbol: tokenInfo.symbol,
+							},
+						}));
+						if (erc20Tranfers.length) {
+							options['token transfers'] = erc20Tranfers;
+						}
 					}
 
 				}

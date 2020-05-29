@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import Switch from '../../Switch';
 import TransformedLogsItem from './TransformedLogItem';
 
-const LogsDataRow = ({ data }) => {
-	const [isDataTransformed, setDataTransformed] = useState(false);
+const LogsDataRow = ({ data, decData }) => {
+	const [isDataTransformed, setDataTransformed] = useState(!!decData);
 
+	const decRowData = decData || ['This is not commmon ERC20 event and ABI was not provided'];
 	const toggleToTransformedData = () => {
 		setDataTransformed(true);
 	};
@@ -16,8 +17,7 @@ const LogsDataRow = ({ data }) => {
 
 	const renderTransformedData = () => (
 		<div className="logs-multy-row">
-			<TransformedLogsItem name="pay_gem" value="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" />
-			<TransformedLogsItem name="id" value="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" isLink />
+			{decRowData.map((d) => <TransformedLogsItem value={d} />)}
 		</div>
 	);
 
@@ -37,5 +37,6 @@ const LogsDataRow = ({ data }) => {
 
 LogsDataRow.propTypes = {
 	data: PropTypes.string.isRequired,
+	decData: PropTypes.array.isRequired,
 };
 export default LogsDataRow;

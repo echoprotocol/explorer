@@ -34,6 +34,7 @@ class OperationsTable extends React.Component {
 				value: '',
 			},
 			showedOperations: [],
+			showEventLogs: [],
 			airRows: [],
 			isFilterOpen: false,
 		};
@@ -44,7 +45,7 @@ class OperationsTable extends React.Component {
 	}
 
 	componentDidMount() {
-		const { showedOperations } = this.state;
+		const { showedOperations, showEventLogs } = this.state;
 		const queryProps = queryString.parse(this.props.router.asPath.split('?')[1]);
 
 		// eslint-disable-next-line react/no-did-mount-set-state
@@ -72,8 +73,12 @@ class OperationsTable extends React.Component {
 		if (!this.tableRefs[op - 1]) {
 			return;
 		}
+
+		if (queryProps.logs === 'true') {
+			showEventLogs.push(op - 1);
+		}
 		showedOperations.push(op - 1);
-		this.setState({ showedOperations }); // eslint-disable-line react/no-did-mount-set-state
+		this.setState({ showedOperations, showEventLogs }); // eslint-disable-line react/no-did-mount-set-state
 	}
 
 	async componentDidUpdate(prevProps) {
@@ -98,13 +103,16 @@ class OperationsTable extends React.Component {
 		}
 
 		if (!search.op && prevSearch.op) {
-			this.setState({ showedOperations: [] }); // eslint-disable-line react/no-did-update-set-state
+			this.setState({ showedOperations: [], showEventLogs: [] }); // eslint-disable-line react/no-did-update-set-state
 		} else if (search.op && !prevSearch.op) {
-			const { showedOperations } = this.state;
+			const { showedOperations, showEventLogs } = this.state;
 			const op = parseInt(search.op, 10);
 			showedOperations.push(op - 1);
+			if (search.logs === 'true') {
+				showEventLogs.push(op - 1);
+			}
 			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ showedOperations });
+			this.setState({ showedOperations, showEventLogs });
 		}
 
 		window.addEventListener('resize', this.updateScroll);
@@ -214,9 +222,11 @@ class OperationsTable extends React.Component {
 		const { operations } = this.props;
 		const { asPath } = this.props.router;
 		const [pathname, search] = asPath.split('?');
-		const { showedOperations, airRows } = this.state;
+		const { showedOperations, airRows, showEventLogs } = this.state;
 		const queryProps = queryString.parse(search);
 		const v = showedOperations.indexOf(index);
+		const showLog = queryProps.logs === 'true';
+
 		if (!this.props.changeUrl && operations && operations.size) {
 			const { blockNumber, type } = operations.get(index);
 			const { trIndex, opIndex, virtual } = operations.get(index);
@@ -229,7 +239,7 @@ class OperationsTable extends React.Component {
 			}
 
 			const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
-			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1, virtual);
+			const operationUrl = URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1, virtual, showLog);
 			Router.push(SSR_TRANSACTION_INFORMATION_PATH, operationUrl);
 
 			return;
@@ -237,6 +247,7 @@ class OperationsTable extends React.Component {
 
 		if (v !== -1) {
 			showedOperations.splice(v, 1);
+			showEventLogs.splice(v, 1);
 
 			if (queryProps.op && parseInt(queryProps.op, 10) - 1 === index) {
 				Router.push(SSR_TRANSACTION_INFORMATION_PATH, `${pathname}?virtual=${queryProps.virtual}`);
@@ -252,7 +263,10 @@ class OperationsTable extends React.Component {
 		} else {
 			const mainOperation = operations.get(index) || {};
 			showedOperations.push(index);
-			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1, mainOperation.virtual));
+			if (showLog) {
+				showEventLogs.push(index);
+			}
+			Router.push(SSR_TRANSACTION_INFORMATION_PATH, URLHelper.createTransactionOperationUrl(pathname, index + 1, mainOperation.virtual, showLog));
 		}
 
 		if (showedOperations.includes(index) && airRows.indexOf(index - 1) === -1) {
@@ -263,7 +277,7 @@ class OperationsTable extends React.Component {
 			airRows.push(index);
 		}
 
-		this.setState({ showedOperations, airRows });
+		this.setState({ showedOperations, airRows, showEventLogs });
 	}
 
 	toggleFilter(e) {
@@ -278,7 +292,7 @@ class OperationsTable extends React.Component {
 			isTransaction, label, loading, router, isMobile, isASCOps,
 		} = this.props;
 		let { filterAndPaginateData } = this.props;
-		const { showedOperations, isFilterOpen } = this.state;
+		const { showedOperations, isFilterOpen, showEventLogs } = this.state;
 		filterAndPaginateData = filterAndPaginateData.toJS();
 		return (
 			<div className="operations-table">
@@ -313,6 +327,7 @@ class OperationsTable extends React.Component {
 									operation={op}
 									index={i}
 									active={showedOperations.includes(i)}
+									showLogs={showEventLogs.includes(i)}
 									tableRefs={this.tableRefs}
 									toggleOperationDetails={(index) => this.toggleOperationDetails(index)}
 								/>

@@ -393,3 +393,16 @@ export const OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING = [
 	Operations.sidechain_erc20_issue.name,
 	Operations.sidechain_erc20_burn.name,
 ];
+export const SIDECHAIN_OPS_DEFAULT_ASSETS = {
+	BTC: [
+		Operations.sidechain_btc_deposit.value,
+		Operations.sidechain_btc_withdraw.value,
+	],
+	ETH: [
+		Operations.withdraw_eth.value,
+		Operations.deposit_eth.value,
+		Operations.eth_send_deposit.value,
+		Operations.sidechain_issue.value,
+		Operations.sidechain_burn.value,
+	],
+};
