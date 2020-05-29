@@ -16,8 +16,8 @@ const LogsInfo = ({ logs }) => (
 				<div className="logs-item-info">
 					{log.address && <LogsAddressRow address={log.address} />}
 					{log.name && <LogsNameRow name={log.name} />}
-					{log.topics && <LogsTopicsRow topics={log.topics} />}
-					{log.data && <LogsDataRow data={log.data} />}
+					{log.topics && <LogsTopicsRow topics={log.topics} decValues={log.decValues} />}
+					{log.data && <LogsDataRow data={log.data} decData={log.decData} />}
 				</div>
 			</div>
 		))}

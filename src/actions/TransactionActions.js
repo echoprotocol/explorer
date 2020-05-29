@@ -35,6 +35,7 @@ import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
 import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
+import ApiService from '../services/ApiService';
 import { SIDECHAIN_OPS_DEFAULT_ASSETS } from '../constants/OpsFormatConstants';
 
 class TransactionActionsClass extends BaseActionsClass {
@@ -193,10 +194,14 @@ class TransactionActionsClass extends BaseActionsClass {
 						isNeedLink = true;
 						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
 						break;
-					case Operations.contract_create.name:
+					case Operations.contract_create.name: {
 						[contractId] = ((await echo.api.getObject(operationResult[1])).contracts_id);
+						// TODO deploy args
+						// const contractAbi = (await ApiService.getContractInfo(contractId)).abi;
+						// const contract = await echo.api.getContract(contractId);
+						// const constructor = contractAbi.find((el) => el.type === 'constructor');
 						break;
-					case Operations.contract_internal_call.name:
+					} case Operations.contract_internal_call.name:
 						isNeedLink = true;
 						contractId = options.callee;
 						break;
@@ -226,6 +231,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('supportedAsset', contract.supported_asset)
 					.set('owner', contract.owner)
 					.set('contractPoolBalance', contractAdditionalInfo.poolBalance)
+					.set('bytecode', FormatHelper.addEthPrefix(options.code))
 					.set('whitelist', contractAdditionalInfo.whitelist || [])
 					.set('blacklist', contractAdditionalInfo.blacklist || []);
 				const currentOp = history.items.find((el) => el.trx_in_block === opInfo.trxInblock &&
@@ -1181,10 +1187,20 @@ class TransactionActionsClass extends BaseActionsClass {
 					}
 
 					if (log.length) {
-						options.logs = log.map(({ address, data, log: topics }) => {
+						let promises = log.map(async ({ address, data, log: topics }) => {
 							const convertedContract = ConvertHelper.toContractId(address);
-							return { topics, contract: convertedContract, data };
+							const contractAbi = (await ApiService.getContractInfo(convertedContract)).abi;
+							const dec = ConvertHelper.convertLogs(topics, contractAbi, data);
+							return {
+								topics,
+								contract: convertedContract,
+								data,
+								decValues: dec.decValues,
+								decData: dec.decData,
+							};
 						});
+						promises = await Promise.all(promises);
+						options.logs = promises;
 					}
 
 				}
