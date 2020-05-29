@@ -32,7 +32,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 								value: objectInfo.token.decimals,
 							}, {
 								key: 'Total supply',
-								value: objectInfo.token.total_supply,
+								value: objectInfo.token.formatted_total_supply,
 							}],
 							erc20_token_transfers: data['token transfers'],
 						}),
@@ -66,7 +66,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 								value: objectInfo.token.decimals,
 							}, {
 								key: 'Total supply',
-								value: objectInfo.token.total_supply,
+								value: objectInfo.token.formatted_total_supply,
 							}],
 							erc20_token_transfers: data['token transfers'],
 						}),
