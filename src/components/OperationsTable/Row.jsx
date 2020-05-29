@@ -44,8 +44,13 @@ const OperationsRow = ({
 	totalDataSize,
 }) => {
 	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
-	const senderLink = (!mainInfo.from.name && validators.isContractId(mainInfo.from.id) ?
-		URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name));
+	let senderLink = '';
+	if (mainInfo) {
+		senderLink = mainInfo.from && (!mainInfo.from.name && validators.isContractId(mainInfo.from.id)) ?
+			URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name);
+	}
+	// const senderLink = mainInfo && (mainInfo.from && (!mainInfo.from.name && validators.isContractId(mainInfo.from.id))) ?
+	// 	URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name);
 	const goToLink = (e, href, objectId) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -68,32 +73,38 @@ const OperationsRow = ({
 	};
 
 	const renderAmount = () => {
-		if (!mainInfo.value.amount) {
-			if (operationsInfoData.operationInfo.amount_info) {
-				return <div className="td-in">{FormatHelper.formatAmount(operationsInfoData.operationInfo.amount_info)}</div>;
+		if (mainInfo) {
+			if (!mainInfo.value.amount) {
+				if (operationsInfoData.operationInfo.amount_info) {
+					return <div className="td-in">{FormatHelper.formatAmount(operationsInfoData.operationInfo.amount_info)}</div>;
+				}
+				return <div className="td-in">—</div>;
 			}
-			return <div className="td-in">—</div>;
+			const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
+			return (
+				<div className="td-in">
+					<Tooltip
+						placement="top"
+						overlayClassName="verify-contract-tooltip"
+						trigger={['hover']}
+						overlay={assetAmount}
+					>
+						<span className="value">
+							{assetAmount}
+						</span>
+					</Tooltip>
+					<span className="currency">{mainInfo.value.symbol}</span>
+				</div>
+			);
 		}
-		const assetAmount = FormatHelper.formatAmount(mainInfo.value.amount, mainInfo.value.precision);
-		return (
-			<div className="td-in">
-				<Tooltip
-					placement="top"
-					overlayClassName="verify-contract-tooltip"
-					trigger={['hover']}
-					overlay={assetAmount}
-				>
-					<span className="value">
-						{assetAmount}
-					</span>
-				</Tooltip>
-				<span className="currency">{mainInfo.value.symbol}</span>
-			</div>
-		);
+		return <div className="td-in">—</div>;
 	};
 
 	tableRefs[index] = React.createRef();
-	const subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
+	let subjectValue = '';
+	if (mainInfo) {
+		subjectValue = mainInfo.subject && (mainInfo.subject.name || mainInfo.subject.id);
+	}
 
 	const numberOperationInPage = ((currentPage - 1) * sizePerPage) + index;
 	let numberOperation = null;
@@ -119,13 +130,13 @@ const OperationsRow = ({
 					<div className="td-in">{type}</div>
 				</td>
 				<td className="sender">
-					{ mainInfo.from.id ?
+					{ mainInfo && (mainInfo.from.id ?
 						<Link href={SsrHrefHelper.getHrefByObjectId(mainInfo.from.id)}>
 							<a href={URLHelper.getUrlWithOrigin(senderLink)} className="td-in avatar-wrap" onClick={(e) => goToLink(e, senderLink, mainInfo.from.id)}>
 								{mainInfo.from.name ? <Avatar accountName={mainInfo.from.name} /> : null}
 								<span>{mainInfo.from.name ? mainInfo.from.name : mainInfo.from.id}</span>
 							</a>
-						</Link> : <div className="td-in">—</div>
+						</Link> : <div className="td-in">—</div>)
 					}
 				</td>
 				<td className="reciever">{renderSubject(subjectValue, mainInfo)}</td>
