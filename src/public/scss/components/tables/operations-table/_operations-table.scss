@@ -46,21 +46,6 @@
 		.td-in {
 			display: flex;
 		}
-
-		.value {
-			@include text-overflow;
-			margin-right: 4px;
-			max-width: 100px;
-			display: block;
-			word-break: break-all;
-		}
-
-		.currency {
-			overflow: initial;
-			color: $grey-mid;
-			@include text-overflow();
-			max-width: 40px;
-		}
 	}
 
 	.number {

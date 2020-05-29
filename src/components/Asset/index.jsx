@@ -6,13 +6,16 @@ import Loader from '../Loader';
 import InnerHeader from '../InnerHeader';
 import InfoBlock from '../InfoBlock';
 import InfoBlockItem from '../InfoBlock/InfoBlockItem';
+import AssetGraphic from '../AssetGraphic';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
-import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
+
+import chartData from './chartData';
+import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
 import GridActions from '../../actions/GridActions';
 import { ASSET_GRID } from '../../constants/TableConstants';
 import AssetTransfersTable from './AssetTransferTable';
@@ -38,9 +41,12 @@ class Asset extends React.Component {
 	}
 
 	componentDidMount() {
+		const { query: { id: assetId, ...filters } } = this.props.router;
 		if (!this.state.asset) {
-			this.updateAssetData(this.props.router.query.id);
+			this.updateAssetData(assetId);
 		}
+		this.props.initData(filters);
+		this.props.loadAssetHisotry(assetId);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -83,7 +89,7 @@ class Asset extends React.Component {
 					<Loader /> :
 					<React.Fragment>
 						<InnerHeader title={`Asset: ${assetSymbol}`} className="committee-members" />
-						<InfoBlock settings={assetFlags && assetFlags.toJS()}>
+						<InfoBlock settings={assetFlags && assetFlags.toJS()} className="asset">
 							<InfoBlockItem
 								title="Issuer"
 								value={issuerName}
@@ -97,6 +103,7 @@ class Asset extends React.Component {
 							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
+						<AssetGraphic data={chartData} />
 						<AssetTransfersTable
 							label="Asset transfers"
 							assetTransfers={assetTransfers}

@@ -17,11 +17,17 @@ export const NOT_FOUND_PATH = '/not-found';
 export const VERIFY_CONTRACT_PATH = '/contracts/:id/verify';
 export const MANAGE_CONTRACT_PATH = '/contracts/:id/manage';
 export const NODE_MAP = '/node-map';
+export const COMMITTEE_PATH = '/committee';
 export const BLOCKS_TABLE_PATH = '/blocks';
 
 export const SSR_BLOCK_INFORMATION_PATH = '/blocks/[round]';
 export const SSR_ACCOUNTS_PATH = '/accounts/[id]/info';
 export const SSR_ASSET_PATH = '/assets/[id]/info';
+
+export const SSR_CURRENT_COMMITTEE_PATH = '/committee/current';
+export const SSR_CANDIDATE_COMMITTEE_PATH = '/committee/candidate';
+export const SSR_FORMER_COMMITTEE_PATH = '/committee/former';
+
 export const SSR_TRANSACTION_INFORMATION_PATH = '/blocks/[round]/[index]';
 export const SSR_CONTRACT_PATH = '/contracts/[id]/info/';
 export const SSR_UPLOAD_ABI_PATH = '/contracts/[id]/upload-abi';

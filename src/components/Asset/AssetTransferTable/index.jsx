@@ -217,7 +217,7 @@ class AssetTransfersTable extends React.Component {
 		const { isFilterOpen } = this.state;
 		filterAndPaginateData = filterAndPaginateData && filterAndPaginateData.toJS();
 		return (
-			<div className="transfers-table">
+			<div className="asset-transfers-table">
 				<TableLabel label={label}>
 					<FilterBtn onClick={this.toggleFilter} />
 				</TableLabel>

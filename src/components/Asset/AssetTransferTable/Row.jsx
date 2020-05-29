@@ -9,7 +9,7 @@ import URLHelper from '../../../helpers/URLHelper';
 import { SSR_ASSET_PATH, SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 import FormatHelper from '../../../helpers/FormatHelper';
 
-const AssetRow = ({
+const AssetTransfersRow = ({
 	from, to, amount, fee, operation, id, onClick, asset,
 }) => {
 	const goToLink = (e, link, srrPath) => {
@@ -25,14 +25,14 @@ const AssetRow = ({
 		<React.Fragment>
 			<tr onClick={onClick} className={cn('view')}>
 				<td className="number"><div className="td-in">{id}.</div></td>
-				<td className="number"><div className="td-in">{operation}</div></td>
-				<td className="account">
+				<td className="operation"><div className="td-in">{operation}</div></td>
+				<td className="from">
 					<Link
 						href={SSR_ACCOUNTS_PATH}
 						as={fromLink}
 					>
 						<a
-							className="td-in link"
+							className="td-in avatar-wrap"
 							href={fromLink}
 							onClick={(e) => goToLink(e, fromLink, SSR_ACCOUNTS_PATH)}
 						>
@@ -41,13 +41,13 @@ const AssetRow = ({
 						</a>
 					</Link>
 				</td>
-				<td className="account">
+				<td className="to">
 					<Link
 						href={SSR_ACCOUNTS_PATH}
 						as={toLink}
 					>
 						<a
-							className="td-in link"
+							className="td-in avatar-wrap"
 							href={toLink}
 							onClick={(e) => goToLink(e, toLink, SSR_ACCOUNTS_PATH)}
 						>
@@ -60,25 +60,23 @@ const AssetRow = ({
 					{(amount && asset) &&
 					<div className="td-in">
 						<span className="value">{FormatHelper.formatAmount(amount, asset.precision)}</span>
-						<span className="type">{asset.symbol}</span>
+						<span className="currency">{asset.symbol}</span>
 					</div>
 					}
 				</td>
-				<td className="amount">
+				<td className="fee">
 					{fee &&
 					<Link
 						href={SSR_ASSET_PATH}
 						as={feeAssetLink}
 					>
 						<a
-							className="td-in link"
+							className="td-in"
 							href={feeAssetLink}
 							onClick={(e) => goToLink(e, feeAssetLink, SSR_ASSET_PATH)}
 						>
-							<div className="td-in">
-								<span className="value">{FormatHelper.formatAmount(fee.value, fee.precision)}</span>
-								<span className="type">{fee.symbol}</span>
-							</div>
+							<span className="value">{FormatHelper.formatAmount(fee.value, fee.precision)}</span>
+							<span className="currency">{fee.symbol}</span>
 						</a>
 					</Link>
 					}
@@ -88,7 +86,7 @@ const AssetRow = ({
 	);
 };
 
-AssetRow.propTypes = {
+AssetTransfersRow.propTypes = {
 	id: PropTypes.number.isRequired,
 	from: PropTypes.object.isRequired,
 	to: PropTypes.object.isRequired,
@@ -99,4 +97,4 @@ AssetRow.propTypes = {
 	operation: PropTypes.string.isRequired,
 };
 
-export default memo(AssetRow);
+export default memo(AssetTransfersRow);
