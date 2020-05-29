@@ -5,6 +5,7 @@ import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = new Map({
 	history: new List([]),
+	transferHistoryWithInterval: new List([]),
 });
 
 export default createModule({

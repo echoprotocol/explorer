@@ -1,13 +1,17 @@
 import echo from 'echojs-lib';
 import { List } from 'immutable';
+import moment from 'moment';
 
 import GlobalActions from './GlobalActions';
 import { getAssetFlags } from '../services/transform.ops/AddInfoHelper';
 import { ASSET_GRID } from '../constants/TableConstants';
 import { getAssetHistory } from '../services/queries/asset';
+import { getTransfersHistoryWithInterval } from '../services/queries/history';
 import GridActions from './GridActions';
 import AssetReducer from '../reducers/AssetReducer';
 import Operations from '../constants/Operations';
+import FormatHelper from '../helpers/FormatHelper';
+import utils from 'util';
 
 /**
  * @method getFullAssetInformation
@@ -94,4 +98,36 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 
 	dispatch(GridActions.setTotalDataSize(ASSET_GRID, total));
 	dispatch(AssetReducer.actions.set({ field: 'history', value: new List(transfers) }));
+};
+
+const formatAssetTransfersHistoyAccounts = (history, precision) => history.map((data) => ({
+	amount: FormatHelper.formatAmount(data.rate, precision),
+	date: moment(data.startIntervalDateString).format('dd-mm-yyyy'),
+}));
+
+export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch) => {
+	let ratesMap = [];
+
+	try {
+		const [asset] = await echo.api.getAssets([assetId]);
+
+		if (!asset) {
+			return;
+		}
+
+		const from = moment().subtract(1, 'month').toISOString();
+		const interval = moment.duration(1, 'day').as('second');
+
+		({ ratesMap } = await getTransfersHistoryWithInterval({
+			from,
+			interval,
+			targetSubject: asset.id,
+		}));
+
+		ratesMap = formatAssetTransfersHistoyAccounts(ratesMap, asset.precision);
+	} catch (err) {
+		console.log('EchoDB error', utils.inspect(err, false, null, true));
+	}
+
+	dispatch(AssetReducer.actions.set({ field: 'transferHistoryWithInterval', value: new List(ratesMap) }));
 };

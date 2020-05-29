@@ -15,7 +15,11 @@ import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
 
 import chartData from './chartData';
-import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
+import {
+	getFullAssetInformation,
+	getAssetTransfers,
+	getAssetTransfersHistoryWithInterval,
+} from '../../actions/AssetActions';
 import GridActions from '../../actions/GridActions';
 import { ASSET_GRID } from '../../constants/TableConstants';
 import AssetTransfersTable from './AssetTransferTable';
@@ -64,7 +68,8 @@ class Asset extends React.Component {
 					issuer: fromJS(issuer),
 				});
 				this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol));
-			});
+			})
+			.then(() => this.props.getAssetTransfersHistoryWithInterval(id));
 	}
 
 	render() {
@@ -125,6 +130,7 @@ Asset.propTypes = {
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
 	loadAssetHisotry: PropTypes.func.isRequired,
+	getAssetTransfersHistoryWithInterval: PropTypes.func.isRequired,
 };
 
 Asset.defaultProps = {
@@ -133,6 +139,7 @@ Asset.defaultProps = {
 
 Asset.getInitialProps = async ({ query: { id: assetId, ...filters }, store }) => {
 	const { asset, issuer } = await store.dispatch(getFullAssetInformation(assetId));
+	await store.dispatch(getAssetTransfersHistoryWithInterval(assetId));
 	await store.dispatch(getAssetTransfers(assetId));
 	await store.dispatch(GridActions.initData(ASSET_GRID, filters));
 	const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);

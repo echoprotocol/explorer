@@ -87,7 +87,7 @@ const AssetGraphic = ({ data }) => {
 						interval="preserveStartEnd"
 					/>
 					<YAxis
-						dataKey="price"
+						dataKey="amount"
 						type="number"
 						tickSize={15}
 						tickMargin={resolution < 1000 ? 10 : 55}
