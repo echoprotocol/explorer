@@ -51,8 +51,8 @@ class URLHelper {
 	 * @param op
 	 * @returns {string}
 	 */
-	static createTransactionOperationUrl(currentUrl, op, virtual) {
-		return `${currentUrl}?op=${op}&virtual=${!!virtual}`;
+	static createTransactionOperationUrl(currentUrl, op, virtual, logs) {
+		return `${currentUrl}?op=${op}&virtual=${!!virtual}${logs ? '&logs=true' : ''}`;
 	}
 
 	/**
