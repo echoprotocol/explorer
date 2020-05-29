@@ -16,7 +16,7 @@ import Operations, {
 	didOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
-import { ERC20_HASHES, ECHO_ASSET, NATHAN } from '../constants/GlobalConstants';
+import { ERC20_HASHES, ECHO_ASSET, NATHAN, EBTC_ASSET_ID, EETH_ASSET_ID } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX, CONTRACT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
 import ConvertHelper from '../helpers/ConvertHelper';
@@ -35,6 +35,7 @@ import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
 import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
+import { SIDECHAIN_OPS_DEFAULT_ASSETS } from '../constants/OpsFormatConstants';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -876,8 +877,11 @@ class TransactionActionsClass extends BaseActionsClass {
 				symbol: response.symbol,
 			};
 		} else {
-			result.value.precision = ECHO_ASSET.PRECISION;
-			result.value.symbol = ECHO_ASSET.SYMBOL;
+			const defaultAsset = await this.getDefaultOperationAsset(type);
+			result.value = {
+				...result.value,
+				...defaultAsset,
+			};
 		}
 
 		// filter sub-operations by account
@@ -1022,6 +1026,23 @@ class TransactionActionsClass extends BaseActionsClass {
 		});
 	}
 
+	async getDefaultOperationAsset(type) {
+		let assetId;
+		if (SIDECHAIN_OPS_DEFAULT_ASSETS.BTC.includes(type)) {
+			assetId = EBTC_ASSET_ID;
+		} else if (SIDECHAIN_OPS_DEFAULT_ASSETS.ETH.includes(type)) {
+			assetId = EETH_ASSET_ID;
+		} else {
+			assetId = ECHO_ASSET.ID;
+		}
+		const asset = await echo.api.getObject(assetId);
+		return {
+			id: assetId,
+			precision: asset.precision,
+			symbol: asset.symbol,
+		};
+	}
+
 	async getOperation(
 		[type, options],
 		blockNumber,
@@ -1061,15 +1082,16 @@ class TransactionActionsClass extends BaseActionsClass {
 		options = Object.entries(options).map(async ([key, value]) => {
 			let link = null;
 			switch (typeof value) {
-				case 'number':
+				case 'number': {
+					const defaultAsset = await this.getDefaultOperationAsset(type);
 					value = {
-						asset_id: ECHO_ASSET.ID,
-						precision: ECHO_ASSET.PRECISION,
-						symbol: ECHO_ASSET.SYMBOL,
+						asset_id: defaultAsset.id,
+						precision: defaultAsset.precision,
+						symbol: defaultAsset.symbol,
 						amount: value,
 					};
 					break;
-				case 'string':
+				} case 'string':
 					if (value === '') {
 						return {};
 					}
