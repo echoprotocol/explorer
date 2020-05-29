@@ -42,8 +42,11 @@ import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
 import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
 import URLHelper from '../helpers/URLHelper';
+import {
+	OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING,
+	SIDECHAIN_OPS_DEFAULT_ASSETS,
+} from '../constants/OpsFormatConstants';
 import ApiService from '../services/ApiService';
-import { SIDECHAIN_OPS_DEFAULT_ASSETS } from '../constants/OpsFormatConstants';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -599,6 +602,18 @@ class TransactionActionsClass extends BaseActionsClass {
 						break;
 					} default:
 						break;
+				}
+
+				if (OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING.includes(operation.name)) {
+					const erc20TokenInfo = singleOperation.erc20_token_info;
+					if (erc20TokenInfo) {
+						const amountInfo = {
+							link: erc20TokenInfo.contractId,
+							symbol: erc20TokenInfo.symbol,
+							precision: erc20TokenInfo.precision,
+						};
+						object = object.set('sidechain_amount_info', amountInfo);
+					}
 				}
 
 				const total = (await echo.api.getObject('2.0.0')).active_committee_members.length;

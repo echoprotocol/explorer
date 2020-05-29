@@ -91,6 +91,7 @@ class OperationInfo extends React.Component {
 					{data.delegate_share && <LinkRow title="Delegate share" amount={data.delegate_share} />}
 					{data.duration && <PrimaryRow title="Duration" description={data.duration} />}
 					{data.amount && <LinkRow title="Amount" amount={data.amount} />}
+					{data.sidechain_amount_info && <LinkRow title="Amount" token={data.sidechain_amount_info} />}
 					{data.deposit_amount && <LinkRow title="Deposit amount" amount={data.deposit_amount} />}
 
 					{data.deposit_id && <LinkRow title="Deposit ID" objectId={data.deposit_id} />}

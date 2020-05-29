@@ -385,6 +385,14 @@ export const ECHO_COMMITTEE_ACCOUNT = {
 	ID: '1.2.1',
 };
 
+export const ETH_EXPLORER = 'https://etherscan.io/';
+export const BTC_EXPLORER = 'https://www.blockchain.com/btc';
+
+export const OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING = [
+	Operations.deposit_erc20_token.name,
+	Operations.sidechain_erc20_issue.name,
+	Operations.sidechain_erc20_burn.name,
+];
 export const SIDECHAIN_OPS_DEFAULT_ASSETS = {
 	BTC: [
 		Operations.sidechain_btc_deposit.value,
