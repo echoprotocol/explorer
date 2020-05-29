@@ -2,7 +2,7 @@ import echo, { validators, OPERATIONS_IDS } from 'echojs-lib';
 import Inmmutable, { List, fromJS } from 'immutable';
 import BN from 'bignumber.js';
 
-import { TITLE_TEMPLATES, TOKEN_TYPE, ECHO_ASSET, EBTC_ASSET_ID, EETH_ASSET_ID } from '../constants/GlobalConstants';
+import { TITLE_TEMPLATES, TOKEN_TYPE } from '../constants/GlobalConstants';
 import { MODAL_ERROR } from '../constants/ModalConstants';
 
 import AccountReducer from '../reducers/AccountReducer';
@@ -246,47 +246,6 @@ class AccountActions extends BaseActionsClass {
 			const totalAccountHistory = getState().account.get('totalAccountHistory');
 			dispatch(this.setValue('totalAccountHistory', totalAccountHistory + 1));
 		};
-	}
-
-	/**
-	* Format account history
-	* @param {String} accountId
-	* @returns {Promise<Object>}
-	*/
-	async getCommitteAdditionalInfo(accountId) {
-		const assetsIds = [
-			ECHO_ASSET.ID,
-			EETH_ASSET_ID,
-			EBTC_ASSET_ID,
-		];
-		const [committeBalances, committeeFrozenData, assetsData, committeMember] = await Promise.all([
-			echo.api.getAccountBalances(accountId, assetsIds),
-			echo.api.getFrozenBalances(accountId),
-			echo.api.getAssets(assetsIds),
-			echo.api.getCommitteeMemberByAccount(accountId),
-		]);
-		const assets = assetsData.map((el) => ({
-			amount: committeBalances.find((b) => b.asset_id === el.id).amount,
-			asset_id: el.id,
-			precision: el.precision,
-			symbol: el.symbol,
-		}));
-		const website = committeMember && committeMember.url;
-		const frozenBalance = committeeFrozenData.length ? committeeFrozenData.map((b) => {
-			const currentAsset = assetsData.find((el) => el.asset_id === b.asset_id);
-			return {
-				amount: b.amount,
-				asset_id: b.asset_id,
-				precision: currentAsset.precision,
-				symbol: currentAsset.symbol,
-			};
-		}) : [{
-			amount: 0,
-			asset_id: ECHO_ASSET.ID,
-			precision: ECHO_ASSET.PRECISION,
-			symbol: ECHO_ASSET.SYMBOL,
-		}];
-		return { assets, frozenBalance, website };
 	}
 
 }

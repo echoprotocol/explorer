@@ -28,7 +28,7 @@ async function getAccountWhiteListInfo(accountId) {
 }
 
 export function getAssetFlags({ flags, issuer_permissions: permissionFlags }) {
-	let [isWhiteList, isOvveride, isTransfer, isCommette] = ['disable', 'disable', 'disable', 'disable'];
+	let [isWhiteList, isOvveride, isTransfer, isCommette] = ['off', 'off', 'off', 'off'];
 	if (!permissionFlags) {
 		return {
 			isWhiteList, isOvveride, isTransfer, isCommette,

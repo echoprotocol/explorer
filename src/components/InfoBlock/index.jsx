@@ -1,14 +1,15 @@
 import React, { memo } from 'react';
+import cn from 'classnames';
 import PropTypes from 'prop-types';
 import SettingsRow from '../TransactionInfo/Rows/SettingsRow';
 
-const InfoBlock = ({ children, settings }) => (
-	<div className="info-block">
+const InfoBlock = ({ children, settings, className }) => (
+	<div className={cn('info-block', className)}>
 		<div className="info-block-main">{children}</div>
-		{settings &&
-		<div className="info-block-secondary">
-			<SettingsRow title="Settings" settings={settings} className="white" />
-		</div>
+		{(settings && settings.length) ?
+			<div className="info-block-secondary">
+				<SettingsRow title="Settings" settings={settings} className="white" />
+			</div> : null
 		}
 	</div>
 );
@@ -16,9 +17,11 @@ const InfoBlock = ({ children, settings }) => (
 InfoBlock.propTypes = {
 	children: PropTypes.node.isRequired,
 	settings: PropTypes.array,
+	className: PropTypes.string,
 };
 
 InfoBlock.defaultProps = {
-	settings: [],
+	settings: null,
+	className: '',
 };
 export default memo(InfoBlock);

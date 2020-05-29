@@ -1,23 +1,32 @@
 .table-label-wrap {
 	margin-bottom: 10px;
+	padding: 0 0 0 30px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	@include min-vw(1280) {
-		.filter-btn {
-			margin-right: -8px;
-		}
+	.filter-btn {
+		margin-left: -8px;
+		margin-right: -8px;
 	}
-	@include max-vw(1000) {
-		margin-right: 20px;
+	@include max-vw($res-1600) {
+		padding: 0 0 0 20px;
+	}
+	@include max-vw($res-1280) {
+		padding: 0 30px 0 30px;
+	}
+	@include min-vw(1280) {
 	}
 	@include max-vw($res-768) {
-		margin-right: 10px;
+		padding: 0 20px 0 20px;
+		flex-wrap: wrap;
 	}
 	@include max-vw($res-500) {
-		.filter-btn {
-			margin-right: 0;
-		}
+		padding: 0 15px 0 15px;
+	}
+	a {
+		font-size: 11px;
+		line-height: 13px;
+		font-weight: 500;
 	}
 }
 
@@ -25,20 +34,9 @@
 	font-size: 16px;
 	line-height: 27px;
 	color: #130d32;
-	padding: 0 0 0 30px;
 	letter-spacing: 0.02em;
 	@include inter-semibold();
-	@include max-vw(1534) {
-		padding: 0 0 0 20px;
-	}
-	@include max-vw($res-1280) {
-		padding: 0 0 0 30px;
-	}
-	@include max-vw($res-768) {
-		padding: 0 0 0 20px;
-	}
 	@include max-vw($res-500) {
 		line-height: 30px;
-		padding: 0 0 0 15px;
 	}
 }
