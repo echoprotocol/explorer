@@ -9,7 +9,7 @@ import LogsNameRow from './LogsComponents/LogsNameRow';
 const LogsInfo = ({ logs }) => (
 	<div className="logs-info">
 		{logs.map((log, id) => (
-			<div className="logs-item" key={log.address}>
+			<div className="logs-item" key={`${log.address}${id.toString()}`}>
 				<div className="logs-item__id">
 					<span>{id + 1}.</span>
 				</div>

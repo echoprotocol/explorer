@@ -19,6 +19,7 @@ import InternalOperations from '../TransactionInfo/InternalOperations';
 import URLHelper from '../../helpers/URLHelper';
 import FormatHelper from '../../helpers/FormatHelper';
 import SsrHrefHelper from '../../helpers/SsrHrefHelper';
+import { SSR_TRANSACTION_INFORMATION_PATH } from '../../constants/RouterConstants';
 
 const OperationsRow = ({
 	operation: {
@@ -32,11 +33,13 @@ const OperationsRow = ({
 		number,
 		type,
 		blockTimestamp,
+		virtual,
 		...detailInfo
 	},
 	isASCOps,
 	index,
 	active,
+	showLogs,
 	toggleOperationDetails,
 	tableRefs,
 	currentPage,
@@ -55,6 +58,11 @@ const OperationsRow = ({
 		e.preventDefault();
 		e.stopPropagation();
 		Router.push(SsrHrefHelper.getHrefByObjectId(objectId), href);
+	};
+
+	const getTabLink = (isShowLogs) => {
+		const transactionUrl = URLHelper.createTransactionUrl(blockNumber, trIndex + 1);
+		return URLHelper.createTransactionOperationUrl(transactionUrl, opIndex + 1, virtual, isShowLogs);
 	};
 
 	const renderSubject = (subject) => {
@@ -165,12 +173,16 @@ const OperationsRow = ({
 			{ active &&
 				<tr className="fold">
 					<td colSpan="6">
-						<Tabs>
+						<Tabs
+							defaultIndex={(operationsInfoData.logs && operationsInfoData.logs.length !== 0 && showLogs) ? 1 : 0}
+						>
 							<TabList className="table-detail-header">
 								<div className="tabs">
-									{	operationsInfoData.operationInfo &&
+									{operationsInfoData.operationInfo &&
 										<Tab>
-											<button className="tab">Operation Info</button>
+											<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={getTabLink(false)} scroll={false}>
+												<button className="tab">Operation Info</button>
+											</Link>
 										</Tab>
 									}
 									{operationsInfoData.proposalOperations && operationsInfoData.proposalOperations.length !== 0 &&
@@ -180,11 +192,14 @@ const OperationsRow = ({
 										</button>
 									</Tab> }
 									{operationsInfoData.logs && operationsInfoData.logs.length !== 0 &&
-									<Tab>
-										<button className="tab">
-											Event logs ({operationsInfoData.logs.length})
-										</button>
-									</Tab>}
+										<Tab>
+											<Link href={SSR_TRANSACTION_INFORMATION_PATH} as={getTabLink(true)} scroll={false}>
+												<button className="tab">
+													Event logs ({operationsInfoData.logs.length})
+												</button>
+											</Link>
+										</Tab>
+									}
 									{operationsInfoData.internalOperations && operationsInfoData.internalOperations !== 0 &&
 									<Tab>
 										<button className="tab">
@@ -232,6 +247,7 @@ OperationsRow.propTypes = {
 	operation: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	active: PropTypes.bool.isRequired,
+	showLogs: PropTypes.bool.isRequired,
 	tableRefs: PropTypes.array.isRequired,
 	toggleOperationDetails: PropTypes.func.isRequired,
 };
