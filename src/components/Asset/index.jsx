@@ -14,11 +14,15 @@ import URLHelper from '../../helpers/URLHelper';
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
 
-import chartData from './chartData';
-import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetActions';
+import {
+	getFullAssetInformation,
+	getAssetTransfers,
+	getAssetTransfersHistoryWithInterval,
+} from '../../actions/AssetActions';
 import GridActions from '../../actions/GridActions';
 import { ASSET_GRID } from '../../constants/TableConstants';
 import AssetTransfersTable from './AssetTransferTable';
+import FormatHelper from '../../helpers/FormatHelper';
 
 class Asset extends React.Component {
 
@@ -67,14 +71,15 @@ class Asset extends React.Component {
 					issuer: fromJS(issuer),
 				});
 				this.props.setTitle(TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol));
-			});
+			})
+			.then(() => this.props.getAssetTransfersHistoryWithInterval(id));
 	}
 
 	render() {
 		const { asset, issuer } = this.state;
 		const {
 			filterAndPaginateData, initData,
-			assetTransfers, router,
+			assetTransfers, router, transferHistoryWithInterval,
 		} = this.props;
 		const assetSymbol = asset && asset.get('symbol');
 		const issuerName = issuer && issuer.get('name');
@@ -99,11 +104,11 @@ class Asset extends React.Component {
 								className="issuer"
 							/>
 							<InfoBlockItem title="Precision" value={`${assetPrecision}`} className="precision" />
-							<InfoBlockItem title="Current supply" value={currentSupply} className="current-supply" />
-							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
+							<InfoBlockItem title="Current supply" value={FormatHelper.formatAmount(currentSupply, assetPrecision)} className="current-supply" />
+							<InfoBlockItem title="Max supply" value={FormatHelper.formatAmount(maxSupply, assetPrecision)} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
-						<AssetGraphic data={chartData} />
+						<AssetGraphic data={transferHistoryWithInterval.toArray()} />
 						<AssetTransfersTable
 							label="Asset transfers"
 							assetTransfers={assetTransfers}
@@ -125,17 +130,21 @@ Asset.propTypes = {
 	getAssetInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	assetTransfers: PropTypes.object,
+	transferHistoryWithInterval: PropTypes.object,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
 	loadAssetHisotry: PropTypes.func.isRequired,
+	getAssetTransfersHistoryWithInterval: PropTypes.func.isRequired,
 };
 
 Asset.defaultProps = {
 	assetTransfers: {},
+	transferHistoryWithInterval: { toArray: () => [] },
 };
 
 Asset.getInitialProps = async ({ query: { id: assetId, ...filters }, store }) => {
 	const { asset, issuer } = await store.dispatch(getFullAssetInformation(assetId));
+	await store.dispatch(getAssetTransfersHistoryWithInterval(assetId));
 	await store.dispatch(getAssetTransfers(assetId));
 	await store.dispatch(GridActions.initData(ASSET_GRID, filters));
 	const title = TITLE_TEMPLATES.ASSET.replace(/name/, asset.symbol);

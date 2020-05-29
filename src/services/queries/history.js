@@ -135,3 +135,25 @@ export const getAccountCondition = async (id, timestamp) => {
 			getAccountCondition: data.getAccountCondition,
 		}));
 };
+
+export const getTransfersHistoryWithInterval = async ({ targetSubject, from, interval }) => {
+	const query = gql`
+    query getTransfersHistoryDataWithInterval($targetSubject: ContractOrAssetId!, $from: String, $interval: Int){
+		getTransfersHistoryDataWithInterval(targetSubject: $targetSubject, from: $from, interval: $interval) {
+        total
+        ratesMap {
+		  rate
+		  startIntervalDateString
+        }
+      }
+	}
+  `;
+	return client.getClient()
+		.query({
+			query,
+			variables: {
+				targetSubject, from, interval,
+			},
+		})
+		.then(({ data }) => data.getTransfersHistoryDataWithInterval);
+};
