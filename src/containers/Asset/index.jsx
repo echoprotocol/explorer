@@ -14,6 +14,7 @@ export default withRouter(connect(
 	(state) => ({
 		isMobile: state.global.get('isMobile'),
 		assetTransfers: state.asset.get('history'),
+		transferHistoryWithInterval: state.asset.get('transferHistoryWithInterval'),
 		filterAndPaginateData: state.grid.get(ASSET_GRID),
 	}),
 	(dispatch) => ({

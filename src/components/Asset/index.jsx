@@ -14,7 +14,6 @@ import URLHelper from '../../helpers/URLHelper';
 import { SSR_ACCOUNTS_PATH } from '../../constants/RouterConstants';
 import GlobalActions from '../../actions/GlobalActions';
 
-import chartData from './chartData';
 import {
 	getFullAssetInformation,
 	getAssetTransfers,
@@ -79,7 +78,7 @@ class Asset extends React.Component {
 		const { asset, issuer } = this.state;
 		const {
 			filterAndPaginateData, initData,
-			assetTransfers, router,
+			assetTransfers, router, transferHistoryWithInterval,
 		} = this.props;
 		const assetSymbol = asset && asset.get('symbol');
 		const issuerName = issuer && issuer.get('name');
@@ -108,7 +107,7 @@ class Asset extends React.Component {
 							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
-						<AssetGraphic data={chartData} />
+						<AssetGraphic data={transferHistoryWithInterval.toArray()} />
 						<AssetTransfersTable
 							label="Asset transfers"
 							assetTransfers={assetTransfers}
@@ -130,6 +129,7 @@ Asset.propTypes = {
 	getAssetInfo: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
 	assetTransfers: PropTypes.object,
+	transferHistoryWithInterval: PropTypes.object,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
 	loadAssetHisotry: PropTypes.func.isRequired,
@@ -138,6 +138,7 @@ Asset.propTypes = {
 
 Asset.defaultProps = {
 	assetTransfers: {},
+	transferHistoryWithInterval: { toArray: () => [] },
 };
 
 Asset.getInitialProps = async ({ query: { id: assetId, ...filters }, store }) => {
