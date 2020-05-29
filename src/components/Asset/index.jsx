@@ -19,6 +19,7 @@ import { getFullAssetInformation, getAssetTransfers } from '../../actions/AssetA
 import GridActions from '../../actions/GridActions';
 import { ASSET_GRID } from '../../constants/TableConstants';
 import AssetTransfersTable from './AssetTransferTable';
+import FormatHelper from '../../helpers/FormatHelper';
 
 class Asset extends React.Component {
 
@@ -99,8 +100,8 @@ class Asset extends React.Component {
 								className="issuer"
 							/>
 							<InfoBlockItem title="Precision" value={`${assetPrecision}`} className="precision" />
-							<InfoBlockItem title="Current supply" value={currentSupply} className="current-supply" />
-							<InfoBlockItem title="Max supply" value={maxSupply} className="max-supply" />
+							<InfoBlockItem title="Current supply" value={FormatHelper.formatAmount(currentSupply, assetPrecision)} className="current-supply" />
+							<InfoBlockItem title="Max supply" value={FormatHelper.formatAmount(maxSupply, assetPrecision)} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
 						<AssetGraphic data={chartData} />
