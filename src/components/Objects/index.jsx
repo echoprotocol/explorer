@@ -9,6 +9,7 @@ import URLHelper from '../../helpers/URLHelper';
 
 import { TITLE_TEMPLATES } from '../../constants/GlobalConstants';
 import { getObjectInfo } from '../../actions/ObjectsActions';
+import GlobalActions from '../../actions/GlobalActions';
 import QueryStringHelper from '../../helpers/QueryStringHelper';
 import SsrHrefHelper from '../../helpers/SsrHrefHelper';
 
@@ -22,6 +23,7 @@ class Objects extends React.Component {
 	componentDidMount() {
 		if (!this.props.data) {
 			const id = QueryStringHelper.getObjectId(this.props.router.asPath.split('?')[1]);
+			this.props.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, id));
 			this.checkObject(id);
 		}
 
@@ -41,6 +43,7 @@ class Objects extends React.Component {
 
 	componentWillUnmount() {
 		this.props.setError(null);
+		this.props.clearData();
 	}
 
 	checkObject(id) {
@@ -126,6 +129,7 @@ Objects.propTypes = {
 	error: PropTypes.string,
 	setTitle: PropTypes.func.isRequired,
 	getObjectInfo: PropTypes.func.isRequired,
+	clearData: PropTypes.func.isRequired,
 };
 
 Objects.defaultProps = {
@@ -139,6 +143,7 @@ Objects.getInitialProps = async ({ query, store, asPath }) => {
 	if (!id) {
 		id = QueryStringHelper.getObjectId(asPath.split('?')[1]);
 	}
+	store.dispatch(GlobalActions.setTitle(TITLE_TEMPLATES.OBJECT.replace(/id/, id)));
 	await store.dispatch(getObjectInfo(id));
 	return { query: { id } };
 };

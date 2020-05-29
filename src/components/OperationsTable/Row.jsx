@@ -46,14 +46,12 @@ const OperationsRow = ({
 	sizePerPage,
 	totalDataSize,
 }) => {
-	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1);
+	const operationObjectsUrl = URLHelper.createOperationObjectsUrl(blockNumber, trIndex + 1, opIndex + 1, virtual);
 	let senderLink = '';
 	if (mainInfo) {
 		senderLink = mainInfo.from && (!mainInfo.from.name && validators.isContractId(mainInfo.from.id)) ?
 			URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name);
 	}
-	// const senderLink = mainInfo && (mainInfo.from && (!mainInfo.from.name && validators.isContractId(mainInfo.from.id))) ?
-	// 	URLHelper.createContractUrl(mainInfo.from.id) : URLHelper.createAccountUrl(mainInfo.from.name);
 	const goToLink = (e, href, objectId) => {
 		e.preventDefault();
 		e.stopPropagation();

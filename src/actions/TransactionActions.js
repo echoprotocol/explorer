@@ -238,7 +238,7 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 				if (isNeedLink) {
 					object = object
-						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1));
+						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1, currentOp.virtual));
 				}
 				if (currentOp.body.virtual_operations.length) {
 					const formatVirtualOps = currentOp.body.virtual_operations.map((op) => this.formatOperation(op));

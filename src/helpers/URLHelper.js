@@ -41,8 +41,8 @@ class URLHelper {
 	 * @param trNum
 	 * @param opNum
 	 */
-	static createOperationObjectsUrl(block, trNum, opNum) {
-		return `/objects?opId=${block}-${trNum}-${opNum}`;
+	static createOperationObjectsUrl(block, trNum, opNum, virtual) {
+		return `/objects?opId=${block}-${trNum}-${opNum}${virtual ? '-virtual' : ''}`;
 	}
 
 	/**
