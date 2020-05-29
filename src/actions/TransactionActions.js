@@ -605,10 +605,11 @@ class TransactionActionsClass extends BaseActionsClass {
 				}
 
 				if (OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING.includes(operation.name)) {
+					const erc20TokenInfo = singleOperation.erc20_token_info;
 					const amountInfo = {
-						link: singleOperation.erc20_token_info.contractId,
-						symbol: singleOperation.erc20_token_info.symbol,
-						precision: singleOperation.erc20_token_info.precision,
+						link: erc20TokenInfo && erc20TokenInfo.contractId,
+						symbol: erc20TokenInfo && erc20TokenInfo.symbol,
+						precision: erc20TokenInfo && erc20TokenInfo.precision,
 					};
 					object = object.set('sidechain_amount_info', amountInfo);
 				}
