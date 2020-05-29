@@ -87,13 +87,14 @@ const AssetGraphic = ({ data }) => {
 						interval="preserveStartEnd"
 					/>
 					<YAxis
-						dataKey="amount"
+						dataKey="price"
 						type="number"
 						tickSize={15}
 						tickMargin={resolution < 1000 ? 10 : 55}
 						tickFormatter={(tick) => formatPrice(tick, 0, '.', ',')}
 					/>
 					<Tooltip
+						content={<CustomTooltip />}
 						position={{ y: 0, x: 0 }}
 						cursor={false}
 					/>

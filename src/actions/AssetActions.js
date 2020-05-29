@@ -10,8 +10,6 @@ import { getTransfersHistoryWithInterval } from '../services/queries/history';
 import GridActions from './GridActions';
 import AssetReducer from '../reducers/AssetReducer';
 import Operations from '../constants/Operations';
-import FormatHelper from '../helpers/FormatHelper';
-import utils from 'util';
 
 /**
  * @method getFullAssetInformation
@@ -111,13 +109,14 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 	dispatch(AssetReducer.actions.set({ field: 'history', value: new List(transfers) }));
 };
 
-const formatAssetTransfersHistoyAccounts = (history, precision) => history.map((data) => ({
-	amount: FormatHelper.formatAmount(data.rate, precision),
+const formatAssetTransfersHistoyAccounts = (history) => history.map((data) => ({
+	price: data.rate,
 	date: moment(data.startIntervalDateString).format('DD-MM-YYYY'),
 }));
 
 export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch) => {
 	let ratesMap = [];
+	let from = moment().subtract(1, 'month').toISOString();
 
 	try {
 		const [asset] = await echo.api.getAssets([assetId]);
@@ -126,7 +125,7 @@ export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch
 			return;
 		}
 		const firstBlock = await echo.api.getBlock(1);
-		const from = firstBlock ? moment(firstBlock.timestamp).toISOString() : moment().subtract(1, 'month').toISOString();
+		from = firstBlock && moment(firstBlock.timestamp).toISOString();
 		const interval = moment.duration(1, 'day').as('second');
 
 		({ ratesMap } = await getTransfersHistoryWithInterval({
@@ -134,10 +133,17 @@ export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch
 			interval,
 			targetSubject: String(asset.id),
 		}));
-
-		ratesMap = formatAssetTransfersHistoyAccounts(ratesMap, asset.precision);
 	} catch (err) {
-		console.log('EchoDB error', utils.inspect(err, false, null, true));
+		console.log('EchoDB error', err);
+	} finally {
+		if (!ratesMap.length) {
+			const nowTime = moment().toISOString();
+			ratesMap = [
+				{ startIntervalDateString: from, rate: 0 },
+				{ startIntervalDateString: nowTime, rate: 0 },
+			];
+		}
+		ratesMap = formatAssetTransfersHistoyAccounts(ratesMap);
 	}
 
 	dispatch(AssetReducer.actions.set({ field: 'transferHistoryWithInterval', value: new List(ratesMap) }));
