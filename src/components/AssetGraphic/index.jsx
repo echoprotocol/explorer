@@ -94,7 +94,6 @@ const AssetGraphic = ({ data }) => {
 						tickFormatter={(tick) => formatPrice(tick, 0, '.', ',')}
 					/>
 					<Tooltip
-						content={<CustomTooltip />}
 						position={{ y: 0, x: 0 }}
 						cursor={false}
 					/>

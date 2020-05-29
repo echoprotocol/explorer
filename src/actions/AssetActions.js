@@ -113,7 +113,7 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 
 const formatAssetTransfersHistoyAccounts = (history, precision) => history.map((data) => ({
 	amount: FormatHelper.formatAmount(data.rate, precision),
-	date: moment(data.startIntervalDateString).format('dd-mm-yyyy'),
+	date: moment(data.startIntervalDateString).format('DD-MM-YYYY'),
 }));
 
 export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch) => {
@@ -125,14 +125,14 @@ export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch
 		if (!asset) {
 			return;
 		}
-
-		const from = moment().subtract(1, 'month').toISOString();
+		const firstBlock = await echo.api.getBlock(1);
+		const from = firstBlock ? moment(firstBlock.timestamp).toISOString() : moment().subtract(1, 'month').toISOString();
 		const interval = moment.duration(1, 'day').as('second');
 
 		({ ratesMap } = await getTransfersHistoryWithInterval({
 			from,
 			interval,
-			targetSubject: asset.id,
+			targetSubject: String(asset.id),
 		}));
 
 		ratesMap = formatAssetTransfersHistoyAccounts(ratesMap, asset.precision);

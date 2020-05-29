@@ -16,6 +16,8 @@ import {
 import { ECHODB_COMMITTEE_STATUS } from '../constants/CommitteeConstants';
 import Operations from '../constants/Operations';
 import { ECHO_ASSET, EBTC_ASSET_ID, EETH_ASSET_ID } from '../constants/GlobalConstants';
+import FormatHelper from '../helpers/FormatHelper';
+
 
 class CommitteeActions extends BaseActionsClass {
 
@@ -42,7 +44,7 @@ class CommitteeActions extends BaseActionsClass {
 				},
 				id: data.committee_options.committee_member_id,
 				bitcoinHash: data.committee_options.btc_public_key,
-				etheriumHash: data.committee_options.eth_address,
+				etheriumHash: FormatHelper.addEthPrefix(data.committee_options.eth_address),
 				participation: data.committee_options.last_status_change_time,
 				abandon: data.committee_options.last_status_change_time,
 				lastOperation: {

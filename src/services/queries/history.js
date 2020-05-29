@@ -136,9 +136,9 @@ export const getAccountCondition = async (id, timestamp) => {
 		}));
 };
 
-export const getTransfersHistoryWithInterval = async (targetSubject, from, interval) => {
+export const getTransfersHistoryWithInterval = async ({ targetSubject, from, interval }) => {
 	const query = gql`
-    query getTransfersHistoryDataWithInterval($targetSubject: ContractOrAssetId, $from: String, $interval: Int){
+    query getTransfersHistoryDataWithInterval($targetSubject: ContractOrAssetId!, $from: String, $interval: Int){
 		getTransfersHistoryDataWithInterval(targetSubject: $targetSubject, from: $from, interval: $interval) {
         total
         ratesMap {
