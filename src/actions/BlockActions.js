@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle,camelcase,no-shadow */
 import BN from 'bignumber.js';
-import { Map, List } from 'immutable';
+import { Map, List, OrderedMap } from 'immutable';
 import echo, { serializers, validators } from 'echojs-lib';
 
 import RoundReducer from '../reducers/RoundReducer';
@@ -22,7 +22,7 @@ import TransactionActions from './TransactionActions';
 
 import GlobalReducer from '../reducers/GlobalReducer';
 import GridActions from './GridActions';
-import { BLOCK_GRID } from '../constants/TableConstants';
+import { BLOCK_GRID, BLOCKS_GRID } from '../constants/TableConstants';
 
 import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
 import { getLatestOperationsFromGQL } from '../services/queries/history';
@@ -110,7 +110,7 @@ export const loadBlockHistory = (paramsOperations) => async (dispatch, getState)
 					account = account.id;
 				}
 				// eslint-disable-next-line no-empty
-			} catch (err) {}
+			} catch (err) { }
 			return account;
 		};
 		const [fromFilter, toFilter] = await Promise.all([
@@ -263,6 +263,88 @@ export const setLatestBlock = (latestBlock) => (dispatch) => {
 	dispatch(RoundReducer.actions.set({ field: 'latestBlock', value: latestBlock }));
 };
 
+/**
+ *  @method getBlocksByIndexes
+ *
+ * 	Get blocks by paginatedData round
+ *
+ * 	@param {Number?} pageNumber
+ * 	@param {Number?} size
+ */
+export const getBlocksByIndexes = () => async (dispatch, getState) => {
+	const latestBlock = getState().round.get('latestBlock');
+	const gridData = getState().grid.get(BLOCKS_GRID).toJS();
+	const { currentPage, sizePerPage } = gridData;
+	const page = currentPage;
+	const onPage = sizePerPage;
+	const lastBlock = latestBlock - (onPage * (page - 1));
+	const startBlock = lastBlock - onPage >= 0 ? lastBlock - onPage : 0;
+
+	const blockReward = new BN(getState().round.get('blockReward'));
+	let blocksResult = [];
+	for (let i = startBlock + 1; i <= lastBlock; i += 1) {
+		blocksResult.push(echo.api.getBlock(i));
+	}
+
+	blocksResult = await Promise.all(blocksResult);
+	const blocksRewards = {};
+	const accountIds = blocksResult.reduce((accounts, block, index) => {
+		if (block) {
+			const { round, transactions } = block;
+
+			const fee = transactions.reduce((trxAcc, trx) => {
+				if (trx.fees_collected) {
+					if (typeof trx.fees_collected === 'number') {
+						return trxAcc.plus(trx.fees_collected);
+					}
+					trx.fees_collected.forEach(({ amount }) => {
+						trxAcc.plus(amount);
+					});
+				}
+				return trxAcc;
+			}, new BN(0));
+			accounts[index] = block.account;
+
+			blocksRewards[round] = blockReward.plus(fee);
+		}
+
+		return accounts;
+	}, []);
+	const accounts = await echo.api.getAccounts(accountIds);
+
+	let blocks = new OrderedMap();
+	blocks = blocks.withMutations((mapBlocks) => {
+		for (let i = 0; i < blocksResult.length; i += 1) {
+			if (!blocksResult[i]) {
+				break;
+			}
+
+			let weight = 0;
+			try {
+				weight = serializers.signedBlock.serialize(blocksResult[i]).length;
+			} catch (e) {
+				weight = JSON.stringify(blocksResult[i]).length;
+			}
+
+			const blockNumber = blocksResult[i].round;
+			mapBlocks
+				.setIn([blockNumber, 'timestamp'], blocksResult[i].timestamp)
+				.setIn([blockNumber, 'producer'], accounts[i].name)
+				.setIn([blockNumber, 'producerId'], blocksResult[i].account)
+				.setIn([blockNumber, 'reward'], blocksRewards[blockNumber] ? blocksRewards[blockNumber].toString(10) : 0)
+				.setIn([blockNumber, 'rewardCurrency'], 'ECHO')
+				.setIn([blockNumber, 'weight'], weight)
+				.setIn([blockNumber, 'weightSize'], 'bytes')
+				.setIn([blockNumber, 'transactions'], blocksResult[i].transactions.length)
+				.setIn([blockNumber, 'transactionsInfo'], blocksResult[i].transactions);
+		}
+	});
+	dispatch(BlockReducer.actions.set({ field: 'blocksOnTable', value: blocks }));
+	dispatch(GridActions.setPage(BLOCKS_GRID, page));
+	dispatch(GridActions.setPageSize(BLOCKS_GRID, onPage));
+	dispatch(GridActions.setTotalDataSize(BLOCKS_GRID, latestBlock));
+	return { blocks };
+};
 /**
  *  @method updateBlockList
  *

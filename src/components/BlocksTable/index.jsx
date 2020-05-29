@@ -4,10 +4,9 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import moment from 'moment';
 import cn from 'classnames';
 import Link from 'next/link';
+import queryString from 'query-string';
 
 import TableLabel from '../TableLabel';
-import FilterBtn from '../FilterBtn';
-import TableFilter from '../../components/TableFilter';
 import TablePagination from '../../components/TablePagination';
 import Thead from './Thead';
 import Row from './Row';
@@ -15,30 +14,38 @@ import ArrowBtn from '../../components/Buttons/ArrowBtn';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
-import { BLOCKS_TABLE_PATH } from '../../constants/RouterConstants';
+import { BLOCKS_TABLE_PATH, SSR_CURRENT_COMMITTEE_PATH } from '../../constants/RouterConstants';
 
 const BlocksTable = (({
 	blocks, goToBlock, label, isAllBlocks, router, filterAndPaginateData,
+	getBlocks, initData,
 }) => {
-	const [handledBlocks, setBlocks] = useState(blocks);
-	const [isFilterOpen, setFilterOpen] = useState(false);
-	const [field, setField] = useState({
-		from: {
-			error: '',
-			value: '',
-		},
-		to: {
-			error: '',
-			value: '',
-		},
-	});
+	const [didMount, setDidMount] = useState(false);
+	useEffect(() => setDidMount(true), []);
 
+	const [handledBlocks, setBlocks] = useState(blocks);
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setBlocks([...blocks]);
 		}, 1000);
 		return () => clearInterval(interval);
 	}, [blocks]);
+
+	useEffect(() => {
+		const loadBlocks = async () => {
+			await getBlocks();
+		};
+		const { asPath } = router;
+		if (!asPath) {
+			return;
+		}
+		const { query: search } = queryString.parseUrl(asPath);
+		const { totalDataSize } = filterAndPaginateData;
+		initData({ ...search, totalDataSize });
+		if (didMount) {
+			loadBlocks();
+		}
+	}, [router.asPath]);
 
 	const getLastByDay = () => {
 		const lastBlocksArr = [];
@@ -66,48 +73,13 @@ const BlocksTable = (({
 		return lastBlocksArr.map((item) => item.number);
 	};
 
-	const toggleFilter = (e) => {
-		e.target.blur();
-		setFilterOpen(!isFilterOpen);
-	};
-
-	const onChangeFilter = (e) => {
-		const { name, value } = e.target;
-		setField({
-			...field,
-			[name]: {
-				value,
-			},
-		});
-	};
-
-	const onClearFilter = (name) => {
-		setField({
-			...field,
-			[name]: {
-				value: '',
-			},
-		});
-	};
-
 	return (
 		<div className={cn('main-page-table', { full: isAllBlocks })}>
-			{ isAllBlocks ?
-				<TableLabel label={label}>
-					<FilterBtn onClick={toggleFilter} />
-				</TableLabel> :
-				<TableLabel label={label} />
-			}
-			<TableFilter
-				open={isFilterOpen}
-				from={field.from.value}
-				fromError={field.from.error}
-				to={field.to.value}
-				toError={field.to.error}
-				onChangeFilter={(e) => onChangeFilter(e)}
-				onClearFilter={(name) => onClearFilter(name)}
-				onSubmitFilter={() => {}}
-			/>
+			<TableLabel label={label}>
+				<Link href={SSR_CURRENT_COMMITTEE_PATH} as={SSR_CURRENT_COMMITTEE_PATH}>
+					<a className="link">View Committee members</a>
+				</Link>
+			</TableLabel>
 			<PerfectScrollbar>
 				<table>
 					<Thead isAllBlocks={isAllBlocks} />
@@ -160,6 +132,8 @@ BlocksTable.propTypes = {
 	goToBlock: PropTypes.func.isRequired,
 	router: PropTypes.object,
 	filterAndPaginateData: PropTypes.object,
+	getBlocks: PropTypes.func,
+	initData: PropTypes.func.isRequired,
 };
 
 BlocksTable.defaultProps = {
@@ -167,6 +141,7 @@ BlocksTable.defaultProps = {
 	label: '',
 	router: {},
 	filterAndPaginateData: {},
+	getBlocks: () => { },
 };
 
 export default memo(BlocksTable);

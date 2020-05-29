@@ -6,10 +6,10 @@ import SettingsRow from '../TransactionInfo/Rows/SettingsRow';
 const InfoBlock = ({ children, settings, className }) => (
 	<div className={cn('info-block', className)}>
 		<div className="info-block-main">{children}</div>
-		{settings &&
-		<div className="info-block-secondary">
-			<SettingsRow title="Settings" settings={settings} className="white" />
-		</div>
+		{(settings && settings.length) ?
+			<div className="info-block-secondary">
+				<SettingsRow title="Settings" settings={settings} className="white" />
+			</div> : null
 		}
 	</div>
 );
