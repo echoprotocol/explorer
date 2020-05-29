@@ -22,7 +22,7 @@ import {
 	NATHAN,
 	ERC20_EVENT_HASHES,
 	EBTC_ASSET_ID,
-	EETH_ASSET_ID
+	EETH_ASSET_ID,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX, CONTRACT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -1011,6 +1011,46 @@ class TransactionActionsClass extends BaseActionsClass {
 		return result;
 	}
 
+	async getErc20TransfersFromLogs(logs) {
+		try {
+			const getObjectId = async (objectId) => {
+				if (!objectId) { return {}; }
+				let account = null;
+				try {
+					account = await echo.api.getObject(objectId);
+				// eslint-disable-next-line no-empty
+				} catch (err) {
+					return {};
+				}
+				return account;
+			};
+			let erc20Tranfers = logs.filter((l) => l.decValues[0] === Object.keys(ERC20_EVENT_HASHES)[0]);
+			const erc20Promises = erc20Tranfers.map(async (t) => {
+				const [fromAcc, toAcc] = await Promise.all([
+					getObjectId(t.decValues[1]),
+					getObjectId(t.decValues[2]),
+				]);
+				return {
+					from: {
+						value: fromAcc.name,
+						link: fromAcc.id,
+					},
+					to: {
+						value: toAcc.name,
+						link: toAcc.id,
+					},
+					amount: {
+						amount: t.decData[0],
+					},
+				};
+			});
+			erc20Tranfers = await Promise.all(erc20Promises);
+			return erc20Tranfers;
+		} catch (e) {
+			return [];
+		}
+	}
+
 	getProposalOperations(proposedOps = [], blockNumber, blockTimestamp, trIndex) {
 		return proposedOps.map(async (proposedOp, proposedOpIndex) => {
 			const [idPropOp] = proposedOp.op;
@@ -1210,41 +1250,17 @@ class TransactionActionsClass extends BaseActionsClass {
 						});
 						promises = await Promise.all(promises);
 						options.logs = promises;
-						const getObjectId = async (objectId) => {
-							if (!objectId) { return {}; }
-							let account = null;
-							try {
-								account = await echo.api.getObject(objectId);
-								// eslint-disable-next-line no-empty
-							} catch (err) {
-								return {};
-							}
-							return account;
-						};
-						let erc20Tranfers = options.logs.filter((l) => l.decValues[0] === Object.keys(ERC20_EVENT_HASHES)[0]);
-						const erc20Promises = erc20Tranfers.map(async (t) => {
-							const [fromAcc, toAcc] = await Promise.all([
-								getObjectId(t.decValues[1]),
-								getObjectId(t.decValues[2]),
-							]);
-							const tokenInfo = objectInfo.get('token');
-							return {
-								from: {
-									value: fromAcc.name,
-									link: fromAcc.id,
-								},
-								to: {
-									value: toAcc.name,
-									link: toAcc.id,
-								},
-								amount: {
-									amount: t.decData[0],
-									precision: Number(tokenInfo.decimals),
-									symbol: tokenInfo.symbol,
-								},
-							};
-						});
-						erc20Tranfers = await Promise.all(erc20Promises);
+
+						const tokenInfo = objectInfo.get('token');
+						let erc20Tranfers = await this.getErc20TransfersFromLogs(options.logs);
+						erc20Tranfers = erc20Tranfers.map((t) => ({
+							...t,
+							amount: {
+								...t.amount,
+								precision: Number(tokenInfo.decimals),
+								symbol: tokenInfo.symbol,
+							},
+						}));
 						if (erc20Tranfers.length) {
 							options['token transfers'] = erc20Tranfers;
 						}
