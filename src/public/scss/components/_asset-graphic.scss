@@ -1,106 +1,109 @@
 .asset-graphic {
-  margin-bottom: 50px;
-  .recharts-responsive-container {
-    margin-left: auto;
-  }
-  .recharts-brush-texts {
-    display: none;
-  }
-  .recharts-text {
-    @include inter-ui-medium;
-    font-size: 11px;
-    color: $grey;
-  }
-  .y-tooltip,
-  .x-tooltip {
-    position: relative;
-    width: auto;
-    padding: 4px 7px;
-    background-color: $blue;
-    color: #fff;
-    @include inter-ui-medium;
-    font-size: 11px;
-    line-height: 140%;
-  }
-  .y-tooltip {
-    width: 52px;
-    &:after {
-      content: "";
-      position: absolute;
-      left: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 0;
-      height: 0;
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
-      border-left: 6px solid $blue;
-    }
-  }
-  .x-tooltip {
-    width: 82px;
-    &:after {
-      content: "";
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-bottom: 6px solid $blue;
-    }
-  }
-  .y-cursor {
-    height: 1px;
-    background-color: rgba($lightgrey, 0.43);
-  }
-  .x-cursor {
-    width: 1px;
-    background-color: rgba($lightgrey, 0.43);
-  }
-  .xAxis {
-    .recharts-cartesian-axis-tick-line {
-      display: none;
-    }
-    .recharts-cartesian-axis-tick {
-      &:not(:last-child) {
-        transform: translateX(32px);
-      }
-      &:last-child {
-        transform: translateX(15px);
-      }
-    }
-  }
-  .recharts-cartesian-axis-line,
-  .recharts-cartesian-axis-tick-line {
-    stroke: $grey-mid;
-  }
+	margin-bottom: 50px;
+	@include max-vw($res-1280) {
+		padding-right: 10px;
+	}
+	.recharts-responsive-container {
+		margin-left: auto;
+	}
+	.recharts-brush-texts {
+		display: none;
+	}
+	.recharts-text {
+		@include inter-ui-medium;
+		font-size: 11px;
+		color: $grey;
+	}
+	.y-tooltip,
+	.x-tooltip {
+		position: relative;
+		width: auto;
+		padding: 4px 7px;
+		background-color: $blue;
+		color: #fff;
+		@include inter-ui-medium;
+		font-size: 11px;
+		line-height: 140%;
+	}
+	.y-tooltip {
+		width: 52px;
+		&:after {
+			content: "";
+			position: absolute;
+			left: 100%;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 0;
+			height: 0;
+			border-top: 6px solid transparent;
+			border-bottom: 6px solid transparent;
+			border-left: 6px solid $blue;
+		}
+	}
+	.x-tooltip {
+		width: 82px;
+		&:after {
+			content: "";
+			position: absolute;
+			bottom: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			border-left: 6px solid transparent;
+			border-right: 6px solid transparent;
+			border-bottom: 6px solid $blue;
+		}
+	}
+	.y-cursor {
+		height: 1px;
+		background-color: rgba($lightgrey, 0.43);
+	}
+	.x-cursor {
+		width: 1px;
+		background-color: rgba($lightgrey, 0.43);
+	}
+	.xAxis {
+		.recharts-cartesian-axis-tick-line {
+			display: none;
+		}
+		.recharts-cartesian-axis-tick {
+			&:not(:last-child) {
+				transform: translateX(32px);
+			}
+			&:last-child {
+				transform: translateX(6px);
+			}
+		}
+	}
+	.recharts-cartesian-axis-line,
+	.recharts-cartesian-axis-tick-line {
+		stroke: $grey-mid;
+	}
 
-  .recharts-brush {
-    > rect:first-child {
-      stroke: none;
-    }
-  }
-  .recharts-brush-traveller {
-    rect {
-      width: 31px;
-      height: 31px;
-      rx: 50%;
-      fill: #fff;
-      transform: translate(-14px, 14px);
-    }
-    line {
-      stroke-width: 15px;
-      stroke: #ccccd4;
-      &:nth-child(2) {
-        transform: translate(0, 0);
-      }
-      &:nth-child(3) {
-        transform: translate(4px, -2px);
-      }
-    }
-  }
-  svg:not(:root) {
-    overflow: visible;
-  }
+	.recharts-brush {
+		> rect:first-child {
+			stroke: none;
+		}
+	}
+	.recharts-brush-traveller {
+		rect {
+			width: 31px;
+			height: 31px;
+			rx: 50%;
+			fill: #fff;
+			transform: translate(-14px, 14px);
+		}
+		line {
+			stroke-width: 15px;
+			stroke: #ccccd4;
+			&:nth-child(2) {
+				transform: translate(0, 0);
+			}
+			&:nth-child(3) {
+				transform: translate(4px, -2px);
+			}
+		}
+	}
+	svg:not(:root) {
+		overflow: visible;
+	}
 }
