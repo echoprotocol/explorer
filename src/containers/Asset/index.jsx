@@ -18,5 +18,6 @@ export default withRouter(connect(
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		onChangeFilter: (filters) => dispatch(GridActions.initData(ASSET_GRID, filters)),
 		initData: (params) => dispatch(GridActions.initData(ASSET_GRID, params)),
+		setTotalDataSize: (size) => dispatch(GridActions.setTotalDataSize(ASSET_GRID, size)),
 	}),
 )(Asset));

@@ -8,7 +8,7 @@ import Avatar from '../Avatar';
 import URLHelper from '../../helpers/URLHelper';
 import { SSR_ACCOUNTS_PATH, SSR_BLOCK_INFORMATION_PATH } from '../../constants/RouterConstants';
 
-const OperationsRow = ({
+const TransfersRow = ({
 	date, sender, receiver, amount, block, id, onClick,
 }) => (
 	<React.Fragment>
@@ -48,9 +48,9 @@ const OperationsRow = ({
 						trigger={['hover']}
 						overlay={amount.value}
 					>
-						<span className="txt">{amount.value}&nbsp;</span>
+						<span className="value">{amount.value}&nbsp;</span>
 					</Tooltip>
-					<span className="type">{amount.coin}</span>
+					<span className="currency">{amount.coin}</span>
 				</div>
 			</td>
 			<td className="block">
@@ -67,7 +67,7 @@ const OperationsRow = ({
 	</React.Fragment>
 );
 
-OperationsRow.propTypes = {
+TransfersRow.propTypes = {
 	id: PropTypes.number.isRequired,
 	block: PropTypes.number.isRequired,
 	sender: PropTypes.string.isRequired,
@@ -77,4 +77,4 @@ OperationsRow.propTypes = {
 	onClick: PropTypes.func.isRequired,
 };
 
-export default memo(OperationsRow);
+export default memo(TransfersRow);

@@ -39,6 +39,9 @@ export const getFullAssetInformation = (assetId) => async (dispatch) => {
 
 export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 	const queryData = getState().grid.get(ASSET_GRID).toJS();
+	if (!echo.api) {
+		return;
+	}
 	const getObjectId = async (objectId) => {
 		if (!objectId) { return; }
 		let account = null;
@@ -60,13 +63,21 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 	let items = [];
 	let total = 0;
 
+	({ total } = await getAssetHistory({
+		assetId,
+		from: fromFilter || undefined,
+		to: toFilter || undefined,
+	}));
+	GridActions.setTotalDataSize(ASSET_GRID, total);
+	const offset = total - (queryData.currentPage * queryData.sizePerPage);
+	const count = offset < 0 ? queryData.sizePerPage + offset : queryData.sizePerPage;
 	try {
 		({ items, total } = await getAssetHistory({
 			assetId,
+			count,
+			offset: offset < 0 ? 0 : offset,
 			from: fromFilter || undefined,
 			to: toFilter || undefined,
-			offset: (queryData.currentPage - 1) * queryData.sizePerPage,
-			count: queryData.sizePerPage,
 		}));
 	} catch (err) {
 		console.log('EchoDB error', err);

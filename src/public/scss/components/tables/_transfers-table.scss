@@ -32,22 +32,6 @@
 		.td-in {
 			display: flex;
 		}
-
-		.value {
-			@include text-overflow;
-			margin-right: 4px;
-			max-width: 140px;
-			display: block;
-			word-break: break-all;
-		}
-
-		.type {
-			color: $grey-mid;
-		}
-
-		.currency {
-			overflow: initial;
-		}
 	}
 
 	.date {

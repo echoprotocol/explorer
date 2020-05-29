@@ -1,0 +1,47 @@
+.asset-transfers-table {
+	position: relative;
+	width: 100%;
+
+	@include table();
+	@include table-y-rythm();
+	@include table-head();
+	@include table-air();
+	@include table-avatar();
+	@include table-vertical-scroll();
+
+	thead {
+		.td-in {
+			@include inter-semibold;
+			font-size: 12px;
+		}
+	}
+
+	.td-in {
+		display: flex;
+		align-items: center;
+	}
+
+	.view {
+		cursor: pointer;
+		z-index: 1;
+		@include inter-ui-regular();
+		@include table-row-highlight(true);
+	}
+
+	// Tr sizes
+	.number {
+		width: 45px;
+	}
+	.operation {
+		width: 16%;
+	}
+	.from {
+		width: 19%;
+	}
+	.to {
+		width: 17%;
+	}
+	.amount {
+		width: 20.5%;
+	}
+}
