@@ -74,6 +74,11 @@
 			}
 		}
 	}
+	.yAxis {
+		text {
+			text-anchor: start;
+		}
+	}
 	.recharts-cartesian-axis-line,
 	.recharts-cartesian-axis-tick-line {
 		stroke: $grey-mid;

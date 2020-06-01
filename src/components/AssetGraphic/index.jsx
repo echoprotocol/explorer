@@ -72,7 +72,7 @@ const AssetGraphic = ({ data }) => {
 
 	return (
 		<div className="asset-graphic">
-			<ResponsiveContainer width={resolution < 1000 ? '86%' : '88%'} height={265}>
+			<ResponsiveContainer width={resolution < 1000 ? '100%' : '96%'} height={265}>
 				<LineChart
 					data={data}
 					margin={{
@@ -90,7 +90,7 @@ const AssetGraphic = ({ data }) => {
 						dataKey="price"
 						type="number"
 						tickSize={15}
-						tickMargin={resolution < 1000 ? 10 : 55}
+						tickMargin={resolution < 1000 ? 40 : 85}
 						tickFormatter={(tick) => formatPrice(tick, 0, '.', ',')}
 					/>
 					<Tooltip
