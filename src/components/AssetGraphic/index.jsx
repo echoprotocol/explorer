@@ -96,7 +96,7 @@ const AssetGraphic = ({ data, label }) => {
 							dataKey="date"
 							tickMargin={10}
 							height={40}
-							interval={1}
+							interval="preserveStartEnd"
 						/>
 						<YAxis
 							dataKey="price"

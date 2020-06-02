@@ -80,11 +80,11 @@
 			&:first-child {
 				transform: translateX(32px);
 			}
-			&:not(:last-child) {
-				transform: translateX(32px);
-			}
+			//&:not(:last-child) {
+			//	transform: translateX(32px);
+			//}
 			&:last-child:not(:only-child) {
-				transform: translateX(-32px);
+				transform: translateX(6px);
 			}
 		}
 	}
