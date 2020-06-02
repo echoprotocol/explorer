@@ -104,10 +104,12 @@
 	}
 
 	.td-in {
+		display: inline-flex;
+		align-items: center;
 		.value {
 			@include text-overflow;
 			margin-right: 4px;
-			max-width: 140px;
+			max-width: 125px;
 			display: block;
 			word-break: break-all;
 		}
@@ -204,6 +206,7 @@
 		}
 		span {
 			@include text-overflow();
+			max-width: 110px;
 		}
 	}
 }

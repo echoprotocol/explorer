@@ -6,7 +6,7 @@ import Router from 'next/router';
 
 import Avatar from '../../Avatar';
 import URLHelper from '../../../helpers/URLHelper';
-import { SSR_ASSET_PATH, SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
+import { SSR_ACCOUNTS_PATH } from '../../../constants/RouterConstants';
 import FormatHelper from '../../../helpers/FormatHelper';
 
 const AssetTransfersRow = ({
@@ -19,7 +19,6 @@ const AssetTransfersRow = ({
 	};
 	const fromLink = URLHelper.createAccountUrl(from && from.id);
 	const toLink = URLHelper.createAccountUrl(to && to.id);
-	const feeAssetLink = URLHelper.createAssetUrl(fee && fee.asset_id);
 
 	return (
 		<React.Fragment>
@@ -66,19 +65,10 @@ const AssetTransfersRow = ({
 				</td>
 				<td className="fee">
 					{fee &&
-					<Link
-						href={SSR_ASSET_PATH}
-						as={feeAssetLink}
-					>
-						<a
-							className="td-in"
-							href={feeAssetLink}
-							onClick={(e) => goToLink(e, feeAssetLink, SSR_ASSET_PATH)}
-						>
+						<div className="td-in">
 							<span className="value">{FormatHelper.formatAmount(fee.value, fee.precision)}</span>
 							<span className="currency">{fee.symbol}</span>
-						</a>
-					</Link>
+						</div>
 					}
 				</td>
 			</tr>

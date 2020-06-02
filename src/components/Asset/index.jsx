@@ -108,7 +108,7 @@ class Asset extends React.Component {
 							<InfoBlockItem title="Max supply" value={FormatHelper.formatAmount(maxSupply, assetPrecision)} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
-						<AssetGraphic data={transferHistoryWithInterval.toArray()} />
+						<AssetGraphic data={transferHistoryWithInterval.toArray()} label="Asset transactions" />
 						<AssetTransfersTable
 							label="Asset transfers"
 							assetTransfers={assetTransfers}
