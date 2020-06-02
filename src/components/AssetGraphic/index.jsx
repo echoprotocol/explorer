@@ -82,7 +82,7 @@ const AssetGraphic = ({ data, label }) => {
 
 	return (
 		<React.Fragment>
-			<TableLabel label={label} />
+			{label && <TableLabel label={label} /> }
 			<div className="asset-graphic">
 				<ResponsiveContainer width={resolution < 1000 ? '100%' : '96%'} height={265}>
 					<LineChart
@@ -144,6 +144,11 @@ const AssetGraphic = ({ data, label }) => {
 
 AssetGraphic.propTypes = {
 	data: PropTypes.array.isRequired,
+	label: PropTypes.string,
+};
+
+AssetGraphic.defaultProps = {
+	label: '',
 };
 
 export default memo(AssetGraphic);
