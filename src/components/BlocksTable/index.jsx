@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import moment from 'moment';
@@ -20,8 +20,7 @@ const BlocksTable = (({
 	blocks, goToBlock, label, isAllBlocks, router, filterAndPaginateData,
 	getBlocks, initData,
 }) => {
-	const [didMount, setDidMount] = useState(false);
-	useEffect(() => setDidMount(true), []);
+	const didMount = useRef(false);
 
 	const [handledBlocks, setBlocks] = useState(blocks);
 	useEffect(() => {
@@ -42,8 +41,10 @@ const BlocksTable = (({
 		const { query: search } = queryString.parseUrl(asPath);
 		const { totalDataSize } = filterAndPaginateData;
 		initData({ ...search, totalDataSize });
-		if (didMount) {
+		if (didMount.current) {
 			loadBlocks();
+		} else {
+			didMount.current = true;
 		}
 	}, [router.asPath]);
 

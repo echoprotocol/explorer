@@ -272,6 +272,7 @@ export const setLatestBlock = (latestBlock) => (dispatch) => {
  * 	@param {Number?} size
  */
 export const getBlocksByIndexes = () => async (dispatch, getState) => {
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: true }));
 	const latestBlock = getState().round.get('latestBlock');
 	const gridData = getState().grid.get(BLOCKS_GRID).toJS();
 	const { currentPage, sizePerPage } = gridData;
@@ -343,6 +344,7 @@ export const getBlocksByIndexes = () => async (dispatch, getState) => {
 	dispatch(GridActions.setPage(BLOCKS_GRID, page));
 	dispatch(GridActions.setPageSize(BLOCKS_GRID, onPage));
 	dispatch(GridActions.setTotalDataSize(BLOCKS_GRID, latestBlock));
+	dispatch(BlockReducer.actions.set({ field: 'loading', value: false }));
 	return { blocks };
 };
 /**
