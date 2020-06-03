@@ -22,6 +22,14 @@ const AssetGraphic = ({ data, label, precision }) => {
 		return () => window.removeEventListener('resize', updateResolution);
 	});
 
+	const cutYAxisValue = (value, precis) => {
+		const [firstPart, secondPart] = value.split('.');
+		if (+firstPart === 0 && Math.ceil(+secondPart) === 0) {
+			return firstPart;
+		}
+		return `${firstPart}.${secondPart.slice(0, precis)}..`;
+	};
+
 	const CustomTooltip = (tooltipData) => {
 		const yTooltipRef = useRef();
 		const yToolTipAlignment = yTooltipRef.current && yTooltipRef.current.clientWidth <= 52 ? 'left' : 'right';
@@ -84,7 +92,7 @@ const AssetGraphic = ({ data, label, precision }) => {
 		<React.Fragment>
 			{label && <TableLabel label={label} /> }
 			<div className="asset-graphic">
-				<ResponsiveContainer width={resolution < 1000 ? '100%' : '96%'} height={265}>
+				<ResponsiveContainer width={resolution < 1000 ? '99%' : '96%'} height={265}>
 					<LineChart
 						data={data}
 						margin={{
@@ -102,8 +110,8 @@ const AssetGraphic = ({ data, label, precision }) => {
 							dataKey="price"
 							type="number"
 							tickSize={15}
-							tickMargin={resolution < 1000 ? 40 : 85}
-							tickFormatter={(tick) => FormatHelper.formatAmount(tick, precision)}
+							tickMargin={resolution < 1000 ? 50 : 85}
+							tickFormatter={(tick) => cutYAxisValue(FormatHelper.formatAmount(tick, precision), 2)}
 						/>
 						<Tooltip
 							content={<CustomTooltip />}
