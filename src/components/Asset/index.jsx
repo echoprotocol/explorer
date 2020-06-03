@@ -46,11 +46,12 @@ class Asset extends React.Component {
 
 	componentDidMount() {
 		const { query: { id: assetId, ...filters } } = this.props.router;
+		this.props.initData(filters);
+		this.props.loadAssetHisotry(assetId);
+
 		if (!this.state.asset) {
 			this.updateAssetData(assetId);
 		}
-		this.props.initData(filters);
-		this.props.loadAssetHisotry(assetId);
 	}
 
 	componentDidUpdate(prevProps) {
