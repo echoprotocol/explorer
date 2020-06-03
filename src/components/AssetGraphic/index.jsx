@@ -5,9 +5,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Brush, Responsiv
 
 import TableLabel from '../TableLabel';
 
-import { formatPrice } from '../../helpers/FunctionHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 
-const AssetGraphic = ({ data, label }) => {
+const AssetGraphic = ({ data, label, precision }) => {
 
 	const lineRef = useRef();
 	const [resolution, setResolution] = useState(1920);
@@ -43,7 +43,7 @@ const AssetGraphic = ({ data, label }) => {
 							top: `${activePoint.y - 11}px`,
 						}}
 					>
-						{tooltipData && formatPrice(tooltipData.payload[0].payload.price, 0, '.', ',')}
+						{tooltipData && FormatHelper.formatAmount(tooltipData.payload[0].payload.price, precision)}
 					</div>
 					<div
 						className="x-tooltip"
@@ -103,7 +103,7 @@ const AssetGraphic = ({ data, label }) => {
 							type="number"
 							tickSize={15}
 							tickMargin={resolution < 1000 ? 40 : 85}
-							tickFormatter={(tick) => formatPrice(tick, 0, '.', ',')}
+							tickFormatter={(tick) => FormatHelper.formatAmount(tick, precision)}
 						/>
 						<Tooltip
 							content={<CustomTooltip />}
@@ -145,10 +145,12 @@ const AssetGraphic = ({ data, label }) => {
 AssetGraphic.propTypes = {
 	data: PropTypes.array.isRequired,
 	label: PropTypes.string,
+	precision: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 AssetGraphic.defaultProps = {
 	label: '',
+	precision: 0,
 };
 
 export default memo(AssetGraphic);
