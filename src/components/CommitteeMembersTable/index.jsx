@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
@@ -45,13 +45,19 @@ const CommitteeMembersTable = ({
 		await onLoadCommittee();
 	};
 
+	const [didMount, setDidMount] = useState(false);
+
+	useEffect(() => setDidMount(true), []);
+
 	useEffect(() => {
 		window.addEventListener('resize', updateScroll);
 		return () => window.removeEventListener('resize', updateScroll);
 	});
 
 	useEffect(() => {
-		onChangeOperationFilters(search);
+		if (didMount) {
+			onChangeOperationFilters(search);
+		}
 	}, [search.l, search.p]);
 
 	return (

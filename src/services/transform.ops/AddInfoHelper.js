@@ -1,11 +1,13 @@
 import echo, { OPERATIONS_IDS, validators } from 'echojs-lib';
 import BN from 'bignumber.js';
-import { payments } from 'bitcoinjs-lib';
+import { payments, networks } from 'bitcoinjs-lib';
 import Buffer from 'buffer-ponyfill';
 import moment from 'moment';
 
 import { ASSET_ISSUER_PERMISSION_FLAGS } from '../../constants/OpsFormatConstants';
 import { ECHO_ASSET } from '../../constants/GlobalConstants';
+
+import config from '../../config/chain';
 
 export async function countRate(asset, { base, quote }) {
 	const amount = (new BN(base.amount).div(`1e${ECHO_ASSET.PRECISION}`))
@@ -58,11 +60,12 @@ async function getAssetUpdateFeedProducersInfo(assetId) {
 	return { assetFeedProducers };
 }
 
-function getBtcAddressByPublicKey(address) {
+export function getBtcAddressByPublicKey(address) {
 	let btcAddress = '';
 	if (!address) { return btcAddress; }
 	try {
-		btcAddress = payments.p2pkh({ pubkey: Buffer.from(address, 'hex') }).address;
+		const network = config.MODE === 'MAINNET' ? networks.bitcoin : networks.testnet;
+		btcAddress = payments.p2pkh({ pubkey: Buffer.from(address, 'hex'), network }).address;
 	} catch (err) {
 		console.log('Error to transform btc_public_key', err);
 	}

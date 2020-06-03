@@ -1,3 +1,3 @@
-import CommitteeMembers from '../../containers/CommitteeMembers/current';
+import CommitteeMembers from '../../containers/CommitteeMembers';
 
 export default CommitteeMembers;
