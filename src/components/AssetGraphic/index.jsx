@@ -24,10 +24,16 @@ const AssetGraphic = ({ data, label, precision }) => {
 
 	const cutYAxisValue = (value, precis) => {
 		const [firstPart, secondPart] = value.split('.');
+
+		if (Math.ceil(+secondPart) === 0) {
+			return `${firstPart}.0`;
+		}
+
 		if (+firstPart === 0 && Math.ceil(+secondPart) === 0) {
 			return firstPart;
 		}
-		return `${firstPart}.${secondPart.slice(0, precis)}..`;
+
+		return secondPart.length > precis ? `${firstPart}.${secondPart.slice(0, precis)}..` : value;
 	};
 
 	const CustomTooltip = (tooltipData) => {
