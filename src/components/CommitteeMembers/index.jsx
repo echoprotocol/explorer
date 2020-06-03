@@ -46,10 +46,42 @@ class CommitteeMembers extends React.Component {
 	componentDidMount() {
 		this.updateResolution();
 		window.addEventListener('resize', this.updateResolution);
+
+		const { asPath } = this.props.router;
+		const { url } = queryString.parseUrl(asPath);
+
+		const status = this.getStatusByUrl(url);
+		this.props.loadCommittees(status);
+	}
+
+	componentDidUpdate(prevProps) {
+		const { asPath } = this.props.router;
+		const { asPath: prevAsPath } = prevProps.router;
+
+		const { url } = queryString.parseUrl(asPath);
+		const { url: prevUrl } = queryString.parseUrl(prevAsPath);
+
+		if (prevUrl && url !== prevUrl) {
+			const status = this.getStatusByUrl(url);
+			this.props.loadCommittees(status);
+		}
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.updateResolution);
+	}
+
+	getStatusByUrl(url) {
+		switch (url) {
+			case SSR_CURRENT_COMMITTEE_PATH:
+				return ECHODB_COMMITTEE_STATUS.ACTIVE;
+			case SSR_CANDIDATE_COMMITTEE_PATH:
+				return ECHODB_COMMITTEE_STATUS.CANDIDATE;
+			case SSR_FORMER_COMMITTEE_PATH:
+				return ECHODB_COMMITTEE_STATUS.DEACTIVATED;
+			default:
+				return ECHODB_COMMITTEE_STATUS.ACTIVE; 
+		}
 	}
 
 	setActiveTab(index) {
