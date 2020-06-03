@@ -16,7 +16,8 @@
 	}
 	.y-tooltip,
 	.x-tooltip {
-		position: relative;
+		position: absolute;
+		z-index: 1;
 		width: auto;
 		padding: 4px 7px;
 		background-color: $blue;
@@ -26,22 +27,32 @@
 		line-height: 140%;
 	}
 	.y-tooltip {
-		width: 52px;
+		min-width: 52px;
 		&:after {
 			content: "";
 			position: absolute;
-			left: 100%;
 			top: 50%;
 			transform: translateY(-50%);
 			width: 0;
 			height: 0;
 			border-top: 6px solid transparent;
 			border-bottom: 6px solid transparent;
-			border-left: 6px solid $blue;
+		}
+		&.left {
+			&:after {
+				left: 100%;
+				border-left: 6px solid $blue;
+			}
+		}
+		&.right {
+			&:after {
+				right: 100%;
+				border-right: 6px solid $blue;
+			}
 		}
 	}
 	.x-tooltip {
-		width: 82px;
+		min-width: 82px;
 		&:after {
 			content: "";
 			position: absolute;
@@ -66,10 +77,13 @@
 			display: none;
 		}
 		.recharts-cartesian-axis-tick {
-			&:not(:last-child) {
+			&:first-child {
 				transform: translateX(32px);
 			}
-			&:last-child {
+			//&:not(:last-child) {
+			//	transform: translateX(32px);
+			//}
+			&:last-child:not(:only-child) {
 				transform: translateX(6px);
 			}
 		}
