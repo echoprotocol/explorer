@@ -84,7 +84,6 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 	} catch (err) {
 		console.log('EchoDB error', err);
 	}
-
 	let transfers = items.map(async (el) => {
 		const feeAsset = await echo.api.getObject(el.fee.asset_id);
 		const operation = Object.values(Operations).find((o) => o.value === el.operationId);
