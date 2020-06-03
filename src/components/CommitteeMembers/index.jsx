@@ -80,7 +80,7 @@ class CommitteeMembers extends React.Component {
 			case SSR_FORMER_COMMITTEE_PATH:
 				return ECHODB_COMMITTEE_STATUS.DEACTIVATED;
 			default:
-				return ECHODB_COMMITTEE_STATUS.ACTIVE; 
+				return ECHODB_COMMITTEE_STATUS.ACTIVE;
 		}
 	}
 
