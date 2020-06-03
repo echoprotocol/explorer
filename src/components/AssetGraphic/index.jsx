@@ -5,9 +5,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Brush, Responsiv
 
 import TableLabel from '../TableLabel';
 
-import { formatPrice } from '../../helpers/FunctionHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 
-const AssetGraphic = ({ data, label }) => {
+const AssetGraphic = ({ data, label, precision }) => {
 
 	const lineRef = useRef();
 	const [resolution, setResolution] = useState(1920);
@@ -21,6 +21,20 @@ const AssetGraphic = ({ data, label }) => {
 		window.addEventListener('resize', updateResolution);
 		return () => window.removeEventListener('resize', updateResolution);
 	});
+
+	const cutYAxisValue = (value, precis) => {
+		const [firstPart, secondPart] = value.split('.');
+
+		if (Math.ceil(+secondPart) === 0) {
+			return `${firstPart}.0`;
+		}
+
+		if (+firstPart === 0 && Math.ceil(+secondPart) === 0) {
+			return firstPart;
+		}
+
+		return secondPart.length > precis ? `${firstPart}.${secondPart.slice(0, precis)}..` : value;
+	};
 
 	const CustomTooltip = (tooltipData) => {
 		const yTooltipRef = useRef();
@@ -43,7 +57,7 @@ const AssetGraphic = ({ data, label }) => {
 							top: `${activePoint.y - 11}px`,
 						}}
 					>
-						{tooltipData && formatPrice(tooltipData.payload[0].payload.price, 0, '.', ',')}
+						{tooltipData && FormatHelper.formatAmount(tooltipData.payload[0].payload.price, precision)}
 					</div>
 					<div
 						className="x-tooltip"
@@ -84,7 +98,7 @@ const AssetGraphic = ({ data, label }) => {
 		<React.Fragment>
 			{label && <TableLabel label={label} /> }
 			<div className="asset-graphic">
-				<ResponsiveContainer width={resolution < 1000 ? '100%' : '96%'} height={265}>
+				<ResponsiveContainer width={resolution < 1000 ? '99%' : '96%'} height={265}>
 					<LineChart
 						data={data}
 						margin={{
@@ -102,8 +116,8 @@ const AssetGraphic = ({ data, label }) => {
 							dataKey="price"
 							type="number"
 							tickSize={15}
-							tickMargin={resolution < 1000 ? 40 : 85}
-							tickFormatter={(tick) => formatPrice(tick, 0, '.', ',')}
+							tickMargin={resolution < 1000 ? 50 : 85}
+							tickFormatter={(tick) => cutYAxisValue(FormatHelper.formatAmount(tick, precision), 2)}
 						/>
 						<Tooltip
 							content={<CustomTooltip />}
@@ -145,10 +159,12 @@ const AssetGraphic = ({ data, label }) => {
 AssetGraphic.propTypes = {
 	data: PropTypes.array.isRequired,
 	label: PropTypes.string,
+	precision: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 AssetGraphic.defaultProps = {
 	label: '',
+	precision: 0,
 };
 
 export default memo(AssetGraphic);

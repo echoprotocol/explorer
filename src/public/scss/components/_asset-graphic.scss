@@ -79,6 +79,9 @@
 		.recharts-cartesian-axis-tick {
 			&:first-child {
 				transform: translateX(32px);
+				@include max-vw($res-500) {
+					transform: translateX(0);
+				}
 			}
 			//&:not(:last-child) {
 			//	transform: translateX(32px);

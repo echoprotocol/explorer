@@ -24,7 +24,7 @@ class BlocksTablePage extends React.Component {
 		super(props);
 
 		this.state = {
-			loader: true,
+			loader: !props.blocksOnTable.size,
 		};
 	}
 

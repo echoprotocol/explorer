@@ -17,6 +17,7 @@ import { ECHODB_COMMITTEE_STATUS } from '../constants/CommitteeConstants';
 import Operations from '../constants/Operations';
 import { ECHO_ASSET, EBTC_ASSET_ID, EETH_ASSET_ID } from '../constants/GlobalConstants';
 import FormatHelper from '../helpers/FormatHelper';
+import { getBtcAddressByPublicKey } from '../services/transform.ops/AddInfoHelper';
 
 
 class CommitteeActions extends BaseActionsClass {
@@ -36,6 +37,7 @@ class CommitteeActions extends BaseActionsClass {
 			const operationInfo = operationValues.find((op) => op.value === operationId);
 
 			const opType = (operationInfo && operationInfo.name) || 'operation';
+			const btcAddress = getBtcAddressByPublicKey(data.committee_options.btc_public_key);
 
 			return {
 				account: {
@@ -43,7 +45,7 @@ class CommitteeActions extends BaseActionsClass {
 					value: data.name,
 				},
 				id: data.committee_options.committee_member_id,
-				bitcoinHash: data.committee_options.btc_public_key,
+				bitcoinHash: btcAddress,
 				etheriumHash: FormatHelper.addEthPrefix(data.committee_options.eth_address),
 				participation: data.committee_options.last_status_change_time,
 				abandon: data.committee_options.last_status_change_time,
@@ -113,6 +115,8 @@ class CommitteeActions extends BaseActionsClass {
 			let items = [];
 			try {
 				if (!echo.api) return {};
+				dispatch(this.setValue('loadingMoreCommittee', true));
+
 				const getGreedAndListKEy = (echodbStatus) => {
 					switch (echodbStatus) {
 						case ECHODB_COMMITTEE_STATUS.ACTIVE:
@@ -147,6 +151,8 @@ class CommitteeActions extends BaseActionsClass {
 			} catch (e) {
 				dispatch(this.setValue('error', e.message));
 				return { total, items };
+			} finally {
+				dispatch(this.setValue('loadingMoreCommittee', false));
 			}
 		};
 	}
