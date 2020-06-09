@@ -260,8 +260,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					sender: data.account,
-					to_eth_address: objectInfo.to,
+					to_eth_address: data.objectInfo.get('eth_addr'),
 					token: data.objectInfo.get('token'),
+					amount_info: data.objectInfo.get('amount_info'),
 					fee: data.fee,
 					additionalInfo: {
 						number_of_confirmations: {
