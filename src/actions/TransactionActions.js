@@ -582,6 +582,7 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('token', { value: token.symbol, link: token.id })
 							.set('amount_info', FormatHelper.formatAmount(singleOperation.value, token.decimals))
+							.set('eth_addr', FormatHelper.addEthPrefix(singleOperation.to))
 							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash));
 						break;
 					}
