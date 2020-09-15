@@ -25,7 +25,7 @@ export default {
 	},
 	SIDECHAIN_EXPLORER_URLS: {
 		ETHEREUM: process.env.SIDECHAIN_EXPLORER_URLS.ETHEREUM,
-		BITCOIN: process.env.EXPLORER_URLS.BITCOIN,
+		BITCOIN: process.env.SIDECHAIN_EXPLORER_URLS.BITCOIN,
 	},
 	MODE: process.env.MODE,
 };

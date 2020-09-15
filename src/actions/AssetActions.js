@@ -117,7 +117,6 @@ const formatAssetTransfersHistoyAccounts = (history) => history.map((data) => ({
 export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch) => {
 	let ratesMap = [];
 	let from = moment().subtract(1, 'month').toISOString();
-
 	try {
 		const [asset] = await echo.api.getAssets([assetId]);
 
@@ -137,6 +136,7 @@ export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch
 		console.log('EchoDB error', err);
 	} finally {
 		if (!ratesMap.length) {
+			from = moment().subtract(1, 'week').toISOString();
 			const nowTime = moment().toISOString();
 			ratesMap = [
 				{ startIntervalDateString: from, rate: 0 },

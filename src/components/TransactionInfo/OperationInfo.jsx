@@ -12,6 +12,7 @@ import AdditionalInfo from './AdditionalInfo';
 import PolicyRow from './Rows/PolicyRow';
 import CopyRow from './Rows/CopyRow';
 import URLHelper from '../../helpers/URLHelper';
+import FormatHelper from '../../helpers/FormatHelper';
 import MultyLinksRow from './Rows/MultyLinksRow';
 
 class OperationInfo extends React.Component {
@@ -50,7 +51,7 @@ class OperationInfo extends React.Component {
 					{data.to_address && <PrimaryRow title="To address" description={data.to_address} />}
 					{data.to_account && <LinkRow title="To account" account={data.to_account} />}
 
-					{data.url && <PrimaryRow title="URL" description={data.url} />}
+					{data.url && <PrimaryRow title="URL" link={FormatHelper.addExternalProtocolToLink(data.url)} value={data.url} isLinkOut />}
 					{data.new_url && <PrimaryRow title="New URL" description={data.new_url} />}
 					{data.eth_address && <LinkRow title="ETH address" value={data.eth_address} link={URLHelper.createEthAddressOut(data.eth_address)} isLinkOut />}
 					{data.from_address && <LinkRow title="From address" value={data.from_address} link={URLHelper.createEthAddressOut(data.from_address)} isLinkOut />}

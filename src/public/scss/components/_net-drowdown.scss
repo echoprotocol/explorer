@@ -11,9 +11,10 @@
 	.dropdown-trigger {
 		position: relative;
 		padding: 8px 10px;
-		height: 35px;
+		height: 34px;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		width: 100%;
 		background-color: #2d3346;
 		border: none;
@@ -109,6 +110,7 @@
 		}
 	}
 	.dropdown-arrow {
+		display: flex;
 		transition: transform $speed;
 	}
 	&.opened {

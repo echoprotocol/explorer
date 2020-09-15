@@ -15,12 +15,30 @@ import BlocksTable from '../../components/BlocksTable';
 import InnerHeader from '../../components/InnerHeader';
 import { getBlocksByIndexes as getBlocks } from '../../actions/BlockActions';
 import GridActions from '../../actions/GridActions';
+import Loader from '../../components/Loader';
 
 
 class BlocksTablePage extends React.Component {
 
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			loader: !props.blocksOnTable.size,
+		};
+	}
+
 	componentDidMount() {
 		this.props.setTitle(TITLE_TEMPLATES.BLOCKS_TABLE);
+	}
+
+	async componentDidUpdate() {
+		if (this.state.loader) {
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({
+				loader: false,
+			});
+		}
 	}
 
 	getBlocks(blocks) {
@@ -55,15 +73,19 @@ class BlocksTablePage extends React.Component {
 		Router.push(SSR_BLOCK_INFORMATION_PATH, BLOCK_INFORMATION_PATH.replace(/:round/, block));
 	}
 
+	renderLoader() {
+		return <Loader />;
+	}
+
 	render() {
 		const {
 			router, filterAndPaginateData, getBlocksByIndexes,
-			blocksOnTable, initData,
+			blocksOnTable, initData, loading,
 		} = this.props;
 		return (
 			<div className="inner-container blocks-page">
 				<InnerHeader title="Blocks list" />
-				<BlocksTable
+				{(loading || this.state.loader) ? this.renderLoader() : <BlocksTable
 					router={router}
 					isAllBlocks
 					goToBlock={(e, block) => this.goToBlock(e, block)}
@@ -71,7 +93,7 @@ class BlocksTablePage extends React.Component {
 					filterAndPaginateData={filterAndPaginateData.toJS()}
 					getBlocks={() => getBlocksByIndexes()}
 					initData={initData}
-				/>
+				/>}
 			</div>
 		);
 	}
@@ -85,6 +107,7 @@ BlocksTablePage.propTypes = {
 	filterAndPaginateData: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
+	loading: PropTypes.bool.isRequired,
 };
 
 BlocksTablePage.getInitialProps = async ({ store }) => {
@@ -104,7 +127,7 @@ export default withRouter(connect(
 	(dispatch) => ({
 		setValue: (field, value) => dispatch(BlockReducer.actions.set({ field, value })),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
-		getBlocksByIndexes: (page, size) => dispatch(getBlocks(page, size)),
+		getBlocksByIndexes: () => dispatch(getBlocks()),
 		initData: (params) => dispatch(GridActions.initData(BLOCKS_GRID, params)),
 	}),
 )(BlocksTablePage));

@@ -275,6 +275,13 @@ class FormatHelper {
 		return addrOrHash && addrOrHash.indexOf('0x') === 0 ? addrOrHash : `0x${addrOrHash}`;
 	}
 
+	static addExternalProtocolToLink(url) {
+		if (!url || typeof url !== 'string') {
+			return '';
+		}
+		return (url.startsWith('http://') || url.startsWith('https://')) ? url : `//${url}`;
+	}
+
 }
 
 export default FormatHelper;

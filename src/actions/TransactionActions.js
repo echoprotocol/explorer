@@ -581,6 +581,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						objectWithApprovals = await echo.api.getObject(operationResult[1]);
 						object = object
 							.set('token', { value: token.symbol, link: token.id })
+							.set('amount_info', FormatHelper.formatAmount(singleOperation.value, token.decimals))
+							.set('eth_addr', FormatHelper.addEthPrefix(singleOperation.to))
 							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash));
 						break;
 					}

@@ -46,11 +46,12 @@ class Asset extends React.Component {
 
 	componentDidMount() {
 		const { query: { id: assetId, ...filters } } = this.props.router;
+		this.props.initData(filters);
+		this.props.loadAssetHisotry(assetId);
+
 		if (!this.state.asset) {
 			this.updateAssetData(assetId);
 		}
-		this.props.initData(filters);
-		this.props.loadAssetHisotry(assetId);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -108,7 +109,7 @@ class Asset extends React.Component {
 							<InfoBlockItem title="Max supply" value={FormatHelper.formatAmount(maxSupply, assetPrecision)} className="max-supply" />
 							<InfoBlockItem title="Bit asset" value={isbitAsset ? 'yes' : 'no'} className="bit-asset" />
 						</InfoBlock>
-						<AssetGraphic data={transferHistoryWithInterval.toArray()} />
+						<AssetGraphic precision={assetPrecision} data={transferHistoryWithInterval.toArray()} label="Asset transactions" />
 						<AssetTransfersTable
 							label="Asset transfers"
 							assetTransfers={assetTransfers}

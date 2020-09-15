@@ -76,7 +76,7 @@ const LinkRow = ({
 				</Link>
 			}
 			{link && isLinkOut &&
-				<a href={link} className="link" target="_blank" rel="noopener noreferrer">{value || link}</a>
+				<a href={link} className="link" target="_blank" rel="noopener noreferrer external" >{value || link}</a>
 			}
 		</div>
 	</div>
