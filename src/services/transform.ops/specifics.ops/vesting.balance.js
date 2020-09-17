@@ -6,6 +6,7 @@ import getAdditionalInfoByOpId from '../AddInfoHelper';
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
 	const description = OPS_DESCRIPTIONS[opNumber];
+	const objectInfo = data.objectInfo ? data.objectInfo.toJS() : {};
 	switch (opNumber) {
 		case OPERATIONS_IDS.VESTING_BALANCE_CREATE: {
 			const {
@@ -119,6 +120,15 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					type: 'Unfreeze balance (virtual)',
 					receiver: data.account,
 					amount: data.amount,
+				},
+			};
+		}
+		case OPERATIONS_IDS.REQUEST_BALANCE_UNFREEZE: {
+			return {
+				operationInfo: {
+					type: 'Request unfreeze balance',
+					sender: data.account,
+					assets: objectInfo.assets,
 				},
 			};
 		}

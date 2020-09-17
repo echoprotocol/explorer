@@ -50,6 +50,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.BALANCE_CLAIM:
 		case OPERATIONS_IDS.BALANCE_FREEZE:
 		case OPERATIONS_IDS.BALANCE_UNFREEZE:
+		case OPERATIONS_IDS.REQUEST_BALANCE_UNFREEZE:
 			return transformVestingOperations(opNumber, data);
 		case OPERATIONS_IDS.CONTRACT_CREATE:
 		case OPERATIONS_IDS.CONTRACT_CALL:

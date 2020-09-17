@@ -35,6 +35,7 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.BALANCE_CLAIM]: Operations.balance_claim.name,
 	[OPERATIONS_IDS.BALANCE_FREEZE]: Operations.balance_freeze.name,
 	[OPERATIONS_IDS.BALANCE_UNFREEZE]: Operations.balance_unfreeze.name,
+	[OPERATIONS_IDS.REQUEST_BALANCE_UNFREEZE]: Operations.request_balance_unfreeze.name,
 	[OPERATIONS_IDS.CONTRACT_CREATE]: Operations.contract_create.name,
 	[OPERATIONS_IDS.CONTRACT_CALL]: Operations.contract_call.name,
 	[OPERATIONS_IDS.CONTRACT_INTERNAL_CREATE]: Operations.contract_internal_create.name,
@@ -222,6 +223,10 @@ export const OPS_DESCRIPTIONS = {
 	[OPERATIONS_IDS.BALANCE_UNFREEZE]: {
 		description: 'Unfreeze balance.',
 		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_unfreeze_operation',
+	},
+	[OPERATIONS_IDS.REQUEST_BALANCE_UNFREEZE]: {
+		description: 'Request unfreeze balance.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#request_balance_unfreeze_operation',
 	},
 	[OPERATIONS_IDS.CONTRACT_CREATE]: {
 		description: 'Creates new contract.',

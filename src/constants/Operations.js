@@ -312,6 +312,16 @@ const Operations = {
 			asset: 'amount.asset_id',
 		},
 	},
+	request_balance_unfreeze: {
+		value: OPERATIONS_IDS.REQUEST_BALANCE_UNFREEZE,
+		name: 'Request balance unfreeze',
+		options: {
+			from: 'account',
+			subject: null,
+			value: null,
+			asset: 'amount.asset_id',
+		},
+	},
 	contract_create: {
 		value: OPERATIONS_IDS.CONTRACT_CREATE,
 		name: 'Contract create',
@@ -713,6 +723,9 @@ export const assetOperations = [
 	Operations.asset_fund_fee_pool.name,
 	Operations.asset_publish_feed.name,
 	Operations.asset_claim_fees.name,
+];
+export const freezeOperations = [
+	Operations.request_balance_unfreeze.name,
 ];
 export const contractOperations = [
 	Operations.contract_create.name,

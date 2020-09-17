@@ -14,6 +14,7 @@ import Operations, {
 	contractOperations,
 	sidechainBtcOperations,
 	didOperations,
+	freezeOperations,
 } from '../constants/Operations';
 import { CONTRACT_RESULT_TYPE_0 } from '../constants/ResultTypeConstants';
 import {
@@ -196,6 +197,24 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('delegating', accounts[1] && accounts[1].name)
 					.set('assets', singleOperation.assets)
 					.set('evm_address', singleOperation.evm_address);
+			} else if (freezeOperations.includes(operation.name)) {
+				switch (operation.name) {
+					case Operations.request_balance_unfreeze.name: {
+						const rowAssets = await echo.api.getObjects(options.objects_to_unfreeze);
+
+						const assets = rowAssets.map(async ({ balance }) => {
+							const assetData = await echo.api.getObject(balance.asset_id);
+							const formateAmount = FormatHelper.formatAmount(balance.amount, assetData.precision);
+							return ({ key: balance.asset_id, value: formateAmount });
+						});
+
+						object = object
+							.set('assets', await Promise.all(assets));
+						break;
+					}
+					default:
+						break;
+				}
 			} else if (contractOperations.includes(operation.name)) {
 				let contractId;
 				let isNeedLink = false;
