@@ -123,7 +123,7 @@ export const getAssetTransfersHistoryWithInterval = (assetId) => async (dispatch
 		if (!asset) {
 			return;
 		}
-		const firstBlock = await echo.api.getBlock(1);
+		const firstBlock = await echo.api.getBlock(0);
 		from = firstBlock && moment(firstBlock.timestamp).toISOString();
 		const interval = moment.duration(1, 'day').as('second');
 
