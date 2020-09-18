@@ -283,7 +283,7 @@ export const getBlocksByIndexes = () => async (dispatch, getState) => {
 
 	const blockReward = new BN(getState().round.get('blockReward'));
 	let blocksResult = [];
-	for (let i = startBlock + 1; i <= lastBlock; i += 1) {
+	for (let i = startBlock; i <= lastBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
 	}
 
