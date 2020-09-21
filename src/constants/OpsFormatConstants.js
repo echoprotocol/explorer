@@ -216,8 +216,8 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_claim_operation',
 	},
 	[OPERATIONS_IDS.BALANCE_FREEZE]: {
-		description: 'Freeze balance to get more reward during fee distribution.\n' +
-			'Duration is indicated in days. For the selected duration, the balance modifier must be specified in the chain parameters',
+		description: 'Freeze balance to increase the likelihood of getting out as a producer or verifier and get more rewards.\n' +
+			'Duration is indicated in days. For the selected duration, the balance modifier must be specified in the chain parameters.',
 		link: 'https://docs.echo.org/api-reference/echo-operations/balance-object#balance_freeze_operation',
 	},
 	[OPERATIONS_IDS.BALANCE_UNFREEZE]: {
