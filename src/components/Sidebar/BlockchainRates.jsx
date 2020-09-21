@@ -11,7 +11,7 @@ const BlockchainRates = ({
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
 				Delegation rate
-				<InfoTooltip overlay="Delegation rate information" />
+				<InfoTooltip overlay="Percentage of consensus messages sent by the delegate on behalf of the original user" />
 			</div>
 			<div className="blockchain-rates-block-info">
 				<div className="blockchain-rates-block-percent">{delegationRate}%</div>
@@ -33,7 +33,7 @@ const BlockchainRates = ({
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
 				Decentralisation rate
-				<InfoTooltip overlay="Decentralisation rate information" />
+				<InfoTooltip overlay="Percentage of unique accounts participated in the consensus" />
 			</div>
 			<div className="blockchain-rates-block-info">
 				<div className="blockchain-rates-block-percent">{decentralizationRate}%</div>
