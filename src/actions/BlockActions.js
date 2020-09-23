@@ -12,6 +12,7 @@ import {
 	DYNAMIC_GLOBAL_BLOCKCHAIN_PROPERTIES,
 	NETWORK_CONNECTED_ERROR,
 	NULL_ACCOUNT,
+	ECHO_ASSET,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -27,6 +28,7 @@ import { BLOCK_GRID, BLOCKS_GRID } from '../constants/TableConstants';
 import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
 import { getLatestOperationsFromGQL } from '../services/queries/history';
 import AccountActions from './AccountActions';
+import { getBlockReward, getBlockFromGraphQl } from '../services/queries/block';
 
 /**
  *
@@ -155,29 +157,28 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		}
 
 		const handledBlock = getState().block.getIn(['blocks', round]);
-		const blockReward = new BN(getState().round.get('blockReward'));
 
 		const value = {};
 
+		let assetsNames = [];
 		if (handledBlock) {
 			value.reward = `${handledBlock.get('reward')} ${handledBlock.get('rewardCurrency')}`;
 			value.size = `${FormatHelper.formatBlockSize(handledBlock.get('weight'))}
 			 ${FormatHelper.formatByteSize(handledBlock.get('weight'))}`;
 			value.blockNumber = handledBlock.get('blockNumber');
 		} else {
-			const fee = planeBlock.transactions.reduce((trxAcc, trx) => {
-				if (trx.fees_collected) {
-					if (typeof trx.fees_collected === 'number') {
-						return trxAcc.plus(trx.fees_collected);
-					}
-					trx.fees_collected.forEach(({ amount }) => {
-						trxAcc.plus(amount);
-					});
-					return trxAcc;
-				}
-				return trxAcc;
-			}, new BN(0));
-			const reward = blockReward.plus(fee);
+			const { data: { getBlock: block } } = await getBlockFromGraphQl(Number(round));
+			const otherAssets = planeBlock.transactions.reduce((acc, tr) => {
+				const notEchoFees = tr.fees_collected.filter((f) => f.asset_id !== ECHO_ASSET.ID && !acc.includes(f.asset_id))
+					.map((el) => el.asset_id);
+				return [...acc, ...notEchoFees];
+			}, []);
+			const getAssetNamePromises = otherAssets.map(async (el) => {
+				const asset = await echo.api.getObject(el);
+				return asset.symbol;
+			});
+			assetsNames = await Promise.all(getAssetNamePromises);
+			const reward = new BN(block.block_reward);
 			value.reward = reward.toString(10);
 			const weight = JSON.stringify(planeBlock).length;
 			value.size = `${FormatHelper.formatBlockSize(weight)} ${FormatHelper.formatByteSize(weight)}`;
@@ -232,6 +233,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		value.transactionCount = resultTransactions.length;
 		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
 
+		value.otherAssetsRewards = assetsNames;
 		value.round = planeBlock.round;
 		value.timestamp = planeBlock.timestamp;
 		value.rewardDistribution = await getRewardDistribution(planeBlock, nextPlaneBlock);
@@ -281,32 +283,21 @@ export const getBlocksByIndexes = () => async (dispatch, getState) => {
 	const lastBlock = latestBlock - (onPage * (page - 1));
 	const startBlock = lastBlock - onPage >= 0 ? lastBlock - onPage : 0;
 
-	const blockReward = new BN(getState().round.get('blockReward'));
 	let blocksResult = [];
 	for (let i = startBlock; i <= lastBlock; i += 1) {
 		blocksResult.push(echo.api.getBlock(i));
 	}
 
 	blocksResult = await Promise.all(blocksResult);
+	const { data: { getBlocks: { items: rewardsFromDB } } } = await getBlockReward(startBlock, lastBlock - startBlock);
 	const blocksRewards = {};
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
 		if (block) {
-			const { round, transactions } = block;
+			const { round } = block;
 
-			const fee = transactions.reduce((trxAcc, trx) => {
-				if (trx.fees_collected) {
-					if (typeof trx.fees_collected === 'number') {
-						return trxAcc.plus(trx.fees_collected);
-					}
-					trx.fees_collected.forEach(({ amount }) => {
-						trxAcc.plus(amount);
-					});
-				}
-				return trxAcc;
-			}, new BN(0));
 			accounts[index] = block.account;
-
-			blocksRewards[round] = blockReward.plus(fee);
+			const reward = rewardsFromDB ? rewardsFromDB.find((el) => el.round === round) : 0;
+			blocksRewards[round] = reward && reward.block_reward;
 		}
 
 		return accounts;
@@ -357,9 +348,11 @@ export const getBlocksByIndexes = () => async (dispatch, getState) => {
  * 	@param {Boolean?} isLoadMore
  */
 export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
+	if (!startBlock || !lastBlock) {
+		return;
+	}
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
-	const blockReward = new BN(getState().round.get('blockReward'));
 
 	const [...keys] = blocks.keys();
 	let startedBlock = startBlock || Math.max(...keys);
@@ -381,24 +374,13 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 	blocksResult = await Promise.all(blocksResult);
 	const blocksRewards = {};
+	const { data: { getBlocks: { items: rewardsFromDB } } } = await getBlockReward(startBlock, lastBlock - startBlock);
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
 		if (block) {
-			const { round, transactions } = block;
-
-			const fee = transactions.reduce((trxAcc, trx) => {
-				if (trx.fees_collected) {
-					if (typeof trx.fees_collected === 'number') {
-						return trxAcc.plus(trx.fees_collected);
-					}
-					trx.fees_collected.forEach(({ amount }) => {
-						trxAcc.plus(amount);
-					});
-				}
-				return trxAcc;
-			}, new BN(0));
+			const { round } = block;
 			accounts[index] = block.account;
-
-			blocksRewards[round] = blockReward.plus(fee);
+			const reward = rewardsFromDB ? rewardsFromDB.find((el) => el.round === round) : 0;
+			blocksRewards[round] = reward && reward.block_reward;
 		}
 
 		return accounts;

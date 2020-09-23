@@ -139,6 +139,7 @@ class OperationInfo extends React.Component {
 					{data.committee_member_ids_in_script && <MultyLinksRow title="Committee member ids in script" fields={data.committee_member_ids_in_script} />}
 					{data.signatures && <MultyRow title="Signatures" fields={data.signatures} />}
 					{data.assets && <MultyLinksRow title="Assets" fields={data.assets} />}
+					{data.totalPrice && <LinkRow title="Total price" amount={data.totalPrice} />}
 					{data.address && <PrimaryRow title="Address" description={data.address} />}
 					{data.bit_asset_options && <MultyRow title="bitAsset options:" fields={data.bit_asset_options} />}
 					{data.changed_parameters && <MultyRow title="New parameters" fields={data.changed_parameters} />}

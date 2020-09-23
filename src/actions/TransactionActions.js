@@ -48,6 +48,7 @@ import {
 	SIDECHAIN_OPS_DEFAULT_ASSETS,
 } from '../constants/OpsFormatConstants';
 import ApiService from '../services/ApiService';
+import { ECHO } from '../constants/TotalSupplyConstants';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -160,7 +161,8 @@ class TransactionActionsClass extends BaseActionsClass {
 		let object = new Map({});
 		try {
 			if (accountOperations.includes(operation.name)) {
-				let account = await echo.api.getObject(from.id);
+				const accId = operation.name === Operations.block_reward.name ? subject.id : from.id;
+				let account = await echo.api.getObject(accId);
 				if (operation.name === Operations.account_create.name) {
 					account = await echo.api.getObject(subject.id);
 				}
@@ -196,6 +198,8 @@ class TransactionActionsClass extends BaseActionsClass {
 					.set('registrar', accounts[0] && accounts[0].name)
 					.set('delegating', accounts[1] && accounts[1].name)
 					.set('assets', singleOperation.assets)
+					.set('isMultipleAssets', singleOperation.assets && !!singleOperation.assets.find((el) => el.asset_id !== ECHO.ID))
+					.set('totalPrice', singleOperation.assets && singleOperation.assets.reduce((p, asset) => p + Number(asset.priceInEcho), 0))
 					.set('evm_address', singleOperation.evm_address);
 			} else if (freezeOperations.includes(operation.name)) {
 				switch (operation.name) {
@@ -324,8 +328,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						//
 					}
 					const rate = await countRate(asset, asset.options.core_exchange_rate);
-					const price = new BN(asset.options.core_exchange_rate.quote.amount)
-						.div(asset.options.core_exchange_rate.base.amount)
+					const price = new BN(asset.options.core_exchange_rate.base.amount)
+						.div(asset.options.core_exchange_rate.quote.amount)
 						.toString();
 					const accumulatedFees = asset.dynamic.accumulated_fees;
 					const quoteAmount = asset.options.core_exchange_rate.quote.amount;

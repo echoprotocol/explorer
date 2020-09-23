@@ -15,7 +15,7 @@ const MultyLinksRow = React.memo(({ title, fields }) => (
 							{item.key}:&nbsp;
 						</span>
 						<Link href={SsrHrefHelper.getHrefByObjectId(item.value)} className="link" as={URLHelper.createUrlById(item.value)}>
-							<a href="">{item.value}</a>
+							<a href="">{item.name ? item.name : item.value}</a>
 						</Link>
 						{
 							item.description &&

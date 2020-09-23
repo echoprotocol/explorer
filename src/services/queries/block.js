@@ -13,6 +13,7 @@ export const getBlockFromGraphQl = async (round) => {
 				round,
 				decentralization_rate,
 				average_block_time,
+				block_reward,
 				frozen_balances_data {
     			accounts_freeze_sum,
       		committee_freeze_sum
@@ -22,4 +23,19 @@ export const getBlockFromGraphQl = async (round) => {
 	`;
 
 	return client.getClient().query({ query, variables: { round } });
+};
+
+export const getBlockReward = async (offset, count) => {
+	const query = gql`
+		query getBlockReward($count: Int, $offset: Int)  {
+			getBlocks(count: $count, offset: $offset) {
+				items {
+					round,
+    			block_reward,
+  			}
+			}
+		}
+	`;
+
+	return client.getClient().query({ query, variables: { offset, count } });
 };

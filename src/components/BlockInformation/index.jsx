@@ -125,6 +125,7 @@ class BlockInformation extends React.Component {
 		const producer = blockInformation.get('producer') || {};
 		const reward = blockInformation.get('reward');
 		const size = blockInformation.get('size');
+		const otherAssetsRewards = blockInformation.get('otherAssetsRewards');
 		const transactionCount = blockInformation.get('transactionCount') || 0;
 		const operationCount = blockInformation.get('operations').size || transactionCount;
 		const rewardDistribution = blockInformation.get('rewardDistribution');
@@ -137,6 +138,7 @@ class BlockInformation extends React.Component {
 				href: path,
 			},
 		];
+		const isOtherAssetsRewards = !!otherAssetsRewards.length;
 
 		const blockNumber = Number(FormatHelper.removeCommas(formattedBlockNumber));
 		return (
@@ -185,8 +187,10 @@ class BlockInformation extends React.Component {
 					/>
 					<InfoBlockItem
 						title="Reward"
-						value={`${FormatHelper.formatAmount(reward, ECHO_ASSET.PRECISION)} ${ECHO_ASSET.SYMBOL}`}
+						value={`${isOtherAssetsRewards ? '~' : ''}${reward} ${ECHO_ASSET.SYMBOL}`}
 						className="reward"
+						withTooltip={isOtherAssetsRewards}
+						overlay={otherAssetsRewards.join(', ')}
 					/>
 				</InfoBlock>
 

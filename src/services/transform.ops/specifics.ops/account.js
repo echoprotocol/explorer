@@ -2,6 +2,7 @@ import { OPERATIONS_IDS } from 'echojs-lib';
 
 import { ACCOUNT_BLACK_WHITE, OPS_DESCRIPTIONS, OPS_TYPES } from '../../../constants/OpsFormatConstants';
 import getAdditionalInfoByOpId from '../AddInfoHelper';
+import { ECHO_ASSET } from '../../../constants/GlobalConstants';
 
 export const transformOperationDataByType = async (opNumber, data) => {
 	const type = OPS_TYPES[opNumber];
@@ -72,7 +73,14 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					to: data.receiver,
-					assets: objectInfo.assets && objectInfo.assets.map((el) => ({ key: el.asset_id, value: el.amount })),
+					totalPrice: {
+						amount: objectInfo.totalPrice,
+						asset_id: ECHO_ASSET.ID,
+						precision: ECHO_ASSET.PRECISION,
+						symbol: ECHO_ASSET.SYMBOL,
+						isRounded: objectInfo.isMultipleAssets,
+					},
+					assets: objectInfo.assets && objectInfo.assets.map((el) => ({ key: el.asset_id, value: el.asset_id, name: el.symbol })),
 					...description,
 				},
 			};

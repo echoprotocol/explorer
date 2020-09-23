@@ -41,7 +41,10 @@ const LinkRow = ({
 			}
 			{amount &&
 				<div>
-					<span className="txt">{FormatHelper.formatAmount(amount.amount, amount.precision)} </span>
+					<span className="txt">{
+						`${amount.isRounded ? '~' : ''}${FormatHelper.formatAmount(amount.amount, amount.precision)} `
+					}
+					</span>
 					<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(amount.asset_id)} >
 						<a className="blue">{amount.symbol}</a>
 					</Link>
