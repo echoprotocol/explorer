@@ -73,6 +73,9 @@ class ManageContract extends React.Component {
 
 	async initData() {
 		const { router: { query: { id } } } = this.props;
+		if (!this.props.owner.size) {
+			this.props.getContractInfo(id);
+		}
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		this.props.setDefaultDateContract(id);
