@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import Link from 'next/link';
 import Dropzone from 'react-dropzone';
 import Router from 'next/router';
+import { Map } from 'immutable';
 
 import { MAX_KB_CONTRACT_ICON, MAX_LENGTH_CONTRACT_DESCRIPTION } from '../../constants/GlobalConstants';
 
@@ -30,6 +31,12 @@ class ManageContract extends React.Component {
 
 	componentDidMount() {
 		this.initData();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.router.query.id && prevProps.router.query.id !== this.props.router.query.id) {
+			this.initData();
+		}
 	}
 
 	componentWillUnmount() {
@@ -73,9 +80,7 @@ class ManageContract extends React.Component {
 
 	async initData() {
 		const { router: { query: { id } } } = this.props;
-		if (!this.props.owner.size) {
-			this.props.getContractInfo(id);
-		}
+		this.props.getContractInfo(id);
 		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		this.props.setDefaultDateContract(id);
