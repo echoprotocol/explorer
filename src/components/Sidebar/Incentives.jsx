@@ -22,38 +22,38 @@ const Incentives = ({
 				Incentive Pool
 				<InfoTooltip overlay="Current Echo's Reward Pool" />
 			</div>
-			<div className="blockchain-rates-block-info">
+			<div className="incentive-block-info">
 				<Tooltip
 					placement="top"
 					overlayClassName="verify-contract-tooltip"
 					trigger={['hover']}
 					overlay={incentivesPool}
 				>
-					<div className="blockchain-rates-block-percent">{incentivesPool}</div>
+					<div className="incentives-pool-value">{incentivesPool}</div>
 				</Tooltip>
+				<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
+					<a href="" className="incentive-coin">
+						{ECHO.SYMBOL}
+					</a>
+				</Link>
 			</div>
-			<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
-				<a href="" className="total-supply-coin">
-					{ECHO.SYMBOL}
-				</a>
-			</Link>
 		</div>
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
 				Incentives
 				<InfoTooltip overlay="Staking profitability and current Echo's Reward increasing" />
 			</div>
-			<div className="blockchain-rates-block-info">
+			<div className="incentive-block-info">
 				<Tooltip
 					placement="top"
 					overlayClassName="verify-contract-tooltip"
 					trigger={['hover']}
 					overlay={incentive}
 				>
-					<div className="blockchain-rates-block-percent">{incentive}</div>
+					<div className="incentives-pool-value">{incentive}</div>
 				</Tooltip>
 				<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
-					<a href="" className="total-supply-coin">
+					<a href="" className="incentive-coin">
 						{ECHO.SYMBOL}
 					</a>
 				</Link>

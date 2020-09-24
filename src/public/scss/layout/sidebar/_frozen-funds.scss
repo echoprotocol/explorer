@@ -64,15 +64,10 @@
 		color: $blue;
 	}
 	.sidebar-element-block {
+		width: 50%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-		&:first-child {
-			min-width: 155px;
-			@include max-vw($res-1280) {
-				min-width: 175px;
-			}
-		}
 	}
 }
 
