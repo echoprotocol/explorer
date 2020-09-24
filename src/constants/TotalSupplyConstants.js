@@ -5,3 +5,4 @@ export const ECHO = {
 };
 
 export const MONITORING_ASSETS = [ECHO.ID];
+export const MONITORING_INCENTIVE_ASSET = ECHO.ID;

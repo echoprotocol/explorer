@@ -1,11 +1,20 @@
 import React from 'react';
-import { LineChart, Line } from 'recharts';
+import Link from 'next/link';
+// import { LineChart, Line } from 'recharts';
 import PropTypes from 'prop-types';
+import Tooltip from 'rc-tooltip';
+import { ECHO } from '../../constants/TotalSupplyConstants';
+
+import { SSR_ASSET_PATH } from '../../constants/RouterConstants';
+import URLHelper from '../../helpers/URLHelper';
 import InfoTooltip from '../../components/InfoTooltip';
-import { SIDEBAR_CHART_WIDTH, SIDEBAR_CHART_HEIGHT } from '../../constants/UiConstants';
+// import { SIDEBAR_CHART_WIDTH, SIDEBAR_CHART_HEIGHT } from '../../constants/UiConstants';
 
 const Incentives = ({
-	pinned, incentivesPool, incentive, incentiveRates,
+	// pinned,
+	// incentiveRates,
+	incentivesPool,
+	incentive,
 }) => (
 	<div className="blockchain-rates-wrap">
 		<div className="sidebar-element-block">
@@ -14,8 +23,20 @@ const Incentives = ({
 				<InfoTooltip overlay="Current Echo's Reward Pool" />
 			</div>
 			<div className="blockchain-rates-block-info">
-				<div className="blockchain-rates-block-percent">{incentivesPool}%</div>
+				<Tooltip
+					placement="top"
+					overlayClassName="verify-contract-tooltip"
+					trigger={['hover']}
+					overlay={incentivesPool}
+				>
+					<div className="blockchain-rates-block-percent">{incentivesPool}</div>
+				</Tooltip>
 			</div>
+			<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
+				<a href="" className="total-supply-coin">
+					{ECHO.SYMBOL}
+				</a>
+			</Link>
 		</div>
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
@@ -23,8 +44,20 @@ const Incentives = ({
 				<InfoTooltip overlay="Staking profitability and current Echo's Reward increasing" />
 			</div>
 			<div className="blockchain-rates-block-info">
-				<div className="blockchain-rates-block-percent">{incentive}%</div>
-				<LineChart
+				<Tooltip
+					placement="top"
+					overlayClassName="verify-contract-tooltip"
+					trigger={['hover']}
+					overlay={incentive}
+				>
+					<div className="blockchain-rates-block-percent">{incentive}</div>
+				</Tooltip>
+				<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO.ID)}>
+					<a href="" className="total-supply-coin">
+						{ECHO.SYMBOL}
+					</a>
+				</Link>
+				{/* <LineChart
 					width={pinned ? SIDEBAR_CHART_WIDTH + 20 : SIDEBAR_CHART_WIDTH}
 					height={SIDEBAR_CHART_HEIGHT}
 					data={incentiveRates}
@@ -36,17 +69,17 @@ const Incentives = ({
 						dataKey="rate"
 						stroke="#2995D8"
 					/>
-				</LineChart>
+				</LineChart> */}
 			</div>
 		</div>
 	</div>
 );
 
 Incentives.propTypes = {
-	pinned: PropTypes.bool.isRequired,
-	incentivesPool: PropTypes.number.isRequired,
-	incentive: PropTypes.number.isRequired,
-	incentiveRates: PropTypes.array.isRequired,
+	incentivesPool: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+	incentive: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+	// pinned: PropTypes.bool.isRequired,
+	// incentiveRates: PropTypes.array.isRequired,
 };
 
 

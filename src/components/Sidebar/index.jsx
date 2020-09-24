@@ -20,6 +20,9 @@ const Sidebar = React.memo((props) => {
 		delegationRates,
 		decentralizationRate,
 		decentralizationRates,
+		incentivesPool,
+		incentive,
+		incentiveRates,
 	} = props;
 	const [blockSubscriber, setBlockSubscriber] = useState(null);
 	useEffect(() => {
@@ -52,9 +55,9 @@ const Sidebar = React.memo((props) => {
 			<SidebarElement title="Fee Pool" className="fee-pool">
 				<Incentives
 					pinned={pinned}
-					incentivesPool={delegationRate}
-					incentive={decentralizationRate}
-					incentiveRates={decentralizationRates}
+					incentivesPool={incentivesPool}
+					incentive={incentive}
+					incentiveRates={incentiveRates}
 				/>
 			</SidebarElement>
 			<SidebarElement title="Blockchain rates" className="blockchain-rates">
@@ -87,6 +90,9 @@ Sidebar.propTypes = {
 	decentralizationRate: PropTypes.number.isRequired,
 	delegationRates: PropTypes.array.isRequired,
 	decentralizationRates: PropTypes.array.isRequired,
+	incentivesPool: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+	incentive: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+	incentiveRates: PropTypes.array.isRequired,
 };
 Sidebar.defaultProps = {
 	pinned: false,
