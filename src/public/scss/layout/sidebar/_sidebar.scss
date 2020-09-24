@@ -19,7 +19,6 @@
 		max-width: 358px;
 		margin-left: auto;
 		padding: 40px 0 20px;
-		max-height: calc(100vh - 182px);
 		min-height: 700px;
 		justify-content: flex-start;
 		@include max-vw($res-1600) {

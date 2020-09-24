@@ -18,6 +18,9 @@ export default withRouter(connect(
 		delegationRates: state.statistics.get('delegationRates'),
 		decentralizationRate: state.statistics.get('decentralizationRate'),
 		decentralizationRates: state.statistics.get('decentralizationRates'),
+		incentivesPool: state.statistics.get('incentivesPool'),
+		incentive: state.statistics.get('incentive'),
+		incentiveRates: state.statistics.get('incentiveRates'),
 	}),
 	(dispatch) => ({
 		updateStatistics: (data) => dispatch(StatisticsActions.updateStatistics(data)),

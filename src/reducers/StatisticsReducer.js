@@ -18,6 +18,9 @@ const DEFAULT_FIELDS = new Map({
 		accounts_freeze_sum: 0,
 	},
 	frozenData: [],
+	incentivesPool: 0,
+	incentive: 0,
+	incentiveRates: [],
 });
 
 export default createModule({

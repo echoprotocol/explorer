@@ -7,8 +7,9 @@ import BaseActionsClass from './BaseActionsClass';
 import StatisticsReducer from '../reducers/StatisticsReducer';
 
 import { getStatistics } from '../services/queries/statistics';
-import { MONITORING_ASSETS } from '../constants/TotalSupplyConstants';
+import { MONITORING_ASSETS, MONITORING_INCENTIVE_ASSET } from '../constants/TotalSupplyConstants';
 import { getLatestOperations } from './BlockActions';
+import FormatHelper from '../helpers/FormatHelper';
 
 class StatisticsActionsClass extends BaseActionsClass {
 
@@ -36,6 +37,8 @@ class StatisticsActionsClass extends BaseActionsClass {
 						getFrozenBalancesData,
 					},
 				} = await getStatistics(from, interval);
+				const incentive = await echo.api.getIncentivesInfo();
+				const coreAsset = await echo.api.getObject(MONITORING_INCENTIVE_ASSET);
 				getBlock.average_block_time = block.average_block_time;
 				getDecentralizationRate.decentralizationRatePercent = block.decentralization_rate;
 				getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
@@ -46,6 +49,8 @@ class StatisticsActionsClass extends BaseActionsClass {
 				dispatch(this.updateOperationCount(getOperationCountHistory));
 				dispatch(this.updateAverageBlocktime(getBlock));
 				dispatch(this.updateFrozenData(getFrozenBalancesData));
+				dispatch(this.updateIncentivesPool(incentive, coreAsset));
+				dispatch(this.updateIncentives(incentive, coreAsset));
 			} catch (error) {
 				console.log('EchoDB err', error);
 			}
@@ -137,6 +142,48 @@ class StatisticsActionsClass extends BaseActionsClass {
 			dispatch(this.setMultipleValue({
 				currentFrozenData: newBlock.currentFrozenData,
 				frozenData: historyFrozenData,
+			}));
+		};
+	}
+
+	/**
+	 *
+	 * @param {object} incentive
+	 * @param {object} assetToWatch
+	 * @return {Promise<function(...[*]=)>}
+	 */
+	// eslint-disable-next-line camelcase
+	updateIncentivesPool({ incentives_pool }, { id, precision }) {
+		return (dispatch) => {
+			const echoIncentivesPool = incentives_pool.find(([assetId]) => assetId === id);
+			if (!echoIncentivesPool) {
+				return;
+			}
+
+			const amount = FormatHelper.formatAmount(echoIncentivesPool[1], precision);
+			dispatch(this.setValue('incentivesPool', amount));
+		};
+	}
+
+	/**
+	 *
+	 * @param {object} incentive
+	 * @param {object} assetToWatch
+	 * @return {Promise<function(...[*]=)>}
+	 */
+	updateIncentives({ incentives }, { id, precision }) {
+		return (dispatch) => {
+			const idWithoutPrefix = parseInt(id.split('.')[2], 10);
+			const echoIncentives = incentives.find(([assetId]) => assetId === idWithoutPrefix);
+			if (!echoIncentives) {
+				return;
+			}
+
+			const amount = FormatHelper.formatAmount(echoIncentives[1], precision);
+
+			dispatch(this.setMultipleValue({
+				incentive: amount,
+				incentiveRates: [],
 			}));
 		};
 	}
