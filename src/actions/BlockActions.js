@@ -348,14 +348,11 @@ export const getBlocksByIndexes = () => async (dispatch, getState) => {
  * 	@param {Boolean?} isLoadMore
  */
 export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dispatch, getState) => {
-	if (!startBlock || !lastBlock) {
-		return;
-	}
 	let blocks = getState().block.get('blocks');
 	let latestBlock = lastBlock || getState().round.get('latestBlock');
 
 	const [...keys] = blocks.keys();
-	let startedBlock = startBlock || Math.max(...keys);
+	let startedBlock = startBlock || Math.min(...keys);
 
 	let blocksResult = [];
 
@@ -374,7 +371,8 @@ export const updateBlockList = (lastBlock, startBlock, isLoadMore) => async (dis
 
 	blocksResult = await Promise.all(blocksResult);
 	const blocksRewards = {};
-	const { data: { getBlocks: { items: rewardsFromDB } } } = await getBlockReward(startBlock, lastBlock - startBlock);
+
+	const { data: { getBlocks: { items: rewardsFromDB } } } = await getBlockReward(startedBlock, latestBlock - startedBlock);
 	const accountIds = blocksResult.reduce((accounts, block, index) => {
 		if (block) {
 			const { round } = block;
