@@ -16,12 +16,12 @@
 }
 .sidebar-element {
 	padding: 0 30px 20px;
-	min-height: 115px;
 	position: relative;
 	border: 1px solid #e9eaef;
 	border-radius: 4px;
 	display: flex;
 	flex-direction: column;
+	margin: 0 1px;
 	@include max-vw($res-1600) {
 		padding: 0 20px 20px;
 		min-width: 26%;
@@ -101,6 +101,7 @@
 		}
 	}
 	.sidebar-element {
+		min-height: 115px;
 		&.total-supply {
 			width: 397px;
 			@include max-vw($res-1600) {
