@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import SidebarElement from './SidebarElement';
 
+import Incentives from './Incentives';
 import BlockchainRates from './BlockchainRates';
 import FrozenFunds from './FrozenFunds';
 import Footer from '../../containers/Footer';
@@ -47,6 +48,14 @@ const Sidebar = React.memo((props) => {
 		<div className={cn('sidebar', { pinned })}>
 			<SidebarElement title="Total supply" className="total-supply">
 				<TotalSupply />
+			</SidebarElement>
+			<SidebarElement title="Fee Pool" className="fee-pool">
+				<Incentives 
+					pinned={pinned}
+					incentivesPool={delegationRate}
+					incentive={decentralizationRate}
+					incentiveRates={decentralizationRates}
+				/>
 			</SidebarElement>
 			<SidebarElement title="Blockchain rates" className="blockchain-rates">
 				<BlockchainRates
