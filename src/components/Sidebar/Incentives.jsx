@@ -10,7 +10,7 @@ const Incentives = ({
 	<div className="blockchain-rates-wrap">
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
-        Incentive Pool
+				Incentive Pool
 				<InfoTooltip overlay="Current Echo's Reward Pool" />
 			</div>
 			<div className="blockchain-rates-block-info">
@@ -19,7 +19,7 @@ const Incentives = ({
 		</div>
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
-        Incentives
+				Incentives
 				<InfoTooltip overlay="Staking profitability and current Echo's Reward increasing" />
 			</div>
 			<div className="blockchain-rates-block-info">

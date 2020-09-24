@@ -50,7 +50,7 @@ const Sidebar = React.memo((props) => {
 				<TotalSupply />
 			</SidebarElement>
 			<SidebarElement title="Fee Pool" className="fee-pool">
-				<Incentives 
+				<Incentives
 					pinned={pinned}
 					incentivesPool={delegationRate}
 					incentive={decentralizationRate}
