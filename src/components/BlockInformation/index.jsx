@@ -53,7 +53,7 @@ class BlockInformation extends React.Component {
 
 	componentDidMount() {
 		const { router: { query: { round } }, blockInformation } = this.props;
-		if (blockInformation.get('blockNumber') !== round) {
+		if (!new BN(blockInformation.get('round')).eq(round)) {
 			this.onResetFilter().then(() => {
 				this.props.getBlockInfo(round);
 			});
