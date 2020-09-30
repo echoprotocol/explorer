@@ -235,9 +235,9 @@ class AssetTransfersTable extends React.Component {
 					<table>
 						<Thead />
 						<tbody>
+							<tr className="air"><td /></tr>
 							{assetTransfers.map((tr, i) => (
 								<React.Fragment key={`${tr.block}-${tr.trx_in_block}-${tr.op_in_trx}`}>
-									<tr className="air"><td /></tr>
 									<Row
 										id={i + 1 + ((filterAndPaginateData.currentPage - 1) * filterAndPaginateData.sizePerPage)}
 										operation={tr.operation}
