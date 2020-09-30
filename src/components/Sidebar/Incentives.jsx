@@ -19,7 +19,7 @@ const Incentives = ({
 	<div className="blockchain-rates-wrap">
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
-				Incentive Pool
+				Echo Treasury
 				<InfoTooltip overlay="Current Echo's Reward Pool" />
 			</div>
 			<div className="incentive-block-info">
@@ -40,8 +40,8 @@ const Incentives = ({
 		</div>
 		<div className="sidebar-element-block">
 			<div className="sidebar-element-block-title">
-				Incentives
-				<InfoTooltip overlay="Staking profitability and current Echo's Reward increasing" />
+				Reward Amplifier
+				<InfoTooltip overlay="Shows staking profitability and current Echo's Reward increasing" />
 			</div>
 			<div className="incentive-block-info">
 				<Tooltip

@@ -1,5 +1,6 @@
 .pinned {
 	.sidebar-element {
+		width: 100%;
 		padding: 30px 30px 20px;
 		&:not(:first-child) {
 			margin-top: 27px;
@@ -22,9 +23,9 @@
 	display: flex;
 	flex-direction: column;
 	margin: 0 1px;
+	width: 25%;
 	@include max-vw($res-1600) {
 		padding: 0 20px 20px;
-		min-width: 26%;
 	}
 	@include max-vw($res-1400) {
 		min-width: 23%;
@@ -102,30 +103,6 @@
 	}
 	.sidebar-element {
 		min-height: 115px;
-		&.total-supply {
-			width: 397px;
-			@include max-vw($res-1600) {
-				width: 360px;
-			}
-			@include max-vw($res-1280) {
-				width: 100%;
-			}
-		}
-		&.blockchain-rates {
-			width: 493px;
-			@include max-vw($res-1280) {
-				width: 100%;
-			}
-		}
-		&.frozen-funds {
-			width: calc(100% - 397px - 493px - 20px);
-			@include max-vw($res-1600) {
-				width: calc(100% - 360px - 493px - 10px);
-			}
-			@include max-vw($res-1280) {
-				width: 100%;
-			}
-		}
 	}
 }
 
