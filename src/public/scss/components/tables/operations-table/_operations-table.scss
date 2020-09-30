@@ -76,7 +76,7 @@
 		width: 16%;
 		min-width: 140px;
 		.td-in {
-			@include text-overflow;
+			// @include text-overflow;
 			max-width: 160px;
 		}
 	}
