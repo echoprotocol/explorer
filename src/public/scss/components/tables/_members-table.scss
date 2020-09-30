@@ -59,7 +59,7 @@
 		&.active {
 			background-color: #fff;
 			.toggle-icon {
-				opacity: 1;
+				transform: translateY(-50%) rotate(0deg);
 			}
 		}
 	}
@@ -75,9 +75,8 @@
 	}
 
 	.toggle-icon {
-		opacity: 0;
-		transform: translateY(-50%);
-		transition: opacity $speed;
+		transform: translateY(-50%) rotate(180deg);
+		transition: transform $speed;
 	}
 
 	// Cell sizes

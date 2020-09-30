@@ -17,7 +17,7 @@ import { PrevButton } from '../Button/PrevButton';
 
 
 const TablePagination = ({
-	currentPage, totalDataSize, sizePerPage, router, from, to,
+	currentPage, totalDataSize, sizePerPage, router, from, to, reverse,
 }) => {
 	const { url: pathname, query } = queryString.parseUrl(router.asPath);
 	const [inputCurrentPage, setCurrentPage] = useState(currentPage);
@@ -97,20 +97,20 @@ const TablePagination = ({
 			<div className="pg-nav-3">
 				{!totalPages || currentPage === 1 ? (
 					<Button className="primary-btn" disabled>
-						<PrevButton />
+						<PrevButton reverse={reverse} />
 					</Button>
 				) : (
 					<a href={prevPageLink} onClick={(e) => goToPage(e, prevPageLink)} className={cn('pg-arrow', 'primary-btn')}>
-						<PrevButton />
+						<PrevButton reverse={reverse} />
 					</a>
 				)}
 				{!totalPages || totalPages === currentPage ? (
 					<Button className="primary-btn" disabled>
-						<NextButton />
+						<NextButton reverse={reverse} />
 					</Button>
 				) : (
 					<a href={nextPageLink} onClick={(e) => goToPage(e, nextPageLink)} className={cn('pg-arrow', 'primary-btn')}>
-						<NextButton />
+						<NextButton reverse={reverse} />
 					</a>
 				)}
 			</div>
@@ -125,11 +125,13 @@ TablePagination.propTypes = {
 	currentPage: PropTypes.number.isRequired,
 	sizePerPage: PropTypes.number.isRequired,
 	totalDataSize: PropTypes.number.isRequired,
+	reverse: PropTypes.bool,
 };
 
 TablePagination.defaultProps = {
 	from: '',
 	to: '',
+	reverse: false,
 };
 
 export default TablePagination;
