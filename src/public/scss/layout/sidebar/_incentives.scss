@@ -1,8 +1,10 @@
 .incentive-block-info {
-  margin-top: 3px;
   display: flex;
   align-items: center;
   height: 22px;
+  @include min-vw(500) {
+    margin-top: 26px;
+  }
 }
 
 .incentives-pool-value {
