@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Router from 'next/router';
+import Link from 'next/link';
 import cn from 'classnames';
 
 import Logotype from '../Logotype';
@@ -23,7 +23,12 @@ const Header = React.memo(({
 	return (
 		<React.Fragment>
 			<header className={cn({ opened: ismobileMenuActive })}>
-				<Logotype onClick={() => Router.push(INDEX_PATH)} />
+				<Link
+					href={INDEX_PATH}
+					as={INDEX_PATH}
+				>
+					<a><Logotype /></a>
+				</Link>
 				<div className={cn('header-actions-wrap', { opened: ismobileMenuActive })}>
 					<NavTabs />
 					<NetDropdown options={[
