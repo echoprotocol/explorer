@@ -15,12 +15,12 @@ const TranfersThead = ({ type }) => (
 			<td className="account"><div className="td-in">Member account</div></td>
 			{type === CURRENT_COMMITTEE_GRID && <td className="participation"><div className="td-in">Participation</div></td>}
 			{type === CANDIDATE_COMMITTEE_GRID && <td className="confirmations"><div className="td-in">Confirmations</div></td>}
-			<td className="bitcoin-address"><div className="td-in">Bitcoin address</div></td>
-			<td className="etherium-address"><div className="td-in">Etherium address</div></td>
+			<td className="bitcoin-address"><div className="td-in">Bitcoin Address</div></td>
+			<td className="etherium-address"><div className="td-in">Etherium Address</div></td>
 			<td className="id"><div className="td-in">Id</div></td>
-			{type === CURRENT_COMMITTEE_GRID && <td className="last-operation"><div className="td-in">Last operation</div></td>}
+			{type === CURRENT_COMMITTEE_GRID && <td className="last-operation"><div className="td-in">Last Operation</div></td>}
 			{(type === CANDIDATE_COMMITTEE_GRID || type === DEACTIVATED_COMMITTEE_GRID) &&
-			<td className="proposal-transaction"><div className="td-in">Proposal transaction</div></td>}
+			<td className="proposal-transaction"><div className="td-in">Proposal Transaction</div></td>}
 		</tr>
 	</thead>
 );
