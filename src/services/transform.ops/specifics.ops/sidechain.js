@@ -341,10 +341,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sidechain_amount_info: {
-						amount: data.amount,
-						...objectInfo.sidechain_amount_info,
-					},
+					amount_info: objectInfo.amount_info,
 					account_name: data.account,
 					withdraw_id: data.withdraw,
 					token: objectInfo.token,
