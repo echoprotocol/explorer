@@ -37,7 +37,7 @@ class CommitteeMembers extends React.Component {
 			isDropdownOpened: false,
 			resolution: 1920,
 			currentTab: 'Current Members',
-			tabs: ['Current Members', 'Committee candidates', 'Former members'],
+			tabs: ['Current Members', 'Committee Candidates', 'Forme Members'],
 		};
 		this.toggleDropdown = this.toggleDropdown.bind(this);
 		this.updateResolution = this.updateResolution.bind(this);
@@ -163,10 +163,10 @@ class CommitteeMembers extends React.Component {
 							<a className={cn('tab', { active: url === SSR_CURRENT_COMMITTEE_PATH })}>Current Members</a>
 						</Link>
 						<Link href={COMMITTEE_PATH} as={SSR_CANDIDATE_COMMITTEE_PATH} scroll={false} replace>
-							<a className={cn('tab', { active: url === SSR_CANDIDATE_COMMITTEE_PATH })} >Committee candidates</a>
+							<a className={cn('tab', { active: url === SSR_CANDIDATE_COMMITTEE_PATH })} >Committee Candidates</a>
 						</Link>
 						<Link href={COMMITTEE_PATH} as={SSR_FORMER_COMMITTEE_PATH} scroll={false} replace>
-							<a className={cn('tab', { active: url === SSR_FORMER_COMMITTEE_PATH })}>Former members</a>
+							<a className={cn('tab', { active: url === SSR_FORMER_COMMITTEE_PATH })}>Former Members</a>
 						</Link>
 					</div>
 				}
