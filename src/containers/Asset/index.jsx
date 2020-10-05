@@ -19,7 +19,7 @@ export default withRouter(connect(
 	}),
 	(dispatch) => ({
 		getAssetInfo: (id) => dispatch(getFullAssetInformation(id)),
-		loadAssetHisotry: (id) => dispatch(getAssetTransfers(id)),
+		loadAssetHistory: (id) => dispatch(getAssetTransfers(id)),
 		getAssetTransfersHistoryWithInterval: (id) => dispatch(getAssetTransfersHistoryWithInterval(id)),
 		setTitle: (title) => dispatch(GlobalActions.setTitle(title)),
 		onChangeFilter: (filters) => dispatch(GridActions.initData(ASSET_GRID, filters)),

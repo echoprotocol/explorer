@@ -88,9 +88,10 @@ const TablePagination = ({
 					value={inputCurrentPage.toString()}
 					onChange={(e) => onChangeInputCurrentPage(e.target.value)}
 					onKeyDown={(e) => onKeyPressInputCurrentPage(e, totalPages)}
+					disabled={!totalPages}
 				/>
 				<div className="pg-caption">out of
-					{!totalPages ? <span> {totalPages}</span> : <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}> {totalPages}</a>}
+					{!totalPages ? <span> 1</span> : <a href={lastPageLink} onClick={(e) => goToPage(e, lastPageLink)}> {totalPages}</a>}
 				</div>
 			</div>
 			<div className="pg-nav-3">
