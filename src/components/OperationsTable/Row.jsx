@@ -82,7 +82,7 @@ const OperationsRow = ({
 		if (mainInfo) {
 			if (!mainInfo.value.amount) {
 				if (operationsInfoData.operationInfo.amount_info) {
-					return <div className="td-in">{FormatHelper.formatAmount(operationsInfoData.operationInfo.amount_info)}</div>;
+					return <div className="td-in">{operationsInfoData.operationInfo.amount_info}</div>;
 				}
 				return <div className="td-in">—</div>;
 			}
