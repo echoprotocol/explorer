@@ -76,7 +76,7 @@ export const getAssetTransfers = (assetId) => async (dispatch, getState) => {
 	try {
 		({ items, total } = await getAssetHistory({
 			assetId,
-			count,
+			count: count < 1 ? 1 : count,
 			offset: offset < 0 ? 0 : offset,
 			from: fromFilter || undefined,
 			to: toFilter || undefined,

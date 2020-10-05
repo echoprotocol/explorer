@@ -47,7 +47,7 @@ class Asset extends React.Component {
 	componentDidMount() {
 		const { query: { id: assetId, ...filters } } = this.props.router;
 		this.props.initData(filters);
-		this.props.loadAssetHisotry(assetId);
+		this.props.loadAssetHistory(assetId);
 
 		if (!this.state.asset) {
 			this.updateAssetData(assetId);
@@ -57,11 +57,13 @@ class Asset extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.router.query.id !== this.props.router.query.id) {
 			this.updateAssetData(this.props.router.query.id);
+			this.props.loadAssetHistory(this.props.router.query.id);
+
 		}
 	}
 
 	onLoadMoreHistory() {
-		this.props.loadAssetHisotry(this.props.router.query.id);
+		this.props.loadAssetHistory(this.props.router.query.id);
 	}
 
 	updateAssetData(id) {
@@ -134,7 +136,7 @@ Asset.propTypes = {
 	transferHistoryWithInterval: PropTypes.object,
 	filterAndPaginateData: PropTypes.object.isRequired,
 	initData: PropTypes.func.isRequired,
-	loadAssetHisotry: PropTypes.func.isRequired,
+	loadAssetHistory: PropTypes.func.isRequired,
 	getAssetTransfersHistoryWithInterval: PropTypes.func.isRequired,
 };
 
