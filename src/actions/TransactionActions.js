@@ -538,6 +538,7 @@ class TransactionActionsClass extends BaseActionsClass {
 							&& singleOperation.list_of_approvals.map((v) => URLHelper.transformEchodbOperationLinkToExplorerLink(v, false));
 						object = object
 							.set('token', { value: token.symbol, link: token.id })
+							.set('amount_info', FormatHelper.formatAmount(options.amount, token.decimals))
 							.set('list_approvals', listApprovals)
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token));
 						break;
