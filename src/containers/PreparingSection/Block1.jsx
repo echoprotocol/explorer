@@ -10,13 +10,13 @@ const Block1 = React.memo((props) => (
 	<React.Fragment>
 		<div className="preparing-head">
 			<NextBlockIcon />
-			<span className="preparing-caption accent">{props.latestBlock}</span>
+			<span className="preparing-caption accent">{props.latestBlock.toLocaleString()}</span>
 		</div>
 		<div className="preparing-line">
 			<span className="preparing-text">
 				<span>Next block:
 					<span style={{ color: '#e9eaef' }}>
-						{props.latestBlock + 1}&nbsp;
+						{(props.latestBlock + 1).toLocaleString()}&nbsp;
 					</span>
 				</span>
 				<span>{getStatus(props.stepProgress)}</span>
