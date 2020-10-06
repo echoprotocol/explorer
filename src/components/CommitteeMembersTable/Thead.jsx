@@ -17,8 +17,8 @@ const TranfersThead = ({ type }) => (
 			{type === CANDIDATE_COMMITTEE_GRID && <td className="confirmations"><div className="td-in">Confirmations</div></td>}
 			<td className="bitcoin-address"><div className="td-in">Bitcoin address</div></td>
 			<td className="etherium-address"><div className="td-in">Etherium address</div></td>
-			<td className="id"><div className="td-in">id</div></td>
-			{type === CURRENT_COMMITTEE_GRID && <td className="last-operation"><div className="td-in">last operation</div></td>}
+			<td className="id"><div className="td-in">Id</div></td>
+			{type === CURRENT_COMMITTEE_GRID && <td className="last-operation"><div className="td-in">Last operation</div></td>}
 			{(type === CANDIDATE_COMMITTEE_GRID || type === DEACTIVATED_COMMITTEE_GRID) &&
 			<td className="proposal-transaction"><div className="td-in">Proposal transaction</div></td>}
 		</tr>
