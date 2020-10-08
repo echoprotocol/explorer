@@ -115,6 +115,7 @@ const BlocksTable = (({
 				totalDataSize={filterAndPaginateData.totalDataSize}
 				currentPage={filterAndPaginateData.currentPage}
 				sizePerPage={filterAndPaginateData.sizePerPage}
+				reverse
 			/>}
 			{!isAllBlocks &&
 			<Link as={BLOCKS_TABLE_PATH} href={BLOCKS_TABLE_PATH}>
