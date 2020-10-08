@@ -46,7 +46,7 @@ const Sidebar = React.memo((props) => {
 				blockSubscriber.unsubscribe();
 			}
 		};
-	});
+	}, []);
 	return (
 		<div className={cn('sidebar', { pinned })}>
 			<SidebarElement title="Total supply" className="total-supply">
