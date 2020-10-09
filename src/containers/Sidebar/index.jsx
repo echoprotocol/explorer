@@ -23,6 +23,6 @@ export default withRouter(connect(
 		incentiveRates: state.statistics.get('incentiveRates'),
 	}),
 	(dispatch) => ({
-		updateStatistics: (data) => dispatch(StatisticsActions.updateStatistics(data)),
+		updateStatistics: (data) => dispatch(StatisticsActions.partUpdateStatistics(data)),
 	}),
 )(SidebarContainer));

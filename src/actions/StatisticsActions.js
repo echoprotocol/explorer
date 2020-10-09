@@ -6,7 +6,7 @@ import GlobalActions from './GlobalActions';
 import BaseActionsClass from './BaseActionsClass';
 import StatisticsReducer from '../reducers/StatisticsReducer';
 
-import { getStatistics } from '../services/queries/statistics';
+import { getStatistics, getReducedStatistics } from '../services/queries/statistics';
 import { MONITORING_ASSETS, MONITORING_INCENTIVE_ASSET } from '../constants/TotalSupplyConstants';
 import { getLatestOperations } from './BlockActions';
 import FormatHelper from '../helpers/FormatHelper';
@@ -18,6 +18,40 @@ class StatisticsActionsClass extends BaseActionsClass {
 	 */
 	constructor() {
 		super(StatisticsReducer);
+	}
+
+	/**
+	 * partUpdateStatistics
+	 */
+	partUpdateStatistics(block) {
+		const getBlock = {};
+		return async (dispatch) => {
+			const from = moment().subtract(1, 'month').toISOString();
+			const interval = moment.duration(1, 'day').as('second');
+			try {
+				const {
+					data: {
+						getOperationCountHistory,
+						getFrozenBalancesData,
+					},
+				} = await getReducedStatistics(from, interval);
+				const incentive = await echo.api.getIncentivesInfo();
+				const coreAsset = await echo.api.getObject(MONITORING_INCENTIVE_ASSET);
+				getBlock.average_block_time = block.average_block_time;
+				getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
+
+				await dispatch(getLatestOperations());
+				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
+				dispatch(this.updateOperationCount(getOperationCountHistory));
+				dispatch(this.updateAverageBlocktime(getBlock));
+				dispatch(this.updateOnlyDecentralizationRate(block.decentralization_rate));
+				dispatch(this.updateFrozenData(getFrozenBalancesData));
+				dispatch(this.updateIncentivesPool(incentive, coreAsset));
+				dispatch(this.updateIncentives(incentive, coreAsset));
+			} catch (error) {
+				console.log('EchoDB err', error);
+			}
+		};
 	}
 
 	/**
@@ -103,6 +137,19 @@ class StatisticsActionsClass extends BaseActionsClass {
 				decentralizationRate: new BN(decentralizationRatePercent).integerValue(BN.ROUND_CEIL).toNumber(),
 				decentralizationRates: ratesMap.map((el) => ({ rate: el.rate })),
 			}));
+		};
+	}
+
+	/**
+	 *
+	 * @param updateOnlyDecentralizationRate
+	 * @param decentralizationRatePercent
+	 * @return {Promise<function(...[*]=)>}
+	 */
+	updateOnlyDecentralizationRate(decentralizationRatePercent) {
+		return (dispatch) => {
+			dispatch(this.setValue('decentralizationRate', new BN(decentralizationRatePercent)
+				.integerValue(BN.ROUND_CEIL).toNumber()));
 		};
 	}
 
