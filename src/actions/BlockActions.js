@@ -192,7 +192,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 		const { transactions } = planeBlock;
 		const virtualTransaction = await echo.api.getBlockVirtualOperations(round);
 		let resultTransactions = [];
-		if (transactions.length !== 0 || virtualTransaction.length) {
+		if (transactions.length !== 0 || virtualTransaction.length !== 0) {
 
 			const promiseTransactions = transactions
 				.map(({ operations, operation_results }, trIndex) =>
@@ -230,7 +230,7 @@ export const getBlockInformation = (round) => async (dispatch, getState) => {
 
 			resultTransactions = await Promise.all([...promiseTransactions, Promise.all(promiseVirtualTransactions)]);
 		}
-		value.transactionCount = resultTransactions.length;
+		value.transactionCount = transactions.length + virtualTransaction.length;
 		value.operations = new List(resultTransactions.reduce((arr, ops) => ([...arr, ...ops]), []));
 
 		value.otherAssetsRewards = assetsNames;
