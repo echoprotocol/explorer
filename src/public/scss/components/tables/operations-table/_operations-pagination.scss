@@ -84,7 +84,7 @@
 .pg-nav-3 {
 	margin-left: 20px;
 	display: flex;
-	.btn:not(:last-child) {
+	*:not(:last-child) {
 		margin-right: 8px;
 	}
 	@include max-vw($res-1000) {
