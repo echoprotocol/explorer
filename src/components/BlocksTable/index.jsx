@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, useRef } from 'react';
+import React, { useEffect, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import moment from 'moment';
@@ -21,14 +21,6 @@ const BlocksTable = (({
 	getBlocks, initData,
 }) => {
 	const didMount = useRef(false);
-
-	const [handledBlocks, setBlocks] = useState(blocks);
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setBlocks([...blocks]);
-		}, 1000);
-		return () => clearInterval(interval);
-	}, [blocks]);
 
 	useEffect(() => {
 		const loadBlocks = async () => {
@@ -86,7 +78,7 @@ const BlocksTable = (({
 					<Thead isAllBlocks={isAllBlocks} />
 					<tbody>
 						<tr className="air"><td /></tr>
-						{ handledBlocks.map((data) => (
+						{ blocks && blocks.map((data) => (
 							<React.Fragment key={data.round}>
 								<Row
 									isAllBlocks={isAllBlocks}
