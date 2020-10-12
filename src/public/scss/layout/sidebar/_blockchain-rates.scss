@@ -22,18 +22,12 @@
 }
 .pinned {
 	.blockchain-rates-block-info {
-		margin-top: 15px;
 		justify-content: space-between;
 	}
 }
 .blockchain-rates-block-info {
-	margin-top: 22px;
 	display: flex;
 	align-items: center;
-	@include max-vw($res-500) {
-		justify-content: space-between;
-		margin-top: 15px;
-	}
 }
 .blockchain-rates-block-percent {
 	color: $explorer-black;

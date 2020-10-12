@@ -3,9 +3,12 @@
 	justify-content: space-between;
 	width: 100%;
 	padding: 50px 0 40px;
-	@include max-vw($res-1280) {
-		flex-wrap: wrap;
-		padding: 40px 30px;
+	// @include max-vw($res-1280) {
+	// 	flex-wrap: wrap;
+	// 	padding: 40px 30px;
+	// }
+	@include max-vw($res-1000) {
+		display: block;
 	}
 	@include max-vw($res-768) {
 		padding: 30px 0;

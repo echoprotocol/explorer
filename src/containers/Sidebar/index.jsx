@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Sidebar from '../../components/Sidebar';
 import StatisticsActions from '../../actions/StatisticsActions';
+import ModalActions from '../../actions/ModalActions';
 
 const SidebarContainer = React.memo(({ ...props }) => (
 	<Sidebar {...props} />
@@ -24,5 +25,6 @@ export default withRouter(connect(
 	}),
 	(dispatch) => ({
 		updateStatistics: (data) => dispatch(StatisticsActions.updateStatistics(data)),
+		openModal: (type, ...params) => dispatch(ModalActions.openModal(type, params)),
 	}),
 )(SidebarContainer));

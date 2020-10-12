@@ -14,9 +14,13 @@
 			margin-top: 20px;
 		}
 	}
+	.sidebar-element-wrap {
+		margin-top: 0;
+	}
 }
+
 .sidebar-element {
-	padding: 0 30px 20px;
+	padding: 0 30px;
 	position: relative;
 	border: 1px solid #e9eaef;
 	border-radius: 4px;
@@ -24,37 +28,45 @@
 	flex-direction: column;
 	margin: 0 1px;
 	width: 25%;
-	@include max-vw($res-1600) {
-		padding: 0 20px 20px;
-	}
-	@include max-vw($res-1400) {
-		min-width: 23%;
-	}
-	@include max-vw(1300) {
-		min-width: 21%;
-	}
-	@include max-vw($res-1280) {
+	@include max-vw($res-1000) {
 		width: 100%;
-		flex-direction: row;
-		min-height: 0;
-		padding: 20px;
-		@include min-vw($res-768) {
-			&:not(:first-child) {
-				border-top: 0;
-				border-top-left-radius: 0;
-				border-top-right-radius: 0;
-			}
-			&:not(:last-child) {
-				border-bottom-left-radius: 0;
-				border-bottom-right-radius: 0;
-			}
-		}
+		margin-top: 20px;
 	}
+	// @include max-vw(1300) {
+	// 	min-width: 21%;
+	// }
+	// @include max-vw($res-1280) {
+	// 	// width: 100%;
+	// 	// flex-direction: row;
+	// 	// min-height: 0;
+	// 	// padding: 20px;
+	// 	@include min-vw($res-768) {
+	// 		&:not(:first-child) {
+	// 			border-top: 0;
+	// 			border-top-left-radius: 0;
+	// 			border-top-right-radius: 0;
+	// 		}
+	// 		&:not(:last-child) {
+	// 			border-bottom-left-radius: 0;
+	// 			border-bottom-right-radius: 0;
+	// 		}
+	// 	}
+	// }
 	@include max-vw($res-768) {
 		padding: 36px 20px 20px;
-
 		&:not(:first-child) {
 			margin-top: 27px;
+		}
+	}
+	&.total-supply {
+		.sidebar-element-wrap {
+			margin: auto 0;
+		}
+	}
+	.recharts-wrapper {
+		margin-left: auto;
+		@include max-vw($res-1000) {
+			margin-left: 20px;
 		}
 	}
 }
@@ -102,7 +114,27 @@
 		}
 	}
 	.sidebar-element {
-		min-height: 115px;
+		min-height: 145px;
+		@media (min-width: 500px) and (max-width: 1000px) {
+			min-height: 85px;
+		}
+	}
+	.sidebar-el-wrap {
+		@media (min-width: 500px) and (max-width: 1000px) {
+			display: flex;
+		}
+	}
+	.sidebar-el-wrap {
+		.sidebar-el:last-child {
+			@media (min-width: 500px) and (max-width: 1000px) {
+				margin-top: 0;
+			}
+		}
+	}
+	.sidebar-el {
+		@media (min-width: 500px) and (max-width: 1000px) {
+			width: 50%;
+		}
 	}
 }
 
@@ -111,27 +143,24 @@
 	color: $grey;
 	font-size: 12px;
 	line-height: 15px;
-
-	@include min-vw($res-1280) {
-		position: absolute;
-		background-color: #fff;
-		padding: 4px 10px;
-
-		top: -12px;
-		left: 20px;
-		@include max-vw($res-1600) {
-			left: 10px;
-		}
+	position: absolute;
+	background-color: #fff;
+	padding: 4px 10px;
+	top: -12px;
+	left: 20px;
+	@include max-vw($res-1600) {
+		left: 10px;
 	}
-	@include max-vw($res-1280) {
-		min-width: 126px;
-		margin-right: 24px;
-	}
+	
+	// @include max-vw($res-1280) {
+	// 	min-width: 126px;
+	// 	margin-right: 24px;
+	// }
+
 	@include max-vw($res-768) {
 		position: absolute;
 		background-color: #fff;
 		padding: 4px 10px;
-
 		top: -12px;
 		left: 10px;
 	}
@@ -151,8 +180,8 @@
 
 .sidebar-element-wrap {
 	width: 100%;
-	margin-top: auto;
-	@include max-vw($res-1280) {
+	margin-top: 25px;
+	@include max-vw($res-768) {
 		margin-top: 0;
 	}
 }

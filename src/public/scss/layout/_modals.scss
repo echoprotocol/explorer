@@ -168,3 +168,30 @@
 		cursor: pointer;
 	}
 }
+
+.modal-incentives {
+	width: 700px;
+	background-color: #cacaca;
+	.asset-graphic .recharts-responsive-container {
+		margin-left: -15px;
+	}
+	.recharts-wrapper .recharts-surface {
+		max-width: none !important;
+	}
+	.asset-graphic {
+		margin-bottom: 0;
+	}
+	.modal-header {
+		text-align: end;
+		img.icon {
+			margin-top: 10px;
+			margin-right: 15px;
+		}
+	}
+}
+
+.modal-close-btn {
+	background: none;
+	border: none;
+	outline: none;
+}

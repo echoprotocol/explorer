@@ -7,7 +7,9 @@ import TableLabel from '../TableLabel';
 
 import FormatHelper from '../../helpers/FormatHelper';
 
-const AssetGraphic = ({ data, label, precision }) => {
+const AssetGraphic = ({
+	data, label, precision, ...props
+}) => {
 
 	const lineRef = useRef();
 	const [resolution, setResolution] = useState(1920);
@@ -115,6 +117,7 @@ const AssetGraphic = ({ data, label, precision }) => {
 						<YAxis
 							dataKey="price"
 							type="number"
+							tick={props.Ytick}
 							tickSize={15}
 							tickMargin={resolution < 1000 ? 50 : 85}
 							tickFormatter={(tick) => cutYAxisValue(FormatHelper.formatAmount(tick, precision), 2)}
@@ -160,11 +163,13 @@ AssetGraphic.propTypes = {
 	data: PropTypes.array.isRequired,
 	label: PropTypes.string,
 	precision: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	Ytick: PropTypes.bool,
 };
 
 AssetGraphic.defaultProps = {
 	label: '',
 	precision: 0,
+	Ytick: true,
 };
 
 export default memo(AssetGraphic);

@@ -84,6 +84,7 @@ class Asset extends React.Component {
 			filterAndPaginateData, initData,
 			assetTransfers, router, transferHistoryWithInterval,
 		} = this.props;
+		console.log(transferHistoryWithInterval);
 		const assetSymbol = asset && asset.get('symbol');
 		const issuerName = issuer && issuer.get('name');
 		const assetPrecision = asset && asset.get('precision');

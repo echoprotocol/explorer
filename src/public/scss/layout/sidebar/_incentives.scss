@@ -1,15 +1,16 @@
 .incentive-block-info {
   display: flex;
   align-items: center;
-  height: 22px;
-  @include min-vw(500) {
-    margin-top: 26px;
+
+  @include max-vw($res-1280) {
+    align-items: flex-end;
   }
 }
 
 .incentives-pool-value {
   margin-right: 4px;
-  max-width: 92px;
+  width: 100%;
+  max-width: 70px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -20,4 +21,17 @@
 .incentive-coin {
   color: #2995d8;
   font-size: 11px;
+}
+
+.sidebar-el-wrap {
+  .sidebar-el:last-child {
+    margin-top: 16px;
+  }
+}
+
+.sidebar-el {
+  height: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

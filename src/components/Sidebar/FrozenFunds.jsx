@@ -11,28 +11,26 @@ import { SSR_ASSET_PATH } from '../../constants/RouterConstants';
 
 const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 	<React.Fragment>
-		<div className="frozen-funds-wrap">
-			<div className="sidebar-element-block">
+		<div className="sidebar-el-wrap">
+			<div className="sidebar-el">
 				<div className="sidebar-element-block-title">Committee amount</div>
 				<div className="frozen-funds-block-info">
-					<div className="comitee-amount">
+					<div className="incentive-block-info">
 						<Tooltip
 							placement="top"
 							overlayClassName="verify-contract-tooltip"
 							trigger={['hover']}
 							overlay={FormatHelper.formatAmount(currentFrozenData.committee_freeze_sum, ECHO_ASSET.PRECISION)}
 						>
-							<div className="comitee-amount-value">
+							<div className="incentives-pool-value">
 								{FormatHelper.formatAmount(currentFrozenData.committee_freeze_sum, ECHO_ASSET.PRECISION)}
 							</div>
 						</Tooltip>
-						<div className="comitee-amount-coin">
-							<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
-								<a href="" className="total-supply-coin">
-									{ECHO_ASSET.SYMBOL}
-								</a>
-							</Link>
-						</div>
+						<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+							<a href="" className="incentive-coin">
+								{ECHO_ASSET.SYMBOL}
+							</a>
+						</Link>
 					</div>
 					{/* <LineChart
 						width={SIDEBAR_CHART_WIDTH}
@@ -49,27 +47,25 @@ const FrozenFunds = ({ currentFrozenData, frozenData }) => (
 					</LineChart> */}
 				</div>
 			</div>
-			<div className="sidebar-element-block">
+			<div className="sidebar-el">
 				<div className="sidebar-element-block-title">Users amount</div>
 				<div className="frozen-funds-block-info">
-					<div className="users-amount">
+					<div className="incentive-block-info">
 						<Tooltip
 							placement="top"
 							overlayClassName="verify-contract-tooltip"
 							trigger={['hover']}
 							overlay={FormatHelper.formatAmount(currentFrozenData.accounts_freeze_sum, ECHO_ASSET.PRECISION)}
 						>
-							<div className="comitee-amount-value">
+							<div className="incentives-pool-value">
 								{FormatHelper.formatAmount(currentFrozenData.accounts_freeze_sum, ECHO_ASSET.PRECISION)}
 							</div>
 						</Tooltip>
-						<div className="users-amount-coin">
-							<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
-								<a href="" className="total-supply-coin">
-									{ECHO_ASSET.SYMBOL}
-								</a>
-							</Link>
-						</div>
+						<Link href={SSR_ASSET_PATH} as={URLHelper.createAssetUrl(ECHO_ASSET.ID)}>
+							<a href="" className="incentive-coin">
+								{ECHO_ASSET.SYMBOL}
+							</a>
+						</Link>
 					</div>
 					<LineChart
 						width={SIDEBAR_CHART_WIDTH}

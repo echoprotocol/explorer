@@ -58,6 +58,7 @@ const Sidebar = React.memo((props) => {
 					incentivesPool={incentivesPool}
 					incentive={incentive}
 					incentiveRates={incentiveRates}
+					openModal={props.openModal}
 				/>
 			</SidebarElement>
 			<SidebarElement title="Blockchain rates" className="blockchain-rates">
@@ -93,6 +94,7 @@ Sidebar.propTypes = {
 	incentivesPool: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 	incentive: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 	incentiveRates: PropTypes.array.isRequired,
+	openModal: PropTypes.func.isRequired,
 };
 Sidebar.defaultProps = {
 	pinned: false,

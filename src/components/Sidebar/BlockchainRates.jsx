@@ -7,8 +7,8 @@ import { SIDEBAR_CHART_WIDTH, SIDEBAR_CHART_HEIGHT } from '../../constants/UiCon
 const BlockchainRates = ({
 	pinned, delegationRate, delegationRates, decentralizationRate, decentralizationRates,
 }) => (
-	<div className="blockchain-rates-wrap">
-		<div className="sidebar-element-block">
+	<div className="sidebar-el-wrap">
+		<div className="sidebar-el">
 			<div className="sidebar-element-block-title">
 				Delegation rate
 				<InfoTooltip overlay="Percentage of consensus messages sent by the delegate on behalf of the original user" />
@@ -30,14 +30,13 @@ const BlockchainRates = ({
 				</LineChart>
 			</div>
 		</div>
-		<div className="sidebar-element-block">
+		<div className="sidebar-el">
 			<div className="sidebar-element-block-title">
 				Decentralisation rate
 				<InfoTooltip overlay="Percentage of unique accounts participated in the consensus" />
 			</div>
 			<div className="blockchain-rates-block-info">
 				<div className="blockchain-rates-block-percent">{decentralizationRate}%</div>
-
 				<LineChart
 					width={pinned ? SIDEBAR_CHART_WIDTH + 20 : SIDEBAR_CHART_WIDTH}
 					height={SIDEBAR_CHART_HEIGHT}

@@ -6,6 +6,7 @@ import {
 	MODAL_EXTENSION_INFO,
 	MODAL_SUCCESS,
 	MODAL_ERROR,
+	MODAL_INCENTIVES_INFO,
 } from '../constants/ModalConstants';
 
 import TransformModules from '../utils/TransformModules';
@@ -18,6 +19,7 @@ const INITIAL_STATE = Map({
 	[MODAL_SUCCESS]: _.cloneDeep(DEFAULT_FIELDS),
 	[MODAL_ERROR]: _.cloneDeep(DEFAULT_FIELDS),
 	[MODAL_EXTENSION_INFO]: _.cloneDeep(DEFAULT_FIELDS),
+	[MODAL_INCENTIVES_INFO]: _.cloneDeep(DEFAULT_FIELDS),
 });
 
 export default createModule({
