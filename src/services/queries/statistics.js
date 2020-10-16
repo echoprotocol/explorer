@@ -4,14 +4,18 @@ import client from '../GraphqlService';
 export const getStatistics = async (from, interval) => {
 	const query = gql`
     query getStatistics($from: String, $interval: Int){
-      getDelegationPercent(from: $from, interval: $interval){
-        delegatePercent,
+	  getCurrentDelegationPercent {
+	  	delegatePercent
+	  }
+	  getDelegationRate(from: $from, interval: $interval){
         ratesMap {
           rate
         }
-      }
+	  }
+	  getCurrentDecentralizationPercent {
+		decentralizationPercent
+	  }
       getDecentralizationRate(from: $from, interval: $interval){
-        decentralizationRatePercent,
         ratesMap {
           rate
         }
@@ -21,20 +25,22 @@ export const getStatistics = async (from, interval) => {
         ratesMap {
           rate
         }
-      }
-  		getFrozenBalancesData(from: $from, interval: $interval){
-   			frozenData {
-      		frozenSums {
-        		accounts_freeze_sum,
-     				committee_freeze_sum
-      		}
-    		}
-    		currentFrozenData {
-    			accounts_freeze_sum,
-      		committee_freeze_sum
-    		}
-			}
+	  }
+	  getCurrentFrozenData {
+	  	currentFrozenData {
+	  	  accounts_freeze_sum,
+	  	  committee_freeze_sum
+	  	}
+	  }
+	  getFrozenBalancesData(from: $from, interval: $interval) {
+		frozenData {
+		  frozenSums {
+		    accounts_freeze_sum,
+		    committee_freeze_sum
+		  }
 		}
+	  }
+	}
   `;
 	return client.getClient().query({ query, variables: { from, interval } });
 };
@@ -47,20 +53,8 @@ export const getReducedStatistics = async (from, interval) => {
         ratesMap {
           rate
         }
-      }
-  		getFrozenBalancesData(from: $from, interval: $interval){
-   			frozenData {
-      		frozenSums {
-        		accounts_freeze_sum,
-     				committee_freeze_sum
-      		}
-    		}
-    		currentFrozenData {
-    			accounts_freeze_sum,
-      		committee_freeze_sum
-    		}
-			}
-		}
+	  }
+	}
   `;
 	return client.getClient().query({ query, variables: { from, interval } });
 };

@@ -24,7 +24,6 @@ class StatisticsActionsClass extends BaseActionsClass {
 	 * partUpdateStatistics
 	 */
 	partUpdateStatistics(block) {
-		const getBlock = {};
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
@@ -32,20 +31,17 @@ class StatisticsActionsClass extends BaseActionsClass {
 				const {
 					data: {
 						getOperationCountHistory,
-						getFrozenBalancesData,
 					},
 				} = await getReducedStatistics(from, interval);
 				const incentive = await echo.api.getIncentivesInfo();
 				const coreAsset = await echo.api.getObject(MONITORING_INCENTIVE_ASSET);
-				getBlock.average_block_time = block.average_block_time;
-				getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
 
 				await dispatch(getLatestOperations());
 				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
 				dispatch(this.updateOperationCount(getOperationCountHistory));
-				dispatch(this.updateAverageBlocktime(getBlock));
+				dispatch(this.updateAverageBlockTime(block.average_block_time));
 				dispatch(this.updateOnlyDecentralizationRate(block.decentralization_rate));
-				dispatch(this.updateFrozenData(getFrozenBalancesData));
+				dispatch(this.updateOnlyCurrentFrozenData(block.frozen_balances_data));
 				dispatch(this.updateIncentivesPool(incentive, coreAsset));
 				dispatch(this.updateIncentives(incentive, coreAsset));
 			} catch (error) {
@@ -58,31 +54,42 @@ class StatisticsActionsClass extends BaseActionsClass {
 	 * updateStatistics
 	 */
 	updateStatistics(block) {
-		const getBlock = {};
 		return async (dispatch) => {
 			const from = moment().subtract(1, 'month').toISOString();
 			const interval = moment.duration(1, 'day').as('second');
 			try {
 				const {
 					data: {
-						getDelegationPercent,
+						getCurrentDelegationPercent,
+						getDelegationRate,
+						getCurrentDecentralizationPercent,
 						getDecentralizationRate,
 						getOperationCountHistory,
 						getFrozenBalancesData,
+						getCurrentFrozenData,
 					},
 				} = await getStatistics(from, interval);
 				const incentive = await echo.api.getIncentivesInfo();
 				const coreAsset = await echo.api.getObject(MONITORING_INCENTIVE_ASSET);
-				getBlock.average_block_time = block.average_block_time;
-				getDecentralizationRate.decentralizationRatePercent = block.decentralization_rate;
-				getFrozenBalancesData.frozen_balances_data = block.frozen_balances_data;
+				const decentralizationData = {
+					...getCurrentDecentralizationPercent,
+					...getDecentralizationRate,
+				};
+				const delegationData = {
+					...getCurrentDelegationPercent,
+					...getDelegationRate,
+				};
+				const frozenData = {
+					...getFrozenBalancesData,
+					...getCurrentFrozenData,
+				};
 				await dispatch(getLatestOperations());
 				dispatch(this.updateTotalSupply(MONITORING_ASSETS));
-				dispatch(this.updateDelegationRate(getDelegationPercent));
-				dispatch(this.updateDecentralizationRate(getDecentralizationRate));
+				dispatch(this.updateDelegationRate(delegationData));
+				dispatch(this.updateDecentralizationRate(decentralizationData));
 				dispatch(this.updateOperationCount(getOperationCountHistory));
-				dispatch(this.updateAverageBlocktime(getBlock));
-				dispatch(this.updateFrozenData(getFrozenBalancesData));
+				dispatch(this.updateAverageBlockTime(block.average_block_time));
+				dispatch(this.updateFrozenData(frozenData));
 				dispatch(this.updateIncentivesPool(incentive, coreAsset));
 				dispatch(this.updateIncentives(incentive, coreAsset));
 			} catch (error) {
@@ -131,10 +138,10 @@ class StatisticsActionsClass extends BaseActionsClass {
 	 * @param ratesMap
 	 * @return {Promise<function(...[*]=)>}
 	 */
-	updateDecentralizationRate({ decentralizationRatePercent, ratesMap }) {
+	updateDecentralizationRate({ decentralizationPercent, ratesMap }) {
 		return (dispatch) => {
 			dispatch(this.setMultipleValue({
-				decentralizationRate: new BN(decentralizationRatePercent).integerValue(BN.ROUND_CEIL).toNumber(),
+				decentralizationRate: new BN(decentralizationPercent).integerValue(BN.ROUND_CEIL).toNumber(),
 				decentralizationRates: ratesMap.map((el) => ({ rate: el.rate })),
 			}));
 		};
@@ -170,11 +177,11 @@ class StatisticsActionsClass extends BaseActionsClass {
 
 	/**
 	 *
-	 * @param updateAverageBlocktime
+	 * @param updateAverageBlockTime
 	 * @param average_block_time
 	 * @return {Promise<function(...[*]=)>}
 	 */
-	updateAverageBlocktime({ average_block_time: averageBlockTime }) {
+	updateAverageBlockTime(averageBlockTime) {
 		return (dispatch) => {
 			dispatch(this.setMultipleValue({
 				averageBlockTime,
@@ -182,12 +189,17 @@ class StatisticsActionsClass extends BaseActionsClass {
 		};
 	}
 
-	updateFrozenData(newBlock) {
+	updateOnlyCurrentFrozenData(currentFrozenData) {
 		return (dispatch) => {
-			const { frozenData } = newBlock;
+			dispatch(this.setMultipleValue({ currentFrozenData }));
+		};
+	}
+
+	updateFrozenData({ currentFrozenData, frozenData }) {
+		return (dispatch) => {
 			const historyFrozenData = frozenData.map((el) => el.frozenSums);
 			dispatch(this.setMultipleValue({
-				currentFrozenData: newBlock.currentFrozenData,
+				currentFrozenData,
 				frozenData: historyFrozenData,
 			}));
 		};
