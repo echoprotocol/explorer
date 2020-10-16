@@ -17,30 +17,38 @@ const TransfersRow = ({ title, transfers }) => (
 			{transfers.map((transfer) => (
 				<span className="transfers-field" key={transfer.from.link} >
 					<div className="transfers-field__amount">
-						<span className="transfers-field__amount-value">{FormatHelper.formatAmount(transfer.amount.amount, transfer.amount.precision)}&nbsp;</span>
-						<span className="transfers-field__amount-currency">{transfer.amount.symbol}</span>
+						{transfer.amount && Object.keys(transfer.amount).length && (
+							<React.Fragment>
+								<span className="transfers-field__amount-value">{FormatHelper.formatAmount(transfer.amount.amount, transfer.amount.precision)}&nbsp;</span>
+								<span className="transfers-field__amount-currency">{transfer.amount.symbol}</span>
+							</React.Fragment>
+						)}
 					</div>
-					<div className="transfers-field__accounts">
-						<div className="transfers-field__accounts-from">
-							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(transfer.from.link)}>
-								<a className="avatar-wrap">
-									{transfer.from.value && <Avatar accountName={transfer.from.value} />}
-									<span>{transfer.from.value ? transfer.from.value : transfer.from.link}</span>
-								</a>
-							</Link>
+					{transfer.to && Object.keys(transfer.to).length && transfer.from && Object.keys(transfer.from).length && (
+						<div className="transfers-field__accounts">
+							<div className="transfers-field__accounts-from">
+								<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(transfer.from.link)}>
+									<a className="avatar-wrap">
+										{transfer.from.value && <Avatar accountName={transfer.from.value} />}
+										<span>{transfer.from.value ? transfer.from.value : transfer.from.link}</span>
+									</a>
+								</Link>
+							</div>
+							<div className="transfers-field__accounts-divider">
+								<img src={arrow} alt="divider" />
+							</div>
+							<div className="transfers-field__accounts-to">
+								<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(transfer.to.link)}>
+									<a className="avatar-wrap">
+										{transfer.to.value && <Avatar accountName={transfer.to.value} />}
+										<span>{transfer.to.value ? transfer.to.value : transfer.to.link}</span>
+									</a>
+								</Link>
+
+							</div>
 						</div>
-						<div className="transfers-field__accounts-divider">
-							<img src={arrow} alt="divider" />
-						</div>
-						<div className="transfers-field__accounts-to">
-							<Link href={SSR_ACCOUNTS_PATH} as={URLHelper.createUrlById(transfer.to.link)}>
-								<a className="avatar-wrap">
-									{transfer.to.value && <Avatar accountName={transfer.to.value} />}
-									<span>{transfer.to.value ? transfer.to.value : transfer.to.link}</span>
-								</a>
-							</Link>
-						</div>
-					</div>
+					)}
+
 				</span>
 			))}
 		</div>
