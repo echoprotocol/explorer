@@ -78,7 +78,7 @@ class Contract extends React.Component {
 		if (prevProps.router.query.id && prevProps.router.query.id !== this.props.router.query.id) {
 			this.initContract();
 		}
-		if (prevProps.connected !== this.props.connected) {
+		if (prevProps.connected !== this.props.connected && this.props.connected) {
 			this.initContract();
 		}
 	}

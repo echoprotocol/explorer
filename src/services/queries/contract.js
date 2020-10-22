@@ -2,32 +2,54 @@ import gql from 'graphql-tag';
 import client from '../GraphqlService';
 
 export const getContractInfo = async ({
-	id, offset, count, to, from,
+	id,
 }) => {
 	const query = gql`
-		query getContract($id: ContractId!, $from: [AccountOrContractId!], $to: [AccountOrContractId!], $offset: Int, $count: Int) {
+		query getContract($id: ContractId!) {
 			getContract(id: $id) {
 				id,
 				registrar {
 					name
 				}
 				block {
-          round
-          timestamp
-		  	}
-		    callers { accounts { id } }
-        type,
-        supported_asset_id
-        eth_accuracy
-        token {
+					round
+					timestamp
+				}
+				callers {
+					accounts {
+						id
+					}
+				}
+				type,
+				supported_asset_id
+				eth_accuracy
+				token {
 					name,
 					symbol,
 					type,
-          decimals,
-          total_supply,
-          holders_count
-        },
+					decimals,
+					total_supply,
+					holders_count
+				},
 			}
+		}
+	`;
+
+	return client.getClient().query({
+		query,
+		variables: {
+			id,
+		},
+	}).then(({ data }) => ({
+		contractInfo: data.getContract,
+	}));
+};
+
+export const getContractHistoryAndTransfers = async ({
+	id, offset, count, to, from,
+}) => {
+	const query = gql`
+		query getContract($id: ContractId!, $from: [AccountOrContractId!], $to: [AccountOrContractId!], $offset: Int, $count: Int) {
 			getHistory(contracts: [$id], operations:[CONTRACT_CREATE]) {
 				items {
 					body
@@ -39,7 +61,7 @@ export const getContractInfo = async ({
 					block,
 					timestamp,
 					trx_in_block,
-          op_in_trx,
+          			op_in_trx,
 					from {
 						name
 					},
@@ -59,11 +81,9 @@ export const getContractInfo = async ({
 		},
 	}).then(({ data }) => ({
 		history: data.getHistory,
-		contractInfo: data.getContract,
 		transferHistory: data.getTransferHistory,
 	}));
 };
-
 
 export const getTotalHistory = async (contracts) => {
 	const query = gql`
