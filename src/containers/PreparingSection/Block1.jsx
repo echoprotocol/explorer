@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { NextBlockIcon } from '../../components/Icons/HeaderIcons';
 import InfoTooltip from '../../components/InfoTooltip';
 import { rounderSteps } from '../../constants/RoundConstants';
+import FormatHelper from '../../helpers/FormatHelper';
 
 const getStatus = (nodeStatus) => nodeStatus && rounderSteps[nodeStatus].title;
 
@@ -10,13 +11,13 @@ const Block1 = React.memo((props) => (
 	<React.Fragment>
 		<div className="preparing-head">
 			<NextBlockIcon />
-			<span className="preparing-caption accent">{props.latestBlock}</span>
+			<span className="preparing-caption accent">{FormatHelper.formatAmount(props.latestBlock, 0)}</span>
 		</div>
 		<div className="preparing-line">
 			<span className="preparing-text">
 				<span>Next block:
 					<span style={{ color: '#e9eaef' }}>
-						{props.latestBlock + 1}&nbsp;
+						{FormatHelper.formatAmount(props.latestBlock + 1, 0)}&nbsp;
 					</span>
 				</span>
 				<span>{getStatus(props.stepProgress)}</span>
