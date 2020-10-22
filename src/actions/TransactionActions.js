@@ -1292,7 +1292,7 @@ class TransactionActionsClass extends BaseActionsClass {
 						promises = await Promise.all(promises);
 						options.logs = promises;
 
-						const tokenInfo = objectInfo.get('token');
+						const tokenInfo = objectInfo.get('token') || {};
 						let erc20Tranfers = await this.getErc20TransfersFromLogs(options.logs);
 						erc20Tranfers = erc20Tranfers.map((t) => ({
 							...t,

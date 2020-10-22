@@ -37,7 +37,7 @@ import ValidateHelper, {
 
 import ApiService from '../services/ApiService';
 import { BridgeService } from '../services/BridgeService';
-import { getContractInfo, getTotalHistory } from '../services/queries/contract';
+import { getContractInfo, getTotalHistory, getContractHistoryAndTransfers } from '../services/queries/contract';
 
 import { loadScript } from '../api/ContractApi';
 import { COMPILER_CONSTS } from '../constants/ContractConstants';
@@ -106,7 +106,6 @@ class ContractActions extends BaseActionsClass {
 	 */
 	getContractInfo(id) {
 		return async (dispatch) => {
-
 			let contractOwner = null;
 			if (!validators.isContractId(id)) {
 				dispatch(GlobalActions.toggleErrorPath(true));
@@ -782,10 +781,12 @@ class ContractActions extends BaseActionsClass {
 				}
 
 				const [
-					{ history, contractInfo, transferHistory },
+					{ contractInfo },
+					{ history, transferHistory },
 					{ total: contractTxs }
 				] = await Promise.all([
-					getContractInfo({ id, ...options }),
+					getContractInfo({ id }),
+					getContractHistoryAndTransfers({ id, ...options }),
 					getTotalHistory([id]),
 				]);
 
