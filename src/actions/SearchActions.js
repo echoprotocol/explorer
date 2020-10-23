@@ -61,6 +61,7 @@ class SearchActions extends BaseActionsClass {
 		let isAccount = false;
 		let isAsset = false;
 		let prefix = '';
+		const postfix = ')';
 		const to = str;
 
 		if (validators.isAccountId(str)) {
@@ -89,25 +90,26 @@ class SearchActions extends BaseActionsClass {
 
 			if (token) {
 				section = TYPE_SEARCH_SECTION.ERC_20;
-				prefix = `${token.symbol} `;
-				str = `(${object.id})`;
+				prefix = `${token.symbol} (`;
+				str = `${object.id}`;
 			}
 		}
 
 
 		if (isAccount) {
-			prefix = `${object.name} `;
-			str = `(${str})`;
+			prefix = `${object.name} (`;
+			str = `${str}`;
 		}
 
 		if (isAsset) {
-			prefix = `${object.symbol} `;
-			str = `(${object.id})`;
+			prefix = `${object.symbol} (`;
+			str = `${object.id}`;
 		}
 
 		const hint = [{
 			section,
 			prefix,
+			postfix,
 			value: str,
 			to: URLHelper.createUrlById(isAccount ? object.name : to),
 		}];
@@ -214,7 +216,8 @@ class SearchActions extends BaseActionsClass {
 			ApiService.searchContracts({
 				name: str,
 				limit: SEARCH_LIMIT.MAX,
-			}), new Promise(async (resolve) => {
+			}),
+			new Promise(async (resolve) => {
 				let contracts = {
 					items: [],
 				};
