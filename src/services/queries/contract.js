@@ -114,7 +114,7 @@ export const getToken = async (id) => {
 export const getContractBySymbol = (name, count) => {
 	const query = gql`
 		query getTokens($count: Int, $name: String) {
-			getTokens(count: $count, name: $name, symbol: $name) {
+			getTokens(count: $count, symbol: $name) {
 				items {
 					symbol
 					contract {
