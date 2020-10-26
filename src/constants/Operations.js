@@ -653,16 +653,6 @@ const Operations = {
 			asset: null,
 		},
 	},
-	sidechain_btc_block_process: {
-		value: OPERATIONS_IDS.SIDECHAIN_BTC_BLOCK_PROCESS,
-		name: 'Process BTC block',
-		options: {
-			from: 'committee_member_id',
-			subject: null,
-			value: null,
-			asset: null,
-		},
-	},
 	block_reward: {
 		value: OPERATIONS_IDS.BLOCK_REWARD,
 		name: 'Block reward',
@@ -791,7 +781,6 @@ export const sidechainBtcOperations = [
 	Operations.sidechain_btc_withdraw.name,
 	Operations.sidechain_btc_aggregate.name,
 	Operations.sidechain_btc_approve_aggregate.name,
-	Operations.sidechain_btc_block_process.name,
 ];
 
 export const didOperations = [

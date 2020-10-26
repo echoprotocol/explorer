@@ -496,16 +496,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		}
-		case OPERATIONS_IDS.SIDECHAIN_BTC_BLOCK_PROCESS: {
-			return {
-				operationInfo: {
-					type,
-					committee_member: data.committee_member_id,
-					fee: data.fee,
-					block_number: data.block_number,
-				},
-			};
-		}
 		default:
 			return null;
 	}

@@ -33,7 +33,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 						getOperationCountHistory,
 					},
 				} = await getReducedStatistics(from, interval);
-				const incentive = await echo.api.getIncentivesInfo();
+				const incentive = await echo.api.getCurrentIncentivesInfo();
 				const coreAsset = await echo.api.getObject(MONITORING_INCENTIVE_ASSET);
 
 				await dispatch(getLatestOperations());
@@ -69,7 +69,7 @@ class StatisticsActionsClass extends BaseActionsClass {
 						getCurrentFrozenData,
 					},
 				} = await getStatistics(from, interval);
-				const incentive = await echo.api.getIncentivesInfo();
+				const incentive = await echo.api.getCurrentIncentivesInfo();
 				const coreAsset = await echo.api.getObject(MONITORING_INCENTIVE_ASSET);
 				const decentralizationData = {
 					...getCurrentDecentralizationPercent,

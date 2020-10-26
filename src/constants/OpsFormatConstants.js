@@ -69,7 +69,6 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW]: Operations.sidechain_btc_withdraw.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE]: Operations.sidechain_btc_aggregate.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: Operations.sidechain_btc_approve_aggregate.name,
-	[OPERATIONS_IDS.SIDECHAIN_BTC_BLOCK_PROCESS]: Operations.sidechain_btc_block_process.name,
 	[OPERATIONS_IDS.BLOCK_REWARD]: Operations.block_reward.name,
 	[OPERATIONS_IDS.EVM_ADDRESS_REGISTER]: Operations.evm_address_register.name,
 	[OPERATIONS_IDS.DID_CREATE]: Operations.did_create_operation.name,
@@ -349,10 +348,6 @@ export const OPS_DESCRIPTIONS = {
 	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: {
 		description: ' An internal operation by which committee members confirm the aggregate transaction',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_approve_aggregate_operation',
-	},
-	[OPERATIONS_IDS.SIDECHAIN_BTC_BLOCK_PROCESS]: {
-		description: 'Store Bitcoin block in ECHO network. Used only by committee.',
-		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_block_process_operation',
 	},
 	[OPERATIONS_IDS.BLOCK_REWARD]: {
 		description: 'Virtual operation that indicates payout of block reward',
