@@ -92,7 +92,7 @@ class SearchField extends React.Component {
 
 	onKeyPress(e) {
 		const { loadingSearch, hints } = this.props;
-		const { inputValue, to } = this.state;
+		const { inputValue, to, href } = this.state;
 		const code = e.keyCode || e.which;
 
 		if (this.timeoutPressEnter) {
@@ -100,8 +100,9 @@ class SearchField extends React.Component {
 		}
 		if (!loadingSearch && KEY_CODES.ENTER_CODE === code && inputValue && to) {
 			this.timeoutPressEnter = setTimeout(() => {
-				if (this.props.hints.length !== 0 && hints.find((el) => el.value === inputValue)) {
-					Router.push(this.state.href, this.state.to);
+				const hint = hints.find((el) => el.value && el.value.toLowerCase() === inputValue.toLowerCase());
+				if (hints.length !== 0 && hint) {
+					Router.push(href, to);
 					this.setState({ focus: false, isChange: false });
 					this.inputEl.blur();
 				}
