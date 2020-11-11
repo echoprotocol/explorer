@@ -653,6 +653,36 @@ const Operations = {
 			asset: null,
 		},
 	},
+	sidechain_stake_eth_update: {
+		value: '',
+		name: 'ETH stake update',
+		options: {
+			from: 'committee_member_id',
+			subject: ['transaction_hash'],
+			amount: null,
+			asset: 'asset_id',
+		},
+	},
+	sidechain_stake_btc_create_script: {
+		value: '',
+		name: 'BTC stake create script',
+		options: {
+			from: 'account',
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_stake_btc_update: {
+		value: '',
+		name: 'BTC stake update',
+		options: {
+			from: 'committee_member_id',
+			subject: ['btc_tx_info', 'out', 'tx_id'],
+			amount: null,
+			asset: null,
+		},
+	},
 	block_reward: {
 		value: OPERATIONS_IDS.BLOCK_REWARD,
 		name: 'Block reward',
@@ -781,6 +811,9 @@ export const sidechainBtcOperations = [
 	Operations.sidechain_btc_withdraw.name,
 	Operations.sidechain_btc_aggregate.name,
 	Operations.sidechain_btc_approve_aggregate.name,
+	Operations.sidechain_stake_eth_update.name,
+	Operations.sidechain_stake_btc_create_script.name,
+	Operations.sidechain_stake_btc_update.name,
 ];
 
 export const didOperations = [
