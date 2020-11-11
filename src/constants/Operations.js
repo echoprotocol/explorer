@@ -654,7 +654,7 @@ const Operations = {
 		},
 	},
 	sidechain_stake_eth_update: {
-		value: '',
+		value: OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE,
 		name: 'ETH stake update',
 		options: {
 			from: 'committee_member_id',
@@ -664,7 +664,7 @@ const Operations = {
 		},
 	},
 	sidechain_stake_btc_create_script: {
-		value: '',
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_STAKE_SCRIPT,
 		name: 'BTC stake create script',
 		options: {
 			from: 'account',
@@ -674,7 +674,7 @@ const Operations = {
 		},
 	},
 	sidechain_stake_btc_update: {
-		value: '',
+		value: OPERATIONS_IDS.SIDECHAIN_STAKE_BTC_UPDATE,
 		name: 'BTC stake update',
 		options: {
 			from: 'committee_member_id',
