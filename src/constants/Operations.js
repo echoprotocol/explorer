@@ -678,7 +678,7 @@ const Operations = {
 		name: 'BTC stake update',
 		options: {
 			from: 'committee_member_id',
-			subject: ['btc_tx_info', 'out', 'tx_id'],
+			subject: null,
 			amount: null,
 			asset: null,
 		},
