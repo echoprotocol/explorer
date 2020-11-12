@@ -71,13 +71,39 @@ export const ERC20_HASHES = {
 };
 
 export const BYTECODE_SYMBOLS_LENGTH = 616;
+
 export const ECHO_ASSET = {
 	ID: constants.CORE_ASSET_ID,
 	SYMBOL: 'ECHO',
 	PRECISION: 8,
 };
-export const EETH_ASSET_ID = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.1`;
-export const EBTC_ASSET_ID = `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.2`;
+export const EETH_ASSET = {
+	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.1`,
+	SYMBOL: 'EETH',
+	PRECISION: 8,
+};
+export const EBTC_ASSET = {
+	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.2`,
+	SYMBOL: 'EBTC',
+	PRECISION: 8,
+};
+export const SETH_ASSET = {
+	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.3`,
+	SYMBOL: 'SETH',
+	PRECISION: 8,
+};
+export const SBTC_ASSET = {
+	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ASSET}.4`,
+	SYMBOL: 'SBTC',
+	PRECISION: 8,
+};
+export const CORE_ASSETS = [
+	ECHO_ASSET,
+	EETH_ASSET,
+	EBTC_ASSET,
+	SETH_ASSET,
+	SBTC_ASSET,
+];
 
 export const NATHAN = {
 	ID: `1.${constants.PROTOCOL_OBJECT_TYPE_ID.ACCOUNT}.15`,

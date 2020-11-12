@@ -7,7 +7,7 @@ import AccountInfoRow from './AccountInfoRow';
 import AccountBalances from './AccountBalances';
 import OperationsTable from '../../containers/OperationsTable';
 import InnerHeader from '../InnerHeader';
-import { ECHO_ASSET } from '../../constants/GlobalConstants';
+import { ECHO_ASSET, CORE_ASSETS } from '../../constants/GlobalConstants';
 import Loader from '../../components/Loader';
 import AccountActions from '../../actions/AccountActions';
 import URLHelper from '../../helpers/URLHelper';
@@ -74,6 +74,32 @@ class Account extends React.Component {
 		return FormatHelper.getFormatTransactionsOperationTitle(operationsCount, transactionsCount);
 	}
 
+	getCoreAssetsBalances() {
+		const { balances } = this.props;
+		const coreBalances = [];
+		if (!balances.size) {
+			return [{
+				id: ECHO_ASSET.ID,
+				title: `${ECHO_ASSET.SYMBOL} balance`,
+				amount: 0,
+				precision: 8,
+				symbol: ECHO_ASSET.SYMBOL,
+			}];
+		}
+		CORE_ASSETS.forEach((asset) => {
+			if (balances.get(asset.ID)) {
+				coreBalances.push({
+					id: asset.ID,
+					title: `${asset.SYMBOL} balance`,
+					amount: balances.get(asset.ID).amount,
+					precision: balances.get(asset.ID).asset.get('precision'),
+					symbol: balances.size ? balances.get(asset.ID).asset.get('symbol') : 'ECHO',
+				});
+			}
+		});
+		return coreBalances;
+	}
+
 	async subscribeHistoryUpdate(id) {
 		const updateHistory = await subscribeAccountHistoryUpdate([id]);
 		const nextUpdate = () => {
@@ -113,6 +139,7 @@ class Account extends React.Component {
 		const {
 			loading, loadingMoreHistory, account, balances, tokens, accountHistory, totalAccountHistory,
 		} = this.props;
+		const coreBalances = this.getCoreAssetsBalances();
 		return (
 			<div className="inner-container">
 				{this.renderMeta()}
@@ -125,23 +152,23 @@ class Account extends React.Component {
 									<React.Fragment>
 										<AccountInfo>
 											<AccountInfoRow title="Account name" value={account.get('name')} />
-											<AccountInfoRow
-												title="ECHO balance"
-												amount={{
-													value: balances.size ?
-														FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision')) :
-														FormatHelper.formatAmount(0, 8),
-													symbol: balances.size ? balances.get(ECHO_ASSET.ID).asset.get('symbol') : 'ECHO',
-												}}
-												amountLink={{
-													href: SSR_ASSET_PATH,
-													as: URLHelper.createUrlById(ECHO_ASSET.ID),
-												}}
-												tooltip={balances.size ?
-													`${FormatHelper.formatAmount(balances.get(ECHO_ASSET.ID).amount, balances.get(ECHO_ASSET.ID).asset.get('precision'))} ${balances.get(ECHO_ASSET.ID).asset.get('symbol')}` :
-													`${FormatHelper.formatAmount(0, 8)} ECHO`}
-												className="lg"
-											/>
+											{
+												coreBalances.map((coreBalance) => (
+													<AccountInfoRow
+														title={`${coreBalance.SYMBOL} balance`}
+														amount={{
+															value: FormatHelper.formatAmount(coreBalance.amount, coreBalance.precision),
+															symbol: coreBalance.symbol,
+														}}
+														amountLink={{
+															href: SSR_ASSET_PATH,
+															as: URLHelper.createUrlById(coreBalance.id),
+														}}
+														tooltip={`${FormatHelper.formatAmount(coreBalance.amount, coreBalance.precision)} ${coreBalance.symbol}`}
+														className="lg"
+													/>
+												))
+											}
 											<AccountInfoRow additionalLink={{
 												href: OBJECTS_PATH,
 												as: URLHelper.createObjectsUrl(account.get('id')),
@@ -150,7 +177,7 @@ class Account extends React.Component {
 											/>
 										</AccountInfo>
 										<AccountBalances
-											balances={balances.delete(ECHO_ASSET.ID).reduce((arr, b) => [...arr, b], [])}
+											balances={balances.deleteAll(coreBalances.map((b) => b.id)).reduce((arr, b) => [...arr, b], [])}
 											tokens={tokens}
 											owner={account.get('assets')}
 										/>
