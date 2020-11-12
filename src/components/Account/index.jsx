@@ -177,7 +177,7 @@ class Account extends React.Component {
 											/>
 										</AccountInfo>
 										<AccountBalances
-											balances={balances.delete(coreBalances.map((b) => b.id)).reduce((arr, b) => [...arr, b], [])}
+											balances={balances.deleteAll(coreBalances.map((b) => b.id)).reduce((arr, b) => [...arr, b], [])}
 											tokens={tokens}
 											owner={account.get('assets')}
 										/>
