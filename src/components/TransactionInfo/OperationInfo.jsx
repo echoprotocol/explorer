@@ -100,7 +100,7 @@ class OperationInfo extends React.Component {
 					{data.address_id && <LinkRow title="Address ID" link={data.address_id} />}
 					{(data.eth_accuracy_is_enabled !== undefined) && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{(data.is_vin !== undefined) && <PrimaryRow title="Is vin" description={data.is_vin} />}
-					{data.user_pubkey_hash && <PrimaryRow title="User piblic key hash" description={data.user_pubkey_hash} />}
+					{data.pubkey_hash && <PrimaryRow title="Public key hash" description={data.pubkey_hash} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
 					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}

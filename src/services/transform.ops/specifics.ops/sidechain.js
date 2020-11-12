@@ -513,7 +513,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					fee: data.fee,
 					owner: data.account,
-					user_pubkey_hash: data.user_pubkey_hash,
+					pubkey_hash: data.pubkey_hash,
 				},
 			};
 		}
