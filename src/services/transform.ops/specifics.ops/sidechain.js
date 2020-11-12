@@ -496,6 +496,38 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				},
 			};
 		}
+		case OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE: {
+			return {
+				operationInfo: {
+					fee: data.fee,
+					committee_member: data.committee_member_id,
+					asset_id: data.asset_id,
+					amount: data.current_balance,
+					owner: data.account,
+					eth_transaction_hash: data.transaction_hash,
+				},
+			};
+		}
+		case OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_STAKE_SCRIPT: {
+			return {
+				operationInfo: {
+					fee: data.fee,
+					owner: data.account,
+					pubkey_hash: data.pubkey_hash,
+				},
+			};
+		}
+		case OPERATIONS_IDS.SIDECHAIN_STAKE_BTC_UPDATE: {
+			return {
+				operationInfo: {
+					fee: data.fee,
+					committee_member: data.committee_member_id,
+					owner: data.account,
+					btc_transaction_hash: objectInfo.transaction_hash,
+					is_vin: data.is_vin,
+				},
+			};
+		}
 		default:
 			return null;
 	}

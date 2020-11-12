@@ -80,7 +80,7 @@ class OperationInfo extends React.Component {
 					{data.max_supply && <PrimaryRow title="Max Suply" description={data.max_supply} />}
 					{data.asset_description && <PrimaryRow title="Asset Description" description={data.asset_description} isText />}
 					{data.rate && <LinkRow title="Rate" rate={data.rate} />}
-					{data.is_bit_asset && <PrimaryRow title="Is bitAsset" description={data.is_bit_asset} />}
+					{(data.is_bit_asset !== undefined) && <PrimaryRow title="Is bitAsset" description={data.is_bit_asset} />}
 					{data.new_issuer && <LinkRow title="New issuer" account={data.new_issuer} />}
 					{data.settings && <SettingsRow title="Settings" settings={data.settings} />}
 					{data.authority && <AuthorityRow title="Authority" tooltip="Public keys and accounts" weightThreshold={data.weight_threshold} authority={data.authority} />}
@@ -98,7 +98,9 @@ class OperationInfo extends React.Component {
 					{data.deposit_id && <LinkRow title="Deposit ID" objectId={data.deposit_id} />}
 					{data.withdraw_id && <LinkRow title="Withdraw ID" objectId={data.withdraw_id} />}
 					{data.address_id && <LinkRow title="Address ID" link={data.address_id} />}
-					{data.eth_accuracy_is_enabled && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
+					{(data.eth_accuracy_is_enabled !== undefined) && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
+					{(data.is_vin !== undefined) && <PrimaryRow title="Is vin" description={data.is_vin} />}
+					{data.pubkey_hash && <PrimaryRow title="Public key hash" description={data.pubkey_hash} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
 					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}

@@ -349,6 +349,18 @@ export const OPS_DESCRIPTIONS = {
 		description: ' An internal operation by which committee members confirm the aggregate transaction',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_approve_aggregate_operation',
 	},
+	[OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE]: {
+		description: 'Used by the committee member to approve/generate stake_eth_update_object with Ethereum stake sidechain data.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_stake_eth_update_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_STAKE_SCRIPT]: {
+		description: 'Used to generate btc_stake_script_object with stake script and p2sh address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_stake_script_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_STAKE_BTC_UPDATE]: {
+		description: 'Used to generate btc_stake_script_object with stake script and p2sh address.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_stake_script_operation',
+	},
 	[OPERATIONS_IDS.BLOCK_REWARD]: {
 		description: 'Virtual operation that indicates payout of block reward',
 		link: 'https://github.com/echoprotocol/echowiki/blob/fba3e7b342a0192369621908292bc9cd969b901d/api-reference/echo-operations/block-reward.md#block_reward_operation',
@@ -383,6 +395,7 @@ export const ASSET_ISSUER_PERMISSION_FLAGS = {
 	OVVERIDE_AUTHORITY: 2,
 	TRANSFER_RESTRICTED: 4,
 	COMMITTEE_FED_ASSET: 8,
+	STAKE_ASSET: 16,
 };
 
 export const ECHO_COMMITTEE_ACCOUNT = {

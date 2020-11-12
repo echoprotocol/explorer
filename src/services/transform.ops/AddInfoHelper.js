@@ -30,7 +30,7 @@ async function getAccountWhiteListInfo(accountId) {
 }
 
 export function getAssetFlags({ flags, issuer_permissions: permissionFlags }) {
-	let [isWhiteList, isOvveride, isTransfer, isCommette] = ['off', 'off', 'off', 'off'];
+	let [isWhiteList, isOvveride, isTransfer, isCommette, isStake] = ['off', 'off', 'off', 'off', 'off'];
 	if (!permissionFlags) {
 		return {
 			isWhiteList, isOvveride, isTransfer, isCommette,
@@ -41,9 +41,10 @@ export function getAssetFlags({ flags, issuer_permissions: permissionFlags }) {
 	isOvveride = (ASSET_ISSUER_PERMISSION_FLAGS.OVVERIDE_AUTHORITY & flags) ? 'on' : 'off';
 	isTransfer = (ASSET_ISSUER_PERMISSION_FLAGS.TRANSFER_RESTRICTED & flags) ? 'on' : 'off';
 	isCommette = (ASSET_ISSUER_PERMISSION_FLAGS.COMMITTEE_FED_ASSET & flags) ? 'on' : 'off';
+	isStake = (ASSET_ISSUER_PERMISSION_FLAGS.STAKE_ASSET & flags) ? 'on' : 'off';
 	/* eslint-enable */
 	return {
-		isWhiteList, isOvveride, isTransfer, isCommette,
+		isWhiteList, isOvveride, isTransfer, isCommette, isStake,
 	};
 }
 

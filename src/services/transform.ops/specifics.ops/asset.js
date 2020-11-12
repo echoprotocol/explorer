@@ -35,6 +35,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					}, {
 						key: 'Commitee fed asset authority',
 						value: settings.isCommette,
+					}, {
+						key: 'Stake asset',
+						value: settings.isStake,
 					}],
 					additionalInfo: {
 						settings: [{
@@ -49,6 +52,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						}, {
 							key: 'Commitee fed asset authority',
 							value: additionalInfo.isCommette,
+						}, {
+							key: 'Stake asset',
+							value: settings.isStake,
 						}],
 					},
 					...description,
@@ -80,6 +86,9 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					}, {
 						key: 'Commitee fed asset authority',
 						value: settings.isCommette,
+					}, {
+						key: 'Stake asset',
+						value: settings.isStake,
 					}],
 					bit_asset_options: bitAssetOps && [{
 						key: 'Feed lifetime',
