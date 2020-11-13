@@ -658,8 +658,8 @@ const Operations = {
 		name: 'ETH stake update',
 		options: {
 			from: 'committee_member_id',
-			subject: ['transaction_hash'],
-			amount: null,
+			subject: null,
+			amount: 'current_balance',
 			asset: 'asset_id',
 		},
 	},
@@ -679,7 +679,7 @@ const Operations = {
 		options: {
 			from: 'committee_member_id',
 			subject: null,
-			amount: null,
+			amount: 'btc_tx_info.out.amount',
 			asset: null,
 		},
 	},

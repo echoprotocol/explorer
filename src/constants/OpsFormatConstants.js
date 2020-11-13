@@ -423,4 +423,11 @@ export const SIDECHAIN_OPS_DEFAULT_ASSETS = {
 		Operations.sidechain_issue.value,
 		Operations.sidechain_burn.value,
 	],
+	SBTC: [
+		Operations.sidechain_stake_btc_update.value,
+		Operations.sidechain_stake_btc_create_script.value,
+	],
+	SETH: [
+		Operations.sidechain_stake_eth_update.value,
+	],
 };
