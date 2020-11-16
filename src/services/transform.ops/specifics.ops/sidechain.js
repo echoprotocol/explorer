@@ -525,6 +525,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					owner: data.account,
 					btc_transaction_hash: objectInfo.transaction_hash,
 					is_vin: data.is_vin,
+					amount: data.mainInfo.value,
 				},
 			};
 		}

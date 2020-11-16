@@ -212,7 +212,7 @@ class URLHelper {
 	 * @return {string}
 	 */
 	static createEthTransactionOut(url) {
-		return `${config.SIDECHAIN_EXPLORER_URLS.ETHEREUM}/tx/${url}`;
+		return `${config.SIDECHAIN_EXPLORER_URLS.ETHEREUM}/tx/0x${url}`;
 	}
 
 	/**

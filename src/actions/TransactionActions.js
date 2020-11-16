@@ -22,8 +22,10 @@ import {
 	ECHO_ASSET,
 	NATHAN,
 	ERC20_EVENT_HASHES,
-	EBTC_ASSET_ID,
-	EETH_ASSET_ID,
+	EBTC_ASSET,
+	EETH_ASSET,
+	SBTC_ASSET,
+	SETH_ASSET,
 } from '../constants/GlobalConstants';
 import { ACCOUNT_OBJECT_PREFIX, CONTRACT_OBJECT_PREFIX } from '../constants/ObjectPrefixesConstants';
 
@@ -922,6 +924,11 @@ class TransactionActionsClass extends BaseActionsClass {
 				...result.value,
 				amount: _.get(operation, options.value),
 			};
+		} else if (options.amount) {
+			result.value = {
+				...result.value,
+				amount: _.get(operation, options.amount),
+			};
 		}
 
 		if (options.asset) {
@@ -1125,9 +1132,13 @@ class TransactionActionsClass extends BaseActionsClass {
 	async getDefaultOperationAsset(type) {
 		let assetId;
 		if (SIDECHAIN_OPS_DEFAULT_ASSETS.BTC.includes(type)) {
-			assetId = EBTC_ASSET_ID;
+			assetId = EBTC_ASSET.ID;
 		} else if (SIDECHAIN_OPS_DEFAULT_ASSETS.ETH.includes(type)) {
-			assetId = EETH_ASSET_ID;
+			assetId = EETH_ASSET.ID;
+		} else if (SIDECHAIN_OPS_DEFAULT_ASSETS.SBTC.includes(type)) {
+			assetId = SBTC_ASSET.ID;
+		} else if (SIDECHAIN_OPS_DEFAULT_ASSETS.SETH.includes(type)) {
+			assetId = SETH_ASSET.ID;
 		} else {
 			assetId = ECHO_ASSET.ID;
 		}

@@ -1,6 +1,7 @@
 export const INDEX_PATH = '/';
 export const BLOCK_INFORMATION_PATH = '/blocks/:round';
 export const TRANSACTION_INFORMATION_PATH = '/blocks/:round/:index';
+export const TRANSACTION_INFORMATION_BY_HASH_PATH = '/tx/:hash/';
 export const ACCOUNTS_PATH = '/accounts/:id/info';
 export const CONTRACT_PATH = '/contracts/:id/info/';
 export const CONTRACT_PATH_DETAIL = '/contracts/:id/info/:detail?';
@@ -23,6 +24,7 @@ export const BLOCKS_TABLE_PATH = '/blocks';
 export const SSR_BLOCK_INFORMATION_PATH = '/blocks/[round]';
 export const SSR_ACCOUNTS_PATH = '/accounts/[id]/info';
 export const SSR_ASSET_PATH = '/assets/[id]/info';
+export const SSR_TRANSACTION_BY_HASH_INFORMATION_PATH = '/tx/[hash]';
 
 export const SSR_CURRENT_COMMITTEE_PATH = '/committee/current';
 export const SSR_CANDIDATE_COMMITTEE_PATH = '/committee/candidate';
