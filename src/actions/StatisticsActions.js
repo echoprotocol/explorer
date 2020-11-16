@@ -212,9 +212,9 @@ class StatisticsActionsClass extends BaseActionsClass {
 	 * @return {Promise<function(...[*]=)>}
 	 */
 	// eslint-disable-next-line camelcase
-	updateIncentivesPool({ incentives_pool }, { id, precision }) {
+	updateIncentivesPool({ pool }, { id, precision }) {
 		return (dispatch) => {
-			const echoIncentivesPool = incentives_pool.find(([assetId]) => assetId === id);
+			const echoIncentivesPool = pool.find(([assetId]) => assetId === id);
 			if (!echoIncentivesPool) {
 				return;
 			}
