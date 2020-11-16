@@ -15,7 +15,7 @@ import {
 } from '../constants/TableConstants';
 import { ECHODB_COMMITTEE_STATUS } from '../constants/CommitteeConstants';
 import Operations from '../constants/Operations';
-import { ECHO_ASSET, EBTC_ASSET_ID, EETH_ASSET_ID } from '../constants/GlobalConstants';
+import { ECHO_ASSET, EBTC_ASSET, EETH_ASSET } from '../constants/GlobalConstants';
 import FormatHelper from '../helpers/FormatHelper';
 import { getBtcAddressByPublicKey } from '../services/transform.ops/AddInfoHelper';
 
@@ -67,8 +67,8 @@ class CommitteeActions extends BaseActionsClass {
 	async getCommitteAdditionalInfo(accountId) {
 		const assetsIds = [
 			ECHO_ASSET.ID,
-			EETH_ASSET_ID,
-			EBTC_ASSET_ID,
+			EETH_ASSET.ID,
+			EBTC_ASSET.ID,
 		];
 		const [committeBalances, assetsData, committeMember] = await Promise.all([
 			echo.api.getAccountBalances(accountId, assetsIds),
