@@ -155,7 +155,7 @@ class Account extends React.Component {
 											{
 												coreBalances.map((coreBalance) => (
 													<AccountInfoRow
-														title={`${coreBalance.SYMBOL} balance`}
+														title={`${coreBalance.symbol} balance`}
 														amount={{
 															value: FormatHelper.formatAmount(coreBalance.amount, coreBalance.precision),
 															symbol: coreBalance.symbol,
