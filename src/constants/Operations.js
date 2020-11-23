@@ -486,8 +486,8 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
 		name: 'Sidechain issue',
 		options: {
-			from: 'account',
-			subject: ['deposit_id'],
+			from: null,
+			subject: ['account'],
 			amount: 'value.amount',
 			asset: 'value.asset_id',
 		},
@@ -497,9 +497,9 @@ const Operations = {
 		name: 'Sidechain burn',
 		options: {
 			from: 'account',
-			subject: ['withdraw_id'],
-			amount: 'amount.value',
-			asset: 'fee.asset_id',
+			subject: null,
+			amount: 'value.amount',
+			asset: 'value.asset_id',
 		},
 	},
 	register_erc20_token: {
@@ -659,7 +659,7 @@ const Operations = {
 		options: {
 			from: 'committee_member_id',
 			subject: null,
-			amount: 'current_balance',
+			amount: null,
 			asset: 'asset_id',
 		},
 	},

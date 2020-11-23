@@ -502,8 +502,8 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					committee_member: data.committee_member_id,
 					asset_id: data.asset_id,
-					amount: data.current_balance,
-					owner: data.account,
+					current_balance: data.current_balance,
+					account: data.account,
 					eth_transaction_hash: data.transaction_hash,
 				},
 			};

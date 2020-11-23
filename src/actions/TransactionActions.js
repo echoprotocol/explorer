@@ -44,6 +44,7 @@ import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
 import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
+import { getTransactionHexByBlockAndPosition } from '../services/queries/transactions';
 import URLHelper from '../helpers/URLHelper';
 import {
 	OPERATIONS_WITH_ERC20_WHICH_REQUIRES_TOKEN_FETCHING,
@@ -51,6 +52,7 @@ import {
 } from '../constants/OpsFormatConstants';
 import ApiService from '../services/ApiService';
 import { ECHO } from '../constants/TotalSupplyConstants';
+import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -1423,8 +1425,38 @@ class TransactionActionsClass extends BaseActionsClass {
 		return op;
 	}
 
+	async filterOpeartions(operations, queryData) {
+		const getObjectId = async (objectId) => {
+			if (!objectId) { return null; }
+			if (isSidechainEthDeposit(objectId) || validators.isContractId(objectId)) {
+				return objectId;
+			}
+			let account = null;
+			try {
+				account = await echo.api.getAccountByName(objectId.trim());
+				if (account) {
+					account = account.id;
+				}
+				// eslint-disable-next-line no-empty
+			} catch (err) { }
+			return account;
+		};
+		const [fromFilter, toFilter] = await Promise.all([
+			getObjectId(queryData.filters.from),
+			getObjectId(queryData.filters.to),
+		]);
+
+		const filteredOperations = operations.filter((operation) => {
+			const isAllowFrom = fromFilter ? (fromFilter === operation.mainInfo.from.name || fromFilter === operation.mainInfo.from.id) : true;
+			const isAllowTo = toFilter ? (toFilter === operation.mainInfo.subject.name || toFilter === operation.mainInfo.subject.id) : true;
+			return isAllowFrom && isAllowTo;
+		});
+		return filteredOperations;
+	}
+
 	getTransaction(blockNumber, index, virtual = false) {
-		return async (dispatch) => {
+		return async (dispatch, getState) => {
+			const queryData = getState().grid.get(TRANSACTION_GRID).toJS();
 			virtual = typeof virtual === 'string' ? virtual === 'true' : !!virtual;
 			dispatch(this.setValue('loading', true));
 			try {
@@ -1462,6 +1494,7 @@ class TransactionActionsClass extends BaseActionsClass {
 					transaction = block.transactions[index - 1];
 				}
 
+				const trxHex = await getTransactionHexByBlockAndPosition(Number(blockNumber), Number(index));
 				let operations = transaction.operations.map(async (operation, opIndex) => {
 					const op = await this.getOperation(
 						operation,
@@ -1480,8 +1513,10 @@ class TransactionActionsClass extends BaseActionsClass {
 				});
 
 				operations = await Promise.all(operations);
-				dispatch(GridActions.setTotalDataSize(TRANSACTION_GRID, operations.length));
-				dispatch(this.setValue('operations', new List(operations)));
+				const filteredOperations = await this.filterOpeartions(operations, queryData);
+				dispatch(GridActions.setTotalDataSize(TRANSACTION_GRID, filteredOperations.length));
+				dispatch(this.setValue('operations', new List(filteredOperations)));
+				dispatch(this.setValue('transactionHash', trxHex ? trxHex.trx_hex : ''));
 			} catch (err) {
 				dispatch(this.setValue('error', FormatHelper.formatError(err)));
 			} finally {

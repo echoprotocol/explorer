@@ -18,6 +18,7 @@ import GlobalActions from '../../actions/GlobalActions';
 import { getBlockInformation } from '../../actions/BlockActions';
 import TransactionActions from '../../actions/TransactionActions';
 import GridActions from '../../actions/GridActions';
+import URLHelper from '../../helpers/URLHelper';
 
 class TransactionsInfo extends React.Component {
 
@@ -50,10 +51,10 @@ class TransactionsInfo extends React.Component {
 	}
 
 	render() {
-		const { query: { round, index } } = this.props.router;
-
+		const { query: { round, index }, asPath } = this.props.router;
+		const { query: { virtual } } = queryString.parseUrl(asPath);
 		const {
-			operations, blockInformation, loading, router,
+			operations, blockInformation, loading, router, transactionHash,
 		} = this.props;
 
 		const breadcrumbs = [
@@ -83,15 +84,24 @@ class TransactionsInfo extends React.Component {
 				{ !loading ?
 					<React.Fragment>
 						<p className="description-text">{`Block has been created ${timeBlockCreated.date} ${timeBlockCreated.time}`}</p>
+						<p className="description-text">
+							{transactionHash ?
+								<React.Fragment>
+									Tx hash: <a href={URLHelper.createTransactionUrlByHash(transactionHash)}>{transactionHash}</a>
+								</React.Fragment>
+								: null
+							}
+						</p>
 						<OperationsTable
 							isASCOps
-							onLoadMoreHistory={() => { }}
+							onLoadMoreHistory={() => this.props.getTransaction(round, index, virtual)}
 							gridName={TRANSACTION_GRID}
 							label={FormatHelper.getFormaOperationsTitle(operations.size)}
 							isTransaction
 							operations={operations}
 							router={router}
 							loading={loading}
+							txHash={transactionHash}
 							changeUrl
 						/>
 					</React.Fragment> : this.renderLoader(loading)
@@ -106,6 +116,7 @@ TransactionsInfo.propTypes = {
 	history: PropTypes.object.isRequired,
 	router: PropTypes.object.isRequired,
 	loading: PropTypes.bool,
+	transactionHash: PropTypes.string,
 	operations: PropTypes.object,
 	getTransaction: PropTypes.func.isRequired,
 	clearTransaction: PropTypes.func.isRequired,
@@ -117,6 +128,7 @@ TransactionsInfo.propTypes = {
 TransactionsInfo.defaultProps = {
 	operations: null,
 	loading: false,
+	transactionHash: '',
 };
 
 TransactionsInfo.getInitialProps = async ({ store, query, asPath }) => {
