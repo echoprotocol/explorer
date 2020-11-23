@@ -1083,6 +1083,19 @@ class TransactionActionsClass extends BaseActionsClass {
 			}
 		}
 
+		if ([
+			OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE,
+		].includes(type)) {
+			const defaultAsset = await this.getDefaultOperationAsset(type);
+			const operationFromGraphQl = await getSingleOpeation(round, trIndex, opIndex);
+			const singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
+			result.value = {
+				...result.value,
+				...defaultAsset,
+				amount: singleOperation.value && singleOperation.value.amount,
+			};
+		}
+
 		if (!result.value && result.internal && result.internal[0] && result.internal[0].value) {
 			result.value = result.internal[0].value;
 		}
