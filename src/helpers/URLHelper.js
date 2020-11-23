@@ -61,7 +61,7 @@ class URLHelper {
 	 * @returns {string}
 	 */
 	static createTransactionUrlByHash(hash) {
-		return `/tx/${hash}`;
+		return `/tx/${hash.substring(0, 20)}`;
 	}
 
 	/**
