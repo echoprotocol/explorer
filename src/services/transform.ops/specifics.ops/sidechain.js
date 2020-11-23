@@ -499,6 +499,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE: {
 			return {
 				operationInfo: {
+					type,
 					fee: data.fee,
 					committee_member: data.committee_member_id,
 					asset_id: data.asset_id,
@@ -511,6 +512,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_STAKE_SCRIPT: {
 			return {
 				operationInfo: {
+					type,
 					fee: data.fee,
 					owner: data.account,
 					pubkey_hash: data.pubkey_hash,
@@ -520,6 +522,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.SIDECHAIN_STAKE_BTC_UPDATE: {
 			return {
 				operationInfo: {
+					type,
 					fee: data.fee,
 					committee_member: data.committee_member_id,
 					owner: data.account,
