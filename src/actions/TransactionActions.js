@@ -284,7 +284,8 @@ class TransactionActionsClass extends BaseActionsClass {
 						.set('link', URLHelper.createOperationObjectsUrl(currentOp.block.round, currentOp.trx_in_block + 1, currentOp.op_in_trx + 1, currentOp.virtual));
 				}
 				if (currentOp.body.virtual_operations.length) {
-					const formatVirtualOps = currentOp.body.virtual_operations.map((op) => this.formatOperation(op));
+					const formatVirtualOps = currentOp.body.virtual_operations.map((op) =>
+						this.formatOperation(op, undefined, undefined, undefined, undefined, undefined, undefined, undefined, true));
 					const virtualOps = await Promise.all(formatVirtualOps);
 					const formatted = virtualOps.map((el) => {
 						let contractIdInOp;
@@ -853,6 +854,7 @@ class TransactionActionsClass extends BaseActionsClass {
 	 * @param {Number} opIndex
 	 * @param {Array} operationResult
 	 * @param {String} id
+	 * @param {Boolean} virtual
 	 * @returns {Promise.<{type: *, fee: {amount, precision, symbol}, from: {id: string}, subject: {id: string}, name, value: {}, status: boolean}>}
 	 */
 	async formatOperation(
@@ -864,6 +866,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		operationResult = [],
 		id = undefined,
 		timestamp = undefined,
+		virtual = false,
 	) {
 		const [type, operation] = data;
 		const [, resId] = operationResult;
@@ -1087,7 +1090,7 @@ class TransactionActionsClass extends BaseActionsClass {
 			OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE,
 		].includes(type)) {
 			const defaultAsset = await this.getDefaultOperationAsset(type);
-			const operationFromGraphQl = await getSingleOpeation(round, trIndex, opIndex);
+			const operationFromGraphQl = await getSingleOpeation(round, trIndex, opIndex, virtual);
 			const singleOperation = operationFromGraphQl.getSingleOperation && operationFromGraphQl.getSingleOperation.body;
 			result.value = {
 				...result.value,
@@ -1216,7 +1219,7 @@ class TransactionActionsClass extends BaseActionsClass {
 
 		const {
 			from, subject, value: opValue, asset: opAsset, internal,
-		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult);
+		} = await this.formatOperation([type, options], accountId, blockNumber, trIndex, opIndex, operationResult, undefined, undefined, virtual);
 		const opInfo = {
 			block: blockNumber,
 			trxInblock: trIndex,
