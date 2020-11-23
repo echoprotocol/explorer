@@ -33,6 +33,7 @@ class OperationInfo extends React.Component {
 					{data.type && proposalIdx && <div className="proposal-operation-header">{proposalIdx}.&nbsp;{data.type}</div>}
 					{data.type && !proposalIdx && <PrimaryRow title="Type" description={data.type} /> }
 					{data.account && <LinkRow title="Account" account={data.account} />}
+					{data.transaction_type && <PrimaryRow title="Transaction type" description={data.transaction_type} />}
 					{data.issuer && <LinkRow title="Issuer" account={data.issuer} />}
 					{data.sender && <LinkRow title="Sender" account={data.sender} />}
 					{data.balance_object_id && <LinkRow title="Balance object ID" link={data.balance_object_id} />}

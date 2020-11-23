@@ -487,7 +487,7 @@ const Operations = {
 		name: 'Sidechain issue',
 		options: {
 			from: null,
-			subject: ['account'],
+			subject: ['account', 'name'],
 			amount: 'value.amount',
 			asset: 'value.asset_id',
 		},
@@ -496,7 +496,7 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_BURN,
 		name: 'Sidechain burn',
 		options: {
-			from: 'account',
+			from: ['account', 'name'],
 			subject: null,
 			amount: 'value.amount',
 			asset: 'value.asset_id',
@@ -801,6 +801,7 @@ export const sidechainOperations = [
 	Operations.erc20_send_deposit.name,
 	Operations.withdraw_erc20_token.name,
 	Operations.erc20_send_withdraw.name,
+	Operations.sidechain_stake_eth_update.name,
 ];
 
 export const sidechainBtcOperations = [
@@ -811,7 +812,6 @@ export const sidechainBtcOperations = [
 	Operations.sidechain_btc_withdraw.name,
 	Operations.sidechain_btc_aggregate.name,
 	Operations.sidechain_btc_approve_aggregate.name,
-	Operations.sidechain_stake_eth_update.name,
 	Operations.sidechain_stake_btc_create_script.name,
 	Operations.sidechain_stake_btc_update.name,
 ];

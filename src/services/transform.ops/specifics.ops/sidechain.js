@@ -159,7 +159,7 @@ export const transformOperationDataByType = async (opNumber, data) => {
 		case OPERATIONS_IDS.SIDECHAIN_ISSUE: {
 			const originalOperation = data.objectInfo.get('original_operation');
 			const listApprovals = data.objectInfo.get('list_approvals');
-			return {
+			const obj = {
 				operationInfo: {
 					type,
 					sender: data.account,
@@ -175,11 +175,15 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					} : undefined,
 				},
 			};
+			if (objectInfo.transaction_hash) {
+				obj.operationInfo[`${objectInfo.sidechain_type}_transaction_hash`] = objectInfo.transaction_hash;
+			}
+			return obj;
 		}
 		case OPERATIONS_IDS.SIDECHAIN_BURN: {
 			const originalOperation = data.objectInfo.get('original_operation');
 			const listApprovals = data.objectInfo.get('list_approvals');
-			return {
+			const obj = {
 				operationInfo: {
 					type,
 					sender: data.account,
@@ -195,6 +199,10 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					} : undefined,
 				},
 			};
+			if (objectInfo.transaction_hash) {
+				obj.operationInfo[`${objectInfo.sidechain_type}_transaction_hash`] = objectInfo.transaction_hash;
+			}
+			return obj;
 		}
 		case OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN: {
 			return {
@@ -503,9 +511,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					fee: data.fee,
 					committee_member: data.committee_member_id,
 					asset_id: data.asset_id,
+					amount: objectInfo.sidechain_amount,
 					current_balance: data.current_balance,
 					account: data.account,
 					eth_transaction_hash: data.transaction_hash,
+					transaction_type: objectInfo.transaction_type,
 				},
 			};
 		}
@@ -525,10 +535,11 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					type,
 					fee: data.fee,
 					committee_member: data.committee_member_id,
+					amount: objectInfo.sidechain_amount,
 					owner: data.account,
 					btc_transaction_hash: objectInfo.transaction_hash,
 					is_vin: data.is_vin,
-					amount: data.mainInfo.value,
+					transaction_type: objectInfo.transaction_type,
 				},
 			};
 		}

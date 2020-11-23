@@ -572,7 +572,9 @@ class TransactionActionsClass extends BaseActionsClass {
 							&& URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_deposit);
 						object = object
 							.set('original_operation', originalOperation)
-							.set('list_approvals', listApprovals);
+							.set('list_approvals', listApprovals)
+							.set('transaction_hash', singleOperation.transaction_hash)
+							.set('sidechain_type', singleOperation.sidechain_type);
 						break;
 					}
 					case Operations.sidechain_burn.name: {
@@ -582,7 +584,9 @@ class TransactionActionsClass extends BaseActionsClass {
 							&& URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_eth_withdraw);
 						object = object
 							.set('original_operation', originalOperation)
-							.set('list_approvals', listApprovals);
+							.set('list_approvals', listApprovals)
+							.set('transaction_hash', singleOperation.transaction_hash)
+							.set('sidechain_type', singleOperation.sidechain_type);
 						break;
 					}
 					case Operations.register_erc20_token.name: {
@@ -629,6 +633,17 @@ class TransactionActionsClass extends BaseActionsClass {
 						object = object
 							.set('original_operation', URLHelper.transformEchodbOperationLinkToExplorerLink(singleOperation.sidchain_erc_20_withdraw_token))
 							.set('transaction_hash', FormatHelper.addEthPrefix(objectWithApprovals.transaction_hash));
+						break;
+					} case Operations.sidechain_stake_eth_update.name: {
+						const asset = await echo.api.getObject(singleOperation.amount.asset_id);
+						object = object
+							.set('transaction_type', singleOperation.type)
+							.set('sidechain_amount', {
+								symbol: asset.symbol,
+								asset_id: asset.id,
+								precision: asset.precision,
+								amount: singleOperation.amount.amount,
+							});
 						break;
 					} default:
 						break;
@@ -699,6 +714,19 @@ class TransactionActionsClass extends BaseActionsClass {
 					case Operations.sidechain_btc_approve_aggregate.name:
 						objectWithApprovals = singleOperation.result;
 						break;
+					case Operations.sidechain_stake_btc_update.name: {
+						const asset = await echo.api.getObject(singleOperation.amount.asset_id);
+						object = object
+							.set('transaction_type', singleOperation.type)
+							.set('sidechain_amount', {
+								symbol: asset.symbol,
+								asset_id: asset.id,
+								precision: asset.precision,
+								amount: singleOperation.amount.amount,
+							});
+
+						break;
+					}
 					default:
 						break;
 				}
