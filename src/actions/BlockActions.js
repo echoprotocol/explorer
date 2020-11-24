@@ -26,7 +26,7 @@ import GridActions from './GridActions';
 import { BLOCK_GRID, BLOCKS_GRID } from '../constants/TableConstants';
 
 import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
-import { getLatestOperationsFromGQL } from '../services/queries/history';
+import { getLatestOperationsFromGQL, getBlockHistory } from '../services/queries/history';
 import AccountActions from './AccountActions';
 import { getBlockReward, getBlockFromGraphQl } from '../services/queries/block';
 
@@ -92,14 +92,46 @@ const getRewardDistribution = async (targetBlock, nextBlock) => {
 };
 
 /**
+ * Format block history
+ * @param {Array} transactions
+ * @returns {function}
+ */
+export const formatBlockHistory = async (transactions) => {
+
+	let accountHistory = transactions.map(async (t) => {
+		const { op: operation, result } = t;
+		const block = await echo.api.getBlock(t.block_num);
+
+		return TransactionActions.getOperation(
+			operation,
+			t.block_num,
+			block ? block.timestamp : null,
+			t.trx_in_block,
+			t.op_in_trx,
+			result,
+			null,
+			null,
+			t.id,
+			t.virtual,
+			true,
+		);
+	});
+
+	accountHistory = await Promise.all(accountHistory);
+
+	return accountHistory.filter((t) => t);
+};
+
+/**
  * method loadBlockHistory
  * @return {function(...[*]=)}
  */
-export const loadBlockHistory = (paramsOperations) => async (dispatch, getState) => {
+export const loadBlockHistory = () => async (dispatch, getState) => {
 	try {
+		let total = 0;
+		let items = [];
 		const queryData = getState().grid.get(BLOCK_GRID).toJS();
-		const { currentPage, sizePerPage } = queryData;
-		let operations = paramsOperations || getState().block.getIn(['blockInformation', 'operations']) || new List([]);
+		const round = getState().block.getIn(['blockInformation', 'blockNumber']);
 		const getObjectId = async (objectId) => {
 			if (!objectId) { return null; }
 			if (isSidechainEthDeposit(objectId) || validators.isContractId(objectId)) {
@@ -119,15 +151,23 @@ export const loadBlockHistory = (paramsOperations) => async (dispatch, getState)
 			getObjectId(queryData.filters.from),
 			getObjectId(queryData.filters.to),
 		]);
-		operations = operations.filter((operation) => {
-			const isAllowFrom = fromFilter ? (fromFilter === operation.mainInfo.from.name || fromFilter === operation.mainInfo.from.id) : true;
-			const isAllowTo = toFilter ? (toFilter === operation.mainInfo.subject.name || toFilter === operation.mainInfo.subject.id) : true;
-			return isAllowFrom && isAllowTo;
-		});
 
-		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, operations.size));
-		operations = operations.slice((currentPage - 1) * sizePerPage, currentPage * sizePerPage);
-		dispatch(BlockReducer.actions.set({ field: 'filteredOperations', value: operations }));
+		try {
+			({ items, total } = await getBlockHistory({
+				fromFilter: fromFilter || undefined,
+				toFilter: toFilter || undefined,
+				offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+				count: queryData.sizePerPage,
+				block: Number(round),
+			}));
+		} catch (err) {
+			console.log('EchoDb error', err);
+		}
+		dispatch(GridActions.setTotalDataSize(BLOCK_GRID, total));
+		let transactions = AccountActions.formatHistoryFromEchoDB(items);
+		transactions = await formatBlockHistory(transactions);
+
+		dispatch(BlockReducer.actions.set({ field: 'filteredOperations', value: new List(transactions) }));
 	} catch (error) {
 		dispatch(BlockReducer.actions.set({ field: 'error', value: FormatHelper.formatError(error) }));
 		dispatch(GlobalActions.toggleErrorPath(true));
