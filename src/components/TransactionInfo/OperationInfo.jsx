@@ -32,6 +32,8 @@ class OperationInfo extends React.Component {
 				<div className="table-detail-rows">
 					{data.type && proposalIdx && <div className="proposal-operation-header">{proposalIdx}.&nbsp;{data.type}</div>}
 					{data.type && !proposalIdx && <PrimaryRow title="Type" description={data.type} /> }
+					{data.account && <LinkRow title="Account" account={data.account} />}
+					{data.transaction_type && <PrimaryRow title="Transaction type" description={data.transaction_type} />}
 					{data.issuer && <LinkRow title="Issuer" account={data.issuer} />}
 					{data.sender && <LinkRow title="Sender" account={data.sender} />}
 					{data.balance_object_id && <LinkRow title="Balance object ID" link={data.balance_object_id} />}
@@ -92,6 +94,7 @@ class OperationInfo extends React.Component {
 					{data.delegate_share && <LinkRow title="Delegate share" amount={data.delegate_share} />}
 					{data.duration && <PrimaryRow title="Duration" description={data.duration} />}
 					{data.amount && <LinkRow title="Amount" amount={data.amount} />}
+					{data.current_balance && <LinkRow title="Current balance" amount={data.current_balance} />}
 					{data.sidechain_amount_info && <LinkRow title="Amount" token={data.sidechain_amount_info} />}
 					{data.deposit_amount && <LinkRow title="Deposit amount" amount={data.deposit_amount} />}
 
@@ -108,13 +111,13 @@ class OperationInfo extends React.Component {
 					{data.label && <PrimaryRow title="Label" description={data.label} />}
 					{data.amount_info && <PrimaryRow title="Amount" description={data.amount_info} />}
 					{data.eth_transaction_hash && <LinkRow
-						title="Transaction hash"
-						value={data.eth_transaction_hash}
+						title=" ETH Transaction hash"
+						value={FormatHelper.addEthPrefix(data.eth_transaction_hash)}
 						link={URLHelper.createEthTransactionOut(data.eth_transaction_hash)}
 						isLinkOut
 					/>}
 					{data.btc_transaction_hash && <LinkRow
-						title="Transaction hash"
+						title="BTC Transaction hash"
 						value={data.btc_transaction_hash}
 						link={URLHelper.createBtcTransactionOut(data.btc_transaction_hash)}
 						isLinkOut

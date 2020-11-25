@@ -5,6 +5,7 @@ import TransformModules from '../utils/TransformModules';
 
 const DEFAULT_FIELDS = new Map({
 	operations: new List([]),
+	transactionHash: '',
 });
 
 export default createModule({

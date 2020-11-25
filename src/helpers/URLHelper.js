@@ -57,6 +57,15 @@ class URLHelper {
 
 	/**
 	 *
+	 * @param hash
+	 * @returns {string}
+	 */
+	static createTransactionUrlByHash(hash) {
+		return `/tx/${hash.substring(0, 20)}`;
+	}
+
+	/**
+	 *
 	 * @param {String} accountId
 	 * @return {String}
 	 */
