@@ -43,7 +43,12 @@ import { transformOperationDataByType } from '../services/transform.ops';
 import GridActions from './GridActions';
 import { TRANSACTION_GRID } from '../constants/TableConstants';
 import { countRate } from '../services/transform.ops/AddInfoHelper';
-import { getConrtactOperations, getSingleOpeation, getAccountCondition } from '../services/queries/history';
+import {
+	getConrtactOperations,
+	getSingleOpeation,
+	getAccountCondition,
+	getBlockHistory,
+} from '../services/queries/history';
 import { getTransactionHexByBlockAndPosition } from '../services/queries/transactions';
 import URLHelper from '../helpers/URLHelper';
 import {
@@ -53,6 +58,7 @@ import {
 import ApiService from '../services/ApiService';
 import { ECHO } from '../constants/TotalSupplyConstants';
 import { isSidechainEthDeposit } from '../helpers/ValidateHelper';
+import AccountActions from './AccountActions';
 
 class TransactionActionsClass extends BaseActionsClass {
 
@@ -1454,6 +1460,36 @@ class TransactionActionsClass extends BaseActionsClass {
 		return op;
 	}
 
+	/**
+ * Format block history
+ * @param {Array} transactions
+ * @returns {function}
+ */
+	async formatTrasactionHistory(operations) {
+
+		let accountHistory = operations.map(async (t) => {
+			const { op: operation, result } = t;
+			const block = await echo.api.getBlock(t.block_num);
+
+			return this.getOperation(
+				operation,
+				t.block_num,
+				block ? block.timestamp : null,
+				t.trx_in_block,
+				t.op_in_trx,
+				result,
+				null,
+				null,
+				t.id,
+				t.virtual,
+				true,
+			);
+		});
+
+		accountHistory = await Promise.all(accountHistory);
+		return accountHistory.filter((t) => t);
+	}
+
 	async filterOpeartions(operations, queryData) {
 		const getObjectId = async (objectId) => {
 			if (!objectId) { return null; }
@@ -1489,62 +1525,50 @@ class TransactionActionsClass extends BaseActionsClass {
 			virtual = typeof virtual === 'string' ? virtual === 'true' : !!virtual;
 			dispatch(this.setValue('loading', true));
 			try {
+				let items = [];
+				let total = 0;
 				const block = await echo.api.getBlock(blockNumber);
 				if (!block) {
 					dispatch(GlobalActions.toggleErrorPath(true));
 					return;
 				}
 
-				if (!block.transactions[index - 1] && !virtual) {
-					dispatch(GlobalActions.toggleErrorPath(true));
-					return;
-				}
-
-				let transaction = {};
-
-				if (virtual) {
-					const operationResults = [];
-					const virtualOperations = await echo.api.getBlockVirtualOperations(blockNumber);
-					const filtredVirtualOperations = virtualOperations.filter(({ trx_in_block }) => trx_in_block === index - 1);
-
-					if (!filtredVirtualOperations.length) {
-						dispatch(GlobalActions.toggleErrorPath(true));
-						return;
+				const getObjectId = async (objectId) => {
+					if (!objectId) { return null; }
+					if (isSidechainEthDeposit(objectId) || validators.isContractId(objectId)) {
+						return objectId;
 					}
-					const transformedOperations = filtredVirtualOperations.reduce((res, { op, result }) => {
-						operationResults.push(result);
-						return [...res, op];
-					}, []);
-					transaction = {
-						operations: transformedOperations,
-						operation_results: operationResults,
-					};
-				} else {
-					transaction = block.transactions[index - 1];
-				}
+					let account = null;
+					try {
+						account = await echo.api.getAccountByName(objectId.trim());
+						if (account) {
+							account = account.id;
+						}
+						// eslint-disable-next-line no-empty
+					} catch (err) { }
+					return account;
+				};
+				const [fromFilter, toFilter] = await Promise.all([
+					getObjectId(queryData.filters.from),
+					getObjectId(queryData.filters.to),
+				]);
 
 				const trxHex = await getTransactionHexByBlockAndPosition(Number(blockNumber), Number(index));
-				let operations = transaction.operations.map(async (operation, opIndex) => {
-					const op = await this.getOperation(
-						operation,
-						parseInt(blockNumber, 10),
-						block.timestamp,
-						index - 1,
-						opIndex,
-						transaction.operation_results[opIndex],
-						null,
-						null,
-						null,
-						virtual,
-						false,
-					);
-					return op;
-				});
+				({ items, total } = await getBlockHistory({
+					fromFilter: fromFilter || undefined,
+					toFilter: toFilter || undefined,
+					offset: (queryData.currentPage - 1) * queryData.sizePerPage,
+					count: queryData.sizePerPage,
+					block: Number(blockNumber),
+				}));
 
-				operations = await Promise.all(operations);
-				const filteredOperations = await this.filterOpeartions(operations, queryData);
-				dispatch(GridActions.setTotalDataSize(TRANSACTION_GRID, filteredOperations.length));
-				dispatch(this.setValue('operations', new List(filteredOperations)));
+				const currentOpertaions = items.filter((item) => item.trx_in_block === index - 1 && item.virtual === virtual);
+
+				let formattedOperations = AccountActions.formatHistoryFromEchoDB(currentOpertaions);
+				formattedOperations = await this.formatTrasactionHistory(formattedOperations);
+
+				dispatch(GridActions.setTotalDataSize(TRANSACTION_GRID, total));
+				dispatch(this.setValue('operations', new List(formattedOperations)));
 				dispatch(this.setValue('transactionHash', trxHex ? trxHex.trx_hex : ''));
 			} catch (err) {
 				dispatch(this.setValue('error', FormatHelper.formatError(err)));

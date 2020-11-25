@@ -1,6 +1,41 @@
 import gql from 'graphql-tag';
 import client from '../GraphqlService';
 
+export const getBlockHistory = async ({
+	offset, count, operations, toFilter, fromFilter, block,
+}) => {
+	const query = gql`
+		query getHistory($offset: Int, $count: Int,, $block: Int, $operations: [OperationIdEnum!], $from: [AccountOrContractOrAssetOrProposalId!], $to: [AccountOrContractOrAssetOrProposalId!]) {
+			getHistory(offset: $offset, count: $count, block: $block, operations: $operations, from: $from, to: $to) {
+			 	total
+				items {
+					id
+					body
+					result
+					virtual
+					trx_in_block
+    				op_in_trx
+					block {
+						round
+					}
+					transaction {
+						ref_block_num
+						block {
+							round
+						}
+					}
+				}
+			}
+		}
+	`;
+
+	return client.getClient().query({
+		query,
+		variables: {
+			offset, count, operations, to: toFilter, from: fromFilter, block,
+		},
+	}).then(({ data }) => data.getHistory);
+};
 export const getHistory = async ({
 	subject, offset, count, operations, toFilter, fromFilter,
 }) => {

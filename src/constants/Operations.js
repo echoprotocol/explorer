@@ -659,7 +659,7 @@ const Operations = {
 		options: {
 			from: 'committee_member_id',
 			subject: null,
-			amount: null,
+			value: 'amount.amount',
 			asset: 'asset_id',
 		},
 	},
