@@ -3385,10 +3385,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@^5.48.0:
-  version "5.52.2"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.52.2.tgz#c29e1f7179f85eb0dd17c0586fa810e4838ff584"
-  integrity sha512-WCGCixNUck2HGvY8/ZNI1jYfxPG5cRHv0VjmWuNzbtCLz8qYA5d+je4QhSSCtCaagyeOwMi/HmmPTjBgiTm2lQ==
+codemirror@^5.58.2:
+  version "5.58.2"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.2.tgz#ed54a1796de1498688bea1cdd4e9eeb187565d1b"
+  integrity sha512-K/hOh24cCwRutd1Mk3uLtjWzNISOkm4fvXiMO7LucCrqbh6aJDdtqUziim3MZUI6wOY0rvY1SlL1Ork01uMy6w==
 
 collection-visit@^1.0.0:
   version "1.0.0"
@@ -4453,10 +4453,10 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-echojs-lib@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/echojs-lib/-/echojs-lib-1.13.0.tgz#15ca298bf90cfb7d7662deafbfdb08624ca4b78f"
-  integrity sha512-o+VDuXs/uiRXPIujNt2Ub+bRdxUWMoXBBrI2h9zSzvf8cY+/zWvCOQ2rS+jNd+Jp4xCtJ+jzgJnbCvqzWn5KnQ==
+echojs-lib@^1.13.1:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/echojs-lib/-/echojs-lib-1.13.2.tgz#af3799a7e504e459c0f672313a7ac39c1fd514e0"
+  integrity sha512-TXRrs7kIcRTm6wdkDqN3lz+KaIqQcUbZi8msGJ4MxfyH7gYmdbHrD3ZqQLXd6fLzLjxi34gEj+Qj8lHJZWUSCQ==
   dependencies:
     "@babel/runtime-corejs3" "^7.6.0"
     "@types/crypto-js" "^3.1.43"
