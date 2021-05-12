@@ -33,7 +33,7 @@
 		"bitcoinjs-lib": "^5.1.7",
 		"buffer-ponyfill": "^0.1.1",
 		"classnames": "^2.2.6",
-		"codemirror": "^5.48.0",
+		"codemirror": "^5.58.2",
 		"config": "^1.30.0",
 		"copy-to-clipboard": "^3.0.8",
 		"core-js": "^2.6.3",
