@@ -4453,10 +4453,10 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-echojs-lib@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/echojs-lib/-/echojs-lib-1.13.0.tgz#15ca298bf90cfb7d7662deafbfdb08624ca4b78f"
-  integrity sha512-o+VDuXs/uiRXPIujNt2Ub+bRdxUWMoXBBrI2h9zSzvf8cY+/zWvCOQ2rS+jNd+Jp4xCtJ+jzgJnbCvqzWn5KnQ==
+echojs-lib@^1.13.1:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/echojs-lib/-/echojs-lib-1.13.2.tgz#af3799a7e504e459c0f672313a7ac39c1fd514e0"
+  integrity sha512-TXRrs7kIcRTm6wdkDqN3lz+KaIqQcUbZi8msGJ4MxfyH7gYmdbHrD3ZqQLXd6fLzLjxi34gEj+Qj8lHJZWUSCQ==
   dependencies:
     "@babel/runtime-corejs3" "^7.6.0"
     "@types/crypto-js" "^3.1.43"
@@ -7698,9 +7698,9 @@ path-key@^2.0.1:
   integrity sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=
 
 path-parse@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
-  integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
+  integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 path-to-regexp@2.1.0:
   version "2.1.0"
