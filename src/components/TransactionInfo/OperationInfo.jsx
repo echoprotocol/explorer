@@ -33,6 +33,7 @@ class OperationInfo extends React.Component {
 					{data.type && proposalIdx && <div className="proposal-operation-header">{proposalIdx}.&nbsp;{data.type}</div>}
 					{data.type && !proposalIdx && <PrimaryRow title="Type" description={data.type} /> }
 					{data.account && <LinkRow title="Account" account={data.account} />}
+					{data.reporter && <LinkRow title="Reporter" account={data.reporter} />}
 					{data.transaction_type && <PrimaryRow title="Transaction type" description={data.transaction_type} />}
 					{data.issuer && <LinkRow title="Issuer" account={data.issuer} />}
 					{data.sender && <LinkRow title="Sender" account={data.sender} />}
@@ -104,6 +105,7 @@ class OperationInfo extends React.Component {
 					{(data.eth_accuracy_is_enabled !== undefined) && <PrimaryRow title="ETH Accuracy is enabled" description={data.eth_accuracy_is_enabled} />}
 					{(data.is_vin !== undefined) && <PrimaryRow title="Is vin" description={data.is_vin} />}
 					{data.pubkey_hash && <PrimaryRow title="Public key hash" description={data.pubkey_hash} />}
+					{data.block_hash && <PrimaryRow title="Block hash" description={data.block_hash} />}
 					{data.balance_owner_key && <PrimaryRow title="Balance owner key" description={data.balance_owner_key} />}
 					{data.policy && <PolicyRow title="Policy" objects={data.policy} />}
 					{data.new_status && <PrimaryRow title="New status" description={data.new_status} />}

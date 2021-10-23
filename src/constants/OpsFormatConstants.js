@@ -7,7 +7,6 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.TRANSFER_TO_ADDRESS]: Operations.transfer_to_address.name,
 	[OPERATIONS_IDS.OVERRIDE_TRANSFER]: Operations.override_transfer.name,
 	[OPERATIONS_IDS.ACCOUNT_CREATE]: Operations.account_create.name,
-	[OPERATIONS_IDS.CONTRACT_CREATE]: Operations.contract_create.name,
 	[OPERATIONS_IDS.ACCOUNT_UPDATE]: Operations.account_update.name,
 	[OPERATIONS_IDS.ACCOUNT_WHITELIST]: Operations.account_whitelist.name,
 	[OPERATIONS_IDS.ACCOUNT_ADDRESS_CREATE]: Operations.account_address_create.name,
@@ -44,31 +43,36 @@ export const OPS_TYPES = {
 	[OPERATIONS_IDS.CONTRACT_UPDATE]: Operations.contract_update.name,
 	[OPERATIONS_IDS.CONTRACT_FUND_POOL]: Operations.contract_fund_pool.name,
 	[OPERATIONS_IDS.CONTRACT_WHITELIST]: Operations.contract_whitelist.name,
+	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: Operations.sidechain_issue.name,
+	[OPERATIONS_IDS.SIDECHAIN_BURN]: Operations.sidechain_burn.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SPV_CREATE]: Operations.sidechain_eth_spv_create.name,
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SPV_ADD_MISSED_TX_RECEIPT]: Operations.sidechain_eth_spv_add_missed_tx_receipt.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: Operations.sidechain_eth_create_address.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS]: Operations.sidechain_eth_approve_address.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT]: Operations.deposit_eth.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_DEPOSIT]: Operations.eth_send_deposit.name,
-	[OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW]: Operations.approve_erc20_token_withdraw.name,
-	[OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE]: Operations.sidechain_erc20_issue.name,
-	[OPERATIONS_IDS.SIDECHAIN_ERC20_BURN]: Operations.sidechain_erc20_burn.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_WITHDRAW]: Operations.withdraw_eth.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_SEND_WITHDRAW]: Operations.eth_send_withdraw.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW]: Operations.approve_withdraw_eth.name,
 	[OPERATIONS_IDS.SIDECHAIN_ETH_UPDATE_CONTRACT_ADDRESS]: Operations.eth_update_contract_address.name,
-	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: Operations.sidechain_issue.name,
-	[OPERATIONS_IDS.SIDECHAIN_BURN]: Operations.sidechain_burn.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_CONTRACT_OPERATION]: Operations.sidechain_erc20_register_contract_operation.name,
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN]: Operations.register_erc20_token.name,
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_DEPOSIT_TOKEN]: Operations.deposit_erc20_token.name,
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_DEPOSIT_TOKEN]: Operations.erc20_send_deposit.name,
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_WITHDRAW_TOKEN]: Operations.withdraw_erc20_token.name,
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_SEND_WITHDRAW_TOKEN]: Operations.erc20_send_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW]: Operations.approve_erc20_token_withdraw.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE]: Operations.sidechain_erc20_issue.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_BURN]: Operations.sidechain_erc20_burn.name,
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_TRANSFER_ASSET]: Operations.sidechain_erc20_transfer_asset.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: Operations.sidechain_btc_create_address.name,
-	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_create_intermediate_deposit.name,
-	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: Operations.sidechain_btc_intermediate_deposit.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT]: Operations.sidechain_btc_deposit.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_WITHDRAW]: Operations.sidechain_btc_withdraw.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_AGGREGATE]: Operations.sidechain_btc_aggregate.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: Operations.sidechain_btc_approve_aggregate.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_SPV_CREATE]: Operations.sidechain_btc_spv_create.name,
+	[OPERATIONS_IDS.SIDECHAIN_BTC_SPV_ADD_MISSED_TX_RECEIPT]: Operations.sidechain_btc_spv_add_missed_tx_receipt.name,
+	[OPERATIONS_IDS.SIDECHAIN_SPV_EXCHANGE_EXCESS_FUNDS]: Operations.sidechain_spv_exchange_excess_funds.name,
 	[OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE]: Operations.sidechain_stake_eth_update.name,
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_STAKE_SCRIPT]: Operations.sidechain_stake_btc_create_script.name,
 	[OPERATIONS_IDS.SIDECHAIN_STAKE_BTC_UPDATE]: Operations.sidechain_stake_btc_update.name,
@@ -263,6 +267,22 @@ export const OPS_DESCRIPTIONS = {
 		description: 'Manage the blacklist and whitelist pool of the contract',
 		link: 'https://docs.echo.org/api-reference/echo-operations/contracts#contract_whitelist_operation',
 	},
+	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: {
+		description: 'Virtual operation, which reports that the money entered with the help of sidechain.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_issue_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BURN]: {
+		description: 'Virtual operation, which reports that the conclusion was successful and funds burned(withdrawn).',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_burn_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SPV_CREATE]: {
+		description: 'Used by the committee member to add Ethereum block header and sidechain related transaction receipts(with proof) from it.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_spv_create_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ETH_SPV_ADD_MISSED_TX_RECEIPT]: {
+		description: 'Can be used by any user to add proof for a missed transaction by a committee member. Also will active penalties mechanism.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_spv_add_missed_tx_receipt_operation',
+	},
 	[OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS]: {
 		description: 'Used to generate address in ETH blockchain. After the address is generated eth_address_object(s) will be created in echo db and can be retrieved using get_eth_address method.\n' +
 		'Until one of the objects will receive sufficient amount of approvals the number of objects connected to account id can be more than one',
@@ -296,13 +316,9 @@ export const OPS_DESCRIPTIONS = {
 		description: 'An internal operation, sent by committee member to propose update of the eth contract address.',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_eth_update_contract_address_operation',
 	},
-	[OPERATIONS_IDS.SIDECHAIN_ISSUE]: {
-		description: 'Virtual operation, which reports that the money entered with the help of sidechain.',
-		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_issue_operation',
-	},
-	[OPERATIONS_IDS.SIDECHAIN_BURN]: {
-		description: 'Virtual operation, which reports that the conclusion was successful and funds burned(withdrawn).',
-		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_burn_operation',
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_CONTRACT_OPERATION]: {
+		description: 'Used to register(create) contract in the sidechain. Used by committie members through proposal.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_register_contract_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN]: {
 		description: 'Used to register a token in the sidechain',
@@ -324,17 +340,25 @@ export const OPS_DESCRIPTIONS = {
 		description: 'An internal operation by which committee members confirm the removal of tokens after 24h.',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc20_send_withdraw_operation',
 	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW]: {
+		description: 'An internal operation by which committee members confirm the removal of tokens.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc-20-_approve_token_withdraw_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_ISSUE]: {
+		description: 'This operation is used to credit erc20 tokens.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc-20-_issue_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_BURN]: {
+		description: 'This operation is used to burn erc20 tokens.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc-20-_burn_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_ERC20_TRANSFER_ASSET]: {
+		description: 'Used for transfer asset to Ethereum ERC20 contract.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_erc-20-_transfer_asset_operation',
+	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS]: {
 		description: 'Used to generate address in BTC blockchain. After the address is generated btc_address_object(s) will be created in echo db and can be retrieved using get_btc_address method',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_address_operation',
-	},
-	[OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT]: {
-		description: 'An internal operation by which committee members processed deposit to account',
-		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_create_intermediate_deposit_operation',
-	},
-	[OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT]: {
-		description: 'An internal operation by which committee members send from intermediate address to deposit address',
-		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_intermediate_deposit_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT]: {
 		description: 'An internal operation by which committee members processed deposit to deposit address from intermediate address',
@@ -349,8 +373,20 @@ export const OPS_DESCRIPTIONS = {
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_aggregate_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_BTC_APPROVE_AGGREGATE]: {
-		description: ' An internal operation by which committee members confirm the aggregate transaction',
+		description: 'An internal operation by which committee members confirm the aggregate transaction',
 		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_approve_aggregate_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_SPV_CREATE]: {
+		description: 'Used by the committee member to add Bitcoin block header and sidechain related transactions(and its proofs) from it',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_spv_create_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_BTC_SPV_ADD_MISSED_TX_RECEIPT]: {
+		description: 'Can be used by any user to add proof for a missed transaction by a committee member. Also will active penalties mechanism',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_btc_spv_add_missed_tx_operation',
+	},
+	[OPERATIONS_IDS.SIDECHAIN_SPV_EXCHANGE_EXCESS_FUNDS]: {
+		description: 'Can be used by any user to exchange surplus of sidechain asset caused by unexpected committee behavior.',
+		link: 'https://docs.echo.org/api-reference/echo-operations/sidechain#sidechain_spv_exchange_excess_funds_operation',
 	},
 	[OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE]: {
 		description: 'Used by the committee member to approve/generate stake_eth_update_object with Ethereum stake sidechain data.',

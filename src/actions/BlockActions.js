@@ -131,7 +131,7 @@ export const loadBlockHistory = () => async (dispatch, getState) => {
 		let total = 0;
 		let items = [];
 		const queryData = getState().grid.get(BLOCK_GRID).toJS();
-		const round = getState().block.getIn(['blockInformation', 'blockNumber']);
+		const round = getState().block.getIn(['blockInformation', 'round']);
 		const getObjectId = async (objectId) => {
 			if (!objectId) { return null; }
 			if (isSidechainEthDeposit(objectId) || validators.isContractId(objectId)) {

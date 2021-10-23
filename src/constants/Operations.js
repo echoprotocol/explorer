@@ -402,6 +402,46 @@ const Operations = {
 			asset: null,
 		},
 	},
+	sidechain_issue: {
+		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
+		name: 'Sidechain issue',
+		options: {
+			from: null,
+			subject: ['account', 'name'],
+			amount: 'value.amount',
+			asset: 'value.asset_id',
+		},
+	},
+	sidechain_burn: {
+		value: OPERATIONS_IDS.SIDECHAIN_BURN,
+		name: 'Sidechain burn',
+		options: {
+			from: ['account', 'name'],
+			subject: null,
+			amount: 'value.amount',
+			asset: 'value.asset_id',
+		},
+	},
+	sidechain_eth_spv_create: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_SPV_CREATE,
+		name: 'Sidechain eth spv create',
+		options: {
+			from: 'committee_member_id',
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_eth_spv_add_missed_tx_receipt: {
+		value: OPERATIONS_IDS.SIDECHAIN_ETH_SPV_ADD_MISSED_TX_RECEIPT,
+		name: 'Sidechain eth spv add missed tx receipt',
+		options: {
+			from: 'reporter',
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
 	sidechain_eth_create_address: {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_CREATE_ADDRESS,
 		name: 'Create eth address',
@@ -416,7 +456,7 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_ADDRESS,
 		name: 'Approve eth address',
 		options: {
-			from: 'committee_member_id',
+			from: null,
 			subject: ['account', 'name'],
 			value: null,
 			asset: null,
@@ -426,7 +466,7 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_DEPOSIT,
 		name: 'Deposit eth',
 		options: {
-			from: 'committee_member_id',
+			from: null,
 			subject: ['account', 'name'],
 			value: 'value',
 			asset: null,
@@ -466,7 +506,7 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_ETH_APPROVE_WITHDRAW,
 		name: 'Approve withdraw eth',
 		options: {
-			from: ['committee_member_id', 'name'],
+			from: null,
 			subject: ['withdraw_id'],
 			value: null,
 			asset: null,
@@ -482,24 +522,14 @@ const Operations = {
 			asset: null,
 		},
 	},
-	sidechain_issue: {
-		value: OPERATIONS_IDS.SIDECHAIN_ISSUE,
-		name: 'Sidechain issue',
+	sidechain_erc20_register_contract_operation: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_CONTRACT_OPERATION,
+		name: 'Erc20 register contract operation',
 		options: {
 			from: null,
-			subject: ['account', 'name'],
-			amount: 'value.amount',
-			asset: 'value.asset_id',
-		},
-	},
-	sidechain_burn: {
-		value: OPERATIONS_IDS.SIDECHAIN_BURN,
-		name: 'Sidechain burn',
-		options: {
-			from: ['account', 'name'],
-			subject: null,
-			amount: 'value.amount',
-			asset: 'value.asset_id',
+			subject: ['address'],
+			value: null,
+			asset: null,
 		},
 	},
 	register_erc20_token: {
@@ -557,7 +587,7 @@ const Operations = {
 		value: OPERATIONS_IDS.SIDECHAIN_ERC20_APPROVE_TOKEN_WITHDRAW,
 		name: 'Approve erc20 token withdraw',
 		options: {
-			from: 'committee_member_id',
+			from: null,
 			subject: ['withdraw_id'],
 			amount: null,
 			asset: null,
@@ -583,6 +613,16 @@ const Operations = {
 			asset: null,
 		},
 	},
+	sidechain_erc20_transfer_asset: {
+		value: OPERATIONS_IDS.SIDECHAIN_ERC20_TRANSFER_ASSET,
+		name: 'Erc20 transfer asset operation',
+		options: {
+			from: 'account',
+			subject: ['to'],
+			amount: 'value.amount',
+			asset: 'value.asset_id',
+		},
+	},
 	sidechain_btc_create_address: {
 		value: OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_ADDRESS,
 		name: 'BTC create address',
@@ -593,32 +633,12 @@ const Operations = {
 			asset: null,
 		},
 	},
-	sidechain_btc_create_intermediate_deposit: {
-		value: OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT,
-		name: 'BTC create intermediate deposit',
-		options: {
-			from: 'account',
-			subject: null,
-			amount: null,
-			asset: null,
-		},
-	},
-	sidechain_btc_intermediate_deposit: {
-		value: OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT,
-		name: 'BTC intermediate deposit',
-		options: {
-			from: 'committee_member_id',
-			subject: ['intermediate_address_id'],
-			amount: null,
-			asset: null,
-		},
-	},
 	sidechain_btc_deposit: {
 		value: OPERATIONS_IDS.SIDECHAIN_BTC_DEPOSIT,
 		name: 'BTC deposit',
 		options: {
 			from: 'account',
-			subject: ['intermediate_deposit_id'],
+			subject: null,
 			amount: null,
 			asset: null,
 		},
@@ -653,11 +673,41 @@ const Operations = {
 			asset: null,
 		},
 	},
+	sidechain_btc_spv_create: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_SPV_CREATE,
+		name: 'BTC spv create',
+		options: {
+			from: 'committee_member_id',
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_btc_spv_add_missed_tx_receipt: {
+		value: OPERATIONS_IDS.SIDECHAIN_BTC_SPV_ADD_MISSED_TX_RECEIPT,
+		name: 'BTC spv add missed tx receipt',
+		options: {
+			from: 'reporter',
+			subject: null,
+			amount: null,
+			asset: null,
+		},
+	},
+	sidechain_spv_exchange_excess_funds: {
+		value: OPERATIONS_IDS.SIDECHAIN_SPV_EXCHANGE_EXCESS_FUNDS,
+		name: 'BTC spv exchange excess funds',
+		options: {
+			from: 'account',
+			subject: null,
+			amount: 'amount.amount',
+			asset: 'amount.asset_id',
+		},
+	},
 	sidechain_stake_eth_update: {
 		value: OPERATIONS_IDS.SIDECHAIN_STAKE_ETH_UPDATE,
 		name: 'ETH stake update',
 		options: {
-			from: 'committee_member_id',
+			from: null,
 			subject: null,
 			value: 'amount.amount',
 			asset: 'asset_id',
@@ -704,7 +754,7 @@ const Operations = {
 		},
 	},
 	did_create_operation: {
-		value: OPERATIONS_IDS.DID_CREATE,
+		value: OPERATIONS_IDS.DID_CREATE_OPERATION,
 		name: 'Did create',
 		options: {
 			from: 'registrar',
@@ -714,7 +764,7 @@ const Operations = {
 		},
 	},
 	did_update_operation: {
-		value: OPERATIONS_IDS.DID_UPDATE,
+		value: OPERATIONS_IDS.DID_UPDATE_OPERATION,
 		name: 'Did update',
 		options: {
 			from: 'registrar',
@@ -724,7 +774,7 @@ const Operations = {
 		},
 	},
 	did_delete_operation: {
-		value: OPERATIONS_IDS.DID_DELETE,
+		value: OPERATIONS_IDS.DID_DELETE_OPERATION,
 		name: 'Did delete',
 		options: {
 			from: 'registrar',
@@ -784,12 +834,16 @@ export const proposalOperations = [
 
 export const sidechainOperations = [
 	Operations.sidechain_eth_create_address.name,
+	Operations.sidechain_eth_spv_create.name,
+	Operations.sidechain_eth_spv_add_missed_tx_receipt.name,
 	Operations.sidechain_eth_approve_address.name,
 	Operations.deposit_eth.name,
 	Operations.eth_send_deposit.name,
 	Operations.approve_erc20_token_withdraw.name,
 	Operations.sidechain_erc20_issue.name,
 	Operations.sidechain_erc20_burn.name,
+	Operations.sidechain_erc20_register_contract_operation.name,
+	Operations.sidechain_erc20_transfer_asset.name,
 	Operations.withdraw_eth.name,
 	Operations.eth_send_withdraw.name,
 	Operations.approve_withdraw_eth.name,
@@ -802,18 +856,19 @@ export const sidechainOperations = [
 	Operations.withdraw_erc20_token.name,
 	Operations.erc20_send_withdraw.name,
 	Operations.sidechain_stake_eth_update.name,
+	Operations.sidechain_spv_exchange_excess_funds.name,
 ];
 
 export const sidechainBtcOperations = [
 	Operations.sidechain_btc_create_address.name,
-	Operations.sidechain_btc_create_intermediate_deposit.name,
-	Operations.sidechain_btc_intermediate_deposit.name,
 	Operations.sidechain_btc_deposit.name,
 	Operations.sidechain_btc_withdraw.name,
 	Operations.sidechain_btc_aggregate.name,
 	Operations.sidechain_btc_approve_aggregate.name,
 	Operations.sidechain_stake_btc_create_script.name,
 	Operations.sidechain_stake_btc_update.name,
+	Operations.sidechain_btc_spv_create.name,
+	Operations.sidechain_btc_spv_add_missed_tx_receipt.name,
 ];
 
 export const didOperations = [

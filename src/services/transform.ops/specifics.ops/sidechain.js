@@ -28,7 +28,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					sender: data.committee_member_id,
 					fee: data.fee,
 					...description,
 					additionalInfo: {
@@ -65,7 +64,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					committee_member: data.committee_member_id,
 					account_name: data.account,
 					amount_info: objectInfo.amount,
 					deposit_id: data.objectInfo.get('deposit_id'),
@@ -124,7 +122,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					committee_member: data.committee_member_id,
 					withdraw_id: data.objectInfo.get('withdraw_id'),
 					fee: data.fee,
 					additionalInfo: {
@@ -204,6 +201,76 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			}
 			return obj;
 		}
+		case OPERATIONS_IDS.SIDECHAIN_ETH_SPV_CREATE: {
+			const obj = {
+				operationInfo: {
+					fee: data.fee,
+					committee_member: data.committee_member_id,
+				},
+			};
+			return obj;
+		}
+		case OPERATIONS_IDS.SIDECHAIN_ETH_SPV_ADD_MISSED_TX_RECEIPT: {
+			const obj = {
+				operationInfo: {
+					fee: data.fee,
+					reporter: data.reporter,
+					block_hash: data.block_hash,
+				},
+			};
+			return obj;
+		}
+		case OPERATIONS_IDS.SIDECHAIN_BTC_SPV_CREATE: {
+			const obj = {
+				operationInfo: {
+					fee: data.fee,
+					committee_member: data.committee_member_id,
+				},
+			};
+			return obj;
+		}
+		case OPERATIONS_IDS.SIDECHAIN_BTC_SPV_ADD_MISSED_TX_RECEIPT: {
+			const obj = {
+				operationInfo: {
+					fee: data.fee,
+					reporter: data.reporter,
+					block_hash: data.block_hash,
+				},
+			};
+			return obj;
+		}
+		case OPERATIONS_IDS.SIDECHAIN_SPV_EXCHANGE_EXCESS_FUNDS: {
+			const obj = {
+				operationInfo: {
+					fee: data.fee,
+					account: data.account,
+					amount: data.amount,
+				},
+			};
+			return obj;
+		}
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_CONTRACT_OPERATION: {
+			const obj = {
+				operationInfo: {
+					eth_address: objectInfo.address,
+					name: objectInfo.name,
+					symbol: objectInfo.symbol,
+					decimals: objectInfo.decimals,
+				},
+			};
+			return obj;
+		}
+		case OPERATIONS_IDS.SIDECHAIN_ERC20_TRANSFER_ASSET: {
+			const obj = {
+				operationInfo: {
+					fee: data.fee,
+					account: data.account,
+					eth_address: data.to,
+					amount: data.value,
+				},
+			};
+			return obj;
+		}
 		case OPERATIONS_IDS.SIDECHAIN_ERC20_REGISTER_TOKEN: {
 			return {
 				operationInfo: {
@@ -230,7 +297,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 						...objectInfo.sidechain_amount_info,
 					},
 					fee: data.fee,
-					committee_member: data.committee_member_id,
 					from_address: data.objectInfo.get('from_address'),
 					deposit_id: data.objectInfo.get('deposit_id'),
 					additionalInfo: {
@@ -307,7 +373,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 			return {
 				operationInfo: {
 					type,
-					committee_member: data.committee_member_id,
 					withdraw_id: objectInfo.withdraw_id,
 					fee: data.fee,
 					...description,
@@ -375,45 +440,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 					...description,
 					additionalInfo: {
 						received_deposit_address: objectInfo.received_deposit_address,
-					},
-				},
-			};
-		}
-		case OPERATIONS_IDS.SIDECHAIN_BTC_CREATE_INTERMEDIATE_DEPOSIT: {
-			return {
-				operationInfo: {
-					type,
-					committee_member: data.committee_member_id,
-					account_name: data.account,
-					fee: data.fee,
-					...description,
-					btc_address: objectInfo.deposit_address,
-					btc_transaction_hash: objectInfo.transaction_hash,
-					additionalInfo: {
-						number_of_confirmations: {
-							value: objectInfo.approves,
-							total: objectInfo.total,
-						},
-					},
-				},
-			};
-		}
-		case OPERATIONS_IDS.SIDECHAIN_BTC_INTERMEDIATE_DEPOSIT: {
-			return {
-				operationInfo: {
-					type,
-					committee_member: data.committee_member_id,
-					account_name: objectInfo.account,
-					btc_address: objectInfo.intermediate_address,
-					address_id: objectInfo.intermediate_address_id,
-					signature: objectInfo.signature,
-					fee: data.fee,
-					...description,
-					additionalInfo: {
-						number_of_confirmations: {
-							value: objectInfo.approves,
-							total: objectInfo.total,
-						},
 					},
 				},
 			};
@@ -509,7 +535,6 @@ export const transformOperationDataByType = async (opNumber, data) => {
 				operationInfo: {
 					type,
 					fee: data.fee,
-					committee_member: data.committee_member_id,
 					asset_id: data.asset_id,
 					amount: objectInfo.sidechain_amount,
 					current_balance: data.current_balance,

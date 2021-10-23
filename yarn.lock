@@ -4453,10 +4453,10 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-echojs-lib@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/echojs-lib/-/echojs-lib-1.13.0.tgz#15ca298bf90cfb7d7662deafbfdb08624ca4b78f"
-  integrity sha512-o+VDuXs/uiRXPIujNt2Ub+bRdxUWMoXBBrI2h9zSzvf8cY+/zWvCOQ2rS+jNd+Jp4xCtJ+jzgJnbCvqzWn5KnQ==
+echojs-lib@^1.13.1:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/echojs-lib/-/echojs-lib-1.13.2.tgz#af3799a7e504e459c0f672313a7ac39c1fd514e0"
+  integrity sha512-TXRrs7kIcRTm6wdkDqN3lz+KaIqQcUbZi8msGJ4MxfyH7gYmdbHrD3ZqQLXd6fLzLjxi34gEj+Qj8lHJZWUSCQ==
   dependencies:
     "@babel/runtime-corejs3" "^7.6.0"
     "@types/crypto-js" "^3.1.43"
