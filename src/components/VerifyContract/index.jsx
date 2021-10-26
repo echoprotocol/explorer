@@ -211,6 +211,14 @@ class VerifyContract extends React.Component {
 		return null;
 	}
 
+	renderVerifyButton(loader) {
+		if (loader) {
+			return <div className="blue-loader" />;
+		}
+
+		return 'Verify';
+	}
+
 	render() {
 		const {
 			router: { query: { id } }, form, contracts,
@@ -377,7 +385,7 @@ class VerifyContract extends React.Component {
 						disabled={this.isDisabled()}
 						className="approve-button"
 					>
-						Verify
+						{this.renderVerifyButton(loader)}
 					</button>
 				</div>
 			</div>
