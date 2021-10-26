@@ -424,7 +424,12 @@ class ContractActions extends BaseActionsClass {
 		if (!errors) {
 			return [];
 		}
-		return errors.map((err) => err.formattedMessage);
+		return errors.reduce((acc, err) => {
+			if (err.formattedMessage.startsWith(COMPILER_CONSTS.WARNING_PREFIX)) {
+				return acc;
+			}
+			return [...acc, err.formattedMessage];
+		});
 	}
 	manageContract(contractId, name, icon, description, clickSaveCounter) {
 		return async (dispatch, getState) => {
