@@ -92,7 +92,7 @@ class OperationInfo extends React.Component {
 					{data.echorand_key && <PrimaryRow title="EchoRand Key" description={data.echorand_key} />}
 					{data.account_updated && <LinkRow title="Account updated" account={{ value: data.account_updated.value, link: data.account_updated.link }} />}
 					{data.delegating_account && <LinkRow title="Delegating Account" account={data.delegating_account} />}
-					{data.delegate_share && <LinkRow title="Delegate share" amount={data.delegate_share} />}
+					{data.delegate_share && <PrimaryRow title="Delegate share" description={`${data.delegate_share} %`} />}
 					{data.duration && <PrimaryRow title="Duration" description={data.duration} />}
 					{data.amount && <LinkRow title="Amount" amount={data.amount} />}
 					{data.current_balance && <LinkRow title="Current balance" amount={data.current_balance} />}
