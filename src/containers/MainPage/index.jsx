@@ -82,6 +82,7 @@ class MainPage extends React.Component {
 					<LatestOperationsTable
 						goToTransaction={(e, block, trx, op, virtual) => this.goToTransaction(e, block, trx, op, virtual)}
 						operations={this.getOperations()}
+						getOperations={() => this.getOperations()}
 					/>
 				</div>
 			</div>
