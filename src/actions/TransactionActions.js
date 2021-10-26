@@ -1413,9 +1413,7 @@ class TransactionActionsClass extends BaseActionsClass {
 		if (options.delegate_data) {
 			const { value, link, amount } = options.delegate_data;
 			options.delegating_account = { value, link };
-			options.delegate_share = {
-				amount, symbol: ECHO_ASSET.SYMBOL, precision: ECHO_ASSET.PRECISION, asset_id: ECHO_ASSET.ID,
-			};
+			options.delegate_share = amount;
 			delete options.delegate_data;
 		}
 
