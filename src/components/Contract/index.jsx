@@ -288,7 +288,7 @@ class Contract extends React.Component {
 								<div className={classnames('menu-item', { active: (CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 })}>
 									<Link href={SSR_CONTRACT_DETAILS_PATH} as={URLHelper.createContractUrl(id, CONTRACT_ABI)} scroll={false}>
 										<a href="" onClick={(e) => this.goToSlide(e, 1)} tabIndex={(CONTRACT_DETAILS_NUMBERS_TAB[detail] || 0) === 1 ? -1 : null}>
-											<span className={classnames('menu-item-content with-icon', { verified }, { unverified: !verified })}>Source Code & ABI</span>
+											<span className={classnames('menu-item-content', { 'with-icon verified': verified })}>Source Code & ABI</span>
 										</a>
 									</Link>
 								</div>
