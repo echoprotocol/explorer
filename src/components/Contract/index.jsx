@@ -239,7 +239,7 @@ class Contract extends React.Component {
 								<ActionButton
 									name={stars.includes(activeAccount.get('id')) ? 'Unstar' : 'Star'}
 									onClick={() => this.props.setStarToContract(id)}
-									label={stars.includes(activeAccount.get('id')) ? `${stars.size}` : null}
+									label={stars.size}
 									icon={starIcon}
 								/>
 								<ActionButton name="Edit info" onClick={this.manageContract} icon={editIcon} />
