@@ -42,6 +42,7 @@ const onConnectSubscriber = () => (dispatch) => {
 			InternetPopupReducer.actions.set({ field: 'show', value: false }),
 			InternetPopupReducer.actions.clearTimeout(),
 		]));
+		window.location.reload();
 	}, 3000);
 
 	dispatch(batchActions([
