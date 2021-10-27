@@ -30,7 +30,7 @@ import { ContractIcon } from './ContractIcon';
 import CopyBtn from '../Buttons/CopyBtn';
 import InnerHeader from '../InnerHeader';
 import ActionButton from '../Buttons/ActionButton';
-// import { BridgeService } from '../../services/BridgeService';
+import { BridgeService } from '../../services/BridgeService';
 import { subscribeContractHistoryUpdate } from '../../services/subscriptions/contract';
 
 import URLHelper from '../../helpers/URLHelper';
@@ -126,7 +126,7 @@ class Contract extends React.Component {
 	}
 
 	async subscribe(id) {
-		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
+		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		const updateHistory = await subscribeContractHistoryUpdate(id);
 
 		const nextUpdate = ({ data: { contractHistoryUpdated } }) => this.props.updateContractHistory(contractHistoryUpdated);

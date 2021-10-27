@@ -9,7 +9,7 @@ import { Map } from 'immutable';
 import { MAX_KB_CONTRACT_ICON, MAX_LENGTH_CONTRACT_DESCRIPTION } from '../../constants/GlobalConstants';
 
 import URLHelper from '../../helpers/URLHelper';
-// import { BridgeService } from '../../services/BridgeService';
+import { BridgeService } from '../../services/BridgeService';
 
 import BackwardIcon from '../BackwardIcon';
 import Avatar from '../Avatar';
@@ -81,7 +81,7 @@ class ManageContract extends React.Component {
 	async initData() {
 		const { router: { query: { id } } } = this.props;
 		this.props.getContractInfo(id);
-		// BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
+		BridgeService.subscribeSwitchAccount(this.props.setActiveAccount);
 		this.props.loadActiveAccount();
 		this.props.setDefaultDateContract(id);
 	}

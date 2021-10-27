@@ -16,7 +16,8 @@ export class BridgeService {
 
 		window.echojslib.extension.subscribeSwitchAccount((account) => {
 			if (!account) return;
-			cb(account);
+			const accountData = account instanceof Array ? account[0] : account;
+			cb(accountData);
 		});
 	}
 
