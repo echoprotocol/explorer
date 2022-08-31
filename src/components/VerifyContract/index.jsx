@@ -351,7 +351,7 @@ class VerifyContract extends React.Component {
 								<div className="verify-contract-table">
 									{
 										form.get('contractInputs').map((input, name) => (
-											<div className="row" key={name.toString()}>
+											<div className="row" key={`${name.toString()}`}>
 												<div className="t-name">{`${name} (${input.type})`}</div>
 												<div className="t-value">
 													<div className="input-wrapper">
