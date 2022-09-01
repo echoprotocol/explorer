@@ -154,7 +154,7 @@ export const serverConnect = () => async (dispatch) => {
 			console.log('EchoDB error', err);
 		}
 
-		if (block) {
+		if (block && block.data) {
 			await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
 		}
 
@@ -201,7 +201,9 @@ export const fullClientInit = () => async (dispatch) => {
 
 		await dispatch(initBlocks());
 		const block = await getBlockFromGraphQl(dynamicGlobalParams.head_block_number);
-		await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		if (block && block.data) {
+			await dispatch(StatisticsActions.updateStatistics(block.data.getBlock));
+		}
 		await dispatch(getLatestOperations());
 		await echo.subscriber.setEchorandSubscribe((result) => dispatch(roundSubscribe(result)));
 

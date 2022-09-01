@@ -111,7 +111,7 @@ class NodeMap extends React.Component {
 						<Layer
 							type="circle"
 							id={p.id}
-							key={key.toString()}
+							key={`${key.toString()}`}
 							paint={p.POSITION_CIRCLE_PAINT}
 						>
 							<Feature
