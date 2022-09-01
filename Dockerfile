@@ -1,7 +1,7 @@
 FROM node:12-alpine as builder
 
 WORKDIR /app
-RUN apk --no-cache add g++ gcc git libgcc libstdc++ linux-headers make python alpine-sdk ffmpeg
+RUN apk --no-cache add g++ gcc git libgcc libstdc++ linux-headers make python3 alpine-sdk ffmpeg
 
 ARG NODE_APP_INSTANCE=""
 ENV NODE_APP_INSTANCE=${NODE_APP_INSTANCE}
