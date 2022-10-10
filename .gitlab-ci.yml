@@ -6,7 +6,7 @@ stages:
 include:
   - project: 'service/devops'
     ref: master
-    file: 'build/frontend/.gitlab-ci.yml'  
+    file: 'build/frontend/.gitlab-ci.yml'
 
 lint:
   image: node:10.15
@@ -49,7 +49,7 @@ stage-deploy:
   only:
     - master
   tags:
-    - pp-stage
+    - echo-linux
 
 production-deploy:
   extends: .deploy

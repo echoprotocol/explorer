@@ -4,12 +4,12 @@
     "HTTP": "https://645-echodb.pixelplexlabs.com/graphql",
     "WS": "wss://645-echodb.pixelplexlabs.com/graphql"
   },
-  "SERVER_URL": "https://656-echo-explorer.pixelplexlabs.com",
+  "SERVER_URL": "https://echo-explorer.pixelplexlabs.com",
   "ECHO_NODE": {
-    "API_URL": "wss://testnet.echo-dev.io/ws"
+    "API_URL": "wss://echo-devnet.pixelplexlabs.com/ws"
   },
   "SIDECHAIN_EXPLORER_URLS":{
-    "ETHEREUM": "https://rinkeby.etherscan.io",
+    "ETHEREUM": "https://goerli.etherscan.io",
     "BITCOIN": "https://blockexplorer.one/btc/testnet"
   },
 	"MODE":"TESTNET"
